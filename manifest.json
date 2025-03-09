@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "CloudSkills AutoScript",
+  "version": "1.0",
+  "description": "Tự động chỉnh sửa trang CloudSkillsBoost với tùy chọn bật/tắt.",
+  "icons": {
+    "48": "icon.png"
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["https://www.cloudskillsboost.google/games/*/labs/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.cloudskillsboost.google/games/*/labs/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
