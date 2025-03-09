@@ -8,6 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Khi người dùng thay đổi trạng thái
     toggle.addEventListener("change", () => {
-        chrome.storage.sync.set({ scriptEnabled: toggle.checked });
+        const isEnabled = toggle.checked;
+        chrome.storage.sync.set({ scriptEnabled: isEnabled });
+
+        // Gửi tín hiệu đến background.js để cập nhật script
+        chrome.runtime.sendMessage({ action: "updateScript", enabled: isEnabled });
     });
 });
