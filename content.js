@@ -1,5 +1,6 @@
 chrome.storage.sync.get("scriptEnabled", (data) => {
-    if (data.scriptEnabled ?? true) {
+    const scriptEnabled = data.scriptEnabled ?? true;
+    if (scriptEnabled) {
         console.log("CloudSkillsBoost script injected!");
 
         function modifyPage() {
