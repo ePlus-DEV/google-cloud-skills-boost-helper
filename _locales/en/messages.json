@@ -1,0 +1,23 @@
+{
+    "extName": {
+        "message": "CloudSkills AutoScript"
+    },
+    "extDescription": {
+        "message": "Automatically modifies CloudSkillsBoost Labs with toggle options."
+    },
+    "scriptRunning": {
+        "message": "✅ Script is running"
+    },
+    "scriptStopped": {
+        "message": "❌ Script is disabled"
+    },
+    "onlyWorksOnLab": {
+        "message": "This script only works on CloudSkillsBoost Labs!"
+    },
+    "hideLeaderboard": {
+        "message": "Hide Leaderboard"
+    },
+    "showLeaderboard": {
+        "message": "Show Leaderboard"
+    }
+}

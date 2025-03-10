@@ -1,17 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "CloudSkills AutoScript",
+  "name": "__MSG_extName__",
   "version": "1.0",
-  "description": "Tự động chỉnh sửa trang CloudSkillsBoost với tùy chọn bật/tắt.",
+  "description": "__MSG_extDescription__",
   "icons": {
     "48": "icon.png"
   },
   "permissions": ["storage", "scripting", "tabs", "activeTab"],
   "host_permissions": ["https://www.cloudskillsboost.google/games/*/labs/*"],
-  "action": {}, 
+  "action": {},
   "background": {
     "service_worker": "background.js"
   },
+  "default_locale": "en",
   "content_scripts": [
     {
       "matches": ["https://www.cloudskillsboost.google/games/*/labs/*"],

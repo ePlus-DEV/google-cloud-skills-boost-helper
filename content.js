@@ -17,7 +17,7 @@ chrome.storage.sync.get("scriptEnabled", (data) => {
       statusDiv.style.fontWeight = "bold";
       statusDiv.style.borderRadius = "5px";
       statusDiv.style.zIndex = "9999";
-      statusDiv.innerText = scriptEnabled ? "✅ Script đang chạy" : "❌ Script bị tắt";
+      statusDiv.innerText = scriptEnabled ? chrome.i18n.getMessage("scriptRunning") : chrome.i18n.getMessage("scriptStopped");
       document.body.appendChild(statusDiv);
 
       setTimeout(() => {
@@ -42,13 +42,13 @@ chrome.storage.sync.get("scriptEnabled", (data) => {
       toggleButton.style.border = "none";
       toggleButton.style.borderRadius = "5px";
       toggleButton.style.zIndex = "9999";
-      toggleButton.innerText = scriptEnabled ? "Ẩn Leaderboard" : "Hiện Leaderboard";
+      toggleButton.innerText = scriptEnabled ? chrome.i18n.getMessage("hideLeaderboard") : chrome.i18n.getMessage("showLeaderboard");
       document.body.appendChild(toggleButton);
 
       toggleButton.addEventListener("click", () => {
         scriptEnabled = !scriptEnabled;
         chrome.storage.sync.set({ scriptEnabled }, () => {
-          toggleButton.innerText = scriptEnabled ? "Ẩn Leaderboard" : "Hiện Leaderboard";
+          toggleButton.innerText = scriptEnabled ? chrome.i18n.getMessage("hideLeaderboard") : chrome.i18n.getMessage("showLeaderboard");
           showStatusLabel();
           modifyPage();
         });
@@ -62,7 +62,7 @@ chrome.storage.sync.get("scriptEnabled", (data) => {
 
     if (leaderboard) {
       leaderboard.style.display = scriptEnabled ? "none" : "block";
-      console.log(scriptEnabled ? "Đã ẩn bảng xếp hạng." : "Đã hiện bảng xếp hạng.");
+      console.log(scriptEnabled ? chrome.i18n.getMessage("hideLeaderboard") : chrome.i18n.getMessage("showLeaderboard"));
     }
 
     if (score) {

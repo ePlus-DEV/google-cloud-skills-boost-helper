@@ -1,0 +1,23 @@
+{
+    "extName": {
+      "message": "CloudSkills AutoScript"
+    },
+    "extDescription": {
+      "message": "Tự động chỉnh sửa trang CloudSkillsBoost với tùy chọn bật/tắt."
+    },
+    "scriptRunning": {
+      "message": "✅ Script đang chạy"
+    },
+    "scriptStopped": {
+      "message": "❌ Script bị tắt"
+    },
+    "onlyWorksOnLab": {
+      "message": "Script này chỉ hoạt động trên CloudSkillsBoost Labs!"
+    },
+    "hideLeaderboard": {
+      "message": "Ẩn bảng xếp hạng"
+    },
+    "showLeaderboard": {
+      "message": "Hiện bảng xếp hạng"
+    }
+}
