@@ -1,4 +1,4 @@
-# CloudSkills AutoScript
+# CloudSkills CloudSkills Auto show/hide ScoreBoard
 
 CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
 
