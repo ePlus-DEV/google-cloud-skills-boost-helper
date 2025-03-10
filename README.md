@@ -1,42 +1,55 @@
 # CloudSkills AutoScript
 
-CloudSkills AutoScript là một tiện ích mở rộng cho Chrome tự động chỉnh sửa trang CloudSkillsBoost Labs với các tùy chọn bật/tắt. Nó cho phép người dùng bật hoặc tắt script, ẩn hoặc hiển thị bảng xếp hạng, và cung cấp phản hồi trực quan về trạng thái của script.
+CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
 
-## Tính năng
+## Features
 
-- Bật hoặc tắt script từ popup.
-- Ẩn hoặc hiển thị bảng xếp hạng trên CloudSkillsBoost Labs.
-- Phản hồi trực quan về trạng thái của script.
+- Automatically hides or shows the leaderboard on CloudSkillsBoost Labs.
+- Displays the script status on the UI.
+- Provides a toggle button to enable or disable the script.
 
-## Cài đặt
+## Installation
 
-1. Clone repository hoặc tải file ZIP.
-2. Mở Chrome và điều hướng đến `chrome://extensions/`.
-3. Bật "Chế độ nhà phát triển" bằng cách bật công tắc ở góc trên bên phải.
-4. Nhấp vào "Tải tiện ích đã giải nén" và chọn thư mục chứa các file tiện ích mở rộng.
+1. Clone the repository or download the ZIP file.
+2. Open Chrome and navigate to `chrome://extensions/`.
+3. Enable "Developer mode" by toggling the switch in the top right corner.
+4. Click on "Load unpacked" and select the directory containing the extension files.
 
-## Sử dụng
+## Usage
 
-1. Nhấp vào biểu tượng tiện ích để mở popup.
-2. Sử dụng công tắc bật/tắt để bật hoặc tắt script.
-3. Script sẽ tự động chỉnh sửa trang CloudSkillsBoost Labs dựa trên trạng thái của công tắc.
-4. Biểu tượng tiện ích sẽ hiển thị huy hiệu cho biết script đang bật ("ON") hay tắt ("OFF").
+1. Once the extension is installed, navigate to any CloudSkillsBoost Lab page.
+2. The extension will automatically inject the content script and modify the page based on the script's status.
+3. Click on the extension icon to toggle the script on or off.
+4. The script status will be displayed on the UI, and the leaderboard will be hidden or shown accordingly.
 
-## Đa ngôn ngữ
+## Localization
 
-Tiện ích hỗ trợ nhiều ngôn ngữ. Các ngôn ngữ có sẵn:
+The extension supports multiple languages. The following languages are currently available:
 
-- Tiếng Anh (en)
-- Tiếng Pháp (fr)
-- Tiếng Việt (vi)
+- English (en)
+- French (fr)
+- Vietnamese (vi)
 
-## Các file
+## File Structure
 
-- `background.js`: Xử lý các tác vụ nền, chẳng hạn như inject content script và cập nhật huy hiệu tiện ích.
-- `content.js`: Chỉnh sửa trang CloudSkillsBoost Labs dựa trên trạng thái bật/tắt của script.
-- `_locales/`: Chứa các file localization cho các ngôn ngữ khác nhau.
-- `manifest.json`: File manifest cho tiện ích Chrome.
+```
+background.js
+content.js
+icon.png
+manifest.json
+_locales/
+  en/
+    messages.json
+  fr/
+    messages.json
+  vi/
+    messages.json
+```
 
-## Giấy phép
+## Contributing
 
-Dự án này được cấp phép theo Giấy phép MIT.
+Feel free to contribute to this project by submitting issues or pull requests.
+
+## License
+
+This project is licensed under the MIT License.
