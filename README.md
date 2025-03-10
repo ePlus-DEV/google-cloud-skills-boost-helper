@@ -2,7 +2,7 @@
 
 CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
 
-![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/38e5dff4-9230-4443-8660-ad0955515aee)
+![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
 
 ## Features
 
