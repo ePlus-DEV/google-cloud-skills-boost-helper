@@ -18,9 +18,8 @@ chrome.storage.sync.get("scriptEnabled", (data) => {
             }
         }
 
-        // Chờ DOM load xong
         document.addEventListener("DOMContentLoaded", modifyPage);
-        setTimeout(modifyPage, 3000); // Tránh trường hợp trang load chậm
+        setTimeout(modifyPage, 3000);
     } else {
         console.log("Script bị tắt.");
     }

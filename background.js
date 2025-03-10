@@ -1,42 +1,66 @@
-function updateBadge(isEnabled) {
-    const text = isEnabled ? "ON " : "OFF";
-    chrome.action.setBadgeText({ text: text });
-    chrome.action.setBadgeBackgroundColor({ color: isEnabled ? "#4CAF50" : "#FF3B30" });
-    chrome.action.setBadgeTextColor({ color: "#FFFFFF" }); // Set badge text color to white
-}
-
-function checkAndUpdateBadge() {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const tab = tabs[0];
-        const urlPattern = /^https:\/\/www\.cloudskillsboost\.google\/games\/.*\/labs\/.*$/;
-        if (urlPattern.test(tab.url)) {
-            chrome.storage.sync.get("scriptEnabled", (data) => {
-                updateBadge(data.scriptEnabled ?? true);
-            });
-        } else {
-            chrome.action.setBadgeText({ text: "" }); // Clear the badge if the URL does not match
-        }
+function injectContentScript(tabId) {
+    chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        files: ["content.js"]
+    }, () => {
+        console.log("Đã inject content.js vào tab:", tabId);
     });
 }
 
-// Listen for messages from popup.js
-chrome.runtime.onMessage.addListener((message) => {
-    if (message.action === "updateScript") {
-        chrome.storage.sync.set({ scriptEnabled: message.enabled }, () => {
-            checkAndUpdateBadge();
+function updateBadge(status) {
+    chrome.action.setBadgeText({ text: status ? "ON " : "OFF" });
+    chrome.action.setBadgeBackgroundColor({ color: status ? "#00FF00" : "#FF0000" });
+    chrome.action.setBadgeTextColor({ color: "#FFFFFF" });
+}
+
+// Kiểm tra và inject script khi tab thay đổi hoặc cập nhật
+function checkAndInjectScript(tabId, changeInfo, tab) {
+    const urlPattern = /^https:\/\/www\.cloudskillsboost\.google\/games\/.*\/labs\/.*$/;
+    if (tab.url && urlPattern.test(tab.url)) {
+        chrome.storage.sync.get("scriptEnabled", (data) => {
+            const scriptEnabled = data.scriptEnabled ?? true;
+            updateBadge(scriptEnabled);
+            if (scriptEnabled) {
+                injectContentScript(tabId);
+            }
         });
+    }
+}
+
+// Lắng nghe khi tab được cập nhật hoặc thay đổi
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === "complete") {
+        checkAndInjectScript(tabId, changeInfo, tab);
     }
 });
 
-// Update badge label when the extension starts or the tab is updated
-chrome.storage.sync.get("scriptEnabled", (data) => {
-    checkAndUpdateBadge();
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    chrome.tabs.get(activeInfo.tabId, (tab) => {
+        checkAndInjectScript(activeInfo.tabId, {}, tab);
+    });
 });
 
-chrome.tabs.onUpdated.addListener(() => {
-    checkAndUpdateBadge();
+// Chạy khi extension được bật
+chrome.runtime.onStartup.addListener(() => {
+    chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+            checkAndInjectScript(tab.id, {}, tab);
+        });
+    });
 });
 
-chrome.tabs.onActivated.addListener(() => {
-    checkAndUpdateBadge();
+// Kiểm tra và inject script ngay khi cài đặt
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+            checkAndInjectScript(tab.id, {}, tab);
+        });
+    });
+});
+
+// Listen for changes in the scriptEnabled setting
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === "sync" && changes.scriptEnabled) {
+        updateBadge(changes.scriptEnabled.newValue);
+    }
 });
