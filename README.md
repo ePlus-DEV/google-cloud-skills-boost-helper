@@ -1,55 +1,33 @@
-# CloudSkills CloudSkills Auto show/hide ScoreBoard
+This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
-CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
+## Getting Started
 
-## Features
+First, run the development server:
 
-- Automatically hides or shows the leaderboard on CloudSkillsBoost Labs.
-- Displays the script status on the UI.
-- Provides a toggle button to enable or disable the script.
-
-## Installation
-
-1. Clone the repository or download the ZIP file.
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable "Developer mode" by toggling the switch in the top right corner.
-4. Click on "Load unpacked" and select the directory containing the extension files.
-
-## Usage
-
-1. Once the extension is installed, navigate to any CloudSkillsBoost Lab page.
-2. The extension will automatically inject the content script and modify the page based on the script's status.
-3. Click on the extension icon to toggle the script on or off.
-4. The script status will be displayed on the UI, and the leaderboard will be hidden or shown accordingly.
-
-## Localization
-
-The extension supports multiple languages. The following languages are currently available:
-
-- English (en)
-- French (fr)
-- Vietnamese (vi)
-
-## File Structure
-
-```
-background.js
-content.js
-icon.png
-manifest.json
-_locales/
-  en/
-    messages.json
-  fr/
-    messages.json
-  vi/
-    messages.json
+```bash
+pnpm dev
+# or
+npm run dev
 ```
 
-## Contributing
+Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
 
-Feel free to contribute to this project by submitting issues or pull requests.
+You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
 
-## License
+For further guidance, [visit our Documentation](https://docs.plasmo.com/)
 
-This project is licensed under the MIT License.
+## Making production build
+
+Run the following:
+
+```bash
+pnpm build
+# or
+npm run build
+```
+
+This should create a production bundle for your extension, ready to be zipped and published to the stores.
+
+## Submit to the webstores
+
+The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
