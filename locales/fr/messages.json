@@ -1,8 +1,23 @@
 {
   "extensionName": {
-    "message": "Google Cloud Skills Boost - Trợ giúp"
+    "message": "Google Cloud Skills Boost - Assistant"
   },
   "extensionDescription": {
-    "message": "Tự động chỉnh sửa các phòng thí nghiệm CloudSkillsBoost với các tùy chọn chuyển đổi."
+    "message": "Modifie automatiquement les laboratoires CloudSkillsBoost avec des options de basculement."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - Assistant Options"
+  },
+  "optionsPageDescription": {
+    "message": "Personnalisez votre expérience avec Google Cloud Skills Boost - Assistant."
+  },
+  "labelFeature": {
+    "message": "Fonctionnalité"
+  },
+  "labelStatus": {
+    "message": "Statut"
+  },
+  "labelShowLeaderboard": {
+    "message": "Afficher le classement"
   }
 }
