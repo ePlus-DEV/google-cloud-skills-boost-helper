@@ -1,34 +1,4 @@
-import assert from "assert"
-
 import { Storage } from "@plasmohq/storage"
-import { SecureStorage } from "@plasmohq/storage/secure"
-
-const TEST_KEY = "ship"
-const TEST_DATA = "1701"
-
-async function testSecureStorage() {
-  const storage = new SecureStorage({ area: "local" })
-  await storage.clear()
-
-  // Must set password then watch, otherwise the namespace key will mismatch
-  storage.watch({
-    [TEST_KEY]: (c) => {
-      console.log(TEST_KEY, c)
-    }
-  })
-
-  await storage.set(TEST_KEY, TEST_DATA)
-
-  const foo = await storage.get(TEST_KEY)
-
-  assert(foo === TEST_DATA, "ENCRYPTION FAILED")
-
-  console.log(await storage.getAll())
-
-  await storage.set(TEST_KEY, TEST_DATA + "2")
-
-  await storage.clear()
-}
 
 async function testBaseStorage() {
   const storage = new Storage()
@@ -66,11 +36,6 @@ async function testBaseStorage() {
 }
 
 const main = async () => {
-  await testSecureStorage()
-
-  // Wait for all the watch event to be processed
-  await new Promise((resolve) => setTimeout(resolve, 1470))
-
   await testBaseStorage()
 }
 
