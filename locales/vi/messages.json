@@ -19,5 +19,8 @@
   },
   "labelShowLeaderboard": {
     "message": "Hiển thị Bảng xếp hạng"
+  },
+  "labelHideLeaderboard": {
+    "message": "Ẩn Bảng xếp hạng"
   }
 }

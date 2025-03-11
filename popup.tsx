@@ -3,7 +3,7 @@ import "./style.css"
 
 function IndexPopup() {
 
-    const [checked, setChecked] = useStorage("checked", true)
+    const [checked, setChecked] = useStorage("checked", false)
 
     return (
         <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 300, }}>
