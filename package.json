@@ -4,6 +4,7 @@
   "version": "1.0.1",
   "description": "__MSG_extensionDescription__",
   "author": "dev@eplus.dev",
+  "license": "MIT",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
