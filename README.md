@@ -2,7 +2,7 @@ This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with
 
 ## Getting Started
 
-First, run the development server:
+![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
 
 ```bash
 pnpm dev
