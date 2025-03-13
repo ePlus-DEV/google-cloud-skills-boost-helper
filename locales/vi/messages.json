@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Google Cloud Skills Boost - Trợ giúp"
+  },
+  "extensionDescription": {
+    "message": "Tự động chỉnh sửa các phòng thí nghiệm CloudSkillsBoost với các tùy chọn chuyển đổi."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - Trợ giúp Tùy chọn"
+  },
+  "optionsPageDescription": {
+    "message": "Tùy chỉnh trải nghiệm của bạn với Google Cloud Skills Boost - Trợ giúp."
+  },
+  "labelFeature": {
+    "message": "Tính năng"
+  },
+  "labelStatus": {
+    "message": "Trạng thái"
+  },
+  "labelShowLeaderboard": {
+    "message": "Hiển thị Bảng xếp hạng"
+  },
+  "labelHideLeaderboard": {
+    "message": "Ẩn Bảng xếp hạng"
+  }
+}
