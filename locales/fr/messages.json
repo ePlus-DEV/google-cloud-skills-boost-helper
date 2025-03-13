@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Google Cloud Skills Boost - Assistant"
+  },
+  "extensionDescription": {
+    "message": "Modifie automatiquement les laboratoires CloudSkillsBoost avec des options de basculement."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - Assistant Options"
+  },
+  "optionsPageDescription": {
+    "message": "Personnalisez votre expérience avec Google Cloud Skills Boost - Assistant."
+  },
+  "labelFeature": {
+    "message": "Fonctionnalité"
+  },
+  "labelStatus": {
+    "message": "Statut"
+  },
+  "labelShowLeaderboard": {
+    "message": "Afficher le classement"
+  },
+  "labelHideLeaderboard": {
+    "message": "Masquer le classement"
+  }
+}

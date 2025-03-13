@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Google Cloud Skills Boost - Helper"
+  },
+  "extensionDescription": {
+    "message": "Automatically modifies CloudSkillsBoost Labs with toggle options."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - Helper Options"
+  },
+  "optionsPageDescription": {
+    "message": "Customize your experience with Google Cloud Skills Boost - Helper."
+  },
+  "labelFeature": {
+    "message": "Feature"
+  },
+  "labelStatus": {
+    "message": "Status"
+  },
+  "labelShowLeaderboard": {
+    "message": "Show Leaderboard"
+  },
+  "labelHideLeaderboard": {
+    "message": "Hide Leaderboard"
+  }
+}
