@@ -8,7 +8,9 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Cache pnpm modules
         uses: actions/cache@v3
         with:
@@ -16,14 +18,18 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 8.6.0
           run_install: true
-      - name: Use Node.js 22.x
-        uses: actions/setup-node@v3.4.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 22.13.0
           cache: "pnpm"
+
       - name: Build the extension
         run: pnpm build --zip
