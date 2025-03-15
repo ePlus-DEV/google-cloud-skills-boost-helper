@@ -28,9 +28,6 @@ jobs:
       - name: Build extension
         run: |
           yarn build --zip
-          # for target in chrome-mv3 firefox-mv3 edge-mv3 brave-mv3 opera-mv3 safari-mv3; do
-          #   yarn build --target=$target --zip
-          # done
 
       - name: Generate Changelog
         run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
