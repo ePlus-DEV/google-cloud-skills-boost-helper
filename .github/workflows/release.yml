@@ -27,7 +27,7 @@ jobs:
         run: yarn dev
 
       - name: Build Extension
-        run: yarn build --zip
+        run: yarn build
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
