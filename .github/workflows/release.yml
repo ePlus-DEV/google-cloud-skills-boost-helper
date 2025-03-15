@@ -24,6 +24,9 @@ jobs:
           npm install -g pnpm
           pnpm install
 
+      - name: Create Build Directory
+        run: mkdir -p build
+
       - name: Build extension
         run: |
           pnpm build --zip
