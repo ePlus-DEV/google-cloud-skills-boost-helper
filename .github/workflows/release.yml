@@ -24,9 +24,10 @@ jobs:
 
       - name: Build extension
         run: |
-          for target in chrome-mv3 firefox-mv3 edge-mv3 brave-mv3 opera-mv3 safari-mv3; do
-            yarn build --target=$target --zip
-          done
+          yarn build --zip
+          # for target in chrome-mv3 firefox-mv3 edge-mv3 brave-mv3 opera-mv3 safari-mv3; do
+          #   yarn build --target=$target --zip
+          # done
 
       - name: Generate Changelog
         run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
@@ -35,8 +36,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            build/chrome-mv3-${{ env.VERSION }}.zip
-            build/edge-mv3-${{ env.VERSION }}.zip
-            build/brave-mv3-${{ env.VERSION }}.zip
-            build/opera-mv3-${{ env.VERSION }}.zip
-            build/safari-mv3-${{ env.VERSION }}.zip
+            build/chrome-mv3-prod.zip
+            # build/chrome-mv3-${{ env.VERSION }}.zip
+            # build/edge-mv3-${{ env.VERSION }}.zip
+            # build/brave-mv3-${{ env.VERSION }}.zip
+            # build/opera-mv3-${{ env.VERSION }}.zip
+            # build/safari-mv3-${{ env.VERSION }}.zip
