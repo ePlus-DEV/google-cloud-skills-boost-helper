@@ -33,3 +33,8 @@ jobs:
 
       - name: Build the extension
         run: pnpm build --zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/chrome-mv3-prod.zip
