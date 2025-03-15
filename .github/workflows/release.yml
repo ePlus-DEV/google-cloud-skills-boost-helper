@@ -19,13 +19,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: "npm"
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Build Extension
-        run: npm run build -- --zip
+        run: node --max-old-space-size=4096 ./node_modules/.bin/yarn build --zip
+
+      # - name: Generate Changelog
+      #   run: echo "# Good things have arrived" > CHANGELOG.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
