@@ -1,31 +1,35 @@
-name: Main
+name: Release Workflow
 
-on: push
+on:
+  push:
+    paths:
+      - 'src/**'
+      - '.github/workflows/release.yml'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
+          cache: 'yarn'
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
-      - name: Build extension
-        run: |
-          yarn build --zip
+      - name: Build Extension
+        run: yarn build --zip
 
       - name: Generate Changelog
-        run: echo "# Good things have arrived" > ${{ github.workspace }}/CHANGELOG.txt
+        run: echo "# Good things have arrived" > CHANGELOG.txt
+        continue-on-error: true
 
-      - name: Release
+      - name: Release to GitHub
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            build/chrome-mv3-prod.zip
+          files: build/chrome-mv3-prod.zip
