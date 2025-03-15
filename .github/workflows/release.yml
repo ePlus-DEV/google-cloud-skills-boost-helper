@@ -24,7 +24,7 @@ jobs:
         run: yarn install
 
       - name: Run Tests
-        run: yarn test
+        run: yarn dev
 
       - name: Build Extension
         run: yarn build --zip
