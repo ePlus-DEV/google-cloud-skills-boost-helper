@@ -1,15 +1,16 @@
 name: Main
 
-on:
-  push:
-    tags:
-      - "*"
+# on:
+#   push:
+#     tags:
+#       - "*"
+on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ github.ref }}
+      VERSION: ${{ github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
