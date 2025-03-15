@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-22.04
@@ -16,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -24,8 +27,8 @@ jobs:
       - name: Build Extension
         run: yarn build --zip
 
-      - name: Generate Changelog
-        run: echo "# Good things have arrived" > CHANGELOG.txt
+      # - name: Generate Changelog
+      #   run: echo "# Good things have arrived" > CHANGELOG.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
