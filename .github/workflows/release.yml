@@ -5,8 +5,8 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ github.ref_name }}
+    # env:
+    #   VERSION: ${{ github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,8 +39,3 @@ jobs:
         with:
           files: |
             build/chrome-mv3-prod.zip
-            # build/chrome-mv3-${{ env.VERSION }}.zip
-            # build/edge-mv3-${{ env.VERSION }}.zip
-            # build/brave-mv3-${{ env.VERSION }}.zip
-            # build/opera-mv3-${{ env.VERSION }}.zip
-            # build/safari-mv3-${{ env.VERSION }}.zip
