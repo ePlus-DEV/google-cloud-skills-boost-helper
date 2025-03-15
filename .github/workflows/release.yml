@@ -1,42 +1,33 @@
-name: Main
+name: Release Workflow
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
-      - name: Cache Yarn Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/yarn
-            node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-            ${{ runner.os }}-yarn-
+          cache: 'yarn'
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
-      - name: Build extension
-        run: |
-          yarn build --zip
+      - name: Build Extension
+        run: yarn build --zip
 
       - name: Generate Changelog
-        run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+        run: echo "# Good things have arrived" > CHANGELOG.txt
 
-      - name: Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            build/chrome-mv3-prod.zip
+          files: build/chrome-mv3-prod.zip
