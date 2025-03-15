@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Build Extension
-        run: npm run build --zip
+        run: node --max-old-space-size=4096 ./node_modules/.bin/npm run build --zip
 
       # - name: Generate Changelog
       #   run: echo "# Good things have arrived" > CHANGELOG.txt
