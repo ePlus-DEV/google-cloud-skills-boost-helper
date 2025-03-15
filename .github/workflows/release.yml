@@ -23,9 +23,6 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Run Tests
-        run: yarn dev
-
       - name: Build Extension
         run: yarn build
 
