@@ -5,7 +5,8 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-release:
+    name: Build and Release
     runs-on: windows-latest
     steps:
       - name: Checkout code
@@ -17,8 +18,16 @@ jobs:
           node-version: 20.x
           cache: "yarn"
 
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Build the extension
         run: yarn build --zip
