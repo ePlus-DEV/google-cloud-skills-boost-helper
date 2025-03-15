@@ -12,6 +12,13 @@ jobs:
   build-and-release:
     runs-on: ubuntu-22.04
     steps:
+      - name: Setup Swap Memory
+        run: |
+          sudo fallocate -l 2G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
