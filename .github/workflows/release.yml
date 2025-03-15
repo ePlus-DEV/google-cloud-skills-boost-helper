@@ -29,7 +29,15 @@ jobs:
           yarn build --target=opera-mv3 --zip
           yarn build --target=safari-mv3 --zip
 
+      - name: Generate checksums
+        run: |
+          for file in build/*.zip; do
+            shasum -a 256 "$file" > "$file.sha256";
+          done
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: build/*.zip
+          files: |
+            build/*.zip
+            build/*.sha256
