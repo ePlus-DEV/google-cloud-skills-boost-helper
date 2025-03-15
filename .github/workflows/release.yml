@@ -30,7 +30,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build the extension
-        run: yarn build --zip
+        run: |
+          yarn build --zip
+          yarn build --target=firefox-mv3 --zip
+          yarn build --target=edge-mv3 --zip
+          yarn build --target=firefox-mv3 --zip
+          yarn build --target=opera-mv3 --zip
+          yarn build --target=safari-mv3 --zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
