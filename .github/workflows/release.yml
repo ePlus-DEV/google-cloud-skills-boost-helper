@@ -24,9 +24,6 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Create Build Directory
-        run: mkdir -p build
-
       - name: Build extension
         run: |
           yarn build --zip
