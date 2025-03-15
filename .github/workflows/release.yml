@@ -1,19 +1,35 @@
 name: Main
 
 on: push
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ github.ref }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Build
-        run: echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
+        run: |
+          yarn install
+          yarn build --zip
+          yarn build --target=firefox-mv3 --zip
+          yarn build --target=edge-mv3 --zip
+          yarn build --target=brave-mv3 --zip
+          yarn build --target=opera-mv3 --zip
+          yarn build --target=safari-mv3 --zip
+
+      - name: Generate Changelog
+        run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+
       - name: Release
-        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
-          files: Release.txt
+          files: |
+            build/chrome-mv3-${{ env.VERSION }}.zip
+            build/edge-mv3-${{ env.VERSION }}.zip
+            build/brave-mv3-${{ env.VERSION }}.zip
+            build/opera-mv3-${{ env.VERSION }}.zip
+            build/safari-mv3-${{ env.VERSION }}.zip

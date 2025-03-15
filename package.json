@@ -5,6 +5,7 @@
   "description": "__MSG_extensionDescription__",
   "author": "dev@eplus.dev",
   "license": "MIT",
+  "homepage_url": "https://eplus.dev",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
