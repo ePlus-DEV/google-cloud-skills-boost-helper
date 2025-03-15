@@ -23,6 +23,9 @@ jobs:
           version: 8.6.0
           run_install: true
 
+      - name: Install pnpm globally
+        run: npm install -g pnpm
+
       - name: Cache pnpm modules
         uses: actions/cache@v3
         with:
