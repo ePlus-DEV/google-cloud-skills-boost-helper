@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm install
@@ -26,8 +27,11 @@ jobs:
       - name: Build Extension
         run: npm run build -- --zip
 
-      # - name: Generate Changelog
-      #   run: echo "# Good things have arrived" > CHANGELOG.txt
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: chrome-extension-build
+          path: build/chrome-mv3-prod.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
