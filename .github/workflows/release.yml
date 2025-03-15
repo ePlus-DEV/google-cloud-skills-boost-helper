@@ -20,11 +20,13 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install Dependencies
-        run: yarn install
+        run: |
+          npm install -g pnpm
+          pnpm install
 
       - name: Build extension
         run: |
-          yarn build --zip
+          pnpm build --zip
           # for target in chrome-mv3 firefox-mv3 edge-mv3 brave-mv3 opera-mv3 safari-mv3; do
           #   yarn build --target=$target --zip
           # done
