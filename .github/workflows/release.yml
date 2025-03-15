@@ -20,12 +20,13 @@ jobs:
         with:
           node-version: 20
           cache: "yarn"
+          cache-dependency-path: yarn.lock
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build Extension
-        run: yarn build --zip
+        run: plasmo build
 
       # - name: Generate Changelog
       #   run: echo "# Good things have arrived" > CHANGELOG.txt
