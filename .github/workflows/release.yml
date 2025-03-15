@@ -25,11 +25,8 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Install Plasmo
-        run: yarn add plasmo
-
       - name: Build Extension
-        run: yarn plasmo build
+        run: yarn build --zip
 
       # - name: Generate Changelog
       #   run: echo "# Good things have arrived" > CHANGELOG.txt
