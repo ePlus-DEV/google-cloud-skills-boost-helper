@@ -1,9 +1,5 @@
 name: Main
 
-# on:
-#   push:
-#     tags:
-#       - "*"
 on: push
 
 jobs:
@@ -15,9 +11,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build extension
         run: |
-          yarn install
           yarn build --zip
           yarn build --target=firefox-mv3 --zip
           yarn build --target=edge-mv3 --zip
