@@ -27,12 +27,6 @@ jobs:
       - name: Build Extension
         run: npm run build -- --zip
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: chrome-extension-build
-          path: build/chrome-mv3-prod.zip
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
