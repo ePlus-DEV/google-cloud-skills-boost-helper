@@ -18,7 +18,19 @@ jobs:
           node-version: 20.x
           cache: "yarn"
 
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
       - name: Build the extension
@@ -29,16 +41,9 @@ jobs:
           yarn build --target=opera-mv3 --zip
           yarn build --target=safari-mv3 --zip
 
-      - name: Generate checksums
-        run: |
-          for file in build/*.zip; do
-            shasum -a 256 "$file" > "$file.sha256";
-          done
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
           files: |
             build/*.zip
-            build/*.sha256
