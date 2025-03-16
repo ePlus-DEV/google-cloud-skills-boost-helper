@@ -26,9 +26,6 @@ jobs:
         with:
           version: 8.x
 
-      - name: Install pnpm globally
-        run: npm install -g pnpm
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
