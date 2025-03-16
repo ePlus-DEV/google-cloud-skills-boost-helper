@@ -1,13 +1,14 @@
 name: "Submit to Web Store"
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - "master"
+      - "release/*"
 
 jobs:
   build-and-release:
     name: Build and Release
-    runs-on: windows-latest
+    runs-on: macos-latest
     env:
       PLASMO_TAG: ${{ github.ref_name }}
     steps:
