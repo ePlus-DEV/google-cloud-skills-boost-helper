@@ -2,8 +2,6 @@
 export default {
   mode: "jit",
   darkMode: "class",
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,html}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   plugins: []
 }
