@@ -40,6 +40,8 @@
 
 [Opera Add-ons][Opera]
 
+[Manual Installation][Manual Installation]
+
 **Google Cloud Skills Boost - Helper** should be compatible with any Chromium-based browser.
 
 ## About
@@ -64,6 +66,7 @@ If you ever want to contribute something, think about the people working hard to
 
 <!---------------------------------[ Internal ]-------------------------------->
 
+[Manual Installation]: INSTALL.md
 [Privacy Policy]: https://eplus.dev/privacy-policy
 
 <!----------------------------------[ Badges ]--------------------------------->
