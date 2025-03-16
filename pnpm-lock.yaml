@@ -23,6 +23,9 @@ dependencies:
   sharp:
     specifier: ^0.33.5
     version: 0.33.5
+  svelte:
+    specifier: ^4.0.5
+    version: 4.2.2
 
 devDependencies:
   '@ianvs/prettier-plugin-sort-imports':
