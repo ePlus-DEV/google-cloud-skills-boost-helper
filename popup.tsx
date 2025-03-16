@@ -29,6 +29,14 @@ function IndexPopup() {
                                 />
                             </td>
                         </tr>
+                        <tr>
+                            <td className="border px-4 py-2">
+                                Public Profile
+                            </td>
+                            <td className="border px-4 py-2">
+                                <a href="https://www.cloudskillsboost.google/my_account/profile#public-profile" target="_blank" rel="noopener noreferrer" className="text-blue-600">Enable/Disable</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
