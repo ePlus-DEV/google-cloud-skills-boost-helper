@@ -61,7 +61,7 @@ If you ever want to contribute something, think about the people working hard to
 
 [Performance]: https://www.debugbear.com/blog/chrome-extension-performance-2021#how-do-ad-blockers-and-privacy-tools-affect-browser-performance
 [Mozilla]: https://addons.mozilla.org/addon/cloud-skills-boost-helper
-[Chrome]: https://chromewebstore.google.com/detail/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github
+[Chrome]: https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=github
 [Opera]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 [Edge]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 
