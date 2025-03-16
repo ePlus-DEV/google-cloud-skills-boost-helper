@@ -57,13 +57,7 @@ Free. Open-source. For users by users. No donations sought.
 
 ## Contributing
 
-Contributions are welcome! If you'd like to contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes with clear and descriptive messages.
-4. Push your branch to your forked repository.
-5. Open a pull request to the main branch of this repository.
+For detailed guidelines on contributing to this project, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 Please ensure your code adheres to the project's coding standards and includes appropriate tests.
 
