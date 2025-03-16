@@ -8,6 +8,8 @@ jobs:
   build-and-release:
     name: Build and Release
     runs-on: windows-latest
+    env:
+      PLASMO_TAG: ${{ github.ref_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
