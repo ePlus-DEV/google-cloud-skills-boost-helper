@@ -1,6 +1,6 @@
 <h1 align="center">
   <sub>
-    <img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/blob/main/assets/icon.png" height="38" width="38">
+    <img src="https://cdn.jsdelivr.net/gh/ePlus-DEV/google-cloud-skills-boost-helper/assets/icon.png" height="38" width="38">
   </sub>
   Google Cloud Skills Boost Helper
 </h1>
