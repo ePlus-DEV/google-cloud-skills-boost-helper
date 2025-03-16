@@ -84,7 +84,6 @@ This project is not affiliated with or endorsed by Google. All trademarks and lo
 
 [License]: LICENSE.md
 
-
 <!---------------------------------[ Internal ]-------------------------------->
 
 [Manual Installation]: INSTALL.md
