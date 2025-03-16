@@ -1,6 +1,9 @@
 name: "Submit to Web Store"
+
 on:
   push:
+    branches:
+      - main
     tags:
       - "*"
 
@@ -20,8 +23,10 @@ jobs:
           node-version: 22.x
           cache: "pnpm"
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.x
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
