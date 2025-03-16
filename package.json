@@ -30,6 +30,9 @@
     "tailwindcss": "3",
     "typescript": "5.3.3"
   },
+  "resolutions": {
+    "msgpackr": "1.10.1"
+  },
   "manifest": {
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
