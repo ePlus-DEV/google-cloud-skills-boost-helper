@@ -1,5 +1,4 @@
 name: "Submit to Web Store"
-
 on:
   push:
     branches:
@@ -27,6 +26,9 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8.x
+
+      - name: Install pnpm globally
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
