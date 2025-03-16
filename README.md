@@ -1,14 +1,5 @@
 # Google Cloud Skills Boost Helper
 
-[![Badge Commits]][Commit Rate]
-[![Badge Issues]][Issues]
-[![Badge Localization]][Crowdin]
-[![Badge License]][License]
-[![Badge NPM]][NPM]
-[![Badge Mozilla]][Mozilla]
-[![Badge Chrome]][Chrome]
-[![Badge Edge]][Edge]
-
 ## Getting Started
 
 ![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
