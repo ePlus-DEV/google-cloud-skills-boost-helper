@@ -25,6 +25,9 @@
   * [Firefox](#firefox)
   * [Chromium](#chromium)
 * [About](#about)
+* [Contributing](#contributing)
+* [Support](#support)
+* [Disclaimer](#disclaimer)
 
 ## Installation
 
@@ -52,7 +55,25 @@
 
 Free. Open-source. For users by users. No donations sought.
 
-If you ever want to contribute something, think about the people working hard to maintain the filter lists you are using, which are available to use by all for free.
+## Contributing
+
+Contributions are welcome! If you'd like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes with clear and descriptive messages.
+4. Push your branch to your forked repository.
+5. Open a pull request to the main branch of this repository.
+
+Please ensure your code adheres to the project's coding standards and includes appropriate tests.
+
+## Support
+
+If you encounter any issues or have questions, feel free to open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues). We will do our best to assist you.
+
+## Disclaimer
+
+This project is not affiliated with or endorsed by Google. All trademarks and logos belong to their respective owners.
 
 <!----------------------------------------------------------------------------->
 
