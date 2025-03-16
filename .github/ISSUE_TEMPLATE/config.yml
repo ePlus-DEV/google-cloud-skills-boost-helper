@@ -1,0 +1,29 @@
+description: Report a bug to help us improve
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug. Please fill out the following details.
+  - type: input
+    id: title
+    attributes:
+      label: Bug title
+      description: Provide a short summary of the bug
+      placeholder: Bug title
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug description
+      description: Provide a detailed description of the bug
+      placeholder: Describe the bug
+    validations:
+      required: true
+contact_links:
+  - name: Feature requests and ideas
+    url: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/discussions/new?category=ideas
+    about: Suggest an idea for this project
+  - name: Questions
+    url: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/discussions/new?category=q-a
+    about: Please ask and answer questions here
