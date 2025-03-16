@@ -7,20 +7,8 @@
 
 ***
 
-<div align="center">
-    <a href="https://chromewebstore.google.com/detail/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github">
-        <img src="https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3" alt="Chrome Web Store">
-    </a>
-    <a href="https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github">
-        <img src="https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34" alt="Firefox Add-ons">
-    </a>
-    <a href="https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github">
-        <img src="https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28" alt="Microsoft Edge Add-ons">
-    </a>
-    <a href="https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github">
-        <img src="https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4" alt="Opera Add-ons">
-    </a>
-</div>
+| [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/en-GB/firefox/addon/cloud-skills-boost-helper/?utm_source=github) | [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)](https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github) | [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)](https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github) |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 ***
 
