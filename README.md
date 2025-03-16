@@ -1,33 +1,86 @@
-# Google Cloud Skills Boost Helper
+<h1 align="center">
+  <sub>
+    <img src="https://cdn.jsdelivr.net/gh/ePlus-DEV/google-cloud-skills-boost-helper/assets/icon.png" height="38" width="38">
+  </sub>
+  Google Cloud Skills Boost Helper
+</h1>
+<p align="center">
+    <sub>
+        CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
+    </sub>
+</p>
 
-## Getting Started
+***
 
-![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
+| [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)]([Mozilla]) | [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)]([Edge]) | [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)]([Opera]) |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-```bash
-pnpm dev
-# or
-npm run dev
-```
+***
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+![postspark_export_2025-03-12_16-00-50](https://github.com/user-attachments/assets/a01c7592-8c29-4002-9f27-3375df34bbdd)
 
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+***
 
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+* [Installation](#installation)
+  * [Firefox](#firefox)
+  * [Chromium](#chromium)
+* [About](#about)
+* [Contributing](#contributing)
+* [Support](#support)
+* [Disclaimer](#disclaimer)
 
-## Making production build
+## Installation
 
-Run the following:
+### Firefox
 
-```bash
-pnpm build
-# or
-npm run build
-```
+[Firefox Add-ons][Mozilla]
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
+### Chromium
 
-## Submit to the webstores
+[Chrome Web Store][Chrome]
 
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+[Microsoft Edge Add-ons][Edge]
+
+[Opera Add-ons][Opera]
+
+[Manual Installation][Manual Installation]
+
+**Google Cloud Skills Boost - Helper** should be compatible with any Chromium-based browser.
+
+## About
+
+[Privacy Policy][Privacy Policy]
+
+[MIT License][License]
+
+Free. Open-source. For users by users. No donations sought.
+
+## Contributing
+
+For detailed guidelines on contributing to this project, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+Please ensure your code adheres to the project's coding standards and includes appropriate tests.
+
+## Support
+
+If you encounter any issues or have questions, feel free to open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues). We will do our best to assist you.
+
+## Disclaimer
+
+This project is not affiliated with or endorsed by Google. All trademarks and logos belong to their respective owners.
+
+<!----------------------------------------------------------------------------->
+
+[Mozilla]: https://addons.mozilla.org/addon/cloud-skills-boost-helper
+[Chrome]: https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=github
+[Opera]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
+[Edge]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
+
+[License]: LICENSE.md
+
+<!---------------------------------[ Internal ]-------------------------------->
+
+[Manual Installation]: INSTALL.md
+[Privacy Policy]: https://eplus.dev/privacy-policy
+
+<!----------------------------------[ Badges ]--------------------------------->
