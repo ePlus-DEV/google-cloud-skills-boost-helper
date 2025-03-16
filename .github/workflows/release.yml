@@ -1,9 +1,9 @@
 name: "Submit to Web Store"
 on:
   push:
-    # branches:
-    #   - "main"
-    #   - "release/*"
+    branches:
+      - "main"
+      - "release/*"
     tags:
       - "*"
 
@@ -28,6 +28,7 @@ jobs:
           path: ~/.local/share/pnpm/store
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
+            ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
             ${{ runner.os }}-pnpm-store-
 
       - name: Setup pnpm
