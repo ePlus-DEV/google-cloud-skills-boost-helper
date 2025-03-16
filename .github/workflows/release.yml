@@ -1,9 +1,9 @@
 name: "Submit to Web Store"
 on:
   push:
-    branches:
-      - "main"
-      - "release/*"
+    # branches:
+    #   - "main"
+    #   - "release/*"
     tags:
       - "*"
 
