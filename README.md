@@ -19,30 +19,49 @@
 
 ![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
 
-```bash
-pnpm dev
-# or
-npm run dev
-```
+***
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+* [Installation](#installation)
+  * [Firefox](#firefox)
+  * [Thunderbird](#thunderbird)
+  * [Chromium](#chromium)
+  * [All Programs](#all-programs)
+  * [Enterprise Deployment](#enterprise-deployment)
+* [Release History](#release-history)
+* [Translations](#translations)
 
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+## Installation
 
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+[Required Permissions][Permissions]
 
-## Making production build
+#### Firefox
 
-Run the following:
+[Firefox Add-ons][Mozilla]
 
-```bash
-pnpm build
-# or
-npm run build
-```
+[Development Builds][Beta]
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
+uBO [works best][Works Best] on Firefox and is available for desktop and Android versions.
 
-## Submit to the webstores
+#### Thunderbird
 
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+[Thunderbird Add-ons][Thunderbird]
+
+In Thunderbird, uBlock Origin does not affect emails, just feeds.
+
+#### Chromium
+
+[Chrome Web Store][Chrome]
+
+[Microsoft Edge Add-ons][Edge] (Published by: [Nicole Rolls][Nicole Rolls])
+
+[Opera Add-ons][Opera]
+
+[Development Builds][Chrome Dev]
+
+uBO should be compatible with any Chromium-based browser.
+
+#### All Programs
+
+Do **NOT** use uBO with any other content blocker. uBO [performs][Performance] as well as or better than most popular blockers. Other blockers can prevent uBO's privacy or anti-blocker-defusing features from working correctly.
+
+[Manual Installation][Manual Installation]
