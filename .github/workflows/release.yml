@@ -7,7 +7,7 @@ on:
 jobs:
   build-and-release:
     name: Build and Release
-    runs-on: macos-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -15,19 +15,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x
-          cache: "yarn"
+          node-version: 22.x
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build the extension
         run: |
-          yarn build --target=chrome-mv3 --zip
-          yarn build --target=firefox-mv3 --zip
-          yarn build --target=edge-mv3 --zip
-          yarn build --target=opera-mv3 --zip
-          yarn build --target=safari-mv3 --zip
+          pnpm build --target=chrome-mv3 --zip
+          pnpm build --target=firefox-mv3 --zip
+          pnpm build --target=edge-mv3 --zip
+          pnpm build --target=opera-mv3 --zip
+          pnpm build --target=safari-mv3 --zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
