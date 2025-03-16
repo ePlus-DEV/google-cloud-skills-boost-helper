@@ -1,8 +1,6 @@
 name: "Submit to Web Store"
 on:
   push:
-    branches:
-      - main
     tags:
       - "*"
 
@@ -20,6 +18,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22.x
+
+      - name: Cache pnpm store
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
