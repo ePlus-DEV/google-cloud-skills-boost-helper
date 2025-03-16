@@ -51,7 +51,7 @@ Do **NOT** use uBO with any other content blocker. uBO [performs][Performance] a
 
 [Privacy Policy][Privacy Policy]
 
-[GPLv3 License][License]
+[MIT License][License]
 
 Free. Open-source. For users by users. No donations sought.
 
