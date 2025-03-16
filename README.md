@@ -17,14 +17,13 @@
 
 ***
 
-![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
+
 
 ***
 
 * [Installation](#installation)
   * [Firefox](#firefox)
   * [Chromium](#chromium)
-  * [All Programs](#all-programs)
 * [About](#about)
 
 ## Installation
@@ -41,11 +40,7 @@
 
 [Opera Add-ons][Opera]
 
-uBO should be compatible with any Chromium-based browser.
-
-### All Programs
-
-Do **NOT** use uBO with any other content blocker. uBO [performs][Performance] as well as or better than most popular blockers. Other blockers can prevent uBO's privacy or anti-blocker-defusing features from working correctly.
+**Google Cloud Skills Boost - Helper** should be compatible with any Chromium-based browser.
 
 ## About
 
@@ -59,7 +54,6 @@ If you ever want to contribute something, think about the people working hard to
 
 <!----------------------------------------------------------------------------->
 
-[Performance]: https://www.debugbear.com/blog/chrome-extension-performance-2021#how-do-ad-blockers-and-privacy-tools-affect-browser-performance
 [Mozilla]: https://addons.mozilla.org/addon/cloud-skills-boost-helper
 [Chrome]: https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=github
 [Opera]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
