@@ -1,4 +1,11 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+[![Badge Commits]][Commit Rate]
+[![Badge Issues]][Issues]
+[![Badge Localization]][Crowdin]
+[![Badge License]][License]
+[![Badge NPM]][NPM]
+[![Badge Mozilla]][Mozilla]
+[![Badge Chrome]][Chrome]
+[![Badge Edge]][Edge]
 
 ## Getting Started
 
