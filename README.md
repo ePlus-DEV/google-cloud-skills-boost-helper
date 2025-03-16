@@ -4,6 +4,11 @@
   </sub>
   Google Cloud Skills Boost Helper
 </h1>
+<p align="center">
+    <sub>
+        CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
+    </sub>
+</p>
 
 ***
 
