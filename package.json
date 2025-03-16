@@ -5,6 +5,7 @@
   "description": "__MSG_extensionDescription__",
   "author": "dev@eplus.dev",
   "license": "MIT",
+  "homepage_url": "https://eplus.dev",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -14,7 +15,9 @@
     "@plasmohq/storage": "^1.15.0",
     "plasmo": "0.90.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sharp": "^0.33.5",
+    "svelte": "^4.2.19"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
@@ -25,8 +28,12 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "prettier": "3.2.4",
-    "tailwindcss": "3",
+    "tailwindcss": "^3.4.17",
+    "tsup": "^8.4.0",
     "typescript": "5.3.3"
+  },
+  "resolutions": {
+    "msgpackr": "1.10.1"
   },
   "manifest": {
     "name": "__MSG_extensionName__",

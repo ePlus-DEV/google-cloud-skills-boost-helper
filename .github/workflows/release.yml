@@ -1,0 +1,58 @@
+name: "Submit to Web Store"
+on:
+  push:
+    # branches:
+    #   - "main"
+    #   - "release/*"
+    tags:
+      - "*"
+
+jobs:
+  build-and-release:
+    name: Build and Release
+    runs-on: macos-latest
+    env:
+      PLASMO_TAG: ${{ github.ref_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8.x
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the extension
+        run: |
+          pnpm build --target=chrome-mv3 --zip
+          pnpm build --target=firefox-mv3 --zip
+          pnpm build --target=edge-mv3 --zip
+          pnpm build --target=opera-mv3 --zip
+          pnpm build --target=safari-mv3 --zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: "v.${{ github.ref_name }}"
+          draft: true
+          generate_release_notes: true
+          files: |
+            build/*.zip

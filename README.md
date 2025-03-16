@@ -1,4 +1,4 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+# Google Cloud Skills Boost Helper
 
 ## Getting Started
 
