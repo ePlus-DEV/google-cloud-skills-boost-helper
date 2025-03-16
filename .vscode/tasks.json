@@ -5,7 +5,7 @@
         {
         "label": "run dev",
         "type": "shell",
-        "command": "yarn; yarn dev",
+        "command": "pnpm install; pnpm dev",
         "group": "build",
         "presentation": {
             "reveal": "always",
@@ -20,7 +20,7 @@
         {
         "label": "run dev w/o install",
         "type": "shell",
-        "command": "yarn dev",
+        "command": "pnpm dev",
         "group": "none",
         "presentation": {
             "reveal": "always",
@@ -32,7 +32,7 @@
         {
         "label": "run build",
         "type": "shell",
-        "command": "yarn build",
+        "command": "pnpm build",
         "group": "none",
         "presentation": {
             "reveal": "always",
@@ -44,7 +44,7 @@
         {
         "label": "run build zip",
         "type": "shell",
-        "command": "yarn build --zip",
+        "command": "pnpm build --zip",
         "group": "none",
         "presentation": {
             "reveal": "always",
@@ -52,6 +52,6 @@
             "group": "one"
         },
         "problemMatcher": []
-        },
+        }
     ]
 }
