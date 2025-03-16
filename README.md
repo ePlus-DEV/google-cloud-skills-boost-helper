@@ -1,6 +1,28 @@
-# Google Cloud Skills Boost Helper
+<h1 align="center">
+  <sub>
+    <img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/blob/main/assets/icon.png" height="38" width="38">
+  </sub>
+  Google Cloud Skills Boost Helper
+</h1>
 
-## Getting Started
+***
+
+<div align="center">
+    <a href="https://chromewebstore.google.com/detail/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github">
+        <img src="https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3" alt="Chrome Web Store">
+    </a>
+    <a href="https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github">
+        <img src="https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34" alt="Firefox Add-ons">
+    </a>
+    <a href="https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github">
+        <img src="https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28" alt="Microsoft Edge Add-ons">
+    </a>
+    <a href="https://addons.mozilla.org/addon/google-cloud-skills-boost-helper/?utm_source=github">
+        <img src="https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4" alt="Opera Add-ons">
+    </a>
+</div>
+
+***
 
 ![postspark_export_2025-03-10_18-06-17](https://github.com/user-attachments/assets/2f157ec3-b7bf-4287-a0a2-ef13c3fc69b7)
 
