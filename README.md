@@ -53,7 +53,7 @@
 
 [MIT License][License]
 
-Free. Open-source. For users by users. No donations sought.
+Free. Open-source. For users by users. No donations are sought.
 
 ## Contributing
 
