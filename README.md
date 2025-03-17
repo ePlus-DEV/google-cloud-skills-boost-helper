@@ -63,7 +63,7 @@ Please ensure your code adheres to the project's coding standards and includes a
 
 ## Support
 
-If you encounter any issues or have questions, feel free to open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues). We will do our best to assist you.
+If you encounter any issues or have questions, open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues). We will do our best to assist you.
 
 ## Disclaimer
 
