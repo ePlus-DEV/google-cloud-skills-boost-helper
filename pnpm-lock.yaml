@@ -20,9 +20,6 @@ dependencies:
   '@fortawesome/free-brands-svg-icons':
     specifier: ^6.7.2
     version: 6.7.2
-  '@fortawesome/pro-thin-svg-icons':
-    specifier: ^6.7.2
-    version: 6.7.2
   '@fortawesome/react-fontawesome':
     specifier: ^0.2.2
     version: 0.2.2(@fortawesome/fontawesome-svg-core@6.7.2)(react@18.2.0)
@@ -691,13 +688,6 @@ packages:
 
   /@fortawesome/free-brands-svg-icons@6.7.2:
     resolution: {integrity: sha512-zu0evbcRTgjKfrr77/2XX+bU+kuGfjm0LbajJHVIgBWNIDzrhpRxiCPNT8DW5AdmSsq7Mcf9D1bH0aSeSUSM+Q==, tarball: https://npm.fontawesome.com/@fortawesome/free-brands-svg-icons/-/6.7.2/free-brands-svg-icons-6.7.2.tgz}
-    engines: {node: '>=6'}
-    dependencies:
-      '@fortawesome/fontawesome-common-types': 6.7.2
-    dev: false
-
-  /@fortawesome/pro-thin-svg-icons@6.7.2:
-    resolution: {integrity: sha512-2MmuchdNCBuNA0/h9Zo75RTw2+U7OimPNRuShW/J509ql0eRowuDHDjFrQhmTdaeTk+lI1FwF63zKYAofsoUMA==, tarball: https://npm.fontawesome.com/@fortawesome/pro-thin-svg-icons/-/6.7.2/pro-thin-svg-icons-6.7.2.tgz}
     engines: {node: '>=6'}
     dependencies:
       '@fortawesome/fontawesome-common-types': 6.7.2

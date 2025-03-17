@@ -1,6 +1,5 @@
 import { useStorage } from "@plasmohq/storage/hook"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { faCopyright, faToggleOn } from '@fortawesome/duotone-regular-svg-icons'
 import "./style.css"
 
