@@ -82,5 +82,3 @@ This project is not affiliated with or endorsed by Google. All trademarks and lo
 
 [Manual Installation]: INSTALL.md
 [Privacy Policy]: https://eplus.dev/privacy-policy
-
-<!----------------------------------[ Badges ]--------------------------------->
