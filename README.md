@@ -2,7 +2,7 @@
   <sub>
     <img src="https://cdn.jsdelivr.net/gh/ePlus-DEV/google-cloud-skills-boost-helper/assets/icon.png" height="38" width="38">
   </sub>
-  Google Cloud Skills Boost Helper
+  Google Cloud Skills Boost - Helper
 </h1>
 <p align="center">
     <sub>
