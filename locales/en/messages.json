@@ -22,5 +22,11 @@
   },
   "labelHideLeaderboard": {
     "message": "Hide Leaderboard"
+  },
+  "labelMyBadges": {
+    "message": "My Badges"
+  },
+  "labelPublicProfile": {
+    "message": "Public Profile"
   }
 }
