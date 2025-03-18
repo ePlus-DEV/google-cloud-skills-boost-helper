@@ -4,6 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopyright, faToggleOn } from '@fortawesome/duotone-regular-svg-icons';
 import "./style.css";
 
+/**
+ * The `IndexPopup` component renders a popup interface for a browser extension.
+ * It includes a title, a table with features and their statuses, and a footer with copyright information.
+ *
+ * Features:
+ * - Displays a checkbox to toggle a feature, with its state managed using a custom hook (`useStorage`).
+ * - Provides a link to the user's public profile on Google Cloud Skills Boost.
+ * - Localized text is retrieved using the `chrome.i18n.getMessage` API.
+ *
+ * @returns {JSX.Element} The rendered popup component.
+ */
 function IndexPopup() {
     const [checked, setChecked] = useStorage("checked", false);
 

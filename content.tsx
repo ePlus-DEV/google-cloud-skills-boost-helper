@@ -6,6 +6,30 @@ export const config: PlasmoCSConfig = {
   matches: ["https://www.cloudskillsboost.google/games/*/labs/*", "https://www.cloudskillsboost.google/my_account/profile*"]
 };
 
+/**
+ * The `PlasmoOverlay` component is a React functional component that provides
+ * an overlay with specific functionality for modifying the DOM and interacting
+ * with the page's elements. It includes features such as toggling the visibility
+ * of a leaderboard, scrolling to a specific section of the page, and displaying
+ * notifications or tooltips for user actions.
+ *
+ * Functionality:
+ * - Toggles the visibility of a leaderboard element on the page.
+ * - Automatically scrolls to the `#public-profile` section if the URL hash matches
+ *   and the user is on the profile page.
+ * - Ensures a checkbox is checked and provides a tooltip for the "Update settings" button.
+ * - Displays a notification prompting the user to update their settings.
+ *
+ * UI:
+ * - Renders a floating button at the bottom-right corner of the page that allows
+ *   users to toggle the leaderboard visibility.
+ *
+ * Dependencies:
+ * - Uses the `useStorage` hook to manage the `checked` state.
+ * - Relies on the `chrome.i18n.getMessage` API for internationalized button labels.
+ *
+ * @returns {JSX.Element | null} A button element for toggling the leaderboard if `checked` is true, or `null` otherwise.
+ */
 const PlasmoOverlay = () => {
   const [checked] = useStorage<boolean>("checked");
 
