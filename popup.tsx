@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useStorage } from "@plasmohq/storage/hook";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopyright, faToggleOn } from '@fortawesome/duotone-regular-svg-icons';
+import { faCopyright, faToggleOn, faBadgeCheck } from '@fortawesome/duotone-regular-svg-icons';
 import "./style.css";
 
 /**
@@ -82,7 +82,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                         }
                     />
                     <FeatureRow
-                        label="Public Profile"
+                        label={chrome.i18n.getMessage("labelPublicProfile")}
                         content={
                             <a
                                 href="https://www.cloudskillsboost.google/my_account/profile#public-profile"
@@ -91,6 +91,19 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                                 className="text-blue-600"
                             >
                                 <FontAwesomeIcon icon={faToggleOn} size="2x" />
+                            </a>
+                        }
+                    />
+                    <FeatureRow
+                        label={chrome.i18n.getMessage("labelMyBadges")}
+                        content={
+                            <a
+                                href="https://www.cloudskillsboost.google/profile/badges"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600"
+                            >
+                                <FontAwesomeIcon icon={faBadgeCheck} size="2x" />
                             </a>
                         }
                     />

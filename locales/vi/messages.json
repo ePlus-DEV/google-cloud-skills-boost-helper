@@ -22,5 +22,11 @@
   },
   "labelHideLeaderboard": {
     "message": "Ẩn Bảng xếp hạng"
+  },
+  "labelMyBadges": {
+    "message": "Huy hiệu của tôi"
+  },
+  "labelPublicProfile": {
+    "message": "Hồ sơ công khai"
   }
 }
