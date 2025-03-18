@@ -13,15 +13,12 @@
   },
   "dependencies": {
     "@fortawesome/duotone-regular-svg-icons": "^6.7.2",
-    "@fortawesome/fontawesome-free": "^6.7.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@plasmohq/storage": "^1.15.0",
     "plasmo": "0.90.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "svelte": "^4.2.19"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
@@ -32,12 +29,8 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "prettier": "3.2.4",
-    "tailwindcss": "^3.4.17",
-    "tsup": "^8.4.0",
+    "tailwindcss": "3",
     "typescript": "5.3.3"
-  },
-  "resolutions": {
-    "msgpackr": "1.10.1"
   },
   "manifest": {
     "name": "__MSG_extensionName__",
@@ -49,5 +42,5 @@
       }
     }
   },
-  "packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531"
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
