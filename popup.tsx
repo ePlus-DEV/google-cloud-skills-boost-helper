@@ -34,6 +34,12 @@ function IndexPopup() {
     );
 }
 
+/**
+ * A React functional component that renders a header element.
+ * The header displays the localized name of the extension using the Chrome i18n API.
+ *
+ * @returns {JSX.Element} A JSX element containing an h3 tag with the extension's name.
+ */
 function Header() {
     return (
         <h3 className="text-xl font-semibold text-center">
@@ -42,6 +48,17 @@ function Header() {
     );
 }
 
+/**
+ * A React functional component that renders a feature table with rows for different features.
+ * Each row can display a label and a corresponding content, such as a checkbox or a link.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {boolean} props.checked - The state of the checkbox for the "Show Leaderboard" feature.
+ * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} props.onCheckboxChange - 
+ * A callback function triggered when the checkbox state changes.
+ *
+ * @returns {JSX.Element} A table displaying feature labels and their corresponding content.
+ */
 function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
     return (
         <div className="mt-4">
@@ -83,6 +100,14 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
     );
 }
 
+/**
+ * A functional component that renders a table row with two cells: one for a label and one for content.
+ *
+ * @param props - The props for the component.
+ * @param props.label - The text to display in the first cell of the row.
+ * @param props.content - A JSX element to display in the second cell of the row.
+ * @returns A table row (`<tr>`) element containing the label and content.
+ */
 function FeatureRow({ label, content }: { label: string; content: JSX.Element }) {
     return (
         <tr>
@@ -92,6 +117,12 @@ function FeatureRow({ label, content }: { label: string; content: JSX.Element })
     );
 }
 
+/**
+ * A functional component that renders a footer section.
+ * The footer includes the current year, a copyright symbol, and a link to the ePlus.DEV website.
+ *
+ * @returns {JSX.Element} The rendered footer component.
+ */
 function Footer() {
     return (
         <footer className="mt-4 text-center text-gray-500">
