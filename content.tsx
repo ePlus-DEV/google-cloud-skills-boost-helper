@@ -58,11 +58,15 @@ const PlasmoOverlay = () => {
     }
   }
 
+  const handleToggleLeaderboard = () => {
+    toggleLeaderboard();
+  };
+
   return (
     <>
       {checked && (
         <button
-          onClick={toggleLeaderboard}
+          onClick={handleToggleLeaderboard}
           style={{
             position: "fixed",
             right: 15,
