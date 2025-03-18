@@ -7,6 +7,10 @@ function IndexPopup() {
 
     const [checked, setChecked] = useStorage("checked", false)
 
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked(event.target.checked)
+    }
+
     return (
         <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 300, }}>
                 <h3 className="text-xl font-semibold text-center">{ chrome.i18n.getMessage("extensionName") }</h3>
@@ -27,7 +31,7 @@ function IndexPopup() {
                                         type="checkbox"
                                         className="form-checkbox h-5 w-5 text-blue-600"
                                         checked={checked}
-                                        onChange={(e) => setChecked(e.target.checked)}
+                                        onChange={handleCheckboxChange}
                                 />
                             </td>
                         </tr>
