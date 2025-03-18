@@ -1,5 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo";
 import { useStorage } from "@plasmohq/storage/hook";
+import React from "react";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://www.cloudskillsboost.google/games/*/labs/*", "https://www.cloudskillsboost.google/my_account/profile*"]
@@ -19,11 +20,11 @@ const PlasmoOverlay = () => {
       leaderboard.classList.add('hidden');
   }
 
-  const toggleLeaderboard = () => {
+  const toggleLeaderboard = React.useCallback(() => {
     if (leaderboard) {
       leaderboard.classList.toggle('hidden');
     }
-  };
+  }, [leaderboard]);
 
   // Scroll to #public-profile if on the specific page
   if (window.location.hash === "#public-profile" && window.location.pathname === "/my_account/profile") {
@@ -58,15 +59,11 @@ const PlasmoOverlay = () => {
     }
   }
 
-  const handleToggleLeaderboard = () => {
-    toggleLeaderboard();
-  };
-
   return (
     <>
       {checked && (
         <button
-          onClick={handleToggleLeaderboard}
+          onClick={toggleLeaderboard}
           style={{
             position: "fixed",
             right: 15,
