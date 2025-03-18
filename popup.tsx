@@ -15,7 +15,7 @@ function IndexPopup() {
     );
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 300 }}>
+        <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 300 }} data-testid="container">
             <h3 className="text-xl font-semibold text-center">{chrome.i18n.getMessage("extensionName")}</h3>
             <div className="mt-4">
                 <table className="min-w-full bg-white">

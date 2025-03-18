@@ -60,26 +60,24 @@ const PlasmoOverlay = () => {
   }
 
   return (
-    <>
-      {checked && (
-        <button
-          onClick={toggleLeaderboard}
-          style={{
-            position: "fixed",
-            right: 15,
-            bottom: 15,
-            zIndex: 50,
-            backgroundColor: "#38a169",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer"
-          }}
-        >
-          { chrome.i18n.getMessage("labelShowLeaderboard") }
-        </button>
-      )}
-    </>
+    checked && (
+      <button
+        onClick={toggleLeaderboard}
+        style={{
+          position: "fixed",
+          right: 15,
+          bottom: 15,
+          zIndex: 50,
+          backgroundColor: "#38a169",
+          color: "white",
+          padding: "0.5rem 1rem",
+          borderRadius: "0.25rem",
+          cursor: "pointer"
+        }}
+      >
+        { chrome.i18n.getMessage("labelShowLeaderboard") }
+      </button>
+    )
   );
 };
 
