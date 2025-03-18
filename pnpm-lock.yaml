@@ -31,7 +31,7 @@ importers:
         version: 1.15.0(react@18.2.0)
       plasmo:
         specifier: 0.90.3
-        version: 0.90.3(@swc/core@1.11.10(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(@types/node@20.11.5)(postcss@8.5.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.90.3(@types/node@20.11.5)(postcss@8.5.3)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -44,7 +44,7 @@ importers:
     devDependencies:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: 4.1.1
-        version: 4.1.1(@vue/compiler-sfc@3.3.4)(prettier@3.2.4)
+        version: 4.1.1(prettier@3.2.4)
       '@types/chrome':
         specifier: 0.0.258
         version: 0.0.258
@@ -71,7 +71,7 @@ importers:
         version: 3.4.17
       tsup:
         specifier: ^8.4.0
-        version: 8.4.0(@swc/core@1.11.10(@swc/helpers@0.5.15))(jiti@1.21.7)(postcss@8.5.3)(typescript@5.3.3)(yaml@2.7.0)
+        version: 8.4.0(postcss@8.5.3)(typescript@5.3.3)
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -1720,8 +1720,8 @@ packages:
     peerDependencies:
       '@svgr/core': '*'
 
-  '@swc/core-darwin-arm64@1.11.10':
-    resolution: {integrity: sha512-FWwYyhUu+xRXldXHw4CBP6M0rXQs9gnE5/qodsb+cyOJaTHI8kU6FJtwaC0PiOVxjREdg/DoTrXS4sZUiL881A==}
+  '@swc/core-darwin-arm64@1.11.11':
+    resolution: {integrity: sha512-vJcjGVDB8cZH7zyOkC0AfpFYI/7GHKG0NSsH3tpuKrmoAXJyCYspKPGid7FT53EAlWreN7+Pew+bukYf5j+Fmg==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
@@ -1732,8 +1732,8 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
-  '@swc/core-darwin-x64@1.11.10':
-    resolution: {integrity: sha512-NKQ62w81TGR5YAidV3KF7CDY0nu62OWmz6Hl/mB/i8Cd9xPc+MnLwdY1cJOU/DsrU4YnRFSaOfBF4Fx4mKLWxA==}
+  '@swc/core-darwin-x64@1.11.11':
+    resolution: {integrity: sha512-/N4dGdqEYvD48mCF3QBSycAbbQd3yoZ2YHSzYesQf8usNc2YpIhYqEH3sql02UsxTjEFOJSf1bxZABDdhbSl6A==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
@@ -1744,8 +1744,8 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@swc/core-linux-arm-gnueabihf@1.11.10':
-    resolution: {integrity: sha512-1Vu+ZjoR7M8ShIf0Koi+B1OJ6DsU7jd4Py743KCgKlabvLFrv/uahp5fPJ1kyAUTxFE5d37qWqWLl5NkYDmDtQ==}
+  '@swc/core-linux-arm-gnueabihf@1.11.11':
+    resolution: {integrity: sha512-hsBhKK+wVXdN3x9MrL5GW0yT8o9GxteE5zHAI2HJjRQel3HtW7m5Nvwaq+q8rwMf4YQRd8ydbvwl4iUOZx7i2Q==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
@@ -1756,8 +1756,8 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  '@swc/core-linux-arm64-gnu@1.11.10':
-    resolution: {integrity: sha512-mP26821Auyqa+Dce8gFlH4GxxbJ8xJU8H5/iIU8ObK12ulmK75G2VdILoc3gFDKfx3K7IqQkfokW3PAGI9X2Vg==}
+  '@swc/core-linux-arm64-gnu@1.11.11':
+    resolution: {integrity: sha512-YOCdxsqbnn/HMPCNM6nrXUpSndLXMUssGTtzT7ffXqr7WuzRg2e170FVDVQFIkb08E7Ku5uOnnUVAChAJQbMOQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -1768,8 +1768,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@swc/core-linux-arm64-musl@1.11.10':
-    resolution: {integrity: sha512-XZ61quwNgTqvbMqpFAa6/ZqoErabocHUHMWQHyShxbqM2nkP1sBe6EgODX6mNSzLn0u+KDVRyQUy9ratt+xbFw==}
+  '@swc/core-linux-arm64-musl@1.11.11':
+    resolution: {integrity: sha512-nR2tfdQRRzwqR2XYw9NnBk9Fdvff/b8IiJzDL28gRR2QiJWLaE8LsRovtWrzCOYq6o5Uu9cJ3WbabWthLo4jLw==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -1780,8 +1780,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@swc/core-linux-x64-gnu@1.11.10':
-    resolution: {integrity: sha512-BwohorC2nkak8YQuS6IH/70XkhBjqmPbL7KT0NKmr4sstRe52I3F5Vbo30xBckpvT8ZRPvjmjK3FvJ2Rf3PRmw==}
+  '@swc/core-linux-x64-gnu@1.11.11':
+    resolution: {integrity: sha512-b4gBp5HA9xNWNC5gsYbdzGBJWx4vKSGybGMGOVWWuF+ynx10+0sA/o4XJGuNHm8TEDuNh9YLKf6QkIO8+GPJ1g==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -1792,8 +1792,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-linux-x64-musl@1.11.10':
-    resolution: {integrity: sha512-bCaEJVB1+5KscAolNfL6qd3I1bVovhNDShutrTlNXNvjqNavWrX8z8ZfSJ3oK6CvrBzFR6fjCSqkoD+ckKBYBA==}
+  '@swc/core-linux-x64-musl@1.11.11':
+    resolution: {integrity: sha512-dEvqmQVswjNvMBwXNb8q5uSvhWrJLdttBSef3s6UC5oDSwOr00t3RQPzyS3n5qmGJ8UMTdPRmsopxmqaODISdg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -1804,8 +1804,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-win32-arm64-msvc@1.11.10':
-    resolution: {integrity: sha512-Gq4svadhEVP7xClzsV8W2/8R/kfEUbJJKIS2fj8hb9lM6/AVs/PVmDiLGye6cYfVpQzkdDsJLm8r4yhSAIFsFQ==}
+  '@swc/core-win32-arm64-msvc@1.11.11':
+    resolution: {integrity: sha512-aZNZznem9WRnw2FbTqVpnclvl8Q2apOBW2B316gZK+qxbe+ktjOUnYaMhdCG3+BYggyIBDOnaJeQrXbKIMmNdw==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
@@ -1816,8 +1816,8 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@swc/core-win32-ia32-msvc@1.11.10':
-    resolution: {integrity: sha512-RkZYTY0pQiHgcoFJwZoFZiEWw4WB/XVLp+y90l4Ar1nnoQQNmfb4FyvWYZbDQgrMGP0Wj5WhZuMXzW12/qI5Kg==}
+  '@swc/core-win32-ia32-msvc@1.11.11':
+    resolution: {integrity: sha512-DjeJn/IfjgOddmJ8IBbWuDK53Fqw7UvOz7kyI/728CSdDYC3LXigzj3ZYs4VvyeOt+ZcQZUB2HA27edOifomGw==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
@@ -1828,8 +1828,8 @@ packages:
     cpu: [ia32]
     os: [win32]
 
-  '@swc/core-win32-x64-msvc@1.11.10':
-    resolution: {integrity: sha512-clDl+oAl6YLsqZiGb8NzpEXTdIzCTPCJSRFCeHIldjLlsAs+qsqItry2r2xSAKU1pFv4D7j9WgJmVVxOPgs/Jg==}
+  '@swc/core-win32-x64-msvc@1.11.11':
+    resolution: {integrity: sha512-Gp/SLoeMtsU4n0uRoKDOlGrRC6wCfifq7bqLwSlAG8u8MyJYJCcwjg7ggm0rhLdC2vbiZ+lLVl3kkETp+JUvKg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
@@ -1840,8 +1840,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@swc/core@1.11.10':
-    resolution: {integrity: sha512-Si27CiYwqJSF3K0HgxugQnjHNfH7YqqD89V+fLpyRHr81uTmCQpF0bnVdRMQ2SGAkCFJACYETRiBSrZOQ660+Q==}
+  '@swc/core@1.11.11':
+    resolution: {integrity: sha512-pCVY2Wn6dV/labNvssk9b3Owi4WOYsapcbWm90XkIj4xH/56Z6gzja9fsU+4MdPuEfC2Smw835nZHcdCFGyX6A==}
     engines: {node: '>=10'}
     peerDependencies:
       '@swc/helpers': '*'
@@ -2157,8 +2157,8 @@ packages:
   config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
 
-  consola@3.4.0:
-    resolution: {integrity: sha512-EiPU8G6dQG0GFHNR8ljnZFki/8a+cQwEQ+7wpxdChl02Q8HXlwEZWD5lqAF8vC2sEC3Tehr8hy7vErz88LHyUA==}
+  consola@3.4.1:
+    resolution: {integrity: sha512-zaUUWockhqxFf4bSXS+kTJwxWvAyMuKtShx0BWcGrMEUqbETcBCT91iQs9pECNx7yz8VH4VeWW/1KAbhE8kiww==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
   content-security-policy-parser@0.4.1:
@@ -2298,8 +2298,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.119:
-    resolution: {integrity: sha512-Ku4NMzUjz3e3Vweh7PhApPrZSS4fyiCIbcIrG9eKrriYVLmbMepETR/v6SU7xPm98QTqMSYiCwfO89QNjXLkbQ==}
+  electron-to-chromium@1.5.120:
+    resolution: {integrity: sha512-oTUp3gfX1gZI+xfD2djr2rzQdHCwHzPQrrK0CD7WpTdF0nPdQ/INcRVjWgLdCT4a9W3jFObR9DAfsuyFQnI8CQ==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3283,8 +3283,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sass@1.85.1:
-    resolution: {integrity: sha512-Uk8WpxM5v+0cMR0XjX9KfRIacmSG86RH4DCCZjLU2rFh5tyutt9siAXJ7G+YfxQ99Q6wrRMbMlVl6KqUms71ag==}
+  sass@1.86.0:
+    resolution: {integrity: sha512-zV8vGUld/+mP4KbMLJMX7TyGCuUp7hnkOScgCMsWuHtns8CWBoz+vmEhoGMXsaJrbUP8gj+F1dLvVe79sK8UdA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -3886,7 +3886,7 @@ snapshots:
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@ianvs/prettier-plugin-sort-imports@4.1.1(@vue/compiler-sfc@3.3.4)(prettier@3.2.4)':
+  '@ianvs/prettier-plugin-sort-imports@4.1.1(prettier@3.2.4)':
     dependencies:
       '@babel/core': 7.26.10
       '@babel/generator': 7.26.10
@@ -3895,8 +3895,6 @@ snapshots:
       '@babel/types': 7.26.10
       prettier: 3.2.4
       semver: 7.7.1
-    optionalDependencies:
-      '@vue/compiler-sfc': 3.3.4
     transitivePeerDependencies:
       - supports-color
 
@@ -3980,46 +3978,41 @@ snapshots:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/figures': 1.0.11
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
+      '@types/node': 20.11.5
       ansi-escapes: 4.3.2
       yoctocolors-cjs: 2.1.2
-    optionalDependencies:
-      '@types/node': 20.11.5
 
   '@inquirer/confirm@5.1.8(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-    optionalDependencies:
       '@types/node': 20.11.5
 
   '@inquirer/core@10.1.9(@types/node@20.11.5)':
     dependencies:
       '@inquirer/figures': 1.0.11
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
+      '@types/node': 20.11.5
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
       mute-stream: 2.0.0
       signal-exit: 4.1.0
       wrap-ansi: 6.2.0
       yoctocolors-cjs: 2.1.2
-    optionalDependencies:
-      '@types/node': 20.11.5
 
   '@inquirer/editor@4.2.9(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-      external-editor: 3.1.0
-    optionalDependencies:
       '@types/node': 20.11.5
+      external-editor: 3.1.0
 
   '@inquirer/expand@4.0.11(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-      yoctocolors-cjs: 2.1.2
-    optionalDependencies:
       '@types/node': 20.11.5
+      yoctocolors-cjs: 2.1.2
 
   '@inquirer/figures@1.0.11': {}
 
@@ -4027,23 +4020,20 @@ snapshots:
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-    optionalDependencies:
       '@types/node': 20.11.5
 
   '@inquirer/number@3.0.11(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-    optionalDependencies:
       '@types/node': 20.11.5
 
   '@inquirer/password@4.0.11(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-      ansi-escapes: 4.3.2
-    optionalDependencies:
       '@types/node': 20.11.5
+      ansi-escapes: 4.3.2
 
   '@inquirer/prompts@7.4.0(@types/node@20.11.5)':
     dependencies:
@@ -4057,38 +4047,34 @@ snapshots:
       '@inquirer/rawlist': 4.0.11(@types/node@20.11.5)
       '@inquirer/search': 3.0.11(@types/node@20.11.5)
       '@inquirer/select': 4.1.0(@types/node@20.11.5)
-    optionalDependencies:
       '@types/node': 20.11.5
 
   '@inquirer/rawlist@4.0.11(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-      yoctocolors-cjs: 2.1.2
-    optionalDependencies:
       '@types/node': 20.11.5
+      yoctocolors-cjs: 2.1.2
 
   '@inquirer/search@3.0.11(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/figures': 1.0.11
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
-      yoctocolors-cjs: 2.1.2
-    optionalDependencies:
       '@types/node': 20.11.5
+      yoctocolors-cjs: 2.1.2
 
   '@inquirer/select@4.1.0(@types/node@20.11.5)':
     dependencies:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/figures': 1.0.11
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
+      '@types/node': 20.11.5
       ansi-escapes: 4.3.2
       yoctocolors-cjs: 2.1.2
-    optionalDependencies:
-      '@types/node': 20.11.5
 
   '@inquirer/type@3.0.5(@types/node@20.11.5)':
-    optionalDependencies:
+    dependencies:
       '@types/node': 20.11.5
 
   '@isaacs/cliui@8.0.2':
@@ -4248,7 +4234,7 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/config-default@2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.15)(postcss@8.5.3)(typescript@5.2.2)':
+  '@parcel/config-default@2.9.3(@parcel/core@2.9.3)(postcss@8.5.3)(typescript@5.2.2)':
     dependencies:
       '@parcel/bundler-default': 2.9.3(@parcel/core@2.9.3)
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
@@ -4258,7 +4244,7 @@ snapshots:
       '@parcel/optimizer-htmlnano': 2.9.3(@parcel/core@2.9.3)(postcss@8.5.3)(typescript@5.2.2)
       '@parcel/optimizer-image': 2.9.3(@parcel/core@2.9.3)
       '@parcel/optimizer-svgo': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/optimizer-swc': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.15)
+      '@parcel/optimizer-swc': 2.9.3(@parcel/core@2.9.3)
       '@parcel/packager-css': 2.9.3(@parcel/core@2.9.3)
       '@parcel/packager-html': 2.9.3(@parcel/core@2.9.3)
       '@parcel/packager-js': 2.9.3(@parcel/core@2.9.3)
@@ -4464,13 +4450,13 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/optimizer-swc@2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.15)':
+  '@parcel/optimizer-swc@2.9.3(@parcel/core@2.9.3)':
     dependencies:
       '@parcel/diagnostic': 2.9.3
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.9.3
-      '@swc/core': 1.11.10(@swc/helpers@0.5.15)
+      '@swc/core': 1.11.11
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -4762,7 +4748,7 @@ snapshots:
     dependencies:
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/source-map': 2.1.1
-      sass: 1.85.1
+      sass: 1.86.0
     transitivePeerDependencies:
       - '@parcel/core'
 
@@ -4972,10 +4958,9 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@plasmohq/consolidate@0.17.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@plasmohq/consolidate@0.17.0(react-dom@18.2.0)(react@18.2.0)':
     dependencies:
       bluebird: 3.7.2
-    optionalDependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -4997,10 +4982,10 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@plasmohq/parcel-config@0.42.0(@swc/core@1.11.10(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(postcss@8.5.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.2.2)':
+  '@plasmohq/parcel-config@0.42.0(postcss@8.5.3)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.15)(postcss@8.5.3)(typescript@5.2.2)
+      '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(postcss@8.5.3)(typescript@5.2.2)
       '@parcel/core': 2.9.3
       '@parcel/optimizer-data-url': 2.9.3(@parcel/core@2.9.3)
       '@parcel/reporter-bundle-buddy': 2.9.3(@parcel/core@2.9.3)
@@ -5024,16 +5009,16 @@ snapshots:
       '@plasmohq/parcel-compressor-utf8': 0.1.1(@parcel/core@2.9.3)
       '@plasmohq/parcel-namer-manifest': 0.3.12
       '@plasmohq/parcel-optimizer-encapsulate': 0.0.8
-      '@plasmohq/parcel-optimizer-es': 0.4.1(@swc/helpers@0.5.15)
+      '@plasmohq/parcel-optimizer-es': 0.4.1
       '@plasmohq/parcel-packager': 0.6.15
       '@plasmohq/parcel-resolver': 0.14.1
-      '@plasmohq/parcel-resolver-post': 0.4.5(@swc/core@1.11.10(@swc/helpers@0.5.15))(postcss@8.5.3)
+      '@plasmohq/parcel-resolver-post': 0.4.5(postcss@8.5.3)
       '@plasmohq/parcel-runtime': 0.25.2
       '@plasmohq/parcel-transformer-inject-env': 0.2.12
       '@plasmohq/parcel-transformer-inline-css': 0.3.11
       '@plasmohq/parcel-transformer-manifest': 0.21.0
       '@plasmohq/parcel-transformer-svelte': 0.6.0
-      '@plasmohq/parcel-transformer-vue': 0.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@plasmohq/parcel-transformer-vue': 0.5.0(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/helpers'
@@ -5128,13 +5113,13 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.9.3(@parcel/core@2.9.3)
 
-  '@plasmohq/parcel-optimizer-es@0.4.1(@swc/helpers@0.5.15)':
+  '@plasmohq/parcel-optimizer-es@0.4.1':
     dependencies:
       '@parcel/core': 2.9.3
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.9.3
-      '@swc/core': 1.3.96(@swc/helpers@0.5.15)
+      '@swc/core': 1.3.96
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -5147,14 +5132,14 @@ snapshots:
       '@parcel/utils': 2.9.3
       nullthrows: 1.1.1
 
-  '@plasmohq/parcel-resolver-post@0.4.5(@swc/core@1.11.10(@swc/helpers@0.5.15))(postcss@8.5.3)':
+  '@plasmohq/parcel-resolver-post@0.4.5(postcss@8.5.3)':
     dependencies:
       '@parcel/core': 2.9.3
       '@parcel/hash': 2.9.3
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/types': 2.9.3(@parcel/core@2.9.3)
       '@parcel/utils': 2.9.3
-      tsup: 7.2.0(@swc/core@1.11.10(@swc/helpers@0.5.15))(postcss@8.5.3)(typescript@5.2.2)
+      tsup: 7.2.0(postcss@8.5.3)(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@swc/core'
@@ -5215,7 +5200,7 @@ snapshots:
       '@parcel/utils': 2.9.3
       svelte: 4.2.2
 
-  '@plasmohq/parcel-transformer-vue@0.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@plasmohq/parcel-transformer-vue@0.5.0(react-dom@18.2.0)(react@18.2.0)':
     dependencies:
       '@parcel/core': 2.9.3
       '@parcel/diagnostic': 2.9.3
@@ -5223,7 +5208,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.9.3(@parcel/core@2.9.3)
       '@parcel/utils': 2.9.3
-      '@plasmohq/consolidate': 0.17.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@plasmohq/consolidate': 0.17.0(react-dom@18.2.0)(react@18.2.0)
       '@vue/compiler-sfc': 3.3.4
       nullthrows: 1.1.1
       semver: 7.5.4
@@ -5279,7 +5264,6 @@ snapshots:
   '@plasmohq/storage@1.15.0(react@18.2.0)':
     dependencies:
       pify: 6.1.0
-    optionalDependencies:
       react: 18.2.0
 
   '@pnpm/config.env-replace@1.1.0': {}
@@ -5433,84 +5417,83 @@ snapshots:
       deepmerge: 4.3.1
       svgo: 2.8.0
 
-  '@swc/core-darwin-arm64@1.11.10':
+  '@swc/core-darwin-arm64@1.11.11':
     optional: true
 
   '@swc/core-darwin-arm64@1.3.96':
     optional: true
 
-  '@swc/core-darwin-x64@1.11.10':
+  '@swc/core-darwin-x64@1.11.11':
     optional: true
 
   '@swc/core-darwin-x64@1.3.96':
     optional: true
 
-  '@swc/core-linux-arm-gnueabihf@1.11.10':
+  '@swc/core-linux-arm-gnueabihf@1.11.11':
     optional: true
 
   '@swc/core-linux-arm-gnueabihf@1.3.96':
     optional: true
 
-  '@swc/core-linux-arm64-gnu@1.11.10':
+  '@swc/core-linux-arm64-gnu@1.11.11':
     optional: true
 
   '@swc/core-linux-arm64-gnu@1.3.96':
     optional: true
 
-  '@swc/core-linux-arm64-musl@1.11.10':
+  '@swc/core-linux-arm64-musl@1.11.11':
     optional: true
 
   '@swc/core-linux-arm64-musl@1.3.96':
     optional: true
 
-  '@swc/core-linux-x64-gnu@1.11.10':
+  '@swc/core-linux-x64-gnu@1.11.11':
     optional: true
 
   '@swc/core-linux-x64-gnu@1.3.96':
     optional: true
 
-  '@swc/core-linux-x64-musl@1.11.10':
+  '@swc/core-linux-x64-musl@1.11.11':
     optional: true
 
   '@swc/core-linux-x64-musl@1.3.96':
     optional: true
 
-  '@swc/core-win32-arm64-msvc@1.11.10':
+  '@swc/core-win32-arm64-msvc@1.11.11':
     optional: true
 
   '@swc/core-win32-arm64-msvc@1.3.96':
     optional: true
 
-  '@swc/core-win32-ia32-msvc@1.11.10':
+  '@swc/core-win32-ia32-msvc@1.11.11':
     optional: true
 
   '@swc/core-win32-ia32-msvc@1.3.96':
     optional: true
 
-  '@swc/core-win32-x64-msvc@1.11.10':
+  '@swc/core-win32-x64-msvc@1.11.11':
     optional: true
 
   '@swc/core-win32-x64-msvc@1.3.96':
     optional: true
 
-  '@swc/core@1.11.10(@swc/helpers@0.5.15)':
+  '@swc/core@1.11.11':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.19
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.11.10
-      '@swc/core-darwin-x64': 1.11.10
-      '@swc/core-linux-arm-gnueabihf': 1.11.10
-      '@swc/core-linux-arm64-gnu': 1.11.10
-      '@swc/core-linux-arm64-musl': 1.11.10
-      '@swc/core-linux-x64-gnu': 1.11.10
-      '@swc/core-linux-x64-musl': 1.11.10
-      '@swc/core-win32-arm64-msvc': 1.11.10
-      '@swc/core-win32-ia32-msvc': 1.11.10
-      '@swc/core-win32-x64-msvc': 1.11.10
-      '@swc/helpers': 0.5.15
+      '@swc/core-darwin-arm64': 1.11.11
+      '@swc/core-darwin-x64': 1.11.11
+      '@swc/core-linux-arm-gnueabihf': 1.11.11
+      '@swc/core-linux-arm64-gnu': 1.11.11
+      '@swc/core-linux-arm64-musl': 1.11.11
+      '@swc/core-linux-x64-gnu': 1.11.11
+      '@swc/core-linux-x64-musl': 1.11.11
+      '@swc/core-win32-arm64-msvc': 1.11.11
+      '@swc/core-win32-ia32-msvc': 1.11.11
+      '@swc/core-win32-x64-msvc': 1.11.11
 
-  '@swc/core@1.3.96(@swc/helpers@0.5.15)':
+  '@swc/core@1.3.96':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.19
@@ -5525,7 +5508,6 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.3.96
       '@swc/core-win32-ia32-msvc': 1.3.96
       '@swc/core-win32-x64-msvc': 1.3.96
-      '@swc/helpers': 0.5.15
 
   '@swc/counter@0.1.3': {}
 
@@ -5717,14 +5699,14 @@ snapshots:
   browserslist@4.22.1:
     dependencies:
       caniuse-lite: 1.0.30001705
-      electron-to-chromium: 1.5.119
+      electron-to-chromium: 1.5.120
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.22.1)
 
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001705
-      electron-to-chromium: 1.5.119
+      electron-to-chromium: 1.5.120
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -5841,7 +5823,7 @@ snapshots:
       ini: 1.3.8
       proto-list: 1.2.4
 
-  consola@3.4.0: {}
+  consola@3.4.1: {}
 
   content-security-policy-parser@0.4.1: {}
 
@@ -5865,7 +5847,6 @@ snapshots:
       import-fresh: 3.3.1
       js-yaml: 4.1.0
       parse-json: 5.2.0
-    optionalDependencies:
       typescript: 5.2.2
 
   cross-spawn@7.0.6:
@@ -5964,7 +5945,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.119: {}
+  electron-to-chromium@1.5.120: {}
 
   emoji-regex@8.0.0: {}
 
@@ -6089,7 +6070,7 @@ snapshots:
       reusify: 1.1.0
 
   fdir@6.4.3(picomatch@4.0.2):
-    optionalDependencies:
+    dependencies:
       picomatch: 4.0.2
 
   fflate@0.8.1: {}
@@ -6210,11 +6191,10 @@ snapshots:
   htmlnano@2.1.1(postcss@8.5.3)(svgo@2.8.0)(typescript@5.2.2):
     dependencies:
       cosmiconfig: 9.0.0(typescript@5.2.2)
-      posthtml: 0.16.6
-      timsort: 0.3.0
-    optionalDependencies:
       postcss: 8.5.3
+      posthtml: 0.16.6
       svgo: 2.8.0
+      timsort: 0.3.0
     transitivePeerDependencies:
       - typescript
 
@@ -6266,12 +6246,11 @@ snapshots:
       '@inquirer/core': 10.1.9(@types/node@20.11.5)
       '@inquirer/prompts': 7.4.0(@types/node@20.11.5)
       '@inquirer/type': 3.0.5(@types/node@20.11.5)
+      '@types/node': 20.11.5
       ansi-escapes: 4.3.2
       mute-stream: 2.0.0
       run-async: 3.0.0
       rxjs: 7.8.2
-    optionalDependencies:
-      '@types/node': 20.11.5
 
   is-arrayish@0.2.1: {}
 
@@ -6693,7 +6672,7 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  plasmo@0.90.3(@swc/core@1.11.10(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(@types/node@20.11.5)(postcss@8.5.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  plasmo@0.90.3(@types/node@20.11.5)(postcss@8.5.3)(react-dom@18.2.0)(react@18.2.0):
     dependencies:
       '@expo/spawn-async': 1.7.2
       '@parcel/core': 2.9.3
@@ -6701,7 +6680,7 @@ snapshots:
       '@parcel/package-manager': 2.9.3(@parcel/core@2.9.3)
       '@parcel/watcher': 2.2.0
       '@plasmohq/init': 0.7.0
-      '@plasmohq/parcel-config': 0.42.0(@swc/core@1.11.10(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(postcss@8.5.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.2.2)
+      '@plasmohq/parcel-config': 0.42.0(postcss@8.5.3)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@plasmohq/parcel-core': 0.1.10
       buffer: 6.0.3
       chalk: 5.3.0
@@ -6800,17 +6779,13 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.5.3):
     dependencies:
       lilconfig: 3.1.3
-      yaml: 2.7.0
-    optionalDependencies:
       postcss: 8.5.3
+      yaml: 2.7.0
 
-  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.3)(yaml@2.7.0):
+  postcss-load-config@6.0.1(postcss@8.5.3):
     dependencies:
       lilconfig: 3.1.3
-    optionalDependencies:
-      jiti: 1.21.7
       postcss: 8.5.3
-      yaml: 2.7.0
 
   postcss-nested@6.2.0(postcss@8.5.3):
     dependencies:
@@ -6976,7 +6951,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass@1.85.1:
+  sass@1.86.0:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.0.3
@@ -7213,7 +7188,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@7.2.0(@swc/core@1.11.10(@swc/helpers@0.5.15))(postcss@8.5.3)(typescript@5.2.2):
+  tsup@7.2.0(postcss@8.5.3)(typescript@5.2.2):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.18.20)
       cac: 6.7.14
@@ -7223,31 +7198,30 @@ snapshots:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
+      postcss: 8.5.3
       postcss-load-config: 4.0.2(postcss@8.5.3)
       resolve-from: 5.0.0
       rollup: 3.29.5
       source-map: 0.8.0-beta.0
       sucrase: 3.35.0
       tree-kill: 1.2.2
-    optionalDependencies:
-      '@swc/core': 1.11.10(@swc/helpers@0.5.15)
-      postcss: 8.5.3
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  tsup@8.4.0(@swc/core@1.11.10(@swc/helpers@0.5.15))(jiti@1.21.7)(postcss@8.5.3)(typescript@5.3.3)(yaml@2.7.0):
+  tsup@8.4.0(postcss@8.5.3)(typescript@5.3.3):
     dependencies:
       bundle-require: 5.1.0(esbuild@0.25.1)
       cac: 6.7.14
       chokidar: 4.0.3
-      consola: 3.4.0
+      consola: 3.4.1
       debug: 4.4.0
       esbuild: 0.25.1
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.3)(yaml@2.7.0)
+      postcss: 8.5.3
+      postcss-load-config: 6.0.1(postcss@8.5.3)
       resolve-from: 5.0.0
       rollup: 4.36.0
       source-map: 0.8.0-beta.0
@@ -7255,9 +7229,6 @@ snapshots:
       tinyexec: 0.3.2
       tinyglobby: 0.2.12
       tree-kill: 1.2.2
-    optionalDependencies:
-      '@swc/core': 1.11.10(@swc/helpers@0.5.15)
-      postcss: 8.5.3
       typescript: 5.3.3
     transitivePeerDependencies:
       - jiti
