@@ -8,6 +8,8 @@ Please refer to the sections below to find the appropriate destination for your 
 
 The issue tracker in this repository is deprecated. Use the links below to report your issues.
 
+[![DeepSource](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper.svg/?label=resolved+issues&show_trend=true&token=AHAf1IA_VVViJ2ZUj08CNAdX)](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper/) [![DeepSource](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper.svg/?label=active+issues&show_trend=true&token=AHAf1IA_VVViJ2ZUj08CNAdX)](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper/)
+
 ---
 
 ## Contributing Code
