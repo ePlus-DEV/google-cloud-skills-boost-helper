@@ -28,5 +28,11 @@
   },
   "labelPublicProfile": {
     "message": "Public Profile"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Arcade Points Calculator"
+  },
+  "labelSave": {
+    "message": "Save"
   }
 }
