@@ -14,8 +14,8 @@
   "labelFeature": {
     "message": "Fonctionnalité"
   },
-  "labelStatus": {
-    "message": "Statut"
+  "labelAction": {
+    "message": "Action"
   },
   "labelShowLeaderboard": {
     "message": "Afficher le classement"

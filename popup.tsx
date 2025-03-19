@@ -66,7 +66,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                 <thead>
                     <tr>
                         <th className="py-2">{chrome.i18n.getMessage("labelFeature")}</th>
-                        <th className="py-2">{chrome.i18n.getMessage("labelStatus")}</th>
+                        <th className="py-2">{chrome.i18n.getMessage("labelAction")}</th>
                     </tr>
                 </thead>
                 <tbody>

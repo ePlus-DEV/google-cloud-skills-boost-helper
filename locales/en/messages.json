@@ -14,8 +14,8 @@
   "labelFeature": {
     "message": "Feature"
   },
-  "labelStatus": {
-    "message": "Status"
+  "labelActiob": {
+    "message": "Action"
   },
   "labelShowLeaderboard": {
     "message": "Show Leaderboard"
