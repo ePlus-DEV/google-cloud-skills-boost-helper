@@ -14,8 +14,8 @@
   "labelFeature": {
     "message": "Tính năng"
   },
-  "labelStatus": {
-    "message": "Trạng thái"
+  "labelAction": {
+    "message": "Hành động"
   },
   "labelShowLeaderboard": {
     "message": "Hiển thị Bảng xếp hạng"
