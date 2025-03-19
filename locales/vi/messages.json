@@ -28,5 +28,11 @@
   },
   "labelPublicProfile": {
     "message": "Hồ sơ công khai"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Tính điểm Arcade"
+  },
+  "labelSave": {
+    "message": "Lưu"
   }
 }

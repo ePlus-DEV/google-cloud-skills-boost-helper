@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useStorage } from "@plasmohq/storage/hook";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopyright, faToggleOn, faBadgeCheck } from '@fortawesome/duotone-regular-svg-icons';
+import { faCopyright, faToggleOn, faBadgeCheck, faFloppyDisk } from '@fortawesome/duotone-regular-svg-icons';
 import "./style.css";
 
 /**
@@ -26,7 +26,7 @@ function IndexPopup() {
     );
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 300 }}>
+        <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 400 }}>
             <Header />
             <FeatureTable checked={checked} onCheckboxChange={handleCheckboxChange} />
             <Footer />
@@ -105,6 +105,21 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                             >
                                 <FontAwesomeIcon icon={faBadgeCheck} size="2x" />
                             </a>
+                        }
+                    />
+                    <FeatureRow
+                        label={chrome.i18n.getMessage("labelArcadePointsCalculator")}
+                        content={
+                            <div className="flex items-center space-x-2">
+                                <input
+                                    type="url"
+                                    className="border px-4 py-2 flex-grow"
+                                    placeholder="Enter url public profile"
+                                />
+                                <button className="bg-blue-600 text-white px-4 py-2 rounded">
+                                    <FontAwesomeIcon icon={faFloppyDisk} />
+                                </button>
+                            </div>
                         }
                     />
                 </tbody>
