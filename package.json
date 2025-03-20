@@ -16,9 +16,11 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@plasmohq/storage": "^1.15.0",
+    "axios": "^1.8.4",
     "plasmo": "0.90.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-hot-toast": "^2.5.2"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
@@ -40,7 +42,10 @@
       "gecko": {
         "id": "{71243e5a-8ec2-41a5-8ef5-f2861ebd8fed}"
       }
-    }
+    },
+    "permissions": [
+      "notifications"
+    ]
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
