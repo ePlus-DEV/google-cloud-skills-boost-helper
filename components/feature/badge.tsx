@@ -1,4 +1,4 @@
-function BadgeTable({ gamePoints, triviaPoints, skillPoints, specialPoints }: { gamePoints: string; triviaPoints: string; skillPoints: string; specialPoints: string }) {
+function BadgeTable({ gamePoints, triviaPoints, skillPoints, specialPoints, lastUpdated }: { gamePoints: string; triviaPoints: string; skillPoints: string; specialPoints: string, lastUpdated: string }) {
     return (
         <div className="md:col-span-2 lg:col-span-3">
             <section className="flex flex-col justify-between items-center h-full">
