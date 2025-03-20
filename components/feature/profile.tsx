@@ -28,7 +28,7 @@ function ProfileCard({ userName, league, ArcadePoints, points }: { userName: str
                     className="w-24 h-24 transition duration-200 transform hover:scale-110"
                 />
                 <h1 className="text-lg font-medium tracking-wide bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">{league}</h1>
-                <h1 className="">{points.toLocaleString(navigator.language)}</h1>
+                <h1 className="text-lg font-medium tracking-wide">{points.toLocaleString(navigator.language)}</h1>
             </div>
         </div>
     );
