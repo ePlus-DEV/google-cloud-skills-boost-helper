@@ -32,8 +32,8 @@ function IndexOptions() {
 function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void }): JSX.Element {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [savedUrl, setSavedUrl] = useStorage("savedUrl", "");
-  const [savedData, setSavedData] = useStorage("savedData", {});
+  const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
+  const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
@@ -57,17 +57,8 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
         const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
 
         // Lưu URL và dữ liệu vào storage
-        setSavedUrl(url);
-        setSavedData({
-          userName,
-          memberSince,
-          league,
-          totalPoints,
-          gamePoints,
-          triviaPoints,
-          skillPoints,
-          specialPoints
-        });
+        setUrlProfile(url);
+        setArcadeData(response.data);
 
         const manifest = chrome.runtime.getManifest();
         const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
@@ -146,7 +137,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                   type="url"
                   className="border px-4 py-2 flex-grow"
                   placeholder="Enter url public profile"
-                  value={url || savedUrl}
+                  value={url || urlProfile}
                   onChange={handleUrlChange}
                 />
                 <button
