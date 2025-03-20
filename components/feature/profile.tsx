@@ -8,7 +8,7 @@ function ProfileCard({ userName, league, ArcadePoints, points }: { userName: str
     return (
         <div className="md:col-span-2 lg:col-span-1">
             <h1 className="w-full text-center bg-gradient-to-r from-red-500 to-red-700 text-white py-3 mb-2 rounded-lg shadow-md">
-                Arcade Points: {ArcadePoints}
+                Arcade Points: {ArcadePoints} <br /> <small className="text-gray-400">Last updated: {new Date().toLocaleString()}</small>
             </h1>
             <div className="flex flex-col items-center justify-center gap-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-xl px-6 py-10 shadow-lg transform transition duration-300">
                 <img
@@ -29,7 +29,6 @@ function ProfileCard({ userName, league, ArcadePoints, points }: { userName: str
                 />
                 <h1 className="text-lg font-medium tracking-wide bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">{league}</h1>
                 <h1 className="text-lg font-medium tracking-wide">{points.toLocaleString(navigator.language)}</h1>
-                <h1 className="text-sm text-gray-400">Last updated: {new Date().toLocaleString()}</h1>
             </div>
         </div>
     );
