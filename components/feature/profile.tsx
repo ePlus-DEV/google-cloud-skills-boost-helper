@@ -1,4 +1,4 @@
-import someCoolImage from "data-base64:~assets/icon.png";
+import someCoolImage from "data-base64:~assets/google.png";
 import diamond from "data-base64:~assets/badge/diamond.png";
 import silver from "data-base64:~assets/badge/silver.png";
 import gold from "data-base64:~assets/badge/gold.png";
@@ -21,13 +21,14 @@ function ProfileCard({ userName, league, ArcadePoints, points }: { userName: str
                     className="rounded-full border-4 border-white shadow-lg transition duration-200 transform hover:scale-105"
                     src={someCoolImage}
                 />
+                <h1 className="text-center text-2xl font-bold tracking-wide">{userName}</h1>
                 <img
                     src={ league === "Diamond League" ? diamond : league === "Gold League" ? gold : league === "Silver League" ? silver : bronze }
                     alt="badge-icon"
                     className="w-24 h-24 transition duration-200 transform hover:scale-110"
                 />
                 <h1 className="text-lg font-medium tracking-wide bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">{league}</h1>
-                <h1 className="">{points}</h1>
+                <h1 className="">{points.toLocaleString(navigator.language)}</h1>
             </div>
         </div>
     );
