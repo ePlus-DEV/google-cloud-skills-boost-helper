@@ -36,6 +36,7 @@ function Header() {
 
 function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void }): JSX.Element {
     const [url, setUrl] = useState("");
+    const [loading, setLoading] = useState(false); // Thêm state loading
 
     const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUrl(event.target.value);
@@ -47,6 +48,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
             return;
         }
 
+        setLoading(true); // Bắt đầu loading
         try {
             const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
                 url
@@ -67,12 +69,15 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                     message: `League: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
                     priority: 2
                 });
+                toast.success("Submission successful!");
             } else {
                 toast.error("Failed to submit URL.");
             }
         } catch (error) {
             toast.error("An error occurred while submitting the URL.");
             console.error("Error submitting URL:", error);
+        } finally {
+            setLoading(false); // Kết thúc loading
         }
     };
 
@@ -137,8 +142,9 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                                 <button
                                     className="bg-blue-600 text-white px-4 py-2 rounded"
                                     onClick={handleSubmit}
+                                    disabled={loading} // Vô hiệu hóa nút khi đang loading
                                 >
-                                    <FontAwesomeIcon icon={faFloppyDisk} />
+                                    {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
                                 </button>
                             </div>
                         }
