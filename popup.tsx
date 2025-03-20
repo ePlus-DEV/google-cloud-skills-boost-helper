@@ -1,20 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 import { useStorage } from "@plasmohq/storage/hook";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopyright, faToggleOn, faBadgeCheck, faFloppyDisk } from '@fortawesome/duotone-regular-svg-icons';
 import "./style.css";
 
-/**
- * The `IndexPopup` component renders a popup interface for a browser extension.
- * It includes a title, a table with features and their statuses, and a footer with copyright information.
- *
- * Features:
- * - Displays a checkbox to toggle a feature, with its state managed using a custom hook (`useStorage`).
- * - Provides a link to the user's public profile on Google Cloud Skills Boost.
- * - Localized text is retrieved using the `chrome.i18n.getMessage` API.
- *
- * @returns {JSX.Element} The rendered popup component.
- */
 function IndexPopup() {
     const [checked, setChecked] = useStorage("checked", false);
 
@@ -30,16 +21,11 @@ function IndexPopup() {
             <Header />
             <FeatureTable checked={checked} onCheckboxChange={handleCheckboxChange} />
             <Footer />
+            <Toaster />
         </div>
     );
 }
 
-/**
- * A React functional component that renders a header element.
- * The header displays the localized name of the extension using the Chrome i18n API.
- *
- * @returns {JSX.Element} A JSX element containing an h3 tag with the extension's name.
- */
 function Header() {
     return (
         <h3 className="text-xl font-semibold text-center">
@@ -48,18 +34,48 @@ function Header() {
     );
 }
 
-/**
- * A React functional component that renders a feature table with rows for different features.
- * Each row can display a label and a corresponding content, such as a checkbox or a link.
- *
- * @param {Object} props - The props for the component.
- * @param {boolean} props.checked - The state of the checkbox for the "Show Leaderboard" feature.
- * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} props.onCheckboxChange - 
- * A callback function triggered when the checkbox state changes.
- *
- * @returns {JSX.Element} A table displaying feature labels and their corresponding content.
- */
-function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
+function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void }): JSX.Element {
+    const [url, setUrl] = useState("");
+
+    const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUrl(event.target.value);
+    };
+
+    const handleSubmit = async () => {
+        if (!url) {
+            toast.error("Please enter a URL.");
+            return;
+        }
+
+        try {
+            const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
+                url
+            });
+
+            if (response.status === 200) {
+                const { userDetails, arcadePoints } = response.data;
+                const { userName, memberSince, league } = userDetails[0] || {};
+                const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
+
+                const manifest = chrome.runtime.getManifest();
+                const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
+
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: iconUrl,
+                    title: `User: ${userName}`,
+                    message: `League: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
+                    priority: 2
+                });
+            } else {
+                toast.error("Failed to submit URL.");
+            }
+        } catch (error) {
+            toast.error("An error occurred while submitting the URL.");
+            console.error("Error submitting URL:", error);
+        }
+    };
+
     return (
         <div className="mt-4">
             <table className="min-w-full bg-white">
@@ -115,8 +131,13 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                                     type="url"
                                     className="border px-4 py-2 flex-grow"
                                     placeholder="Enter url public profile"
+                                    value={url}
+                                    onChange={handleUrlChange}
                                 />
-                                <button className="bg-blue-600 text-white px-4 py-2 rounded">
+                                <button
+                                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                                    onClick={handleSubmit}
+                                >
                                     <FontAwesomeIcon icon={faFloppyDisk} />
                                 </button>
                             </div>
@@ -128,14 +149,6 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
     );
 }
 
-/**
- * A functional component that renders a table row with two cells: one for a label and one for content.
- *
- * @param props - The props for the component.
- * @param props.label - The text to display in the first cell of the row.
- * @param props.content - A JSX element to display in the second cell of the row.
- * @returns A table row (`<tr>`) element containing the label and content.
- */
 function FeatureRow({ label, content }: { label: string; content: JSX.Element }) {
     return (
         <tr>
@@ -145,12 +158,6 @@ function FeatureRow({ label, content }: { label: string; content: JSX.Element })
     );
 }
 
-/**
- * A functional component that renders a footer section.
- * The footer includes the current year, a copyright symbol, and a link to the ePlus.DEV website.
- *
- * @returns {JSX.Element} The rendered footer component.
- */
 function Footer() {
     return (
         <footer className="mt-4 text-center text-gray-500">
