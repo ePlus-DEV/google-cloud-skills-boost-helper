@@ -33,6 +33,8 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
+  const [userDetail, setUserDetail] = useStorage("userDetail", {});
+  const [arcadePoints, setarcadePoints] = useStorage("arcadePoints", {});
   const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,9 +58,11 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
         const { userName, memberSince, league } = userDetails[0] || {};
         const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
 
-        // Lưu URL và dữ liệu vào storage
+        const lastUpdated = new Date().toISOString();
         setUrlProfile(url);
-        setArcadeData(response.data);
+        // setUserDetail({ ...userDetails[0], lastUpdated: lastUpdated });
+        // setarcadePoints({ ...arcadePoints, lastUpdated: lastUpdated });
+        setArcadeData({ userDetails: userDetails[0], arcadePoints, lastUpdated });
 
         const manifest = chrome.runtime.getManifest();
         const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
@@ -132,22 +136,25 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
           <FeatureRow
             label={chrome.i18n.getMessage("labelArcadePointsCalculator")}
             content={
+              <div>
                 <div className="flex items-center space-x-2">
-                <input
-                  type="url"
-                  className="border px-4 py-2 flex-grow"
-                  placeholder="Enter url public profile"
-                  value={url || urlProfile}
-                  onChange={handleUrlChange}
-                />
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded"
-                  onClick={handleSubmit}
-                  disabled={loading}
-                >
-                  {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
-                </button>
+                  <input
+                    type="url"
+                    className="border px-4 py-2 flex-grow"
+                    placeholder="Enter url public profile"
+                    value={url || urlProfile}
+                    onChange={handleUrlChange}
+                  />
+                  <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                    onClick={handleSubmit}
+                    disabled={loading}
+                  >
+                    {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
+                  </button>
                 </div>
+                <pre>{JSON.stringify(userDetail, null, 2)}</pre>
+              </div>
             }
           />
         </tbody>
