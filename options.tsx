@@ -33,8 +33,6 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
-  const [userDetail, setUserDetail] = useStorage("userDetail", {});
-  const [arcadePoints, setarcadePoints] = useStorage("arcadePoints", {});
   const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +40,8 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
   };
 
   const handleSubmit = async () => {
-    if (!url || !url.startsWith("https://www.cloudskillsboost.google/public_profiles/")) {
+    const link = url || urlProfile;
+    if (!link || !link.startsWith("https://www.cloudskillsboost.google/public_profiles/")) {
       toast.error("Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/'.");
       return;
     }
@@ -50,7 +49,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
     setLoading(true);
     try {
       const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
-        url
+        url: link
       });
 
       if (response.status === 200) {
@@ -59,10 +58,13 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
         const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
 
         const lastUpdated = new Date().toISOString();
-        setUrlProfile(url);
-        // setUserDetail({ ...userDetails[0], lastUpdated: lastUpdated });
-        // setarcadePoints({ ...arcadePoints, lastUpdated: lastUpdated });
-        setArcadeData({ userDetails: userDetails[0], arcadePoints, lastUpdated });
+        setUrlProfile(link);
+        setArcadeData((prevData) => ({
+          ...prevData,
+          userDetails: userDetails[0],
+          arcadePoints,
+          lastUpdated
+        }));
 
         const manifest = chrome.runtime.getManifest();
         const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
@@ -153,7 +155,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                     {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
                   </button>
                 </div>
-                <pre>{JSON.stringify(userDetail, null, 2)}</pre>
+                <pre>{JSON.stringify(arcadeData, null, 2)}</pre>
               </div>
             }
           />
