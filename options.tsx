@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOn, faBadgeCheck, faFloppyDisk } from '@fortawesome/duotone-regular-svg-icons';
 import Header from "~components/header"
 import Footer from "~components/footer"
-
+import FeatureRow from "~components/feature/row"
 import "./style.css";
 
 function IndexOptions() {
@@ -147,15 +147,6 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                 </tbody>
             </table>
         </div>
-    );
-}
-
-function FeatureRow({ label, content }: { label: string; content: JSX.Element }) {
-    return (
-        <tr>
-            <td className="border px-4 py-2">{label}</td>
-            <td className="border px-4 py-2">{content}</td>
-        </tr>
     );
 }
 
