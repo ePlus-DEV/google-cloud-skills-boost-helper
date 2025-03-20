@@ -1,4 +1,4 @@
-function BadgeTable() {
+function BadgeTable({ gamePoints, triviaPoints, skillPoints, specialPoints }: { gamePoints: string; triviaPoints: string; skillPoints: string; specialPoints: string }) {
     return (
         <div className="md:col-span-2 lg:col-span-3">
             <section className="flex flex-col justify-between items-center h-full">
@@ -10,10 +10,10 @@ function BadgeTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        <BadgeRow name="Game Badge" value="7" isEven />
-                        <BadgeRow name="Trivia Badge" value="8" />
-                        <BadgeRow name="Skill Badge" value="1" isEven />
-                        <BadgeRow name="Swag Eligibility" value="TBD" />
+                        <BadgeRow name="Game Badge" value={gamePoints} isEven />
+                        <BadgeRow name="Trivia Badge" value={triviaPoints} />
+                        <BadgeRow name="Skill Badge" value={skillPoints} isEven />
+                        <BadgeRow name="special Points" value={specialPoints} />
                     </tbody>
                 </table>
             </section>
