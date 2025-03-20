@@ -29,6 +29,7 @@ function ProfileCard({ userName, league, ArcadePoints, points }: { userName: str
                 />
                 <h1 className="text-lg font-medium tracking-wide bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">{league}</h1>
                 <h1 className="text-lg font-medium tracking-wide">{points.toLocaleString(navigator.language)}</h1>
+                <h1 className="text-sm text-gray-400">Last updated: {new Date().toLocaleString()}</h1>
             </div>
         </div>
     );
