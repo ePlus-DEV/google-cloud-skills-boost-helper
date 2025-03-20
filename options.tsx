@@ -6,9 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOn, faBadgeCheck, faFloppyDisk } from '@fortawesome/duotone-regular-svg-icons';
 import Header from "~components/header"
 import Footer from "~components/footer"
+
 import "./style.css";
 
-function IndexPopup() {
+function IndexOptions() {
     const [checked, setChecked] = useStorage("checked", false);
 
     const handleCheckboxChange = useCallback(
@@ -19,7 +20,7 @@ function IndexPopup() {
     );
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 400 }}>
+        <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 400, margin: "0 auto", height: "100vh", justifyContent: "center" }}>
             <Header />
             <FeatureTable checked={checked} onCheckboxChange={handleCheckboxChange} />
             <Footer />
@@ -158,4 +159,4 @@ function FeatureRow({ label, content }: { label: string; content: JSX.Element })
     );
 }
 
-export default IndexPopup;
+export default IndexOptions;
