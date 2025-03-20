@@ -21,7 +21,7 @@ function IndexPopup() {
             <Header />
             <FeatureTable checked={checked} onCheckboxChange={handleCheckboxChange} />
             <Footer />
-            <Toaster />
+            <Toaster position="top-center" reverseOrder={false}/>
         </div>
     );
 }
@@ -42,8 +42,8 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
     };
 
     const handleSubmit = async () => {
-        if (!url) {
-            toast.error("Please enter a URL.");
+        if (!url || !url.startsWith("https://www.cloudskillsboost.google/public_profiles/")) {
+            toast.error("Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/'.");
             return;
         }
 
