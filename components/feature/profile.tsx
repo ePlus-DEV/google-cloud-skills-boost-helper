@@ -1,18 +1,36 @@
-import someCoolImage from "data-base64:~assets/coming-soon.png"
+import someCoolImage from "data-base64:~assets/coming-soon.png";
 
-function ProfileCard() {
+function ProfileCard({ userName, league, ArcadePoints, points }: { userName: string; league: string; ArcadePoints: number; points: number }) {
     return (
         <div className="md:col-span-2 lg:col-span-1">
-            <h1 className="w-full text-center bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 mb-2 rounded-lg shadow-md">Arcade Points: 20</h1>
+            <h1 className="w-full text-center bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 mb-2 rounded-lg shadow-md">
+                Arcade Points: {ArcadePoints}
+            </h1>
             <div className="flex flex-col items-center justify-center gap-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-xl px-6 py-10 shadow-lg transform transition duration-300">
-                <img alt="profile-image" loading="lazy" width="160" height="160" decoding="async" data-nimg="1" className="rounded-full border-4 border-white shadow-lg transition duration-200 transform hover:scale-105" src={someCoolImage} />
-                <h1 className="text-center text-2xl font-bold tracking-wide">Hoang Minh</h1>
+                <img
+                    alt="profile-image"
+                    loading="lazy"
+                    width="160"
+                    height="160"
+                    decoding="async"
+                    data-nimg="1"
+                    className="rounded-full border-4 border-white shadow-lg transition duration-200 transform hover:scale-105"
+                    src={someCoolImage}
+                />
+                <h1 className="text-center text-2xl font-bold tracking-wide">{userName}</h1>
                 <img src={someCoolImage} alt="badge-icon" className="w-24 h-24 transition duration-200 transform hover:scale-110" />
-                <h1 className="text-lg font-medium tracking-wide bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">Diamond League</h1>
-                <h1 className="">107745 points</h1>
+                <h1 className="text-lg font-medium tracking-wide bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">{league}</h1>
+                <h1 className="">{points}</h1>
             </div>
         </div>
     );
 }
+
+ProfileCard.defaultProps = {
+    userName: "Default User",
+    league: "Bronze",
+    ArcadePoints: 0,
+    points: 0,
+};
 
 export default ProfileCard;
