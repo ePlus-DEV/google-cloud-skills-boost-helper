@@ -1,6 +1,5 @@
 import React from "react";
 import { useStorage } from "@plasmohq/storage/hook";
-import BadgeTable from "~components/feature/badge";
 import ProfileCard from "~components/feature/arcade/profile";
 import "./style.css";
 
