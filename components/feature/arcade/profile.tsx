@@ -10,54 +10,41 @@ import { faTrophy, faStar, faBolt, faAwardSimple, faCrown, faAward, faFireFlame,
 export default function ArcadeProfile({ userName, league, ArcadePoints, points, lastUpdated, gamePoints, triviaPoints, skillPoints, specialPoints }: { userName: string; league: string; ArcadePoints: number; points: number; lastUpdated: string; gamePoints: string; triviaPoints: string; skillPoints: string; specialPoints: string }) {
     const [currentDateTime, setCurrentDateTime] = useState(new Date())
     const [isUpdating, setIsUpdating] = useState(false)
-    const [activeTab, setActiveTab] = useState("profile")
 
     const handleUpdatePoints = () => {
-            setIsUpdating(true)
+        setIsUpdating(true)
 
-            setTimeout(() => {
-                setIsUpdating(false)
-            }, 1500)
-        }
+        setTimeout(() => {
+            setIsUpdating(false)
+        }, 1500)
+    }
 
-    const formattedDate = currentDateTime.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    })
-
-  const formattedTime = currentDateTime.toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  })
-
-  const badgeData = [
-    {
-        name: "Game Badge",
-        value: gamePoints,
-        icon: <FontAwesomeIcon icon={faTrophy} className="w-5 h-5 text-yellow-400"  />,
-        color: "from-yellow-400 to-orange-500",
-    },
-    {
-        name: "Trivia Badge",
-        value: triviaPoints,
-        icon: <FontAwesomeIcon icon={faStar} className="w-5 h-5 text-purple-400" />,
-        color: "from-purple-400 to-indigo-500",
-    },
-    {
-        name: "Skill Badge",
-        value: skillPoints,
-        icon: <FontAwesomeIcon icon={faBolt} className="w-5 h-5 text-white" />,
-        color: "from-blue-400 to-cyan-500",
-    },
-    {
-        name: "Special Points",
-        value: specialPoints,
-        icon: <FontAwesomeIcon icon={faAwardSimple} className="w-5 h-5 text-green-400" />,
-        color: "from-green-400 to-emerald-500",
-    },
-  ]
+    const badgeData = [
+        {
+            name: "Game Badge",
+            value: gamePoints,
+            icon: <FontAwesomeIcon icon={faTrophy} className="w-5 h-5 text-yellow-400"  />,
+            color: "from-yellow-400 to-orange-500",
+        },
+        {
+            name: "Trivia Badge",
+            value: triviaPoints,
+            icon: <FontAwesomeIcon icon={faStar} className="w-5 h-5 text-purple-400" />,
+            color: "from-purple-400 to-indigo-500",
+        },
+        {
+            name: "Skill Badge",
+            value: skillPoints,
+            icon: <FontAwesomeIcon icon={faBolt} className="w-5 h-5 text-white" />,
+            color: "from-blue-400 to-cyan-500",
+        },
+        {
+            name: "Special Points",
+            value: specialPoints,
+            icon: <FontAwesomeIcon icon={faAwardSimple} className="w-5 h-5 text-green-400" />,
+            color: "from-green-400 to-emerald-500",
+        },
+    ]
 
     return (
         <div className="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl">
@@ -227,7 +214,7 @@ export default function ArcadeProfile({ userName, league, ArcadePoints, points, 
 
                 {/* Footer */}
                 <div className="mt-6 text-center text-xs text-white/50">
-                    Last updated: {formattedDate}, {formattedTime}
+                    Last updated: { new Date(lastUpdated).toLocaleString(navigator.language) }
                 </div>
             </div>
         </div>
