@@ -46,7 +46,7 @@ export default function ArcadeActivity({ isUpdating }: { isUpdating: boolean }) 
                                     <div className="text-sm text-gray-300">{activity.dateEarned}</div>
                                 </div>
                             </div>
-                            <div className="text-sm text-white font-bold">{activity.points} points</div>
+                            <div className="text-sm text-white">{activity.points} points</div>
                         </div>
                     </div>
                 ))}
