@@ -3,11 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown } from '@fortawesome/duotone-regular-svg-icons';
 
 export default function ArcadeProfile({ userName, league, points, arcadePoints }: { userName: string; league: string; points: number; arcadePoints: number; }) {
-    const milestones = [15, 30, 45, 65];
+    const milestones = [
+        { points: 15, league: "STANDARD" },
+        { points: 30, league: "ADVANCED" },
+        { points: 45, league: "PREMIUM" },
+        { points: 65, league: "PREMIUM PLUS" }
+    ];
+
     const roundedArcadePoints = Math.floor(arcadePoints);
-    const currentLevel = milestones.findIndex(milestone => roundedArcadePoints < milestone) + 1 || milestones.length + 1;
-    const nextMilestone = milestones.find(milestone => milestone > roundedArcadePoints) || milestones[milestones.length - 1];
-    const isMaxLevel = nextMilestone === milestones[milestones.length - 1];
+    const currentLevel = milestones.findIndex(milestone => roundedArcadePoints < milestone.points) + 1 || milestones.length + 1;
+    const nextMilestone = milestones.find(milestone => milestone.points > roundedArcadePoints) || milestones[milestones.length - 1];
+    const isMaxLevel = nextMilestone.points === milestones[milestones.length - 1].points;
+    const currentLeague = milestones.find(milestone => roundedArcadePoints < milestone.points)?.league || milestones[milestones.length - 1].league;
 
     return (
         <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 overflow-hidden group">
@@ -29,7 +36,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
                     <div className="flex items-center mt-1">
                         <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
                             <FontAwesomeIcon icon={faCrown} className="h-3 w-3 mr-1" />
-                            {league}
+                            {currentLeague}
                         </div>
                         <div className="ml-2 text-xs text-white/70">{points}</div>
                     </div>
@@ -37,14 +44,14 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
             </div>
 
             <div className="mt-4 w-full bg-white/10 rounded-full h-1.5">
-                <div style={{ width: `${(roundedArcadePoints / (isMaxLevel ? milestones[milestones.length - 1] : nextMilestone)) * 100}%` }}
+                <div style={{ width: `${(roundedArcadePoints / (isMaxLevel ? milestones[milestones.length - 1].points : nextMilestone.points)) * 100}%` }}
                     className="bg-gradient-to-r from-yellow-400 to-orange-500 h-full rounded-full">
                     <div className="absolute inset-0 bg-white/30 animate-pulse-slow"></div>
                 </div>
             </div>
             <div className="mt-1 flex justify-between text-xs text-white/70">
                 <span>Level {currentLevel}</span>
-                <span>Next: {isMaxLevel ? "Max Level" : `${nextMilestone - arcadePoints} points`}</span>
+                <span>Next: {isMaxLevel ? "Max Level" : `${nextMilestone.points - arcadePoints} points`}</span>
             </div>
         </div>
     );
