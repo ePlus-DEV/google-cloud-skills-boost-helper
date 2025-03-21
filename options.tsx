@@ -66,10 +66,8 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
           arcadePoints,
           lastUpdated
         }));
-        setArcadeBadges({
-          badge: badges[0] || {}
-        });
-
+        setArcadeBadges(badges);
+        
         const manifest = chrome.runtime.getManifest();
         const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
 
