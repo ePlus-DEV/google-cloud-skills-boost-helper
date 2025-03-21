@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy, faStar, faBolt, faAwardSimple, faCrown, faAward, faFireFlame, faBullseye, faSparkles, faArrowsRotate } from '@fortawesome/duotone-regular-svg-icons';
 
 export default function ArcadeProfile({ userName, league, ArcadePoints, points, lastUpdated, gamePoints, triviaPoints, skillPoints, specialPoints }: { userName: string; league: string; ArcadePoints: number; points: number; lastUpdated: string; gamePoints: string; triviaPoints: string; skillPoints: string; specialPoints: string }) {
-    const [currentDateTime, setCurrentDateTime] = useState(new Date())
     const [isUpdating, setIsUpdating] = useState(false)
 
     const handleUpdatePoints = () => {
