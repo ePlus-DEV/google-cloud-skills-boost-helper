@@ -9,7 +9,7 @@ interface Activity {
     points: number;
 }
 
-export default function ArcadeActivity({ isUpdating }: { isUpdating: boolean }) {
+export default function ArcadeActivity({ isUpdating, onUpdatePoints }: { isUpdating: boolean; onUpdatePoints: () => void }) {
     const [arcadeBadges] = useStorage<Activity[]>("arcadebadges", []);
     const [visibleCount, setVisibleCount] = useState(3);
 
@@ -65,7 +65,7 @@ export default function ArcadeActivity({ isUpdating }: { isUpdating: boolean }) 
                 </button>
             )}
 
-            <button className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3">
+            <button onClick={onUpdatePoints} className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300">
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute inset-0 bg-black/20"></div>
                     <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
