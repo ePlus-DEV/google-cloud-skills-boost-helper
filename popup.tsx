@@ -1,6 +1,6 @@
 import React from "react";
 import { useStorage } from "@plasmohq/storage/hook";
-import ProfileCard from "~components/feature/arcade/profile";
+import ProfileCard from "~components/feature/arcade/card";
 import "./style.css";
 
 function IndexPopup() {
