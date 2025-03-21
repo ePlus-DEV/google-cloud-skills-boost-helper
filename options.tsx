@@ -34,6 +34,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
   const [loading, setLoading] = useState(false);
   const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
   const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
+  const [arcadeBadges, setArcadeBadges] = useStorage("arcadebadges", {});
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
@@ -53,7 +54,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
       });
 
       if (response.status === 200) {
-        const { userDetails, arcadePoints } = response.data;
+        const { userDetails, arcadePoints, badges } = response.data;
         const { userName, memberSince, league } = userDetails[0] || {};
         const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
 
@@ -65,6 +66,9 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
           arcadePoints,
           lastUpdated
         }));
+        setArcadeBadges({
+          badge: badges[0] || {}
+        });
 
         const manifest = chrome.runtime.getManifest();
         const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
@@ -155,7 +159,9 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                     {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
                   </button>
                 </div>
-                <pre>{JSON.stringify(arcadeData, null, 2)}</pre>
+                <div className="max-h-96 overflow-y-scroll border border-gray-300 p-2 max-w-md mt-3">
+                  <pre>{JSON.stringify(arcadeBadges, null, 2)}</pre>
+                </div>
               </div>
             }
           />
