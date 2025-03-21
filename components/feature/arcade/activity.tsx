@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFireFlame, faBullseye, faSparkles, faArrowsRotate } from '@fortawesome/duotone-regular-svg-icons';
 import { useStorage } from "@plasmohq/storage/hook";
@@ -10,8 +11,15 @@ interface Activity {
 
 export default function ArcadeActivity({ isUpdating }: { isUpdating: boolean }) {
     const [arcadeBadges] = useStorage<Activity[]>("arcadebadges", []);
+    const [visibleCount, setVisibleCount] = useState(3);
 
     const activities: Activity[] = arcadeBadges;
+    const totalPages = Math.ceil(activities.length / 3);
+    const currentPage = Math.ceil(visibleCount / 3);
+
+    const handleLoadMore = () => {
+        setVisibleCount((prev) => prev + 3);
+    };
 
     return (
         <div>
@@ -20,8 +28,8 @@ export default function ArcadeActivity({ isUpdating }: { isUpdating: boolean }) 
                 Recent Activity
             </h3>
 
-            <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
-                {activities.map((activity, index) => (
+            <div className="space-y-3 max-h-64 overflow-y-auto">
+                {activities.slice(0, visibleCount).map((activity, index) => (
                     <div
                         key={index}
                         className="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group"
@@ -44,7 +52,20 @@ export default function ArcadeActivity({ isUpdating }: { isUpdating: boolean }) 
                 ))}
             </div>
 
-            <button className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group">
+            <div className="text-center text-white mt-3">
+                Page {currentPage}/{totalPages}
+            </div>
+
+            {visibleCount < activities.length && (
+                <button
+                    onClick={handleLoadMore}
+                    className="w-full py-2.5 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white font-bold rounded-xl mt-3"
+                >
+                    Load More
+                </button>
+            )}
+
+            <button className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3">
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute inset-0 bg-black/20"></div>
                     <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
