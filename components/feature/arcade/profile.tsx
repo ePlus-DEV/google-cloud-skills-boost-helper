@@ -43,7 +43,9 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
 
                 {/* User details */}
                 <div className="ml-4">
-                    <h2 className="text-xl font-bold text-white">{userName}</h2>
+                    <h2 className="text-xl font-bold text-white truncate max-w-[200px]" title={userName}>
+                        {userName}
+                    </h2>
                     <div className="flex items-center mt-1">
                         {/* League badge */}
                         <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
