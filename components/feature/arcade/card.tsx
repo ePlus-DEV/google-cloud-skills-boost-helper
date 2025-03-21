@@ -104,7 +104,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
 
                 <ArcadeBadge gamePoints={gamePoints} triviaPoints={triviaPoints} skillPoints={skillPoints} specialPoints={specialPoints} />
 
-                <ArcadeActivity isUpdating={ isUpdating } />
+                <ArcadeActivity isUpdating={ isUpdating } onUpdatePoints={handleUpdatePoints} />
 
                 {/* Footer */}
                 <div className="mt-6 text-center text-xs text-white/50">
