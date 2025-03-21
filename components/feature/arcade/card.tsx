@@ -98,7 +98,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     </button>
                 </div>
 
-                <ArcadeProfile userName={userName} league={league} points={points} />
+                <ArcadeProfile userName={userName} league={league} points={points} arcadePoints={ArcadePoints} />
 
                 <ArcadeBadge gamePoints={gamePoints} triviaPoints={triviaPoints} skillPoints={skillPoints} specialPoints={specialPoints} />
 
