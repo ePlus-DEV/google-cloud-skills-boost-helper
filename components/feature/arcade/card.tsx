@@ -9,16 +9,57 @@ import { faArrowsRotate } from '@fortawesome/duotone-regular-svg-icons';
 import ArcadeProfile from "~components/feature/arcade/profile";
 import ArcadeBadge from "~components/feature/arcade/badges";
 import ArcadeActivity from "~components/feature/arcade/activity";
+import axios from "axios";
+import toast from 'react-hot-toast';
+import { useStorage } from "@plasmohq/storage/hook";
 
 export default function ArcadeCard({ userName, league, ArcadePoints, points, lastUpdated, gamePoints, triviaPoints, skillPoints, specialPoints }: { userName: string; league: string; ArcadePoints: number; points: number; lastUpdated: string; gamePoints: number; triviaPoints: number; skillPoints: number; specialPoints: number }) {
     const [isUpdating, setIsUpdating] = useState(false)
+    const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
+    const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
 
-    const handleUpdatePoints = () => {
-        setIsUpdating(true)
+    const handleUpdatePoints = async () => {
+        setIsUpdating(true);
 
-        setTimeout(() => {
-            setIsUpdating(false)
-        }, 1500)
+        try {
+            const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
+                url: urlProfile
+            });
+
+            if (response.status === 200) {
+                const { userDetails, arcadePoints } = response.data;
+                const { userName, memberSince, league } = userDetails[0] || {};
+                const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
+
+                const lastUpdated = new Date().toISOString();
+
+                setArcadeData((prevData) => ({
+                    ...prevData,
+                    userDetails: userDetails[0],
+                    arcadePoints,
+                    lastUpdated
+                }));
+
+                const manifest = chrome.runtime.getManifest();
+                const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
+
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: iconUrl,
+                    title: `User: ${userName}`,
+                    message: `League: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
+                    priority: 2
+                });
+                toast.success("Submission successful!");
+            } else {
+                toast.error("Failed to submit URL.");
+            }
+        } catch (error) {
+            toast.error("An error occurred while submitting the URL.");
+            console.error("Error submitting URL:", error);
+        } finally {
+            setIsUpdating(false);
+        }
     }
 
     return (
@@ -57,13 +98,10 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     </button>
                 </div>
 
-                {/* Profile card */}
                 <ArcadeProfile userName={userName} league={league} points={points} />
 
-                {/* Badges section */}
                 <ArcadeBadge gamePoints={gamePoints} triviaPoints={triviaPoints} skillPoints={skillPoints} specialPoints={specialPoints} />
 
-                {/* Recent activity */}
                 <ArcadeActivity isUpdating={ isUpdating } />
 
                 {/* Footer */}
