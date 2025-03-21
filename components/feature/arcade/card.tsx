@@ -17,6 +17,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
     const [isUpdating, setIsUpdating] = useState(false)
     const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
     const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
+    const [arcadeBadges, setArcadeBadges] = useStorage("arcadebadges", {});
 
     const handleUpdatePoints = async () => {
         setIsUpdating(true);
@@ -27,7 +28,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
             });
 
             if (response.status === 200) {
-                const { userDetails, arcadePoints } = response.data;
+                const { userDetails, arcadePoints, badges } = response.data;
                 const { userName, memberSince, league } = userDetails[0] || {};
                 const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
 
@@ -39,6 +40,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     arcadePoints,
                     lastUpdated
                 }));
+                setArcadeBadges(badges);
 
                 const manifest = chrome.runtime.getManifest();
                 const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
