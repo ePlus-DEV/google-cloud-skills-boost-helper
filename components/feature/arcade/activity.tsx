@@ -59,9 +59,10 @@ export default function ArcadeActivity({ isUpdating, onUpdatePoints }: { isUpdat
             {visibleCount < activities.length && (
                 <button
                     onClick={handleLoadMore}
-                    className="w-full py-2.5 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white font-bold rounded-xl mt-3"
+                    className="w-full py-2.5 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white font-bold rounded-xl mt-3 relative overflow-hidden group hover:from-teal-500 hover:via-blue-500 hover:to-green-500 transition-all duration-300"
                 >
-                    Load More
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    <span className="relative z-10">Load More</span>
                 </button>
             )}
 
