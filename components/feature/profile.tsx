@@ -4,11 +4,15 @@ import silver from "data-base64:~assets/badge/silver.png";
 import gold from "data-base64:~assets/badge/gold.png";
 import bronze from "data-base64:~assets/badge/bronze.png";
 
-function ProfileCard({ userName, league, ArcadePoints, points }: { userName: string; league: string; ArcadePoints: number; points: number }) {
+function ProfileCard({ userName, league, ArcadePoints, points, lastUpdated }: { userName: string; league: string; ArcadePoints: number; points: number; lastUpdated: string }) {
     return (
         <div className="md:col-span-2 lg:col-span-1">
             <h1 className="w-full text-center bg-gradient-to-r from-red-500 to-red-700 text-white py-3 mb-2 rounded-lg shadow-md">
-                Arcade Points: {ArcadePoints} <br /> <small className="text-gray-400">Last updated: {new Date().toLocaleString()}</small>
+                <div>
+                    Arcade Points: {ArcadePoints}
+                    <br />
+                    <small className="text-gray-400">Last updated: {new Date(lastUpdated).toLocaleString(navigator.language)}</small>
+                </div>
             </h1>
             <div className="flex flex-col items-center justify-center gap-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-xl px-6 py-10 shadow-lg transform transition duration-300">
                 <img
