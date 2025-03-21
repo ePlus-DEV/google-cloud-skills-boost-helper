@@ -11,11 +11,14 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
     ];
 
     const roundedArcadePoints = Math.floor(arcadePoints);
-    const currentLevel = milestones.findIndex(milestone => arcadePoints <= milestone.points) + 1 || milestones.length + 1;
+    const currentLevel = milestones.findIndex((milestone, index) => {
+        const nextMilestone = milestones[index + 1];
+        return arcadePoints <= milestone.points || (nextMilestone && arcadePoints < nextMilestone.points);
+    }) + 1 || milestones.length + 1;
+
     const nextMilestone = milestones.find(milestone => milestone.points > roundedArcadePoints) || milestones[milestones.length - 1];
     const isMaxLevel = nextMilestone.points === milestones[milestones.length - 1].points;
 
-    // Lấy tên league tương ứng với currentLevel
     const currentLeague = milestones[currentLevel - 1]?.league || "MAX LEVEL";
 
     return (
@@ -52,8 +55,8 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
                 </div>
             </div>
             <div className="mt-1 flex justify-between text-xs text-white/70">
-                <span>Level {currentLeague}</span>
-                <span>Next: {isMaxLevel ? "Max Level" : `${nextMilestone.points - arcadePoints} points`}</span>
+                <span>Current Level: {currentLeague}</span>
+                <span>{isMaxLevel ? "Max level!" : `Next level in ${nextMilestone.points - arcadePoints} points`}</span>
             </div>
         </div>
     );
