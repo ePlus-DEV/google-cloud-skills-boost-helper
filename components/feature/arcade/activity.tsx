@@ -50,14 +50,14 @@ export default function ArcadeActivity() {
                                             <div className="text-sm text-gray-300">{activity.dateEarned}</div>
                                         </div>
                                     </div>
-                                    <div className="text-sm text-white">{activity.points} points</div>
+                                    <div className="text-sm text-white">{activity.points} {chrome.i18n.getMessage("Points")}</div>
                                 </div>
                             </div>
                         ))}
                     </div>
 
                     <div className="text-center text-white mt-3">
-                        Page {currentPage}/{totalPages}
+                        {chrome.i18n.getMessage("labelPage")} {currentPage}/{totalPages}
                     </div>
 
                     {visibleCount < activities.length && (
@@ -66,7 +66,7 @@ export default function ArcadeActivity() {
                             className="w-full py-2.5 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white font-bold rounded-xl mt-3 relative overflow-hidden group hover:from-teal-500 hover:via-blue-500 hover:to-green-500 transition-all duration-300"
                         >
                             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                            <span className="relative z-10">Load More</span>
+                            <span className="relative z-10">{chrome.i18n.getMessage("labelLoadMore")}</span>
                         </button>
                     )}
                 </>

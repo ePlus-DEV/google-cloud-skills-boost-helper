@@ -49,5 +49,23 @@
   },
   "labelLastUpdated": {
     "message": "Dernière mise à jour"
+  },
+  "labelPage": {
+    "message": "Page"
+  },
+  "labelLoadMore": {
+    "message": "Charger plus"
+  },
+  "textCurrentLevel": {
+    "message": "Niveau actuel"
+  },
+  "textMaxLevel": {
+    "message": "Niveau maximum"
+  },
+  "textNextLevelInPoints": {
+    "message": "Niveau suivant dans ${points} points"
+  },
+  "textPoints": {
+    "message": "Points"
   }
 }
