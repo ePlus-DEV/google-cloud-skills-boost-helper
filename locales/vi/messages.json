@@ -67,5 +67,8 @@
   },
   "textPoints": {
     "message": "điểm"
+  },
+  "textPleaseSetUpTheSettings": {
+    "message": "Vui lòng thiết lập cài đặt"
   }
 }
