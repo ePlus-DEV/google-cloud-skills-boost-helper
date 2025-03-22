@@ -29,7 +29,11 @@ export default function ArcadeActivity() {
             </h3>
 
             {activities.length === 0 ? (
-                <div className="text-center text-gray-300">{chrome.i18n.getMessage("messageNoDataAvailable")}</div>
+                <div className="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
+                    <span className="text-gray-400 font-medium">
+                        {chrome.i18n.getMessage("messageNoDataAvailable")}
+                    </span>
+                </div>
             ) : (
                 <>
                     <div className="space-y-3 max-h-64 overflow-y-auto">
