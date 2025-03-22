@@ -34,5 +34,20 @@
   },
   "labelSave": {
     "message": "Save"
+  },
+  "messageNoDataAvailable": {
+    "message": "No data available"
+  },
+  "labelRecentActivity": {
+    "message": "Recent Activity"
+  },
+  "labelBadges&Achievements": {
+    "message": "Badges & Achievements"
+  },
+  "labelUpdatePoints": {
+    "message": "Update Points"
+  },
+  "labelLastUpdated": {
+    "message": "Last Updated"
   }
 }
