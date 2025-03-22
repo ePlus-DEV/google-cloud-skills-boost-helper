@@ -63,7 +63,7 @@
     "message": "Cấp độ tối đa"
   },
   "textNextLevelInPoints": {
-    "message": "Cấp độ tiếp theo trong {points} điểm"
+    "message": "Cấp độ tiếp theo trong ${points} điểm"
   },
   "textPoints": {
     "message": "Điểm"
