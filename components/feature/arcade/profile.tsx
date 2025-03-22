@@ -73,7 +73,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
             {/* Level information */}
             <div className="mt-1 flex justify-between text-xs text-white/70">
                 <span>{chrome.i18n.getMessage("textCurrentLevel")}: {currentLeague}</span>
-                <span>{isMaxLevel ? chrome.i18n.getMessage("textMaxLevel") : chrome.i18n.getMessage("textNextLevelInPoints", Math.ceil(pointsToNextLevel).toString())}</span>
+                <span>{isMaxLevel ? chrome.i18n.getMessage("textMaxLevel") : chrome.i18n.getMessage("textNextLevelInPoints", [Math.ceil(pointsToNextLevel).toString()])}</span>
             </div>
         </div>
     );

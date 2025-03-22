@@ -5,7 +5,7 @@ import silver from "data-base64:~assets/badge/silver.png";
 import gold from "data-base64:~assets/badge/gold.png";
 import bronze from "data-base64:~assets/badge/bronze.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowsRotate, faSparkles } from '@fortawesome/duotone-regular-svg-icons';
+import { faArrowsRotate, faSparkles, faGear } from '@fortawesome/duotone-regular-svg-icons'; // Import thêm icon faGear
 import ArcadeProfile from "~components/feature/arcade/profile";
 import ArcadeBadge from "~components/feature/arcade/badges";
 import ArcadeActivity from "~components/feature/arcade/activity";
@@ -64,6 +64,10 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
         }
     }
 
+    const handleOpenSettings = () => {
+        chrome.runtime.openOptionsPage();
+    };
+
     return (
         <div className="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl">
             {/* Decorative elements */}
@@ -90,13 +94,23 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                             </div>
                         </div>
                     </div>
-
+        
+                    {/* Update Button */}
                     <button
                         onClick={handleUpdatePoints}
                         disabled={isUpdating}
-                        className="absolute top-0 right-0 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-2 rounded-full disabled:opacity-50 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20"
+                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50"
                     >
-                        <FontAwesomeIcon icon={faArrowsRotate} className={`h-5 w-5 ${isUpdating ? "animate-spin" : ""}`} />
+                        <FontAwesomeIcon icon={faArrowsRotate} className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`} />
+                    </button>
+
+                    {/* Settings Button */}
+                    <button
+                        onClick={handleOpenSettings}
+                        disabled={isUpdating}
+                        className="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center"
+                    >
+                        <FontAwesomeIcon icon={faGear} className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`} />
                     </button>
                 </div>
 
@@ -117,7 +131,6 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     <FontAwesomeIcon icon={faArrowsRotate} className={`ml-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
                 </span>
                 </button>
-                
                 <div className="mt-6 text-center text-xs text-white/50">
                     {chrome.i18n.getMessage("labelLastUpdated")}: { new Date(lastUpdated).toLocaleString(navigator.language) }
                 </div>
