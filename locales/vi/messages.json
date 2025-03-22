@@ -34,5 +34,20 @@
   },
   "labelSave": {
     "message": "Lưu"
+  },
+  "messageNoDataAvailable": {
+    "message": "Không có dữ liệu"
+  },
+  "labelRecentActivity": {
+    "message": "Hoạt động gần đây"
+  },
+  "labelBadges&Achievements": {
+    "message": "Huy hiệu & Thành tựu"
+  },
+  "labelUpdatePoints": {
+    "message": "Cập nhật điểm"
+  },
+  "labelLastUpdated": {
+    "message": "Cập nhật lần cuối"
   }
 }

@@ -49,7 +49,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     type: "basic",
                     iconUrl: iconUrl,
                     title: `User: ${userName}`,
-                    message: `League: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
+                    message: `League: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}`,
                     priority: 2
                 });
                 toast.success("Submission successful!");
@@ -113,13 +113,13 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
                 </div>
                 <span className="relative z-10 flex items-center justify-center">
-                    Update Points
+                    {chrome.i18n.getMessage("labelUpdatePoints")}
                     <FontAwesomeIcon icon={faArrowsRotate} className={`ml-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
                 </span>
                 </button>
                 
                 <div className="mt-6 text-center text-xs text-white/50">
-                    Last updated: { new Date(lastUpdated).toLocaleString(navigator.language) }
+                    {chrome.i18n.getMessage("labelLastUpdated")}: { new Date(lastUpdated).toLocaleString(navigator.language) }
                 </div>
             </div>
         </div>
