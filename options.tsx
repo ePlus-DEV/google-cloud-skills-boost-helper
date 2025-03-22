@@ -20,7 +20,7 @@ function IndexOptions() {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 400, margin: "0 auto", height: "100vh", justifyContent: "center" }}>
+    <div style={{ display: "flex", flexDirection: "column", padding: 16, width: 800, margin: "0 auto", height: "100vh", justifyContent: "center" }}>
       <Header />
       <FeatureTable checked={checked} onCheckboxChange={handleCheckboxChange} />
       <Footer />
@@ -92,7 +92,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
 
   return (
     <div className="mt-4">
-      <table className="min-w-full bg-white">
+      <table className="min-w-[800px] bg-white">
         <thead>
           <tr>
             <th className="py-2">{chrome.i18n.getMessage("labelFeature")}</th>
@@ -157,9 +157,12 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                     {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
                   </button>
                 </div>
-                <div className="max-h-96 overflow-y-scroll border border-gray-300 p-2 max-w-md mt-3">
-                  <pre>{JSON.stringify(arcadeBadges, null, 2)}</pre>
+                <div className="flex justify-center mt-4">
+                  <iframe className="w-full max-w-lg aspect-video" src="https://www.youtube.com/embed/_4Funy68Na0?si=Bas3OZvYEt_v3o1B" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen ></iframe>
                 </div>
+                {/* <div className="max-h-96 overflow-y-scroll border border-gray-300 p-2 max-w-md mt-3">
+                  <pre>{JSON.stringify(arcadeBadges, null, 2)}</pre>
+                </div> */}
               </div>
             }
           />
