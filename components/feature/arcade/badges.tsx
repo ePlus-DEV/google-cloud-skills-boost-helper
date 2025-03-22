@@ -34,7 +34,7 @@ export default function ArcadeBadge({ gamePoints, triviaPoints, skillPoints, spe
      <div className="mb-4">
         <h3 className="text-white font-bold mb-3 flex items-center">
             <FontAwesomeIcon icon={faAward} className="h-5 w-5 mr-2 text-pink-400" />
-            {chrome.i18n.getMessage("labelBadges&Achievements")}
+            {chrome.i18n.getMessage("labelBadgesAchievements")}
         </h3>
 
         <div className="grid grid-cols-2 gap-3">
