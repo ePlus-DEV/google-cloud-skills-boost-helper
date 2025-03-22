@@ -86,7 +86,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                         <div className="relative mt-2">
                             <div className="text-6xl font-black text-white tracking-tighter">{ ArcadePoints }</div>
                             <div className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
-                                +2.3
+                                +0
                             </div>
                         </div>
                     </div>

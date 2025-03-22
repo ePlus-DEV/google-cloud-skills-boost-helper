@@ -19,7 +19,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
     const nextMilestone = milestones.find(milestone => milestone.points > roundedArcadePoints) || milestones[milestones.length - 1];
     const isMaxLevel = nextMilestone.points === milestones[milestones.length - 1].points;
     const currentLeague = milestones[currentLevel - 1]?.league || "MAX LEVEL";
-    const pointsToNextLevel = Math.max(0, nextMilestone.points - arcadePoints);
+    const pointsToNextLevel = nextMilestone.points - arcadePoints;
 
     return (
         <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 overflow-hidden group">
@@ -73,7 +73,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
             {/* Level information */}
             <div className="mt-1 flex justify-between text-xs text-white/70">
                 <span>{chrome.i18n.getMessage("textCurrentLevel")}: {currentLeague}</span>
-                <span>{isMaxLevel ? chrome.i18n.getMessage("textMaxLevel") : chrome.i18n.getMessage("textNextLevelInPoints", pointsToNextLevel.toString())}</span>
+                <span>{isMaxLevel ? chrome.i18n.getMessage("textMaxLevel") : chrome.i18n.getMessage("textNextLevelInPoints", Math.ceil(pointsToNextLevel).toString())}</span>
             </div>
         </div>
     );
