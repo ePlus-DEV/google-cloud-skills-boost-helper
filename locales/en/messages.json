@@ -63,9 +63,9 @@
     "message": "Max level"
   },
   "textNextLevelInPoints": {
-    "message": "Next level in ${points} points"
+    "message": "Next level in"
   },
   "textPoints": {
-    "message": "Points"
+    "message": "points"
   }
 }

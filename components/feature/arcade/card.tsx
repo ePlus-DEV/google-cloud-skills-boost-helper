@@ -99,7 +99,7 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                     <button
                         onClick={handleUpdatePoints}
                         disabled={isUpdating}
-                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50"
+                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center"
                     >
                         <FontAwesomeIcon icon={faArrowsRotate} className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`} />
                     </button>
