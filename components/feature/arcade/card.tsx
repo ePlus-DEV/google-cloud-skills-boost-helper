@@ -5,7 +5,7 @@ import silver from "data-base64:~assets/badge/silver.png";
 import gold from "data-base64:~assets/badge/gold.png";
 import bronze from "data-base64:~assets/badge/bronze.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowsRotate } from '@fortawesome/duotone-regular-svg-icons';
+import { faArrowsRotate, faSparkles } from '@fortawesome/duotone-regular-svg-icons';
 import ArcadeProfile from "~components/feature/arcade/profile";
 import ArcadeBadge from "~components/feature/arcade/badges";
 import ArcadeActivity from "~components/feature/arcade/activity";
@@ -104,9 +104,20 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
 
                 <ArcadeBadge gamePoints={gamePoints} triviaPoints={triviaPoints} skillPoints={skillPoints} specialPoints={specialPoints} />
 
-                <ArcadeActivity isUpdating={ isUpdating } onUpdatePoints={handleUpdatePoints} />
+                <ArcadeActivity />
 
                 {/* Footer */}
+                <button onClick={handleUpdatePoints} className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300">
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
+                </div>
+                <span className="relative z-10 flex items-center justify-center">
+                    Update Points
+                    <FontAwesomeIcon icon={faArrowsRotate} className={`ml-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
+                </span>
+                </button>
+                
                 <div className="mt-6 text-center text-xs text-white/50">
                     Last updated: { new Date(lastUpdated).toLocaleString(navigator.language) }
                 </div>
