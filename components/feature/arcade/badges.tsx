@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrophy, faStar, faBolt, faAwardSimple, faAward } from '@fortawesome/duotone-regular-svg-icons';
+import { faTrophy, faStar, faBolt, faAward, faMedal } from '@fortawesome/duotone-regular-svg-icons';
 
 export default function ArcadeBadge({ gamePoints, triviaPoints, skillPoints, specialPoints }: { gamePoints: number; triviaPoints: number;  skillPoints: number; specialPoints: number; }) {
     
@@ -19,13 +19,13 @@ export default function ArcadeBadge({ gamePoints, triviaPoints, skillPoints, spe
         {
             name: "Skill Badge",
             value: skillPoints,
-            icon: <FontAwesomeIcon icon={faBolt} className="w-5 h-5 text-white" />,
-            color: "from-blue-400 to-cyan-500",
+            icon: <FontAwesomeIcon icon={faBolt} className="w-5 h-5 text-blue-400" />,
+            color: "from-blue-400 to-indigo-500",
         },
         {
             name: "Special Points",
             value: specialPoints,
-            icon: <FontAwesomeIcon icon={faAwardSimple} className="w-5 h-5 text-green-400" />,
+            icon: <FontAwesomeIcon icon={faMedal} className="w-5 h-5 text-green-400" />,
             color: "from-green-400 to-emerald-500",
         },
     ];
