@@ -49,5 +49,23 @@
   },
   "labelLastUpdated": {
     "message": "Last Updated"
+  },
+  "labelPage": {
+    "message": "Page"
+  },
+  "labelLoadMore": {
+    "message": "Load More"
+  },
+  "textCurrentLevel": {
+    "message": "Current Level"
+  },
+  "textMaxLevel": {
+    "message": "Max level"
+  },
+  "textNextLevelInPoints": {
+    "message": "Next level in ${points} points"
+  },
+  "textPoints": {
+    "message": "Points"
   }
 }

@@ -49,5 +49,23 @@
   },
   "labelLastUpdated": {
     "message": "Cập nhật lần cuối"
+  },
+  "labelPage": {
+    "message": "Trang"
+  },
+  "labelLoadMore": {
+    "message": "Tải thêm"
+  },
+  "textCurrentLevel": {
+    "message": "Cấp độ hiện tại"
+  },
+  "textMaxLevel": {
+    "message": "Cấp độ tối đa"
+  },
+  "textNextLevelInPoints": {
+    "message": "Cấp độ tiếp theo trong ${points} điểm"
+  },
+  "textPoints": {
+    "message": "Điểm"
   }
 }
