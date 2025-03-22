@@ -1,9 +1,4 @@
 import { useState, useEffect } from "react"
-import avatar from "data-base64:~assets/google.png";
-import diamond from "data-base64:~assets/badge/diamond.png";
-import silver from "data-base64:~assets/badge/silver.png";
-import gold from "data-base64:~assets/badge/gold.png";
-import bronze from "data-base64:~assets/badge/bronze.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsRotate, faSparkles, faGear } from '@fortawesome/duotone-regular-svg-icons'; // Import thêm icon faGear
 import ArcadeProfile from "~components/feature/arcade/profile";

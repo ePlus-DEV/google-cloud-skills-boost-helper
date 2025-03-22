@@ -158,7 +158,16 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                   </button>
                 </div>
                 <div className="flex justify-center mt-4">
-                  <iframe className="w-full max-w-lg aspect-video" src="https://www.youtube.com/embed/_4Funy68Na0?si=Bas3OZvYEt_v3o1B" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen ></iframe>
+                    <iframe 
+                    className="w-full max-w-lg aspect-video" 
+                    src="https://www.youtube.com/embed/_4Funy68Na0?si=Bas3OZvYEt_v3o1B" 
+                    title="YouTube video player" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerPolicy="strict-origin-when-cross-origin" 
+                    allowFullScreen 
+                    sandbox="allow-scripts allow-same-origin allow-presentation"
+                    ></iframe>
                 </div>
                 {/* <div className="max-h-96 overflow-y-scroll border border-gray-300 p-2 max-w-md mt-3">
                   <pre>{JSON.stringify(arcadeBadges, null, 2)}</pre>

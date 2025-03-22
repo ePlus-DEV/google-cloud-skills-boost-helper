@@ -39,7 +39,7 @@ function IndexPopup() {
                         onClick={handleOpenSettings}
                         className="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center"
                     >
-                        <FontAwesomeIcon icon={faGear} className={`h-5 w-5 transition-transform duration-300 hover:rotate-90"}`} />
+                        <FontAwesomeIcon icon={faGear} className="h-5 w-5 transition-transform duration-300 hover:rotate-90" />
                     </button>
                 </div>
             )}
