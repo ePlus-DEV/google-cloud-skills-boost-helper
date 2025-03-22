@@ -14,8 +14,8 @@
   "labelFeature": {
     "message": "Fonctionnalité"
   },
-  "labelStatus": {
-    "message": "Statut"
+  "labelAction": {
+    "message": "Action"
   },
   "labelShowLeaderboard": {
     "message": "Afficher le classement"
@@ -28,5 +28,47 @@
   },
   "labelPublicProfile": {
     "message": "Profil public"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Calculateur de points d'arcade"
+  },
+  "labelSave": {
+    "message": "Enregistrer"
+  },
+  "messageNoDataAvailable": {
+    "message": "Aucune donnée disponible"
+  },
+  "labelRecentActivity": {
+    "message": "Activité récente"
+  },
+  "labelBadgesAchievements": {
+    "message": "Badges et réalisations"
+  },
+  "labelUpdatePoints": {
+    "message": "Mettre à jour les points"
+  },
+  "labelLastUpdated": {
+    "message": "Dernière mise à jour"
+  },
+  "labelPage": {
+    "message": "Page"
+  },
+  "labelLoadMore": {
+    "message": "Charger plus"
+  },
+  "textCurrentLevel": {
+    "message": "Niveau actuel"
+  },
+  "textMaxLevel": {
+    "message": "Niveau maximum"
+  },
+  "textNextLevelInPoints": {
+    "message": "Niveau suivant dans"
+  },
+  "textPoints": {
+    "message": "points"
+  },
+  "labelShowOptions": {
+    "message": "Afficher les options"
   }
 }

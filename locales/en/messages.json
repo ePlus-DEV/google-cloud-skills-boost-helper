@@ -14,8 +14,8 @@
   "labelFeature": {
     "message": "Feature"
   },
-  "labelStatus": {
-    "message": "Status"
+  "labelAction": {
+    "message": "Action"
   },
   "labelShowLeaderboard": {
     "message": "Show Leaderboard"
@@ -28,5 +28,47 @@
   },
   "labelPublicProfile": {
     "message": "Public Profile"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Arcade Points Calculator"
+  },
+  "labelSave": {
+    "message": "Save"
+  },
+  "messageNoDataAvailable": {
+    "message": "No data available"
+  },
+  "labelRecentActivity": {
+    "message": "Recent Activity"
+  },
+  "labelBadgesAchievements": {
+    "message": "Badges & Achievements"
+  },
+  "labelUpdatePoints": {
+    "message": "Update Points"
+  },
+  "labelLastUpdated": {
+    "message": "Last Updated"
+  },
+  "labelPage": {
+    "message": "Page"
+  },
+  "labelLoadMore": {
+    "message": "Load More"
+  },
+  "textCurrentLevel": {
+    "message": "Current Level"
+  },
+  "textMaxLevel": {
+    "message": "Max level"
+  },
+  "textNextLevelInPoints": {
+    "message": "Next level in"
+  },
+  "textPoints": {
+    "message": "points"
+  },
+  "textPleaseSetUpTheSettings": {
+    "message": "Please set up the settings"
   }
 }
