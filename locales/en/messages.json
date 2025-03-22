@@ -67,5 +67,8 @@
   },
   "textPoints": {
     "message": "points"
+  },
+  "textPleaseSetUpTheSettings": {
+    "message": "Please set up the settings"
   }
 }

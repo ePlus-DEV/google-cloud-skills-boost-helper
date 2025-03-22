@@ -67,5 +67,8 @@
   },
   "textPoints": {
     "message": "points"
-  }
+  },
+  "labelShowOptions": {
+    "message": "Afficher les options"
+  },
 }
