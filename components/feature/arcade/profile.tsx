@@ -32,7 +32,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-spin-slow blur-md"></div>
                     <div className="relative z-10">
                         {/* Avatar image */}
-                        <img src={avatar} width={80} height={80} className="rounded-full border-2 border-white/50 p-0.5" />
+                        <img src={avatar} alt="Avatar" width={80} height={80} className="rounded-full border-2 border-white/50 p-0.5" />
                     </div>
                     {/* Crown icon */}
                     <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-1 z-20">
