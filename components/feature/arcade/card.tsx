@@ -8,17 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useStorage } from "@plasmohq/storage/hook";
 
-export default function ArcadeCard({
-    userName,
-    league,
-    ArcadePoints,
-    points,
-    lastUpdated,
-    gamePoints,
-    triviaPoints,
-    skillPoints,
-    specialPoints,
-}: {
+interface ArcadeCardProps {
     userName: string;
     league: string;
     ArcadePoints: number;
@@ -28,7 +18,42 @@ export default function ArcadeCard({
     triviaPoints: number;
     skillPoints: number;
     specialPoints: number;
-}) {
+}
+
+const GradientButton = ({
+    onClick,
+    icon,
+    additionalClasses = "",
+    isUpdating,
+}: {
+    onClick: () => void;
+    icon: any;
+    additionalClasses?: string;
+    isUpdating: boolean;
+}) => (
+    <button
+        onClick={onClick}
+        disabled={isUpdating}
+        className={`absolute p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg ${additionalClasses}`}
+    >
+        <FontAwesomeIcon
+            icon={icon}
+            className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`}
+        />
+    </button>
+);
+
+const ArcadeCard = ({
+    userName,
+    league,
+    ArcadePoints,
+    points,
+    lastUpdated,
+    gamePoints,
+    triviaPoints,
+    skillPoints,
+    specialPoints,
+}: ArcadeCardProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
     const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
@@ -67,19 +92,6 @@ export default function ArcadeCard({
 
     const handleOpenSettings = () => chrome.runtime.openOptionsPage();
 
-    const renderButton = (onClick: () => void, icon: any, additionalClasses = "") => (
-        <button
-            onClick={onClick}
-            disabled={isUpdating}
-            className={`absolute p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg ${additionalClasses}`}
-        >
-            <FontAwesomeIcon
-                icon={icon}
-                className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`}
-            />
-        </button>
-    );
-
     return (
         <div className="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl">
             {/* Decorative elements */}
@@ -108,10 +120,20 @@ export default function ArcadeCard({
                     </div>
 
                     {/* Update Button */}
-                    {renderButton(handleUpdatePoints, faArrowsRotate, "top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white")}
+                    <GradientButton
+                        onClick={handleUpdatePoints}
+                        icon={faArrowsRotate}
+                        additionalClasses="top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white"
+                        isUpdating={isUpdating}
+                    />
 
                     {/* Settings Button */}
-                    {renderButton(handleOpenSettings, faGear, "top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white")}
+                    <GradientButton
+                        onClick={handleOpenSettings}
+                        icon={faGear}
+                        additionalClasses="top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white"
+                        isUpdating={isUpdating}
+                    />
                 </div>
 
                 <ArcadeProfile userName={userName} league={league} points={points} arcadePoints={ArcadePoints} />
@@ -140,4 +162,6 @@ export default function ArcadeCard({
             </div>
         </div>
     );
-}
+};
+
+export default ArcadeCard;
