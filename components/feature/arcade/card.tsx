@@ -1,15 +1,35 @@
-import { useState } from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowsRotate, faSparkles, faGear } from '@fortawesome/duotone-regular-svg-icons';
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsRotate, faSparkles, faGear } from "@fortawesome/duotone-regular-svg-icons";
 import ArcadeProfile from "~components/feature/arcade/profile";
 import ArcadeBadge from "~components/feature/arcade/badges";
 import ArcadeActivity from "~components/feature/arcade/activity";
 import axios from "axios";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import { useStorage } from "@plasmohq/storage/hook";
 
-export default function ArcadeCard({ userName, league, ArcadePoints, points, lastUpdated, gamePoints, triviaPoints, skillPoints, specialPoints }: { userName: string; league: string; ArcadePoints: number; points: number; lastUpdated: string; gamePoints: number; triviaPoints: number; skillPoints: number; specialPoints: number }) {
-    const [isUpdating, setIsUpdating] = useState(false)
+export default function ArcadeCard({
+    userName,
+    league,
+    ArcadePoints,
+    points,
+    lastUpdated,
+    gamePoints,
+    triviaPoints,
+    skillPoints,
+    specialPoints,
+}: {
+    userName: string;
+    league: string;
+    ArcadePoints: number;
+    points: number;
+    lastUpdated: string;
+    gamePoints: number;
+    triviaPoints: number;
+    skillPoints: number;
+    specialPoints: number;
+}) {
+    const [isUpdating, setIsUpdating] = useState(false);
     const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
     const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
     const [arcadeBadges, setArcadeBadges] = useStorage("arcadebadges", {});
@@ -19,19 +39,17 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
 
         try {
             const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
-                url: urlProfile
+                url: urlProfile,
             });
 
             if (response.status === 200) {
                 const { userDetails, arcadePoints, badges } = response.data;
 
-                const lastUpdated = new Date().toISOString();
-
                 setArcadeData((prevData) => ({
                     ...prevData,
                     userDetails: userDetails[0],
                     arcadePoints,
-                    lastUpdated
+                    lastUpdated: new Date().toISOString(),
                 }));
                 setArcadeBadges(badges);
 
@@ -45,11 +63,22 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
         } finally {
             setIsUpdating(false);
         }
-    }
-
-    const handleOpenSettings = () => {
-        chrome.runtime.openOptionsPage();
     };
+
+    const handleOpenSettings = () => chrome.runtime.openOptionsPage();
+
+    const renderButton = (onClick: () => void, icon: any, additionalClasses = "") => (
+        <button
+            onClick={onClick}
+            disabled={isUpdating}
+            className={`absolute p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg ${additionalClasses}`}
+        >
+            <FontAwesomeIcon
+                icon={icon}
+                className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`}
+            />
+        </button>
+    );
 
     return (
         <div className="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl">
@@ -71,30 +100,18 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                             Arcade Points
                         </h1>
                         <div className="relative mt-2">
-                            <div className="text-6xl font-black text-white tracking-tighter">{ ArcadePoints }</div>
+                            <div className="text-6xl font-black text-white tracking-tighter">{ArcadePoints}</div>
                             <div className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
                                 +0
                             </div>
                         </div>
                     </div>
-        
+
                     {/* Update Button */}
-                    <button
-                        onClick={handleUpdatePoints}
-                        disabled={isUpdating}
-                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center"
-                    >
-                        <FontAwesomeIcon icon={faArrowsRotate} className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`} />
-                    </button>
+                    {renderButton(handleUpdatePoints, faArrowsRotate, "top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white")}
 
                     {/* Settings Button */}
-                    <button
-                        onClick={handleOpenSettings}
-                        disabled={isUpdating}
-                        className="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center"
-                    >
-                        <FontAwesomeIcon icon={faGear} className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : "hover:rotate-90"}`} />
-                    </button>
+                    {renderButton(handleOpenSettings, faGear, "top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white")}
                 </div>
 
                 <ArcadeProfile userName={userName} league={league} points={points} arcadePoints={ArcadePoints} />
@@ -104,18 +121,21 @@ export default function ArcadeCard({ userName, league, ArcadePoints, points, las
                 <ArcadeActivity />
 
                 {/* Footer */}
-                <button onClick={handleUpdatePoints} className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300">
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute inset-0 bg-black/20"></div>
-                    <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
-                </div>
-                <span className="relative z-10 flex items-center justify-center">
-                    {chrome.i18n.getMessage("labelUpdatePoints")}
-                    <FontAwesomeIcon icon={faArrowsRotate} className={`ml-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
-                </span>
+                <button
+                    onClick={handleUpdatePoints}
+                    className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300"
+                >
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 bg-black/20"></div>
+                        <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
+                    </div>
+                    <span className="relative z-10 flex items-center justify-center">
+                        {chrome.i18n.getMessage("labelUpdatePoints")}
+                        <FontAwesomeIcon icon={faArrowsRotate} className={`ml-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
+                    </span>
                 </button>
                 <div className="mt-6 text-center text-xs text-white/50">
-                    {chrome.i18n.getMessage("labelLastUpdated")}: { new Date(lastUpdated).toLocaleString(navigator.language) }
+                    {chrome.i18n.getMessage("labelLastUpdated")}: {new Date(lastUpdated).toLocaleString(navigator.language)}
                 </div>
             </div>
         </div>
