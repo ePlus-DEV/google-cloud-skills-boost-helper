@@ -14,17 +14,19 @@
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
-    "compile": "vue-tsc --noEmit",
+    "compile": "tsc --noEmit",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "vue": "^3.5.12"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.280",
-    "@wxt-dev/module-vue": "^1.0.1",
-    "typescript": "5.6.3",
-    "vue-tsc": "^2.1.10",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
+    "@wxt-dev/module-react": "^1.1.2",
+    "typescript": "^5.6.3",
     "wxt": "^0.19.29"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
