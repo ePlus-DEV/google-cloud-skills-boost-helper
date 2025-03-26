@@ -1,8 +1,11 @@
 {
-  "name": "wxt-vue-starter",
+  "name": "google-cloud-skills-boost-helper",
   "description": "manifest.json description",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.3",
+  "author": "dev@eplus.dev",
+  "license": "MIT",
+  "homepage_url": "https://eplus.dev",
   "type": "module",
   "scripts": {
     "dev": "wxt",
