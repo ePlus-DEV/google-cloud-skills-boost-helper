@@ -1,8 +1,8 @@
 {
-  "extensionName": {
+  "extName": {
     "message": "Google Cloud Skills Boost - Trợ giúp"
   },
-  "extensionDescription": {
+  "extDescription": {
     "message": "Tự động chỉnh sửa các phòng thí nghiệm CloudSkillsBoost với các tùy chọn chuyển đổi."
   },
   "optionsPageTitle": {
