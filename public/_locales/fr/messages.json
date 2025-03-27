@@ -1,8 +1,8 @@
 {
-  "extensionName": {
+  "extName": {
     "message": "Google Cloud Skills Boost - Assistant"
   },
-  "extensionDescription": {
+  "extDescription": {
     "message": "Modifie automatiquement les laboratoires CloudSkillsBoost avec des options de basculement."
   },
   "optionsPageTitle": {

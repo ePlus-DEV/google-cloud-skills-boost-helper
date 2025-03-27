@@ -1,6 +1,6 @@
 {
   "name": "google-cloud-skills-boost-helper",
-  "description": "manifest.json description",
+  "description": "__MSG_extDescription__",
   "private": true,
   "version": "1.0.3",
   "author": "dev@eplus.dev",

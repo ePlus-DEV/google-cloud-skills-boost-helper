@@ -1,8 +1,8 @@
 {
-  "extensionName": {
+  "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
-  "extensionDescription": {
+  "extDescription": {
     "message": "Automatically modifies CloudSkillsBoost Labs with toggle options."
   },
   "optionsPageTitle": {
