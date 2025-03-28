@@ -1,6 +1,4 @@
 import avatar from "data-base64:~assets/google.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCrown } from '@fortawesome/duotone-regular-svg-icons';
 
 export default function ArcadeProfile({ userName, league, points, arcadePoints }: { userName: string; league: string; points: number; arcadePoints: number; }) {
     const milestones = [
@@ -36,7 +34,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
                     </div>
                     {/* Crown icon */}
                     <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-1 z-20">
-                        <FontAwesomeIcon icon={faCrown} className="h-3 w-3 text-white" />
+                        dđ
                     </div>
                 </div>
 
@@ -48,7 +46,7 @@ export default function ArcadeProfile({ userName, league, points, arcadePoints }
                     <div className="flex items-center mt-1">
                         {/* League badge */}
                         <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
-                            <FontAwesomeIcon icon={faCrown} className="h-3 w-3 mr-1" />
+                            rrr
                             {league}
                         </div>
                         {/* Points */}

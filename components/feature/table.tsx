@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faToggleOn, faBadgeCheck, faFloppyDisk } from '@fortawesome/duotone-regular-svg-icons';
 import axios from "axios";
 import toast from 'react-hot-toast';
 
-import FeatureRow from "~components/feature/row"
+import FeatureRow from "~components/feature/row";
 
 function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void }): JSX.Element {
     const [url, setUrl] = useState("");
-    const [loading, setLoading] = useState(false); // Thêm state loading
+    const [loading, setLoading] = useState(false);
 
     const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUrl(event.target.value);
@@ -20,7 +18,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
             return;
         }
 
-        setLoading(true); // Bắt đầu loading
+        setLoading(true);
         try {
             const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
                 url
@@ -49,7 +47,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
             toast.error("An error occurred while submitting the URL.");
             console.error("Error submitting URL:", error);
         } finally {
-            setLoading(false); // Kết thúc loading
+            setLoading(false);
         }
     };
 
@@ -83,7 +81,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                                 rel="noopener noreferrer"
                                 className="text-blue-600"
                             >
-                                <FontAwesomeIcon icon={faToggleOn} size="2x" />
+                                Toggle
                             </a>
                         }
                     />
@@ -96,7 +94,7 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                                 rel="noopener noreferrer"
                                 className="text-blue-600"
                             >
-                                <FontAwesomeIcon icon={faBadgeCheck} size="2x" />
+                                Badge
                             </a>
                         }
                     />
@@ -114,9 +112,9 @@ function FeatureTable({ checked, onCheckboxChange }: { checked: boolean; onCheck
                                 <button
                                     className="bg-blue-600 text-white px-4 py-2 rounded"
                                     onClick={handleSubmit}
-                                    disabled={loading} // Vô hiệu hóa nút khi đang loading
+                                    disabled={loading}
                                 >
-                                    {loading ? "Loading..." : <FontAwesomeIcon icon={faFloppyDisk} />}
+                                    {loading ? "Loading..." : "Save"}
                                 </button>
                             </div>
                         }
