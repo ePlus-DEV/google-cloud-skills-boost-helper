@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFireFlame, faBullseye } from "@fortawesome/duotone-regular-svg-icons";
 import { useStorage } from "@plasmohq/storage/hook";
 
 interface Activity {
@@ -11,11 +9,11 @@ interface Activity {
 
 const ActivityCard = ({ activity }: { activity: Activity }) => (
     <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 t</div>ransition-opacity duration-300"></div>
         <div className="flex justify-between items-center"></div>
         <div className="flex items-center">
             <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white">
-                <FontAwesomeIcon icon={faBullseye} className="h-4 w-4" />
+                View
             </div>
             <div className="ml-3">
                 <div className="text-white font-bold">{activity.title}</div>
@@ -65,10 +63,6 @@ export default function ArcadeActivity() {
     return (
         <div>
             <h3 className="text-white font-bold mb-3 flex items-center">
-                <FontAwesomeIcon
-                    icon={faFireFlame}
-                    className="h-5 w-5 mr-2 text-orange-400"
-                />
                 {chrome.i18n.getMessage("labelRecentActivity")}
             </h3>
 

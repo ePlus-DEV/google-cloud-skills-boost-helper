@@ -1,31 +1,28 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrophy, faStar, faBolt, faAward, faMedal } from '@fortawesome/duotone-regular-svg-icons';
-
 export default function ArcadeBadge({ gamePoints, triviaPoints, skillPoints, specialPoints }: { gamePoints: number; triviaPoints: number;  skillPoints: number; specialPoints: number; }) {
     
     const badgeData = [
         {
             name: "Game Badge",
             value: gamePoints,
-            icon: <FontAwesomeIcon icon={faTrophy} className="w-5 h-5 text-yellow-400" />,
+            icon: "🏆", // Thay thế bằng emoji
             color: "from-yellow-400 to-orange-500",
         },
         {
             name: "Trivia Badge",
             value: triviaPoints,
-            icon: <FontAwesomeIcon icon={faStar} className="w-5 h-5 text-purple-400" />,
+            icon: "⭐", // Thay thế bằng emoji
             color: "from-purple-400 to-indigo-500",
         },
         {
             name: "Skill Badge",
             value: skillPoints,
-            icon: <FontAwesomeIcon icon={faBolt} className="w-5 h-5 text-blue-400" />,
+            icon: "⚡", // Thay thế bằng emoji
             color: "from-blue-400 to-indigo-500",
         },
         {
             name: "Special Points",
             value: specialPoints,
-            icon: <FontAwesomeIcon icon={faMedal} className="w-5 h-5 text-green-400" />,
+            icon: "🎖️", // Thay thế bằng emoji
             color: "from-green-400 to-emerald-500",
         },
     ];
@@ -33,7 +30,7 @@ export default function ArcadeBadge({ gamePoints, triviaPoints, skillPoints, spe
     return (
      <div className="mb-4">
         <h3 className="text-white font-bold mb-3 flex items-center">
-            <FontAwesomeIcon icon={faAward} className="h-5 w-5 mr-2 text-pink-400" />
+            <span className="h-5 w-5 mr-2 text-pink-400">🏅</span> {/* Thay thế bằng emoji */}
             {chrome.i18n.getMessage("labelBadgesAchievements")}
         </h3>
 
@@ -51,7 +48,7 @@ export default function ArcadeBadge({ gamePoints, triviaPoints, skillPoints, spe
                         <div
                             className={`h-10 w-10 rounded-full bg-gradient-to-br ${badge.color} flex items-center justify-center`}
                         >
-                            {badge.icon}
+                            <span className="text-lg">{badge.icon}</span> {/* Hiển thị emoji */}
                         </div>
                         <div className="ml-3">
                             <div className="text-white font-bold">{badge.value}</div>

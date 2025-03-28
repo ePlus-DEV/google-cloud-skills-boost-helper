@@ -1,56 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ArcadeProfile from "~components/feature/arcade/profile";
 import ArcadeBadge from "~components/feature/arcade/badges";
 import ArcadeActivity from "~components/feature/arcade/activity";
 import axios from "axios";
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 import { useStorage } from "@plasmohq/storage/hook";
 
-interface ArcadeCardProps {
-    userName: string;
-    league: string;
-    ArcadePoints: number;
-    points: number;
-    lastUpdated: string;
-    gamePoints: number;
-    triviaPoints: number;
-    skillPoints: number;
-    specialPoints: number;
-}
-
-const GradientButton = ({
-    onClick,
-    additionalClasses = "",
-    isUpdating,
-    label,
-}: {
-    onClick: () => void;
-    additionalClasses?: string;
-    isUpdating: boolean;
-    label: string;
-}) => (
-    <button
-        onClick={onClick}
-        disabled={isUpdating}
-        className={`absolute p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg ${additionalClasses}`}
-    >
-        <span className={`h-5 w-5 transition-transform duration-300 ${isUpdating ? "animate-spin" : ""}`}>
-            {label}
-        </span>
-    </button>
-);
-
-const ArcadeCard = ({
-    userName,
-    league,
-    ArcadePoints,
-    points,
-    lastUpdated,
-    gamePoints,
-    triviaPoints,
-    skillPoints,
-    specialPoints,
-}: ArcadeCardProps) => {
+export default function ArcadeCard({ userName, league, ArcadePoints, points, lastUpdated, gamePoints, triviaPoints, skillPoints, specialPoints }: { userName: string; league: string; ArcadePoints: number; points: number; lastUpdated: string; gamePoints: number; triviaPoints: number; skillPoints: number; specialPoints: number }) {
     const [isUpdating, setIsUpdating] = useState(false);
     const [urlProfile, setUrlProfile] = useStorage("urlProfile", "");
     const [arcadeData, setArcadeData] = useStorage("arcadeData", {});
@@ -61,20 +17,34 @@ const ArcadeCard = ({
 
         try {
             const response = await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", {
-                url: urlProfile,
+                url: urlProfile
             });
 
             if (response.status === 200) {
                 const { userDetails, arcadePoints, badges } = response.data;
+                const { userName, memberSince, league } = userDetails[0] || {};
+                const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } = arcadePoints;
+
+                const lastUpdated = new Date().toISOString();
 
                 setArcadeData((prevData) => ({
                     ...prevData,
                     userDetails: userDetails[0],
                     arcadePoints,
-                    lastUpdated: new Date().toISOString(),
+                    lastUpdated
                 }));
                 setArcadeBadges(badges);
 
+                const manifest = chrome.runtime.getManifest();
+                const iconUrl = chrome.runtime.getURL(manifest.icons["48"]);
+
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: iconUrl,
+                    title: `User: ${userName}`,
+                    message: `League: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}`,
+                    priority: 2
+                });
                 toast.success("Submission successful!");
             } else {
                 toast.error("Failed to submit URL.");
@@ -87,7 +57,9 @@ const ArcadeCard = ({
         }
     };
 
-    const handleOpenSettings = () => chrome.runtime.openOptionsPage();
+    const handleOpenSettings = () => {
+        chrome.runtime.openOptionsPage();
+    };
 
     return (
         <div className="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl">
@@ -101,14 +73,14 @@ const ArcadeCard = ({
             {/* Content container */}
             <div className="relative z-10 p-4">
                 {/* Header with points */}
-                <div className="relative mb-6 pt-6"></div>
+                <div className="relative mb-6 pt-6">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full blur-sm"></div>
 
                     <div className="text-center">
                         <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
                             Arcade Points
                         </h1>
-                        <div className="relative mt-2"></div>
+                        <div className="relative mt-2">
                             <div className="text-6xl font-black text-white tracking-tighter">{ArcadePoints}</div>
                             <div className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
                                 +0
@@ -117,20 +89,22 @@ const ArcadeCard = ({
                     </div>
 
                     {/* Update Button */}
-                    <GradientButton
+                    <button
                         onClick={handleUpdatePoints}
-                        additionalClasses="top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white"
-                        isUpdating={isUpdating}
-                        label="↻"
-                    />
+                        disabled={isUpdating}
+                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center"
+                    >
+                        {isUpdating ? "Updating..." : "Update"}
+                    </button>
 
                     {/* Settings Button */}
-                    <GradientButton
+                    <button
                         onClick={handleOpenSettings}
-                        additionalClasses="top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white"
-                        isUpdating={isUpdating}
-                        label="⚙"
-                    />
+                        disabled={isUpdating}
+                        className="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center"
+                    >
+                        Settings
+                    </button>
                 </div>
 
                 <ArcadeProfile userName={userName} league={league} points={points} arcadePoints={ArcadePoints} />
@@ -140,20 +114,9 @@ const ArcadeCard = ({
                 <ArcadeActivity />
 
                 {/* Footer */}
-                <button
-                    onClick={handleUpdatePoints}
-                    className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300"
-                >
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-black/20"></div>
-                        <span className="h-5 w-5 text-white animate-pulse">✨</span>
-                    </div>
-                    <span className="relative z-10 flex items-center justify-center">
-                        <FontAwesomeIcon icon={faSparkles} className="h-5 w-5 text-white animate-pulse" />
-                    </div>
+                <button onClick={handleUpdatePoints} className="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300">
                     <span className="relative z-10 flex items-center justify-center">
                         {chrome.i18n.getMessage("labelUpdatePoints")}
-                        <FontAwesomeIcon icon={faArrowsRotate} className={`ml-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
                     </span>
                 </button>
                 <div className="mt-6 text-center text-xs text-white/50">
@@ -162,6 +125,4 @@ const ArcadeCard = ({
             </div>
         </div>
     );
-};
-
-export default ArcadeCard;
+}
