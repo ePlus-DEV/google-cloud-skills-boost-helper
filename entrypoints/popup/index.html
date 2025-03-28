@@ -44,14 +44,14 @@
                         <!-- Button Setting -->
                         <button
                             class="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center hover:rotate-180">
-                            <i class="fa-solid fa-cog transition-transform duration-300 fa-2x hover:rotate-180"></i>
+                            <i class="fa-solid fa-cog transition-transform duration-300 fa-2x hover:rotate-90"></i>
                         </button>
                         <!-- Button Setting -->
                         <!-- Button Refresh -->
                         <button
-                            class="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center hover:rotate-180">
-                            <i
-                                class="fa-solid fa-arrows-rotate transition-transform duration-300 fa-2x hover:rotate-180"></i>
+                            class="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center hover:rotate-180 refresh-button cursor-pointer">
+                            <i id="refresh-icon"
+                                class="fa-solid fa-arrows-rotate transition-transform duration-300 fa-2x hover:rotate-90"></i>
                         </button>
                         <!-- Button Refresh -->
                     </div>
@@ -246,14 +246,17 @@
                                 class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
                             </div><span class="relative z-10">Load More</span>
                         </button>
-                    </div><button
-                        class="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300">
-                        <span class="relative z-10 flex items-center justify-center">Update Points
+                    </div>
+                    <button
+                        class="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300 refresh-button cursor-pointer">
+                        <span class="relative z-10 flex items-center justify-center">
+                            Update Points
                             <i class="fa-solid fa-arrows-rotate ml-2"></i>
                         </span>
                     </button>
-                    <div id="last-updated" class="mt-6 text-center text-xs text-white/50">Last Updated: 28/03/2025,
-                        10:07:33</div>
+                    <div id="last-updated" class="mt-6 text-center text-xs text-white/50">
+                        Last Updated: 28/03/2025, 10:07:33
+                    </div>
                 </div>
             </div>
         </div>
