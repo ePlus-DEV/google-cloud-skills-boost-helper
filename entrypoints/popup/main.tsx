@@ -36,13 +36,14 @@ const displayUserDetails = (data: any) => {
 };
 
 const handleSubmit = async () => {
-	const refreshButton = document.querySelector("refresh-button") as HTMLButtonElement | null;
-	const refreshIcon = document.getElementById("refresh-icon");
-	addSpinner(refreshIcon);
+	const refreshButtons = document.querySelectorAll(".refresh-button") as NodeListOf<HTMLButtonElement>;
+	const refreshIcon = document.querySelectorAll(".refresh-icon") as NodeListOf<HTMLButtonElement>;
 
-	if (refreshButton) {
-		refreshButton.disabled = true; // Disable the button
+	if (refreshIcon) {
+		refreshIcon.forEach((icon) => addSpinner(icon));
 	}
+
+	refreshButtons.forEach((button) => button.disabled = true);
 
 	try {
 		const response = await fetchData(
@@ -57,10 +58,8 @@ const handleSubmit = async () => {
 	} catch {
 		// Error already logged in fetchData
 	} finally {
-		removeSpinner(refreshIcon);
-		if (refreshButton) {
-			refreshButton.disabled = false; // Re-enable the button
-		}
+		refreshIcon.forEach((icon) => removeSpinner(icon));
+		refreshButtons.forEach((button) => button.disabled = false);
 	}
 };
 
