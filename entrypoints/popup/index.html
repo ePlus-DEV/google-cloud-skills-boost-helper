@@ -85,26 +85,16 @@
                                 </div>
                             </div>
                             <div class="ml-4">
-                                <h2 class="text-xl font-bold text-white truncate max-w-[200px]" title="Hoang Minh">
+                                <h2 class="text-xl font-bold text-white truncate max-w-[200px]" title="Hoang Minh"
+                                    id="name">
                                     Hoang Minh
                                 </h2>
                                 <div class="flex items-center mt-1">
                                     <div
                                         class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
-                                        <svg aria-hidden="true" focusable="false" data-prefix="fadr" data-icon="crown"
-                                            class="svg-inline--fa fa-crown h-3 w-3 mr-1" role="img"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <g class="fa-duotone-group">
-                                                <path class="fa-secondary" fill="currentColor"
-                                                    d="M102.2 245.6l31.5 173.3c1.4 7.6 8 13.1 15.7 13.1l277.2 0c7.7 0 14.4-5.5 15.7-13.1l31.5-173.3-28.9 23.1c-39.8 31.8-98.8 18.9-121.5-26.7L288 171.3l-35.4 70.7c-22.8 45.6-81.8 58.5-121.5 26.7l-28.9-23.1z">
-                                                </path>
-                                                <path class="fa-primary" fill="currentColor"
-                                                    d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34l-5.8 11.6L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7l-72-57.6L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0l4.4 23.9L86.4 427.4c5.5 30.4 32 52.6 63 52.6l277.2 0c30.9 0 57.4-22.1 63-52.6l41.4-227.5 4.4-23.9c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-17.1 13.7-72 57.6c-15.9 12.7-39.5 7.5-48.6-10.7L314.8 117.7 309 106zM133.7 418.9L102.2 245.6l28.9 23.1c39.8 31.8 98.8 18.9 121.5-26.7L288 171.3l35.4 70.7c22.8 45.6 81.8 58.5 121.5 26.7l28.9-23.1L442.3 418.9c-1.4 7.6-8 13.1-15.7 13.1l-277.2 0c-7.7 0-14.4-5.5-15.7-13.1z">
-                                                </path>
-                                            </g>
-                                        </svg>Diamond League
+                                        <i class="fa-solid fa-crown"></i> <span class="ml-1" id="league">VIP</span>
                                     </div>
-                                    <div class="ml-2 text-xs text-white/70">108375 points</div>
+                                    <div class="ml-2 text-xs text-white/70" id="total-points">108375 points</div>
                                 </div>
                             </div>
                         </div>
@@ -114,23 +104,16 @@
                                 <div class="absolute inset-0 bg-white/30 animate-pulse-slow"></div>
                             </div>
                         </div>
-                        <div class="mt-1 flex justify-between text-xs text-white/70"><span>Current Level:
-                                STANDARD</span><span>Next level in 9.5 points</span></div>
+                        <div id="level-info" class="mt-1 flex justify-between text-xs text-white/70">
+                            <span>Current Level: STANDARD</span>
+                            <span>Next level in 9.5 points</span>
+                        </div>
                     </div>
                     <div class="mb-4">
-                        <h3 class="text-white font-bold mb-3 flex items-center"><svg aria-hidden="true"
-                                focusable="false" data-prefix="fadr" data-icon="award"
-                                class="svg-inline--fa fa-award h-5 w-5 mr-2 text-pink-400" role="img"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                                <g class="fa-duotone-group">
-                                    <path class="fa-secondary" fill="currentColor"
-                                        d="M49.1 188.1c-1.5 2.4-1.5 5.4 0 7.8l9.5 15.6c5.5 9.1 8.3 19.6 8.1 30.2l-.4 18.3c-.1 2.8 1.4 5.4 3.9 6.8l16.1 8.8c9.3 5.1 17 12.8 22.1 22.1l8.8 16.1c1.4 2.5 4 4 6.8 3.9l18.3-.4c10.6-.3 21.1 2.6 30.2 8.1l15.6 9.5c2.4 1.5 5.4 1.5 7.8 0l15.6-9.5c9.1-5.5 19.6-8.3 30.2-8.1l18.3 .4c2.8 .1 5.4-1.4 6.8-3.9l8.8-16.1c5.1-9.3 12.8-17 22.1-22.1l16.1-8.8c2.5-1.4 4-4 3.9-6.8l-.4-18.3c-.3-10.6 2.6-21.1 8.1-30.2l9.5-15.6c1.5-2.4 1.5-5.4 0-7.8l-9.5-15.6c-5.5-9.1-8.3-19.6-8.1-30.2l.4-18.3c.1-2.8-1.4-5.4-3.9-6.8l-16.1-8.8c-9.3-5.1-17-12.8-22.1-22.1l-8.8-16.1c-1.4-2.5-4-4-6.8-3.9l-18.3 .4c-10.6 .3-21.1-2.6-30.2-8.1l-15.6-9.5c-2.4-1.5-5.4-1.5-7.8 0l-15.6 9.5c-9.1 5.5-19.6 8.3-30.2 8.1l-18.3-.4c-2.8-.1-5.4 1.4-6.8 3.9l-8.8 16.1c-5.1 9.3-12.8 17-22.1 22.1l-16.1 8.8c-2.5 1.4-4 4-3.9 6.8l.4 18.3c.3 10.6-2.6 21.1-8.1 30.2l-9.5 15.6zM256 192a64 64 0 1 1 -128 0 64 64 0 1 1 128 0z">
-                                    </path>
-                                    <path class="fa-primary" fill="currentColor"
-                                        d="M163.1 8.1c17.7-10.8 40-10.8 57.8 0l15.6 9.5c1.2 .7 2.7 1.1 4.1 1.1l18.3-.4c20.8-.5 40.1 10.7 50 28.9l8.8 16.1c.7 1.3 1.7 2.3 3 3L336.8 75c18.2 10 29.4 29.3 28.9 50l-.4 18.3c0 1.4 .3 2.9 1.1 4.1l9.5 15.6c10.8 17.7 10.8 40 0 57.8l-9.5 15.6c-.7 1.2-1.1 2.7-1.1 4.1l.4 18.3c.5 20.8-10.7 40.1-28.9 50l-16.1 8.8c-1.3 .7-2.3 1.7-3 3L309 336.8c-10 18.2-29.3 29.4-50 28.9l-18.3-.4c-1.4 0-2.9 .3-4.1 1.1l-15.6 9.5c-17.7 10.8-40 10.8-57.8 0l-15.6-9.5c-1.2-.7-2.7-1.1-4.1-1.1l-18.3 .4c-20.8 .5-40.1-10.7-50-28.9l-8.8-16.1c-.7-1.3-1.7-2.3-3-3L47.2 309c-18.2-10-29.4-29.3-28.9-50l.4-18.3c0-1.4-.3-2.9-1.1-4.1L8.1 220.9c-10.8-17.7-10.8-40 0-57.8l9.5-15.6c.7-1.2 1.1-2.7 1.1-4.1l-.4-18.3C17.8 104.3 29 85 47.2 75l16.1-8.8c1.3-.7 2.3-1.7 3-3L75 47.2c10-18.2 29.3-29.4 50-28.9l18.3 .4c1.4 0 2.9-.3 4.1-1.1l15.6-9.5zm32.8 41c-2.4-1.5-5.4-1.5-7.8 0l-15.6 9.5c-9.1 5.5-19.6 8.3-30.2 8.1l-18.3-.4c-2.8-.1-5.4 1.4-6.8 3.9l-8.8 16.1c-5.1 9.3-12.8 17-22.1 22.1l-16.1 8.8c-2.5 1.4-4 4-3.9 6.8l.4 18.3c.3 10.6-2.6 21.1-8.1 30.2l-9.5 15.6L28.6 175.6l20.5 12.5c-1.5 2.4-1.5 5.4 0 7.8l9.5 15.6c5.5 9.1 8.3 19.6 8.1 30.2l-.4 18.3c-.1 2.8 1.4 5.4 3.9 6.8l16.1 8.8c9.3 5.1 17 12.8 22.1 22.1l8.8 16.1c1.4 2.5 4 4 6.8 3.9l18.3-.4c10.6-.3 21.1 2.6 30.2 8.1l15.6 9.5c2.4 1.5 5.4 1.5 7.8 0l15.6-9.5c9.1-5.5 19.6-8.3 30.2-8.1l18.3 .4c2.8 .1 5.4-1.4 6.8-3.9l8.8-16.1c5.1-9.3 12.8-17 22.1-22.1l16.1-8.8c2.5-1.4 4-4 3.9-6.8l-.4-18.3c-.3-10.6 2.6-21.1 8.1-30.2l9.5-15.6c1.5-2.4 1.5-5.4 0-7.8l-9.5-15.6c-5.5-9.1-8.3-19.6-8.1-30.2l.4-18.3c.1-2.8-1.4-5.4-3.9-6.8l-16.1-8.8c-9.3-5.1-17-12.8-22.1-22.1l-8.8-16.1c-1.4-2.5-4-4-6.8-3.9l-18.3 .4c-10.6 .3-21.1-2.6-30.2-8.1l-15.6-9.5zM128 192a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM1.3 441.8l41.2-97.9 4.5 8.2c15.7 28.7 46.1 46.3 78.9 45.5l11.1-.3 9.5 5.8c8 4.9 16.7 8.4 25.6 10.5l-37.3 88.5c-2.3 5.5-7.4 9.2-13.3 9.7s-11.6-2.2-14.8-7.2L74.4 455.5l-56.1 8.3c-5.7 .8-11.4-1.5-15-6s-4.3-10.7-2.1-16zm248 60.4L212 413.7c8.9-2.1 17.5-5.6 25.5-10.5l9.5-5.8 11.1 .3c32.7 .8 63.2-16.8 78.9-45.5l4.5-8.2 41.2 97.9c2.2 5.3 1.4 11.4-2.1 16s-9.3 6.9-15 6l-56.1-8.3-32.2 49.2c-3.2 5-8.9 7.7-14.8 7.2s-11-4.3-13.3-9.7z">
-                                    </path>
-                                </g>
-                            </svg>Badges &amp; Achievements</h3>
+                        <h3 class="text-white font-bold mb-3 flex items-center">
+                            <i class="fa-solid fa-award mr-2 fa-xl text-pink-400"></i>
+                            Badges & Achievements
+                        </h3>
                         <div class="grid grid-cols-2 gap-3">
                             <div
                                 class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
@@ -143,8 +126,8 @@
                                         <i class="fa-solid fa-trophy text-yellow-400"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <div class="text-white font-bold">7</div>
-                                        <div class="text-xs text-white/70">Game Badge</div>
+                                        <div class="text-white font-bold" id="game-badge-count">7</div>
+                                        <div class="text-xs text-white/70" id="game-badge-label">Game Badge</div>
                                     </div>
                                 </div>
                             </div>
@@ -159,8 +142,8 @@
                                         <i class="fa-regular fa-star text-purple-400"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <div class="text-white font-bold">8</div>
-                                        <div class="text-xs text-white/70">Trivia Badge</div>
+                                        <div class="text-white font-bold" id="trivia-badge-count">8</div>
+                                        <div class="text-xs text-white/70" id="trivia-badge-label">Trivia Badge</div>
                                     </div>
                                 </div>
                             </div>
@@ -175,8 +158,8 @@
                                         <i class="fa-solid fa-bolt text-blue-400"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <div class="text-white font-bold">0.5</div>
-                                        <div class="text-xs text-white/70">Skill Badge</div>
+                                        <div class="text-white font-bold" id="skill-badge-count">0.5</div>
+                                        <div class="text-xs text-white/70" id="skill-badge-label">Skill Badge</div>
                                     </div>
                                 </div>
                             </div>
@@ -191,15 +174,16 @@
                                         <i class="fa-solid fa-medal text-green-400"></i>
                                     </div>
                                     <div class="ml-3">
-                                        <div class="text-white font-bold">5</div>
-                                        <div class="text-xs text-white/70">Special Points</div>
+                                        <div class="text-white font-bold" id="special-points-count">5</div>
+                                        <div class="text-xs text-white/70" id="special-points-label">Special Points
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <h3 class="text-white font-bold mb-3 flex items-center">
+                        <h3 id="recent-activity" class="text-white font-bold mb-3 flex items-center">
                             <i class="fa-solid fa-fire text-orange-400 fa-xl mr-2"></i>
                             Recent Activity
                         </h3>
@@ -302,7 +286,8 @@
                                 </g>
                             </svg></span>
                     </button>
-                    <div class="mt-6 text-center text-xs text-white/50">Last Updated: 28/03/2025, 10:07:33</div>
+                    <div id="last-updated" class="mt-6 text-center text-xs text-white/50">Last Updated: 28/03/2025,
+                        10:07:33</div>
                 </div>
             </div>
         </div>
