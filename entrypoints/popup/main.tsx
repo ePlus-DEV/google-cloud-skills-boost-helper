@@ -1,20 +1,26 @@
 import axios from "axios";
 
-const addSpinner = (element: HTMLElement | null) => {
-	if (element) {
-		element.classList.add("animate-spin");
-	}
+const SPINNER_CLASS = "animate-spin";
+const API_URL = "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
+const PROFILE_URL = "https://www.cloudskillsboost.google/public_profiles/e0963130-302f-49dc-9634-e63e0d8e1f1a";
+
+const toggleSpinner = (elements: NodeListOf<HTMLElement>, add: boolean) => {
+	elements.forEach((element) => {
+		if (add) {
+			element.classList.add(SPINNER_CLASS);
+		} else {
+			element.classList.remove(SPINNER_CLASS);
+		}
+	});
 };
 
-const removeSpinner = (element: HTMLElement | null) => {
-	if (element) {
-		element.classList.remove("animate-spin");
-	}
+const toggleButtonState = (buttons: NodeListOf<HTMLButtonElement>, disabled: boolean) => {
+	buttons.forEach((button) => (button.disabled = disabled));
 };
 
 const fetchData = async (url: string) => {
 	try {
-		return await axios.post("https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit", { url });
+		return await axios.post(API_URL, { url });
 	} catch (error) {
 		console.error("Error submitting URL:", error);
 		throw error;
@@ -37,18 +43,13 @@ const displayUserDetails = (data: any) => {
 
 const handleSubmit = async () => {
 	const refreshButtons = document.querySelectorAll(".refresh-button") as NodeListOf<HTMLButtonElement>;
-	const refreshIcon = document.querySelectorAll(".refresh-icon") as NodeListOf<HTMLButtonElement>;
+	const refreshIcons = document.querySelectorAll(".refresh-icon") as NodeListOf<HTMLElement>;
 
-	if (refreshIcon) {
-		refreshIcon.forEach((icon) => addSpinner(icon));
-	}
-
-	refreshButtons.forEach((button) => button.disabled = true);
+	toggleSpinner(refreshIcons, true);
+	toggleButtonState(refreshButtons, true);
 
 	try {
-		const response = await fetchData(
-			"https://www.cloudskillsboost.google/public_profiles/e0963130-302f-49dc-9634-e63e0d8e1f1a"
-		);
+		const response = await fetchData(PROFILE_URL);
 
 		if (response.status === 200) {
 			displayUserDetails(response.data);
@@ -58,11 +59,15 @@ const handleSubmit = async () => {
 	} catch {
 		// Error already logged in fetchData
 	} finally {
-		refreshIcon.forEach((icon) => removeSpinner(icon));
-		refreshButtons.forEach((button) => button.disabled = false);
+		toggleSpinner(refreshIcons, false);
+		toggleButtonState(refreshButtons, false);
 	}
 };
 
-document.querySelectorAll(".refresh-button").forEach((button) => {
-	button.addEventListener("click", handleSubmit);
-});
+const initializeEventListeners = () => {
+	document.querySelectorAll(".refresh-button").forEach((button) => {
+		button.addEventListener("click", handleSubmit);
+	});
+};
+
+initializeEventListeners();
