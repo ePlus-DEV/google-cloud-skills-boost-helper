@@ -3,7 +3,7 @@ import axios from "axios";
 const SPINNER_CLASS = "animate-spin";
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-const PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";  
+const PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";
 
 const toggleSpinner = (elements: NodeListOf<HTMLElement>, add: boolean) => {
   elements.forEach((element) => {
@@ -32,17 +32,31 @@ const fetchData = async (url: string) => {
 };
 
 type ArcadeData = {
-  userDetails?: { userName?: string; league?: string; points?: number; profileImage?: string }[];
-  arcadePoints?: { totalPoints?: number; gamePoints?: number; triviaPoints?: number; skillPoints?: number; specialPoints?: number };
+  userDetails?: {
+    userName?: string;
+    league?: string;
+    points?: number;
+    profileImage?: string;
+  }[];
+  arcadePoints?: {
+    totalPoints?: number;
+    gamePoints?: number;
+    triviaPoints?: number;
+    skillPoints?: number;
+    specialPoints?: number;
+  };
   badges?: any;
 };
 
 const init = async () => {
-  const localArcadeData: ArcadeData = (await storage.getItem('local:arcadeData')) || {};
+  const localArcadeData: ArcadeData =
+    (await storage.getItem("local:arcadeData")) || {};
   // const localArcadeBadges = await storage.getMeta('local:arcadebadges');
   // console.log("localArcadeData", localArcadeData);
   const { userDetails, arcadePoints, badges } = localArcadeData || {};
-  const { userName, league, points, profileImage } = Array.isArray(userDetails) ? userDetails[0] || {} : {};
+  const { userName, league, points, profileImage } = Array.isArray(userDetails)
+    ? userDetails[0] || {}
+    : {};
 
   const {
     totalPoints = 0,
@@ -74,8 +88,7 @@ const init = async () => {
   });
 
   document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
-  
-}
+};
 
 const displayUserDetails = async (data: any) => {
   const { userDetails, arcadePoints, badges } = data;
@@ -83,7 +96,7 @@ const displayUserDetails = async (data: any) => {
 
   const lastUpdated = new Date().toISOString();
 
-  await storage.setMeta('local:arcadeData', { ...data, lastUpdated });
+  await storage.setMeta("local:arcadeData", { ...data, lastUpdated });
 
   const {
     totalPoints = 0,
@@ -141,7 +154,7 @@ const handleSubmit = async () => {
 
     if (response.status === 200) {
       displayUserDetails(response.data);
-      await storage.setItem('local:arcadeData', response.data);
+      await storage.setItem("local:arcadeData", response.data);
     } else {
       console.error("Failed to submit URL.");
     }
