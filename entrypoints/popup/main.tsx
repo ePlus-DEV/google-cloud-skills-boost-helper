@@ -54,7 +54,7 @@ const displayUserDetails = (data: any) => {
     { selector: "#game-points-count", value: gamePoints },
     { selector: "#trivia-points-count", value: triviaPoints },
     { selector: "#skill-points-count", value: skillPoints },
-	{ selector: "#special-points-count", value: specialPoints },
+    { selector: "#special-points-count", value: specialPoints },
   ];
 
   elements.forEach(({ selector, value }) => {
@@ -63,12 +63,12 @@ const displayUserDetails = (data: any) => {
       element.textContent = value.toString();
     }
   });
-	
-	document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
 
-//   alert(
-//     `User: ${userName}\nLeague: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
-//   );
+  document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
+
+  //   alert(
+  //     `User: ${userName}\nLeague: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
+  //   );
 };
 
 const handleSubmit = async () => {
