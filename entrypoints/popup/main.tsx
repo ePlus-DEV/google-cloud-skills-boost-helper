@@ -11,7 +11,9 @@ const toggleClass = (
   add: boolean,
 ) => {
   elements.forEach((element) =>
-    add ? element.classList.add(className) : element.classList.remove(className),
+    add
+      ? element.classList.add(className)
+      : element.classList.remove(className),
   );
 };
 
