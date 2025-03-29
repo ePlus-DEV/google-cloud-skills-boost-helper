@@ -11,9 +11,7 @@ const toggleClass = (
   add: boolean,
 ) => {
   elements.forEach((element) =>
-    add
-      ? element.classList.add(className)
-      : element.classList.remove(className),
+    element.classList.toggle(className, add),
   );
 };
 
@@ -54,72 +52,50 @@ const updateElements = (elements: { selector: string; value: any }[]) => {
   elements.forEach(({ selector, value }) => {
     const element = document.querySelector(selector);
     if (element) {
-      element.textContent = value.toString();
+      element.textContent = value?.toString() || "N/A";
     }
   });
 };
 
-const updateAvatar = (profileImage: string | undefined) => {
+const updateAvatar = (profileImage?: string) => {
   document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
+};
+
+const updateUI = (data: ArcadeData) => {
+  const { userDetails, arcadePoints } = data;
+  const { userName, league, points, profileImage } = userDetails?.[0] || {};
+  const {
+    totalPoints = 0,
+    gamePoints = 0,
+    triviaPoints = 0,
+    skillPoints = 0,
+    specialPoints = 0,
+  } = arcadePoints || {};
+
+  updateElements([
+    { selector: "#arcade-points", value: totalPoints },
+    { selector: "#user-name", value: userName },
+    { selector: "#league", value: league },
+    { selector: "#total-points", value: points },
+    { selector: "#game-points-count", value: gamePoints },
+    { selector: "#trivia-points-count", value: triviaPoints },
+    { selector: "#skill-points-count", value: skillPoints },
+    { selector: "#special-points-count", value: specialPoints },
+  ]);
+
+  updateAvatar(profileImage);
 };
 
 const init = async () => {
   const localArcadeData: ArcadeData =
     (await storage.getItem("local:arcadeData")) || {};
-  const { userDetails, arcadePoints } = localArcadeData || {};
-  const { userName, league, points, profileImage } = Array.isArray(userDetails)
-    ? userDetails[0] || {}
-    : {};
-
-  const {
-    totalPoints = 0,
-    gamePoints = 0,
-    triviaPoints = 0,
-    skillPoints = 0,
-    specialPoints = 0,
-  } = arcadePoints || {};
-
-  updateElements([
-    { selector: "#arcade-points", value: totalPoints },
-    { selector: "#user-name", value: userName || "N/A" },
-    { selector: "#league", value: league || "N/A" },
-    { selector: "#total-points", value: points || 0 },
-    { selector: "#game-points-count", value: gamePoints },
-    { selector: "#trivia-points-count", value: triviaPoints },
-    { selector: "#skill-points-count", value: skillPoints },
-    { selector: "#special-points-count", value: specialPoints },
-  ]);
-
-  updateAvatar(profileImage);
+  updateUI(localArcadeData);
 };
 
 const displayUserDetails = async (data: ArcadeData) => {
-  const { userDetails, arcadePoints } = data;
-  const { userName, league, points, profileImage } = userDetails?.[0] || {};
-
   const lastUpdated = new Date().toISOString();
   await storage.setMeta("local:arcadeData", { ...data, lastUpdated });
-
-  const {
-    totalPoints = 0,
-    gamePoints = 0,
-    triviaPoints = 0,
-    skillPoints = 0,
-    specialPoints = 0,
-  } = arcadePoints || {};
-
-  updateElements([
-    { selector: "#arcade-points", value: totalPoints },
-    { selector: "#user-name", value: userName || "N/A" },
-    { selector: "#league", value: league || "N/A" },
-    { selector: "#total-points", value: points || 0 },
-    { selector: "#game-points-count", value: gamePoints },
-    { selector: "#trivia-points-count", value: triviaPoints },
-    { selector: "#skill-points-count", value: skillPoints },
-    { selector: "#special-points-count", value: specialPoints },
-  ]);
-
-  updateAvatar(profileImage);
+  updateUI(data);
 };
 
 const handleSubmit = async () => {
