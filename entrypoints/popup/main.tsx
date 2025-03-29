@@ -34,7 +34,7 @@ const fetchData = async (url: string) => {
 
 const displayUserDetails = (data: any) => {
   const { userDetails, arcadePoints } = data;
-  const { userName, memberSince, league } = userDetails[0] || {};
+  const { userName, league, points, profileImage } = userDetails[0] || {};
   const {
     totalPoints = 0,
     gamePoints = 0,
@@ -46,15 +46,15 @@ const displayUserDetails = (data: any) => {
   const elements = [
     {
       selector: "#arcade-points",
-      value: gamePoints + triviaPoints + skillPoints + specialPoints,
+      value: totalPoints || 0,
     },
     { selector: "#user-name", value: userName || "N/A" },
     { selector: "#league", value: league || "N/A" },
-    { selector: "#total-points", value: totalPoints },
+    { selector: "#total-points", value: points || 0 },
     { selector: "#game-points-count", value: gamePoints },
     { selector: "#trivia-points-count", value: triviaPoints },
     { selector: "#skill-points-count", value: skillPoints },
-    { selector: "#special-points-count", value: specialPoints },
+	{ selector: "#special-points-count", value: specialPoints },
   ];
 
   elements.forEach(({ selector, value }) => {
@@ -63,10 +63,12 @@ const displayUserDetails = (data: any) => {
       element.textContent = value.toString();
     }
   });
+	
+	document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
 
-  alert(
-    `User: ${userName}\nLeague: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
-  );
+//   alert(
+//     `User: ${userName}\nLeague: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
+//   );
 };
 
 const handleSubmit = async () => {
