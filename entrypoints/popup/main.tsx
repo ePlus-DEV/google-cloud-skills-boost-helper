@@ -10,9 +10,7 @@ const toggleClass = (
   className: string,
   add: boolean,
 ) => {
-  elements.forEach((element) =>
-    element.classList.toggle(className, add),
-  );
+  elements.forEach((element) => element.classList.toggle(className, add));
 };
 
 const toggleButtonState = (
