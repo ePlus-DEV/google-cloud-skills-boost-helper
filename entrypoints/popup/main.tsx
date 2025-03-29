@@ -35,18 +35,35 @@ const fetchData = async (url: string) => {
 const displayUserDetails = (data: any) => {
   const { userDetails, arcadePoints } = data;
   const { userName, memberSince, league } = userDetails[0] || {};
-  const { totalPoints, gamePoints, triviaPoints, skillPoints, specialPoints } =
-    arcadePoints;
+	const {
+		totalPoints = 0,
+		gamePoints = 0,
+		triviaPoints = 0,
+		skillPoints = 0,
+		specialPoints = 0,
+	} = arcadePoints || {};
 
-  const manifest = chrome.runtime.getManifest();
-  const iconUrl = manifest.icons
-    ? chrome.runtime.getURL(manifest.icons["48"])
-    : "";
+	const elements = [
+		{ selector: "#arcade-points", value: gamePoints + triviaPoints + skillPoints + specialPoints },
+		{ selector: "#user-name", value: userName || "N/A" },
+		{ selector: "#league", value: league || "N/A" },
+		{ selector: "#total-points", value: totalPoints },
+		{ selector: "#game-points-count", value: gamePoints },
+		{ selector: "#trivia-points-count", value: triviaPoints },
+		{ selector: "#skill-points-count", value: skillPoints },
+		{ selector: "#special-points-count", value: specialPoints },
+	];
+
+	elements.forEach(({ selector, value }) => {
+		const element = document.querySelector(selector);
+		if (element) {
+			element.textContent = value.toString();
+		}
+	});
 
   alert(
     `User: ${userName}\nLeague: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
   );
-  console.log(iconUrl);
 };
 
 const handleSubmit = async () => {
