@@ -1,0 +1,74 @@
+{
+  "extName": {
+    "message": "Google Cloud Skills Boost - Assistant"
+  },
+  "extDescription": {
+    "message": "Modifie automatiquement les laboratoires CloudSkillsBoost avec des options de basculement."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - Assistant Options"
+  },
+  "optionsPageDescription": {
+    "message": "Personnalisez votre expérience avec Google Cloud Skills Boost - Assistant."
+  },
+  "labelFeature": {
+    "message": "Fonctionnalité"
+  },
+  "labelAction": {
+    "message": "Action"
+  },
+  "labelShowLeaderboard": {
+    "message": "Afficher le classement"
+  },
+  "labelHideLeaderboard": {
+    "message": "Masquer le classement"
+  },
+  "labelMyBadges": {
+    "message": "Mes badges"
+  },
+  "labelPublicProfile": {
+    "message": "Profil public"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Calculateur de points d'arcade"
+  },
+  "labelSave": {
+    "message": "Enregistrer"
+  },
+  "messageNoDataAvailable": {
+    "message": "Aucune donnée disponible"
+  },
+  "labelRecentActivity": {
+    "message": "Activité récente"
+  },
+  "labelBadgesAchievements": {
+    "message": "Badges et réalisations"
+  },
+  "labelUpdatePoints": {
+    "message": "Mettre à jour les points"
+  },
+  "labelLastUpdated": {
+    "message": "Dernière mise à jour"
+  },
+  "labelPage": {
+    "message": "Page"
+  },
+  "labelLoadMore": {
+    "message": "Charger plus"
+  },
+  "textCurrentLevel": {
+    "message": "Niveau actuel"
+  },
+  "textMaxLevel": {
+    "message": "Niveau maximum"
+  },
+  "textNextLevelInPoints": {
+    "message": "Niveau suivant dans"
+  },
+  "textPoints": {
+    "message": "points"
+  },
+  "labelShowOptions": {
+    "message": "Afficher les options"
+  }
+}
