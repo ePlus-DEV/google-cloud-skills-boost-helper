@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Default Popup Title</title>
-  <meta name="manifest.type" content="browser_action" />
-  <link rel="stylesheet" href="~/assets/tailwind.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Default Popup Title</title>
+    <meta name="manifest.type" content="browser_action" />
+    <link rel="stylesheet" href="~/assets/tailwind.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+  </head>
 
 <body>
   <div class="relative">
@@ -98,54 +100,64 @@
                 style="width: 66.6667%">
                 <div class="absolute inset-0 bg-white/30 animate-pulse-slow"></div>
               </div>
-            </div>
-            <div id="level-info" class="mt-1 flex justify-between text-xs text-white/70">
-              <span id="current-level">Current Level: STANDARD</span>
-              <span id="next-level">Next level in 9.5 points</span>
-            </div>
-          </div>
-          <div class="mb-4">
-            <h3 class="text-white font-bold mb-3 flex items-center">
-              <i class="fa-solid fa-award mr-2 fa-xl text-pink-400"></i>
-              Badges & Achievements
-            </h3>
-            <div class="grid grid-cols-2 gap-3">
               <div
-                class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                </div>
-                <div class="flex items-center">
-                  <div
-                    class="h-10 w-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-                    <i class="fa-solid fa-trophy text-yellow-400"></i>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white font-bold" id="game-badge-count">
-                      7
-                    </div>
-                    <div class="text-xs text-white/70" id="game-badge-label">
-                      Game Badge
-                    </div>
-                  </div>
-                </div>
+                id="level-info"
+                class="mt-1 flex justify-between text-xs text-white/70"
+              >
+                <span id="current-level">Current Level: STANDARD</span>
+                <span id="next-level">Next level in 9.5 points</span>
               </div>
-              <div
-                class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
+            </div>
+            <div class="mb-4">
+              <h3 class="text-white font-bold mb-3 flex items-center">
+                <i class="fa-solid fa-award mr-2 fa-xl text-pink-400"></i>
+                Badges & Achievements
+              </h3>
+              <div class="grid grid-cols-2 gap-3">
                 <div
-                  class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                </div>
-                <div class="flex items-center">
+                  class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden"
+                >
                   <div
-                    class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center">
-                    <i class="fa-regular fa-star text-purple-400"></i>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white font-bold" id="trivia-badge-count">
-                      8
+                    class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  ></div>
+                  <div class="flex items-center">
+                    <div
+                      class="h-10 w-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-trophy text-yellow-400"></i>
                     </div>
-                    <div class="text-xs text-white/70" id="trivia-badge-label">
-                      Trivia Badge
+                    <div class="ml-3">
+                      <div class="text-white font-bold" id="game-badge-count">
+                        7
+                      </div>
+                      <div class="text-xs text-white/70" id="game-badge-label">
+                        Game Badge
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden"
+                >
+                  <div
+                    class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  ></div>
+                  <div class="flex items-center">
+                    <div
+                      class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center"
+                    >
+                      <i class="fa-regular fa-star text-purple-400"></i>
+                    </div>
+                    <div class="ml-3">
+                      <div class="text-white font-bold" id="trivia-badge-count">
+                        8
+                      </div>
+                      <div
+                        class="text-xs text-white/70"
+                        id="trivia-badge-label"
+                      >
+                        Trivia Badge
+                      </div>
                     </div>
                   </div>
                 </div>
