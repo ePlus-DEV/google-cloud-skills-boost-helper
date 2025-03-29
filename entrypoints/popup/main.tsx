@@ -5,14 +5,14 @@ const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
 const PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";
 
-const toggleSpinner = (elements: NodeListOf<HTMLElement>, add: boolean) => {
-  elements.forEach((element) => {
-    if (add) {
-      element.classList.add(SPINNER_CLASS);
-    } else {
-      element.classList.remove(SPINNER_CLASS);
-    }
-  });
+const toggleClass = (
+  elements: NodeListOf<HTMLElement>,
+  className: string,
+  add: boolean,
+) => {
+  elements.forEach((element) =>
+    add ? element.classList.add(className) : element.classList.remove(className),
+  );
 };
 
 const toggleButtonState = (
@@ -48,12 +48,23 @@ type ArcadeData = {
   badges?: any;
 };
 
+const updateElements = (elements: { selector: string; value: any }[]) => {
+  elements.forEach(({ selector, value }) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.textContent = value.toString();
+    }
+  });
+};
+
+const updateAvatar = (profileImage: string | undefined) => {
+  document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
+};
+
 const init = async () => {
   const localArcadeData: ArcadeData =
     (await storage.getItem("local:arcadeData")) || {};
-  // const localArcadeBadges = await storage.getMeta('local:arcadebadges');
-  // console.log("localArcadeData", localArcadeData);
-  const { userDetails, arcadePoints, badges } = localArcadeData || {};
+  const { userDetails, arcadePoints } = localArcadeData || {};
   const { userName, league, points, profileImage } = Array.isArray(userDetails)
     ? userDetails[0] || {}
     : {};
@@ -66,11 +77,8 @@ const init = async () => {
     specialPoints = 0,
   } = arcadePoints || {};
 
-  const elements = [
-    {
-      selector: "#arcade-points",
-      value: totalPoints || 0,
-    },
+  updateElements([
+    { selector: "#arcade-points", value: totalPoints },
     { selector: "#user-name", value: userName || "N/A" },
     { selector: "#league", value: league || "N/A" },
     { selector: "#total-points", value: points || 0 },
@@ -78,24 +86,16 @@ const init = async () => {
     { selector: "#trivia-points-count", value: triviaPoints },
     { selector: "#skill-points-count", value: skillPoints },
     { selector: "#special-points-count", value: specialPoints },
-  ];
+  ]);
 
-  elements.forEach(({ selector, value }) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.textContent = value.toString();
-    }
-  });
-
-  document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
+  updateAvatar(profileImage);
 };
 
-const displayUserDetails = async (data: any) => {
-  const { userDetails, arcadePoints, badges } = data;
-  const { userName, league, points, profileImage } = userDetails[0] || {};
+const displayUserDetails = async (data: ArcadeData) => {
+  const { userDetails, arcadePoints } = data;
+  const { userName, league, points, profileImage } = userDetails?.[0] || {};
 
   const lastUpdated = new Date().toISOString();
-
   await storage.setMeta("local:arcadeData", { ...data, lastUpdated });
 
   const {
@@ -106,11 +106,8 @@ const displayUserDetails = async (data: any) => {
     specialPoints = 0,
   } = arcadePoints || {};
 
-  const elements = [
-    {
-      selector: "#arcade-points",
-      value: totalPoints || 0,
-    },
+  updateElements([
+    { selector: "#arcade-points", value: totalPoints },
     { selector: "#user-name", value: userName || "N/A" },
     { selector: "#league", value: league || "N/A" },
     { selector: "#total-points", value: points || 0 },
@@ -118,20 +115,9 @@ const displayUserDetails = async (data: any) => {
     { selector: "#trivia-points-count", value: triviaPoints },
     { selector: "#skill-points-count", value: skillPoints },
     { selector: "#special-points-count", value: specialPoints },
-  ];
+  ]);
 
-  elements.forEach(({ selector, value }) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.textContent = value.toString();
-    }
-  });
-
-  document.querySelector("#avatar")?.setAttribute("src", profileImage || "");
-
-  //   alert(
-  //     `User: ${userName}\nLeague: ${league}\nMember Since: ${memberSince}\nTotal Points: ${totalPoints}\nGame Points: ${gamePoints}\nTrivia Points: ${triviaPoints}\nSkill Points: ${skillPoints}\nSpecial Points: ${specialPoints}`,
-  //   );
+  updateAvatar(profileImage);
 };
 
 const handleSubmit = async () => {
@@ -142,7 +128,7 @@ const handleSubmit = async () => {
     ".refresh-icon",
   ) as NodeListOf<HTMLElement>;
 
-  toggleSpinner(refreshIcons, true);
+  toggleClass(refreshIcons, SPINNER_CLASS, true);
   toggleButtonState(refreshButtons, true);
 
   try {
@@ -153,7 +139,7 @@ const handleSubmit = async () => {
     const response = await fetchData(PROFILE_URL);
 
     if (response.status === 200) {
-      displayUserDetails(response.data);
+      await displayUserDetails(response.data);
       await storage.setItem("local:arcadeData", response.data);
     } else {
       console.error("Failed to submit URL.");
@@ -161,7 +147,7 @@ const handleSubmit = async () => {
   } catch {
     // Error already logged in fetchData
   } finally {
-    toggleSpinner(refreshIcons, false);
+    toggleClass(refreshIcons, SPINNER_CLASS, false);
     toggleButtonState(refreshButtons, false);
   }
 };
