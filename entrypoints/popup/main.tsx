@@ -56,7 +56,9 @@ const updateElements = (elements: { selector: string; value: any }[]) => {
 };
 
 const updateAvatar = (profileImage?: string) => {
-  document.querySelector("#user-avatar")?.setAttribute("src", profileImage || "");
+  document
+    .querySelector("#user-avatar")
+    ?.setAttribute("src", profileImage || "");
 };
 
 const updateUI = (data: ArcadeData) => {
@@ -87,17 +89,19 @@ const updateUI = (data: ArcadeData) => {
 const init = async () => {
   const localArcadeData: ArcadeData =
     (await storage.getItem("local:arcadeData")) || {};
-  const localUrlProfile: string = (await storage.getItem("local:urlProfile")) || "sadd";
+  const localUrlProfile: string =
+    (await storage.getItem("local:urlProfile")) || "sadd";
   if (!localUrlProfile) {
     const settingsMessageElement = document.querySelector("#settings-message");
     if (settingsMessageElement) {
-      settingsMessageElement.textContent =
-        browser.i18n.getMessage('textPleaseSetUpTheSettings');
+      settingsMessageElement.textContent = browser.i18n.getMessage(
+        "textPleaseSetUpTheSettings",
+      );
     }
     document.querySelector("#popup-content")?.classList.add("blur-sm");
     document.querySelector("#auth-screen")?.classList.remove("invisible");
   } else {
-     updateUI(localArcadeData);
+    updateUI(localArcadeData);
   }
   // updateUI(localArcadeData);
   // const settingsMessageElement = document.querySelector("#settings-message");
