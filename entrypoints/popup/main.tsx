@@ -150,13 +150,11 @@ const initializeEventListeners = () => {
     button.addEventListener("click", handleSubmit);
   });
 
-   document.querySelectorAll(".settings-button").forEach(() => {
-    browser.runtime.openOptionsPage();
+  document.querySelectorAll(".settings-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      window.open(browser.runtime.getURL("/options.html"), "_blank");
+    });
   });
-
-  // document.querySelectorAll(".settings-button")?.addEventListener("click", () => {
-  //   browser.runtime.openOptionsPage();
-  // });
 
   init();
 };
