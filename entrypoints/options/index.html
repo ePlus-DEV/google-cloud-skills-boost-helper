@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options</title>
+    <link rel="stylesheet" href="~/assets/tailwind.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
+
+<body>
+    <div class="flex flex-col p-4 w-[800px] mx-auto h-screen justify-center">
+        <h3 class="text-xl font-semibold text-center">Google Cloud Skills Boost - Helper</h3>
+        <div class="mt-4">
+            <table class="min-w-[800px] bg-gray-100 border border-gray-300">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-2 border-b border-gray-300">Feature</th>
+                        <th class="py-2 border-b border-gray-300">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-white even:bg-gray-50">
+                        <td class="border px-4 py-2">Show Leaderboard</td>
+                        <td class="border px-4 py-2"><input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                        </td>
+                    </tr>
+                    <tr class="odd:bg-white even:bg-gray-50">
+                        <td class="border px-4 py-2">Public Profile</td>
+                        <td class="border px-4 py-2">
+                            <a href="https://www.cloudskillsboost.google/my_account/profile#public-profile"
+                                target="_blank" rel="noopener noreferrer" class="text-blue-600">
+                                <i class="fa-solid fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="odd:bg-white even:bg-gray-50">
+                        <td class="border px-4 py-2">My Badges</td>
+                        <td class="border px-4 py-2">
+                            <a href="https://www.cloudskillsboost.google/profile/badges" target="_blank"
+                                rel="noopener noreferrer" class="text-blue-600">
+                                <i class="fa-solid fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="odd:bg-white even:bg-gray-50">
+                        <td class="border px-4 py-2">Arcade Points Calculator</td>
+                        <td class="border px-4 py-2">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="url" class="border px-4 py-2 flex-grow"
+                                        placeholder="Enter url public profile"
+                                        value="https://www.cloudskillsboost.google/public_profiles/e0963130-302f-49dc-9634-e63e0d8e1f1a">
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded">Lưu</button>
+                                </div>
+                                <div class="flex justify-center mt-4">
+                                    <iframe class="w-full max-w-lg aspect-video"
+                                        src="https://www.youtube.com/embed/_4Funy68Na0?si=Bas3OZvYEt_v3o1B"
+                                        title="YouTube video player" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""
+                                        sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <footer class="mt-4 text-center text-gray-500"><i class="fa-solid fa-copyright"></i> 2025 - <a
+                href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-blue-600">ePlus.DEV</a>
+        </footer>
+    </div>
+</body>
+
+</html>
