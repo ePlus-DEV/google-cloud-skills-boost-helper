@@ -173,11 +173,11 @@ const updateUI = (data: ArcadeData) => {
       const start = 0;
       const end = currentPage * incrementCount;
       badges.slice(start, end).forEach((badge: any) => {
-      const badgeContainer = document.createElement("div");
-      badgeContainer.className =
-        "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
+        const badgeContainer = document.createElement("div");
+        badgeContainer.className =
+          "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
 
-      badgeContainer.innerHTML = `
+        badgeContainer.innerHTML = `
       <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
       <div class="flex justify-between items-center">
       <div class="flex items-center">
@@ -192,15 +192,16 @@ const updateUI = (data: ArcadeData) => {
       )}</div>
       </div>
       `;
-      activityElement.appendChild(badgeContainer);
+        activityElement.appendChild(badgeContainer);
       });
 
-      const paginationElement = querySelector<HTMLDivElement>("#pagination-info");
+      const paginationElement =
+        querySelector<HTMLDivElement>("#pagination-info");
       if (paginationElement) {
-      paginationElement.textContent = `${browser.i18n.getMessage(
-        "labelPage",
-      )} ${currentPage}/${totalPages}`;
-      paginationElement.classList.remove("hidden");
+        paginationElement.textContent = `${browser.i18n.getMessage(
+          "labelPage",
+        )} ${currentPage}/${totalPages}`;
+        paginationElement.classList.remove("hidden");
       }
     };
 
@@ -210,15 +211,14 @@ const updateUI = (data: ArcadeData) => {
     if (loadMoreButton) {
       loadMoreButton.classList.remove("hidden");
       loadMoreButton.addEventListener("click", () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderBadges();
-      }
-      if (currentPage === totalPages) {
-        loadMoreButton.classList.add("hidden");
-      }
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderBadges();
+        }
+        if (currentPage === totalPages) {
+          loadMoreButton.classList.add("hidden");
+        }
       });
-
     } else {
       activityElement.innerHTML = `
         <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
