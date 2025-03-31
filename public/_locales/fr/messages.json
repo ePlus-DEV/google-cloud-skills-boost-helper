@@ -1,8 +1,8 @@
 {
-  "extensionName": {
+  "extName": {
     "message": "Google Cloud Skills Boost - Assistant"
   },
-  "extensionDescription": {
+  "extDescription": {
     "message": "Modifie automatiquement les laboratoires CloudSkillsBoost avec des options de basculement."
   },
   "optionsPageTitle": {
@@ -34,6 +34,9 @@
   },
   "labelSave": {
     "message": "Enregistrer"
+  },
+  "labelLoading": {
+    "message": "Chargement..."
   },
   "messageNoDataAvailable": {
     "message": "Aucune donnée disponible"
@@ -70,5 +73,14 @@
   },
   "labelShowOptions": {
     "message": "Afficher les options"
+  },
+   "textPleaseSetUpTheSettings": {
+    "message": "Veuillez configurer les paramètres"
+  },
+  "errorInvalidUrl": {
+    "message": "Veuillez entrer une URL valide commençant par 'https://www.cloudskillsboost.google/public_profiles/xxx"
+  },
+  "successSettingsSaved": {
+    "message": "Paramètres enregistrés avec succès !"
   }
 }
