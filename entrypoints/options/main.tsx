@@ -27,6 +27,7 @@ type ArcadeData = {
     specialPoints?: number;
   };
   badges?: any;
+  lastUpdated?: string;
 };
 
 const fetchData = async (url: string) => {

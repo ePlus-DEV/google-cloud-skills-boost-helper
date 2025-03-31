@@ -20,7 +20,7 @@ type ArcadeData = {
     specialPoints?: number;
   };
   badges?: any;
-  lastUpdated?: Date;
+  lastUpdated?: String;
 };
 
 const querySelector = <T extends HTMLElement>(selector: string): T | null =>
@@ -93,12 +93,12 @@ const updateLeagueInfo = (
   );
 };
 
-const updateLastUpdated = (lastUpdated?: Date) => {
+const updateLastUpdated = (lastUpdated?: String) => {
   updateElementText(
     "#last-updated",
     `${browser.i18n.getMessage("labelLastUpdated")}: ${
       lastUpdated
-        ? new Date(lastUpdated).toLocaleString(navigator.language)
+        ? new Date(lastUpdated.toString()).toLocaleString(navigator.language)
         : "N/A"
     }`,
   );
@@ -267,7 +267,7 @@ const init = async () => {
 };
 
 const displayUserDetails = async (data: ArcadeData) => {
-  const lastUpdated = new Date();
+  const lastUpdated = new Date().toISOString();;
   const updatedData = { ...data, lastUpdated };
   await storage.setItem("local:arcadeData", updatedData);
   updateUI(updatedData);
