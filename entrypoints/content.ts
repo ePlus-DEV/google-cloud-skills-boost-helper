@@ -2,26 +2,30 @@ import type { ContentScriptContext } from "wxt/client";
 import "~/assets/tailwind.css";
 
 export default defineContentScript({
-  matches: ["https://storybook.js.org/*"],
+  matches: ["https://www.cloudskillsboost.google/games/*/labs/*"],
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    // const ui = await createUi(ctx);
-    // ui.mount();
+    const ui = await createUi(ctx);
+    ui.mount();
   },
 });
 
 function createUi(ctx: ContentScriptContext) {
-  // return createShadowRootUi(ctx, {
-  //   name: "tailwind-shadow-root-example",
-  //   position: "inline",
-  //   anchor: "body",
-  //   append: "first",
-  //   onMount: (uiContainer) => {
-  //     const p = document.createElement("p");
-  //     p.classList.add("text-lg", "text-red-500", "font-bold", "p-8");
-  //     p.textContent = "Hello from shadow root with TailwindCSS applied";
-  //     uiContainer.append(p);
-  //   },
-  // });
+  return createShadowRootUi(ctx, {
+    name: "tailwind-shadow-root-example",
+    position: "inline",
+    anchor: "body",
+    onMount: () => {
+      const removeLeaderboard = document.querySelector(".js-lab-leaderboard");
+      const showScore = document.querySelector(".games-labs");
+      if (removeLeaderboard) {
+        removeLeaderboard.remove();
+      }
+      if (showScore) {
+        showScore.className =
+          "lab-show l-full no-nav application-new lab-show l-full no-nav";
+      }
+    },
+  });
 }
