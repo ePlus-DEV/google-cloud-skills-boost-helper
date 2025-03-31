@@ -5,30 +5,6 @@ const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
 const PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";
 
-const toggleClass = (
-  elements: NodeListOf<HTMLElement>,
-  className: string,
-  add: boolean,
-) => {
-  elements.forEach((element) => element.classList.toggle(className, add));
-};
-
-const toggleButtonState = (
-  buttons: NodeListOf<HTMLButtonElement>,
-  disabled: boolean,
-) => {
-  buttons.forEach((button) => (button.disabled = disabled));
-};
-
-const fetchData = async (url: string) => {
-  try {
-    return await axios.post(API_URL, { url });
-  } catch (error) {
-    console.error("Error submitting URL:", error);
-    throw error;
-  }
-};
-
 type ArcadeData = {
   userDetails?: {
     userName?: string;
@@ -47,6 +23,26 @@ type ArcadeData = {
   lastUpdated?: Date;
 };
 
+const toggleClass = (
+  elements: NodeListOf<HTMLElement>,
+  className: string,
+  add: boolean,
+) => elements.forEach((element) => element.classList.toggle(className, add));
+
+const toggleButtonState = (
+  buttons: NodeListOf<HTMLButtonElement>,
+  disabled: boolean,
+) => buttons.forEach((button) => (button.disabled = disabled));
+
+const fetchData = async (url: string) => {
+  try {
+    return await axios.post(API_URL, { url });
+  } catch (error) {
+    console.error("Error submitting URL:", error);
+    throw error;
+  }
+};
+
 const updateElements = (elements: { selector: string; value: any }[]) => {
   elements.forEach(({ selector, value }) => {
     const element = document.querySelector(selector);
@@ -57,9 +53,61 @@ const updateElements = (elements: { selector: string; value: any }[]) => {
 };
 
 const updateAvatar = (profileImage?: string) => {
-  document
-    .querySelector("#user-avatar")
-    ?.setAttribute("src", profileImage || "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg");
+  const avatarElement = document.querySelector("#user-avatar");
+  avatarElement?.setAttribute(
+    "src",
+    profileImage ||
+      "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg",
+  );
+};
+
+const updateProgressBar = (totalPoints: number, nextMilestonePoints: number) => {
+  const progressBar = document.querySelector("#progress-bar") as HTMLDivElement;
+  if (progressBar) {
+    progressBar.style.width = `${(totalPoints / nextMilestonePoints) * 100}%`;
+  }
+};
+
+const updateLeagueInfo = (
+  currentLeague: string,
+  isMaxLevel: boolean,
+  nextMilestonePoints: number,
+  totalPoints: number,
+) => {
+  const leagueElement = document.querySelector(
+    "#current-level",
+  ) as HTMLSpanElement;
+  if (leagueElement) {
+    leagueElement.textContent = `${browser.i18n.getMessage(
+      "textCurrentLevel",
+    )}: ${currentLeague}`;
+  }
+
+  const nextLevelElement = document.querySelector(
+    "#next-level",
+  ) as HTMLSpanElement;
+  if (nextLevelElement) {
+    nextLevelElement.textContent = isMaxLevel
+      ? chrome.i18n.getMessage("textMaxLevel")
+      : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
+          nextMilestonePoints - totalPoints
+        } ${browser.i18n.getMessage("textPoints")}`;
+  }
+};
+
+const updateLastUpdated = (lastUpdated?: Date) => {
+  const lastUpdatedElement = document.querySelector(
+    "#last-updated",
+  ) as HTMLSpanElement;
+  if (lastUpdatedElement) {
+    lastUpdatedElement.textContent = `${browser.i18n.getMessage(
+      "labelLastUpdated",
+    )}: ${
+      lastUpdated
+        ? new Date(lastUpdated).toLocaleString(navigator.language)
+        : "N/A"
+    }`;
+  }
 };
 
 const updateUI = (data: ArcadeData) => {
@@ -86,13 +134,31 @@ const updateUI = (data: ArcadeData) => {
 
   updateAvatar(profileImage);
 
-  const lastUpdatedElement = document.querySelector(
-    "#last-updated",
-  ) as HTMLSpanElement;
-  if (lastUpdatedElement) {
-    lastUpdatedElement.textContent =
-      `${browser.i18n.getMessage("labelLastUpdated")}: ${lastUpdated ? new Date(lastUpdated).toLocaleString(navigator.language) : "N/A"}`;
-  }
+  const milestones = [
+    { points: 15, league: "STANDARD" },
+    { points: 30, league: "ADVANCED" },
+    { points: 45, league: "PREMIUM" },
+    { points: 65, league: "PREMIUM PLUS" },
+  ];
+
+  const roundedArcadePoints = Math.floor(totalPoints);
+  const currentLevel =
+    milestones.findIndex(
+      (milestone, index) =>
+        totalPoints <= milestone.points ||
+        (milestones[index + 1] && totalPoints < milestones[index + 1].points),
+    ) + 1 || milestones.length + 1;
+
+  const nextMilestone =
+    milestones.find((milestone) => milestone.points > roundedArcadePoints) ||
+    milestones[milestones.length - 1];
+  const isMaxLevel =
+    nextMilestone.points === milestones[milestones.length - 1].points;
+  const currentLeague = milestones[currentLevel - 1]?.league || "MAX LEVEL";
+
+  updateLeagueInfo(currentLeague, isMaxLevel, nextMilestone.points, totalPoints);
+  updateProgressBar(roundedArcadePoints, nextMilestone.points);
+  updateLastUpdated(lastUpdated);
 };
 
 const init = async () => {
@@ -100,6 +166,7 @@ const init = async () => {
     (await storage.getItem("local:arcadeData")) || {};
   const localUrlProfile: string =
     (await storage.getItem("local:urlProfile")) || "";
+
   if (!localUrlProfile) {
     const settingsMessageElement = document.querySelector("#settings-message");
     if (settingsMessageElement) {
