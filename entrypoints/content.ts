@@ -26,7 +26,7 @@ function handleUiMount() {
   removeElement(".js-lab-leaderboard");
   updateClassName(
     ".games-labs",
-    "lab-show l-full no-nav application-new lab-show l-full no-nav"
+    "lab-show l-full no-nav application-new lab-show l-full no-nav",
   );
 
   if (isPublicProfilePage()) {
@@ -61,7 +61,7 @@ function scrollToElement(selector: string) {
 
 function handlePublicProfileSettings() {
   const publicProfileChecked = document.querySelector<HTMLInputElement>(
-    "#public_profile_checked"
+    "#public_profile_checked",
   );
   if (publicProfileChecked && !publicProfileChecked.checked) {
     publicProfileChecked.checked = true;
@@ -72,7 +72,7 @@ function handlePublicProfileSettings() {
 
 function addTooltipToUpdateButton() {
   const updateSettingsButton = document.querySelector<HTMLElement>(
-    'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
+    'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
   );
   updateSettingsButton?.setAttribute("title", "Click to update your settings");
 }
