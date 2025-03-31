@@ -166,77 +166,27 @@ const updateUI = (data: ArcadeData) => {
   renderBadges(badges);
 };
 
-const renderBadges = (badges: any[]) => {
-  const activityElement = querySelector<HTMLDivElement>("#activity-list");
-
-  if (!activityElement) return;
-
-  activityElement.innerHTML = "";
-
-  const incrementCount = 3;
-  const totalPages = Math.ceil(badges.length / incrementCount);
-  let currentPage = 1;
-
-  const renderPage = () => {
-    activityElement.innerHTML = "";
-    const start = 0;
-    const end = currentPage * incrementCount;
-    badges.slice(start, end).forEach((badge: any) => {
-      const badgeContainer = document.createElement("div");
-      badgeContainer.className =
-        "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
-
-      badgeContainer.innerHTML = `
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-        <div class="flex justify-between items-center">
-          <div class="flex items-center">
-            <img src="${badge.imageURL}" alt="${badge.title}" class="h-8 w-8 rounded-full border-2 border-white/50" />
-            <div class="ml-3">
-              <div class="text-white font-bold">${badge.title}</div>
-              <div class="text-sm text-gray-300">${badge.dateEarned}</div>
-            </div>
-          </div>
-          <div class="text-sm text-white">${badge.points} ${browser.i18n.getMessage(
-            "textPoints",
-          )}</div>
-        </div>
-      `;
-      activityElement.appendChild(badgeContainer);
-    });
-
-    updatePaginationInfo(currentPage, totalPages);
-  };
-
-  renderPage();
-
-  const loadMoreButton = querySelector<HTMLButtonElement>("#load-more");
-  if (loadMoreButton) {
-    const loadMoreButtonText =
-      querySelector<HTMLButtonElement>("#load-more-text");
-    if (loadMoreButtonText) {
-      loadMoreButtonText.textContent = browser.i18n.getMessage("labelLoadMore");
-    }
-
-    loadMoreButton.classList.remove("hidden");
-    loadMoreButton.addEventListener("click", () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderPage();
-      }
-      if (currentPage === totalPages) {
-        loadMoreButton.classList.add("hidden");
-      }
-    });
-  } else {
-    activityElement.innerHTML = `
-      <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
-        <span class="text-gray-400 font-medium">${browser.i18n.getMessage(
-          "messageNoDataAvailable",
-        )}</span>
-      </div>
-    `;
-  }
-};
+/**
+ * Renders a list of badges into the activity element on the page. The badges are displayed
+ * in a paginated manner, with a "Load More" button to load additional badges incrementally.
+ *
+ * @param {any[]} badges - An array of badge objects to be rendered. Each badge object should
+ * contain the following properties:
+ *   - `imageURL` (string): The URL of the badge image.
+ *   - `title` (string): The title of the badge.
+ *   - `dateEarned` (string): The date the badge was earned.
+ *   - `points` (number): The points associated with the badge.
+ *
+ * The function performs the following:
+ * - Clears the content of the activity element.
+ * - Displays badges in groups of a fixed increment count per page.
+ * - Updates the pagination information and handles the "Load More" button functionality.
+ * - If no badges are available, displays a "No Data Available" message.
+ *
+ * Dependencies:
+ * - The function relies on the `querySelector` utility to select DOM elements.
+ * - The `browser.i18n.getMessage` API is used for localized text messages.
+ */
 
 const updatePaginationInfo = (currentPage: number, totalPages: number) => {
   const paginationElement = querySelector<HTMLDivElement>("#pagination-info");
