@@ -1,9 +1,13 @@
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
+const submitUrlElement = document.getElementById('submit-url');
+const profileUrlInput = document.querySelector<HTMLInputElement>("#public-profile-url");
 
-const SPINNER_CLASS = "animate-spin";
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-const PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";
+const PROFILE_URL =
+    (await storage.getItem<string>("local:urlProfile")) ||
+    (profileUrlInput?.value || "");
 
 const toggleClass = (
   elements: NodeListOf<HTMLElement>,
@@ -90,7 +94,7 @@ const init = async () => {
   const localArcadeData: ArcadeData =
     (await storage.getItem("local:arcadeData")) || {};
   const localUrlProfile: string =
-    (await storage.getItem("local:urlProfile")) || "";
+    (await storage.getItem("local:urlProfile")) || "sadd";
   if (!localUrlProfile) {
     const settingsMessageElement = document.querySelector("#settings-message");
     if (settingsMessageElement) {
@@ -103,57 +107,68 @@ const init = async () => {
   } else {
     updateUI(localArcadeData);
   }
+  // updateUI(localArcadeData);
+  // const settingsMessageElement = document.querySelector("#settings-message");
+  // if (settingsMessageElement) {
+  //   settingsMessageElement.textContent =
+  //     browser.i18n.getMessage('textPleaseSetUpTheSettings');;
+  // }
 };
 
 const displayUserDetails = async (data: ArcadeData) => {
+        alert("Cập nhật thành công!");
   const lastUpdated = new Date().toISOString();
-  await storage.setItem("local:arcadeData", { ...data, lastUpdated });
-  updateUI(data);
+    await storage.setItem("local:arcadeData", { ...data, lastUpdated });
 };
 
 const handleSubmit = async () => {
-  const refreshButtons = document.querySelectorAll(
-    ".refresh-button",
-  ) as NodeListOf<HTMLButtonElement>;
-  const refreshIcons = document.querySelectorAll(
-    ".refresh-icon",
-  ) as NodeListOf<HTMLElement>;
 
-  toggleClass(refreshIcons, SPINNER_CLASS, true);
-  toggleButtonState(refreshButtons, true);
-
-  try {
-    if (!PROFILE_URL) {
-      console.error("PROFILE_URL is null or empty.");
-      return;
+    if (submitUrlElement) {
+        submitUrlElement.textContent = browser.i18n.getMessage('labelLoading');
     }
+    const PROFILE_URL = profileUrlInput?.value;
+  try {
+    if (!PROFILE_URL || !PROFILE_URL.startsWith("https://www.cloudskillsboost.google/public_profiles/")) {
+        // toast.error("Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/'.");
+        alert("Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/'.");
+        return;
+    }
+      
     const response = await fetchData(PROFILE_URL);
 
     if (response.status === 200) {
-      await displayUserDetails(response.data);
+        await displayUserDetails(response.data);
+        await storage.setItem("local:urlProfile", PROFILE_URL);
     } else {
       console.error("Failed to submit URL.");
     }
   } catch {
     // Error already logged in fetchData
   } finally {
-    toggleClass(refreshIcons, SPINNER_CLASS, false);
-    toggleButtonState(refreshButtons, false);
+    if (submitUrlElement) {
+        submitUrlElement.textContent = browser.i18n.getMessage('labelSave');
+    }
   }
 };
 
 const initializeEventListeners = () => {
-  document.querySelectorAll(".refresh-button").forEach((button) => {
-    button.addEventListener("click", handleSubmit);
-  });
-
-  document.querySelectorAll(".settings-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      window.open(browser.runtime.getURL("/options.html"), "_blank");
-    });
-  });
-
-  init();
+    if (submitUrlElement) {
+        submitUrlElement.textContent = browser.i18n.getMessage('labelSave');
+        submitUrlElement.addEventListener('click', function () {
+            handleSubmit();
+        });
+    }
+    toast.error("Failed to submit URL.");
+    if (profileUrlInput) {
+        profileUrlInput.value = PROFILE_URL;
+        console.log("Profile URL:", PROFILE_URL);
+    }
 };
 
 initializeEventListeners();
+
+const App = () => {
+  return <Toaster position="top-right" />;
+};
+
+export default App;

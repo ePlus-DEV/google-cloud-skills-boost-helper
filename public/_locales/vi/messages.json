@@ -35,6 +35,9 @@
   "labelSave": {
     "message": "Lưu"
   },
+  "labelLoading": {
+    "message": "Đang tải..."
+  },
   "messageNoDataAvailable": {
     "message": "Không có dữ liệu"
   },
