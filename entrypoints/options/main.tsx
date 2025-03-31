@@ -107,12 +107,6 @@ const init = async () => {
   } else {
     updateUI(localArcadeData);
   }
-  // updateUI(localArcadeData);
-  // const settingsMessageElement = document.querySelector("#settings-message");
-  // if (settingsMessageElement) {
-  //   settingsMessageElement.textContent =
-  //     browser.i18n.getMessage('textPleaseSetUpTheSettings');;
-  // }
 };
 
 const displayUserDetails = async (data: ArcadeData) => {
@@ -129,11 +123,14 @@ const handleSubmit = async () => {
     const PROFILE_URL = profileUrlInput?.value;
   try {
     if (!PROFILE_URL || !PROFILE_URL.startsWith("https://www.cloudskillsboost.google/public_profiles/")) {
-        // toast.error("Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/'.");
-        alert("Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/'.");
+        const errorElement = document.querySelector("#error-message");
+        if (errorElement) {
+            errorElement.textContent = browser.i18n.getMessage("errorInvalidUrl");
+            errorElement.classList.remove("hidden");
+            errorElement.classList.add("text-red-500", "font-bold", "mt-2", "animate-pulse");
+        }
         return;
     }
-      
     const response = await fetchData(PROFILE_URL);
 
     if (response.status === 200) {

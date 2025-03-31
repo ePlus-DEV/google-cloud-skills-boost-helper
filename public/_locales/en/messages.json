@@ -73,5 +73,8 @@
   },
   "textPleaseSetUpTheSettings": {
     "message": "Please set up the settings"
+  },
+  "errorInvalidUrl": {
+    "message": "Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/xxx"
   }
 }
