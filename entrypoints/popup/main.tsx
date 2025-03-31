@@ -59,7 +59,7 @@ const updateElements = (elements: { selector: string; value: any }[]) => {
 const updateAvatar = (profileImage?: string) => {
   document
     .querySelector("#user-avatar")
-    ?.setAttribute("src", profileImage || "");
+    ?.setAttribute("src", profileImage || "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg");
 };
 
 const updateUI = (data: ArcadeData) => {
@@ -78,9 +78,9 @@ const updateUI = (data: ArcadeData) => {
     { selector: "#user-name", value: userName },
     { selector: "#league", value: league },
     { selector: "#total-points", value: points },
-    { selector: "#game-points-count", value: gamePoints },
-    { selector: "#trivia-points-count", value: triviaPoints },
-    { selector: "#skill-points-count", value: skillPoints },
+    { selector: "#game-badge-count", value: gamePoints },
+    { selector: "#trivia-badge-count", value: triviaPoints },
+    { selector: "#skill-badge-count", value: skillPoints },
     { selector: "#special-points-count", value: specialPoints },
   ]);
 
