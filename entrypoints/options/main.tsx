@@ -1,5 +1,4 @@
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
 const submitUrlElement = document.getElementById('submit-url');
 const profileUrlInput = document.querySelector<HTMLInputElement>("#public-profile-url");
 
@@ -8,21 +7,6 @@ const API_URL =
 const PROFILE_URL =
     (await storage.getItem<string>("local:urlProfile")) ||
     (profileUrlInput?.value || "");
-
-const toggleClass = (
-  elements: NodeListOf<HTMLElement>,
-  className: string,
-  add: boolean,
-) => {
-  elements.forEach((element) => element.classList.toggle(className, add));
-};
-
-const toggleButtonState = (
-  buttons: NodeListOf<HTMLButtonElement>,
-  disabled: boolean,
-) => {
-  buttons.forEach((button) => (button.disabled = disabled));
-};
 
 const fetchData = async (url: string) => {
   try {
@@ -50,67 +34,16 @@ type ArcadeData = {
   badges?: any;
 };
 
-const updateElements = (elements: { selector: string; value: any }[]) => {
-  elements.forEach(({ selector, value }) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.textContent = value?.toString() || "N/A";
-    }
-  });
-};
-
-const updateAvatar = (profileImage?: string) => {
-  document
-    .querySelector("#user-avatar")
-    ?.setAttribute("src", profileImage || "");
-};
-
-const updateUI = (data: ArcadeData) => {
-  const { userDetails, arcadePoints } = data;
-  const { userName, league, points, profileImage } = userDetails?.[0] || {};
-  const {
-    totalPoints = 0,
-    gamePoints = 0,
-    triviaPoints = 0,
-    skillPoints = 0,
-    specialPoints = 0,
-  } = arcadePoints || {};
-
-  updateElements([
-    { selector: "#arcade-points", value: totalPoints },
-    { selector: "#user-name", value: userName },
-    { selector: "#league", value: league },
-    { selector: "#total-points", value: points },
-    { selector: "#game-points-count", value: gamePoints },
-    { selector: "#trivia-points-count", value: triviaPoints },
-    { selector: "#skill-points-count", value: skillPoints },
-    { selector: "#special-points-count", value: specialPoints },
-  ]);
-
-  updateAvatar(profileImage);
-};
-
-const init = async () => {
-  const localArcadeData: ArcadeData =
-    (await storage.getItem("local:arcadeData")) || {};
-  const localUrlProfile: string =
-    (await storage.getItem("local:urlProfile")) || "sadd";
-  if (!localUrlProfile) {
-    const settingsMessageElement = document.querySelector("#settings-message");
-    if (settingsMessageElement) {
-      settingsMessageElement.textContent = browser.i18n.getMessage(
-        "textPleaseSetUpTheSettings",
-      );
-    }
-    document.querySelector("#popup-content")?.classList.add("blur-sm");
-    document.querySelector("#auth-screen")?.classList.remove("invisible");
-  } else {
-    updateUI(localArcadeData);
-  }
-};
-
 const displayUserDetails = async (data: ArcadeData) => {
-        alert("Cập nhật thành công!");
+    const successElement = document.querySelector("#success-message");
+        if (successElement) {
+            successElement.textContent = browser.i18n.getMessage("successSettingsSaved");
+            successElement.classList.remove("hidden");
+            successElement.classList.add("text-green-500", "font-bold", "mt-2", "animate-pulse");
+            setTimeout(() => {
+                successElement.classList.add("hidden");
+            }, 6000);
+        }
   const lastUpdated = new Date().toISOString();
     await storage.setItem("local:arcadeData", { ...data, lastUpdated });
 };
@@ -128,6 +61,9 @@ const handleSubmit = async () => {
             errorElement.textContent = browser.i18n.getMessage("errorInvalidUrl");
             errorElement.classList.remove("hidden");
             errorElement.classList.add("text-red-500", "font-bold", "mt-2", "animate-pulse");
+             setTimeout(() => {
+                errorElement.classList.add("hidden");
+            }, 6000);
         }
         return;
     }
@@ -149,13 +85,13 @@ const handleSubmit = async () => {
 };
 
 const initializeEventListeners = () => {
+
     if (submitUrlElement) {
         submitUrlElement.textContent = browser.i18n.getMessage('labelSave');
         submitUrlElement.addEventListener('click', function () {
             handleSubmit();
         });
     }
-    toast.error("Failed to submit URL.");
     if (profileUrlInput) {
         profileUrlInput.value = PROFILE_URL;
         console.log("Profile URL:", PROFILE_URL);
@@ -163,9 +99,3 @@ const initializeEventListeners = () => {
 };
 
 initializeEventListeners();
-
-const App = () => {
-  return <Toaster position="top-right" />;
-};
-
-export default App;

@@ -74,7 +74,13 @@
   "labelShowOptions": {
     "message": "Afficher les options"
   },
+   "textPleaseSetUpTheSettings": {
+    "message": "Veuillez configurer les paramètres"
+  },
   "errorInvalidUrl": {
     "message": "Veuillez entrer une URL valide commençant par 'https://www.cloudskillsboost.google/public_profiles/xxx"
+  },
+  "successSettingsSaved": {
+    "message": "Paramètres enregistrés avec succès !"
   }
 }

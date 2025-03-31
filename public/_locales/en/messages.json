@@ -76,5 +76,8 @@
   },
   "errorInvalidUrl": {
     "message": "Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/xxx"
+  },
+  "successSettingsSaved": {
+    "message": "Settings saved successfully!"
   }
 }
