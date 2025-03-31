@@ -44,6 +44,7 @@ type ArcadeData = {
     specialPoints?: number;
   };
   badges?: any;
+  lastUpdated?: Date;
 };
 
 const updateElements = (elements: { selector: string; value: any }[]) => {
@@ -62,7 +63,7 @@ const updateAvatar = (profileImage?: string) => {
 };
 
 const updateUI = (data: ArcadeData) => {
-  const { userDetails, arcadePoints } = data;
+  const { userDetails, arcadePoints, lastUpdated } = data;
   const { userName, league, points, profileImage } = userDetails?.[0] || {};
   const {
     totalPoints = 0,
@@ -84,6 +85,14 @@ const updateUI = (data: ArcadeData) => {
   ]);
 
   updateAvatar(profileImage);
+
+  const lastUpdatedElement = document.querySelector(
+    "#last-updated",
+  ) as HTMLSpanElement;
+  if (lastUpdatedElement) {
+    lastUpdatedElement.textContent =
+      `${browser.i18n.getMessage("labelLastUpdated")}: ${lastUpdated ? new Date(lastUpdated).toLocaleString(navigator.language) : "N/A"}`;
+  }
 };
 
 const init = async () => {
@@ -106,9 +115,10 @@ const init = async () => {
 };
 
 const displayUserDetails = async (data: ArcadeData) => {
-  const lastUpdated = new Date().toISOString();
-  await storage.setItem("local:arcadeData", { ...data, lastUpdated });
-  updateUI(data);
+  const lastUpdated = new Date();
+  const updatedData = { ...data, lastUpdated };
+  await storage.setItem("local:arcadeData", updatedData);
+  updateUI(updatedData);
 };
 
 const handleSubmit = async () => {
