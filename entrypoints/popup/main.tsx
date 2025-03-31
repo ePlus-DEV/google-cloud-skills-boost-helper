@@ -170,11 +170,11 @@ const updateUI = (data: ArcadeData) => {
 
     if (badges && badges.length > 0) {
       badges.slice(0, visibleCount).forEach((badge: any) => {
-      const badgeContainer = document.createElement("div");
-      badgeContainer.className =
-        "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
+        const badgeContainer = document.createElement("div");
+        badgeContainer.className =
+          "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
 
-      badgeContainer.innerHTML = `
+        badgeContainer.innerHTML = `
         <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
         <div class="flex justify-between items-center">
         <div class="flex items-center">
@@ -189,16 +189,17 @@ const updateUI = (data: ArcadeData) => {
         )}</div>
         </div>
       `;
-      activityElement.appendChild(badgeContainer);
+        activityElement.appendChild(badgeContainer);
       });
 
-      const paginationElement = querySelector<HTMLDivElement>("#pagination-info");
+      const paginationElement =
+        querySelector<HTMLDivElement>("#pagination-info");
 
       if (paginationElement) {
-      paginationElement.textContent = `${browser.i18n.getMessage(
-        "labelPage",
-      )} ${currentPage}/${totalPages}`;
-      paginationElement.classList.remove("hidden");
+        paginationElement.textContent = `${browser.i18n.getMessage(
+          "labelPage",
+        )} ${currentPage}/${totalPages}`;
+        paginationElement.classList.remove("hidden");
       }
     } else {
       activityElement.innerHTML = `
