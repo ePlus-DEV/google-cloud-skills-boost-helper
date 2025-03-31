@@ -1,8 +1,10 @@
 import type { ContentScriptContext } from "wxt/client";
-import "~/assets/tailwind.css";
 
 export default defineContentScript({
-  matches: ["https://www.cloudskillsboost.google/games/*/labs/*"],
+  matches: [
+    "https://www.cloudskillsboost.google/games/*/labs/*",
+    "https://www.cloudskillsboost.google/my_account/profile*",
+  ],
   cssInjectionMode: "ui",
 
   async main(ctx) {
@@ -16,16 +18,79 @@ function createUi(ctx: ContentScriptContext) {
     name: "tailwind-shadow-root-example",
     position: "inline",
     anchor: "body",
-    onMount: () => {
-      const removeLeaderboard = document.querySelector(".js-lab-leaderboard");
-      const showScore = document.querySelector(".games-labs");
-      if (removeLeaderboard) {
-        removeLeaderboard.remove();
-      }
-      if (showScore) {
-        showScore.className =
-          "lab-show l-full no-nav application-new lab-show l-full no-nav";
-      }
-    },
+    onMount: handleUiMount,
   });
+}
+
+function handleUiMount() {
+  removeElement(".js-lab-leaderboard");
+  updateClassName(
+    ".games-labs",
+    "lab-show l-full no-nav application-new lab-show l-full no-nav"
+  );
+
+  if (isPublicProfilePage()) {
+    scrollToElement("#public-profile");
+    handlePublicProfileSettings();
+  }
+}
+
+function removeElement(selector: string) {
+  const element = document.querySelector(selector);
+  element?.remove();
+}
+
+function updateClassName(selector: string, className: string) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.className = className;
+  }
+}
+
+function isPublicProfilePage() {
+  return (
+    window.location.hash === "#public-profile" &&
+    window.location.pathname === "/my_account/profile"
+  );
+}
+
+function scrollToElement(selector: string) {
+  const element = document.querySelector(selector);
+  element?.scrollIntoView({ behavior: "smooth" });
+}
+
+function handlePublicProfileSettings() {
+  const publicProfileChecked = document.querySelector<HTMLInputElement>(
+    "#public_profile_checked"
+  );
+  if (publicProfileChecked && !publicProfileChecked.checked) {
+    publicProfileChecked.checked = true;
+    addTooltipToUpdateButton();
+    displaySaveNotification();
+  }
+}
+
+function addTooltipToUpdateButton() {
+  const updateSettingsButton = document.querySelector<HTMLElement>(
+    'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
+  );
+  updateSettingsButton?.setAttribute("title", "Click to update your settings");
+}
+
+function displaySaveNotification() {
+  const saveNotification = document.createElement("div");
+  Object.assign(saveNotification.style, {
+    position: "fixed",
+    bottom: "10px",
+    right: "10px",
+    backgroundColor: "#f8d7da",
+    color: "#721c24",
+    padding: "10px",
+    border: "1px solid #f5c6cb",
+    borderRadius: "5px",
+    zIndex: "1000",
+  });
+  saveNotification.textContent =
+    "Please click the 'Update settings' button above.";
+  document.body.appendChild(saveNotification);
 }
