@@ -311,7 +311,7 @@ const handleSubmit = async () => {
 
 const initializeEventListeners = async () => {
   await initializeProfileUrl();
-  
+
   document.querySelectorAll(".refresh-button").forEach((button) => {
     button.addEventListener("click", handleSubmit);
   });
