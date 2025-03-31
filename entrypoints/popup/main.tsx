@@ -114,7 +114,7 @@ const updateLastUpdated = (lastUpdated?: Date) => {
 };
 
 const updateUI = (data: ArcadeData) => {
-  const { userDetails, arcadePoints, lastUpdated } = data;
+  const { userDetails, arcadePoints, lastUpdated, badges } = data;
   const { userName, league, points, profileImage } = userDetails?.[0] || {};
   const {
     totalPoints = 0,
@@ -167,6 +167,121 @@ const updateUI = (data: ArcadeData) => {
   );
   updateProgressBar(roundedArcadePoints, nextMilestone.points);
   updateLastUpdated(lastUpdated);
+
+  const activityElement = document.querySelector("#activity-list");
+
+  if (activityElement) {
+
+    activityElement.innerHTML = "";
+    
+    if (badges && badges.length > 0) {
+
+      interface Badge {
+        imageURL: string;
+        title: string;
+        dateEarned: string;
+        points: number;
+      }
+
+      badges.forEach((badge: Badge) => {
+        const badgeContainer = document.createElement("div");
+        badgeContainer.classList.add(
+          "bg-white/10",
+          "backdrop-blur-md",
+          "rounded-xl",
+          "p-3",
+          "hover:bg-white/20",
+          "transition-colors",
+          "duration-300",
+          "relative",
+          "overflow-hidden",
+          "group",
+        );
+
+        const gradientOverlay = document.createElement("div");
+        gradientOverlay.classList.add(
+          "absolute",
+          "inset-0",
+          "bg-gradient-to-br",
+          "from-blue-500",
+          "to-indigo-500",
+          "opacity-0",
+          "group-hover:opacity-20",
+          "transition-opacity",
+          "duration-300",
+        );
+        badgeContainer.appendChild(gradientOverlay);
+
+        const badgeContent = document.createElement("div");
+        badgeContent.classList.add("flex", "justify-between", "items-center");
+
+        const badgeInfo = document.createElement("div");
+        badgeInfo.classList.add("flex", "items-center");
+
+        const badgeImage = document.createElement("img");
+        badgeImage.src = badge.imageURL;
+        badgeImage.alt = badge.title;
+        badgeImage.classList.add(
+          "h-8",
+          "w-8",
+          "rounded-full",
+          "border-2",
+          "border-white/50",
+        );
+
+        const badgeDetails = document.createElement("div");
+        badgeDetails.classList.add("ml-3");
+
+        const badgeTitle = document.createElement("div");
+        badgeTitle.textContent = badge.title;
+        badgeTitle.classList.add("text-white", "font-bold");
+
+        const badgeDate = document.createElement("div");
+        badgeDate.textContent = badge.dateEarned;
+        badgeDate.classList.add("text-sm", "text-gray-300");
+
+        badgeDetails.appendChild(badgeTitle);
+        badgeDetails.appendChild(badgeDate);
+
+        badgeInfo.appendChild(badgeImage);
+        badgeInfo.appendChild(badgeDetails);
+
+        const badgePoints = document.createElement("div");
+        badgePoints.textContent = `${badge.points} ${browser.i18n.getMessage(
+          "textPoints",
+        )}`;
+        badgePoints.classList.add("text-sm", "text-white");
+
+        badgeContent.appendChild(badgeInfo);
+        badgeContent.appendChild(badgePoints);
+
+        badgeContainer.appendChild(badgeContent);
+
+        activityElement.appendChild(badgeContainer);
+      });
+    } else {
+      const noDataMessage = document.createElement("div");
+      noDataMessage.classList.add(
+        "text-center",
+        "bg-gradient-to-r",
+        "from-gray-800",
+        "via-gray-900",
+        "to-black",
+        "py-4",
+        "px-6",
+        "rounded-xl",
+        "shadow-sm",
+      );
+
+      const noDataText = document.createElement("span");
+      noDataText.textContent = browser.i18n.getMessage("messageNoDataAvailable");
+      noDataText.classList.add("text-gray-400", "font-medium");
+
+      noDataMessage.appendChild(noDataText);
+      activityElement.appendChild(noDataMessage);
+    }
+  }
+
 };
 
 const init = async () => {
