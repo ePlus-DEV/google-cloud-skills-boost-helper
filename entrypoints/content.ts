@@ -25,7 +25,8 @@ export default defineContentScript({
           window.location.hash === "#public-profile" &&
           window.location.pathname === "/my_account/profile"
         ) {
-          const publicProfileElement = document.querySelector("#public-profile");
+          const publicProfileElement =
+            document.querySelector("#public-profile");
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
