@@ -164,43 +164,61 @@ const updateUI = (data: ArcadeData) => {
   if (activityElement) {
     activityElement.innerHTML = "";
 
-    const visibleCount = 3; // Updated to display 5 badges per page
-    const totalPages = Math.ceil(badges.length / visibleCount);
-    const currentPage = Math.ceil(visibleCount / visibleCount);
+    const incrementCount = 3;
+    const totalPages = Math.ceil(badges.length / incrementCount);
+    let currentPage = 1;
 
-    if (badges && badges.length > 0) {
-      badges.slice(0, visibleCount).forEach((badge: any) => {
-        const badgeContainer = document.createElement("div");
-        badgeContainer.className =
-          "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
+    const renderBadges = () => {
+      activityElement.innerHTML = ""; // Clear existing badges
+      const start = 0;
+      const end = currentPage * incrementCount;
+      badges.slice(start, end).forEach((badge: any) => {
+      const badgeContainer = document.createElement("div");
+      badgeContainer.className =
+        "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
 
-        badgeContainer.innerHTML = `
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-        <div class="flex justify-between items-center">
-        <div class="flex items-center">
-          <img src="${badge.imageURL}" alt="${badge.title}" class="h-8 w-8 rounded-full border-2 border-white/50" />
-          <div class="ml-3">
-          <div class="text-white font-bold">${badge.title}</div>
-          <div class="text-sm text-gray-300">${badge.dateEarned}</div>
-          </div>
+      badgeContainer.innerHTML = `
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+      <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="${badge.imageURL}" alt="${badge.title}" class="h-8 w-8 rounded-full border-2 border-white/50" />
+        <div class="ml-3">
+        <div class="text-white font-bold">${badge.title}</div>
+        <div class="text-sm text-gray-300">${badge.dateEarned}</div>
         </div>
-        <div class="text-sm text-white">${badge.points} ${browser.i18n.getMessage(
-          "textPoints",
-        )}</div>
-        </div>
+      </div>
+      <div class="text-sm text-white">${badge.points} ${browser.i18n.getMessage(
+        "textPoints",
+      )}</div>
+      </div>
       `;
-        activityElement.appendChild(badgeContainer);
+      activityElement.appendChild(badgeContainer);
       });
 
-      const paginationElement =
-        querySelector<HTMLDivElement>("#pagination-info");
-
+      const paginationElement = querySelector<HTMLDivElement>("#pagination-info");
       if (paginationElement) {
-        paginationElement.textContent = `${browser.i18n.getMessage(
-          "labelPage",
-        )} ${currentPage}/${totalPages}`;
-        paginationElement.classList.remove("hidden");
+      paginationElement.textContent = `${browser.i18n.getMessage(
+        "labelPage",
+      )} ${currentPage}/${totalPages}`;
+      paginationElement.classList.remove("hidden");
       }
+    };
+
+    renderBadges();
+
+    const loadMoreButton = querySelector<HTMLButtonElement>("#load-more");
+    if (loadMoreButton) {
+      loadMoreButton.classList.remove("hidden");
+      loadMoreButton.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderBadges();
+      }
+      if (currentPage === totalPages) {
+        loadMoreButton.classList.add("hidden");
+      }
+      });
+
     } else {
       activityElement.innerHTML = `
         <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
