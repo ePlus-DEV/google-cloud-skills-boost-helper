@@ -35,6 +35,9 @@
   "labelSave": {
     "message": "Enregistrer"
   },
+  "labelLoading": {
+    "message": "Chargement..."
+  },
   "messageNoDataAvailable": {
     "message": "Aucune donnée disponible"
   },

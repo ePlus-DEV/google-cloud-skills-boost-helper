@@ -35,6 +35,9 @@
   "labelSave": {
     "message": "Save"
   },
+  "labelLoading": {
+    "message": "Loading..."
+  },
   "messageNoDataAvailable": {
     "message": "No data available"
   },
