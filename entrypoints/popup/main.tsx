@@ -3,7 +3,12 @@ import axios from "axios";
 const SPINNER_CLASS = "animate-spin";
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-const PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";
+
+let PROFILE_URL = "";
+
+const initializeProfileUrl = async () => {
+  PROFILE_URL = (await storage.getItem<string>("local:urlProfile")) || "";
+};
 
 type ArcadeData = {
   userDetails?: {
@@ -304,7 +309,9 @@ const handleSubmit = async () => {
   }
 };
 
-const initializeEventListeners = () => {
+const initializeEventListeners = async () => {
+  await initializeProfileUrl();
+  
   document.querySelectorAll(".refresh-button").forEach((button) => {
     button.addEventListener("click", handleSubmit);
   });
