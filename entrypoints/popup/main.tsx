@@ -61,7 +61,10 @@ const updateAvatar = (profileImage?: string) => {
   );
 };
 
-const updateProgressBar = (totalPoints: number, nextMilestonePoints: number) => {
+const updateProgressBar = (
+  totalPoints: number,
+  nextMilestonePoints: number,
+) => {
   const progressBar = document.querySelector("#progress-bar") as HTMLDivElement;
   if (progressBar) {
     progressBar.style.width = `${(totalPoints / nextMilestonePoints) * 100}%`;
@@ -156,7 +159,12 @@ const updateUI = (data: ArcadeData) => {
     nextMilestone.points === milestones[milestones.length - 1].points;
   const currentLeague = milestones[currentLevel - 1]?.league || "MAX LEVEL";
 
-  updateLeagueInfo(currentLeague, isMaxLevel, nextMilestone.points, totalPoints);
+  updateLeagueInfo(
+    currentLeague,
+    isMaxLevel,
+    nextMilestone.points,
+    totalPoints,
+  );
   updateProgressBar(roundedArcadePoints, nextMilestone.points);
   updateLastUpdated(lastUpdated);
 };
