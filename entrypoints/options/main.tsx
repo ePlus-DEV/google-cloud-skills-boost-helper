@@ -7,10 +7,12 @@ const profileUrlInput = document.querySelector<HTMLInputElement>(
 
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-const PROFILE_URL =
-  (await storage.getItem<string>("local:urlProfile")) ||
-  profileUrlInput?.value ||
-  "";
+const initializeProfileUrl = async () => {
+  const profileUrl =
+    (await storage.getItem<string>("local:urlProfile")) ||
+    profileUrlInput?.value ||
+    "";
+};
 
 type ArcadeData = {
   userDetails?: {
@@ -109,8 +111,9 @@ const initializeEventListeners = () => {
   }
 
   if (profileUrlInput) {
-    profileUrlInput.value = PROFILE_URL;
-    console.log("Profile URL:", PROFILE_URL);
+    initializeProfileUrl().then(() => {
+      initializeEventListeners();
+    });
   }
 };
 
