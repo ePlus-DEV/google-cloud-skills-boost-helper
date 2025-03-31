@@ -211,8 +211,8 @@ const renderBadges = (badges: any[]) => {
 
   const loadMoreButton = querySelector<HTMLButtonElement>("#load-more");
   if (loadMoreButton) {
-
-    const loadMoreButtonText = querySelector<HTMLButtonElement>("#load-more-text");
+    const loadMoreButtonText =
+      querySelector<HTMLButtonElement>("#load-more-text");
     if (loadMoreButtonText) {
       loadMoreButtonText.textContent = browser.i18n.getMessage("labelLoadMore");
     }
