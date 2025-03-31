@@ -79,16 +79,16 @@ function addTooltipToUpdateButton() {
 
 /**
  * Displays a notification on the screen to remind the user to click the 'Update settings' button.
- * 
+ *
  * The notification is styled as a fixed-position element at the bottom-right corner of the screen
  * with a red background and a message indicating the required action.
- * 
+ *
  * Styling details:
  * - Positioned at the bottom-right corner of the viewport.
  * - Styled with a red background (#f8d7da) and red border (#f5c6cb).
  * - Text color is dark red (#721c24).
  * - Includes padding, border radius, and a high z-index for visibility.
- * 
+ *
  * The notification is appended to the `document.body`.
  */
 function displaySaveNotification() {
