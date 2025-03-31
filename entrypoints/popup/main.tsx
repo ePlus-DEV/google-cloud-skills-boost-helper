@@ -115,7 +115,7 @@ const updateUI = (data: ArcadeData) => {
     specialPoints = 0,
   } = arcadePoints || {};
 
-  [
+  const elementsToUpdate = [
     { selector: "#arcade-points", value: totalPoints },
     { selector: "#user-name", value: userName },
     { selector: "#league", value: league },
@@ -124,7 +124,11 @@ const updateUI = (data: ArcadeData) => {
     { selector: "#trivia-badge-count", value: triviaPoints },
     { selector: "#skill-badge-count", value: skillPoints },
     { selector: "#special-points-count", value: specialPoints },
-  ].forEach(({ selector, value }) => updateElementText(selector, value));
+  ];
+
+  elementsToUpdate.forEach(({ selector, value }) =>
+    updateElementText(selector, value),
+  );
 
   updateAvatar(profileImage);
 
@@ -159,75 +163,88 @@ const updateUI = (data: ArcadeData) => {
   updateProgressBar(roundedArcadePoints, nextMilestone.points);
   updateLastUpdated(lastUpdated);
 
+  renderBadges(badges);
+};
+
+const renderBadges = (badges: any[]) => {
   const activityElement = querySelector<HTMLDivElement>("#activity-list");
 
-  if (activityElement) {
+  if (!activityElement) return;
+
+  activityElement.innerHTML = "";
+
+  const incrementCount = 3;
+  const totalPages = Math.ceil(badges.length / incrementCount);
+  let currentPage = 1;
+
+  const renderPage = () => {
     activityElement.innerHTML = "";
+    const start = 0;
+    const end = currentPage * incrementCount;
+    badges.slice(start, end).forEach((badge: any) => {
+      const badgeContainer = document.createElement("div");
+      badgeContainer.className =
+        "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
 
-    const incrementCount = 3;
-    const totalPages = Math.ceil(badges.length / incrementCount);
-    let currentPage = 1;
-
-    const renderBadges = () => {
-      activityElement.innerHTML = ""; // Clear existing badges
-      const start = 0;
-      const end = currentPage * incrementCount;
-      badges.slice(start, end).forEach((badge: any) => {
-        const badgeContainer = document.createElement("div");
-        badgeContainer.className =
-          "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
-
-        badgeContainer.innerHTML = `
-      <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-      <div class="flex justify-between items-center">
-      <div class="flex items-center">
-        <img src="${badge.imageURL}" alt="${badge.title}" class="h-8 w-8 rounded-full border-2 border-white/50" />
-        <div class="ml-3">
-        <div class="text-white font-bold">${badge.title}</div>
-        <div class="text-sm text-gray-300">${badge.dateEarned}</div>
-        </div>
-      </div>
-      <div class="text-sm text-white">${badge.points} ${browser.i18n.getMessage(
-        "textPoints",
-      )}</div>
-      </div>
-      `;
-        activityElement.appendChild(badgeContainer);
-      });
-
-      const paginationElement =
-        querySelector<HTMLDivElement>("#pagination-info");
-      if (paginationElement) {
-        paginationElement.textContent = `${browser.i18n.getMessage(
-          "labelPage",
-        )} ${currentPage}/${totalPages}`;
-        paginationElement.classList.remove("hidden");
-      }
-    };
-
-    renderBadges();
-
-    const loadMoreButton = querySelector<HTMLButtonElement>("#load-more");
-    if (loadMoreButton) {
-      loadMoreButton.classList.remove("hidden");
-      loadMoreButton.addEventListener("click", () => {
-        if (currentPage < totalPages) {
-          currentPage++;
-          renderBadges();
-        }
-        if (currentPage === totalPages) {
-          loadMoreButton.classList.add("hidden");
-        }
-      });
-    } else {
-      activityElement.innerHTML = `
-        <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
-          <span class="text-gray-400 font-medium">${browser.i18n.getMessage(
-            "messageNoDataAvailable",
-          )}</span>
+      badgeContainer.innerHTML = `
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <img src="${badge.imageURL}" alt="${badge.title}" class="h-8 w-8 rounded-full border-2 border-white/50" />
+            <div class="ml-3">
+              <div class="text-white font-bold">${badge.title}</div>
+              <div class="text-sm text-gray-300">${badge.dateEarned}</div>
+            </div>
+          </div>
+          <div class="text-sm text-white">${badge.points} ${browser.i18n.getMessage(
+            "textPoints",
+          )}</div>
         </div>
       `;
+      activityElement.appendChild(badgeContainer);
+    });
+
+    updatePaginationInfo(currentPage, totalPages);
+  };
+
+  renderPage();
+
+  const loadMoreButton = querySelector<HTMLButtonElement>("#load-more");
+  if (loadMoreButton) {
+
+    const loadMoreButtonText = querySelector<HTMLButtonElement>("#load-more-text");
+    if (loadMoreButtonText) {
+      loadMoreButtonText.textContent = browser.i18n.getMessage("labelLoadMore");
     }
+
+    loadMoreButton.classList.remove("hidden");
+    loadMoreButton.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPage();
+      }
+      if (currentPage === totalPages) {
+        loadMoreButton.classList.add("hidden");
+      }
+    });
+  } else {
+    activityElement.innerHTML = `
+      <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
+        <span class="text-gray-400 font-medium">${browser.i18n.getMessage(
+          "messageNoDataAvailable",
+        )}</span>
+      </div>
+    `;
+  }
+};
+
+const updatePaginationInfo = (currentPage: number, totalPages: number) => {
+  const paginationElement = querySelector<HTMLDivElement>("#pagination-info");
+  if (paginationElement) {
+    paginationElement.textContent = `${browser.i18n.getMessage(
+      "labelPage",
+    )} ${currentPage}/${totalPages}`;
+    paginationElement.classList.remove("hidden");
   }
 };
 
