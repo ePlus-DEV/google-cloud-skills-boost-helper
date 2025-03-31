@@ -18,15 +18,11 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@fortawesome/duotone-regular-svg-icons": "^6.7.2",
-    "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
     "@tailwindcss/vite": "^4.0.16",
     "@wxt-dev/storage": "^1.1.1",
     "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.5.2",
     "tailwindcss": "^4.0.16"
   },
   "devDependencies": {
