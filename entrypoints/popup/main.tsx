@@ -267,7 +267,7 @@ const init = async () => {
 };
 
 const displayUserDetails = async (data: ArcadeData) => {
-  const lastUpdated = new Date().toISOString();;
+  const lastUpdated = new Date().toISOString();
   const updatedData = { ...data, lastUpdated };
   await storage.setItem("local:arcadeData", updatedData);
   updateUI(updatedData);
