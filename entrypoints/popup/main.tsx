@@ -171,11 +171,9 @@ const updateUI = (data: ArcadeData) => {
   const activityElement = document.querySelector("#activity-list");
 
   if (activityElement) {
-
     activityElement.innerHTML = "";
-    
-    if (badges && badges.length > 0) {
 
+    if (badges && badges.length > 0) {
       interface Badge {
         imageURL: string;
         title: string;
@@ -274,14 +272,15 @@ const updateUI = (data: ArcadeData) => {
       );
 
       const noDataText = document.createElement("span");
-      noDataText.textContent = browser.i18n.getMessage("messageNoDataAvailable");
+      noDataText.textContent = browser.i18n.getMessage(
+        "messageNoDataAvailable",
+      );
       noDataText.classList.add("text-gray-400", "font-medium");
 
       noDataMessage.appendChild(noDataText);
       activityElement.appendChild(noDataMessage);
     }
   }
-
 };
 
 const init = async () => {
