@@ -23,6 +23,9 @@ type ArcadeData = {
   lastUpdated?: Date;
 };
 
+const querySelector = <T extends HTMLElement>(selector: string): T | null =>
+  document.querySelector(selector);
+
 const toggleClass = (
   elements: NodeListOf<HTMLElement>,
   className: string,
@@ -43,17 +46,15 @@ const fetchData = async (url: string) => {
   }
 };
 
-const updateElements = (elements: { selector: string; value: any }[]) => {
-  elements.forEach(({ selector, value }) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.textContent = value?.toString() || "N/A";
-    }
-  });
+const updateElementText = (selector: string, value: any) => {
+  const element = querySelector(selector);
+  if (element) {
+    element.textContent = value?.toString() || "N/A";
+  }
 };
 
 const updateAvatar = (profileImage?: string) => {
-  const avatarElement = document.querySelector("#user-avatar");
+  const avatarElement = querySelector<HTMLImageElement>("#user-avatar");
   avatarElement?.setAttribute(
     "src",
     profileImage ||
@@ -65,7 +66,7 @@ const updateProgressBar = (
   totalPoints: number,
   nextMilestonePoints: number,
 ) => {
-  const progressBar = document.querySelector("#progress-bar") as HTMLDivElement;
+  const progressBar = querySelector<HTMLDivElement>("#progress-bar");
   if (progressBar) {
     progressBar.style.width = `${(totalPoints / nextMilestonePoints) * 100}%`;
   }
@@ -77,40 +78,30 @@ const updateLeagueInfo = (
   nextMilestonePoints: number,
   totalPoints: number,
 ) => {
-  const leagueElement = document.querySelector(
+  updateElementText(
     "#current-level",
-  ) as HTMLSpanElement;
-  if (leagueElement) {
-    leagueElement.textContent = `${browser.i18n.getMessage(
-      "textCurrentLevel",
-    )}: ${currentLeague}`;
-  }
+    `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
+  );
 
-  const nextLevelElement = document.querySelector(
+  updateElementText(
     "#next-level",
-  ) as HTMLSpanElement;
-  if (nextLevelElement) {
-    nextLevelElement.textContent = isMaxLevel
+    isMaxLevel
       ? chrome.i18n.getMessage("textMaxLevel")
       : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
           nextMilestonePoints - totalPoints
-        } ${browser.i18n.getMessage("textPoints")}`;
-  }
+        } ${browser.i18n.getMessage("textPoints")}`,
+  );
 };
 
 const updateLastUpdated = (lastUpdated?: Date) => {
-  const lastUpdatedElement = document.querySelector(
+  updateElementText(
     "#last-updated",
-  ) as HTMLSpanElement;
-  if (lastUpdatedElement) {
-    lastUpdatedElement.textContent = `${browser.i18n.getMessage(
-      "labelLastUpdated",
-    )}: ${
+    `${browser.i18n.getMessage("labelLastUpdated")}: ${
       lastUpdated
         ? new Date(lastUpdated).toLocaleString(navigator.language)
         : "N/A"
-    }`;
-  }
+    }`,
+  );
 };
 
 const updateUI = (data: ArcadeData) => {
@@ -124,7 +115,7 @@ const updateUI = (data: ArcadeData) => {
     specialPoints = 0,
   } = arcadePoints || {};
 
-  updateElements([
+  [
     { selector: "#arcade-points", value: totalPoints },
     { selector: "#user-name", value: userName },
     { selector: "#league", value: league },
@@ -133,7 +124,7 @@ const updateUI = (data: ArcadeData) => {
     { selector: "#trivia-badge-count", value: triviaPoints },
     { selector: "#skill-badge-count", value: skillPoints },
     { selector: "#special-points-count", value: specialPoints },
-  ]);
+  ].forEach(({ selector, value }) => updateElementText(selector, value));
 
   updateAvatar(profileImage);
 
@@ -168,117 +159,42 @@ const updateUI = (data: ArcadeData) => {
   updateProgressBar(roundedArcadePoints, nextMilestone.points);
   updateLastUpdated(lastUpdated);
 
-  const activityElement = document.querySelector("#activity-list");
+  const activityElement = querySelector<HTMLDivElement>("#activity-list");
 
   if (activityElement) {
     activityElement.innerHTML = "";
 
     if (badges && badges.length > 0) {
-      interface Badge {
-        imageURL: string;
-        title: string;
-        dateEarned: string;
-        points: number;
-      }
-
-      badges.forEach((badge: Badge) => {
+      badges.forEach((badge: any) => {
         const badgeContainer = document.createElement("div");
-        badgeContainer.classList.add(
-          "bg-white/10",
-          "backdrop-blur-md",
-          "rounded-xl",
-          "p-3",
-          "hover:bg-white/20",
-          "transition-colors",
-          "duration-300",
-          "relative",
-          "overflow-hidden",
-          "group",
-        );
+        badgeContainer.className =
+          "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
 
-        const gradientOverlay = document.createElement("div");
-        gradientOverlay.classList.add(
-          "absolute",
-          "inset-0",
-          "bg-gradient-to-br",
-          "from-blue-500",
-          "to-indigo-500",
-          "opacity-0",
-          "group-hover:opacity-20",
-          "transition-opacity",
-          "duration-300",
-        );
-        badgeContainer.appendChild(gradientOverlay);
-
-        const badgeContent = document.createElement("div");
-        badgeContent.classList.add("flex", "justify-between", "items-center");
-
-        const badgeInfo = document.createElement("div");
-        badgeInfo.classList.add("flex", "items-center");
-
-        const badgeImage = document.createElement("img");
-        badgeImage.src = badge.imageURL;
-        badgeImage.alt = badge.title;
-        badgeImage.classList.add(
-          "h-8",
-          "w-8",
-          "rounded-full",
-          "border-2",
-          "border-white/50",
-        );
-
-        const badgeDetails = document.createElement("div");
-        badgeDetails.classList.add("ml-3");
-
-        const badgeTitle = document.createElement("div");
-        badgeTitle.textContent = badge.title;
-        badgeTitle.classList.add("text-white", "font-bold");
-
-        const badgeDate = document.createElement("div");
-        badgeDate.textContent = badge.dateEarned;
-        badgeDate.classList.add("text-sm", "text-gray-300");
-
-        badgeDetails.appendChild(badgeTitle);
-        badgeDetails.appendChild(badgeDate);
-
-        badgeInfo.appendChild(badgeImage);
-        badgeInfo.appendChild(badgeDetails);
-
-        const badgePoints = document.createElement("div");
-        badgePoints.textContent = `${badge.points} ${browser.i18n.getMessage(
-          "textPoints",
-        )}`;
-        badgePoints.classList.add("text-sm", "text-white");
-
-        badgeContent.appendChild(badgeInfo);
-        badgeContent.appendChild(badgePoints);
-
-        badgeContainer.appendChild(badgeContent);
-
+        badgeContainer.innerHTML = `
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+          <div class="flex justify-between items-center">
+            <div class="flex items-center">
+              <img src="${badge.imageURL}" alt="${badge.title}" class="h-8 w-8 rounded-full border-2 border-white/50" />
+              <div class="ml-3">
+                <div class="text-white font-bold">${badge.title}</div>
+                <div class="text-sm text-gray-300">${badge.dateEarned}</div>
+              </div>
+            </div>
+            <div class="text-sm text-white">${badge.points} ${browser.i18n.getMessage(
+              "textPoints",
+            )}</div>
+          </div>
+        `;
         activityElement.appendChild(badgeContainer);
       });
     } else {
-      const noDataMessage = document.createElement("div");
-      noDataMessage.classList.add(
-        "text-center",
-        "bg-gradient-to-r",
-        "from-gray-800",
-        "via-gray-900",
-        "to-black",
-        "py-4",
-        "px-6",
-        "rounded-xl",
-        "shadow-sm",
-      );
-
-      const noDataText = document.createElement("span");
-      noDataText.textContent = browser.i18n.getMessage(
-        "messageNoDataAvailable",
-      );
-      noDataText.classList.add("text-gray-400", "font-medium");
-
-      noDataMessage.appendChild(noDataText);
-      activityElement.appendChild(noDataMessage);
+      activityElement.innerHTML = `
+        <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
+          <span class="text-gray-400 font-medium">${browser.i18n.getMessage(
+            "messageNoDataAvailable",
+          )}</span>
+        </div>
+      `;
     }
   }
 };
@@ -290,14 +206,12 @@ const init = async () => {
     (await storage.getItem("local:urlProfile")) || "";
 
   if (!localUrlProfile) {
-    const settingsMessageElement = document.querySelector("#settings-message");
-    if (settingsMessageElement) {
-      settingsMessageElement.textContent = browser.i18n.getMessage(
-        "textPleaseSetUpTheSettings",
-      );
-    }
-    document.querySelector("#popup-content")?.classList.add("blur-sm");
-    document.querySelector("#auth-screen")?.classList.remove("invisible");
+    updateElementText(
+      "#settings-message",
+      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
+    );
+    querySelector("#popup-content")?.classList.add("blur-sm");
+    querySelector("#auth-screen")?.classList.remove("invisible");
   } else {
     updateUI(localArcadeData);
   }
