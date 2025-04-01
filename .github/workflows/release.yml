@@ -21,11 +21,6 @@ jobs:
         with:
           node-version: 22.x
 
-      - name: Create .npmrc file
-        run: |
-          echo "@fortawesome:registry=https://npm.fontawesome.com/" > ~/.npmrc
-          echo "//npm.fontawesome.com/:_authToken=${{ secrets.FONTAWESOME_TOKEN }}" >> ~/.npmrc
-
       - name: Cache yarn dependencies
         uses: actions/cache@v4
         with:
@@ -39,11 +34,10 @@ jobs:
 
       - name: Build the extension
         run: |
-          yarn build --target=chrome-mv3 --zip
-          yarn build --target=firefox-mv3 --zip
-          yarn build --target=edge-mv3 --zip
-          yarn build --target=opera-mv3 --zip
-          yarn build --target=safari-mv3 --zip
+          yarn zip
+          yarn zip:firefox --mv3
+          yarn zip -b edge
+          yarn zip -b opera
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -52,5 +46,9 @@ jobs:
           name: "v.${{ github.ref_name }}"
           draft: true
           generate_release_notes: true
+          body_path: INSTALL.md
           files: |
-            build/*.zip
+            .output/*-chrome.zip
+            .output/*-firefox.zip
+            .output/*-edge.zip
+            .output/*-opera.zip
