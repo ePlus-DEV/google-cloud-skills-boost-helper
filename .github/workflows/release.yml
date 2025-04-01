@@ -48,7 +48,7 @@ jobs:
           generate_release_notes: true
           body_path: INSTALL.md
           files: |
-            .output/*-chrome.zip /
-            .output/*-firefox.zip /
-            .output/*-edge.zip /
+            .output/*-chrome.zip
+            .output/*-firefox.zip
+            .output/*-edge.zip
             .output/*-opera.zip
