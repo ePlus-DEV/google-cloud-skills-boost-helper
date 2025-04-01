@@ -39,7 +39,7 @@ jobs:
           yarn zip -b edge
           yarn zip -b opera
           yarn build -b safari --mv3
-          xcrun safari-web-extension-converter .output/safari-mv3
+          xcrun safari-web-extension-converter .output/safari-mv3 --output-package --no-open
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -55,3 +55,5 @@ jobs:
             .output/*-edge.zip
             .output/*-opera.zip
             .output/safari-mv3/*.safariextz
+            .output/safari-mv3/*.app
+            .output/safari-mv3/*.xcarchive
