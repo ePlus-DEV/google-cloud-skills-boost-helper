@@ -1,8 +1,8 @@
 {
-  "extensionName": {
+  "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
-  "extensionDescription": {
+  "extDescription": {
     "message": "Automatically modifies CloudSkillsBoost Labs with toggle options."
   },
   "optionsPageTitle": {
@@ -34,6 +34,9 @@
   },
   "labelSave": {
     "message": "Save"
+  },
+  "labelLoading": {
+    "message": "Loading..."
   },
   "messageNoDataAvailable": {
     "message": "No data available"
@@ -70,5 +73,11 @@
   },
   "textPleaseSetUpTheSettings": {
     "message": "Please set up the settings"
+  },
+  "errorInvalidUrl": {
+    "message": "Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/xxx"
+  },
+  "successSettingsSaved": {
+    "message": "Settings saved successfully!"
   }
 }
