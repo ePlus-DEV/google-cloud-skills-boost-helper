@@ -6,7 +6,7 @@
 </h1>
 <p align="center">
     <sub>
-        CloudSkills AutoScript is a Chrome extension that automatically modifies CloudSkillsBoost Labs with toggle options.
+        A browser extension designed to optimize your learning experience on Google Cloud Skills Boost.
     </sub>
 </p>
 
@@ -21,6 +21,7 @@
 
 ***
 
+* [Introduction](#introduction)
 * [Installation](#installation)
   * [Firefox](#firefox)
   * [Chromium](#chromium)
@@ -28,6 +29,18 @@
 * [Contributing](#contributing)
 * [Support](#support)
 * [Disclaimer](#disclaimer)
+
+## Introduction
+
+We are excited to introduce Google Cloud Skills Boost - Helper, a browser extension designed to optimize your learning experience on Google Cloud Skills Boost. With a range of useful features, this tool makes it easier to track progress, calculate Arcade points, and manage leaderboards efficiently!
+
+### Key Features
+
+🎯 **Arcade Points Calculator** – Automatically calculates and displays your Arcade points.
+
+📊 **Scoreboard with Quick Actions** – Easily track your scores and take quick actions.
+
+👁 **Toggle Leaderboard Visibility** – Customize the display of the leaderboard as needed.
 
 ## Installation
 
