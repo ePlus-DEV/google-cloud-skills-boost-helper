@@ -7,7 +7,7 @@ const profileUrlInput = document.querySelector<HTMLInputElement>(
 
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-  
+
 const initializeProfileUrl = async (): Promise<string> => {
   const profileUrl =
     (await storage.getItem<string>("local:urlProfile")) ||
