@@ -8,6 +8,16 @@ const profileUrlInput = document.querySelector<HTMLInputElement>(
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
   
+/**
+ * Asynchronously initializes and retrieves the profile URL.
+ *
+ * This function attempts to retrieve the profile URL from local storage using the key
+ * "local:urlProfile". If no value is found in storage, it falls back to the value of
+ * the `profileUrlInput` element (if available). If neither source provides a value,
+ * it defaults to an empty string.
+ *
+ * @returns {Promise<string>} A promise that resolves to the profile URL as a string.
+ */
 const initializeProfileUrl = async (): Promise<string> => {
   const profileUrl =
     (await storage.getItem<string>("local:urlProfile")) ||
