@@ -7,7 +7,7 @@ const profileUrlInput = document.querySelector<HTMLInputElement>(
 
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-  
+
 /**
  * Asynchronously initializes and retrieves the profile URL.
  *
