@@ -7,11 +7,23 @@ const profileUrlInput = document.querySelector<HTMLInputElement>(
 
 const API_URL =
   "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-const initializeProfileUrl = async () => {
+
+/**
+ * Asynchronously initializes and retrieves the profile URL.
+ *
+ * This function attempts to retrieve the profile URL from local storage using the key
+ * "local:urlProfile". If no value is found in storage, it falls back to the value of
+ * the `profileUrlInput` element (if available). If neither source provides a value,
+ * it defaults to an empty string.
+ *
+ * @returns {Promise<string>} A promise that resolves to the profile URL as a string.
+ */
+const initializeProfileUrl = async (): Promise<string> => {
   const profileUrl =
     (await storage.getItem<string>("local:urlProfile")) ||
     profileUrlInput?.value ||
     "";
+  return profileUrl;
 };
 
 type ArcadeData = {
@@ -110,10 +122,17 @@ const initializeEventListeners = () => {
     submitUrlElement.addEventListener("click", handleSubmit);
   }
 
-  if (profileUrlInput) {
-    initializeProfileUrl().then(() => {
-      initializeEventListeners();
-    });
+  initializeProfileUrl().then((profileUrl) => {
+    if (profileUrlInput) {
+      profileUrlInput.value = profileUrl;
+    }
+  });
+
+  const manifest = browser.runtime.getManifest();
+  const version = manifest.version;
+  const versionElement = document.querySelector("#version-number");
+  if (versionElement) {
+    versionElement.textContent = `${version}`;
   }
 };
 
