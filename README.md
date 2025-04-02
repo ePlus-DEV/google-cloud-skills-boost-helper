@@ -10,25 +10,25 @@
     </sub>
 </p>
 
-***
+---
 
 | [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) | [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) | [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-***
+---
 
 ![postspark_export_2025-03-12_16-00-50](https://github.com/user-attachments/assets/a01c7592-8c29-4002-9f27-3375df34bbdd)
 
-***
+---
 
-* [Introduction](#introduction)
-* [Installation](#installation)
-  * [Firefox](#firefox)
-  * [Chromium](#chromium)
-* [About](#about)
-* [Contributing](#contributing)
-* [Support](#support)
-* [Disclaimer](#disclaimer)
+- [Introduction](#introduction)
+- [Installation](#installation)
+  - [Firefox](#firefox)
+  - [Chromium](#chromium)
+- [About](#about)
+- [Contributing](#contributing)
+- [Support](#support)
+- [Disclaimer](#disclaimer)
 
 ## Introduction
 
@@ -88,7 +88,6 @@ This project is not affiliated with or endorsed by Google. All trademarks and lo
 [Chrome]: https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=github
 [Opera]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 [Edge]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
-
 [License]: LICENSE.md
 
 <!---------------------------------[ Internal ]-------------------------------->
