@@ -112,11 +112,18 @@ const initializeEventListeners = () => {
     submitUrlElement.addEventListener("click", handleSubmit);
   }
 
-    initializeProfileUrl().then((profileUrl) => {
-      if (profileUrlInput) {
-        profileUrlInput.value = profileUrl;
-      }
-    });
+  initializeProfileUrl().then((profileUrl) => {
+    if (profileUrlInput) {
+      profileUrlInput.value = profileUrl;
+    }
+  });
+
+  const manifest = browser.runtime.getManifest();
+  const version = manifest.version;
+  const versionElement = document.querySelector("#version-number");
+  if (versionElement) {
+    versionElement.textContent = `${version}`;
+  }
 };
 
 initializeEventListeners();
