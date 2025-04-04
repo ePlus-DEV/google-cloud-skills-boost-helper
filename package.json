@@ -18,9 +18,11 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.5",
     "@tailwindcss/vite": "^4.0.16",
     "@wxt-dev/storage": "^1.1.1",
     "axios": "^1.8.4",
+    "graphql": "^16.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.16"

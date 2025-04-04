@@ -1,4 +1,83 @@
 import type { ContentScriptContext } from "wxt/client";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: "https://gql.hashnode.com/",
+  cache: new InMemoryCache(),
+});
+
+// Define the GraphQL query
+const SEARCH_POSTS_QUERY = gql`
+  query SearchPostsOfPublication(
+    $first: Int!
+    $filter: SearchPostsOfPublicationFilter!
+    $after: String
+  ) {
+    searchPostsOfPublication(first: $first, after: $after, filter: $filter) {
+      edges {
+        cursor
+        node {
+          id
+          brief
+          title
+          cuid
+          slug
+          reactionCount
+          publishedAt
+          url
+          coverImage {
+            url
+          }
+          author {
+            id
+            name
+          }
+          publication {
+            title
+            url
+          }
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`;
+
+// Function to fetch posts of a publication
+async function fetchPostsOfPublicationOnce(
+  publicationId: string,
+  query: string,
+  first: number = 10,
+  after: string | null = null
+) {
+  let fetched = false;
+
+  if (!fetched) {
+    fetched = true;
+    try {
+      const { data } = await client.query({
+        query: SEARCH_POSTS_QUERY,
+        variables: {
+          first,
+          filter: {
+            publicationId,
+            query,
+          },
+          after,
+        },
+      });
+
+      console.log("Posts Data:", data.searchPostsOfPublication);
+      return data.searchPostsOfPublication;
+    } catch (error) {
+      console.error("Error fetching posts of publication:", error);
+    }
+  }
+}
 
 export default defineContentScript({
   matches: [
@@ -8,6 +87,55 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
+    const labLeaderboardElement = document.querySelector("#step1");
+    const labLeaderboardText = labLeaderboardElement?.textContent || "";
+
+    if (labLeaderboardText) {
+      console.log("Lab Leaderboard Text:", labLeaderboardText);
+      const postsData = await fetchPostsOfPublicationOnce(
+        "5f9b8b3a63809957bd8ec5a8",
+        labLeaderboardText
+      );
+
+      const firstPostUrl =
+        postsData?.edges?.[0]?.node?.url ?? "javascript:void(0);";
+
+      const outlineContainer = document
+        .querySelector(".lab-content__outline.js-lab-content-outline")
+        ?.closest("ul");
+
+      if (!outlineContainer) {
+        console.warn("Outline container <ul> element not found.");
+        return;
+      }
+
+      const solutionElement = document.createElement("li");
+      Object.assign(solutionElement, {});
+      Object.assign(solutionElement.style, {
+        marginTop: "10px",
+        backgroundColor: "#e8f0fe", // Light blue background
+        border: "1px solid #d2e3fc", // Blue border
+        borderRadius: "5px",
+        padding: "5px",
+      });
+
+      const solutionLink = document.createElement("a");
+      Object.assign(solutionLink, {
+        href: firstPostUrl,
+        textContent: "Solution to this lab",
+        target: "_blank",
+        title: "Click to view the solution for this lab",
+        style: {
+          textDecoration: "underline",
+          color: "#007bff",
+          fontWeight: "bold",
+        },
+      });
+
+      solutionElement.appendChild(solutionLink);
+      outlineContainer.appendChild(solutionElement);
+    }
+
     const ui = await createShadowRootUi(ctx, {
       name: "tailwind-shadow-root-example",
       position: "inline",
@@ -30,17 +158,17 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked",
+            "#public_profile_checked"
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
+              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
             );
             updateSettingsButton?.setAttribute(
               "title",
-              "Click to update your settings",
+              "Click to update your settings"
             );
 
             const saveNotification = document.createElement("div");
