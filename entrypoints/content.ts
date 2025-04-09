@@ -93,7 +93,7 @@ export default defineContentScript({
     if (labLeaderboardText) {
       const postsData = await fetchPostsOfPublicationOnce(
         "5f9b8b3a63809957bd8ec5a8",
-        labLeaderboardText
+        labLeaderboardText,
       );
 
       const firstPostUrl = postsData?.edges?.[0]?.node?.url
@@ -186,17 +186,17 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked"
+            "#public_profile_checked",
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
+              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
             );
             updateSettingsButton?.setAttribute(
               "title",
-              "Click to update your settings"
+              "Click to update your settings",
             );
 
             const saveNotification = document.createElement("div");
