@@ -1,9 +1,6 @@
 import axios from "axios";
 
 const SPINNER_CLASS = "animate-spin";
-const API_URL =
-  "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
-
 let PROFILE_URL = "";
 
 const initializeProfileUrl = async () => {
@@ -44,7 +41,7 @@ const toggleButtonState = (
 
 const fetchData = async (url: string) => {
   try {
-    return await axios.post(API_URL, { url });
+    return await axios.post(import.meta.env.WXT_ARCADE_POINT_URL, { url });
   } catch (error) {
     console.error("Error submitting URL:", error);
     throw error;
