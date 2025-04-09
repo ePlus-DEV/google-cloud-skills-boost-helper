@@ -51,7 +51,7 @@ const SEARCH_POSTS_QUERY = gql`
 async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
-  first: number = 10,
+  first = 10,
   after: string | null = null
 ) {
   let fetched = false;
@@ -70,13 +70,13 @@ async function fetchPostsOfPublicationOnce(
           after,
         },
       });
-
-      console.log("Posts Data:", data.searchPostsOfPublication);
       return data.searchPostsOfPublication;
     } catch (error) {
       console.error("Error fetching posts of publication:", error);
+      return null;
     }
   }
+  return null;
 }
 
 export default defineContentScript({
@@ -91,13 +91,14 @@ export default defineContentScript({
     const labLeaderboardText = labLeaderboardElement?.textContent || "";
 
     if (labLeaderboardText) {
-      console.log("Lab Leaderboard Text:", labLeaderboardText);
       const postsData = await fetchPostsOfPublicationOnce(
         "5f9b8b3a63809957bd8ec5a8",
         labLeaderboardText
       );
 
-      const firstPostUrl = postsData?.edges?.[0]?.node?.url ?? null;
+      const firstPostUrl = postsData?.edges?.[0]?.node?.url
+        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
+        : null;
 
       const outlineContainer = document
         .querySelector(".lab-content__outline.js-lab-content-outline")
