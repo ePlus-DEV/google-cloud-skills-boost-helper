@@ -81,8 +81,9 @@ async function fetchPostsOfPublicationOnce(
 export default defineContentScript({
   matches: [
     "https://www.cloudskillsboost.google/games/*/labs/*",
-    "https://www.cloudskillsboost.google/my_account/profile*",
     "https://www.cloudskillsboost.google/course_templates/*/labs/*",
+    "https://www.cloudskillsboost.google/focuses/*",
+    "https://www.cloudskillsboost.google/my_account/profile*",
   ],
   cssInjectionMode: "ui",
 
