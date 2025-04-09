@@ -1,4 +1,83 @@
 import type { ContentScriptContext } from "wxt/client";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: import.meta.env.WXT_API_URL,
+  cache: new InMemoryCache(),
+});
+
+// Define the GraphQL query
+const SEARCH_POSTS_QUERY = gql`
+  query SearchPostsOfPublication(
+    $first: Int!
+    $filter: SearchPostsOfPublicationFilter!
+    $after: String
+  ) {
+    searchPostsOfPublication(first: $first, after: $after, filter: $filter) {
+      edges {
+        cursor
+        node {
+          id
+          brief
+          title
+          cuid
+          slug
+          reactionCount
+          publishedAt
+          url
+          coverImage {
+            url
+          }
+          author {
+            id
+            name
+          }
+          publication {
+            title
+            url
+          }
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`;
+
+// Function to fetch posts of a publication
+async function fetchPostsOfPublicationOnce(
+  publicationId: string,
+  query: string,
+  first = 10,
+  after: string | null = null,
+) {
+  let fetched = false;
+
+  if (!fetched) {
+    fetched = true;
+    try {
+      const { data } = await client.query({
+        query: SEARCH_POSTS_QUERY,
+        variables: {
+          first,
+          filter: {
+            publicationId,
+            query,
+          },
+          after,
+        },
+      });
+      return data.searchPostsOfPublication;
+    } catch (error) {
+      console.error("Error fetching posts of publication:", error);
+      return null;
+    }
+  }
+  return null;
+}
 
 export default defineContentScript({
   matches: [
@@ -8,6 +87,83 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
+    const labLeaderboardElement = document.querySelector("#step1");
+    const labLeaderboardText = labLeaderboardElement?.textContent || "";
+
+    if (labLeaderboardText) {
+      const postsData = await fetchPostsOfPublicationOnce(
+        import.meta.env.WXT_API_KEY,
+        labLeaderboardText,
+      );
+
+      const firstPostUrl = postsData?.edges?.[0]?.node?.url
+        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
+        : null;
+
+      const outlineContainer = document
+        .querySelector(".lab-content__outline.js-lab-content-outline")
+        ?.closest("ul");
+
+      if (!outlineContainer) {
+        console.warn("Outline container <ul> element not found.");
+        return;
+      }
+
+      const solutionElement = document.createElement("li");
+      Object.assign(solutionElement.style, {
+        marginTop: "15px",
+        backgroundColor: "#f0f9ff",
+        border: "1px solid #b6e0fe",
+        borderRadius: "8px",
+        padding: "10px",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      });
+
+      if (firstPostUrl) {
+        const solutionLink = document.createElement("a");
+        Object.assign(solutionLink, {
+          href: firstPostUrl,
+          textContent: "Solution for this Lab",
+          target: "_blank",
+          title: "Click to view the solution for this lab",
+          style: {
+            textDecoration: "none",
+            color: "#0056b3",
+            fontWeight: "bold",
+            fontSize: "14px",
+            display: "inline-block",
+            padding: "5px 10px",
+            backgroundColor: "#e3f2fd",
+            borderRadius: "5px",
+            transition: "background-color 0.3s, color 0.3s",
+          },
+        });
+
+        solutionLink.addEventListener("mouseover", () => {
+          solutionLink.style.backgroundColor = "#bbdefb";
+          solutionLink.style.color = "#003c8f";
+        });
+
+        solutionLink.addEventListener("mouseout", () => {
+          solutionLink.style.backgroundColor = "#e3f2fd";
+          solutionLink.style.color = "#0056b3";
+        });
+
+        solutionElement.appendChild(solutionLink);
+      } else {
+        solutionElement.textContent = "No solution available.";
+        Object.assign(solutionElement.style, {
+          color: "#d32f2f",
+          fontWeight: "bold",
+          fontSize: "14px",
+          textAlign: "center",
+        });
+      }
+
+      outlineContainer.appendChild(solutionElement);
+    }
+
     const ui = await createShadowRootUi(ctx, {
       name: "tailwind-shadow-root-example",
       position: "inline",
