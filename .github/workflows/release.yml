@@ -11,7 +11,9 @@ jobs:
     name: Build and Release
     runs-on: macos-latest
     env:
-      PLASMO_TAG: ${{ github.ref_name }}
+      WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
+      WXT_API_URL: ${{ secrets.WXT_API_URL }}
+      WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,7 +26,7 @@ jobs:
       - name: Cache yarn dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.yarn/cache
+          path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-cache-
