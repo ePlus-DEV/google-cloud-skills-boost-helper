@@ -52,7 +52,7 @@ async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
   first = 10,
-  after: string | null = null
+  after: string | null = null,
 ) {
   let fetched = false;
 
