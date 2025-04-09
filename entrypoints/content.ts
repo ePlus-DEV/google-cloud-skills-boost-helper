@@ -97,8 +97,7 @@ export default defineContentScript({
         labLeaderboardText
       );
 
-      const firstPostUrl =
-        postsData?.edges?.[0]?.node?.url ?? "javascript:void(0);";
+      const firstPostUrl = postsData?.edges?.[0]?.node?.url ?? null;
 
       const outlineContainer = document
         .querySelector(".lab-content__outline.js-lab-content-outline")
@@ -110,29 +109,37 @@ export default defineContentScript({
       }
 
       const solutionElement = document.createElement("li");
-      Object.assign(solutionElement, {});
       Object.assign(solutionElement.style, {
         marginTop: "10px",
-        backgroundColor: "#e8f0fe", // Light blue background
-        border: "1px solid #d2e3fc", // Blue border
+        backgroundColor: "#e8f0fe",
+        border: "1px solid #d2e3fc",
         borderRadius: "5px",
         padding: "5px",
       });
 
-      const solutionLink = document.createElement("a");
-      Object.assign(solutionLink, {
-        href: firstPostUrl,
-        textContent: "Solution to this lab",
-        target: "_blank",
-        title: "Click to view the solution for this lab",
-        style: {
-          textDecoration: "underline",
-          color: "#007bff",
-          fontWeight: "bold",
-        },
-      });
+      if (firstPostUrl) {
+        const solutionLink = document.createElement("a");
+        Object.assign(solutionLink, {
+          href: firstPostUrl,
+          textContent: "Solution to this lab",
+          target: "_blank",
+          title: "Click to view the solution for this lab",
+          style: {
+            textDecoration: "underline",
+            color: "#007bff",
+            fontWeight: "bold",
+          },
+        });
 
-      solutionElement.appendChild(solutionLink);
+        solutionElement.appendChild(solutionLink);
+      } else {
+        solutionElement.textContent = "No solution.";
+        Object.assign(solutionElement.style, {
+          color: "#721c24",
+          fontWeight: "bold",
+        });
+      }
+
       outlineContainer.appendChild(solutionElement);
     }
 
