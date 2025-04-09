@@ -1,4 +1,3 @@
-import type { ContentScriptContext } from "wxt/client";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 // Initialize Apollo Client
@@ -82,18 +81,22 @@ async function fetchPostsOfPublicationOnce(
 export default defineContentScript({
   matches: [
     "https://www.cloudskillsboost.google/games/*/labs/*",
+    "https://www.cloudskillsboost.google/course_templates/*/labs/*",
+    "https://www.cloudskillsboost.google/focuses/*",
     "https://www.cloudskillsboost.google/my_account/profile*",
   ],
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    const labLeaderboardElement = document.querySelector("#step1");
-    const labLeaderboardText = labLeaderboardElement?.textContent || "";
+    const labElement = document.querySelector(
+      "h1.ql-display-large.lab-preamble__title",
+    );
+    const labElementText = labElement?.textContent || "";
 
-    if (labLeaderboardText) {
+    if (labElementText) {
       const postsData = await fetchPostsOfPublicationOnce(
         import.meta.env.WXT_API_KEY,
-        labLeaderboardText,
+        labElementText,
       );
 
       const firstPostUrl = postsData?.edges?.[0]?.node?.url
