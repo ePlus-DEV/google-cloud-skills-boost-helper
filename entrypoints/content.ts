@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 // Initialize Apollo Client
 const client = new ApolloClient({
-  uri: "https://gql.hashnode.com/",
+  uri: import.meta.env.WXT_API_URL,
   cache: new InMemoryCache(),
 });
 
@@ -92,8 +92,8 @@ export default defineContentScript({
 
     if (labLeaderboardText) {
       const postsData = await fetchPostsOfPublicationOnce(
-        "5f9b8b3a63809957bd8ec5a8",
-        labLeaderboardText,
+        import.meta.env.WXT_API_KEY,
+        labLeaderboardText
       );
 
       const firstPostUrl = postsData?.edges?.[0]?.node?.url
@@ -186,17 +186,17 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked",
+            "#public_profile_checked"
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
+              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
             );
             updateSettingsButton?.setAttribute(
               "title",
-              "Click to update your settings",
+              "Click to update your settings"
             );
 
             const saveNotification = document.createElement("div");
