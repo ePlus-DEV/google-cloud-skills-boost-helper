@@ -1,4 +1,3 @@
-import type { ContentScriptContext } from "wxt/client";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 // Initialize Apollo Client
@@ -83,11 +82,14 @@ export default defineContentScript({
   matches: [
     "https://www.cloudskillsboost.google/games/*/labs/*",
     "https://www.cloudskillsboost.google/my_account/profile*",
+    "https://www.cloudskillsboost.google/course_templates/*/labs/*",
   ],
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    const labElement = document.querySelector("h1");
+    const labElement = document.querySelector(
+      "h1.ql-display-large.lab-preamble__title"
+    );
     const labElementText = labElement?.textContent || "";
 
     if (labElementText) {
