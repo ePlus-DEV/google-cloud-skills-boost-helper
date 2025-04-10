@@ -172,7 +172,7 @@ export default defineContentScript({
           }
         } else if (pathname === "/my_account/profile") {
           const publicProfileElement = document.querySelector(
-            ".ql-body-medium.public-profile.public"
+            ".ql-body-medium.public-profile.public",
           );
 
           if (publicProfileElement) {
