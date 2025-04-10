@@ -79,5 +79,8 @@
   },
   "successSettingsSaved": {
     "message": "Settings saved successfully!"
+  },
+  "notePleaseSetUpTheSettings": {
+    "message": "<strong>Note:</strong> <br>⚠️ You have enabled the <strong>\"Make profile public\"</strong> option, but haven't saved the changes yet.<br>👉 Please click the <strong>\"Update settings\"</strong> button to confirm and save your new settings.<br>❌ If you don't save, your profile will <strong>not be made public</strong> and the link will not be generated."
   }
 }
