@@ -51,7 +51,7 @@ async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
   first = 10,
-  after: string | null = null
+  after: string | null = null,
 ) {
   let fetched = false;
 
@@ -90,13 +90,13 @@ export default defineContentScript({
   async main(ctx) {
     if (
       window.location.href.startsWith(
-        "https://www.cloudskillsboost.google/games/"
+        "https://www.cloudskillsboost.google/games/",
       ) ||
       window.location.href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/"
+        "https://www.cloudskillsboost.google/course_templates/",
       ) ||
       window.location.href.startsWith(
-        "https://www.cloudskillsboost.google/focuses/"
+        "https://www.cloudskillsboost.google/focuses/",
       )
     ) {
       const queryText =
@@ -113,7 +113,7 @@ export default defineContentScript({
       if (queryText) {
         const postsData = await fetchPostsOfPublicationOnce(
           import.meta.env.WXT_API_KEY,
-          queryText
+          queryText,
         );
 
         const firstPostUrl = postsData?.edges?.[0]?.node?.url
@@ -182,17 +182,17 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked"
+            "#public_profile_checked",
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
+              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
             );
             updateSettingsButton?.setAttribute(
               "title",
-              "Click to update your settings"
+              "Click to update your settings",
             );
 
             const saveNotification = document.createElement("div");
