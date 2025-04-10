@@ -35,7 +35,7 @@ async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
   first = 10,
-  after: string | null = null
+  after: string | null = null,
 ) {
   try {
     const { data } = await client.query({
@@ -98,7 +98,7 @@ export default defineContentScript({
     if (
       href.startsWith("https://www.cloudskillsboost.google/games/") ||
       href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/"
+        "https://www.cloudskillsboost.google/course_templates/",
       ) ||
       href.startsWith("https://www.cloudskillsboost.google/focuses/")
     ) {
@@ -115,7 +115,7 @@ export default defineContentScript({
 
       const postsData = await fetchPostsOfPublicationOnce(
         import.meta.env.WXT_API_KEY,
-        queryText
+        queryText,
       );
 
       const firstPostUrl = postsData?.edges?.[0]?.node?.url
@@ -153,20 +153,20 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked"
+            "#public_profile_checked",
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const formElement = document.querySelector(
-              ".simple_form.edit_user"
+              ".simple_form.edit_user",
             );
             if (formElement) {
               formElement.insertAdjacentHTML(
                 "afterend",
                 `<ql-warningbox> ${browser.i18n.getMessage(
-                  "notePleaseSetUpTheSettings"
-                )} </ql-warningbox>`
+                  "notePleaseSetUpTheSettings",
+                )} </ql-warningbox>`,
               );
             }
           }
