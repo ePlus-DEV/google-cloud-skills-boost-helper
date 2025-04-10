@@ -128,8 +128,6 @@ export default defineContentScript({
       if (firstPostUrl) {
         solutionElement.innerHTML = `
           <ql-button
-            class="start-module-button"
-            target="_blank"
             icon="check"
             type="button"
             title="Click to open the solution"
@@ -140,22 +138,11 @@ export default defineContentScript({
           </ql-button>
         `;
       } else {
-        const buttonContainer = document.createElement("div");
-        buttonContainer.className = "buttonContainer";
-        buttonContainer.setAttribute("aria-disabled", "true");
-
-        const noSolutionButton = document.createElement("md-filled-button");
-        noSolutionButton.className = "ql-button default";
-        noSolutionButton.setAttribute("disabled", "");
-        noSolutionButton.setAttribute("data-aria-busy", "false");
-        noSolutionButton.setAttribute("value", "");
-        noSolutionButton.setAttribute(
-          "data-aria-label",
-          "No solution available"
-        );
-
-        buttonContainer.appendChild(noSolutionButton);
-        solutionElement.appendChild(buttonContainer);
+        solutionElement.innerHTML = `
+          <ql-button icon="close" disabled>
+            No solution
+          </ql-button>
+        `;
       }
 
       outlineContainer.appendChild(solutionElement);
