@@ -79,5 +79,8 @@
   },
   "successSettingsSaved": {
     "message": "Cài đặt đã được lưu thành công!"
+  },
+  "notePleaseSetUpTheSettings": {
+    "message": "<strong>Note:</strong> <br>⚠️ Bạn đã bật tùy chọn <strong>\"Make profile public\"</strong>, nhưng chưa lưu thay đổi.<br>👉 Vui lòng nhấn nút <strong>\"Update settings\"</strong> để xác nhận và lưu lại cài đặt mới.<br>❌Nếu bạn không lưu, hồ sơ của bạn sẽ <strong>không được công khai</strong> và đường dẫn sẽ không được tạo."
   }
 }
