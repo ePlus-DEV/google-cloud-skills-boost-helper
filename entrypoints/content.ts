@@ -18,24 +18,8 @@ const SEARCH_POSTS_QUERY = gql`
         cursor
         node {
           id
-          brief
           title
-          cuid
-          slug
-          reactionCount
-          publishedAt
           url
-          coverImage {
-            url
-          }
-          author {
-            id
-            name
-          }
-          publication {
-            title
-            url
-          }
         }
       }
       pageInfo {
@@ -53,29 +37,50 @@ async function fetchPostsOfPublicationOnce(
   first = 10,
   after: string | null = null,
 ) {
-  let fetched = false;
-
-  if (!fetched) {
-    fetched = true;
-    try {
-      const { data } = await client.query({
-        query: SEARCH_POSTS_QUERY,
-        variables: {
-          first,
-          filter: {
-            publicationId,
-            query,
-          },
-          after,
-        },
-      });
-      return data.searchPostsOfPublication;
-    } catch (error) {
-      console.error("Error fetching posts of publication:", error);
-      return null;
-    }
+  try {
+    const { data } = await client.query({
+      query: SEARCH_POSTS_QUERY,
+      variables: {
+        first,
+        filter: { publicationId, query },
+        after,
+      },
+    });
+    return data.searchPostsOfPublication;
+  } catch (error) {
+    console.error("Error fetching posts of publication:", error);
+    return null;
   }
-  return null;
+}
+
+// Helper function to create a solution button
+function createSolutionElement(url: string | null): HTMLLIElement {
+  const solutionElement = document.createElement("li");
+  Object.assign(solutionElement.style, {
+    marginTop: "15px",
+    padding: "10px",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  });
+
+  solutionElement.innerHTML = url
+    ? `
+      <ql-button
+        icon="check"
+        type="button"
+        title="Click to open the solution"
+        data-aria-label="Click to open the solution"
+        onclick="window.open('${url}', '_blank')"
+      >
+        Solution this lab
+      </ql-button>
+    `
+    : `
+      <ql-button icon="close" disabled>
+        No solution
+      </ql-button>
+    `;
+
+  return solutionElement;
 }
 
 export default defineContentScript({
@@ -88,16 +93,12 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
+    const { href, pathname, hash } = window.location;
+
     if (
-      window.location.href.startsWith(
-        "https://www.cloudskillsboost.google/games/",
-      ) ||
-      window.location.href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/",
-      ) ||
-      window.location.href.startsWith(
-        "https://www.cloudskillsboost.google/focuses/",
-      )
+      href.startsWith("https://www.cloudskillsboost.google/games/") ||
+      href.startsWith("https://www.cloudskillsboost.google/course_templates/") ||
+      href.startsWith("https://www.cloudskillsboost.google/focuses/")
     ) {
       const queryText =
         document.querySelector("#step1")?.textContent?.trim() ||
@@ -110,54 +111,25 @@ export default defineContentScript({
         return;
       }
 
-      if (queryText) {
-        const postsData = await fetchPostsOfPublicationOnce(
-          import.meta.env.WXT_API_KEY,
-          queryText,
-        );
+      const postsData = await fetchPostsOfPublicationOnce(
+        import.meta.env.WXT_API_KEY,
+        queryText,
+      );
 
-        const firstPostUrl = postsData?.edges?.[0]?.node?.url
-          ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
-          : null;
+      const firstPostUrl = postsData?.edges?.[0]?.node?.url
+        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
+        : null;
 
-        const outlineContainer = document
-          .querySelector(".lab-content__outline.js-lab-content-outline")
-          ?.closest("ul");
+      const outlineContainer = document
+        .querySelector(".lab-content__outline.js-lab-content-outline")
+        ?.closest("ul");
 
-        if (!outlineContainer) {
-          console.warn("Outline container <ul> element not found.");
-          return;
-        }
-
-        const solutionElement = document.createElement("li");
-        Object.assign(solutionElement.style, {
-          marginTop: "15px",
-          padding: "10px",
-          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        });
-
-        if (firstPostUrl) {
-          solutionElement.innerHTML = `
-        <ql-button
-          icon="check"
-          type="button"
-          title="Click to open the solution"
-          data-aria-label="Click to open the solution"
-          onclick="window.open('${firstPostUrl}', '_blank')"
-        >
-          Solution this lab
-        </ql-button>
-        `;
-        } else {
-          solutionElement.innerHTML = `
-        <ql-button icon="close" disabled>
-          No solution
-        </ql-button>
-        `;
-        }
-
-        outlineContainer.appendChild(solutionElement);
+      if (!outlineContainer) {
+        console.warn("Outline container <ul> element not found.");
+        return;
       }
+
+      outlineContainer.appendChild(createSolutionElement(firstPostUrl));
     }
 
     const ui = await createShadowRootUi(ctx, {
@@ -173,12 +145,8 @@ export default defineContentScript({
             "lab-show l-full no-nav application-new lab-show l-full no-nav";
         }
 
-        if (
-          window.location.hash === "#public-profile" &&
-          window.location.pathname === "/my_account/profile"
-        ) {
-          const publicProfileElement =
-            document.querySelector("#public-profile");
+        if (hash === "#public-profile" && pathname === "/my_account/profile") {
+          const publicProfileElement = document.querySelector("#public-profile");
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
