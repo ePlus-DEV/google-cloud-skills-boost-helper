@@ -97,7 +97,9 @@ export default defineContentScript({
 
     if (
       href.startsWith("https://www.cloudskillsboost.google/games/") ||
-      href.startsWith("https://www.cloudskillsboost.google/course_templates/") ||
+      href.startsWith(
+        "https://www.cloudskillsboost.google/course_templates/",
+      ) ||
       href.startsWith("https://www.cloudskillsboost.google/focuses/")
     ) {
       const queryText =
@@ -146,7 +148,8 @@ export default defineContentScript({
         }
 
         if (hash === "#public-profile" && pathname === "/my_account/profile") {
-          const publicProfileElement = document.querySelector("#public-profile");
+          const publicProfileElement =
+            document.querySelector("#public-profile");
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
