@@ -51,7 +51,7 @@ async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
   first = 10,
-  after: string | null = null,
+  after: string | null = null
 ) {
   let fetched = false;
 
@@ -88,15 +88,21 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    const labElement = document.querySelector(
-      "h1.ql-display-large.lab-preamble__title",
-    );
-    const labElementText = labElement?.textContent || "";
+    const queryText =
+      document.querySelector("#step1")?.textContent?.trim() ||
+      document
+        .querySelector("h1.ql-display-large.lab-preamble__title")
+        ?.textContent?.trim();
 
-    if (labElementText) {
+    if (!queryText || queryText === "Overview") {
+      console.warn("No valid query text found.");
+      return;
+    }
+
+    if (queryText) {
       const postsData = await fetchPostsOfPublicationOnce(
         import.meta.env.WXT_API_KEY,
-        labElementText,
+        queryText
       );
 
       const firstPostUrl = postsData?.edges?.[0]?.node?.url
@@ -115,53 +121,41 @@ export default defineContentScript({
       const solutionElement = document.createElement("li");
       Object.assign(solutionElement.style, {
         marginTop: "15px",
-        backgroundColor: "#f0f9ff",
-        border: "1px solid #b6e0fe",
-        borderRadius: "8px",
         padding: "10px",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       });
 
       if (firstPostUrl) {
-        const solutionLink = document.createElement("a");
-        Object.assign(solutionLink, {
-          href: firstPostUrl,
-          textContent: "Solution for this Lab",
-          target: "_blank",
-          title: "Click to view the solution for this lab",
-          style: {
-            textDecoration: "none",
-            color: "#0056b3",
-            fontWeight: "bold",
-            fontSize: "14px",
-            display: "inline-block",
-            padding: "5px 10px",
-            backgroundColor: "#e3f2fd",
-            borderRadius: "5px",
-            transition: "background-color 0.3s, color 0.3s",
-          },
-        });
-
-        solutionLink.addEventListener("mouseover", () => {
-          solutionLink.style.backgroundColor = "#bbdefb";
-          solutionLink.style.color = "#003c8f";
-        });
-
-        solutionLink.addEventListener("mouseout", () => {
-          solutionLink.style.backgroundColor = "#e3f2fd";
-          solutionLink.style.color = "#0056b3";
-        });
-
-        solutionElement.appendChild(solutionLink);
+        solutionElement.innerHTML = `
+          <ql-button
+            class="start-module-button"
+            target="_blank"
+            icon="check"
+            type="button"
+            title="Click to open the solution"
+            data-aria-label="Click to open the solution"
+            onclick="window.open('${firstPostUrl}', '_blank')"
+          >
+            Solution this lab
+          </ql-button>
+        `;
       } else {
-        solutionElement.textContent = "No solution available.";
-        Object.assign(solutionElement.style, {
-          color: "#d32f2f",
-          fontWeight: "bold",
-          fontSize: "14px",
-          textAlign: "center",
-        });
+        const buttonContainer = document.createElement("div");
+        buttonContainer.className = "buttonContainer";
+        buttonContainer.setAttribute("aria-disabled", "true");
+
+        const noSolutionButton = document.createElement("md-filled-button");
+        noSolutionButton.className = "ql-button default";
+        noSolutionButton.setAttribute("disabled", "");
+        noSolutionButton.setAttribute("data-aria-busy", "false");
+        noSolutionButton.setAttribute("value", "");
+        noSolutionButton.setAttribute(
+          "data-aria-label",
+          "No solution available"
+        );
+
+        buttonContainer.appendChild(noSolutionButton);
+        solutionElement.appendChild(buttonContainer);
       }
 
       outlineContainer.appendChild(solutionElement);
@@ -189,17 +183,17 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked",
+            "#public_profile_checked"
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
+              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
             );
             updateSettingsButton?.setAttribute(
               "title",
-              "Click to update your settings",
+              "Click to update your settings"
             );
 
             const saveNotification = document.createElement("div");
