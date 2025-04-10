@@ -170,6 +170,41 @@ export default defineContentScript({
               );
             }
           }
+        } else if (pathname === "/my_account/profile") {
+          const publicProfileElement = document.querySelector(
+            ".ql-body-medium.public-profile.public"
+          );
+
+          if (publicProfileElement) {
+            const linkElement = publicProfileElement.querySelector("a");
+            if (linkElement) {
+              const copyButton = document.createElement("button");
+              copyButton.textContent = "Copy Link";
+              Object.assign(copyButton.style, {
+                marginLeft: "10px",
+                padding: "5px 10px",
+                fontSize: "14px",
+                cursor: "pointer",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+              });
+
+              copyButton.addEventListener("click", () => {
+                navigator.clipboard
+                  .writeText(linkElement.href)
+                  .then(() => {
+                    alert("Link copied to clipboard!");
+                  })
+                  .catch((err) => {
+                    console.error("Failed to copy link:", err);
+                  });
+              });
+
+              publicProfileElement.appendChild(copyButton);
+            }
+          }
         }
       },
     });
