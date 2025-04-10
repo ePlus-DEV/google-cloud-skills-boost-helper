@@ -51,7 +51,7 @@ async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
   first = 10,
-  after: string | null = null,
+  after: string | null = null
 ) {
   let fetched = false;
 
@@ -88,64 +88,76 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    const queryText =
-      document.querySelector("#step1")?.textContent?.trim() ||
-      document
-        .querySelector("h1.ql-display-large.lab-preamble__title")
-        ?.textContent?.trim();
+    if (
+      window.location.href.startsWith(
+        "https://www.cloudskillsboost.google/games/"
+      ) ||
+      window.location.href.startsWith(
+        "https://www.cloudskillsboost.google/course_templates/"
+      ) ||
+      window.location.href.startsWith(
+        "https://www.cloudskillsboost.google/focuses/"
+      )
+    ) {
+      const queryText =
+        document.querySelector("#step1")?.textContent?.trim() ||
+        document
+          .querySelector("h1.ql-display-large.lab-preamble__title")
+          ?.textContent?.trim();
 
-    if (!queryText || queryText === "Overview") {
-      console.warn("No valid query text found.");
-      return;
-    }
-
-    if (queryText) {
-      const postsData = await fetchPostsOfPublicationOnce(
-        import.meta.env.WXT_API_KEY,
-        queryText,
-      );
-
-      const firstPostUrl = postsData?.edges?.[0]?.node?.url
-        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
-        : null;
-
-      const outlineContainer = document
-        .querySelector(".lab-content__outline.js-lab-content-outline")
-        ?.closest("ul");
-
-      if (!outlineContainer) {
-        console.warn("Outline container <ul> element not found.");
+      if (!queryText || queryText === "Overview") {
+        console.warn("Query text not found or is 'Overview'.");
         return;
       }
 
-      const solutionElement = document.createElement("li");
-      Object.assign(solutionElement.style, {
-        marginTop: "15px",
-        padding: "10px",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      });
+      if (queryText) {
+        const postsData = await fetchPostsOfPublicationOnce(
+          import.meta.env.WXT_API_KEY,
+          queryText
+        );
 
-      if (firstPostUrl) {
-        solutionElement.innerHTML = `
-          <ql-button
-            icon="check"
-            type="button"
-            title="Click to open the solution"
-            data-aria-label="Click to open the solution"
-            onclick="window.open('${firstPostUrl}', '_blank')"
-          >
-            Solution this lab
-          </ql-button>
+        const firstPostUrl = postsData?.edges?.[0]?.node?.url
+          ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
+          : null;
+
+        const outlineContainer = document
+          .querySelector(".lab-content__outline.js-lab-content-outline")
+          ?.closest("ul");
+
+        if (!outlineContainer) {
+          console.warn("Outline container <ul> element not found.");
+          return;
+        }
+
+        const solutionElement = document.createElement("li");
+        Object.assign(solutionElement.style, {
+          marginTop: "15px",
+          padding: "10px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        });
+
+        if (firstPostUrl) {
+          solutionElement.innerHTML = `
+        <ql-button
+          icon="check"
+          type="button"
+          title="Click to open the solution"
+          data-aria-label="Click to open the solution"
+          onclick="window.open('${firstPostUrl}', '_blank')"
+        >
+          Solution this lab
+        </ql-button>
         `;
-      } else {
-        solutionElement.innerHTML = `
-          <ql-button icon="close" disabled>
-            No solution
-          </ql-button>
+        } else {
+          solutionElement.innerHTML = `
+        <ql-button icon="close" disabled>
+          No solution
+        </ql-button>
         `;
+        }
+
+        outlineContainer.appendChild(solutionElement);
       }
-
-      outlineContainer.appendChild(solutionElement);
     }
 
     const ui = await createShadowRootUi(ctx, {
@@ -170,17 +182,17 @@ export default defineContentScript({
           publicProfileElement?.scrollIntoView({ behavior: "smooth" });
 
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked",
+            "#public_profile_checked"
           );
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
+              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]'
             );
             updateSettingsButton?.setAttribute(
               "title",
-              "Click to update your settings",
+              "Click to update your settings"
             );
 
             const saveNotification = document.createElement("div");
