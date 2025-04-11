@@ -132,7 +132,7 @@ const initializeEventListeners = () => {
   const version = manifest.version;
   const versionElement = document.querySelector("#version-number");
   if (versionElement) {
-    versionElement.textContent = `${version}`;
+    versionElement.textContent = `v${version}`;
   }
 };
 
