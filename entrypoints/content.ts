@@ -35,7 +35,7 @@ async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
   first = 10,
-  after: string | null = null,
+  after: string | null = null
 ) {
   try {
     const { data } = await client.query({
@@ -98,30 +98,10 @@ export default defineContentScript({
     if (
       href.startsWith("https://www.cloudskillsboost.google/games/") ||
       href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/",
+        "https://www.cloudskillsboost.google/course_templates/"
       ) ||
       href.startsWith("https://www.cloudskillsboost.google/focuses/")
     ) {
-      const queryText =
-        document.querySelector("#step1")?.textContent?.trim() ||
-        document
-          .querySelector("h1.ql-display-large.lab-preamble__title")
-          ?.textContent?.trim();
-
-      if (!queryText || queryText !== "Overview") {
-        console.warn("Query text not found or is 'Overview'.");
-        return;
-      }
-
-      const postsData = await fetchPostsOfPublicationOnce(
-        import.meta.env.WXT_API_KEY,
-        queryText,
-      );
-
-      const firstPostUrl = postsData?.edges?.[0]?.node?.url
-        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
-        : null;
-
       const outlineContainer = document
         .querySelector(".lab-content__outline.js-lab-content-outline")
         ?.closest("ul");
@@ -130,6 +110,25 @@ export default defineContentScript({
         console.warn("Outline container <ul> element not found.");
         return;
       }
+
+      const firstOutlineItem = outlineContainer.querySelector("li");
+      if (!firstOutlineItem) {
+        console.warn("First outline item <li> element not found.");
+        return;
+      }
+      const queryText =
+        firstOutlineItem?.textContent?.trim() ||
+        document.querySelector(".lab-preamble__title")?.textContent?.trim() ||
+        "";
+
+      const postsData = await fetchPostsOfPublicationOnce(
+        import.meta.env.WXT_API_KEY,
+        queryText
+      );
+
+      const firstPostUrl = postsData?.edges?.[0]?.node?.url
+        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
+        : null;
 
       outlineContainer.appendChild(createSolutionElement(firstPostUrl));
     }
@@ -149,27 +148,27 @@ export default defineContentScript({
 
         if (pathname === "/my_account/profile") {
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked",
+            "#public_profile_checked"
           );
 
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const formElement = document.querySelector(
-              ".simple_form.edit_user",
+              ".simple_form.edit_user"
             );
             if (formElement) {
               formElement.insertAdjacentHTML(
                 "afterend",
                 `<ql-warningbox> ${browser.i18n.getMessage(
-                  "notePleaseSetUpTheSettings",
-                )} </ql-warningbox>`,
+                  "notePleaseSetUpTheSettings"
+                )} </ql-warningbox>`
               );
             }
           }
 
           const publicProfileElement = document.querySelector(
-            ".ql-body-medium.public-profile.public",
+            ".ql-body-medium.public-profile.public"
           );
 
           if (publicProfileElement) {
@@ -197,8 +196,8 @@ export default defineContentScript({
                       publicProfileElement.insertAdjacentHTML(
                         "afterend",
                         `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
-                          "messageLinkCopiedToClipboard",
-                        )} </ql-infobox>`,
+                          "messageLinkCopiedToClipboard"
+                        )} </ql-infobox>`
                       );
                     }
 
