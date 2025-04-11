@@ -135,7 +135,7 @@ export default defineContentScript({
     }
 
     const ui = await createShadowRootUi(ctx, {
-      name: "tailwind",
+      name: "tailwind-extension",
       position: "inline",
       anchor: "body",
       onMount() {
@@ -147,14 +147,11 @@ export default defineContentScript({
             "lab-show l-full no-nav application-new lab-show l-full no-nav";
         }
 
-        if (hash === "#public-profile") {
-          const publicProfileElement =
-            document.querySelector("#public-profile");
-          publicProfileElement?.scrollIntoView({ behavior: "smooth" });
-
+        if (pathname === "/my_account/profile") {
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
             "#public_profile_checked"
           );
+
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
@@ -170,7 +167,7 @@ export default defineContentScript({
               );
             }
           }
-        } else if (pathname === "/my_account/profile") {
+
           const publicProfileElement = document.querySelector(
             ".ql-body-medium.public-profile.public"
           );
@@ -219,6 +216,22 @@ export default defineContentScript({
               });
 
               publicProfileElement.appendChild(copyButton);
+            }
+          }
+
+            // If there is a hash #public-profile, automatically scroll to the public profile section
+          if (hash === "#public-profile") {
+            const publicProfileElement =
+              document.querySelector("#public-profile");
+            if (publicProfileElement) {
+              const elementPosition =
+                publicProfileElement.getBoundingClientRect().top +
+                window.pageYOffset;
+
+              window.scrollTo({
+                top: elementPosition,
+                behavior: "smooth",
+              });
             }
           }
         }
