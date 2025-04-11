@@ -85,5 +85,8 @@
   },
   "notePleaseSetUpTheSettings": {
     "message": "<strong>Remarque :</strong> <br>⚠️ Vous avez activé l’option <strong>\"Rendre le profil public\"</strong>, mais vous n’avez pas encore enregistré les modifications.<br>👉 Veuillez cliquer sur le bouton <strong>\"Mettre à jour les paramètres\"</strong> pour confirmer et sauvegarder vos nouveaux réglages.<br>❌ Si vous ne les enregistrez pas, votre profil <strong>ne sera pas rendu public</strong> et le lien ne sera pas généré."
+  },
+  "messageLinkCopiedToClipboard": {
+    "message": "✔️ Le lien a été copié dans le presse-papiers !"
   }
 }
