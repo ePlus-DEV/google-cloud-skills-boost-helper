@@ -18,24 +18,8 @@ const SEARCH_POSTS_QUERY = gql`
         cursor
         node {
           id
-          brief
           title
-          cuid
-          slug
-          reactionCount
-          publishedAt
           url
-          coverImage {
-            url
-          }
-          author {
-            id
-            name
-          }
-          publication {
-            title
-            url
-          }
         }
       }
       pageInfo {
@@ -53,29 +37,50 @@ async function fetchPostsOfPublicationOnce(
   first = 10,
   after: string | null = null,
 ) {
-  let fetched = false;
-
-  if (!fetched) {
-    fetched = true;
-    try {
-      const { data } = await client.query({
-        query: SEARCH_POSTS_QUERY,
-        variables: {
-          first,
-          filter: {
-            publicationId,
-            query,
-          },
-          after,
-        },
-      });
-      return data.searchPostsOfPublication;
-    } catch (error) {
-      console.error("Error fetching posts of publication:", error);
-      return null;
-    }
+  try {
+    const { data } = await client.query({
+      query: SEARCH_POSTS_QUERY,
+      variables: {
+        first,
+        filter: { publicationId, query },
+        after,
+      },
+    });
+    return data.searchPostsOfPublication;
+  } catch (error) {
+    console.error("Error fetching posts of publication:", error);
+    return null;
   }
-  return null;
+}
+
+// Helper function to create a solution button
+function createSolutionElement(url: string | null): HTMLLIElement {
+  const solutionElement = document.createElement("li");
+  Object.assign(solutionElement.style, {
+    marginTop: "15px",
+    padding: "10px",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  });
+
+  solutionElement.innerHTML = url
+    ? `
+      <ql-button
+        icon="check"
+        type="button"
+        title="Click to open the solution"
+        data-aria-label="Click to open the solution"
+        onclick="window.open('${url}', '_blank')"
+      >
+        Solution this lab
+      </ql-button>
+    `
+    : `
+      <ql-button icon="close" disabled>
+        No solution
+      </ql-button>
+    `;
+
+  return solutionElement;
 }
 
 export default defineContentScript({
@@ -88,21 +93,15 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    const labElement = document.querySelector(
-      "h1.ql-display-large.lab-preamble__title",
-    );
-    const labElementText = labElement?.textContent || "";
+    const { href, pathname, hash } = window.location;
 
-    if (labElementText) {
-      const postsData = await fetchPostsOfPublicationOnce(
-        import.meta.env.WXT_API_KEY,
-        labElementText,
-      );
-
-      const firstPostUrl = postsData?.edges?.[0]?.node?.url
-        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
-        : null;
-
+    if (
+      href.startsWith("https://www.cloudskillsboost.google/games/") ||
+      href.startsWith(
+        "https://www.cloudskillsboost.google/course_templates/",
+      ) ||
+      href.startsWith("https://www.cloudskillsboost.google/focuses/")
+    ) {
       const outlineContainer = document
         .querySelector(".lab-content__outline.js-lab-content-outline")
         ?.closest("ul");
@@ -112,63 +111,30 @@ export default defineContentScript({
         return;
       }
 
-      const solutionElement = document.createElement("li");
-      Object.assign(solutionElement.style, {
-        marginTop: "15px",
-        backgroundColor: "#f0f9ff",
-        border: "1px solid #b6e0fe",
-        borderRadius: "8px",
-        padding: "10px",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      });
-
-      if (firstPostUrl) {
-        const solutionLink = document.createElement("a");
-        Object.assign(solutionLink, {
-          href: firstPostUrl,
-          textContent: "Solution for this Lab",
-          target: "_blank",
-          title: "Click to view the solution for this lab",
-          style: {
-            textDecoration: "none",
-            color: "#0056b3",
-            fontWeight: "bold",
-            fontSize: "14px",
-            display: "inline-block",
-            padding: "5px 10px",
-            backgroundColor: "#e3f2fd",
-            borderRadius: "5px",
-            transition: "background-color 0.3s, color 0.3s",
-          },
-        });
-
-        solutionLink.addEventListener("mouseover", () => {
-          solutionLink.style.backgroundColor = "#bbdefb";
-          solutionLink.style.color = "#003c8f";
-        });
-
-        solutionLink.addEventListener("mouseout", () => {
-          solutionLink.style.backgroundColor = "#e3f2fd";
-          solutionLink.style.color = "#0056b3";
-        });
-
-        solutionElement.appendChild(solutionLink);
-      } else {
-        solutionElement.textContent = "No solution available.";
-        Object.assign(solutionElement.style, {
-          color: "#d32f2f",
-          fontWeight: "bold",
-          fontSize: "14px",
-          textAlign: "center",
-        });
+      const firstOutlineItem = outlineContainer.querySelector("li");
+      if (!firstOutlineItem) {
+        console.warn("First outline item <li> element not found.");
+        return;
       }
+      const queryText =
+        firstOutlineItem?.textContent?.trim() ||
+        document.querySelector(".lab-preamble__title")?.textContent?.trim() ||
+        "";
 
-      outlineContainer.appendChild(solutionElement);
+      const postsData = await fetchPostsOfPublicationOnce(
+        import.meta.env.WXT_API_KEY,
+        queryText,
+      );
+
+      const firstPostUrl = postsData?.edges?.[0]?.node?.url
+        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
+        : null;
+
+      outlineContainer.appendChild(createSolutionElement(firstPostUrl));
     }
 
     const ui = await createShadowRootUi(ctx, {
-      name: "tailwind-shadow-root-example",
+      name: "tailwind-extension",
       position: "inline",
       anchor: "body",
       onMount() {
@@ -180,43 +146,92 @@ export default defineContentScript({
             "lab-show l-full no-nav application-new lab-show l-full no-nav";
         }
 
-        if (
-          window.location.hash === "#public-profile" &&
-          window.location.pathname === "/my_account/profile"
-        ) {
-          const publicProfileElement =
-            document.querySelector("#public-profile");
-          publicProfileElement?.scrollIntoView({ behavior: "smooth" });
-
+        if (pathname === "/my_account/profile") {
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
             "#public_profile_checked",
           );
+
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
-            const updateSettingsButton = document.querySelector<HTMLElement>(
-              'ql-button[type="submit"][name="commit"][data-disable-with="Update settings"]',
+            const formElement = document.querySelector(
+              ".simple_form.edit_user",
             );
-            updateSettingsButton?.setAttribute(
-              "title",
-              "Click to update your settings",
-            );
+            if (formElement) {
+              formElement.insertAdjacentHTML(
+                "afterend",
+                `<ql-warningbox> ${browser.i18n.getMessage(
+                  "notePleaseSetUpTheSettings",
+                )} </ql-warningbox>`,
+              );
+            }
+          }
 
-            const saveNotification = document.createElement("div");
-            Object.assign(saveNotification.style, {
-              position: "fixed",
-              bottom: "10px",
-              right: "10px",
-              backgroundColor: "#f8d7da",
-              color: "#721c24",
-              padding: "10px",
-              border: "1px solid #f5c6cb",
-              borderRadius: "5px",
-              zIndex: "1000",
-            });
-            saveNotification.textContent =
-              "Please click the 'Update settings' button above.";
-            document.body.appendChild(saveNotification);
+          const publicProfileElement = document.querySelector(
+            ".ql-body-medium.public-profile.public",
+          );
+
+          if (publicProfileElement) {
+            const linkElement = publicProfileElement.querySelector("a");
+            if (linkElement) {
+              const copyButton = document.createElement("button");
+              copyButton.textContent = "Copy Link";
+              Object.assign(copyButton.style, {
+                marginLeft: "10px",
+                padding: "5px 10px",
+                fontSize: "14px",
+                cursor: "pointer",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+              });
+
+              copyButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                navigator.clipboard
+                  .writeText(linkElement.href)
+                  .then(() => {
+                    if (publicProfileElement) {
+                      publicProfileElement.insertAdjacentHTML(
+                        "afterend",
+                        `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
+                          "messageLinkCopiedToClipboard",
+                        )} </ql-infobox>`,
+                      );
+                    }
+
+                    setTimeout(() => {
+                      const clipboardElement =
+                        document.querySelector("#clipboard");
+                      if (clipboardElement) {
+                        clipboardElement.remove();
+                      }
+                    }, 4000);
+                  })
+                  .catch((err) => {
+                    console.error("Failed to copy link:", err);
+                  });
+              });
+
+              publicProfileElement.appendChild(copyButton);
+            }
+          }
+
+          // If there is a hash #public-profile, automatically scroll to the public profile section
+          if (hash === "#public-profile") {
+            const publicProfileElement =
+              document.querySelector("#public-profile");
+            if (publicProfileElement) {
+              const elementPosition =
+                publicProfileElement.getBoundingClientRect().top +
+                window.pageYOffset;
+
+              window.scrollTo({
+                top: elementPosition,
+                behavior: "smooth",
+              });
+            }
           }
         }
       },
