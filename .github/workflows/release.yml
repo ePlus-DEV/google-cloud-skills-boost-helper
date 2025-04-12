@@ -59,6 +59,7 @@ jobs:
             .output/*-opera.zip
 
       - name: Submit to stores
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           yarn wxt submit \
             --firefox-zip .output/*-firefox.zip --firefox-sources-zip .output/*-sources.zip
