@@ -29,6 +29,11 @@ jobs:
         with:
           node-version: 22.x
 
+      - name: Ensure cache directories exist
+        run: |
+          mkdir -p ~/.cache/yarn
+          mkdir -p .yarn/cache
+
       - name: Cache Yarn dependencies
         id: yarn-cache
         uses: actions/cache@v4
