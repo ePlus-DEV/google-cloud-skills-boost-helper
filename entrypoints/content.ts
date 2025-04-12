@@ -40,9 +40,9 @@ const SEARCH_POSTS_QUERY = gql`
 async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
-  first = 10,
+  first: number,
   after: string | null = null,
-  sortBy: "DATE_PUBLISHED_DESC"
+  sortBy: "DATE_PUBLISHED_DESC" = "DATE_PUBLISHED_DESC"
 ) {
   try {
     const { data } = await client.query({
