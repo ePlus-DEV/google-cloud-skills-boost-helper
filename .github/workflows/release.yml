@@ -14,6 +14,9 @@ jobs:
       WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
       WXT_API_URL: ${{ secrets.WXT_API_URL }}
       WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
+      FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+      FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+      FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -54,3 +57,8 @@ jobs:
             .output/*-firefox.zip
             .output/*-edge.zip
             .output/*-opera.zip
+
+      - name: Submit to stores
+        run: |
+          yarn wxt submit \
+            --firefox-zip .output/*-firefox.zip --firefox-sources-zip .output/*-sources.zip
