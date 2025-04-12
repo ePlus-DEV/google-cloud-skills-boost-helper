@@ -24,7 +24,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Ensure Yarn cache directory exists
+        run: mkdir -p ~/Library/Caches/Yarn/v6
+
+      - name: Setup Node.js with Yarn cache
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
@@ -41,11 +44,7 @@ jobs:
           yarn zip -b opera
 
       - name: Verify build outputs
-        run: |
-          ls -l .output/*-chrome.zip
-          ls -l .output/*-firefox.zip
-          ls -l .output/*-edge.zip
-          ls -l .output/*-opera.zip
+        run: ls -l .output/*.zip
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
