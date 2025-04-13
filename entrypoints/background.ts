@@ -1,5 +1,6 @@
 export default defineBackground(() => {
   browser.runtime.onInstalled.addListener(async ({ reason }) => {
+    // Check if the extension is being installed
     if (reason !== "install") return;
 
     // Open a tab on install
