@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UAParser } from 'ua-parser-js';
+import { UAParser } from "ua-parser-js";
 
 const submitUrlElement = document.getElementById("submit-url");
 const profileUrlInput = document.querySelector<HTMLInputElement>(
@@ -145,7 +145,6 @@ const initializeEventListeners = () => {
   if (badgeSelector) {
     document.querySelector(badgeSelector)?.classList.remove("hidden");
   }
-
 };
 
 initializeEventListeners();
