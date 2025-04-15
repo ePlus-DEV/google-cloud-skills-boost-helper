@@ -12,8 +12,14 @@ const SEARCH_POSTS_QUERY = gql`
     $first: Int!
     $filter: SearchPostsOfPublicationFilter!
     $after: String
+    $sortBy: PostSortBy
   ) {
-    searchPostsOfPublication(first: $first, after: $after, filter: $filter) {
+    searchPostsOfPublication(
+      first: $first
+      after: $after
+      filter: $filter
+      sortBy: $sortBy
+    ) {
       edges {
         cursor
         node {
@@ -34,8 +40,9 @@ const SEARCH_POSTS_QUERY = gql`
 async function fetchPostsOfPublicationOnce(
   publicationId: string,
   query: string,
-  first = 10,
+  first: number,
   after: string | null = null,
+  sortBy: "DATE_PUBLISHED_DESC" = "DATE_PUBLISHED_DESC",
 ) {
   try {
     const { data } = await client.query({
@@ -44,6 +51,7 @@ async function fetchPostsOfPublicationOnce(
         first,
         filter: { publicationId, query },
         after,
+        sortBy,
       },
     });
     return data.searchPostsOfPublication;
@@ -124,6 +132,9 @@ export default defineContentScript({
       const postsData = await fetchPostsOfPublicationOnce(
         import.meta.env.WXT_API_KEY,
         queryText,
+        5,
+        null,
+        "DATE_PUBLISHED_DESC",
       );
 
       const firstPostUrl = postsData?.edges?.[0]?.node?.url
