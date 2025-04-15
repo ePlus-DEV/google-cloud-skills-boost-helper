@@ -1,35 +1,39 @@
 name: "Submit to Web Store"
+
 on:
   push:
-    branches:
-      - dev
     tags:
-      - "*"
+      - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
   build-and-release:
     name: Build and Release
     runs-on: macos-latest
+
     env:
       WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
       WXT_API_URL: ${{ secrets.WXT_API_URL }}
       WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
+      FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+      FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+      FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
+      CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+      CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+      CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+      CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Ensure Yarn cache directory exists
+        run: mkdir -p ~/Library/Caches/Yarn/v6
+
+      - name: Setup Node.js with Yarn cache
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-
-      - name: Cache yarn dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-cache-
+          cache: "yarn"
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -41,16 +45,37 @@ jobs:
           yarn zip -b edge
           yarn zip -b opera
 
+      - name: Verify build outputs
+        run: ls -l .output/*.zip
+
+      - name: Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
+
+      - name: Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: "docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]"
+          file_pattern: CHANGELOG.md
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
           name: "v.${{ github.ref_name }}"
           draft: true
           generate_release_notes: true
           body_path: INSTALL.md
-          files: |
-            .output/*-chrome.zip
-            .output/*-firefox.zip
-            .output/*-edge.zip
-            .output/*-opera.zip
+          files: .output/*.zip
+
+      - name: Submit to stores
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          yarn wxt submit \
+            --chrome-zip .output/*-chrome.zip \
+            --firefox-zip .output/*-firefox.zip \
+            --firefox-sources-zip .output/*-sources.zip

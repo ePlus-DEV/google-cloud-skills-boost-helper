@@ -1,12 +1,10 @@
 import axios from "axios";
+import { UAParser } from "ua-parser-js";
 
 const submitUrlElement = document.getElementById("submit-url");
 const profileUrlInput = document.querySelector<HTMLInputElement>(
   "#public-profile-url",
 );
-
-const API_URL =
-  "https://cors.eplus.dev/https://arcadepoints.vercel.app/api/submit";
 
 /**
  * Asynchronously initializes and retrieves the profile URL.
@@ -46,7 +44,7 @@ type ArcadeData = {
 
 const fetchData = async (url: string) => {
   try {
-    return await axios.post(API_URL, { url });
+    return await axios.post(import.meta.env.WXT_ARCADE_POINT_URL, { url });
   } catch (error) {
     console.error("Error submitting URL:", error);
     throw error;
@@ -133,6 +131,19 @@ const initializeEventListeners = () => {
   const versionElement = document.querySelector("#version-number");
   if (versionElement) {
     versionElement.textContent = `v${version}`;
+  }
+
+  const parser = new UAParser();
+  const browserName = parser.getBrowser().name;
+
+  const badgeSelectors: Record<string, string> = {
+    Chrome: "#chrome-web-store-badge",
+    Firefox: "#firefox-addon-store",
+  };
+
+  const badgeSelector = badgeSelectors[browserName || ""];
+  if (badgeSelector) {
+    document.querySelector(badgeSelector)?.classList.remove("hidden");
   }
 };
 
