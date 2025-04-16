@@ -1,193 +1,283 @@
 <div class="mt-8">
   <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Options</title>
+      <link rel="stylesheet" href="~/assets/tailwind.css" />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+      />
+    </head>
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Options</title>
-    <link rel="stylesheet" href="~/assets/tailwind.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
-  </head>
-
-  <body>
-    <div
-      class="flex flex-col p-4 w-[800px] mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50">
+    <body>
       <div
-        class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-8 rounded-lg shadow-lg relative border border-indigo-300">
-        <h3 class="text-4xl font-bold text-white inline-block relative">
-          Google Cloud Skills Boost - Helper
-          <span
-            class="absolute top-0 right-[-60px] text-sm font-medium text-white bg-indigo-800 px-3 py-1 rounded-full shadow-md animate-pulse"
-            id="version-number">v1.0.0</span>
-        </h3>
-        <p class="text-white mt-4 text-lg leading-relaxed">
-          Take your Google Cloud Skills Boost experience to the next level
-          with our powerful and intuitive browser extension.
-        </p>
-      </div>
-      <div class="mt-4 space-y-4">
-        <!-- BEGIN - Settings -->
-        <!-- Card 1 -->
+        class="flex flex-col p-4 w-[800px] mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50"
+      >
         <div
-          class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
-          <div>
-            <h4 class="text-lg font-bold text-gray-800">Show Leaderboard</h4>
-            <p class="text-gray-600 text-sm">(Coming soon)</p>
-          </div>
-          <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" disabled />
-        </div>
-        <!-- Card 2 -->
-        <div
-          class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
-          <div>
-            <h4 class="text-lg font-bold text-gray-800">Public Profile</h4>
-            <p class="text-gray-600 text-sm">
-              View your public profile on Google Cloud Skills Boost.
-            </p>
-          </div>
-          <a href="https://www.cloudskillsboost.google/my_account/profile#public-profile" target="_blank"
-            rel="noopener noreferrer"
-            class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200">
-            <i class="fa-solid fa-eye"></i> View Profile
-          </a>
-        </div>
-        <!-- Card 3 -->
-        <div
-          class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
-          <div>
-            <h4 class="text-lg font-bold text-gray-800">My Badges</h4>
-            <p class="text-gray-600 text-sm">View all your earned badges.</p>
-          </div>
-          <a href="https://www.cloudskillsboost.google/profile/badges" target="_blank" rel="noopener noreferrer"
-            class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200">
-            <i class="fa-solid fa-eye"></i> View Badges
-          </a>
-        </div>
-        <!-- Card 4 -->
-        <div class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200">
-          <h4 class="text-xl font-semibold text-gray-800 mb-2">
-            Arcade Points Calculator
-          </h4>
-          <p class="text-gray-500 text-sm mb-4">
-            Enter your public profile URL to calculate your arcade points.
+          class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-8 rounded-lg shadow-lg relative border border-indigo-300"
+        >
+          <h3 class="text-4xl font-bold text-white inline-block relative">
+            Google Cloud Skills Boost - Helper
+            <span
+              class="absolute top-0 right-[-60px] text-sm font-medium text-white bg-indigo-800 px-3 py-1 rounded-full shadow-md animate-pulse"
+              id="version-number"
+              >v1.0.0</span
+            >
+          </h3>
+          <p class="text-white mt-4 text-lg leading-relaxed">
+            Take your Google Cloud Skills Boost experience to the next level
+            with our powerful and intuitive browser extension.
           </p>
-          <div class="flex items-center space-x-3">
-            <input type="url" id="public-profile-url"
-              class="border border-gray-300 rounded-lg px-4 py-2 flex-grow focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              placeholder="Enter public profile URL" value="" required />
-            <button
-              class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200"
-              id="submit-url">
-              Save
-            </button>
+        </div>
+        <div class="mt-4 space-y-4">
+          <!-- BEGIN - Settings -->
+          <!-- Card 1 -->
+          <div
+            class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center"
+          >
+            <div>
+              <h4 class="text-lg font-bold text-gray-800">Show Leaderboard</h4>
+              <p class="text-gray-600 text-sm">(Coming soon)</p>
+            </div>
+            <input
+              type="checkbox"
+              class="form-checkbox h-5 w-5 text-indigo-600"
+              disabled
+            />
           </div>
-          <!-- Arcade -->
-          <div id="arcade-points"
-            class="hidden relative bg-gradient-to-br from-purple-600 to-indigo-800 rounded-2xl p-6 mt-6 shadow-lg text-white">
-            <div class="flex items-center">
-              <div class="relative">
-                <img
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAOxAAADsQH1g%2B1JAAAABHNCSVQICAgIfAhkiAAAEUVJREFUeNrtnQl0FFXahotZVBD9Z35BEfTXUUeHxeUfHUdHRxQYlkEGGCACoqIsw6aogIDDCIJAQCDBgGQIJBBAMEGIZCMx6ap0ks7W2feFpG8HSAQJAUJCAul3%2BnLo05lIkFR91el013fOew4cQk5VvU%2Fd5avv3iu4WgDoEsPwkMjwqsTwrmTCRpEhWDRBEhlyrTppVY1VdVaB69qfa679W%2B61nw3i%2F5f%2FDp0JI%2FnvBNBF0MK5IrYSfXQMHhLDZpHBYNV5q6CSzksMiSKDt8QwIdqM3oIWjg2xAreJlRjODZdMKObGdLCKrPLSmTEsohS3ClrQR1A%2BbuFNuo4hUGI4R2YevWolht28yzAa8UtBC2URV4nfigyeVlVbhU6mat5K6Rj6C1q0L0SGF60KtcpiFVxACRLDKG0Q%2BROjd8mEsSJDplVwRUkM6TozRmsgtArJhBEig9EquInS%2BKBRcPfQleMxkSHMKripvhPNGCC4W4SeRLdrCZrLVsHN1SQxrDNUoqvgDiEyDJEYjmnG%2F0ilsSYMElww7AkcBk8dQ7NmdpuySAz%2F5i2k4EoRU4knRIY8zeCbVo7L5A8kMyaJDHWaqe1WvVVvCZ01goCf8xy5szzQhMJzSEkzIVPMQl54HPJCRRSERIGtWoWK9RtQutUP%2BftCkP2tDkmZVc4DghkbVgA%2FE2hD%2Fdy9xPB1RzwwfUk9uMllew%2Bg2nMlzi%2BcgctTRwATX7quGvv1ROPvevxYT9yL%2Bhf64tzoV3Bqzjso3vkV9CV1HQXBIT6GEjpDiKfQXWKIcuQDMiYUomKHP2qXzIVl8qA2zG4HAG2p391oeOlxnJ4%2BBYWBwRArmh0Jgi6iFHcKzhwx5biHpzsd8UBSU8th%2FvJLNMz2aG2qHADk6cn7UPPGeGSF6h0FgTGqDHcLTjrNe5DPZVXNpVdcRsHhKJz7aHZLEykAUKyG5x%2FF8U%2BWIa6sXm0ISvizFpwp9FXoyQsjVOvXSxtQuvdrXJo13mYcNQB0euo%2BVM2fi4S8GjUhKBMr0EtwhuD9Em%2F21Xrjiw%2BE4NLMv9OZTg9Am4PI6vdmIa6sQZ3W0IRssQK%2FcoZKnWg1bjBTzETd%2FLdkmEoAAKEuPf0ASn18VRsYdlgZGp%2Bb8spZ8vl6QS2%2B9%2FyUwFwCAAh1YeQLSI0vpIfAhMM85yI4OtRI8uRGJqBxxhhujCsBYNfjvXDM6ws1Ck3WCY4MnQmTSW%2Bg%2FAqYry8waSA3xUUBsKvW46%2FUSSULrzRy2IcdieEi1cUbck8TTOscCgDRtPExpMdmUkLwQ9wJ3O%2BIT7o5ZMmclGNomDWBG%2BFOANj1RG%2FkBUVQjgeSVS1HF83wobrYrBgjrrw1jJvgvgBw9e%2BF4h17KVsCT9UqeajKtHOiDGieMoQboAFgFb%2BGijVr6cYDlRhIXsPHs08k5kcn2T7YaAC0UPkbryO4kGxWkE%2FaFfACTpKvdolFtmZfA6Cl%2BVMmY20SsDYZCC4iyxQuolmeZUJfXrmq9IKSM0%2Bgcfpo%2FtA1AH5sPhcpBHymFluOB5T3%2FSZEKr2YxLwfUD9vcoeb3fTGUJye%2ByaOvz8bx5YsQsHyT3F6%2BJ9xdtAzOP%2Fi46h%2F5jcOBaL89Ul24%2Bkh4AomWLGjtCm6gjrDM8C%2F%2Bjnc8FNzpyL5820I2RWD7REMnoZm%2FoBvKM%2FEKwg8kAH9Cm8cHz8KF599BI19ezrIfHoIdAyDZa%2FVExlSlV4AK1wKZAiwpP%2FcIRB8%2F%2B47EH32wTeykj9IEu38Jh%2BFM2ah7rlHiZp9u%2FlqQyAxJMp9%2B8cqnuuXxcCS8TMOgOoQVH44F8FfJWKtwcIfnmoK8Q0D7zYa%2BxL0%2BY6CwIw%2FC%2B0Npat0E0xn0Jh5j838VhD0JzPevGAeAr4tlmGmMh30%2B46PGwiaffUh4DWacpI%2BUKKT%2BdNbm0%2FaElx8%2B28I2xkh442nVfLSNWh8sg%2B1%2BfQQmPEHh438M8rigYwu3GxVICj5eCm8xHMEBtLoy4jjODvkWSV9vvoQmHC4PduyWOSP%2Bi%2BjLrt%2FG8Yr6w4sk16G3nsXxVtPr8RmFMycbTW8J82bTw%2BBJdaMh4WfCl5coOTtLyrxa200RUvA5%2FB8kEdsHL30n3rz9QMEbz49BJIJq4UbBc8fiwxVcs2PY41oyPoNN5YUAm7%2BV0EZKplGrwivAyh5%2B22C30UOQRX3%2BEZv%2Fyglb39JsY%2FNVHkQfNL%2FuubvDzLym9ZEAUElht9o9L9H%2FlSjCZey%2BrRlsJwxAe%2FzebOvGU0LQUCb1T5KNmHMKw1qaSZJSxDvHaAZTA%2FBWV7OL7QO3jQoaf5rcgdzA8kgqNrgwXP3mrnqQDDkev3%2FZrnmp5QX2ub9JLqY3hM%2BhhOaqWpBYMaG6%2FX%2FJfI%2F%2BCzhxpHpUMpBzUwVIeAVQz%2Facl1J838x6zEy803GVzQTHQCB3oR7W1b7via7tLs8n8x8%2FuXQPyVDM9ABEOhMGEfS%2F5cXrSIDoDhtjGacYyDgAGxq2f8b5AJQm%2FMCGQCBKdqc34EQJLRc5XtBbuq3OfM2EvOrjU9pZjkWgloAXfj8%2FxG5b396WTLZ2x%2BTukkzysEQ8KphRfn%2F0mJvIgC6wCdZm%2Fc7GgJe9CvoGN6TC0B1%2FhSi5v%2F%2FnfKBLdz7PYZPiHR6zfc7LgsCyYzZilb9nMt5ngSApLQlGgAEALQXAh3DekFkCJYJgK3oU7EOpoRoADgMADsE%2BwtgECSGODnm6011ZPn%2FLcmVGgAOBoDLJx01gtxt3FPL80jMb0zvzi9GA6ADAPjCiIscgJOyKn%2BPJZAAcDq9vwZABwHgnYYmDkCtvFU%2F0SQAlBuHagB0EACb0tDMAaiXA0Bu6SESAIqM4zQAOgiADSmwcACuyAGgoGQPCQB5xikaAB0EgKdV8gEo3asB4CR6P%2BCk7Myggi7gsNYFOIkW7jsl6%2F7WWaUNAl0AgCUHz8i6v8%2F5GEBiOCFvGphINA3spwGgUMuOyFsouzEFV3gLkNuRiaCmjNs1ABTqk6MX5eYB6nk9oNjRqeCtyUwDQIE%2Bi7ssLxWcgTNO8THoUMo3GgAyNXqqTvb9bU2H2Uk%2BBy%2FWAJCpiQtSZd%2Ff9iwkCxLDux1fEPKUBoBMTVudL%2Fv%2BdmRjP%2B8CXpVdElbkRVUSZvsk7BZaEd2AER40AMzbJn%2F85J%2BDZUIMw0Oyi0KPpZAVhcambnQbAOb4VNDlAIJr5AOQjz8KALrIXRYusSY0Z3YlAeCUcYDbADBudgKJ%2BSMnR2NNQrO8JFAyLLAdSi0xJDrDwpA9KQkub%2F6S4DNkb%2F%2Fri%2BXvnLI5DedargzydoalYaXGUS4PwORFaWQAzN1qkn0dvplIa7k2cALB4lACdUFAcrrLmr84iO7t5%2FpX%2BAXZ1xKQ1eJomWgzeitaHp79OzIImHGgawJgsGD83EQy88dOj1N0Pbtz8UTrzaGLnWWDiMMpwS4HwAf%2BJ0jf%2FlleZbKvxSsNlwRbUIwDkstLSLeIqc%2FogU0ulBf49LsGjHozlg4Aj6NYHt0g%2B3r%2BnYlUoXXozBimbJOoQaStwNq4v2N1UrMrNP08XUv59vOBpKJr8s%2FGwusdA38rLw6Rv03cQTLzdyX0xW2hczA0JrzTA%2FCPjaXk6d8PdlfJvh5eBLI1H93b2il0t4JNovlGkWTm33JkLm4NnYepcTmd1vwFgdUY4XGU1PwxM%2BKwOtEif2fzTBTf6FDokQRbxZKYb9Ptoe9jRlxR50v37juGv06MUqsCWLb8c7FUaCtE4Bd8pRDBZtEk5reEYKa%2B80Dwtx1RGPpaGLn5Y2fEYU2iRUnz3xxqRLefOi3EU9l28TtJzbdD8AHekrKd3vyhRw7iuZk71Cn%2F3qlsE43tmUgQfir4ljHKD4zoR2i%2BXbcemYdBMSFY44QHRvAZy%2BNfr0e3zeNxx6ZJeH7aLkrz%2BQckxfcdWHiTZwpLDOHKjozR87wAmfmtNSBqG5YlXnCewV5cFXrs%2BAe4%2BTbd4TURz0%2F3J5v3L%2FnmrKJr9DGiWrjZiDVhkPJDo2aQmt9a%2FxO6CKNjxQ5vDV4O2YduW16zGa8KBNPWFiq%2Bzl15mCu0JySGdCUAxJtqcSmrN7n5rfVI5EbMizc53PjxkSJ%2BvX1aK9PpIRjzjojP9FcUXetmIy4I7Q2dGaOVtgLZZRF8%2B9e2zCfVY0c3Y5q%2BAGuS1G0RxkZ8h7v8ZnJzb0aKxgS8bGzRgdPKTz7NxnJBTkgMKQRHx8owX77uC1%2BNEbFHsSChmsz0eboyDDiwDt23vd620fQtAc8iKr52byPqbJU%2FclqBYRSHR5dkPC3DfOXqE7EKL8ccwiQpFR%2FGV93Ut4VVhiZMj83D4CNf48E9S2WYTgPB5IWpJOObnblYIMgIshkBV3hZJR6OXuFA89vOJfQOX4mHIz9Hv6Nb8XS0P%2B7d9T567JzF%2B3Or2VPQ7YsJMsylhWDMNAkrdU3KD7RMBxOUBs8LSAyNSiHYX%2FoD7olYSmAkqayGkxhLNiYYOSUGy0LPKzZ%2FfQosu3LwtCAjiA%2BTtMuvyIw7wj50DQDoWwJe5Wsr81as7dn4VqAKQyW6igylFBCsyMhHtyPzXQAAWgj%2BMjEUM%2FYVkpjvnYaGIAO6CmRhTw5ZKCD4LLMYd4YtdHMA7BD8ceYOjPQNtRlIk%2FShD3vZGIU255xAj7B%2FujcAXD4ePKlEZT4v90oUSKN11ZAZWVQQ%2BOaeRq%2FwFW4LwO1bJ%2BHtmEwy83nGz%2Fa5V7XQMfQXGeqoINiVfx6%2FjdzkdgD8r98MfCjRnZHAR%2F1%2B2XhOcERIJoylGg9wHSxuxrDYcF4C5hYAPLJvOVYn0ha87sjFZ4Ijg58%2Byc2j0qFiYLo%2BH3eF%2FdNlAbh9y2t4NSyMznj7Mi%2BD4NCwHzZ1gBKCw8XAiqSLeDYqkBd%2FuBQA%2Fxf4EZbqz5CbvyUdbAXwC6EjwmjEL0WGo9QQrEsGZunLcH%2FE6k4PwJ2%2Bb8AjMo7WeHuRR83eZNwpdGQkFOEOkcGoBgT84814MZFPFzsdAN2%2FnIznvtmOVUmXVTHfOw11X%2BXiHsEZQjyJHiJDkRoQ8JtdaWjCGJ2Iu8M%2FcXoAum%2B9Zryhid54%2BzbvTTuyMUBwphAr8KDIUEI9MPRM%2Fu%2FCy8lSGh6N9OJjBCIA6KZ1Lx3eY3vj1TM%2FFU3%2BufiT4IwRcxx3iWYkqdUStBQv%2BBgc8y1PJHUYALxWoO%2F%2BNZijK2nDMPpmf28G%2BgnOHOIpdFdnYNj2g5kffxy8CujRSG90DX1PPQB8PMBrB54K9sKb0akyTFQ24NuWhT5CZ4igfNwimrDfcRDYtdLQiNn6Yxit04FPJx%2BKWM8riNsNAJ%2Bz%2F9pvOh7Ysxi%2FD96McZGxBP267B09TwRk4lcCbaifJ7hWR2ChHxO0X8sN9eDdBp9eTpVyMEXKwEQxFQND9mBo6EGMCT%2BKSVGJmBlbgI%2FjCb7JEyZ5HDvPp%2F%2BCOMSqavqWwLXF1%2FHZqnk7fYjHcZ%2FIEK9BcPODvcAsvCi4TNhXHq%2FQMTRrELQt3wxk2T7pumToKjFQZMijGxO4zFvfQF%2FJ49ytwXyrzrt7S7Du6rJtSLZtW9wq%2BP6EOoZAd4VgSwaqA3gRh7uHjmGwyKB3l%2B6Al25dXbGjxX9HrBkv8Syiq0LAR%2FdXp3Za3Dh05XjyWtdwxRW6gy%2BMOOOfhVWCFu2LuBO4X2RYLJnBOhsEG1LQvD0LSbvz8IqgBcGsoRLDRYYAq87edHfg%2BOydZVsGSgKy8XFABW4TtFDnQ5PE8Bd%2B2pnEkE8EgaKNl%2Fne%2B%2F45%2BOjqVE4Lhxei9NKZMM6qTSJDglW19BDYj1nhJ234ZiDdLxvrr1blaOGUUDwomTBCZ8YcHcP6AwXQ%2B6Sjhh%2BVuikVlzeloZk3154tFlXwv%2FOzdL1T0cB%2Fllfb%2BmYhhR%2Btxk%2FXulqF44LxH6hcs87tJ6aMAAAAAElFTkSuQmCC"
-                  alt="Avatar" width="80" height="80" class="rounded-full border-4 border-white shadow-md"
-                  id="user-avatar" />
-                <div
-                  class="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full p-2 shadow-lg">
-                  <i class="fa-solid fa-trophy"></i>
-                </div>
-              </div>
-              <div class="ml-6">
-                <h2 class="text-2xl font-bold truncate max-w-[200px]" title="Anonymous" id="user-name">
-                  Anonymous
-                </h2>
-                <div class="flex items-center mt-2">
+          <!-- Card 2 -->
+          <div
+            class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center"
+          >
+            <div>
+              <h4 class="text-lg font-bold text-gray-800">Public Profile</h4>
+              <p class="text-gray-600 text-sm">
+                View your public profile on Google Cloud Skills Boost.
+              </p>
+            </div>
+            <a
+              href="https://www.cloudskillsboost.google/my_account/profile#public-profile"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200"
+            >
+              <i class="fa-solid fa-eye"></i> View Profile
+            </a>
+          </div>
+          <!-- Card 3 -->
+          <div
+            class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center"
+          >
+            <div>
+              <h4 class="text-lg font-bold text-gray-800">My Badges</h4>
+              <p class="text-gray-600 text-sm">View all your earned badges.</p>
+            </div>
+            <a
+              href="https://www.cloudskillsboost.google/profile/badges"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200"
+            >
+              <i class="fa-solid fa-eye"></i> View Badges
+            </a>
+          </div>
+          <!-- Card 4 -->
+          <div
+            class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200"
+          >
+            <h4 class="text-xl font-semibold text-gray-800 mb-2">
+              Arcade Points Calculator
+            </h4>
+            <p class="text-gray-500 text-sm mb-4">
+              Enter your public profile URL to calculate your arcade points.
+            </p>
+            <div class="flex items-center space-x-3">
+              <input
+                type="url"
+                id="public-profile-url"
+                class="border border-gray-300 rounded-lg px-4 py-2 flex-grow focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                placeholder="Enter public profile URL"
+                value=""
+                required
+              />
+              <button
+                class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200"
+                id="submit-url"
+              >
+                Save
+              </button>
+            </div>
+            <!-- Arcade -->
+            <div
+              id="arcade-points"
+              class="hidden relative bg-gradient-to-br from-purple-600 to-indigo-800 rounded-2xl p-6 mt-6 shadow-lg text-white"
+            >
+              <div class="flex items-center">
+                <div class="relative">
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAOxAAADsQH1g%2B1JAAAABHNCSVQICAgIfAhkiAAAEUVJREFUeNrtnQl0FFXahotZVBD9Z35BEfTXUUeHxeUfHUdHRxQYlkEGGCACoqIsw6aogIDDCIJAQCDBgGQIJBBAMEGIZCMx6ap0ks7W2feFpG8HSAQJAUJCAul3%2BnLo05lIkFR91el013fOew4cQk5VvU%2Fd5avv3iu4WgDoEsPwkMjwqsTwrmTCRpEhWDRBEhlyrTppVY1VdVaB69qfa679W%2B61nw3i%2F5f%2FDp0JI%2FnvBNBF0MK5IrYSfXQMHhLDZpHBYNV5q6CSzksMiSKDt8QwIdqM3oIWjg2xAreJlRjODZdMKObGdLCKrPLSmTEsohS3ClrQR1A%2BbuFNuo4hUGI4R2YevWolht28yzAa8UtBC2URV4nfigyeVlVbhU6mat5K6Rj6C1q0L0SGF60KtcpiFVxACRLDKG0Q%2BROjd8mEsSJDplVwRUkM6TozRmsgtArJhBEig9EquInS%2BKBRcPfQleMxkSHMKripvhPNGCC4W4SeRLdrCZrLVsHN1SQxrDNUoqvgDiEyDJEYjmnG%2F0ilsSYMElww7AkcBk8dQ7NmdpuySAz%2F5i2k4EoRU4knRIY8zeCbVo7L5A8kMyaJDHWaqe1WvVVvCZ01goCf8xy5szzQhMJzSEkzIVPMQl54HPJCRRSERIGtWoWK9RtQutUP%2BftCkP2tDkmZVc4DghkbVgA%2FE2hD%2Fdy9xPB1RzwwfUk9uMllew%2Bg2nMlzi%2BcgctTRwATX7quGvv1ROPvevxYT9yL%2Bhf64tzoV3Bqzjso3vkV9CV1HQXBIT6GEjpDiKfQXWKIcuQDMiYUomKHP2qXzIVl8qA2zG4HAG2p391oeOlxnJ4%2BBYWBwRArmh0Jgi6iFHcKzhwx5biHpzsd8UBSU8th%2FvJLNMz2aG2qHADk6cn7UPPGeGSF6h0FgTGqDHcLTjrNe5DPZVXNpVdcRsHhKJz7aHZLEykAUKyG5x%2FF8U%2BWIa6sXm0ISvizFpwp9FXoyQsjVOvXSxtQuvdrXJo13mYcNQB0euo%2BVM2fi4S8GjUhKBMr0EtwhuD9Em%2F21Xrjiw%2BE4NLMv9OZTg9Am4PI6vdmIa6sQZ3W0IRssQK%2FcoZKnWg1bjBTzETd%2FLdkmEoAAKEuPf0ASn18VRsYdlgZGp%2Bb8spZ8vl6QS2%2B9%2FyUwFwCAAh1YeQLSI0vpIfAhMM85yI4OtRI8uRGJqBxxhhujCsBYNfjvXDM6ws1Ck3WCY4MnQmTSW%2Bg%2FAqYry8waSA3xUUBsKvW46%2FUSSULrzRy2IcdieEi1cUbck8TTOscCgDRtPExpMdmUkLwQ9wJ3O%2BIT7o5ZMmclGNomDWBG%2BFOANj1RG%2FkBUVQjgeSVS1HF83wobrYrBgjrrw1jJvgvgBw9e%2BF4h17KVsCT9UqeajKtHOiDGieMoQboAFgFb%2BGijVr6cYDlRhIXsPHs08k5kcn2T7YaAC0UPkbryO4kGxWkE%2FaFfACTpKvdolFtmZfA6Cl%2BVMmY20SsDYZCC4iyxQuolmeZUJfXrmq9IKSM0%2Bgcfpo%2FtA1AH5sPhcpBHymFluOB5T3%2FSZEKr2YxLwfUD9vcoeb3fTGUJye%2ByaOvz8bx5YsQsHyT3F6%2BJ9xdtAzOP%2Fi46h%2F5jcOBaL89Ul24%2Bkh4AomWLGjtCm6gjrDM8C%2F%2Bjnc8FNzpyL5820I2RWD7REMnoZm%2FoBvKM%2FEKwg8kAH9Cm8cHz8KF599BI19ezrIfHoIdAyDZa%2FVExlSlV4AK1wKZAiwpP%2FcIRB8%2F%2B47EH32wTeykj9IEu38Jh%2BFM2ah7rlHiZp9u%2FlqQyAxJMp9%2B8cqnuuXxcCS8TMOgOoQVH44F8FfJWKtwcIfnmoK8Q0D7zYa%2BxL0%2BY6CwIw%2FC%2B0Npat0E0xn0Jh5j838VhD0JzPevGAeAr4tlmGmMh30%2B46PGwiaffUh4DWacpI%2BUKKT%2BdNbm0%2FaElx8%2B28I2xkh442nVfLSNWh8sg%2B1%2BfQQmPEHh438M8rigYwu3GxVICj5eCm8xHMEBtLoy4jjODvkWSV9vvoQmHC4PduyWOSP%2Bi%2BjLrt%2FG8Yr6w4sk16G3nsXxVtPr8RmFMycbTW8J82bTw%2BBJdaMh4WfCl5coOTtLyrxa200RUvA5%2FB8kEdsHL30n3rz9QMEbz49BJIJq4UbBc8fiwxVcs2PY41oyPoNN5YUAm7%2BV0EZKplGrwivAyh5%2B22C30UOQRX3%2BEZv%2Fyglb39JsY%2FNVHkQfNL%2FuubvDzLym9ZEAUElht9o9L9H%2FlSjCZey%2BrRlsJwxAe%2FzebOvGU0LQUCb1T5KNmHMKw1qaSZJSxDvHaAZTA%2FBWV7OL7QO3jQoaf5rcgdzA8kgqNrgwXP3mrnqQDDkev3%2FZrnmp5QX2ub9JLqY3hM%2BhhOaqWpBYMaG6%2FX%2FJfI%2F%2BCzhxpHpUMpBzUwVIeAVQz%2Facl1J838x6zEy803GVzQTHQCB3oR7W1b7via7tLs8n8x8%2FuXQPyVDM9ABEOhMGEfS%2F5cXrSIDoDhtjGacYyDgAGxq2f8b5AJQm%2FMCGQCBKdqc34EQJLRc5XtBbuq3OfM2EvOrjU9pZjkWgloAXfj8%2FxG5b396WTLZ2x%2BTukkzysEQ8KphRfn%2F0mJvIgC6wCdZm%2Fc7GgJe9CvoGN6TC0B1%2FhSi5v%2F%2FnfKBLdz7PYZPiHR6zfc7LgsCyYzZilb9nMt5ngSApLQlGgAEALQXAh3DekFkCJYJgK3oU7EOpoRoADgMADsE%2BwtgECSGODnm6011ZPn%2FLcmVGgAOBoDLJx01gtxt3FPL80jMb0zvzi9GA6ADAPjCiIscgJOyKn%2BPJZAAcDq9vwZABwHgnYYmDkCtvFU%2F0SQAlBuHagB0EACb0tDMAaiXA0Bu6SESAIqM4zQAOgiADSmwcACuyAGgoGQPCQB5xikaAB0EgKdV8gEo3asB4CR6P%2BCk7Myggi7gsNYFOIkW7jsl6%2F7WWaUNAl0AgCUHz8i6v8%2F5GEBiOCFvGphINA3spwGgUMuOyFsouzEFV3gLkNuRiaCmjNs1ABTqk6MX5eYB6nk9oNjRqeCtyUwDQIE%2Bi7ssLxWcgTNO8THoUMo3GgAyNXqqTvb9bU2H2Uk%2BBy%2FWAJCpiQtSZd%2Ff9iwkCxLDux1fEPKUBoBMTVudL%2Fv%2BdmRjP%2B8CXpVdElbkRVUSZvsk7BZaEd2AER40AMzbJn%2F85J%2BDZUIMw0Oyi0KPpZAVhcambnQbAOb4VNDlAIJr5AOQjz8KALrIXRYusSY0Z3YlAeCUcYDbADBudgKJ%2BSMnR2NNQrO8JFAyLLAdSi0xJDrDwpA9KQkub%2F6S4DNkb%2F%2Fri%2BXvnLI5DedargzydoalYaXGUS4PwORFaWQAzN1qkn0dvplIa7k2cALB4lACdUFAcrrLmr84iO7t5%2FpX%2BAXZ1xKQ1eJomWgzeitaHp79OzIImHGgawJgsGD83EQy88dOj1N0Pbtz8UTrzaGLnWWDiMMpwS4HwAf%2BJ0jf%2FlleZbKvxSsNlwRbUIwDkstLSLeIqc%2FogU0ulBf49LsGjHozlg4Aj6NYHt0g%2B3r%2BnYlUoXXozBimbJOoQaStwNq4v2N1UrMrNP08XUv59vOBpKJr8s%2FGwusdA38rLw6Rv03cQTLzdyX0xW2hczA0JrzTA%2FCPjaXk6d8PdlfJvh5eBLI1H93b2il0t4JNovlGkWTm33JkLm4NnYepcTmd1vwFgdUY4XGU1PwxM%2BKwOtEif2fzTBTf6FDokQRbxZKYb9Ptoe9jRlxR50v37juGv06MUqsCWLb8c7FUaCtE4Bd8pRDBZtEk5reEYKa%2B80Dwtx1RGPpaGLn5Y2fEYU2iRUnz3xxqRLefOi3EU9l28TtJzbdD8AHekrKd3vyhRw7iuZk71Cn%2F3qlsE43tmUgQfir4ljHKD4zoR2i%2BXbcemYdBMSFY44QHRvAZy%2BNfr0e3zeNxx6ZJeH7aLkrz%2BQckxfcdWHiTZwpLDOHKjozR87wAmfmtNSBqG5YlXnCewV5cFXrs%2BAe4%2BTbd4TURz0%2F3J5v3L%2FnmrKJr9DGiWrjZiDVhkPJDo2aQmt9a%2FxO6CKNjxQ5vDV4O2YduW16zGa8KBNPWFiq%2Bzl15mCu0JySGdCUAxJtqcSmrN7n5rfVI5EbMizc53PjxkSJ%2BvX1aK9PpIRjzjojP9FcUXetmIy4I7Q2dGaOVtgLZZRF8%2B9e2zCfVY0c3Y5q%2BAGuS1G0RxkZ8h7v8ZnJzb0aKxgS8bGzRgdPKTz7NxnJBTkgMKQRHx8owX77uC1%2BNEbFHsSChmsz0eboyDDiwDt23vd620fQtAc8iKr52byPqbJU%2FclqBYRSHR5dkPC3DfOXqE7EKL8ccwiQpFR%2FGV93Ut4VVhiZMj83D4CNf48E9S2WYTgPB5IWpJOObnblYIMgIshkBV3hZJR6OXuFA89vOJfQOX4mHIz9Hv6Nb8XS0P%2B7d9T567JzF%2B3Or2VPQ7YsJMsylhWDMNAkrdU3KD7RMBxOUBs8LSAyNSiHYX%2FoD7olYSmAkqayGkxhLNiYYOSUGy0LPKzZ%2FfQosu3LwtCAjiA%2BTtMuvyIw7wj50DQDoWwJe5Wsr81as7dn4VqAKQyW6igylFBCsyMhHtyPzXQAAWgj%2BMjEUM%2FYVkpjvnYaGIAO6CmRhTw5ZKCD4LLMYd4YtdHMA7BD8ceYOjPQNtRlIk%2FShD3vZGIU255xAj7B%2FujcAXD4ePKlEZT4v90oUSKN11ZAZWVQQ%2BOaeRq%2FwFW4LwO1bJ%2BHtmEwy83nGz%2Fa5V7XQMfQXGeqoINiVfx6%2FjdzkdgD8r98MfCjRnZHAR%2F1%2B2XhOcERIJoylGg9wHSxuxrDYcF4C5hYAPLJvOVYn0ha87sjFZ4Ijg58%2Byc2j0qFiYLo%2BH3eF%2FdNlAbh9y2t4NSyMznj7Mi%2BD4NCwHzZ1gBKCw8XAiqSLeDYqkBd%2FuBQA%2Fxf4EZbqz5CbvyUdbAXwC6EjwmjEL0WGo9QQrEsGZunLcH%2FE6k4PwJ2%2Bb8AjMo7WeHuRR83eZNwpdGQkFOEOkcGoBgT84814MZFPFzsdAN2%2FnIznvtmOVUmXVTHfOw11X%2BXiHsEZQjyJHiJDkRoQ8JtdaWjCGJ2Iu8M%2FcXoAum%2B9Zryhid54%2BzbvTTuyMUBwphAr8KDIUEI9MPRM%2Fu%2FCy8lSGh6N9OJjBCIA6KZ1Lx3eY3vj1TM%2FFU3%2BufiT4IwRcxx3iWYkqdUStBQv%2BBgc8y1PJHUYALxWoO%2F%2BNZijK2nDMPpmf28G%2BgnOHOIpdFdnYNj2g5kffxy8CujRSG90DX1PPQB8PMBrB54K9sKb0akyTFQ24NuWhT5CZ4igfNwimrDfcRDYtdLQiNn6Yxit04FPJx%2BKWM8riNsNAJ%2Bz%2F9pvOh7Ysxi%2FD96McZGxBP267B09TwRk4lcCbaifJ7hWR2ChHxO0X8sN9eDdBp9eTpVyMEXKwEQxFQND9mBo6EGMCT%2BKSVGJmBlbgI%2FjCb7JEyZ5HDvPp%2F%2BCOMSqavqWwLXF1%2FHZqnk7fYjHcZ%2FIEK9BcPODvcAsvCi4TNhXHq%2FQMTRrELQt3wxk2T7pumToKjFQZMijGxO4zFvfQF%2FJ49ytwXyrzrt7S7Du6rJtSLZtW9wq%2BP6EOoZAd4VgSwaqA3gRh7uHjmGwyKB3l%2B6Al25dXbGjxX9HrBkv8Syiq0LAR%2FdXp3Za3Dh05XjyWtdwxRW6gy%2BMOOOfhVWCFu2LuBO4X2RYLJnBOhsEG1LQvD0LSbvz8IqgBcGsoRLDRYYAq87edHfg%2BOydZVsGSgKy8XFABW4TtFDnQ5PE8Bd%2B2pnEkE8EgaKNl%2Fne%2B%2F45%2BOjqVE4Lhxei9NKZMM6qTSJDglW19BDYj1nhJ234ZiDdLxvrr1blaOGUUDwomTBCZ8YcHcP6AwXQ%2B6Sjhh%2BVuikVlzeloZk3154tFlXwv%2FOzdL1T0cB%2Fllfb%2BmYhhR%2Btxk%2FXulqF44LxH6hcs87tJ6aMAAAAAElFTkSuQmCC"
+                    alt="Avatar"
+                    width="80"
+                    height="80"
+                    class="rounded-full border-4 border-white shadow-md"
+                    id="user-avatar"
+                  />
                   <div
-                    class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full flex items-center shadow-md">
-                    <i class="fa-solid fa-crown"></i>
-                    <span class="ml-2" id="league">VIP</span>
+                    class="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full p-2 shadow-lg"
+                  >
+                    <i class="fa-solid fa-trophy"></i>
+                  </div>
+                </div>
+                <div class="ml-6">
+                  <h2
+                    class="text-2xl font-bold truncate max-w-[200px]"
+                    title="Anonymous"
+                    id="user-name"
+                  >
+                    Anonymous
+                  </h2>
+                  <div class="flex items-center mt-2">
+                    <div
+                      class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full flex items-center shadow-md"
+                    >
+                      <i class="fa-solid fa-crown"></i>
+                      <span class="ml-2" id="league">VIP</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- Arcade -->
+            <div
+              id="error-message"
+              class="hidden bg-gradient-to-r from-red-400 to-red-600 border border-red-500 text-white px-4 py-3 rounded mb-4"
+              role="alert"
+            >
+              <strong class="font-bold">Error:</strong>
+              <span class="block sm:inline"
+                >Something went wrong. Please try again.</span
+              >
+            </div>
+            <div
+              id="success-message"
+              class="hidden bg-gradient-to-r from-green-400 to-green-600 border border-green-500 text-white px-4 py-3 rounded mb-4"
+              role="alert"
+            >
+              <strong class="font-bold">Success:</strong>
+              <span class="block sm:inline">Your action was successful!</span>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button
+                id="toggle-video"
+                class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200 flex items-center space-x-2"
+              >
+                <i class="fa-solid fa-video"></i>
+                <span>Show/Hide Video</span>
+              </button>
+            </div>
+            <div
+              class="flex justify-center mt-6"
+              id="video-container"
+              style="display: none"
+            >
+              <iframe
+                class="rounded-lg shadow-md"
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/lcQywccAT4A?si=zWZwa2nCP5CPA-2P"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <script>
+              document
+                .getElementById("toggle-video")
+                .addEventListener("click", () => {
+                  const videoContainer =
+                    document.getElementById("video-container");
+                  if (videoContainer.style.display === "none") {
+                    videoContainer.style.display = "flex";
+                  } else {
+                    videoContainer.style.display = "none";
+                  }
+                });
+            </script>
           </div>
-          <!-- Arcade -->
-          <div id="error-message"
-            class="hidden bg-gradient-to-r from-red-400 to-red-600 border border-red-500 text-white px-4 py-3 rounded mb-4"
-            role="alert">
-            <strong class="font-bold">Error:</strong>
-            <span class="block sm:inline">Something went wrong. Please try again.</span>
-          </div>
-          <div id="success-message"
-            class="hidden bg-gradient-to-r from-green-400 to-green-600 border border-green-500 text-white px-4 py-3 rounded mb-4"
-            role="alert">
-            <strong class="font-bold">Success:</strong>
-            <span class="block sm:inline">Your action was successful!</span>
-          </div>
-          <div class="flex justify-center mt-6">
-            <button id="toggle-video"
-              class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200 flex items-center space-x-2">
-              <i class="fa-solid fa-video"></i>
-              <span>Show/Hide Video</span>
-            </button>
-          </div>
-          <div class="flex justify-center mt-6" id="video-container" style="display: none;">
-            <iframe class="rounded-lg shadow-md" width="560" height="315"
-              src="https://www.youtube.com/embed/lcQywccAT4A?si=zWZwa2nCP5CPA-2P" title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          </div>
-          <script>
-            document.getElementById('toggle-video').addEventListener('click', () => {
-              const videoContainer = document.getElementById('video-container');
-              if (videoContainer.style.display === 'none') {
-                videoContainer.style.display = 'flex';
-              } else {
-                videoContainer.style.display = 'none';
-              }
-            });
-          </script>
+          <!-- END - Settings -->
         </div>
-        <!-- END - Settings -->
+        <footer
+          class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6"
+        >
+          <div class="mb-4">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
+              class="inline-block"
+              aria-label="Chrome Web Store"
+            >
+              <img
+                alt="Chrome Web Store Version"
+                class="hidden"
+                id="chrome-web-store-badge"
+                src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
+                class="mx-auto"
+              />
+            </a>
+
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
+              class="inline-block"
+              aria-label="Firefox Addon Store"
+            >
+              <img
+                alt="Mozilla Add-on Version"
+                class="hidden"
+                id="firefox-addon-store"
+                src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white"
+              />
+            </a>
+
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=webext&utm_medium=options_page"
+              class="inline-block"
+              aria-label="Github releases"
+            >
+              <img
+                alt="Github releases"
+                id="github-releases"
+                src="https://img.shields.io/github/v/release/ePlus-DEV/google-cloud-skills-boost-helper?style=for-the-badge&logo=github&label=Release%20Extension"
+                class="mx-auto"
+              />
+            </a>
+          </div>
+          <p class="text-sm">
+            This extension is not affiliated with Google Cloud Skills Boost. All
+            rights reserved.
+          </p>
+          <p class="text-sm mt-2">
+            <i class="fa-solid fa-copyright"></i> 2025 -
+            <a
+              href="http://eplus.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-indigo-600 hover:underline"
+            >
+              ePlus.DEV
+            </a>
+          </p>
+        </footer>
       </div>
-      <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
-        <div class="mb-4">
-          <a target="_blank" rel="noopener noreferrer"
-            href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
-            class="inline-block" aria-label="Chrome Web Store">
-            <img alt="Chrome Web Store Version" class="hidden" id="chrome-web-store-badge"
-              src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
-              class="mx-auto" />
-          </a>
-
-          <a target="_blank" rel="noopener noreferrer"
-            href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
-            class="inline-block" aria-label="Firefox Addon Store">
-            <img alt="Mozilla Add-on Version" class="hidden" id="firefox-addon-store"
-              src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white" />
-          </a>
-
-          <a target="_blank" rel="noopener noreferrer"
-            href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=webext&utm_medium=options_page"
-            class="inline-block" aria-label="Github releases">
-            <img alt="Github releases" id="github-releases"
-              src="https://img.shields.io/github/v/release/ePlus-DEV/google-cloud-skills-boost-helper?style=for-the-badge&logo=github&label=Release%20Extension"
-              class="mx-auto" />
-          </a>
-        </div>
-        <p class="text-sm">
-          This extension is not affiliated with Google Cloud Skills Boost. All
-          rights reserved.
-        </p>
-        <p class="text-sm mt-2">
-          <i class="fa-solid fa-copyright"></i> 2025 -
-          <a href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
-            ePlus.DEV
-          </a>
-        </p>
-      </footer>
-    </div>
-    <script type="module" src="main.tsx"></script>
-  </body>
-
+      <script type="module" src="main.tsx"></script>
+    </body>
   </html>
 </div>
