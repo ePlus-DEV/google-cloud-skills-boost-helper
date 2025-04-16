@@ -135,10 +135,11 @@ const updateUI = (data: ArcadeData) => {
   updateAvatar(profileImage);
 
   const milestones = [
-    { points: 15, league: "STANDARD" },
-    { points: 30, league: "ADVANCED" },
-    { points: 45, league: "PREMIUM" },
-    { points: 65, league: "PREMIUM PLUS" },
+    { points: 20, league: "Arcade Novice" },
+    { points: 40, league: "Arcade Trooper" },
+    { points: 65, league: "Arcade Ranger" },
+    { points: 75, league: "Arcade Champion" },
+    { points: 85, league: "Arcade Legend" },
   ];
 
   const roundedArcadePoints = Math.floor(totalPoints);
