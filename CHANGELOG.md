@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2025-04-16
+### :sparkles: New Features
+- [`86a036c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/86a036c99713ebadd944428158cf06cec5d6735f) - add new icon and remove old logo *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`f959733`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f959733878623b6dbe5042b0b9dbeb473e6824d2) - Detected usage of the any type JS-0323 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`d0c96dd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d0c96dd48cbb65b3b8cc83ea30c4fe8b18764f80) - remove unused pageInfo from SEARCH_POSTS_QUERY and improve type definitions *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`551a013`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/551a013dd90dbe0d3f26488fc660229d3e6f34b6) - clean up code formatting and improve query text extraction logic *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0f84523`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0f84523f0ef26afd811679b2e27d44095f530182) - remove unnecessary console log for query text in fetchPostsOfPublicationOnce *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`1bb7251`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1bb7251051205152393ee4cd7c16bb9b13b2e609) - enhance UI updates and improve profile data handling in options page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.0.8] - 2025-04-15
 ### :sparkles: New Features
 - [`a218fad`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a218fad99473dd0799bbb5d1a54c69b67d2fa158) - add Firefox submission steps and environment variables to release workflow *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -32,3 +46,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [`3995f75`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3995f75ee63995a87969f2b127505538726b0734) - add sortBy parameter to searchPostsOfPublication query and update fetch function *(commit by [@hoangsvit](https://github.com/hoangsvit))*
 
 [1.0.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.7...1.0.8
+[1.0.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.8...1.0.9
