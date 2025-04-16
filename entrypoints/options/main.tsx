@@ -5,6 +5,8 @@ const submitUrlElement = document.getElementById("submit-url");
 const profileUrlInput = document.querySelector<HTMLInputElement>(
   "#public-profile-url",
 );
+const querySelector = <T extends HTMLElement>(selector: string): T | null =>
+  document.querySelector(selector);
 
 /**
  * Asynchronously initializes and retrieves the profile URL.
@@ -73,7 +75,9 @@ const displayUserDetails = async (data: ArcadeData) => {
     ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
   );
   const lastUpdated = new Date().toISOString();
-  await storage.setItem("local:arcadeData", { ...data, lastUpdated });
+  const updatedData = { ...data, lastUpdated };
+  await storage.setItem("local:arcadeData", updatedData);
+  updateUI(updatedData);
 };
 
 const handleSubmit = async () => {
@@ -114,17 +118,66 @@ const handleSubmit = async () => {
   }
 };
 
+const updateElementText = (selector: string, value: any) => {
+  const element = querySelector(selector);
+  if (element) {
+    element.textContent = value?.toString() || "N/A";
+  }
+};
+
+const updateAvatar = (profileImage?: string) => {
+  const avatarElement = querySelector<HTMLImageElement>("#user-avatar");
+  avatarElement?.setAttribute(
+    "src",
+    profileImage ||
+      "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg",
+  );
+};
+
+const updateUI = (data: ArcadeData) => {
+  const { userDetails } = data;
+  const { userName, league, profileImage } = userDetails?.[0] || {};
+
+  const elementsToUpdate = [
+    { selector: "#user-name", value: userName },
+    { selector: "#league", value: league },
+  ];
+
+  elementsToUpdate.forEach(({ selector, value }) =>
+    updateElementText(selector, value),
+  );
+
+  updateAvatar(profileImage);
+  const arcadePointsElement = document.querySelector("#arcade-points");
+  if (arcadePointsElement) {
+    arcadePointsElement.classList.remove("hidden");
+  }
+};
+
 const initializeEventListeners = () => {
   if (submitUrlElement) {
     submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
     submitUrlElement.addEventListener("click", handleSubmit);
   }
 
-  initializeProfileUrl().then((profileUrl) => {
-    if (profileUrlInput) {
-      profileUrlInput.value = profileUrl;
-    }
-  });
+  initializeProfileUrl().then(async (profileUrl) => {
+      if (profileUrlInput) {
+        profileUrlInput.value = profileUrl;
+        const arcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
+        const arcadePointsElement = document.querySelector("#arcade-points");
+        if (arcadeData) {
+          updateUI(arcadeData);
+          if (arcadePointsElement) {
+            arcadePointsElement.classList.remove("hidden");
+          }
+        } else {
+          if (arcadePointsElement) {
+            arcadePointsElement.classList.add("hidden");
+          }
+          console.warn("No arcade data found in storage.");
+        }
+      }
+    });
 
   const manifest = browser.runtime.getManifest();
   const version = manifest.version;
