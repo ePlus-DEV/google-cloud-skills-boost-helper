@@ -7,10 +7,10 @@ const profileUrlInput = document.querySelector<HTMLInputElement>(
 );
 /**
  * A utility function to select an HTML element from the DOM using a CSS selector.
- * 
+ *
  * @template T - The type of the HTML element being selected. It extends `HTMLElement`.
  * @param selector - A string representing the CSS selector to match the desired element.
- * @returns The first element within the document that matches the specified selector, 
+ * @returns The first element within the document that matches the specified selector,
  *          or `null` if no matching element is found.
  */
 const querySelector = <T extends HTMLElement>(selector: string): T | null =>
@@ -130,7 +130,7 @@ const handleSubmit = async () => {
  * Updates the text content of a DOM element specified by a CSS selector.
  *
  * @param {string} selector - The CSS selector used to locate the DOM element.
- * @param {any} value - The value to set as the text content of the element. 
+ * @param {any} value - The value to set as the text content of the element.
  *                      If the value is null or undefined, "N/A" will be used as the default.
  */
 const updateElementText = (selector: string, value: any) => {
