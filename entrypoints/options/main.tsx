@@ -76,6 +76,40 @@ const showMessage = (
   }
 };
 
+/**
+ * Updates the UI with user details and arcade points information.
+ *
+ * @param {ArcadeData} data - The data object containing user details and other information.
+ * @property {Object[]} data.userDetails - An array of user details.
+ * @property {string} [data.userDetails[].userName] - The name of the user.
+ * @property {string} [data.userDetails[].league] - The league of the user.
+ * @property {string} [data.userDetails[].profileImage] - The URL of the user's profile image.
+ *
+ * The function performs the following actions:
+ * - Updates the text content of elements with selectors `#user-name` and `#league` using the provided user details.
+ * - Updates the user's avatar using the `profileImage` URL.
+ * - Ensures the arcade points element (with selector `#arcade-points`) is visible by removing the `hidden` class.
+ */
+const updateUI = (data: ArcadeData) => {
+  const { userDetails } = data;
+  const { userName, league, profileImage } = userDetails?.[0] || {};
+
+  const elementsToUpdate = [
+    { selector: "#user-name", value: userName },
+    { selector: "#league", value: league },
+  ];
+
+  elementsToUpdate.forEach(({ selector, value }) =>
+    updateElementText(selector, value),
+  );
+
+  updateAvatar(profileImage);
+  const arcadePointsElement = document.querySelector("#arcade-points");
+  if (arcadePointsElement) {
+    arcadePointsElement.classList.remove("hidden");
+  }
+};
+
 const displayUserDetails = async (data: ArcadeData) => {
   showMessage(
     "#success-message",
@@ -133,8 +167,8 @@ const handleSubmit = async () => {
  * @param {any} value - The value to set as the text content of the element.
  *                      If the value is null or undefined, "N/A" will be used as the default.
  */
-const updateElementText = (selector: string, value: any) => {
-  const element = querySelector(selector);
+const updateElementText = (selector: string, value: string | number | null | undefined) => {
+  const element = querySelector<HTMLElement>(selector);
   if (element) {
     element.textContent = value?.toString() || "N/A";
   }
@@ -153,40 +187,6 @@ const updateAvatar = (profileImage?: string) => {
     profileImage ||
       "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg",
   );
-};
-
-/**
- * Updates the UI with user details and arcade points information.
- *
- * @param {ArcadeData} data - The data object containing user details and other information.
- * @property {Object[]} data.userDetails - An array of user details.
- * @property {string} [data.userDetails[].userName] - The name of the user.
- * @property {string} [data.userDetails[].league] - The league of the user.
- * @property {string} [data.userDetails[].profileImage] - The URL of the user's profile image.
- *
- * The function performs the following actions:
- * - Updates the text content of elements with selectors `#user-name` and `#league` using the provided user details.
- * - Updates the user's avatar using the `profileImage` URL.
- * - Ensures the arcade points element (with selector `#arcade-points`) is visible by removing the `hidden` class.
- */
-const updateUI = (data: ArcadeData) => {
-  const { userDetails } = data;
-  const { userName, league, profileImage } = userDetails?.[0] || {};
-
-  const elementsToUpdate = [
-    { selector: "#user-name", value: userName },
-    { selector: "#league", value: league },
-  ];
-
-  elementsToUpdate.forEach(({ selector, value }) =>
-    updateElementText(selector, value),
-  );
-
-  updateAvatar(profileImage);
-  const arcadePointsElement = document.querySelector("#arcade-points");
-  if (arcadePointsElement) {
-    arcadePointsElement.classList.remove("hidden");
-  }
 };
 
 const initializeEventListeners = () => {
