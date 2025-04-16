@@ -154,7 +154,7 @@ export default defineContentScript({
       interface SearchPostsOfPublicationData {
         edges: PostEdge[];
       }
-      console.log("postsData", queryText);
+
       const firstPostUrl: string | null =
         (postsData as SearchPostsOfPublicationData | null)?.edges?.find(
           (edge) => edge.node.title.includes(queryText),
