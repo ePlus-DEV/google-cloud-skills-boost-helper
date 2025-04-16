@@ -28,10 +28,6 @@ const SEARCH_POSTS_QUERY = gql`
           url
         }
       }
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
     }
   }
 `;
@@ -124,10 +120,17 @@ export default defineContentScript({
         console.warn("First outline item <li> element not found.");
         return;
       }
-      const queryText =
-        firstOutlineItem?.textContent?.trim() ||
-        document.querySelector(".lab-preamble__title")?.textContent?.trim() ||
-        "";
+      const queryText = (() => {
+        const firstItemText = firstOutlineItem?.textContent?.trim();
+        if (firstItemText === "Overview") {
+          return (
+            document
+              .querySelector(".ql-display-large.lab-preamble__title")
+              ?.textContent?.trim() || ""
+          );
+        }
+        return firstItemText || "";
+      })();
 
       const postsData = await fetchPostsOfPublicationOnce(
         import.meta.env.WXT_API_KEY,
@@ -137,9 +140,25 @@ export default defineContentScript({
         "DATE_PUBLISHED_DESC",
       );
 
-      const firstPostUrl = postsData?.edges?.[0]?.node?.url
-        ? `${postsData.edges[0].node.url}#heading-solution-of-lab`
-        : null;
+      interface PostNode {
+        id: string;
+        title: string;
+        url: string;
+      }
+
+      interface PostEdge {
+        cursor: string;
+        node: PostNode;
+      }
+
+      interface SearchPostsOfPublicationData {
+        edges: PostEdge[];
+      }
+
+      const firstPostUrl: string | null =
+        (postsData as SearchPostsOfPublicationData | null)?.edges?.find(
+          (edge) => edge.node.title.includes(queryText),
+        )?.node.url || null;
 
       outlineContainer.appendChild(createSolutionElement(firstPostUrl));
     }

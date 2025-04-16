@@ -5,6 +5,16 @@ const submitUrlElement = document.getElementById("submit-url");
 const profileUrlInput = document.querySelector<HTMLInputElement>(
   "#public-profile-url",
 );
+/**
+ * A utility function to select an HTML element from the DOM using a CSS selector.
+ *
+ * @template T - The type of the HTML element being selected. It extends `HTMLElement`.
+ * @param selector - A string representing the CSS selector to match the desired element.
+ * @returns The first element within the document that matches the specified selector,
+ *          or `null` if no matching element is found.
+ */
+const querySelector = <T extends HTMLElement>(selector: string): T | null =>
+  document.querySelector(selector);
 
 /**
  * Asynchronously initializes and retrieves the profile URL.
@@ -73,7 +83,9 @@ const displayUserDetails = async (data: ArcadeData) => {
     ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
   );
   const lastUpdated = new Date().toISOString();
-  await storage.setItem("local:arcadeData", { ...data, lastUpdated });
+  const updatedData = { ...data, lastUpdated };
+  await storage.setItem("local:arcadeData", updatedData);
+  updateUI(updatedData);
 };
 
 const handleSubmit = async () => {
@@ -114,15 +126,91 @@ const handleSubmit = async () => {
   }
 };
 
+/**
+ * Updates the text content of a DOM element specified by a CSS selector.
+ *
+ * @param {string} selector - The CSS selector used to locate the DOM element.
+ * @param {any} value - The value to set as the text content of the element.
+ *                      If the value is null or undefined, "N/A" will be used as the default.
+ */
+const updateElementText = (selector: string, value: any) => {
+  const element = querySelector(selector);
+  if (element) {
+    element.textContent = value?.toString() || "N/A";
+  }
+};
+
+/**
+ * Updates the avatar image source of the element with the ID "user-avatar".
+ *
+ * @param profileImage - The URL of the new profile image. If not provided,
+ * a default image URL will be used.
+ */
+const updateAvatar = (profileImage?: string) => {
+  const avatarElement = querySelector<HTMLImageElement>("#user-avatar");
+  avatarElement?.setAttribute(
+    "src",
+    profileImage ||
+      "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg",
+  );
+};
+
+/**
+ * Updates the UI with user details and arcade points information.
+ *
+ * @param {ArcadeData} data - The data object containing user details and other information.
+ * @property {Object[]} data.userDetails - An array of user details.
+ * @property {string} [data.userDetails[].userName] - The name of the user.
+ * @property {string} [data.userDetails[].league] - The league of the user.
+ * @property {string} [data.userDetails[].profileImage] - The URL of the user's profile image.
+ *
+ * The function performs the following actions:
+ * - Updates the text content of elements with selectors `#user-name` and `#league` using the provided user details.
+ * - Updates the user's avatar using the `profileImage` URL.
+ * - Ensures the arcade points element (with selector `#arcade-points`) is visible by removing the `hidden` class.
+ */
+const updateUI = (data: ArcadeData) => {
+  const { userDetails } = data;
+  const { userName, league, profileImage } = userDetails?.[0] || {};
+
+  const elementsToUpdate = [
+    { selector: "#user-name", value: userName },
+    { selector: "#league", value: league },
+  ];
+
+  elementsToUpdate.forEach(({ selector, value }) =>
+    updateElementText(selector, value),
+  );
+
+  updateAvatar(profileImage);
+  const arcadePointsElement = document.querySelector("#arcade-points");
+  if (arcadePointsElement) {
+    arcadePointsElement.classList.remove("hidden");
+  }
+};
+
 const initializeEventListeners = () => {
   if (submitUrlElement) {
     submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
     submitUrlElement.addEventListener("click", handleSubmit);
   }
 
-  initializeProfileUrl().then((profileUrl) => {
+  initializeProfileUrl().then(async (profileUrl) => {
     if (profileUrlInput) {
       profileUrlInput.value = profileUrl;
+      const arcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
+      const arcadePointsElement = document.querySelector("#arcade-points");
+      if (arcadeData) {
+        updateUI(arcadeData);
+        if (arcadePointsElement) {
+          arcadePointsElement.classList.remove("hidden");
+        }
+      } else {
+        if (arcadePointsElement) {
+          arcadePointsElement.classList.add("hidden");
+        }
+        console.warn("No arcade data found in storage.");
+      }
     }
   });
 
