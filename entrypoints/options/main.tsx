@@ -5,6 +5,14 @@ const submitUrlElement = document.getElementById("submit-url");
 const profileUrlInput = document.querySelector<HTMLInputElement>(
   "#public-profile-url",
 );
+/**
+ * A utility function to select an HTML element from the DOM using a CSS selector.
+ * 
+ * @template T - The type of the HTML element being selected. It extends `HTMLElement`.
+ * @param selector - A string representing the CSS selector to match the desired element.
+ * @returns The first element within the document that matches the specified selector, 
+ *          or `null` if no matching element is found.
+ */
 const querySelector = <T extends HTMLElement>(selector: string): T | null =>
   document.querySelector(selector);
 
@@ -118,6 +126,13 @@ const handleSubmit = async () => {
   }
 };
 
+/**
+ * Updates the text content of a DOM element specified by a CSS selector.
+ *
+ * @param {string} selector - The CSS selector used to locate the DOM element.
+ * @param {any} value - The value to set as the text content of the element. 
+ *                      If the value is null or undefined, "N/A" will be used as the default.
+ */
 const updateElementText = (selector: string, value: any) => {
   const element = querySelector(selector);
   if (element) {
@@ -125,6 +140,12 @@ const updateElementText = (selector: string, value: any) => {
   }
 };
 
+/**
+ * Updates the avatar image source of the element with the ID "user-avatar".
+ *
+ * @param profileImage - The URL of the new profile image. If not provided,
+ * a default image URL will be used.
+ */
 const updateAvatar = (profileImage?: string) => {
   const avatarElement = querySelector<HTMLImageElement>("#user-avatar");
   avatarElement?.setAttribute(
@@ -134,6 +155,20 @@ const updateAvatar = (profileImage?: string) => {
   );
 };
 
+/**
+ * Updates the UI with user details and arcade points information.
+ *
+ * @param {ArcadeData} data - The data object containing user details and other information.
+ * @property {Object[]} data.userDetails - An array of user details.
+ * @property {string} [data.userDetails[].userName] - The name of the user.
+ * @property {string} [data.userDetails[].league] - The league of the user.
+ * @property {string} [data.userDetails[].profileImage] - The URL of the user's profile image.
+ *
+ * The function performs the following actions:
+ * - Updates the text content of elements with selectors `#user-name` and `#league` using the provided user details.
+ * - Updates the user's avatar using the `profileImage` URL.
+ * - Ensures the arcade points element (with selector `#arcade-points`) is visible by removing the `hidden` class.
+ */
 const updateUI = (data: ArcadeData) => {
   const { userDetails } = data;
   const { userName, league, profileImage } = userDetails?.[0] || {};
