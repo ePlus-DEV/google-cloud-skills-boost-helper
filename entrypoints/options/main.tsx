@@ -167,7 +167,10 @@ const handleSubmit = async () => {
  * @param {any} value - The value to set as the text content of the element.
  *                      If the value is null or undefined, "N/A" will be used as the default.
  */
-const updateElementText = (selector: string, value: string | number | null | undefined) => {
+const updateElementText = (
+  selector: string,
+  value: string | number | null | undefined,
+) => {
   const element = querySelector<HTMLElement>(selector);
   if (element) {
     element.textContent = value?.toString() || "N/A";
