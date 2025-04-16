@@ -161,23 +161,23 @@ const initializeEventListeners = () => {
   }
 
   initializeProfileUrl().then(async (profileUrl) => {
-      if (profileUrlInput) {
-        profileUrlInput.value = profileUrl;
-        const arcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
-        const arcadePointsElement = document.querySelector("#arcade-points");
-        if (arcadeData) {
-          updateUI(arcadeData);
-          if (arcadePointsElement) {
-            arcadePointsElement.classList.remove("hidden");
-          }
-        } else {
-          if (arcadePointsElement) {
-            arcadePointsElement.classList.add("hidden");
-          }
-          console.warn("No arcade data found in storage.");
+    if (profileUrlInput) {
+      profileUrlInput.value = profileUrl;
+      const arcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
+      const arcadePointsElement = document.querySelector("#arcade-points");
+      if (arcadeData) {
+        updateUI(arcadeData);
+        if (arcadePointsElement) {
+          arcadePointsElement.classList.remove("hidden");
         }
+      } else {
+        if (arcadePointsElement) {
+          arcadePointsElement.classList.add("hidden");
+        }
+        console.warn("No arcade data found in storage.");
       }
-    });
+    }
+  });
 
   const manifest = browser.runtime.getManifest();
   const version = manifest.version;
