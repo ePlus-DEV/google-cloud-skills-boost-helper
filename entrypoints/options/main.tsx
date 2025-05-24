@@ -217,19 +217,19 @@ const initializeEventListeners = () => {
     }
   });
 
-const toggleVideoButton = document.getElementById("toggle-video");
-if (toggleVideoButton) {
-  toggleVideoButton.addEventListener("click", () => {
-    const videoContainer = document.getElementById("video-container");
-    if (videoContainer) {
-      if (videoContainer.style.display === "none") {
-        videoContainer.style.display = "flex";
-      } else {
-        videoContainer.style.display = "none";
+  const toggleVideoButton = document.getElementById("toggle-video");
+  if (toggleVideoButton) {
+    toggleVideoButton.addEventListener("click", () => {
+      const videoContainer = document.getElementById("video-container");
+      if (videoContainer) {
+        if (videoContainer.style.display === "none") {
+          videoContainer.style.display = "flex";
+        } else {
+          videoContainer.style.display = "none";
+        }
       }
-    }
-  });
-}
+    });
+  }
 
   const manifest = browser.runtime.getManifest();
   const version = manifest.version;
