@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-05-24
+### :recycle: Refactors
+- [`6d1dc39`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6d1dc390b4ff6cc77757364ee7e91a1c72f90061) - move video toggle functionality to main.tsx *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`fd731e5`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/fd731e5614cddc39d6c0835347e57ad3091ad37c) - bump version to 1.1.1 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.0.9] - 2025-04-16
 
 ### :sparkles: New Features
@@ -55,3 +63,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [1.0.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.7...1.0.8
 [1.0.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.8...1.0.9
+[1.1.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.0...1.1.1
