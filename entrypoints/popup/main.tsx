@@ -320,6 +320,14 @@ const initializeEventListeners = async () => {
     });
   });
 
+  const prizeTiersElement = document.querySelector<HTMLImageElement>(
+    "#prize-tiers",
+  );
+  if (prizeTiersElement) {
+    const currentTime = new Date().getTime();
+    prizeTiersElement.src = `${prizeTiersElement.src}?t=${currentTime}`;
+  }
+
   init();
 };
 
