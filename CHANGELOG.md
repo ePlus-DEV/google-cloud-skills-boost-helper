@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-05-27
+### :wrench: Chores
+- [`b40c0eb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b40c0eb8d058413d3502610fdf0ba9e8d5f247b1) - update node engine requirement to >=22
+- [`8bf4813`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8bf4813b00161c3962b692d9de1e8c3dac29bd50) - update node engine requirement to >=22 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.1.1] - 2025-05-24
 ### :recycle: Refactors
 - [`6d1dc39`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6d1dc390b4ff6cc77757364ee7e91a1c72f90061) - move video toggle functionality to main.tsx *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -64,3 +70,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.7...1.0.8
 [1.0.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.8...1.0.9
 [1.1.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.0...1.1.1
+[1.1.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.1...1.1.2
