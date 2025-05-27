@@ -193,6 +193,14 @@ const updateAvatar = (profileImage?: string) => {
 };
 
 const initializeEventListeners = () => {
+  const prizeTiersElement = document.querySelector<HTMLImageElement>(
+    "#prize-tiers",
+  );
+  if (prizeTiersElement) {
+    const currentTime = new Date().getTime();
+    prizeTiersElement.src = `${prizeTiersElement.src}?t=${currentTime}`;
+  }
+
   if (submitUrlElement) {
     submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
     submitUrlElement.addEventListener("click", handleSubmit);
