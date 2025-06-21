@@ -1,4 +1,9 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import Fuse from "fuse.js";
+const fuseOptions = {
+  threshold: 0.4,
+  keys: ["title"],
+};
 
 // Initialize Apollo Client
 const client = new ApolloClient({
@@ -120,6 +125,7 @@ export default defineContentScript({
         console.warn("First outline item <li> element not found.");
         return;
       }
+
       const queryText = (() => {
         const firstItemText = firstOutlineItem?.textContent?.trim();
         if (firstItemText === "Overview") {
@@ -132,10 +138,16 @@ export default defineContentScript({
         return firstItemText || "";
       })();
 
+      const labTitle =
+        document
+          .querySelector(".ql-display-large.lab-preamble__title")
+          ?.textContent?.trim() || "";
+      const combinedQueryText = `${labTitle} - ${queryText}`.trim();
+
       const postsData = await fetchPostsOfPublicationOnce(
         import.meta.env.WXT_API_KEY,
         queryText,
-        5,
+        20,
         null,
         "DATE_PUBLISHED_DESC",
       );
@@ -155,10 +167,21 @@ export default defineContentScript({
         edges: PostEdge[];
       }
 
-      const firstPostUrl: string | null =
-        (postsData as SearchPostsOfPublicationData | null)?.edges?.find(
-          (edge) => edge.node.title.includes(queryText),
-        )?.node.url || null;
+      // Use Fuse.js for fuzzy search to improve matching accuracy
+      const firstPostUrl: string | null = (() => {
+        if (!postsData) return null;
+        const nodes = (postsData as SearchPostsOfPublicationData).edges.map(
+          (e) => e.node,
+        );
+        if (!nodes.length) return null;
+        const fuse = new Fuse(nodes, fuseOptions);
+        const [best] = fuse.search(combinedQueryText);
+        if (!best) return null;
+        const url = best.item.url;
+        if (!url) return null;
+        const separator = url.includes("?") ? "&" : "?";
+        return `${url}${separator}t=${Date.now()}`;
+      })();
 
       outlineContainer.appendChild(createSolutionElement(firstPostUrl));
     }
