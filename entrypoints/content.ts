@@ -38,7 +38,7 @@ async function fetchPostsOfPublicationOnce(
   query: string,
   first: number,
   after: string | null = null,
-  sortBy: "DATE_PUBLISHED_DESC" = "DATE_PUBLISHED_DESC",
+  sortBy: "DATE_PUBLISHED_DESC" = "DATE_PUBLISHED_DESC"
 ) {
   try {
     const { data } = await client.query({
@@ -102,7 +102,7 @@ export default defineContentScript({
     if (
       href.startsWith("https://www.cloudskillsboost.google/games/") ||
       href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/",
+        "https://www.cloudskillsboost.google/course_templates/"
       ) ||
       href.startsWith("https://www.cloudskillsboost.google/focuses/")
     ) {
@@ -137,7 +137,7 @@ export default defineContentScript({
         queryText,
         5,
         null,
-        "DATE_PUBLISHED_DESC",
+        "DATE_PUBLISHED_DESC"
       );
 
       interface PostNode {
@@ -155,10 +155,14 @@ export default defineContentScript({
         edges: PostEdge[];
       }
 
-      const firstPostUrl: string | null =
-        (postsData as SearchPostsOfPublicationData | null)?.edges?.find(
-          (edge) => edge.node.title.includes(queryText),
-        )?.node.url || null;
+      const firstPostUrl: string | null = (() => {
+        const post = (
+          postsData as SearchPostsOfPublicationData | null
+        )?.edges?.find((edge) => edge.node.title.includes(queryText));
+        if (!post) return null;
+        const url = post.node.url;
+        return `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`;
+      })();
 
       outlineContainer.appendChild(createSolutionElement(firstPostUrl));
     }
@@ -178,27 +182,27 @@ export default defineContentScript({
 
         if (pathname === "/my_account/profile") {
           const publicProfileChecked = document.querySelector<HTMLInputElement>(
-            "#public_profile_checked",
+            "#public_profile_checked"
           );
 
           if (publicProfileChecked && !publicProfileChecked.checked) {
             publicProfileChecked.checked = true;
 
             const formElement = document.querySelector(
-              ".simple_form.edit_user",
+              ".simple_form.edit_user"
             );
             if (formElement) {
               formElement.insertAdjacentHTML(
                 "afterend",
                 `<ql-warningbox> ${browser.i18n.getMessage(
-                  "notePleaseSetUpTheSettings",
-                )} </ql-warningbox>`,
+                  "notePleaseSetUpTheSettings"
+                )} </ql-warningbox>`
               );
             }
           }
 
           const publicProfileElement = document.querySelector(
-            ".ql-body-medium.public-profile.public",
+            ".ql-body-medium.public-profile.public"
           );
 
           if (publicProfileElement) {
@@ -226,8 +230,8 @@ export default defineContentScript({
                       publicProfileElement.insertAdjacentHTML(
                         "afterend",
                         `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
-                          "messageLinkCopiedToClipboard",
-                        )} </ql-infobox>`,
+                          "messageLinkCopiedToClipboard"
+                        )} </ql-infobox>`
                       );
                     }
 
