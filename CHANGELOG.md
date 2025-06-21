@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2025-06-21
+### :sparkles: New Features
+- [`3fd648b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3fd648bdb90e964f16ab3c5caf8c5c8c9e70f2b4) - integrate Fuse.js for improved fuzzy search functionality and update version to 1.1.3 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`7d9b66a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7d9b66a5775a41105c3271c4c0c2cfcba1912a42) - clean up formatting and improve URL handling in content script *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`730e50f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/730e50f6c581340749209b2efe75388518868f57) - clean up formatting and improve readability in content script *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.1.2] - 2025-05-27
 ### :wrench: Chores
 - [`b40c0eb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b40c0eb8d058413d3502610fdf0ba9e8d5f247b1) - update node engine requirement to >=22
@@ -71,3 +80,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.0.8...1.0.9
 [1.1.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.0...1.1.1
 [1.1.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.1...1.1.2
+[1.1.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.2...1.1.3
