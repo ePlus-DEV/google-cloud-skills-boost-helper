@@ -53,15 +53,24 @@ class ArcadeScrapingService {
    */
   private static extractUserDetails(doc: Document) {
     const userNameElement = doc.querySelector(
-      '.profile-header h1, .profile-name h1, [data-testid="profile-name"]'
+      '.ql-display-small, .profile-header h1, .profile-name h1, [data-testid="profile-name"]'
     );
     const userName = userNameElement?.textContent?.trim() || "Anonymous";
 
-    // Try to extract profile image
-    const profileImageElement = doc.querySelector(
-      ".profile-avatar img, .avatar img, .profile-picture img"
-    ) as HTMLImageElement;
-    const profileImage = profileImageElement?.src || "";
+    // Extract profile image from ql-avatar or img elements
+    let profileImage = "";
+
+    // Try ql-avatar first (from actual HTML structure)
+    const avatarElement = doc.querySelector("ql-avatar.profile-avatar") as any;
+    if (avatarElement && avatarElement.src) {
+      profileImage = avatarElement.src;
+    } else {
+      // Fallback to img elements
+      const profileImageElement = doc.querySelector(
+        ".profile-avatar img, .avatar img, .profile-picture img"
+      ) as HTMLImageElement;
+      profileImage = profileImageElement?.src || "";
+    }
 
     return {
       userName,
@@ -85,6 +94,7 @@ class ArcadeScrapingService {
 
       // Look for badge elements within the profile-badges container
       const badgeSelectors = [
+        ".profile-badge", // Individual badge items (from Node.js controller)
         ".badge-card",
         ".achievement-card",
         ".earned-badge",
@@ -121,10 +131,29 @@ class ArcadeScrapingService {
       }
     }
 
-    // Fallback: if no profile-badges container found, use old method
+    // Fallback: if no profile-badges container found, try .profile-badge (individual items)
     if (badges.length === 0) {
       console.log(
-        "ArcadeScrapingService: .profile-badges container not found, using fallback method"
+        "ArcadeScrapingService: .profile-badges container not found, trying .profile-badge elements"
+      );
+
+      const profileBadgeElements = doc.querySelectorAll(".profile-badge");
+      console.log(
+        `ArcadeScrapingService: Found ${profileBadgeElements.length} .profile-badge elements`
+      );
+
+      profileBadgeElements.forEach((element) => {
+        const badge = this.extractBadgeFromElement(element);
+        if (badge) {
+          badges.push(badge);
+        }
+      });
+    }
+
+    // Final fallback: use old method
+    if (badges.length === 0) {
+      console.log(
+        "ArcadeScrapingService: No .profile-badge elements found, using final fallback method"
       );
       badges.push(...this.fallbackBadgeExtraction(doc));
     }
@@ -165,6 +194,7 @@ class ArcadeScrapingService {
     try {
       // Try to extract badge title
       const titleSelectors = [
+        ".ql-title-medium", // Primary selector from real HTML structure
         ".badge-title",
         ".badge-name",
         ".achievement-title",
@@ -183,12 +213,24 @@ class ArcadeScrapingService {
         }
       }
 
-      // Try to extract badge image
-      const imgElement = element.querySelector("img") as HTMLImageElement;
-      const imageURL = imgElement?.src || "";
+      // Try to extract badge image from the specific structure
+      let imageURL = "";
 
-      // Try to extract date earned
+      // First try the exact structure from real HTML: .badge-image > img
+      const badgeImageLink = element.querySelector(
+        ".badge-image img"
+      ) as HTMLImageElement;
+      if (badgeImageLink?.src) {
+        imageURL = badgeImageLink.src;
+      } else {
+        // Fallback to any img element
+        const imgElement = element.querySelector("img") as HTMLImageElement;
+        imageURL = imgElement?.src || "";
+      }
+
+      // Try to extract date earned using the real HTML structure
       const dateSelectors = [
+        ".ql-body-medium", // Primary selector from real HTML structure
         ".date-earned",
         ".earned-date",
         ".completion-date",
@@ -200,7 +242,14 @@ class ArcadeScrapingService {
       for (const selector of dateSelectors) {
         const dateElement = element.querySelector(selector);
         if (dateElement?.textContent?.trim()) {
-          dateEarned = dateElement.textContent.trim();
+          const dateText = dateElement.textContent.trim();
+
+          // Parse the specific format from real HTML: "Earned Jul 19, 2025 EDT"
+          if (dateText.startsWith("Earned ")) {
+            dateEarned = dateText.replace("Earned ", "");
+          } else {
+            dateEarned = dateText;
+          }
           break;
         }
       }
@@ -279,80 +328,183 @@ class ArcadeScrapingService {
   }
 
   /**
-   * Calculate points for a badge based on its title and type
+   * Calculate points for a badge based on its title and type (based on official arcade point rules)
+   * Official Rules:
+   * - 1 Arcade Monthly/Certification Game Badge = 1 Arcade Point
+   * - 1 Arcade Weekly Trivia Badge = 1 Arcade Point
+   * - 1 Arcade Special Edition Badge = 2 Arcade Points
+   * - 2 Skill Badges = 1 Arcade Point
    */
   private static calculateBadgePoints(title: string, imageURL: string): number {
     const titleLower = title.toLowerCase();
-    const imageLower = imageURL.toLowerCase();
 
-    // Arcade Game badges - typically 1 point each
-    if (titleLower.includes("arcade") || titleLower.includes("game")) {
+    console.log(`ArcadeScrapingService: Calculating points for: "${title}"`);
+
+    // Arcade Weekly Trivia badges = 1 Arcade Point
+    if (
+      titleLower.includes("arcade trivia") ||
+      (titleLower.includes("trivia") && titleLower.includes("week"))
+    ) {
+      console.log("  → Arcade Weekly Trivia badge: 1 Arcade Point");
       return 1;
     }
 
-    // Trivia badges - typically 1 point each
-    if (titleLower.includes("trivia")) {
+    // Arcade Monthly/Certification Game badges = 1 Arcade Point
+    if (
+      titleLower.includes("arcade") &&
+      (titleLower.includes("month") ||
+        titleLower.includes("certification") ||
+        titleLower.includes("game") ||
+        titleLower.includes("base camp"))
+    ) {
+      console.log("  → Arcade Monthly/Game badge: 1 Arcade Point");
       return 1;
     }
 
-    // Skill badges - typically 5 points each
-    if (titleLower.includes("skill") || titleLower.includes("challenge")) {
-      return 5;
+    // Arcade Special Edition badges = 2 Arcade Points
+    if (
+      titleLower.includes("arcade") &&
+      (titleLower.includes("special") ||
+        titleLower.includes("edition") ||
+        titleLower.includes("extraskillestrial") ||
+        titleLower.includes("skillestrial"))
+    ) {
+      console.log("  → Arcade Special Edition badge: 2 Arcade Points");
+      return 2;
     }
 
-    // Special events or quest badges - variable points
-    if (titleLower.includes("quest") || titleLower.includes("special")) {
-      return 3;
+    // Skill badges = 0.5 Arcade Points each (2 Skill Badges = 1 Arcade Point)
+    // We'll mark them and calculate fractional points later
+    if (
+      titleLower.includes("skill") ||
+      titleLower.includes("level") ||
+      titleLower.includes("challenge") ||
+      titleLower.includes("infrastructure") ||
+      titleLower.includes("application") ||
+      titleLower.includes("deployment")
+    ) {
+      console.log("  → Skill badge: 0.5 Arcade Points (2 needed for 1 point)");
+      return 0.5;
     }
 
-    // Lab completion badges - typically 1-2 points
-    if (titleLower.includes("lab") || titleLower.includes("completion")) {
+    // Generic arcade badges
+    if (titleLower.includes("arcade")) {
+      console.log("  → Generic Arcade badge: 1 Arcade Point");
       return 1;
     }
 
-    // Certificate or course badges - typically 10+ points
-    if (titleLower.includes("certificate") || titleLower.includes("course")) {
-      return 10;
-    }
-
-    // Default for unrecognized badges
-    return 1;
+    // Non-arcade badges don't contribute to arcade points
+    console.log("  → Non-arcade badge: 0 Arcade Points");
+    return 0;
   }
 
   /**
-   * Calculate total arcade points from badges
+   * Calculate total arcade points from badges (following official rules)
+   * Official Rules:
+   * - Arcade Monthly/Game badges (including Base Camp) = 1 point each
+   * - Arcade Weekly Trivia badges = 1 point each
+   * - Arcade Special Edition badges = 2 points each
+   * - Skill badges = 0.5 points each, rounded down by pairs (2 skill badges = 1 arcade point)
    */
   private static calculateArcadePointsFromBadges(badges: BadgeData[]) {
-    let gamePoints = 0;
-    let triviaPoints = 0;
-    let skillPoints = 0;
-    let specialPoints = 0;
+    let arcadeGamePoints = 0;
+    let arcadeTriviaPoints = 0;
+    let arcadeSpecialPoints = 0;
+    let skillBadgeCount = 0;
+
+    console.log("ArcadeScrapingService: Calculating total arcade points...");
 
     badges.forEach((badge) => {
       const titleLower = badge.title.toLowerCase();
 
-      if (titleLower.includes("arcade") || titleLower.includes("game")) {
-        gamePoints += badge.points;
-      } else if (titleLower.includes("trivia")) {
-        triviaPoints += badge.points;
-      } else if (
-        titleLower.includes("skill") ||
-        titleLower.includes("challenge")
+      // Arcade Weekly Trivia badges
+      if (
+        titleLower.includes("arcade trivia") ||
+        (titleLower.includes("trivia") && titleLower.includes("week"))
       ) {
-        skillPoints += badge.points;
-      } else {
-        specialPoints += badge.points;
+        arcadeTriviaPoints += badge.points;
+        console.log(`  → Trivia: ${badge.title} = ${badge.points} points`);
+      }
+      // Arcade Monthly/Game badges (including Base Camp)
+      else if (
+        titleLower.includes("arcade") &&
+        (titleLower.includes("month") ||
+          titleLower.includes("certification") ||
+          titleLower.includes("game") ||
+          titleLower.includes("base camp"))
+      ) {
+        arcadeGamePoints += badge.points;
+        console.log(
+          `  → Game/Base Camp: ${badge.title} = ${badge.points} points`
+        );
+      }
+      // Arcade Special Edition badges
+      else if (
+        titleLower.includes("arcade") &&
+        (titleLower.includes("special") ||
+          titleLower.includes("edition") ||
+          titleLower.includes("extraskillestrial") ||
+          titleLower.includes("skillestrial"))
+      ) {
+        arcadeSpecialPoints += badge.points;
+        console.log(`  → Special: ${badge.title} = ${badge.points} points`);
+      }
+      // Skill badges (count them for pairs)
+      else if (
+        titleLower.includes("skill") ||
+        titleLower.includes("level") ||
+        titleLower.includes("challenge") ||
+        titleLower.includes("infrastructure") ||
+        titleLower.includes("application") ||
+        titleLower.includes("deployment")
+      ) {
+        skillBadgeCount++;
+        console.log(`  → Skill: ${badge.title} (count: ${skillBadgeCount})`);
+      }
+      // Generic arcade badges
+      else if (titleLower.includes("arcade")) {
+        arcadeGamePoints += badge.points;
+        console.log(
+          `  → Generic Arcade: ${badge.title} = ${badge.points} points`
+        );
+      }
+      // Non-arcade badges
+      else {
+        console.log(`  → Non-arcade: ${badge.title} = 0 arcade points`);
       }
     });
 
-    const totalPoints = gamePoints + triviaPoints + skillPoints + specialPoints;
+    // Calculate skill badge points: 2 skill badges = 1 arcade point
+    const skillArcadePoints = Math.floor(skillBadgeCount / 2);
+    console.log(
+      `  → Skill badges: ${skillBadgeCount} badges = ${skillArcadePoints} arcade points (${
+        skillBadgeCount % 2
+      } remaining)`
+    );
+
+    const totalArcadePoints =
+      arcadeGamePoints +
+      arcadeTriviaPoints +
+      arcadeSpecialPoints +
+      skillArcadePoints;
+
+    console.log("ArcadeScrapingService: Final calculation:");
+    console.log(`  Game/Monthly/Base Camp: ${arcadeGamePoints} points`);
+    console.log(`  Trivia/Weekly: ${arcadeTriviaPoints} points`);
+    console.log(`  Special Edition: ${arcadeSpecialPoints} points`);
+    console.log(
+      `  Skill (${skillBadgeCount} badges): ${skillArcadePoints} points`
+    );
+    console.log(`  TOTAL ARCADE POINTS: ${totalArcadePoints}`);
 
     return {
-      totalPoints,
-      gamePoints,
-      triviaPoints,
-      skillPoints,
-      specialPoints,
+      totalPoints: totalArcadePoints,
+      gamePoints: arcadeGamePoints,
+      triviaPoints: arcadeTriviaPoints,
+      skillPoints: skillArcadePoints,
+      specialPoints: arcadeSpecialPoints,
+      skillBadgeCount: skillBadgeCount,
+      skillBadgesRemaining: skillBadgeCount % 2,
     };
   }
 
