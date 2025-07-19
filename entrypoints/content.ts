@@ -1,4 +1,8 @@
-import { LabService, ProfileService } from "../services";
+import {
+  LabService,
+  ProfileService,
+  ProfileDetectionService,
+} from "../services";
 
 export default defineContentScript({
   matches: [
@@ -34,6 +38,9 @@ export default defineContentScript({
         if (pathname === "/my_account/profile") {
           ProfileService.initialize();
         }
+
+        // Initialize profile detection for arcade data scraping
+        ProfileDetectionService.initialize();
       },
     });
     ui.mount();
