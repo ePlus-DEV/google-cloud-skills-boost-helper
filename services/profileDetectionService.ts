@@ -99,9 +99,16 @@ class ProfileDetectionService {
   }
 
   /**
-   * Check if an element might be a badge
+   * Check if an element might be a badge (prioritize elements within .profile-badges)
    */
   private static elementMightBeBadge(element: Element): boolean {
+    // First check if element is within .profile-badges container
+    const isInProfileBadges = element.closest(".profile-badges") !== null;
+    if (isInProfileBadges) {
+      return true; // Any element in .profile-badges is potentially a badge
+    }
+
+    // Fallback to old method for elements outside .profile-badges
     const className = element.className || "";
     const id = element.id || "";
     const tagName = element.tagName?.toLowerCase() || "";
@@ -143,6 +150,19 @@ class ProfileDetectionService {
    */
   private static async checkAndScrapePage(): Promise<void> {
     try {
+      // First check if .profile-badges container exists
+      const profileBadgesContainer = document.querySelector(".profile-badges");
+      if (!profileBadgesContainer) {
+        console.log(
+          "ProfileDetectionService: .profile-badges container not found on current page"
+        );
+        return;
+      }
+
+      console.log(
+        "ProfileDetectionService: Found .profile-badges container, checking for badges..."
+      );
+
       // Wait a bit for content to load
       await ArcadeScrapingService.waitForBadgesToLoad(5000);
 

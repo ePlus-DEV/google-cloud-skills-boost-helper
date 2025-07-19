@@ -1,5 +1,6 @@
 import { UAParser } from "ua-parser-js";
 import ArcadeApiService from "./arcadeApiService";
+import ArcadeScrapingService from "./arcadeScrapingService";
 import StorageService from "./storageService";
 import PopupUIService from "./popupUIService";
 import type { ArcadeData } from "../types";
@@ -27,6 +28,14 @@ class OptionsService {
     if (submitUrlElement) {
       submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
       submitUrlElement.addEventListener("click", () => this.handleSubmit());
+    }
+
+    // Scrape Only button
+    const scrapeOnlyElement = document.getElementById("scrape-only-url");
+    if (scrapeOnlyElement) {
+      scrapeOnlyElement.addEventListener("click", () =>
+        this.handleScrapeOnly()
+      );
     }
 
     // Video toggle button
@@ -127,18 +136,97 @@ class OptionsService {
     }
 
     try {
-      const arcadeData = await ArcadeApiService.fetchArcadeData(profileUrl);
+      // Try API first, then fallback to scraping
+      let arcadeData = await ArcadeApiService.fetchArcadeData(profileUrl);
+
+      if (!arcadeData) {
+        console.log("OptionsService: API failed, trying scraping method...");
+        arcadeData = await ArcadeScrapingService.scrapeArcadeData(profileUrl);
+      }
 
       if (arcadeData) {
         await this.displayUserDetails(arcadeData);
         await StorageService.saveProfileUrl(profileUrl);
       } else {
-        console.error("Failed to fetch arcade data.");
+        console.error(
+          "Failed to fetch arcade data from both API and scraping."
+        );
+        PopupUIService.showMessage(
+          "#error-message",
+          "Failed to fetch data. Please try again later.",
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        );
       }
     } catch (error) {
       console.error("Error during submission:", error);
+      PopupUIService.showMessage(
+        "#error-message",
+        "An error occurred. Please try again.",
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+      );
     } finally {
       this.resetSubmitButton();
+    }
+  }
+
+  /**
+   * Handle scrape-only submission (bypass API, use scraping only)
+   */
+  private static async handleScrapeOnly(): Promise<void> {
+    const scrapeOnlyElement = document.getElementById("scrape-only-url");
+    const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
+      "#public-profile-url"
+    );
+
+    if (scrapeOnlyElement) {
+      scrapeOnlyElement.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Scraping...';
+    }
+
+    const profileUrl = profileUrlInput?.value;
+
+    // Validate URL
+    if (!profileUrl || !ArcadeApiService.isValidProfileUrl(profileUrl)) {
+      PopupUIService.showMessage(
+        "#error-message",
+        browser.i18n.getMessage("errorInvalidUrl"),
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+      );
+      this.resetScrapeOnlyButton();
+      return;
+    }
+
+    try {
+      console.log("OptionsService: Using scraping method only...");
+      const arcadeData = await ArcadeScrapingService.scrapeArcadeData(
+        profileUrl
+      );
+
+      if (arcadeData) {
+        await this.displayUserDetails(arcadeData);
+        await StorageService.saveProfileUrl(profileUrl);
+        PopupUIService.showMessage(
+          "#success-message",
+          "✅ Data scraped successfully (API bypassed)!",
+          ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
+        );
+      } else {
+        console.error("Failed to scrape arcade data.");
+        PopupUIService.showMessage(
+          "#error-message",
+          "Failed to scrape data. Please ensure the profile is public and try again.",
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        );
+      }
+    } catch (error) {
+      console.error("Error during scraping:", error);
+      PopupUIService.showMessage(
+        "#error-message",
+        "An error occurred during scraping. Please try again.",
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+      );
+    } finally {
+      this.resetScrapeOnlyButton();
     }
   }
 
@@ -163,6 +251,16 @@ class OptionsService {
     const submitUrlElement = document.getElementById("submit-url");
     if (submitUrlElement) {
       submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
+    }
+  }
+
+  /**
+   * Reset scrape only button text
+   */
+  private static resetScrapeOnlyButton(): void {
+    const scrapeOnlyElement = document.getElementById("scrape-only-url");
+    if (scrapeOnlyElement) {
+      scrapeOnlyElement.innerHTML = '<i class="fa-solid fa-search"></i> Scrape';
     }
   }
 }
