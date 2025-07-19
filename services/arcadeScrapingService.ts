@@ -77,35 +77,84 @@ class ArcadeScrapingService {
   private static extractBadges(doc: Document): BadgeData[] {
     const badges: BadgeData[] = [];
 
-    // Look for badge containers - Google Cloud Skills Boost uses various selectors
-    const badgeSelectors = [
-      ".badge-card",
-      ".achievement-card",
-      ".earned-badge",
-      ".badge-item",
-      '[data-testid="badge"]',
-      ".profile-badge",
-    ];
+    // First, try to find the profile-badges container
+    const profileBadgesContainer = doc.querySelector(".profile-badges");
 
-    for (const selector of badgeSelectors) {
-      const badgeElements = doc.querySelectorAll(selector);
+    if (profileBadgesContainer) {
+      console.log("ArcadeScrapingService: Found .profile-badges container");
 
-      badgeElements.forEach((element) => {
+      // Look for badge elements within the profile-badges container
+      const badgeSelectors = [
+        ".badge-card",
+        ".achievement-card",
+        ".earned-badge",
+        ".badge-item",
+        '[data-testid="badge"]',
+        ".badge",
+        ".completion-badge",
+        ".skill-badge",
+      ];
+
+      for (const selector of badgeSelectors) {
+        const badgeElements = profileBadgesContainer.querySelectorAll(selector);
+
+        console.log(
+          `ArcadeScrapingService: Found ${badgeElements.length} elements with selector "${selector}" in .profile-badges`
+        );
+
+        badgeElements.forEach((element) => {
+          const badge = this.extractBadgeFromElement(element);
+          if (badge) {
+            badges.push(badge);
+          }
+        });
+
+        if (badges.length > 0) break; // Stop if we found badges with one selector
+      }
+
+      // If no specific badge selectors work, try to find any elements that look like badges
+      if (badges.length === 0) {
+        console.log(
+          "ArcadeScrapingService: No badges found with specific selectors, trying generic approach in .profile-badges"
+        );
+        badges.push(...this.extractBadgesFromContainer(profileBadgesContainer));
+      }
+    }
+
+    // Fallback: if no profile-badges container found, use old method
+    if (badges.length === 0) {
+      console.log(
+        "ArcadeScrapingService: .profile-badges container not found, using fallback method"
+      );
+      badges.push(...this.fallbackBadgeExtraction(doc));
+    }
+
+    console.log(`ArcadeScrapingService: Total badges found: ${badges.length}`);
+    return badges;
+  }
+
+  /**
+   * Extract badges from a specific container element
+   */
+  private static extractBadgesFromContainer(container: Element): BadgeData[] {
+    const badges: BadgeData[] = [];
+
+    // Try to find any clickable elements or divs that might represent badges
+    const possibleBadges = container.querySelectorAll(
+      "div, a, article, section"
+    );
+
+    possibleBadges.forEach((element) => {
+      // Check if element contains an image (common for badges)
+      const img = element.querySelector("img");
+      if (img) {
         const badge = this.extractBadgeFromElement(element);
         if (badge) {
           badges.push(badge);
         }
-      });
+      }
+    });
 
-      if (badges.length > 0) break; // Stop if we found badges with one selector
-    }
-
-    // Fallback: try to find badges in any element with badge-related text
-    if (badges.length === 0) {
-      badges.push(...this.fallbackBadgeExtraction(doc));
-    }
-
-    console.log(`ArcadeScrapingService: Found ${badges.length} badges`);
     return badges;
   }
 

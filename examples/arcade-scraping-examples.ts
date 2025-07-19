@@ -179,20 +179,39 @@ async function exampleMonitoringAndDebugging() {
     await ArcadeScrapingService.waitForBadgesToLoad(10000);
     console.log("✅ Badges loading completed");
 
-    // Check what selectors are available
-    const badgeSelectors = [
-      ".badge-card",
-      ".achievement-card",
-      ".earned-badge",
-      ".badge-item",
-    ];
+    // Check if .profile-badges container exists
+    const profileBadgesContainer = document.querySelector(".profile-badges");
+    if (profileBadgesContainer) {
+      console.log("✅ Found .profile-badges container");
 
-    badgeSelectors.forEach((selector) => {
-      const elements = document.querySelectorAll(selector);
-      console.log(
-        `🔍 Selector "${selector}": ${elements.length} elements found`
+      // Check what selectors are available within .profile-badges
+      const badgeSelectors = [
+        ".badge-card",
+        ".achievement-card",
+        ".earned-badge",
+        ".badge-item",
+        ".badge",
+        ".completion-badge",
+        ".skill-badge",
+      ];
+
+      badgeSelectors.forEach((selector) => {
+        const elements = profileBadgesContainer.querySelectorAll(selector);
+        console.log(
+          `🔍 Selector "${selector}" in .profile-badges: ${elements.length} elements found`
+        );
+      });
+
+      // Check for any divs or links that might be badges
+      const possibleBadges = profileBadgesContainer.querySelectorAll(
+        "div, a, article, section"
       );
-    });
+      console.log(
+        `🏅 Possible badge elements in .profile-badges: ${possibleBadges.length}`
+      );
+    } else {
+      console.log("❌ .profile-badges container not found");
+    }
 
     // Check for images that might be badges
     const images = document.querySelectorAll("img");
