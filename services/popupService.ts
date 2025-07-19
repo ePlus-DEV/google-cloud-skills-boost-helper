@@ -21,11 +21,21 @@ class PopupService {
     // Load existing data
     const arcadeData = await StorageService.getArcadeData();
 
+    console.log("PopupService: Profile URL:", this.profileUrl);
+    console.log("PopupService: Stored arcade data:", arcadeData);
+
     if (!this.profileUrl) {
       this.showAuthScreen();
     } else if (arcadeData) {
       PopupUIService.updateMainUI(arcadeData);
       BadgeService.renderBadges(arcadeData.badges || []);
+    } else {
+      // Profile URL exists but no data - show loading state and try to fetch
+      console.log(
+        "PopupService: Profile URL exists but no data, showing loading state"
+      );
+      PopupUIService.showLoadingState();
+      this.refreshData();
     }
 
     this.setupEventListeners();
@@ -69,15 +79,19 @@ class PopupService {
         this.profileUrl
       );
 
+      console.log("PopupService: Fetched arcade data:", arcadeData);
+
       if (arcadeData) {
         await StorageService.saveArcadeData(arcadeData);
         PopupUIService.updateMainUI(arcadeData);
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
         console.error("Failed to fetch arcade data.");
+        PopupUIService.showErrorState();
       }
     } catch (error) {
       console.error("Error refreshing data:", error);
+      PopupUIService.showErrorState();
     } finally {
       // Hide loading state
       PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);

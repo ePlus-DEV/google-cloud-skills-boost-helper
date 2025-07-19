@@ -29,6 +29,10 @@ class PopupUIService {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
       element.textContent = value?.toString() || "N/A";
+    } else {
+      console.warn(
+        `PopupUIService: Element not found for selector: ${selector}`
+      );
     }
   }
 
@@ -146,11 +150,57 @@ class PopupUIService {
   }
 
   /**
+   * Show error state
+   */
+  static showErrorState(): void {
+    const updates: UIUpdateData[] = [
+      { selector: "#user-name", value: "Error loading data" },
+      { selector: "#league", value: "N/A" },
+      { selector: "#total-points", value: "0 points" },
+      { selector: "#arcade-points", value: "0" },
+    ];
+    this.updateElements(updates);
+  }
+
+  /**
+   * Show loading state
+   */
+  static showLoadingState(): void {
+    const updates: UIUpdateData[] = [
+      { selector: "#user-name", value: "Loading..." },
+      { selector: "#league", value: "Loading..." },
+      { selector: "#total-points", value: "Loading..." },
+      { selector: "#arcade-points", value: "Loading..." },
+    ];
+    this.updateElements(updates);
+  }
+
+  /**
    * Update main UI with arcade data
    */
   static updateMainUI(data: ArcadeData): void {
+    console.log("PopupUIService: updateMainUI called with data:", data);
+
     const { userDetails, arcadePoints, lastUpdated, badges } = data;
-    const { userName, league, points, profileImage } = userDetails?.[0] || {};
+    console.log("PopupUIService: userDetails:", userDetails);
+    console.log("PopupUIService: arcadePoints:", arcadePoints);
+
+    // Handle both array and object formats for backward compatibility
+    let userInfo;
+    if (Array.isArray(userDetails)) {
+      // Legacy format: userDetails is an array
+      userInfo = userDetails[0] || {};
+      console.log(
+        "PopupUIService: userDetails is array, using first item:",
+        userInfo
+      );
+    } else {
+      // New format: userDetails is an object
+      userInfo = userDetails || {};
+      console.log("PopupUIService: userDetails is object:", userInfo);
+    }
+
+    const { userName, league, points, profileImage } = userInfo;
     const {
       totalPoints = 0,
       gamePoints = 0,
@@ -159,17 +209,36 @@ class PopupUIService {
       specialPoints = 0,
     } = arcadePoints || {};
 
+    console.log("PopupUIService: extracted user data:", {
+      userName,
+      league,
+      points,
+      profileImage,
+    });
+    console.log("PopupUIService: extracted arcade points:", {
+      totalPoints,
+      gamePoints,
+      triviaPoints,
+      skillPoints,
+      specialPoints,
+    });
+
     // Update basic info
     const updates: UIUpdateData[] = [
       { selector: "#arcade-points", value: totalPoints },
-      { selector: "#user-name", value: userName },
-      { selector: "#league", value: league },
-      { selector: "#total-points", value: points },
+      { selector: "#user-name", value: userName || "Anonymous" },
+      { selector: "#league", value: league || "VIP" },
+      {
+        selector: "#total-points",
+        value: `${points || totalPoints || 0} points`,
+      },
       { selector: "#game-badge-count", value: gamePoints },
       { selector: "#trivia-badge-count", value: triviaPoints },
       { selector: "#skill-badge-count", value: skillPoints },
       { selector: "#special-points-count", value: specialPoints },
     ];
+
+    console.log("PopupUIService: UI updates to apply:", updates);
 
     this.updateElements(updates);
     this.updateAvatar(profileImage);
@@ -190,6 +259,53 @@ class PopupUIService {
 
     // Show arcade points section
     this.toggleElementVisibility("#arcade-points", true);
+  }
+
+  /**
+   * Update options UI with arcade data (specific for options page)
+   */
+  static updateOptionsUI(data: ArcadeData): void {
+    console.log("PopupUIService: updateOptionsUI called with data:", data);
+
+    const { userDetails, arcadePoints, lastUpdated } = data;
+
+    // Handle both array and object formats for backward compatibility
+    let userInfo;
+    if (Array.isArray(userDetails)) {
+      userInfo = userDetails[0] || {};
+    } else {
+      userInfo = userDetails || {};
+    }
+
+    const { userName, league, points, profileImage } = userInfo;
+    const { totalPoints = 0 } = arcadePoints || {};
+
+    console.log("PopupUIService: Options page - extracted user data:", {
+      userName,
+      league,
+      points,
+      profileImage,
+      totalPoints,
+    });
+
+    // Update user info in options page (different selectors than popup)
+    const updates: UIUpdateData[] = [
+      { selector: "#user-name", value: userName || "Anonymous" },
+      { selector: "#league", value: league || "VIP" },
+      {
+        selector: "#total-points",
+        value: `${points || totalPoints || 0} points`,
+      },
+      { selector: "#arcade-total-points", value: totalPoints },
+    ];
+
+    this.updateElements(updates);
+    this.updateAvatar(profileImage);
+
+    // Show arcade points section
+    this.toggleElementVisibility("#arcade-points", true);
+
+    console.log("PopupUIService: Options UI updated successfully");
   }
 
   /**
