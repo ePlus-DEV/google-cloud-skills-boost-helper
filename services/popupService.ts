@@ -123,10 +123,19 @@ class PopupService {
     const refreshIcons = document.querySelectorAll(
       ".refresh-icon"
     ) as NodeListOf<HTMLElement>;
+    const scrapeButtons = document.querySelectorAll(
+      ".scrape-only-button"
+    ) as NodeListOf<HTMLButtonElement>;
 
     // Show loading state
     PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, true);
     PopupUIService.toggleButtonState(refreshButtons, true);
+    PopupUIService.toggleButtonState(scrapeButtons, true);
+
+    // Update scrape button icon
+    scrapeButtons.forEach((button) => {
+      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    });
 
     try {
       console.log("PopupService: Using scraping method only...");
@@ -151,6 +160,12 @@ class PopupService {
       // Hide loading state
       PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);
       PopupUIService.toggleButtonState(refreshButtons, false);
+      PopupUIService.toggleButtonState(scrapeButtons, false);
+
+      // Reset scrape button icon
+      scrapeButtons.forEach((button) => {
+        button.innerHTML = '<i class="fa-solid fa-search"></i>';
+      });
     }
   }
 
@@ -161,6 +176,11 @@ class PopupService {
     // Refresh buttons
     document.querySelectorAll(".refresh-button").forEach((button) => {
       button.addEventListener("click", () => this.refreshData());
+    });
+
+    // Scrape Only buttons
+    document.querySelectorAll(".scrape-only-button").forEach((button) => {
+      button.addEventListener("click", () => this.refreshDataByScraping());
     });
 
     // Settings buttons
