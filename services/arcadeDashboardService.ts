@@ -3,6 +3,16 @@
  * Scrape arcade points và league info từ https://go.cloudskillsboost.google/arcade
  */
 
+export interface ArcadeEvent {
+  title: string;
+  description?: string;
+  accessCode?: string;
+  points: number;
+  imageUrl?: string;
+  gameUrl?: string;
+  isActive: boolean;
+}
+
 export interface ArcadeDashboardData {
   totalArcadePoints: number;
   currentLeague: string;
@@ -22,6 +32,7 @@ export interface ArcadeDashboardData {
     timeRemaining?: string;
     currentEvent?: string;
   };
+  availableEvents?: ArcadeEvent[];
 }
 
 class ArcadeDashboardService {
@@ -60,6 +71,9 @@ class ArcadeDashboardService {
 
       // Extract game status
       result.gameStatus = this.extractGameStatus();
+
+      // Extract available events/games
+      result.availableEvents = this.extractAvailableEvents();
 
       console.log("ArcadeDashboardService: Scraping completed:", result);
       return result;
@@ -434,6 +448,226 @@ class ArcadeDashboardService {
     }
 
     return { isActive, timeRemaining, currentEvent };
+  }
+
+  /**
+   * Extract available arcade events/games
+   */
+  private static extractAvailableEvents(): ArcadeEvent[] {
+    console.log("ArcadeDashboardService: Extracting available events...");
+
+    const events: ArcadeEvent[] = [];
+
+    // Look for event cards
+    const eventSelectors = [
+      ".card",
+      ".event-card",
+      ".arcade-game-card",
+      ".game-card",
+      '[class*="card"]',
+    ];
+
+    for (const selector of eventSelectors) {
+      try {
+        const cards = document.querySelectorAll(selector);
+
+        for (const card of cards) {
+          const event = this.extractEventFromCard(card as Element);
+          if (event) {
+            events.push(event);
+            console.log(
+              `ArcadeDashboardService: Found event: ${event.title} (${event.points} points)`
+            );
+          }
+        }
+      } catch (error) {
+        console.warn(
+          `ArcadeDashboardService: Error extracting events with ${selector}:`,
+          error
+        );
+      }
+    }
+
+    console.log(`ArcadeDashboardService: Found ${events.length} total events`);
+    return events;
+  }
+
+  /**
+   * Extract event information from a card element
+   */
+  private static extractEventFromCard(card: Element): ArcadeEvent | null {
+    try {
+      // Extract title - check both card title and parent elements
+      const titleSelectors = [
+        ".card-title",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        ".title",
+        '[class*="title"]',
+      ];
+      let title = "";
+
+      // First try to get title from the card itself
+      for (const selector of titleSelectors) {
+        const titleElement = card.querySelector(selector);
+        if (titleElement && titleElement.textContent?.trim()) {
+          title = titleElement.textContent.trim();
+          break;
+        }
+      }
+
+      // If no title found in card, check parent container (for weekly trivia layout)
+      if (!title) {
+        let parentElement = card.parentElement;
+        while (parentElement && !title) {
+          for (const selector of titleSelectors) {
+            const titleElement = parentElement.querySelector(selector);
+            if (titleElement && titleElement.textContent?.trim()) {
+              title = titleElement.textContent.trim();
+              break;
+            }
+          }
+          parentElement = parentElement.parentElement;
+          // Limit search to 3 levels up to avoid going too far
+          if (!parentElement || parentElement === document.body) break;
+        }
+      }
+
+      if (!title) return null;
+
+      // Generate full title for weekly events
+      const fullTitle = this.generateEventTitle(title, card);
+
+      // Only process arcade-related events
+      const titleLower = fullTitle.toLowerCase();
+      if (
+        !titleLower.includes("arcade") &&
+        !titleLower.includes("base camp") &&
+        !titleLower.includes("game") &&
+        !titleLower.includes("trivia") &&
+        !titleLower.includes("week")
+      ) {
+        return null;
+      }
+
+      // Extract description
+      let description = "";
+      const descSelectors = [
+        "p",
+        ".description",
+        ".card-text",
+        '[class*="desc"]',
+      ];
+      for (const selector of descSelectors) {
+        const descElement = card.querySelector(selector);
+        if (descElement && descElement.textContent?.trim()) {
+          description = descElement.textContent.trim();
+          break;
+        }
+      }
+
+      // Extract access code
+      let accessCode = "";
+      const codePattern = /access code[:\s]*([a-z0-9\-]+)/i;
+      const cardText = card.textContent || "";
+      const codeMatch = cardText.match(codePattern);
+      if (codeMatch) {
+        accessCode = codeMatch[1];
+      }
+
+      // Extract points
+      let points = 0;
+      const pointsPattern = /arcade points?[:\s]*(\d+)/i;
+      const pointsMatch = cardText.match(pointsPattern);
+      if (pointsMatch) {
+        points = parseInt(pointsMatch[1], 10);
+      } else {
+        // Default points based on event type
+        if (fullTitle.toLowerCase().includes("base camp")) points = 1;
+        else if (fullTitle.toLowerCase().includes("trivia")) points = 1;
+        else if (fullTitle.toLowerCase().includes("game")) points = 1;
+        else if (fullTitle.toLowerCase().includes("special")) points = 2;
+      }
+
+      // Extract image URL
+      let imageUrl = "";
+      const imgElement = card.querySelector("img");
+      if (imgElement && imgElement.src) {
+        imageUrl = imgElement.src;
+      }
+
+      // Extract game URL
+      let gameUrl = "";
+      const linkElement = card.querySelector(
+        'a[href*="cloudskillsboost.google"]'
+      );
+      if (linkElement) {
+        gameUrl = (linkElement as HTMLAnchorElement).href;
+      }
+
+      // Determine if active
+      const isActive =
+        !cardText.toLowerCase().includes("ended") &&
+        !cardText.toLowerCase().includes("closed") &&
+        !cardText.toLowerCase().includes("completed");
+
+      return {
+        title: fullTitle,
+        description: description || undefined,
+        accessCode: accessCode || undefined,
+        points,
+        imageUrl: imageUrl || undefined,
+        gameUrl: gameUrl || undefined,
+        isActive,
+      };
+    } catch (error) {
+      console.warn(
+        "ArcadeDashboardService: Error extracting event from card:",
+        error
+      );
+      return null;
+    }
+  }
+
+  /**
+   * Generate full event title for weekly events
+   */
+  private static generateEventTitle(title: string, card: Element): string {
+    const titleLower = title.toLowerCase();
+
+    // If title contains "week", generate full trivia title
+    if (titleLower.includes("week")) {
+      // Try to determine current month/year
+      const currentDate = new Date();
+      const currentMonth = currentDate.toLocaleDateString("en-US", {
+        month: "long",
+      });
+      const currentYear = currentDate.getFullYear();
+
+      // Extract week number from title
+      const weekMatch = title.match(/week\s*(\d+)/i);
+      const weekNumber = weekMatch ? weekMatch[1] : title;
+
+      return `Skills Boost Arcade Trivia ${currentMonth} ${currentYear} Week ${weekNumber}`;
+    }
+
+    // For other events, return as is or try to enhance
+    if (titleLower.includes("base camp")) {
+      const currentDate = new Date();
+      const currentMonth = currentDate.toLocaleDateString("en-US", {
+        month: "long",
+      });
+      const currentYear = currentDate.getFullYear();
+
+      if (!titleLower.includes(currentMonth.toLowerCase())) {
+        return `The Arcade Base Camp ${currentMonth} ${currentYear}`;
+      }
+    }
+
+    return title;
   }
 
   /**

@@ -4,6 +4,7 @@
  */
 
 import type { BadgeData } from "../types";
+import type { ArcadeEvent } from "./arcadeDashboardService";
 
 export interface ArcadePoints {
   totalPoints: number;
@@ -187,6 +188,80 @@ export class CSVExportService {
     );
 
     console.log("📊 Full report exported successfully!");
+  }
+
+  /**
+   * Generate CSV content cho available events
+   */
+  static generateEventsCSV(events: ArcadeEvent[]): string {
+    // CSV Headers
+    const headers = [
+      "Event Title",
+      "Points",
+      "Access Code",
+      "Status",
+      "Description",
+      "Game URL",
+      "Image URL",
+    ];
+
+    // CSV Rows
+    const rows = events.map((event) => [
+      `"${event.title}"`,
+      event.points.toString(),
+      `"${event.accessCode || ""}"`,
+      `"${event.isActive ? "Active" : "Inactive"}"`,
+      `"${event.description || ""}"`,
+      `"${event.gameUrl || ""}"`,
+      `"${event.imageUrl || ""}"`,
+    ]);
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
+
+    return csvContent;
+  }
+
+  /**
+   * Export available events to CSV
+   */
+  static exportEventsCSV(
+    events: ArcadeEvent[],
+    filename: string = "available-arcade-events.csv"
+  ): void {
+    const csvContent = this.generateEventsCSV(events);
+    this.downloadCSV(csvContent, filename);
+    console.log(`📊 Exported ${events.length} events to ${filename}`);
+  }
+
+  /**
+   * Export comprehensive report (badges + summary + events)
+   */
+  static exportComprehensiveReport(
+    badges: BadgeData[],
+    arcadePoints: ArcadePoints,
+    events?: ArcadeEvent[]
+  ): void {
+    const today = new Date().toISOString().split("T")[0];
+
+    // Export detailed badges
+    this.exportBadgesCSV(badges, `google-cloud-badges-${today}.csv`);
+
+    // Export summary
+    this.exportSummaryCSV(arcadePoints, `arcade-points-summary-${today}.csv`);
+
+    // Export events if available
+    if (events && events.length > 0) {
+      this.exportEventsCSV(events, `available-arcade-events-${today}.csv`);
+      console.log(
+        "📊 Comprehensive report exported successfully (badges + summary + events)!"
+      );
+    } else {
+      console.log("📊 Full report exported successfully (badges + summary)!");
+    }
   }
 }
 
