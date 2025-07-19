@@ -1,12 +1,19 @@
 // Types for popup and options functionality
 
 export interface ArcadeData {
-  userDetails?: {
-    userName?: string;
-    league?: string;
-    points?: number;
-    profileImage?: string;
-  }[];
+  userDetails?:
+    | {
+        userName?: string;
+        league?: string;
+        points?: number;
+        profileImage?: string;
+      }
+    | {
+        userName?: string;
+        league?: string;
+        points?: number;
+        profileImage?: string;
+      }[];
   arcadePoints?: {
     totalPoints?: number;
     gamePoints?: number;

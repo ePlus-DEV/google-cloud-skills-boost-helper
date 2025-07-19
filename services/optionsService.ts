@@ -94,7 +94,7 @@ class OptionsService {
 
     const arcadeData = await StorageService.getArcadeData();
     if (arcadeData) {
-      PopupUIService.updateMainUI(arcadeData);
+      PopupUIService.updateOptionsUI(arcadeData);
     } else {
       PopupUIService.toggleElementVisibility("#arcade-points", false);
     }
@@ -153,7 +153,7 @@ class OptionsService {
     );
 
     await StorageService.saveArcadeData(data);
-    PopupUIService.updateMainUI(data);
+    PopupUIService.updateOptionsUI(data);
   }
 
   /**
