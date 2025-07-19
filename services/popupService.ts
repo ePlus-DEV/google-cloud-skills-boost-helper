@@ -1,4 +1,5 @@
 import ArcadeApiService from "./arcadeApiService";
+import ArcadeScrapingService from "./arcadeScrapingService";
 import StorageService from "./storageService";
 import PopupUIService from "./popupUIService";
 import BadgeService from "./badgeService";
@@ -75,9 +76,15 @@ class PopupService {
     PopupUIService.toggleButtonState(refreshButtons, true);
 
     try {
-      const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl
-      );
+      // Try API first, then fallback to scraping
+      let arcadeData = await ArcadeApiService.fetchArcadeData(this.profileUrl);
+
+      if (!arcadeData) {
+        console.log("PopupService: API failed, trying scraping method...");
+        arcadeData = await ArcadeScrapingService.scrapeArcadeData(
+          this.profileUrl
+        );
+      }
 
       console.log("PopupService: Fetched arcade data:", arcadeData);
 
@@ -86,11 +93,59 @@ class PopupService {
         PopupUIService.updateMainUI(arcadeData);
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
-        console.error("Failed to fetch arcade data.");
+        console.error(
+          "Failed to fetch arcade data from both API and scraping."
+        );
         PopupUIService.showErrorState();
       }
     } catch (error) {
       console.error("Error refreshing data:", error);
+      PopupUIService.showErrorState();
+    } finally {
+      // Hide loading state
+      PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);
+      PopupUIService.toggleButtonState(refreshButtons, false);
+    }
+  }
+
+  /**
+   * Refresh arcade data using only scraping method (bypass API)
+   */
+  static async refreshDataByScraping(): Promise<void> {
+    if (!this.profileUrl) {
+      console.error("Profile URL is not set.");
+      return;
+    }
+
+    const refreshButtons = document.querySelectorAll(
+      ".refresh-button"
+    ) as NodeListOf<HTMLButtonElement>;
+    const refreshIcons = document.querySelectorAll(
+      ".refresh-icon"
+    ) as NodeListOf<HTMLElement>;
+
+    // Show loading state
+    PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, true);
+    PopupUIService.toggleButtonState(refreshButtons, true);
+
+    try {
+      console.log("PopupService: Using scraping method only...");
+      const arcadeData = await ArcadeScrapingService.scrapeArcadeData(
+        this.profileUrl
+      );
+
+      console.log("PopupService: Scraped arcade data:", arcadeData);
+
+      if (arcadeData) {
+        await StorageService.saveArcadeData(arcadeData);
+        PopupUIService.updateMainUI(arcadeData);
+        BadgeService.renderBadges(arcadeData.badges || []);
+      } else {
+        console.error("Failed to scrape arcade data.");
+        PopupUIService.showErrorState();
+      }
+    } catch (error) {
+      console.error("Error scraping data:", error);
       PopupUIService.showErrorState();
     } finally {
       // Hide loading state
