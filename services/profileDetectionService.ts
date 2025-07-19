@@ -1,4 +1,5 @@
 import ArcadeScrapingService from "./arcadeScrapingService";
+import ArcadeDashboardService from "./arcadeDashboardService";
 import StorageService from "./storageService";
 import type { ArcadeData } from "../types";
 
@@ -35,6 +36,7 @@ class ProfileDetectionService {
       "cloudskillsboost.google/public_profiles",
       "cloudskillsboost.google/profile",
       "cloudskillsboost.google/my_account/profile",
+      "go.cloudskillsboost.google/arcade", // Add arcade dashboard
     ];
 
     return relevantPatterns.some((pattern) => url.includes(pattern));
@@ -150,7 +152,56 @@ class ProfileDetectionService {
    */
   private static async checkAndScrapePage(): Promise<void> {
     try {
-      // First check if .profile-badges container exists
+      // Check if this is arcade dashboard page
+      if (ArcadeDashboardService.isArcadeDashboardPage()) {
+        console.log("ProfileDetectionService: Detected arcade dashboard page");
+
+        const dashboardData =
+          ArcadeDashboardService.extractArcadeDashboardData();
+
+        if (dashboardData && dashboardData.totalArcadePoints >= 0) {
+          console.log(
+            `ProfileDetectionService: Found arcade points: ${dashboardData.totalArcadePoints}`
+          );
+
+          // Merge dashboard data with existing stored data
+          const existingData = await StorageService.getArcadeData();
+          const updatedData: ArcadeData = {
+            ...existingData,
+            arcadePoints: {
+              totalPoints: dashboardData.totalArcadePoints,
+              gamePoints: existingData?.arcadePoints?.gamePoints || 0,
+              triviaPoints: existingData?.arcadePoints?.triviaPoints || 0,
+              skillPoints: existingData?.arcadePoints?.skillPoints || 0,
+              specialPoints: existingData?.arcadePoints?.specialPoints || 0,
+            },
+            userDetails: {
+              ...existingData?.userDetails,
+              userName:
+                dashboardData.userDetails?.userName ||
+                existingData?.userDetails?.userName,
+              league: dashboardData.currentLeague,
+              points: dashboardData.totalArcadePoints,
+              profileImage:
+                dashboardData.userDetails?.profileImage ||
+                existingData?.userDetails?.profileImage,
+            },
+            lastUpdated: new Date().toISOString(),
+          };
+
+          await StorageService.saveArcadeData(updatedData);
+          console.log(
+            "ProfileDetectionService: Updated arcade data from dashboard"
+          );
+
+          // Notify extension
+          this.notifyExtensionOfUpdate();
+        }
+
+        return;
+      }
+
+      // Original profile page scraping logic
       const profileBadgesContainer = document.querySelector(".profile-badges");
       if (!profileBadgesContainer) {
         console.log(
