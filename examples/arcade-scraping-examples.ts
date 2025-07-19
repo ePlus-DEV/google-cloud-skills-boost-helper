@@ -186,6 +186,7 @@ async function exampleMonitoringAndDebugging() {
 
       // Check what selectors are available within .profile-badges
       const badgeSelectors = [
+        ".profile-badge", // Individual badge items (from Node.js controller)
         ".badge-card",
         ".achievement-card",
         ".earned-badge",
@@ -211,6 +212,40 @@ async function exampleMonitoringAndDebugging() {
       );
     } else {
       console.log("❌ .profile-badges container not found");
+
+      // Check for individual .profile-badge elements directly
+      const profileBadgeElements = document.querySelectorAll(".profile-badge");
+      console.log(
+        `🔍 Found ${profileBadgeElements.length} individual .profile-badge elements`
+      );
+
+      if (profileBadgeElements.length > 0) {
+        profileBadgeElements.forEach((element, index) => {
+          const title = element
+            .querySelector(".ql-title-medium")
+            ?.textContent?.trim();
+          const dateText = element
+            .querySelector(".ql-body-medium")
+            ?.textContent?.trim();
+          const imageLink = element.querySelector(
+            ".badge-image img"
+          ) as HTMLImageElement;
+          const imageUrl = imageLink?.src;
+
+          console.log(`🏅 Badge ${index + 1}:`);
+          console.log(`   Title: ${title || "No title"}`);
+          console.log(`   Date: ${dateText || "No date"}`);
+          console.log(`   Image: ${imageUrl ? "Present" : "Missing"}`);
+
+          // Test badge link
+          const badgeLink = element.querySelector(
+            ".badge-image"
+          ) as HTMLAnchorElement;
+          if (badgeLink?.href) {
+            console.log(`   Link: ${badgeLink.href}`);
+          }
+        });
+      }
     }
 
     // Check for images that might be badges
