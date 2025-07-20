@@ -7,6 +7,7 @@ class StorageService {
   private static readonly STORAGE_KEYS = {
     arcadeData: "local:arcadeData" as const,
     urlProfile: "local:urlProfile" as const,
+    enableSearchFeature: "local:enableSearchFeature" as const,
   };
 
   /**
@@ -45,10 +46,27 @@ class StorageService {
    * Initialize profile URL from storage or input
    */
   static async initializeProfileUrl(
-    inputElement?: HTMLInputElement,
+    inputElement?: HTMLInputElement
   ): Promise<string> {
     const storedUrl = await this.getProfileUrl();
     return storedUrl || inputElement?.value || "";
+  }
+
+  /**
+   * Get search feature enabled setting
+   */
+  static async isSearchFeatureEnabled(): Promise<boolean> {
+    const enabled = await storage.getItem<boolean>(
+      this.STORAGE_KEYS.enableSearchFeature
+    );
+    return enabled !== null ? enabled : true; // Default to true
+  }
+
+  /**
+   * Save search feature enabled setting
+   */
+  static async saveSearchFeatureEnabled(enabled: boolean): Promise<void> {
+    await storage.setItem(this.STORAGE_KEYS.enableSearchFeature, enabled);
   }
 }
 
