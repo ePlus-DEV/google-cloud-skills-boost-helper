@@ -46,7 +46,7 @@ class StorageService {
    * Initialize profile URL from storage or input
    */
   static async initializeProfileUrl(
-    inputElement?: HTMLInputElement
+    inputElement?: HTMLInputElement,
   ): Promise<string> {
     const storedUrl = await this.getProfileUrl();
     return storedUrl || inputElement?.value || "";
@@ -57,7 +57,7 @@ class StorageService {
    */
   static async isSearchFeatureEnabled(): Promise<boolean> {
     const enabled = await storage.getItem<boolean>(
-      this.STORAGE_KEYS.enableSearchFeature
+      this.STORAGE_KEYS.enableSearchFeature,
     );
     return enabled !== null ? enabled : true; // Default to true
   }
