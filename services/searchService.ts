@@ -7,9 +7,135 @@ import type {
 
 class SearchService {
   private static readonly DEFAULT_FUSE_OPTIONS: FuseOptions = {
-    threshold: 0.2, // More strict threshold for better matching
+    threshold: 0.15, // Even more strict threshold to avoid false positives
     keys: ["title"],
   };
+
+  /**
+   * Calculate exact word matching score between two strings
+   */
+  private static calculateExactWordMatch(query: string, title: string): number {
+    const queryWords = query.toLowerCase().split(/\s+/);
+    const titleWords = title.toLowerCase().split(/\s+/);
+
+    let exactMatches = 0;
+    queryWords.forEach((queryWord) => {
+      if (titleWords.includes(queryWord)) {
+        exactMatches++;
+      }
+    });
+
+    return exactMatches / queryWords.length;
+  }
+
+  /**
+   * Extract distinctive words that are likely important for matching
+   */
+  private static extractDistinctiveWords(text: string): string[] {
+    const words = text.toLowerCase().split(/\s+/);
+
+    // Filter out common words that don't affect meaning
+    const commonWords = new Set([
+      "a",
+      "an",
+      "the",
+      "and",
+      "or",
+      "but",
+      "in",
+      "on",
+      "at",
+      "to",
+      "for",
+      "of",
+      "with",
+      "create",
+      "build",
+      "setup",
+      "configure",
+      "deploy",
+      "upload",
+      "download",
+      "install",
+      "code",
+      "project",
+      "application",
+      "service",
+      "system",
+      "using",
+      "how",
+      "what",
+      "where",
+    ]);
+
+    return words.filter(
+      (word) =>
+        word.length > 2 && !commonWords.has(word) && /^[a-zA-Z0-9]+$/.test(word) // Only alphanumeric words
+    );
+  }
+
+  /**
+   * Check if distinctive words match between query and title
+   */
+  private static hasMatchingDistinctiveWords(
+    query: string,
+    title: string
+  ): boolean {
+    const queryDistinctive = this.extractDistinctiveWords(query);
+    const titleDistinctive = this.extractDistinctiveWords(title);
+
+    if (queryDistinctive.length === 0) return true;
+
+    // Calculate how many distinctive words from query appear in title
+    let matches = 0;
+    for (const queryWord of queryDistinctive) {
+      if (titleDistinctive.includes(queryWord)) {
+        matches++;
+      }
+    }
+
+    // Require at least 80% of distinctive words to match
+    const matchRatio = matches / queryDistinctive.length;
+    return matchRatio >= 0.8;
+  }
+
+  /**
+   * Advanced word similarity scoring
+   */
+  private static calculateAdvancedSimilarity(
+    query: string,
+    title: string
+  ): number {
+    const queryWords = query.toLowerCase().split(/\s+/);
+    const titleWords = title.toLowerCase().split(/\s+/);
+
+    let totalScore = 0;
+    let maxPossibleScore = 0;
+
+    for (const queryWord of queryWords) {
+      maxPossibleScore += 1;
+
+      // Exact match gets full score
+      if (titleWords.includes(queryWord)) {
+        totalScore += 1;
+        continue;
+      }
+
+      // Partial match for words that contain each other
+      let bestPartialScore = 0;
+      for (const titleWord of titleWords) {
+        if (queryWord.includes(titleWord) || titleWord.includes(queryWord)) {
+          const similarity =
+            Math.min(queryWord.length, titleWord.length) /
+            Math.max(queryWord.length, titleWord.length);
+          bestPartialScore = Math.max(bestPartialScore, similarity * 0.5);
+        }
+      }
+      totalScore += bestPartialScore;
+    }
+
+    return maxPossibleScore > 0 ? totalScore / maxPossibleScore : 0;
+  }
 
   /**
    * Extract key identifiers from a title (like week numbers, dates)
@@ -27,7 +153,7 @@ class SearchService {
     const monthYearMatch = title.match(/([A-Za-z]+)\s+(\d{4})/);
     if (monthYearMatch) {
       identifiers.push(
-        `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`,
+        `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`
       );
     }
 
@@ -39,7 +165,7 @@ class SearchService {
    */
   private static hasCompatibleIdentifiers(
     title1: string,
-    title2: string,
+    title2: string
   ): boolean {
     const identifiers1 = this.extractKeyIdentifiers(title1);
     const identifiers2 = this.extractKeyIdentifiers(title2);
@@ -64,12 +190,12 @@ class SearchService {
   }
 
   /**
-   * Find the best matching post URL using fuzzy search
+   * Find the best matching post URL using fuzzy search with enhanced filtering
    */
   static findBestMatchUrl(
     postsData: SearchPostsOfPublicationData | null,
     searchQuery: string,
-    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
+    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS
   ): string | null {
     if (!postsData) return null;
 
@@ -79,15 +205,37 @@ class SearchService {
     const fuse = new Fuse(nodes, fuseOptions);
     const results = fuse.search(searchQuery);
 
-    // Filter results to only include compatible matches
-    const compatibleResults = results.filter((result) =>
-      this.hasCompatibleIdentifiers(searchQuery, result.item.title),
-    );
+    // Enhanced filtering with flexible matching criteria
+    const validResults = results.filter((result) => {
+      const title = result.item.title;
 
-    // If no compatible results, return null
-    if (!compatibleResults.length) return null;
+      // 1. Must have compatible identifiers (existing logic)
+      if (!this.hasCompatibleIdentifiers(searchQuery, title)) {
+        return false;
+      }
 
-    const bestMatch = compatibleResults[0];
+      // 2. Must have matching distinctive words (new flexible approach)
+      if (!this.hasMatchingDistinctiveWords(searchQuery, title)) {
+        return false;
+      }
+
+      // 3. Must meet advanced similarity threshold
+      const similarityScore = this.calculateAdvancedSimilarity(
+        searchQuery,
+        title
+      );
+      if (similarityScore < 0.75) {
+        // 75% similarity threshold
+        return false;
+      }
+
+      return true;
+    });
+
+    // If no valid results after filtering, return null
+    if (!validResults.length) return null;
+
+    const bestMatch = validResults[0];
     const url = bestMatch.item.url;
     if (!url) return null;
 
