@@ -2,11 +2,15 @@
  * UI Components for the extension
  */
 
+import StorageService from "../services/storageService";
+
 class UIComponents {
   /**
    * Create a solution button element
    */
-  static createSolutionElement(url: string | null): HTMLLIElement {
+  static async createSolutionElement(
+    url: string | null
+  ): Promise<HTMLLIElement> {
     const solutionElement = document.createElement("li");
 
     Object.assign(solutionElement.style, {
@@ -28,56 +32,70 @@ class UIComponents {
         </ql-button>
       `;
     } else {
-      // No solution found - show "No solution" and search options
-      solutionElement.innerHTML = `
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      // Check if search feature is enabled
+      const isSearchEnabled = await StorageService.isSearchFeatureEnabled();
+
+      if (isSearchEnabled) {
+        // No solution found - show "No solution" and search options
+        solutionElement.innerHTML = `
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <ql-button icon="close" disabled>
+              No solution
+            </ql-button>
+            <ql-button
+              icon="search"
+              type="button"
+              title="Search for this lab on Google"
+              data-aria-label="Search for this lab on Google"
+              id="google-search-btn"
+            >
+              Google Search
+            </ql-button>
+            <ql-button
+              icon="video_library"
+              type="button"
+              title="Search for video tutorials on YouTube"
+              data-aria-label="Search for video tutorials on YouTube"
+              id="youtube-search-btn"
+            >
+              YouTube
+            </ql-button>
+          </div>
+        `;
+
+        // Add event listeners after creating the HTML
+        setTimeout(() => {
+          const googleBtn = solutionElement.querySelector("#google-search-btn");
+          const youtubeBtn = solutionElement.querySelector(
+            "#youtube-search-btn"
+          );
+
+          if (googleBtn) {
+            googleBtn.addEventListener("click", (e) => {
+              console.log("Google Search button clicked");
+              e.preventDefault();
+              e.stopPropagation();
+              this.searchOnGoogle();
+            });
+          }
+
+          if (youtubeBtn) {
+            youtubeBtn.addEventListener("click", (e) => {
+              console.log("YouTube Search button clicked");
+              e.preventDefault();
+              e.stopPropagation();
+              this.searchOnYouTube();
+            });
+          }
+        }, 100);
+      } else {
+        // Search feature disabled - show only "No solution"
+        solutionElement.innerHTML = `
           <ql-button icon="close" disabled>
             No solution
           </ql-button>
-          <ql-button
-            icon="search"
-            type="button"
-            title="Search for this lab on Google"
-            data-aria-label="Search for this lab on Google"
-            id="google-search-btn"
-          >
-            Google Search
-          </ql-button>
-          <ql-button
-            icon="video_library"
-            type="button"
-            title="Search for video tutorials on YouTube"
-            data-aria-label="Search for video tutorials on YouTube"
-            id="youtube-search-btn"
-          >
-            YouTube
-          </ql-button>
-        </div>
-      `;
-
-      // Add event listeners after creating the HTML
-      setTimeout(() => {
-        const googleBtn = solutionElement.querySelector("#google-search-btn");
-        const youtubeBtn = solutionElement.querySelector("#youtube-search-btn");
-
-        if (googleBtn) {
-          googleBtn.addEventListener("click", (e) => {
-            console.log("Google Search button clicked");
-            e.preventDefault();
-            e.stopPropagation();
-            this.searchOnGoogle();
-          });
-        }
-
-        if (youtubeBtn) {
-          youtubeBtn.addEventListener("click", (e) => {
-            console.log("YouTube Search button clicked");
-            e.preventDefault();
-            e.stopPropagation();
-            this.searchOnYouTube();
-          });
-        }
-      }, 100);
+        `;
+      }
     }
 
     return solutionElement;
@@ -143,7 +161,7 @@ class UIComponents {
       const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
       window.open(
         `https://www.youtube.com/results?search_query=${fallbackQuery}`,
-        "_blank",
+        "_blank"
       );
     }
   }
@@ -182,15 +200,15 @@ class UIComponents {
       await navigator.clipboard.writeText(href);
 
       const publicProfileElement = document.querySelector(
-        ".ql-body-medium.public-profile.public",
+        ".ql-body-medium.public-profile.public"
       );
 
       if (publicProfileElement) {
         publicProfileElement.insertAdjacentHTML(
           "afterend",
           `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
-            "messageLinkCopiedToClipboard",
-          )} </ql-infobox>`,
+            "messageLinkCopiedToClipboard"
+          )} </ql-infobox>`
         );
       }
 
