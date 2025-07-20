@@ -9,7 +9,7 @@ class ProfileService {
    */
   static setupPublicProfile(): void {
     const publicProfileChecked = document.querySelector<HTMLInputElement>(
-      "#public_profile_checked"
+      "#public_profile_checked",
     );
 
     if (publicProfileChecked && !publicProfileChecked.checked) {
@@ -20,8 +20,8 @@ class ProfileService {
         formElement.insertAdjacentHTML(
           "afterend",
           `<ql-warningbox> ${browser.i18n.getMessage(
-            "notePleaseSetUpTheSettings"
-          )} </ql-warningbox>`
+            "notePleaseSetUpTheSettings",
+          )} </ql-warningbox>`,
         );
       }
     }
@@ -32,7 +32,7 @@ class ProfileService {
    */
   static setupPublicProfileCopyButton(): void {
     const publicProfileElement = document.querySelector(
-      ".ql-body-medium.public-profile.public"
+      ".ql-body-medium.public-profile.public",
     );
 
     if (publicProfileElement) {

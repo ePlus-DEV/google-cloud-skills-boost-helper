@@ -25,7 +25,7 @@ class ArcadeApiService {
    */
   static isValidProfileUrl(url: string): boolean {
     return url.startsWith(
-      "https://www.cloudskillsboost.google/public_profiles/"
+      "https://www.cloudskillsboost.google/public_profiles/",
     );
   }
 }

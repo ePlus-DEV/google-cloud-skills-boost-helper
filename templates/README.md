@@ -8,7 +8,7 @@ Template này giúp bạn tự tạo file CSV để tính toán arcade points m�
 
 1. **Mở file template**: `badges-template.csv`
 2. **Thay thế placeholders**:
-   - `[Month]` → Tháng (vd: "July", "June")  
+   - `[Month]` → Tháng (vd: "July", "June")
    - `[Year]` → Năm (vd: "2025")
    - `[Number]` → Số tuần (vd: "1", "2", "3", "4")
    - `[Date]` → Ngày đạt badge (vd: "Jul 19, 2025")
@@ -31,19 +31,19 @@ Badge Name,Category,Arcade Points,Earned Date,Image URL
 
 ### Quy tắc tính điểm:
 
-| Category | Points per Badge | Ghi chú |
-|----------|------------------|---------|
-| Weekly Trivia | 1 | Mỗi tuần 1 badge |
-| Arcade Monthly/Game | 1 | Base Camp cũng = 1 point |
-| Special Edition | 2 | Các event đặc biệt |
-| Skill Badge | 0.5 | 2 badges = 1 arcade point |
+| Category            | Points per Badge | Ghi chú                   |
+| ------------------- | ---------------- | ------------------------- |
+| Weekly Trivia       | 1                | Mỗi tuần 1 badge          |
+| Arcade Monthly/Game | 1                | Base Camp cũng = 1 point  |
+| Special Edition     | 2                | Các event đặc biệt        |
+| Skill Badge         | 0.5              | 2 badges = 1 arcade point |
 
 ### Formulas trong Excel/Google Sheets:
 
 ```excel
 // Tổng điểm theo category
 =SUMIF(B:B,"Weekly Trivia",C:C)
-=SUMIF(B:B,"Arcade Monthly/Game",C:C) 
+=SUMIF(B:B,"Arcade Monthly/Game",C:C)
 =SUMIF(B:B,"Special Edition",C:C)
 =SUMIF(B:B,"Skill Badge",C:C)
 
@@ -57,7 +57,7 @@ Badge Name,Category,Arcade Points,Earned Date,Image URL
 ### Target Points cho các League:
 
 - **Bronze**: 5 points
-- **Silver**: 15 points  
+- **Silver**: 15 points
 - **Gold**: 25 points
 - **Platinum**: 40 points
 - **Diamond**: 60+ points
@@ -65,6 +65,7 @@ Badge Name,Category,Arcade Points,Earned Date,Image URL
 ---
 
 **Tip**: Sử dụng template này khi bạn muốn:
+
 - Lập kế hoạch training
 - Tính toán trước khi làm labs
 - So sánh với bạn bè

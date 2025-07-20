@@ -48,7 +48,7 @@ class ApiClient {
    * Fetch posts of a publication using GraphQL
    */
   static async fetchPostsOfPublication(
-    params: SearchPostsParams
+    params: SearchPostsParams,
   ): Promise<SearchPostsOfPublicationData | null> {
     const {
       publicationId,

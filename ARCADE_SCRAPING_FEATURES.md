@@ -7,16 +7,19 @@ Google Cloud Skills Boost Helper giờ đây đã hỗ trợ **đếm điểm Ar
 ## ✨ Tính năng chính
 
 ### 🔍 Web Scraping Thông minh
+
 - **Tự động phát hiện badges** trên trang profile
-- **Phân loại thông minh** các loại badge khác nhau  
+- **Phân loại thông minh** các loại badge khác nhau
 - **Tính toán điểm chính xác** theo từng loại badge
 
 ### 🤖 Auto-Detection
+
 - **Tự động cập nhật** khi có badge mới
 - **Real-time monitoring** khi browse trên Google Cloud Skills Boost
 - **Background processing** không làm chậm trải nghiệm
 
 ### 💪 Không phụ thuộc API
+
 - **Hoạt động offline** với cached data
 - **Không giới hạn requests**
 - **Privacy-friendly** - data không rời khỏi browser
@@ -33,7 +36,7 @@ Google Cloud Skills Boost Helper giờ đây đã hỗ trợ **đếm điểm Ar
 ### Phương pháp 2: Manual Refresh
 
 1. Click vào extension icon
-2. Nhấn button **"Update Points"**  
+2. Nhấn button **"Update Points"**
 3. Extension sẽ thử API trước, nếu fail sẽ dùng scraping
 4. Hoặc dùng scraping only với `PopupService.refreshDataByScraping()`
 
@@ -41,25 +44,25 @@ Google Cloud Skills Boost Helper giờ đây đã hỗ trợ **đếm điểm Ar
 
 ```javascript
 // Console trên trang Google Cloud Skills Boost
-import { ArcadeScrapingService } from './services';
+import { ArcadeScrapingService } from "./services";
 
 // Scrape từ URL
 const data = await ArcadeScrapingService.scrapeArcadeData(profileUrl);
 
-// Hoặc scrape từ trang hiện tại  
+// Hoặc scrape từ trang hiện tại
 const currentData = ArcadeScrapingService.extractArcadeDataFromCurrentPage();
 ```
 
 ## 🎯 Quy tắc tính điểm
 
-| Loại Badge | Điểm | Ví dụ |
-|------------|------|-------|
-| 🎮 **Arcade Game** | 1 điểm | "The Arcade Trivia July 2024" |
-| ❓ **Trivia** | 1 điểm | "Trivia Challenge Week 1" |  
-| ⚡ **Skill Badge** | 5 điểm | "Cloud Security Specialist" |
-| ⭐ **Special/Quest** | 3 điểm | "Monthly Quest Series" |
-| 🧪 **Lab Completion** | 1-2 điểm | "Complete Lab XYZ" |
-| 🏆 **Certificate** | 10+ điểm | "Google Cloud Certified" |
+| Loại Badge            | Điểm     | Ví dụ                         |
+| --------------------- | -------- | ----------------------------- |
+| 🎮 **Arcade Game**    | 1 điểm   | "The Arcade Trivia July 2024" |
+| ❓ **Trivia**         | 1 điểm   | "Trivia Challenge Week 1"     |
+| ⚡ **Skill Badge**    | 5 điểm   | "Cloud Security Specialist"   |
+| ⭐ **Special/Quest**  | 3 điểm   | "Monthly Quest Series"        |
+| 🧪 **Lab Completion** | 1-2 điểm | "Complete Lab XYZ"            |
+| 🏆 **Certificate**    | 10+ điểm | "Google Cloud Certified"      |
 
 ## 🔧 Technical Details
 
@@ -72,7 +75,7 @@ const currentData = ArcadeScrapingService.extractArcadeDataFromCurrentPage();
 ### Tính năng nâng cao:
 
 - **Smart selectors** - Nhiều strategy để tìm badges
-- **Fallback detection** - Backup methods nếu selectors chính fail  
+- **Fallback detection** - Backup methods nếu selectors chính fail
 - **Mutation observer** - Phát hiện content được load động
 - **Intelligent updates** - Chỉ update khi có dữ liệu mới
 - **Error handling** - Graceful degradation khi có lỗi
@@ -80,7 +83,7 @@ const currentData = ArcadeScrapingService.extractArcadeDataFromCurrentPage();
 ### Browser Support:
 
 - ✅ **Chrome/Chromium** - Full support
-- ✅ **Firefox** - Full support  
+- ✅ **Firefox** - Full support
 - ✅ **Edge** - Full support
 - ✅ **Opera** - Full support
 
@@ -106,18 +109,18 @@ const currentData = ArcadeScrapingService.extractArcadeDataFromCurrentPage();
 
 ## 📊 So sánh các phương pháp
 
-| Tính năng | API Method | Scraping Method | Auto-Detection |
-|-----------|------------|-----------------|----------------|
-| **Tốc độ** | ⚡ Nhanh | 🐌 Chậm hơn | 🐌 Chậm hơn |
-| **Độ chính xác** | 🎯 Cao | 🎯 Cao | 🎯 Cao |
-| **Privacy** | ⚠️ Gửi data ra ngoài | ✅ Local only | ✅ Local only |
-| **Reliability** | ⚠️ Phụ thuộc service | ✅ Độc lập | ✅ Độc lập |
-| **Real-time** | ❌ Manual refresh | ❌ Manual refresh | ✅ Auto update |
-| **Offline** | ❌ Cần internet | ⚠️ Cần internet cho fetch | ✅ Với cached data |
+| Tính năng        | API Method           | Scraping Method           | Auto-Detection     |
+| ---------------- | -------------------- | ------------------------- | ------------------ |
+| **Tốc độ**       | ⚡ Nhanh             | 🐌 Chậm hơn               | 🐌 Chậm hơn        |
+| **Độ chính xác** | 🎯 Cao               | 🎯 Cao                    | 🎯 Cao             |
+| **Privacy**      | ⚠️ Gửi data ra ngoài | ✅ Local only             | ✅ Local only      |
+| **Reliability**  | ⚠️ Phụ thuộc service | ✅ Độc lập                | ✅ Độc lập         |
+| **Real-time**    | ❌ Manual refresh    | ❌ Manual refresh         | ✅ Auto update     |
+| **Offline**      | ❌ Cần internet      | ⚠️ Cần internet cho fetch | ✅ Với cached data |
 
 ## 🔮 Future Plans
 
-- **🎨 Advanced UI** - Dashboard với charts và analytics  
+- **🎨 Advanced UI** - Dashboard với charts và analytics
 - **🏆 Achievement tracking** - Theo dõi progress các achievements
 - **📈 Comparison mode** - So sánh với bạn bè
 - **📱 Mobile support** - Extension cho mobile browsers
@@ -129,7 +132,7 @@ Bạn có thể contribute bằng cách:
 
 1. **Report bugs** - Báo lỗi qua GitHub Issues
 2. **Suggest improvements** - Đề xuất cải tiến
-3. **Add new selectors** - Thêm selector cho badges mới  
+3. **Add new selectors** - Thêm selector cho badges mới
 4. **Optimize performance** - Cải thiện tốc độ scraping
 5. **Documentation** - Cập nhật docs và examples
 

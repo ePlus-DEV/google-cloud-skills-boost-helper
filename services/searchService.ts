@@ -27,7 +27,7 @@ class SearchService {
     const monthYearMatch = title.match(/([A-Za-z]+)\s+(\d{4})/);
     if (monthYearMatch) {
       identifiers.push(
-        `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`
+        `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`,
       );
     }
 
@@ -39,7 +39,7 @@ class SearchService {
    */
   private static hasCompatibleIdentifiers(
     title1: string,
-    title2: string
+    title2: string,
   ): boolean {
     const identifiers1 = this.extractKeyIdentifiers(title1);
     const identifiers2 = this.extractKeyIdentifiers(title2);
@@ -69,7 +69,7 @@ class SearchService {
   static findBestMatchUrl(
     postsData: SearchPostsOfPublicationData | null,
     searchQuery: string,
-    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS
+    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
   ): string | null {
     if (!postsData) return null;
 
@@ -81,7 +81,7 @@ class SearchService {
 
     // Filter results to only include compatible matches
     const compatibleResults = results.filter((result) =>
-      this.hasCompatibleIdentifiers(searchQuery, result.item.title)
+      this.hasCompatibleIdentifiers(searchQuery, result.item.title),
     );
 
     // If no compatible results, return null
