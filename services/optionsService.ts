@@ -16,6 +16,7 @@ class OptionsService {
     this.setupEventListeners();
     this.setupVersion();
     this.setupBrowserBadges();
+    this.setupI18n();
     await this.loadExistingData();
     await this.loadSearchFeatureSetting();
   }
@@ -97,6 +98,28 @@ class OptionsService {
     if (badgeSelector) {
       PopupUIService.querySelector(badgeSelector)?.classList.remove("hidden");
     }
+  }
+
+  /**
+   * Setup i18n translations
+   */
+  private static setupI18n(): void {
+    // Find all elements with data-i18n attribute
+    const i18nElements = document.querySelectorAll("[data-i18n]");
+
+    i18nElements.forEach((element) => {
+      const messageKey = element.getAttribute("data-i18n");
+      if (messageKey) {
+        try {
+          const translatedText = browser.i18n.getMessage(messageKey as any);
+          if (translatedText) {
+            element.textContent = translatedText;
+          }
+        } catch (error) {
+          console.warn(`Translation not found for key: ${messageKey}`);
+        }
+      }
+    });
   }
 
   /**
