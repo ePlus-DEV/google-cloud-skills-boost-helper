@@ -373,17 +373,30 @@ class ArcadeScrapingService {
       return 2;
     }
 
-    // Skill badges = 0.5 Arcade Points each (2 Skill Badges = 1 Arcade Point)
-    // We'll mark them and calculate fractional points later
+    // Level badges = 1 Arcade Point each (Level 1, Level 2, Level 3)
+    if (
+      titleLower.includes("level 1") ||
+      titleLower.includes("level 2") ||
+      titleLower.includes("level 3") ||
+      titleLower.includes("level1") ||
+      titleLower.includes("level2") ||
+      titleLower.includes("level3")
+    ) {
+      console.log("  → Level badge (1/2/3): 1 Arcade Point");
+      return 1;
+    }
+
+    // Other Skill badges = 0.5 Arcade Points each (2 Skill Badges = 1 Arcade Point)
     if (
       titleLower.includes("skill") ||
-      titleLower.includes("level") ||
       titleLower.includes("challenge") ||
       titleLower.includes("infrastructure") ||
       titleLower.includes("application") ||
       titleLower.includes("deployment")
     ) {
-      console.log("  → Skill badge: 0.5 Arcade Points (2 needed for 1 point)");
+      console.log(
+        "  → Other Skill badge: 0.5 Arcade Points (2 needed for 1 point)"
+      );
       return 0.5;
     }
 
@@ -404,12 +417,14 @@ class ArcadeScrapingService {
    * - Arcade Monthly/Game badges (including Base Camp) = 1 point each
    * - Arcade Weekly Trivia badges = 1 point each
    * - Arcade Special Edition badges = 2 points each
-   * - Skill badges = 0.5 points each, rounded down by pairs (2 skill badges = 1 arcade point)
+   * - Level badges (Level 1, 2, 3) = 1 point each
+   * - Other Skill badges = 0.5 points each, rounded down by pairs (2 skill badges = 1 arcade point)
    */
   private static calculateArcadePointsFromBadges(badges: BadgeData[]) {
     let arcadeGamePoints = 0;
     let arcadeTriviaPoints = 0;
     let arcadeSpecialPoints = 0;
+    let levelBadgePoints = 0;
     let skillBadgeCount = 0;
 
     console.log("ArcadeScrapingService: Calculating total arcade points...");
@@ -449,10 +464,21 @@ class ArcadeScrapingService {
         arcadeSpecialPoints += badge.points;
         console.log(`  → Special: ${badge.title} = ${badge.points} points`);
       }
-      // Skill badges (count them for pairs)
+      // Level badges (Level 1, 2, 3) = 1 point each
+      else if (
+        titleLower.includes("level 1") ||
+        titleLower.includes("level 2") ||
+        titleLower.includes("level 3") ||
+        titleLower.includes("level1") ||
+        titleLower.includes("level2") ||
+        titleLower.includes("level3")
+      ) {
+        levelBadgePoints += badge.points;
+        console.log(`  → Level: ${badge.title} = ${badge.points} points`);
+      }
+      // Other Skill badges (count them for pairs)
       else if (
         titleLower.includes("skill") ||
-        titleLower.includes("level") ||
         titleLower.includes("challenge") ||
         titleLower.includes("infrastructure") ||
         titleLower.includes("application") ||
@@ -486,14 +512,16 @@ class ArcadeScrapingService {
       arcadeGamePoints +
       arcadeTriviaPoints +
       arcadeSpecialPoints +
+      levelBadgePoints +
       skillArcadePoints;
 
     console.log("ArcadeScrapingService: Final calculation:");
     console.log(`  Game/Monthly/Base Camp: ${arcadeGamePoints} points`);
     console.log(`  Trivia/Weekly: ${arcadeTriviaPoints} points`);
     console.log(`  Special Edition: ${arcadeSpecialPoints} points`);
+    console.log(`  Level badges: ${levelBadgePoints} points`);
     console.log(
-      `  Skill (${skillBadgeCount} badges): ${skillArcadePoints} points`
+      `  Other Skill (${skillBadgeCount} badges): ${skillArcadePoints} points`
     );
     console.log(`  TOTAL ARCADE POINTS: ${totalArcadePoints}`);
 
@@ -501,8 +529,9 @@ class ArcadeScrapingService {
       totalPoints: totalArcadePoints,
       gamePoints: arcadeGamePoints,
       triviaPoints: arcadeTriviaPoints,
-      skillPoints: skillArcadePoints,
+      skillPoints: skillArcadePoints + levelBadgePoints, // Combined for backward compatibility
       specialPoints: arcadeSpecialPoints,
+      levelPoints: levelBadgePoints,
       skillBadgeCount: skillBadgeCount,
       skillBadgesRemaining: skillBadgeCount % 2,
     };
