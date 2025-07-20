@@ -15,8 +15,8 @@ class UIComponents {
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
 
-    solutionElement.innerHTML = url
-      ? `
+    if (url) {
+      solutionElement.innerHTML = `
         <ql-button
           icon="check"
           type="button"
@@ -26,14 +26,126 @@ class UIComponents {
         >
           Solution this lab
         </ql-button>
-      `
-      : `
-        <ql-button icon="close" disabled>
-          No solution
-        </ql-button>
+      `;
+    } else {
+      // No solution found - show "No solution" and search options
+      solutionElement.innerHTML = `
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <ql-button icon="close" disabled>
+            No solution
+          </ql-button>
+          <ql-button
+            icon="search"
+            type="button"
+            title="Search for this lab on Google"
+            data-aria-label="Search for this lab on Google"
+            id="google-search-btn"
+          >
+            Google Search
+          </ql-button>
+          <ql-button
+            icon="video_library"
+            type="button"
+            title="Search for video tutorials on YouTube"
+            data-aria-label="Search for video tutorials on YouTube"
+            id="youtube-search-btn"
+          >
+            YouTube
+          </ql-button>
+        </div>
       `;
 
+      // Add event listeners after creating the HTML
+      setTimeout(() => {
+        const googleBtn = solutionElement.querySelector("#google-search-btn");
+        const youtubeBtn = solutionElement.querySelector("#youtube-search-btn");
+
+        if (googleBtn) {
+          googleBtn.addEventListener("click", (e) => {
+            console.log("Google Search button clicked");
+            e.preventDefault();
+            e.stopPropagation();
+            this.searchOnGoogle();
+          });
+        }
+
+        if (youtubeBtn) {
+          youtubeBtn.addEventListener("click", (e) => {
+            console.log("YouTube Search button clicked");
+            e.preventDefault();
+            e.stopPropagation();
+            this.searchOnYouTube();
+          });
+        }
+      }, 100);
+    }
+
     return solutionElement;
+  }
+
+  /**
+   * Search the current lab on Google
+   */
+  static searchOnGoogle(): void {
+    console.log("UIComponents.searchOnGoogle() called");
+    try {
+      // Get lab title
+      const labTitle =
+        document
+          .querySelector(".ql-display-large.lab-preamble__title")
+          ?.textContent?.trim() || "";
+
+      console.log("Lab title found:", labTitle);
+
+      // Use simple search with just the title
+      const searchQuery = labTitle;
+
+      const encodedQuery = encodeURIComponent(searchQuery);
+      const googleSearchUrl = `https://www.google.com/search?q=${encodedQuery}`;
+
+      console.log("Opening Google search with query:", searchQuery);
+      console.log("URL:", googleSearchUrl);
+      window.open(googleSearchUrl, "_blank");
+    } catch (error) {
+      console.error("Error opening Google search:", error);
+      // Fallback to simple search
+      const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
+      window.open(`https://www.google.com/search?q=${fallbackQuery}`, "_blank");
+    }
+  }
+
+  /**
+   * Search the current lab on YouTube
+   */
+  static searchOnYouTube(): void {
+    console.log("UIComponents.searchOnYouTube() called");
+    try {
+      // Get lab title
+      const labTitle =
+        document
+          .querySelector(".ql-display-large.lab-preamble__title")
+          ?.textContent?.trim() || "";
+
+      console.log("Lab title found:", labTitle);
+
+      // Use simple search with just the title
+      const searchQuery = labTitle;
+
+      const encodedQuery = encodeURIComponent(searchQuery);
+      const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
+
+      console.log("Opening YouTube search with query:", searchQuery);
+      console.log("URL:", youtubeSearchUrl);
+      window.open(youtubeSearchUrl, "_blank");
+    } catch (error) {
+      console.error("Error opening YouTube search:", error);
+      // Fallback to simple search
+      const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
+      window.open(
+        `https://www.youtube.com/results?search_query=${fallbackQuery}`,
+        "_blank"
+      );
+    }
   }
 
   /**
@@ -70,15 +182,15 @@ class UIComponents {
       await navigator.clipboard.writeText(href);
 
       const publicProfileElement = document.querySelector(
-        ".ql-body-medium.public-profile.public",
+        ".ql-body-medium.public-profile.public"
       );
 
       if (publicProfileElement) {
         publicProfileElement.insertAdjacentHTML(
           "afterend",
           `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
-            "messageLinkCopiedToClipboard",
-          )} </ql-infobox>`,
+            "messageLinkCopiedToClipboard"
+          )} </ql-infobox>`
         );
       }
 
