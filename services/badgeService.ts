@@ -54,8 +54,8 @@ class BadgeService {
       <div class="flex justify-between items-center">
         <div class="flex items-center">
           <img src="${badge.imageURL}" alt="${
-      badge.title
-    }" class="h-8 w-8 rounded-full border-2 border-white/50" />
+            badge.title
+          }" class="h-8 w-8 rounded-full border-2 border-white/50" />
           <div class="ml-3">
             <div class="text-white font-bold">${badge.title}</div>
             <div class="text-sm text-gray-300">${badge.dateEarned}</div>
@@ -76,7 +76,7 @@ class BadgeService {
   private static setupLoadMoreButton(
     totalPages: number,
     renderPage: () => void,
-    badges: BadgeData[]
+    badges: BadgeData[],
   ): void {
     const loadMoreButton =
       PopupUIService.querySelector<HTMLButtonElement>("#load-more");
@@ -112,7 +112,7 @@ class BadgeService {
     activityElement.innerHTML = `
       <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
         <span class="text-gray-400 font-medium">${browser.i18n.getMessage(
-          "messageNoDataAvailable"
+          "messageNoDataAvailable",
         )}</span>
       </div>
     `;
@@ -123,13 +123,13 @@ class BadgeService {
    */
   private static updatePaginationInfo(
     currentPage: number,
-    totalPages: number
+    totalPages: number,
   ): void {
     const paginationElement =
       PopupUIService.querySelector<HTMLDivElement>("#pagination-info");
     if (paginationElement) {
       paginationElement.textContent = `${browser.i18n.getMessage(
-        "labelPage"
+        "labelPage",
       )} ${currentPage}/${totalPages}`;
       paginationElement.classList.remove("hidden");
     }

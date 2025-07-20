@@ -35,7 +35,7 @@ class PopupService {
     } else {
       // Profile URL exists but no data - show loading state and try to fetch
       console.log(
-        "PopupService: Profile URL exists but no data, showing loading state"
+        "PopupService: Profile URL exists but no data, showing loading state",
       );
       PopupUIService.showLoadingState();
       this.refreshData();
@@ -51,7 +51,7 @@ class PopupService {
   private static showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings")
+      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -67,10 +67,10 @@ class PopupService {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button"
+      ".refresh-button",
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon"
+      ".refresh-icon",
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -84,7 +84,7 @@ class PopupService {
       if (!arcadeData) {
         console.log("PopupService: API failed, trying scraping method...");
         arcadeData = await ArcadeScrapingService.scrapeArcadeData(
-          this.profileUrl
+          this.profileUrl,
         );
       }
 
@@ -96,7 +96,7 @@ class PopupService {
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
         console.error(
-          "Failed to fetch arcade data from both API and scraping."
+          "Failed to fetch arcade data from both API and scraping.",
         );
         PopupUIService.showErrorState();
       }
@@ -120,13 +120,13 @@ class PopupService {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button"
+      ".refresh-button",
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon"
+      ".refresh-icon",
     ) as NodeListOf<HTMLElement>;
     const scrapeButtons = document.querySelectorAll(
-      ".scrape-only-button"
+      ".scrape-only-button",
     ) as NodeListOf<HTMLButtonElement>;
 
     // Show loading state
@@ -142,7 +142,7 @@ class PopupService {
     try {
       console.log("PopupService: Using scraping method only...");
       const arcadeData = await ArcadeScrapingService.scrapeArcadeData(
-        this.profileUrl
+        this.profileUrl,
       );
 
       console.log("PopupService: Scraped arcade data:", arcadeData);
@@ -279,17 +279,17 @@ class PopupService {
       const today = new Date().toISOString().split("T")[0];
       CSVExportService.exportBadgesCSV(
         arcadeData.badges,
-        `google-cloud-badges-${today}.csv`
+        `google-cloud-badges-${today}.csv`,
       );
 
       // Also export summary CSV
       CSVExportService.exportSummaryCSV(
         arcadePoints,
-        `arcade-points-summary-${today}.csv`
+        `arcade-points-summary-${today}.csv`,
       );
 
       console.log(
-        `PopupService: Exported ${arcadeData.badges.length} badges to CSV`
+        `PopupService: Exported ${arcadeData.badges.length} badges to CSV`,
       );
 
       // Show success state
@@ -350,7 +350,7 @@ class PopupService {
       const activeTab = tabs[0];
       if (!activeTab.url?.includes("cloudskillsboost.google")) {
         console.warn(
-          "PopupService: Active tab is not Google Cloud Skills Boost page"
+          "PopupService: Active tab is not Google Cloud Skills Boost page",
         );
         return;
       }
@@ -371,7 +371,7 @@ class PopupService {
           if (url.includes("arcade")) {
             // Try to find arcade points in page
             const pointsElements = document.querySelectorAll(
-              '[class*="point"], [class*="score"], [class*="arcade"]'
+              '[class*="point"], [class*="score"], [class*="arcade"]',
             );
             for (const element of pointsElements) {
               const text = element.textContent || "";

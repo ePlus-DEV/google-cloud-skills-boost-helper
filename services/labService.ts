@@ -59,7 +59,7 @@ class LabService {
     // Find best matching URL
     const bestMatchUrl = SearchService.findBestMatchUrl(
       postsData,
-      combinedQueryText
+      combinedQueryText,
     );
 
     // Create and append solution element
@@ -75,7 +75,7 @@ class LabService {
     return (
       href.startsWith("https://www.cloudskillsboost.google/games/") ||
       href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/"
+        "https://www.cloudskillsboost.google/course_templates/",
       ) ||
       href.startsWith("https://www.cloudskillsboost.google/focuses/")
     );

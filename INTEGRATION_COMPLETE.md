@@ -56,15 +56,15 @@
 
 ### 🔍 Key Features
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| 🎯 **Smart Badge Detection** | ✅ | Multiple selector strategies with fallback |
-| 🧮 **Intelligent Point Calculation** | ✅ | Different points for different badge types |
-| 🤖 **Auto-Detection** | ✅ | Real-time monitoring on Skills Boost pages |
-| 🔄 **API Fallback** | ✅ | Graceful degradation when API fails |
-| 💾 **Smart Caching** | ✅ | Only update when new data is available |
-| 🎮 **UI Integration** | ✅ | Buttons in both popup and options |
-| 📊 **Progress Tracking** | ✅ | Visual feedback and loading states |
+| Feature                              | Status | Description                                |
+| ------------------------------------ | ------ | ------------------------------------------ |
+| 🎯 **Smart Badge Detection**         | ✅     | Multiple selector strategies with fallback |
+| 🧮 **Intelligent Point Calculation** | ✅     | Different points for different badge types |
+| 🤖 **Auto-Detection**                | ✅     | Real-time monitoring on Skills Boost pages |
+| 🔄 **API Fallback**                  | ✅     | Graceful degradation when API fails        |
+| 💾 **Smart Caching**                 | ✅     | Only update when new data is available     |
+| 🎮 **UI Integration**                | ✅     | Buttons in both popup and options          |
+| 📊 **Progress Tracking**             | ✅     | Visual feedback and loading states         |
 
 ## 🎮 How to Use
 
@@ -105,16 +105,19 @@ await PopupService.refreshDataByScraping(); // Scraping only
 ## 🚀 Performance & Reliability
 
 ### ⚡ Speed Optimization
+
 - Intelligent selector prioritization
 - Cached results to avoid duplicate requests
 - Background processing without UI blocking
 
 ### 🛡️ Error Handling
+
 - Graceful fallback from API to scraping
 - Comprehensive error logging
 - User-friendly error messages
 
 ### 🔒 Privacy Features
+
 - No data sent to external servers (scraping mode)
 - Local-only processing and storage
 - CORS-compliant implementation
@@ -122,12 +125,13 @@ await PopupService.refreshDataByScraping(); // Scraping only
 ## 🧪 Testing & Debugging
 
 ### Debug Console Commands:
+
 ```javascript
 // Check current implementation
 console.log("Services loaded:", {
   ArcadeScrapingService,
   ProfileDetectionService,
-  PopupService
+  PopupService,
 });
 
 // Test scraping
@@ -138,6 +142,7 @@ StorageService.getArcadeData().then(console.log);
 ```
 
 ### Browser DevTools:
+
 - Check Console for scraping logs
 - Monitor Network tab for requests
 - Inspect Application > Storage for cached data
@@ -154,6 +159,7 @@ StorageService.getArcadeData().then(console.log);
 ## 🏁 Deployment Ready
 
 The extension is now ready for deployment with:
+
 - ✅ All scraping functionality implemented
 - ✅ UI components integrated
 - ✅ Error handling in place
@@ -164,4 +170,4 @@ The extension is now ready for deployment with:
 
 ---
 
-*Next steps: Load extension in browser, test scraping functionality, and enjoy real-time arcade point tracking!* 🚀
+_Next steps: Load extension in browser, test scraping functionality, and enjoy real-time arcade point tracking!_ 🚀

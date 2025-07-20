@@ -45,7 +45,7 @@ class StorageService {
    * Initialize profile URL from storage or input
    */
   static async initializeProfileUrl(
-    inputElement?: HTMLInputElement
+    inputElement?: HTMLInputElement,
   ): Promise<string> {
     const storedUrl = await this.getProfileUrl();
     return storedUrl || inputElement?.value || "";

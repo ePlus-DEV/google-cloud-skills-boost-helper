@@ -87,7 +87,7 @@ class ProfileDetectionService {
 
       if (shouldCheck) {
         console.log(
-          "ProfileDetectionService: New content detected, checking for badges..."
+          "ProfileDetectionService: New content detected, checking for badges...",
         );
         await this.checkAndScrapePage();
       }
@@ -133,7 +133,7 @@ class ProfileDetectionService {
         className.toLowerCase().includes(indicator) ||
         id.toLowerCase().includes(indicator) ||
         (tagName === "img" &&
-          (element as HTMLImageElement).src?.toLowerCase().includes(indicator))
+          (element as HTMLImageElement).src?.toLowerCase().includes(indicator)),
     );
   }
 
@@ -161,7 +161,7 @@ class ProfileDetectionService {
 
         if (dashboardData && dashboardData.totalArcadePoints >= 0) {
           console.log(
-            `ProfileDetectionService: Found arcade points: ${dashboardData.totalArcadePoints}`
+            `ProfileDetectionService: Found arcade points: ${dashboardData.totalArcadePoints}`,
           );
 
           // Merge dashboard data with existing stored data
@@ -191,7 +191,7 @@ class ProfileDetectionService {
 
           await StorageService.saveArcadeData(updatedData);
           console.log(
-            "ProfileDetectionService: Updated arcade data from dashboard"
+            "ProfileDetectionService: Updated arcade data from dashboard",
           );
 
           // Notify extension
@@ -205,13 +205,13 @@ class ProfileDetectionService {
       const profileBadgesContainer = document.querySelector(".profile-badges");
       if (!profileBadgesContainer) {
         console.log(
-          "ProfileDetectionService: .profile-badges container not found on current page"
+          "ProfileDetectionService: .profile-badges container not found on current page",
         );
         return;
       }
 
       console.log(
-        "ProfileDetectionService: Found .profile-badges container, checking for badges..."
+        "ProfileDetectionService: Found .profile-badges container, checking for badges...",
       );
 
       // Wait a bit for content to load
@@ -222,7 +222,7 @@ class ProfileDetectionService {
 
       if (arcadeData && arcadeData.badges && arcadeData.badges.length > 0) {
         console.log(
-          `ProfileDetectionService: Found ${arcadeData.badges.length} badges on current page`
+          `ProfileDetectionService: Found ${arcadeData.badges.length} badges on current page`,
         );
 
         // Check if we should update stored data
@@ -245,7 +245,7 @@ class ProfileDetectionService {
    * Check if we should update the stored data
    */
   private static async shouldUpdateStoredData(
-    newData: ArcadeData
+    newData: ArcadeData,
   ): Promise<boolean> {
     try {
       const existingData = await StorageService.getArcadeData();
@@ -283,7 +283,7 @@ class ProfileDetectionService {
     } catch (error) {
       console.error(
         "ProfileDetectionService: Error checking if should update:",
-        error
+        error,
       );
       return true; // Default to updating if there's an error
     }
@@ -340,7 +340,7 @@ class ProfileDetectionService {
 
     // Try to find profile URL in the page
     const profileLinks = document.querySelectorAll(
-      'a[href*="/public_profiles/"]'
+      'a[href*="/public_profiles/"]',
     );
     if (profileLinks.length > 0) {
       const link = profileLinks[0] as HTMLAnchorElement;

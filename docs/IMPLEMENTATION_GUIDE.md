@@ -15,7 +15,8 @@ Both approaches are now compatible and use similar selectors.
 
 ```javascript
 // Example 1: Scrape from profile URL
-const profileUrl = "https://www.cloudskillsboost.google/public_profiles/your-id";
+const profileUrl =
+  "https://www.cloudskillsboost.google/public_profiles/your-id";
 const arcadeData = await ArcadeScrapingService.scrapeArcadeData(profileUrl);
 
 // Example 2: Scrape current page
@@ -31,13 +32,13 @@ The extension uses a **multi-tier fallback strategy**:
 
 ```javascript
 // Tier 1: Look for .profile-badges container
-const container = document.querySelector('.profile-badges');
+const container = document.querySelector(".profile-badges");
 if (container) {
   // Search within container for badge elements
 }
 
-// Tier 2: Look for individual .profile-badge elements  
-const badges = document.querySelectorAll('.profile-badge');
+// Tier 2: Look for individual .profile-badge elements
+const badges = document.querySelectorAll(".profile-badge");
 
 // Tier 3: Generic fallback search
 // Search for any elements that might be badges
@@ -48,18 +49,22 @@ const badges = document.querySelectorAll('.profile-badge');
 ### From Your Controller Code
 
 ```javascript
-$('.profile-badge').each((index, badge) => {
+$(".profile-badge").each((index, badge) => {
   // Extract title using Google's design system
-  const badgeTitle = $(badge).find('.ql-title-medium').text().trim();
-  
+  const badgeTitle = $(badge).find(".ql-title-medium").text().trim();
+
   // Extract date from badge
-  const badgeDateText = $(badge).find('.ql-body-medium').text().trim();
-  
+  const badgeDateText = $(badge).find(".ql-body-medium").text().trim();
+
   // Parse date format: "Nov 15, 2024"
-  const badgeDateMatch = badgeDateText.match(/(\\w{3})\\s+(\\d{1,2}),\\s+(\\d{4})/);
-  
+  const badgeDateMatch = badgeDateText.match(
+    /(\\w{3})\\s+(\\d{1,2}),\\s+(\\d{4})/,
+  );
+
   if (badgeDateMatch) {
-    const badgeDate = new Date(`${badgeDateMatch[3]}-${badgeDateMatch[2]}-${badgeDateMatch[1]}T00:00:00-0400`);
+    const badgeDate = new Date(
+      `${badgeDateMatch[3]}-${badgeDateMatch[2]}-${badgeDateMatch[1]}T00:00:00-0400`,
+    );
     // Process badge...
   }
 });
@@ -67,13 +72,13 @@ $('.profile-badge').each((index, badge) => {
 
 ### Key Differences
 
-| Aspect | Browser Extension | Node.js Server |
-|--------|------------------|----------------|
-| Environment | Client-side | Server-side |
-| Parser | DOMParser | Cheerio |
-| Selector | `.profile-badges` → `.profile-badge` | `.profile-badge` directly |
-| User Detection | `.ql-display-small` | Same |
-| Avatar | `ql-avatar.profile-avatar` | Same |
+| Aspect         | Browser Extension                    | Node.js Server            |
+| -------------- | ------------------------------------ | ------------------------- |
+| Environment    | Client-side                          | Server-side               |
+| Parser         | DOMParser                            | Cheerio                   |
+| Selector       | `.profile-badges` → `.profile-badge` | `.profile-badge` directly |
+| User Detection | `.ql-display-small`                  | Same                      |
+| Avatar         | `ql-avatar.profile-avatar`           | Same                      |
 
 ## 🎨 Compatible Selectors
 
@@ -81,22 +86,22 @@ $('.profile-badge').each((index, badge) => {
 
 ```javascript
 // Badge Container
-".profile-badges"        // Extension primary
-".profile-badge"         // Both (individual items)
+".profile-badges"; // Extension primary
+".profile-badge"; // Both (individual items)
 
-// Title Extraction  
-".ql-title-medium"       // Google Design System (Both)
-".badge-title"           // Fallback (Extension)
-".badge-name"            // Fallback (Extension)
+// Title Extraction
+".ql-title-medium"; // Google Design System (Both)
+".badge-title"; // Fallback (Extension)
+".badge-name"; // Fallback (Extension)
 
 // Date Extraction
-".ql-body-medium"        // Google Design System (Both)  
-".date-earned"           // Fallback (Extension)
-".completion-date"       // Fallback (Extension)
+".ql-body-medium"; // Google Design System (Both)
+".date-earned"; // Fallback (Extension)
+".completion-date"; // Fallback (Extension)
 
 // User Details
-".ql-display-small"      // Profile name (Both)
-"ql-avatar.profile-avatar" // Profile avatar (Both)
+".ql-display-small"; // Profile name (Both)
+"ql-avatar.profile-avatar"; // Profile avatar (Both)
 ```
 
 ## 🧪 Testing & Debugging
@@ -107,10 +112,13 @@ $('.profile-badge').each((index, badge) => {
 // Open browser console on Google Cloud Skills Boost profile page
 
 // Test 1: Check container approach
-console.log("Container:", document.querySelector('.profile-badges'));
+console.log("Container:", document.querySelector(".profile-badges"));
 
 // Test 2: Check individual badges
-console.log("Individual badges:", document.querySelectorAll('.profile-badge').length);
+console.log(
+  "Individual badges:",
+  document.querySelectorAll(".profile-badge").length,
+);
 
 // Test 3: Run scraping
 const data = ArcadeScrapingService.extractArcadeDataFromCurrentPage();
@@ -124,32 +132,34 @@ await exampleMonitoringAndDebugging();
 
 ```javascript
 // In your Node.js environment
-const cheerio = require('cheerio');
+const cheerio = require("cheerio");
 
 // Load profile HTML
 const $ = cheerio.load(profileHTML);
 
 // Test selectors
-console.log("Profile name:", $('.ql-display-small').text());
-console.log("Badge count:", $('.profile-badge').length);
+console.log("Profile name:", $(".ql-display-small").text());
+console.log("Badge count:", $(".profile-badge").length);
 
 // Test badge extraction
-$('.profile-badge').each((i, badge) => {
-  const title = $(badge).find('.ql-title-medium').text().trim();
-  const date = $(badge).find('.ql-body-medium').text().trim();
-  console.log(`Badge ${i+1}: ${title} (${date})`);
+$(".profile-badge").each((i, badge) => {
+  const title = $(badge).find(".ql-title-medium").text().trim();
+  const date = $(badge).find(".ql-body-medium").text().trim();
+  console.log(`Badge ${i + 1}: ${title} (${date})`);
 });
 ```
 
 ## ⚡ Performance Considerations
 
 ### Browser Extension
+
 - ✅ Real-time processing
-- ✅ No network overhead  
+- ✅ No network overhead
 - ✅ Works offline
 - ⚠️ Limited by browser resources
 
 ### Node.js Server
+
 - ✅ Stable environment
 - ✅ Better error handling
 - ✅ Can cache results
@@ -162,10 +172,10 @@ $('.profile-badge').each((i, badge) => {
 ```javascript
 // In your popup or options page
 const config = {
-  waitTimeout: 10000,      // Wait time for badges to load
-  fallbackEnabled: true,   // Enable fallback methods
-  debugMode: true,         // Enable console logging
-  autoDetection: true      // Enable auto-detection
+  waitTimeout: 10000, // Wait time for badges to load
+  fallbackEnabled: true, // Enable fallback methods
+  debugMode: true, // Enable console logging
+  autoDetection: true, // Enable auto-detection
 };
 
 ArcadeScrapingService.configure(config);
@@ -177,13 +187,13 @@ ArcadeScrapingService.configure(config);
 // In your Node.js controller
 const config = {
   dateRange: {
-    start: new Date('2024-03-22T00:00:00'),
-    end: new Date('2024-04-20T23:59:59')
+    start: new Date("2024-03-22T00:00:00"),
+    end: new Date("2024-04-20T23:59:59"),
   },
   badgeCategories: {
-    skillBadges: ['badge1', 'badge2'],
-    regularBadges: ['badge3', 'badge4']
-  }
+    skillBadges: ["badge1", "badge2"],
+    regularBadges: ["badge3", "badge4"],
+  },
 };
 ```
 
@@ -193,14 +203,14 @@ If you're moving from server-side to browser extension:
 
 ```javascript
 // Before (Server)
-$('.profile-badge').each((index, badge) => {
-  const title = $(badge).find('.ql-title-medium').text().trim();
+$(".profile-badge").each((index, badge) => {
+  const title = $(badge).find(".ql-title-medium").text().trim();
   // Process...
 });
 
 // After (Extension)
-document.querySelectorAll('.profile-badge').forEach((badge, index) => {
-  const title = badge.querySelector('.ql-title-medium')?.textContent?.trim();
+document.querySelectorAll(".profile-badge").forEach((badge, index) => {
+  const title = badge.querySelector(".ql-title-medium")?.textContent?.trim();
   // Process...
 });
 ```
@@ -226,12 +236,12 @@ try {
 ```javascript
 try {
   const $ = await gcp.get(profileUrl);
-  if (!$('.profile-badge').length) {
+  if (!$(".profile-badge").length) {
     throw new Error("No badges found");
   }
 } catch (error) {
   console.error("Failed to load profile:", error);
-  return res.redirect('/');
+  return res.redirect("/");
 }
 ```
 

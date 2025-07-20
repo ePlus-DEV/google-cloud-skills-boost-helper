@@ -24,14 +24,14 @@ class PopupUIService {
    */
   static updateElementText(
     selector: string,
-    value: string | number | null | undefined
+    value: string | number | null | undefined,
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
       element.textContent = value?.toString() || "N/A";
     } else {
       console.warn(
-        `PopupUIService: Element not found for selector: ${selector}`
+        `PopupUIService: Element not found for selector: ${selector}`,
       );
     }
   }
@@ -41,7 +41,7 @@ class PopupUIService {
    */
   static updateElements(updates: UIUpdateData[]): void {
     updates.forEach(({ selector, value }) =>
-      this.updateElementText(selector, value)
+      this.updateElementText(selector, value),
     );
   }
 
@@ -62,7 +62,7 @@ class PopupUIService {
    */
   static updateProgressBar(
     totalPoints: number,
-    nextMilestonePoints: number
+    nextMilestonePoints: number,
   ): void {
     const progressBar = this.querySelector<HTMLDivElement>("#progress-bar");
     if (progressBar) {
@@ -80,7 +80,7 @@ class PopupUIService {
         (milestone, index) =>
           totalPoints <= milestone.points ||
           (this.MILESTONES[index + 1] &&
-            totalPoints < this.MILESTONES[index + 1].points)
+            totalPoints < this.MILESTONES[index + 1].points),
       ) + 1 || this.MILESTONES.length + 1;
 
     const nextMilestone =
@@ -108,11 +108,11 @@ class PopupUIService {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number
+    totalPoints: number,
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
     );
 
     this.updateElementText(
@@ -121,7 +121,7 @@ class PopupUIService {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`
+          } ${browser.i18n.getMessage("textPoints")}`,
     );
   }
 
@@ -135,7 +135,7 @@ class PopupUIService {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`
+      }`,
     );
   }
 
@@ -192,7 +192,7 @@ class PopupUIService {
       userInfo = userDetails[0] || {};
       console.log(
         "PopupUIService: userDetails is array, using first item:",
-        userInfo
+        userInfo,
       );
     } else {
       // New format: userDetails is an object
@@ -249,11 +249,11 @@ class PopupUIService {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      totalPoints
+      totalPoints,
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points
+      leagueInfo.nextMilestone.points,
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -315,7 +315,7 @@ class PopupUIService {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000
+    timeout = 6000,
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -331,7 +331,7 @@ class PopupUIService {
    */
   static toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean
+    disabled: boolean,
   ): void {
     buttons.forEach((button) => (button.disabled = disabled));
   }
@@ -342,7 +342,7 @@ class PopupUIService {
   static toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean
+    add: boolean,
   ): void {
     elements.forEach((element) => element.classList.toggle(className, add));
   }

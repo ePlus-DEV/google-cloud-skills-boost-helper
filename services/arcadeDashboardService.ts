@@ -41,7 +41,7 @@ class ArcadeDashboardService {
    */
   static extractArcadeDashboardData(): ArcadeDashboardData {
     console.log(
-      "ArcadeDashboardService: Starting arcade dashboard scraping..."
+      "ArcadeDashboardService: Starting arcade dashboard scraping...",
     );
 
     try {
@@ -138,7 +138,7 @@ class ArcadeDashboardService {
             // Validate range - arcade points usually 0-100+
             if (points >= 0 && points <= 1000) {
               console.log(
-                `ArcadeDashboardService: Found points ${points} using selector: ${selector}`
+                `ArcadeDashboardService: Found points ${points} using selector: ${selector}`,
               );
               return points;
             }
@@ -147,7 +147,7 @@ class ArcadeDashboardService {
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error with selector ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -160,7 +160,7 @@ class ArcadeDashboardService {
     if (match) {
       const points = parseInt(match[1], 10);
       console.log(
-        `ArcadeDashboardService: Found points ${points} via text pattern`
+        `ArcadeDashboardService: Found points ${points} via text pattern`,
       );
       return points;
     }
@@ -203,7 +203,7 @@ class ArcadeDashboardService {
             if (text.includes(league.toLowerCase())) {
               currentLeague = league;
               console.log(
-                `ArcadeDashboardService: Found current league: ${league}`
+                `ArcadeDashboardService: Found current league: ${league}`,
               );
               break;
             }
@@ -212,7 +212,7 @@ class ArcadeDashboardService {
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting league with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -224,7 +224,7 @@ class ArcadeDashboardService {
         if (bodyText.includes(league.toLowerCase())) {
           currentLeague = league;
           console.log(
-            `ArcadeDashboardService: Found league via text pattern: ${league}`
+            `ArcadeDashboardService: Found league via text pattern: ${league}`,
           );
           break;
         }
@@ -296,7 +296,7 @@ class ArcadeDashboardService {
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting username with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -308,14 +308,14 @@ class ArcadeDashboardService {
         if (element && element.src) {
           profileImage = element.src;
           console.log(
-            `ArcadeDashboardService: Found profile image: ${profileImage}`
+            `ArcadeDashboardService: Found profile image: ${profileImage}`,
           );
           break;
         }
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting profile image with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -347,7 +347,7 @@ class ArcadeDashboardService {
 
           // Look for patterns like "#123" or "Rank: 123" or "123 of 1000"
           const rankMatch = text.match(
-            /(?:#|rank:?\s*)?(\d+)(?:\s*of\s*(\d+))?/i
+            /(?:#|rank:?\s*)?(\d+)(?:\s*of\s*(\d+))?/i,
           );
           if (rankMatch) {
             const position = parseInt(rankMatch[1], 10);
@@ -356,7 +356,7 @@ class ArcadeDashboardService {
             console.log(
               `ArcadeDashboardService: Found leaderboard position: ${position}${
                 total ? ` of ${total}` : ""
-              }`
+              }`,
             );
             return { position, totalParticipants: total };
           }
@@ -364,7 +364,7 @@ class ArcadeDashboardService {
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting leaderboard with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -415,14 +415,14 @@ class ArcadeDashboardService {
         if (element && element.textContent?.trim()) {
           timeRemaining = element.textContent.trim();
           console.log(
-            `ArcadeDashboardService: Found time remaining: ${timeRemaining}`
+            `ArcadeDashboardService: Found time remaining: ${timeRemaining}`,
           );
           break;
         }
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting time with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -435,14 +435,14 @@ class ArcadeDashboardService {
         if (element && element.textContent?.trim()) {
           currentEvent = element.textContent.trim();
           console.log(
-            `ArcadeDashboardService: Found current event: ${currentEvent}`
+            `ArcadeDashboardService: Found current event: ${currentEvent}`,
           );
           break;
         }
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting event with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -476,14 +476,14 @@ class ArcadeDashboardService {
           if (event) {
             events.push(event);
             console.log(
-              `ArcadeDashboardService: Found event: ${event.title} (${event.points} points)`
+              `ArcadeDashboardService: Found event: ${event.title} (${event.points} points)`,
             );
           }
         }
       } catch (error) {
         console.warn(
           `ArcadeDashboardService: Error extracting events with ${selector}:`,
-          error
+          error,
         );
       }
     }
@@ -602,7 +602,7 @@ class ArcadeDashboardService {
       // Extract game URL
       let gameUrl = "";
       const linkElement = card.querySelector(
-        'a[href*="cloudskillsboost.google"]'
+        'a[href*="cloudskillsboost.google"]',
       );
       if (linkElement) {
         gameUrl = (linkElement as HTMLAnchorElement).href;
@@ -626,7 +626,7 @@ class ArcadeDashboardService {
     } catch (error) {
       console.warn(
         "ArcadeDashboardService: Error extracting event from card:",
-        error
+        error,
       );
       return null;
     }
@@ -687,13 +687,13 @@ class ArcadeDashboardService {
   static autoScrapeIfArcadePage(): ArcadeDashboardData | null {
     if (this.isArcadeDashboardPage()) {
       console.log(
-        "ArcadeDashboardService: Detected arcade page, auto-scraping..."
+        "ArcadeDashboardService: Detected arcade page, auto-scraping...",
       );
       return this.extractArcadeDashboardData();
     }
 
     console.log(
-      "ArcadeDashboardService: Not on arcade page, skipping auto-scrape"
+      "ArcadeDashboardService: Not on arcade page, skipping auto-scrape",
     );
     return null;
   }
