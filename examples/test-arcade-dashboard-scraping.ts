@@ -15,7 +15,7 @@ function testArcadeDashboardScraping() {
   if (!ArcadeDashboardService.isArcadeDashboardPage()) {
     console.error("❌ Not on arcade dashboard page!");
     console.log(
-      "Please navigate to: https://go.cloudskillsboost.google/arcade"
+      "Please navigate to: https://go.cloudskillsboost.google/arcade",
     );
     return;
   }
@@ -44,12 +44,12 @@ function testArcadeDashboardScraping() {
         dashboardData.leaderboard.totalParticipants
           ? ` of ${dashboardData.leaderboard.totalParticipants}`
           : ""
-      }`
+      }`,
     );
   }
 
   console.log(
-    `Game Status: ${dashboardData.gameStatus?.isActive ? "Active" : "Inactive"}`
+    `Game Status: ${dashboardData.gameStatus?.isActive ? "Active" : "Inactive"}`,
   );
 
   if (dashboardData.gameStatus?.timeRemaining) {
@@ -66,7 +66,7 @@ function testArcadeDashboardScraping() {
     dashboardData.availableEvents.length > 0
   ) {
     console.log(
-      `\n🎮 Available Events (${dashboardData.availableEvents.length}):`
+      `\n🎮 Available Events (${dashboardData.availableEvents.length}):`,
     );
     dashboardData.availableEvents.forEach((event, index) => {
       console.log(`${index + 1}. ${event.title}`);
@@ -74,7 +74,7 @@ function testArcadeDashboardScraping() {
       if (event.accessCode) console.log(`   Access Code: ${event.accessCode}`);
       if (event.description)
         console.log(
-          `   Description: ${event.description.substring(0, 100)}...`
+          `   Description: ${event.description.substring(0, 100)}...`,
         );
       console.log(`   Active: ${event.isActive ? "Yes" : "No"}`);
     });
@@ -177,13 +177,13 @@ function testWithMockHTML() {
       passed++;
     } else {
       console.log(
-        `❌ ${validation.test}: FAIL (expected: ${validation.expected}, got: ${validation.actual})`
+        `❌ ${validation.test}: FAIL (expected: ${validation.expected}, got: ${validation.actual})`,
       );
     }
   });
 
   console.log(
-    `\n📈 Mock Test Summary: ${passed}/${validations.length} tests passed`
+    `\n📈 Mock Test Summary: ${passed}/${validations.length} tests passed`,
   );
 
   return mockData;
@@ -266,7 +266,7 @@ function testBaseCampEventExtraction() {
     dashboardData.availableEvents.length > 0
   ) {
     const baseCampEvent = dashboardData.availableEvents.find((event) =>
-      event.title.toLowerCase().includes("base camp")
+      event.title.toLowerCase().includes("base camp"),
     );
 
     if (baseCampEvent) {
@@ -305,13 +305,13 @@ function testBaseCampEventExtraction() {
           passed++;
         } else {
           console.log(
-            `❌ ${validation.test}: FAIL (expected: ${validation.expected}, got: ${validation.actual})`
+            `❌ ${validation.test}: FAIL (expected: ${validation.expected}, got: ${validation.actual})`,
           );
         }
       });
 
       console.log(
-        `\n📈 Base Camp Test Summary: ${passed}/${validations.length} tests passed`
+        `\n📈 Base Camp Test Summary: ${passed}/${validations.length} tests passed`,
       );
 
       return baseCampEvent;
@@ -470,7 +470,7 @@ function testWeeklyTriviaExtraction() {
           passed++;
         } else {
           console.log(
-            `   ❌ Title should contain Week ${expectedWeek.week}: FAIL`
+            `   ❌ Title should contain Week ${expectedWeek.week}: FAIL`,
           );
         }
 
@@ -488,7 +488,7 @@ function testWeeklyTriviaExtraction() {
           passed++;
         } else {
           console.log(
-            `   ❌ Access Code should be ${expectedWeek.accessCode}: FAIL (got ${event.accessCode})`
+            `   ❌ Access Code should be ${expectedWeek.accessCode}: FAIL (got ${event.accessCode})`,
           );
         }
 
@@ -503,7 +503,7 @@ function testWeeklyTriviaExtraction() {
     });
 
     console.log(
-      `\n📈 Weekly Trivia Test Summary: ${passed}/${totalTests} tests passed`
+      `\n📈 Weekly Trivia Test Summary: ${passed}/${totalTests} tests passed`,
     );
 
     return dashboardData.availableEvents;
@@ -525,7 +525,7 @@ function runArcadeDashboardTest() {
   } else {
     console.log("🧪 Running mock HTML test...");
     console.log(
-      "For live testing, navigate to: https://go.cloudskillsboost.google/arcade"
+      "For live testing, navigate to: https://go.cloudskillsboost.google/arcade",
     );
     return testWithMockHTML();
   }
@@ -543,13 +543,13 @@ console.log("Available functions:");
 console.log("- testArcadeDashboardScraping() - Test on real arcade page");
 console.log("- testWithMockHTML() - Test with mock data");
 console.log(
-  "- testBaseCampEventExtraction() - Test Base Camp event extraction"
+  "- testBaseCampEventExtraction() - Test Base Camp event extraction",
 );
 console.log(
-  "- testWeeklyTriviaExtraction() - Test Weekly Trivia events extraction"
+  "- testWeeklyTriviaExtraction() - Test Weekly Trivia events extraction",
 );
 console.log(
-  "- runArcadeDashboardTest() - Auto-detect and run appropriate test"
+  "- runArcadeDashboardTest() - Auto-detect and run appropriate test",
 );
 
 // Auto-run test

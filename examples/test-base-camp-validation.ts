@@ -138,13 +138,13 @@ function testRealProfileCalculation() {
     console.log(`✅ PASS: Total matches expected (${expectedTotal} points)`);
   } else {
     console.log(
-      `❌ FAIL: Expected ${expectedTotal}, got ${arcadePoints.totalPoints}`
+      `❌ FAIL: Expected ${expectedTotal}, got ${arcadePoints.totalPoints}`,
     );
   }
 
   // Check Base Camp specifically
   const baseCampBadge = badges.find((b: BadgeData) =>
-    b.title.includes("Base Camp")
+    b.title.includes("Base Camp"),
   );
   if (baseCampBadge && baseCampBadge.points === 1) {
     console.log("✅ PASS: Base Camp badge = 1 point");
@@ -165,7 +165,7 @@ function testRealProfileCalculation() {
 
 console.log("🔧 Base Camp validation tests loaded!");
 console.log(
-  "Run: testBaseCampPointCalculation() or testRealProfileCalculation()"
+  "Run: testBaseCampPointCalculation() or testRealProfileCalculation()",
 );
 
 export { testBaseCampPointCalculation, testRealProfileCalculation };

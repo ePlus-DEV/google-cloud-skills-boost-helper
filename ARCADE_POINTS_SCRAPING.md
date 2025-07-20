@@ -33,7 +33,7 @@ const currentData = ArcadeScrapingService.extractArcadeDataFromCurrentPage();
 - **Phát hiện badges**: Tự động tìm và phân loại badges
 - **Tính điểm theo loại badge**:
   - Arcade Game badges: 1 điểm
-  - Trivia badges: 1 điểm  
+  - Trivia badges: 1 điểm
   - Skill badges: 5 điểm
   - Special/Quest badges: 3 điểm
   - Lab completion: 1-2 điểm
@@ -86,11 +86,13 @@ await PopupService.refreshDataByScraping();
 ### Content Script tự động khởi tạo:
 
 Khi user vào các trang:
+
 - `https://www.cloudskillsboost.google/public_profiles/*`
-- `https://www.cloudskillsboost.google/profile*`  
+- `https://www.cloudskillsboost.google/profile*`
 - `https://www.cloudskillsboost.google/my_account/profile*`
 
 Extension sẽ tự động:
+
 1. Phát hiện badges trên trang
 2. Tính toán điểm arcade
 3. Lưu vào storage
@@ -121,12 +123,12 @@ Có thể thay đổi logic tính điểm trong `calculateBadgePoints()`:
 ```typescript
 private static calculateBadgePoints(title: string, imageURL: string): number {
   const titleLower = title.toLowerCase();
-  
+
   // Custom logic
   if (titleLower.includes('special-event')) {
     return 10; // Special event badges = 10 points
   }
-  
+
   // Default logic...
 }
 ```
@@ -137,9 +139,9 @@ Có thể thêm selector mới trong `extractBadges()`:
 
 ```typescript
 const badgeSelectors = [
-  '.badge-card',
-  '.achievement-card', 
-  '.new-badge-selector', // Add new selector
+  ".badge-card",
+  ".achievement-card",
+  ".new-badge-selector", // Add new selector
   // ...
 ];
 ```

@@ -9,7 +9,7 @@ class ArcadeScrapingService {
    * Scrape arcade data from a public profile page
    */
   static async scrapeArcadeData(
-    profileUrl: string
+    profileUrl: string,
   ): Promise<ArcadeData | null> {
     try {
       if (!this.isValidProfileUrl(profileUrl)) {
@@ -53,7 +53,7 @@ class ArcadeScrapingService {
    */
   private static extractUserDetails(doc: Document) {
     const userNameElement = doc.querySelector(
-      '.ql-display-small, .profile-header h1, .profile-name h1, [data-testid="profile-name"]'
+      '.ql-display-small, .profile-header h1, .profile-name h1, [data-testid="profile-name"]',
     );
     const userName = userNameElement?.textContent?.trim() || "Anonymous";
 
@@ -67,7 +67,7 @@ class ArcadeScrapingService {
     } else {
       // Fallback to img elements
       const profileImageElement = doc.querySelector(
-        ".profile-avatar img, .avatar img, .profile-picture img"
+        ".profile-avatar img, .avatar img, .profile-picture img",
       ) as HTMLImageElement;
       profileImage = profileImageElement?.src || "";
     }
@@ -109,7 +109,7 @@ class ArcadeScrapingService {
         const badgeElements = profileBadgesContainer.querySelectorAll(selector);
 
         console.log(
-          `ArcadeScrapingService: Found ${badgeElements.length} elements with selector "${selector}" in .profile-badges`
+          `ArcadeScrapingService: Found ${badgeElements.length} elements with selector "${selector}" in .profile-badges`,
         );
 
         badgeElements.forEach((element) => {
@@ -125,7 +125,7 @@ class ArcadeScrapingService {
       // If no specific badge selectors work, try to find any elements that look like badges
       if (badges.length === 0) {
         console.log(
-          "ArcadeScrapingService: No badges found with specific selectors, trying generic approach in .profile-badges"
+          "ArcadeScrapingService: No badges found with specific selectors, trying generic approach in .profile-badges",
         );
         badges.push(...this.extractBadgesFromContainer(profileBadgesContainer));
       }
@@ -134,12 +134,12 @@ class ArcadeScrapingService {
     // Fallback: if no profile-badges container found, try .profile-badge (individual items)
     if (badges.length === 0) {
       console.log(
-        "ArcadeScrapingService: .profile-badges container not found, trying .profile-badge elements"
+        "ArcadeScrapingService: .profile-badges container not found, trying .profile-badge elements",
       );
 
       const profileBadgeElements = doc.querySelectorAll(".profile-badge");
       console.log(
-        `ArcadeScrapingService: Found ${profileBadgeElements.length} .profile-badge elements`
+        `ArcadeScrapingService: Found ${profileBadgeElements.length} .profile-badge elements`,
       );
 
       profileBadgeElements.forEach((element) => {
@@ -153,7 +153,7 @@ class ArcadeScrapingService {
     // Final fallback: use old method
     if (badges.length === 0) {
       console.log(
-        "ArcadeScrapingService: No .profile-badge elements found, using final fallback method"
+        "ArcadeScrapingService: No .profile-badge elements found, using final fallback method",
       );
       badges.push(...this.fallbackBadgeExtraction(doc));
     }
@@ -170,7 +170,7 @@ class ArcadeScrapingService {
 
     // Try to find any clickable elements or divs that might represent badges
     const possibleBadges = container.querySelectorAll(
-      "div, a, article, section"
+      "div, a, article, section",
     );
 
     possibleBadges.forEach((element) => {
@@ -218,7 +218,7 @@ class ArcadeScrapingService {
 
       // First try the exact structure from real HTML: .badge-image > img
       const badgeImageLink = element.querySelector(
-        ".badge-image img"
+        ".badge-image img",
       ) as HTMLImageElement;
       if (badgeImageLink?.src) {
         imageURL = badgeImageLink.src;
@@ -323,7 +323,7 @@ class ArcadeScrapingService {
     const altLower = alt.toLowerCase();
 
     return badgeKeywords.some(
-      (keyword) => srcLower.includes(keyword) || altLower.includes(keyword)
+      (keyword) => srcLower.includes(keyword) || altLower.includes(keyword),
     );
   }
 
@@ -395,7 +395,7 @@ class ArcadeScrapingService {
       titleLower.includes("deployment")
     ) {
       console.log(
-        "  → Other Skill badge: 0.5 Arcade Points (2 needed for 1 point)"
+        "  → Other Skill badge: 0.5 Arcade Points (2 needed for 1 point)",
       );
       return 0.5;
     }
@@ -450,7 +450,7 @@ class ArcadeScrapingService {
       ) {
         arcadeGamePoints += badge.points;
         console.log(
-          `  → Game/Base Camp: ${badge.title} = ${badge.points} points`
+          `  → Game/Base Camp: ${badge.title} = ${badge.points} points`,
         );
       }
       // Arcade Special Edition badges
@@ -491,7 +491,7 @@ class ArcadeScrapingService {
       else if (titleLower.includes("arcade")) {
         arcadeGamePoints += badge.points;
         console.log(
-          `  → Generic Arcade: ${badge.title} = ${badge.points} points`
+          `  → Generic Arcade: ${badge.title} = ${badge.points} points`,
         );
       }
       // Non-arcade badges
@@ -505,7 +505,7 @@ class ArcadeScrapingService {
     console.log(
       `  → Skill badges: ${skillBadgeCount} badges = ${skillArcadePoints} arcade points (${
         skillBadgeCount % 2
-      } remaining)`
+      } remaining)`,
     );
 
     const totalArcadePoints =
@@ -521,7 +521,7 @@ class ArcadeScrapingService {
     console.log(`  Special Edition: ${arcadeSpecialPoints} points`);
     console.log(`  Level badges: ${levelBadgePoints} points`);
     console.log(
-      `  Other Skill (${skillBadgeCount} badges): ${skillArcadePoints} points`
+      `  Other Skill (${skillBadgeCount} badges): ${skillArcadePoints} points`,
     );
     console.log(`  TOTAL ARCADE POINTS: ${totalArcadePoints}`);
 
@@ -542,7 +542,7 @@ class ArcadeScrapingService {
    */
   private static isValidProfileUrl(url: string): boolean {
     return url.startsWith(
-      "https://www.cloudskillsboost.google/public_profiles/"
+      "https://www.cloudskillsboost.google/public_profiles/",
     );
   }
 
@@ -569,7 +569,7 @@ class ArcadeScrapingService {
     } catch (error) {
       console.error(
         "ArcadeScrapingService: Error extracting from current page:",
-        error
+        error,
       );
       return null;
     }
@@ -584,7 +584,7 @@ class ArcadeScrapingService {
     return new Promise((resolve) => {
       const checkInterval = setInterval(() => {
         const badges = document.querySelectorAll(
-          ".badge-card, .achievement-card, .earned-badge"
+          ".badge-card, .achievement-card, .earned-badge",
         );
 
         if (badges.length > 0 || Date.now() - startTime > maxWaitTime) {

@@ -26,7 +26,7 @@ async function exampleBasicScraping() {
       console.log(`❓ Trivia Points: ${arcadeData.arcadePoints?.triviaPoints}`);
       console.log(`⚡ Skill Points: ${arcadeData.arcadePoints?.skillPoints}`);
       console.log(
-        `⭐ Special Points: ${arcadeData.arcadePoints?.specialPoints}`
+        `⭐ Special Points: ${arcadeData.arcadePoints?.specialPoints}`,
       );
       console.log(`📜 Badges Found: ${arcadeData.badges?.length || 0}`);
     } else {
@@ -53,7 +53,7 @@ function exampleCurrentPageScraping() {
     // Log first few badges
     arcadeData.badges.slice(0, 3).forEach((badge, index) => {
       console.log(
-        `🏅 Badge ${index + 1}: ${badge.title} (${badge.points} points)`
+        `🏅 Badge ${index + 1}: ${badge.title} (${badge.points} points)`,
       );
     });
   } else {
@@ -116,7 +116,7 @@ function exampleCustomBadgeDetection() {
   // This would be inside ArcadeScrapingService.calculateBadgePoints()
   const customCalculateBadgePoints = (
     title: string,
-    imageURL: string
+    imageURL: string,
   ): number => {
     const titleLower = title.toLowerCase();
     const imageLower = imageURL.toLowerCase();
@@ -199,16 +199,16 @@ async function exampleMonitoringAndDebugging() {
       badgeSelectors.forEach((selector) => {
         const elements = profileBadgesContainer.querySelectorAll(selector);
         console.log(
-          `🔍 Selector "${selector}" in .profile-badges: ${elements.length} elements found`
+          `🔍 Selector "${selector}" in .profile-badges: ${elements.length} elements found`,
         );
       });
 
       // Check for any divs or links that might be badges
       const possibleBadges = profileBadgesContainer.querySelectorAll(
-        "div, a, article, section"
+        "div, a, article, section",
       );
       console.log(
-        `🏅 Possible badge elements in .profile-badges: ${possibleBadges.length}`
+        `🏅 Possible badge elements in .profile-badges: ${possibleBadges.length}`,
       );
     } else {
       console.log("❌ .profile-badges container not found");
@@ -216,7 +216,7 @@ async function exampleMonitoringAndDebugging() {
       // Check for individual .profile-badge elements directly
       const profileBadgeElements = document.querySelectorAll(".profile-badge");
       console.log(
-        `🔍 Found ${profileBadgeElements.length} individual .profile-badge elements`
+        `🔍 Found ${profileBadgeElements.length} individual .profile-badge elements`,
       );
 
       if (profileBadgeElements.length > 0) {
@@ -228,7 +228,7 @@ async function exampleMonitoringAndDebugging() {
             .querySelector(".ql-body-medium")
             ?.textContent?.trim();
           const imageLink = element.querySelector(
-            ".badge-image img"
+            ".badge-image img",
           ) as HTMLImageElement;
           const imageUrl = imageLink?.src;
 
@@ -239,7 +239,7 @@ async function exampleMonitoringAndDebugging() {
 
           // Test badge link
           const badgeLink = element.querySelector(
-            ".badge-image"
+            ".badge-image",
           ) as HTMLAnchorElement;
           if (badgeLink?.href) {
             console.log(`   Link: ${badgeLink.href}`);
@@ -299,9 +299,8 @@ async function examplePerformanceComparison() {
   // Test Scraping method
   console.time("Scraping Method");
   try {
-    const scrapingData = await ArcadeScrapingService.scrapeArcadeData(
-      profileUrl
-    );
+    const scrapingData =
+      await ArcadeScrapingService.scrapeArcadeData(profileUrl);
     console.timeEnd("Scraping Method");
     console.log("✅ Scraping method completed");
     console.log(`📊 Found ${scrapingData?.badges?.length || 0} badges`);

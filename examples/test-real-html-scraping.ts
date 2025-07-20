@@ -126,10 +126,10 @@ function testScrapingWithRealHTML() {
 
   console.log("🧪 Validation:");
   console.log(
-    `Expected badges: ${expectedBadges.length}, Found: ${badges.length}`
+    `Expected badges: ${expectedBadges.length}, Found: ${badges.length}`,
   );
   console.log(
-    `Expected total points: ${expectedTotalPoints}, Calculated: ${arcadePoints.totalPoints}`
+    `Expected total points: ${expectedTotalPoints}, Calculated: ${arcadePoints.totalPoints}`,
   );
 
   // Validate each badge
@@ -141,7 +141,7 @@ function testScrapingWithRealHTML() {
       console.log(
         `Badge ${index + 1}: Title ${titleMatch ? "✅" : "❌"}, Points ${
           pointsMatch ? "✅" : "❌"
-        }`
+        }`,
       );
 
       if (!titleMatch) {
@@ -150,7 +150,7 @@ function testScrapingWithRealHTML() {
       }
       if (!pointsMatch) {
         console.log(
-          `  Expected points: ${expected.points}, Found: ${found.points}`
+          `  Expected points: ${expected.points}, Found: ${found.points}`,
         );
       }
     } else {
@@ -192,7 +192,7 @@ function testCurrentPageExtraction() {
 
     data.badges?.forEach((badge: BadgeData, index: number) => {
       console.log(
-        `🏅 Badge ${index + 1}: ${badge.title} (${badge.points} pts)`
+        `🏅 Badge ${index + 1}: ${badge.title} (${badge.points} pts)`,
       );
     });
   } else {

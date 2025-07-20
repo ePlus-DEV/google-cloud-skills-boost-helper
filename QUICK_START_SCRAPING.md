@@ -20,6 +20,7 @@
 ### 🤖 Auto-Detection
 
 Extension sẽ **tự động** scrape khi bạn vào các trang:
+
 - `https://www.cloudskillsboost.google/public_profiles/*`
 - `https://www.cloudskillsboost.google/profile*`
 - `https://www.cloudskillsboost.google/my_account/profile*`
@@ -27,12 +28,14 @@ Extension sẽ **tự động** scrape khi bạn vào các trang:
 ## 🎯 Khi nào dùng Scraping?
 
 ### ✅ Nên dùng Scraping khi:
+
 - API không hoạt động
 - Muốn data real-time
 - Quan tâm về privacy
 - Không muốn phụ thuộc external service
 
 ### ⚡ Nên dùng API khi:
+
 - Cần tốc độ nhanh
 - API đang hoạt động tốt
 - Không quan trọng về privacy
@@ -40,6 +43,7 @@ Extension sẽ **tự động** scrape khi bạn vào các trang:
 ## 🔧 Debug và Test
 
 ### Console Commands
+
 ```javascript
 // Test scraping manual
 const data = await ArcadeScrapingService.scrapeArcadeData("profile-url");
@@ -52,9 +56,10 @@ const detectedData = await ProfileDetectionService.manualCheck();
 ```
 
 ### Kiểm tra Storage
+
 ```javascript
 // Xem data đã lưu
-import { StorageService } from './services';
+import { StorageService } from "./services";
 const savedData = await StorageService.getArcadeData();
 console.log(savedData);
 ```
@@ -82,15 +87,15 @@ console.log(savedData);
 
 ## 📊 Features Overview
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| 🔍 **Basic Scraping** | ✅ | Scrape từ profile URL |
-| 🤖 **Auto-Detection** | ✅ | Tự động scrape khi browse |
-| 🔄 **API Fallback** | ✅ | API fail → scraping |
-| 🎮 **Popup Integration** | ✅ | Buttons trong popup |
-| ⚙️ **Options Integration** | ✅ | Settings trong options |
-| 💾 **Smart Caching** | ✅ | Chỉ update khi cần |
-| 🏷️ **Badge Classification** | ✅ | Phân loại badges thông minh |
+| Feature                     | Status | Description                 |
+| --------------------------- | ------ | --------------------------- |
+| 🔍 **Basic Scraping**       | ✅     | Scrape từ profile URL       |
+| 🤖 **Auto-Detection**       | ✅     | Tự động scrape khi browse   |
+| 🔄 **API Fallback**         | ✅     | API fail → scraping         |
+| 🎮 **Popup Integration**    | ✅     | Buttons trong popup         |
+| ⚙️ **Options Integration**  | ✅     | Settings trong options      |
+| 💾 **Smart Caching**        | ✅     | Chỉ update khi cần          |
+| 🏷️ **Badge Classification** | ✅     | Phân loại badges thông minh |
 
 ## 🎉 Ready to Use!
 
