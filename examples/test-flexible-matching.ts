@@ -49,7 +49,9 @@ class FlexibleSearchService {
 
     return words.filter(
       (word) =>
-        word.length > 2 && !commonWords.has(word) && /^[a-zA-Z0-9]+$/.test(word) // Only alphanumeric words
+        word.length > 2 &&
+        !commonWords.has(word) &&
+        /^[a-zA-Z0-9]+$/.test(word), // Only alphanumeric words
     );
   }
 
@@ -58,7 +60,7 @@ class FlexibleSearchService {
    */
   private static hasMatchingDistinctiveWords(
     query: string,
-    title: string
+    title: string,
   ): boolean {
     const queryDistinctive = this.extractDistinctiveWords(query);
     const titleDistinctive = this.extractDistinctiveWords(title);
@@ -83,7 +85,7 @@ class FlexibleSearchService {
    */
   private static calculateAdvancedSimilarity(
     query: string,
-    title: string
+    title: string,
   ): number {
     const queryWords = query.toLowerCase().split(/\s+/);
     const titleWords = title.toLowerCase().split(/\s+/);
@@ -138,7 +140,7 @@ class FlexibleSearchService {
       // Check distinctive word matching
       const distinctiveMatch = this.hasMatchingDistinctiveWords(
         searchQuery,
-        title
+        title,
       );
       console.log(`Distinctive words match: ${distinctiveMatch}`);
 
