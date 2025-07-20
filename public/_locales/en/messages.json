@@ -85,5 +85,17 @@
   },
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Link copied to clipboard!"
+  },
+  "labelEnableSearchFeature": {
+    "message": "Enable Search Feature"
+  },
+  "descriptionEnableSearchFeature": {
+    "message": "Show Google Search and YouTube buttons when no solution is found."
+  },
+  "messageSearchFeatureEnabled": {
+    "message": "Search feature enabled - Google and YouTube search buttons will appear when no solution is found"
+  },
+  "messageSearchFeatureDisabled": {
+    "message": "Search feature disabled - Only \"No solution\" will be shown when no solution is found"
   }
 }
