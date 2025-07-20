@@ -3,6 +3,12 @@ import {
   ProfileService,
   ProfileDetectionService,
 } from "../services";
+import UIComponents from "../components/uiComponents";
+
+// Expose UIComponents search functions globally for onclick handlers
+(window as any).UIComponentsSearchGoogle = () => UIComponents.searchOnGoogle();
+(window as any).UIComponentsSearchYouTube = () =>
+  UIComponents.searchOnYouTube();
 
 export default defineContentScript({
   matches: [
