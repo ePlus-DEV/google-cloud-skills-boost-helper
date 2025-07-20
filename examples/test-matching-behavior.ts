@@ -51,8 +51,8 @@ function testMatching() {
       results.forEach((result, index) => {
         console.log(
           `${index + 1}. "${result.item.title}" (Score: ${result.score?.toFixed(
-            3
-          )})`
+            3,
+          )})`,
         );
       });
     }
@@ -82,8 +82,8 @@ function testWithDifferentThresholds() {
       results.forEach((result, index) => {
         console.log(
           `${index + 1}. "${result.item.title}" (Score: ${result.score?.toFixed(
-            3
-          )})`
+            3,
+          )})`,
         );
       });
     }
@@ -105,7 +105,7 @@ function enhancedMatching() {
       if (
         titleWords.some(
           (titleWord) =>
-            titleWord.includes(queryWord) || queryWord.includes(titleWord)
+            titleWord.includes(queryWord) || queryWord.includes(titleWord),
         )
       ) {
         matches++;
@@ -121,7 +121,7 @@ function enhancedMatching() {
   testPosts.forEach((post) => {
     const similarity = calculateWordSimilarity(testQuery, post.title);
     console.log(
-      `"${post.title}" - Similarity: ${(similarity * 100).toFixed(1)}%`
+      `"${post.title}" - Similarity: ${(similarity * 100).toFixed(1)}%`,
     );
   });
 }
