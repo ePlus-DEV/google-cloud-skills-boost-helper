@@ -36,7 +36,7 @@ class OptionsService {
     const scrapeOnlyElement = document.getElementById("scrape-only-url");
     if (scrapeOnlyElement) {
       scrapeOnlyElement.addEventListener("click", () =>
-        this.handleScrapeOnly()
+        this.handleScrapeOnly(),
       );
     }
 
@@ -54,7 +54,7 @@ class OptionsService {
 
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle"
+      "search-feature-toggle",
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
@@ -128,7 +128,7 @@ class OptionsService {
   private static async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url"
+      "#public-profile-url",
     );
 
     if (profileUrlInput) {
@@ -149,7 +149,7 @@ class OptionsService {
   private static async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url"
+      "#public-profile-url",
     );
 
     if (submitUrlElement) {
@@ -163,7 +163,7 @@ class OptionsService {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
       this.resetSubmitButton();
       return;
@@ -183,12 +183,12 @@ class OptionsService {
         await StorageService.saveProfileUrl(profileUrl);
       } else {
         console.error(
-          "Failed to fetch arcade data from both API and scraping."
+          "Failed to fetch arcade data from both API and scraping.",
         );
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
         );
       }
     } catch (error) {
@@ -196,7 +196,7 @@ class OptionsService {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
     } finally {
       this.resetSubmitButton();
@@ -209,7 +209,7 @@ class OptionsService {
   private static async handleScrapeOnly(): Promise<void> {
     const scrapeOnlyElement = document.getElementById("scrape-only-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url"
+      "#public-profile-url",
     );
 
     if (scrapeOnlyElement) {
@@ -224,7 +224,7 @@ class OptionsService {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
       this.resetScrapeOnlyButton();
       return;
@@ -232,9 +232,8 @@ class OptionsService {
 
     try {
       console.log("OptionsService: Using scraping method only...");
-      const arcadeData = await ArcadeScrapingService.scrapeArcadeData(
-        profileUrl
-      );
+      const arcadeData =
+        await ArcadeScrapingService.scrapeArcadeData(profileUrl);
 
       if (arcadeData) {
         await this.displayUserDetails(arcadeData);
@@ -242,14 +241,14 @@ class OptionsService {
         PopupUIService.showMessage(
           "#success-message",
           "✅ Data scraped successfully (API bypassed)!",
-          ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
+          ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
         );
       } else {
         console.error("Failed to scrape arcade data.");
         PopupUIService.showMessage(
           "#error-message",
           "Failed to scrape data. Please ensure the profile is public and try again.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
         );
       }
     } catch (error) {
@@ -257,7 +256,7 @@ class OptionsService {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred during scraping. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
     } finally {
       this.resetScrapeOnlyButton();
@@ -271,7 +270,7 @@ class OptionsService {
     PopupUIService.showMessage(
       "#success-message",
       browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
     );
 
     await StorageService.saveArcadeData(data);
@@ -303,7 +302,7 @@ class OptionsService {
    */
   private static async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle"
+      "search-feature-toggle",
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
@@ -315,7 +314,7 @@ class OptionsService {
    * Handle search feature toggle change
    */
   private static async handleSearchFeatureToggle(
-    enabled: boolean
+    enabled: boolean,
   ): Promise<void> {
     try {
       await StorageService.saveSearchFeatureEnabled(enabled);
