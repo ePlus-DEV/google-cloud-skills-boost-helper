@@ -5,21 +5,25 @@ import type {
 } from "../types/api";
 
 // Apollo Client singleton
-class ApiClient {
-  private static instance: ApolloClient<any>;
+const ApiClient = (() => {
+  let instance: ApolloClient<unknown>;
 
-  private static getClient(): ApolloClient<any> {
-    if (!this.instance) {
-      this.instance = new ApolloClient({
+  /**
+   * Returns the singleton ApolloClient instance.
+   * Initializes the client if it does not exist.
+   */
+  function getClient(): ApolloClient<unknown> {
+    if (!instance) {
+      instance = new ApolloClient({
         uri: import.meta.env.WXT_API_URL,
         cache: new InMemoryCache(),
       });
     }
-    return this.instance;
+    return instance;
   }
 
   // GraphQL query definition
-  private static readonly SEARCH_POSTS_QUERY = gql`
+  const SEARCH_POSTS_QUERY = gql`
     query SearchPostsOfPublication(
       $first: Int!
       $filter: SearchPostsOfPublicationFilter!
@@ -47,7 +51,7 @@ class ApiClient {
   /**
    * Fetch posts of a publication using GraphQL
    */
-  static async fetchPostsOfPublication(
+  async function fetchPostsOfPublication(
     params: SearchPostsParams
   ): Promise<SearchPostsOfPublicationData | null> {
     const {
@@ -59,8 +63,8 @@ class ApiClient {
     } = params;
 
     try {
-      const { data } = await this.getClient().query({
-        query: this.SEARCH_POSTS_QUERY,
+      const { data } = await getClient().query({
+        query: SEARCH_POSTS_QUERY,
         variables: {
           first,
           filter: { publicationId, query },
@@ -74,6 +78,10 @@ class ApiClient {
       return null;
     }
   }
-}
+
+  return {
+    fetchPostsOfPublication,
+  };
+})();
 
 export default ApiClient;
