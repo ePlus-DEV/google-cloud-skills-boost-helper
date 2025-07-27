@@ -4,11 +4,11 @@ import type { ArcadeData } from "../types";
 /**
  * Service to handle Arcade API operations
  */
-class ArcadeApiService {
+const ArcadeApiService = {
   /**
    * Fetch arcade data from the API
    */
-  static async fetchArcadeData(url: string): Promise<ArcadeData | null> {
+  async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
       const response = await axios.post(import.meta.env.WXT_ARCADE_POINT_URL, {
         url,
@@ -25,16 +25,16 @@ class ArcadeApiService {
     } catch (error) {
       return null;
     }
-  }
+  },
 
   /**
    * Validate profile URL format
    */
-  static isValidProfileUrl(url: string): boolean {
+  isValidProfileUrl(url: string): boolean {
     return url.startsWith(
-      "https://www.cloudskillsboost.google/public_profiles/",
+      "https://www.cloudskillsboost.google/public_profiles/"
     );
-  }
-}
+  },
+};
 
 export default ArcadeApiService;

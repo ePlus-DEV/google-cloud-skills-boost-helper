@@ -6,11 +6,11 @@ import type { SearchPostsParams } from "../types/api";
 /**
  * Service to handle lab page functionality
  */
-class LabService {
+const LabService = {
   /**
    * Check if the outline container exists and is valid
    */
-  private static validateOutlineContainer(): HTMLUListElement | null {
+  validateOutlineContainer(): HTMLUListElement | null {
     const outlineContainer = document
       .querySelector(".lab-content__outline.js-lab-content-outline")
       ?.closest("ul") as HTMLUListElement | null;
@@ -25,12 +25,12 @@ class LabService {
     }
 
     return outlineContainer;
-  }
+  },
 
   /**
    * Process lab page and add solution button
    */
-  static async processLabPage(): Promise<void> {
+  async processLabPage(): Promise<void> {
     const outlineContainer = this.validateOutlineContainer();
     if (!outlineContainer) return;
 
@@ -56,28 +56,29 @@ class LabService {
     // Find best matching URL
     const bestMatchUrl = SearchService.findBestMatchUrl(
       postsData,
-      combinedQueryText,
+      combinedQueryText
     );
 
     // Create and append solution element
-    const solutionElement =
-      await UIComponents.createSolutionElement(bestMatchUrl);
+    const solutionElement = await UIComponents.createSolutionElement(
+      bestMatchUrl
+    );
     outlineContainer.appendChild(solutionElement);
-  }
+  },
 
   /**
    * Check if current page is a lab page
    */
-  static isLabPage(): boolean {
+  isLabPage(): boolean {
     const { href } = window.location;
     return (
       href.startsWith("https://www.cloudskillsboost.google/games/") ||
       href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/",
+        "https://www.cloudskillsboost.google/course_templates/"
       ) ||
       href.startsWith("https://www.cloudskillsboost.google/focuses/")
     );
-  }
-}
+  },
+};
 
 export default LabService;

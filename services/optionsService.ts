@@ -7,28 +7,30 @@ import type { ArcadeData } from "../types";
 /**
  * Service to handle options page functionality
  */
-class OptionsService {
+const OptionsService = {
   /**
    * Initialize options page
    */
-  static async initialize(): Promise<void> {
-    this.setupEventListeners();
-    this.setupVersion();
-    this.setupBrowserBadges();
-    this.setupI18n();
-    await this.loadExistingData();
-    await this.loadSearchFeatureSetting();
-  }
+  async initialize(): Promise<void> {
+    OptionsService.setupEventListeners();
+    OptionsService.setupVersion();
+    OptionsService.setupBrowserBadges();
+    OptionsService.setupI18n();
+    await OptionsService.loadExistingData();
+    await OptionsService.loadSearchFeatureSetting();
+  },
 
   /**
    * Setup event listeners for options page
    */
-  private static setupEventListeners(): void {
+  setupEventListeners(): void {
     // Submit URL button
     const submitUrlElement = document.getElementById("submit-url");
     if (submitUrlElement) {
       submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
-      submitUrlElement.addEventListener("click", () => this.handleSubmit());
+      submitUrlElement.addEventListener("click", () =>
+        OptionsService.handleSubmit()
+      );
     }
 
     // Video toggle button
@@ -45,11 +47,11 @@ class OptionsService {
 
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
-        this.handleSearchFeatureToggle(searchFeatureToggle.checked);
+        OptionsService.handleSearchFeatureToggle(searchFeatureToggle.checked);
       });
     }
 
@@ -60,23 +62,23 @@ class OptionsService {
       const currentTime = new Date().getTime();
       prizeTiersElement.src = `${prizeTiersElement.src}?t=${currentTime}`;
     }
-  }
+  },
 
   /**
    * Setup version display
    */
-  private static setupVersion(): void {
+  setupVersion(): void {
     const manifest = browser.runtime.getManifest();
     const versionElement = PopupUIService.querySelector("#version-number");
     if (versionElement) {
       versionElement.textContent = `v${manifest.version}`;
     }
-  }
+  },
 
   /**
    * Setup browser-specific badges
    */
-  private static setupBrowserBadges(): void {
+  setupBrowserBadges(): void {
     const parser = new UAParser();
     const browserName = parser.getBrowser().name;
 
@@ -89,12 +91,12 @@ class OptionsService {
     if (badgeSelector) {
       PopupUIService.querySelector(badgeSelector)?.classList.remove("hidden");
     }
-  }
+  },
 
   /**
    * Setup i18n translations
    */
-  private static setupI18n(): void {
+  setupI18n(): void {
     // Find all elements with data-i18n attribute
     const i18nElements = document.querySelectorAll("[data-i18n]");
 
@@ -102,22 +104,24 @@ class OptionsService {
       const messageKey = element.getAttribute("data-i18n");
       if (messageKey) {
         try {
-          const translatedText = browser.i18n.getMessage(messageKey as any);
+          const translatedText = browser.i18n.getMessage(messageKey as Parameters<typeof browser.i18n.getMessage>[0]);
           if (translatedText) {
             element.textContent = translatedText;
           }
-        } catch (error) {}
+        } catch (error: unknown) {
+          console.error("Error saving search feature setting:", error);
+        }
       }
     });
-  }
+  },
 
   /**
    * Load existing data from storage
    */
-  private static async loadExistingData(): Promise<void> {
+  async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (profileUrlInput) {
@@ -130,15 +134,15 @@ class OptionsService {
     } else {
       PopupUIService.toggleElementVisibility("#arcade-points", false);
     }
-  }
+  },
 
   /**
    * Handle form submission
    */
-  private static async handleSubmit(): Promise<void> {
+  async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (submitUrlElement) {
@@ -152,9 +156,9 @@ class OptionsService {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
-      this.resetSubmitButton();
+      OptionsService.resetSubmitButton();
       return;
     }
 
@@ -162,69 +166,67 @@ class OptionsService {
       const arcadeData = await ArcadeApiService.fetchArcadeData(profileUrl);
 
       if (arcadeData) {
-        await this.displayUserDetails(arcadeData);
+        await OptionsService.displayUserDetails(arcadeData);
         await StorageService.saveProfileUrl(profileUrl);
       } else {
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
         );
       }
     } catch (error) {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
     } finally {
-      this.resetSubmitButton();
+      OptionsService.resetSubmitButton();
     }
-  }
+  },
 
   /**
    * Display user details after successful data fetch
    */
-  private static async displayUserDetails(data: ArcadeData): Promise<void> {
+  async displayUserDetails(data: ArcadeData): Promise<void> {
     PopupUIService.showMessage(
       "#success-message",
       browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
     );
 
     await StorageService.saveArcadeData(data);
     PopupUIService.updateOptionsUI(data);
-  }
+  },
 
   /**
    * Reset submit button text
    */
-  private static resetSubmitButton(): void {
+  resetSubmitButton(): void {
     const submitUrlElement = document.getElementById("submit-url");
     if (submitUrlElement) {
       submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
     }
-  }
+  },
 
   /**
    * Load search feature setting from storage and update UI
    */
-  private static async loadSearchFeatureSetting(): Promise<void> {
+  async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
     }
-  }
+  },
 
   /**
    * Handle search feature toggle change
    */
-  private static async handleSearchFeatureToggle(
-    enabled: boolean,
-  ): Promise<void> {
+  async handleSearchFeatureToggle(enabled: boolean): Promise<void> {
     try {
       await StorageService.saveSearchFeatureEnabled(enabled);
 
@@ -245,8 +247,10 @@ class OptionsService {
       setTimeout(() => {
         messageElement.remove();
       }, 3000);
-    } catch (error) {}
-  }
-}
+    } catch (error) {
+      console.error("Error saving search feature setting:", error);
+    }
+  },
+};
 
 export default OptionsService;

@@ -4,13 +4,11 @@
 
 import StorageService from "../services/storageService";
 
-class UIComponents {
+const UIComponents = {
   /**
    * Create a solution button element
    */
-  static async createSolutionElement(
-    url: string | null,
-  ): Promise<HTMLLIElement> {
+  async createSolutionElement(url: string | null): Promise<HTMLLIElement> {
     const solutionElement = document.createElement("li");
 
     Object.assign(solutionElement.style, {
@@ -67,14 +65,14 @@ class UIComponents {
         setTimeout(() => {
           const googleBtn = solutionElement.querySelector("#google-search-btn");
           const youtubeBtn = solutionElement.querySelector(
-            "#youtube-search-btn",
+            "#youtube-search-btn"
           );
 
           if (googleBtn) {
             googleBtn.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              this.searchOnGoogle();
+              UIComponents.searchOnGoogle();
             });
           }
 
@@ -82,7 +80,7 @@ class UIComponents {
             youtubeBtn.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              this.searchOnYouTube();
+              UIComponents.searchOnYouTube();
             });
           }
         }, 100);
@@ -97,12 +95,12 @@ class UIComponents {
     }
 
     return solutionElement;
-  }
+  },
 
   /**
    * Search the current lab on Google
    */
-  static searchOnGoogle(): void {
+  searchOnGoogle(): void {
     try {
       // Get lab title
       const labTitle =
@@ -121,12 +119,12 @@ class UIComponents {
       const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
       window.open(`https://www.google.com/search?q=${fallbackQuery}`, "_blank");
     }
-  }
+  },
 
   /**
    * Search the current lab on YouTube
    */
-  static searchOnYouTube(): void {
+  searchOnYouTube(): void {
     try {
       // Get lab title
       const labTitle =
@@ -146,15 +144,15 @@ class UIComponents {
       const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
       window.open(
         `https://www.youtube.com/results?search_query=${fallbackQuery}`,
-        "_blank",
+        "_blank"
       );
     }
-  }
+  },
 
   /**
    * Create a copy button for profile links
    */
-  static createCopyButton(linkElement: HTMLAnchorElement): HTMLButtonElement {
+  createCopyButton(linkElement: HTMLAnchorElement): HTMLButtonElement {
     const copyButton = document.createElement("button");
     copyButton.textContent = "Copy Link";
 
@@ -171,29 +169,29 @@ class UIComponents {
 
     copyButton.addEventListener("click", (event) => {
       event.preventDefault();
-      this.handleCopyLink(linkElement.href);
+      UIComponents.handleCopyLink(linkElement.href);
     });
 
     return copyButton;
-  }
+  },
 
   /**
    * Handle copy link functionality
    */
-  private static async handleCopyLink(href: string): Promise<void> {
+  async handleCopyLink(href: string): Promise<void> {
     try {
       await navigator.clipboard.writeText(href);
 
       const publicProfileElement = document.querySelector(
-        ".ql-body-medium.public-profile.public",
+        ".ql-body-medium.public-profile.public"
       );
 
       if (publicProfileElement) {
         publicProfileElement.insertAdjacentHTML(
           "afterend",
           `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
-            "messageLinkCopiedToClipboard",
-          )} </ql-infobox>`,
+            "messageLinkCopiedToClipboard"
+          )} </ql-infobox>`
         );
       }
 
@@ -204,7 +202,7 @@ class UIComponents {
     } catch (err) {
       // Failed to copy link - silently continue
     }
-  }
-}
+  },
+};
 
 export default UIComponents;
