@@ -13,7 +13,15 @@ class ArcadeApiService {
       const response = await axios.post(import.meta.env.WXT_ARCADE_POINT_URL, {
         url,
       });
-      return response.status === 200 ? response.data : null;
+
+      if (response.status === 200) {
+        const data = response.data;
+        // Add current timestamp as lastUpdated
+        data.lastUpdated = new Date().toISOString();
+        return data;
+      }
+
+      return null;
     } catch (error) {
       return null;
     }
@@ -24,7 +32,7 @@ class ArcadeApiService {
    */
   static isValidProfileUrl(url: string): boolean {
     return url.startsWith(
-      "https://www.cloudskillsboost.google/public_profiles/",
+      "https://www.cloudskillsboost.google/public_profiles/"
     );
   }
 }
