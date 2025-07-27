@@ -312,14 +312,16 @@
                 <span class="relative z-10" id="load-more-text">Load More</span>
               </button>
             </div>
-            <button
-              class="w-full py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group mt-3 hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300 refresh-button cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Update Points
-              <i
-                class="fa-solid fa-arrows-rotate transition-transform duration-300 hover:rotate-90 ml-2 refresh-icon"
-              ></i>
-            </button>
+            <div class="flex items-center space-x-2 mt-3">
+              <button
+                class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300 refresh-button cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Update Points
+                <i
+                  class="fa-solid fa-arrows-rotate transition-transform duration-300 hover:rotate-90 ml-2 refresh-icon"
+                ></i>
+              </button>
+            </div>
             <div
               id="last-updated"
               class="mt-6 text-center text-xs text-white/50"

@@ -74,7 +74,7 @@
   "labelShowOptions": {
     "message": "Afficher les options"
   },
-   "textPleaseSetUpTheSettings": {
+  "textPleaseSetUpTheSettings": {
     "message": "Veuillez configurer les paramètres"
   },
   "errorInvalidUrl": {
@@ -88,5 +88,17 @@
   },
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Le lien a été copié dans le presse-papiers !"
+  },
+  "labelEnableSearchFeature": {
+    "message": "Activer la fonction de recherche"
+  },
+  "descriptionEnableSearchFeature": {
+    "message": "Afficher les boutons de recherche Google et YouTube quand aucune solution n'est trouvée."
+  },
+  "messageSearchFeatureEnabled": {
+    "message": "Fonction de recherche activée - Les boutons de recherche Google et YouTube apparaîtront quand aucune solution n'est trouvée"
+  },
+  "messageSearchFeatureDisabled": {
+    "message": "Fonction de recherche désactivée - Seul \"Aucune solution\" sera affiché quand aucune solution n'est trouvée"
   }
 }
