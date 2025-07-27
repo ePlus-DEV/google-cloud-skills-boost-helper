@@ -1,6 +1,5 @@
 import Fuse from "fuse.js";
 import type {
-  PostNode,
   SearchPostsOfPublicationData,
   FuseOptions,
 } from "../types/api";
