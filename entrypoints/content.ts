@@ -1,8 +1,4 @@
-import {
-  LabService,
-  ProfileService,
-  ProfileDetectionService,
-} from "../services";
+import { LabService, ProfileService } from "../services";
 import UIComponents from "../components/uiComponents";
 
 // Expose UIComponents search functions globally for onclick handlers
@@ -44,9 +40,6 @@ export default defineContentScript({
         if (pathname === "/my_account/profile") {
           ProfileService.initialize();
         }
-
-        // Initialize profile detection for arcade data scraping
-        ProfileDetectionService.initialize();
       },
     });
     ui.mount();
