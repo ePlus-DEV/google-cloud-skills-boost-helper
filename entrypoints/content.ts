@@ -1,10 +1,17 @@
 import { LabService, ProfileService } from "../services";
 import UIComponents from "../components/uiComponents";
 
+// Extend Window interface for custom properties
+declare global {
+  interface Window {
+    UIComponentsSearchGoogle: () => void;
+    UIComponentsSearchYouTube: () => void;
+  }
+}
+
 // Expose UIComponents search functions globally for onclick handlers
-(window as any).UIComponentsSearchGoogle = () => UIComponents.searchOnGoogle();
-(window as any).UIComponentsSearchYouTube = () =>
-  UIComponents.searchOnYouTube();
+window.UIComponentsSearchGoogle = () => UIComponents.searchOnGoogle();
+window.UIComponentsSearchYouTube = () => UIComponents.searchOnYouTube();
 
 export default defineContentScript({
   matches: [
