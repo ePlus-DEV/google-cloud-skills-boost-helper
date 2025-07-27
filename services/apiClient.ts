@@ -48,7 +48,7 @@ class ApiClient {
    * Fetch posts of a publication using GraphQL
    */
   static async fetchPostsOfPublication(
-    params: SearchPostsParams,
+    params: SearchPostsParams
   ): Promise<SearchPostsOfPublicationData | null> {
     const {
       publicationId,
@@ -71,7 +71,6 @@ class ApiClient {
 
       return data.searchPostsOfPublication;
     } catch (error) {
-      console.error("Error fetching posts of publication:", error);
       return null;
     }
   }
