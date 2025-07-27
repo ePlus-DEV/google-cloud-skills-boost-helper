@@ -6,14 +6,14 @@ import BadgeService from "./badgeService";
 /**
  * Main service to handle popup functionality
  */
-class PopupService {
-  private static profileUrl = "";
-  private static readonly SPINNER_CLASS = "animate-spin";
+const PopupService = {
+  profileUrl: "",
+  SPINNER_CLASS: "animate-spin",
 
   /**
    * Initialize the popup
    */
-  static async initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     // Initialize profile URL
     this.profileUrl = await StorageService.getProfileUrl();
 
@@ -37,33 +37,33 @@ class PopupService {
 
     this.setupEventListeners();
     this.setupPrizeTiers();
-  }
+  },
 
   /**
    * Show authentication screen
    */
-  private static showAuthScreen(): void {
+  showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
+      browser.i18n.getMessage("textPleaseSetUpTheSettings")
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
-  }
+  },
 
   /**
    * Refresh arcade data
    */
-  static async refreshData(): Promise<void> {
+  async refreshData(): Promise<void> {
     if (!this.profileUrl) {
       return;
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon",
+      ".refresh-icon"
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -72,7 +72,7 @@ class PopupService {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl,
+        this.profileUrl
       );
 
       if (arcadeData) {
@@ -89,12 +89,12 @@ class PopupService {
       PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);
       PopupUIService.toggleButtonState(refreshButtons, false);
     }
-  }
+  },
 
   /**
    * Setup event listeners
    */
-  private static setupEventListeners(): void {
+  setupEventListeners(): void {
     // Refresh buttons
     document.querySelectorAll(".refresh-button").forEach((button) => {
       button.addEventListener("click", () => this.refreshData());
@@ -106,33 +106,33 @@ class PopupService {
         window.open(browser.runtime.getURL("/options.html"), "_blank");
       });
     });
-  }
+  },
 
   /**
    * Setup prize tiers image with cache busting
    */
-  private static setupPrizeTiers(): void {
+  setupPrizeTiers(): void {
     const prizeTiersElement =
       PopupUIService.querySelector<HTMLImageElement>("#prize-tiers");
     if (prizeTiersElement) {
       const currentTime = new Date().getTime();
       prizeTiersElement.src = `${prizeTiersElement.src}?t=${currentTime}`;
     }
-  }
+  },
 
   /**
    * Update profile URL (called from external sources)
    */
-  static updateProfileUrl(url: string): void {
+  updateProfileUrl(url: string): void {
     this.profileUrl = url;
-  }
+  },
 
   /**
    * Get current profile URL
    */
-  static getProfileUrl(): string {
+  getProfileUrl(): string {
     return this.profileUrl;
-  }
-}
+  },
+};
 
 export default PopupService;
