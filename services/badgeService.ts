@@ -4,47 +4,50 @@ import PopupUIService from "./popupUIService";
 /**
  * Service to handle badge rendering and pagination
  */
-class BadgeService {
-  private static currentPage = 1;
-  private static readonly INCREMENT_COUNT = 3;
+const BadgeService = {
+  currentPage: 1,
+  INCREMENT_COUNT: 3,
 
   /**
    * Render badges with pagination
    */
-  static renderBadges(badges: BadgeData[]): void {
+  renderBadges(badges: BadgeData[]): void {
     const activityElement =
       PopupUIService.querySelector<HTMLDivElement>("#activity-list");
     if (!activityElement) return;
 
     if (!badges || badges.length === 0) {
-      this.renderNoBadgesMessage(activityElement);
+      BadgeService.renderNoBadgesMessage(activityElement);
       return;
     }
 
-    const totalPages = Math.ceil(badges.length / this.INCREMENT_COUNT);
-    this.currentPage = 1;
+    const totalPages = Math.ceil(badges.length / BadgeService.INCREMENT_COUNT);
+    BadgeService.currentPage = 1;
 
+    /**
+     * Render the current page of badges and update pagination info
+     */
     const renderPage = () => {
       activityElement.innerHTML = "";
       const start = 0;
-      const end = this.currentPage * this.INCREMENT_COUNT;
+      const end = BadgeService.currentPage * BadgeService.INCREMENT_COUNT;
 
       badges.slice(start, end).forEach((badge) => {
-        const badgeElement = this.createBadgeElement(badge);
+        const badgeElement = BadgeService.createBadgeElement(badge);
         activityElement.appendChild(badgeElement);
       });
 
-      this.updatePaginationInfo(this.currentPage, totalPages);
+      BadgeService.updatePaginationInfo(BadgeService.currentPage, totalPages);
     };
 
     renderPage();
-    this.setupLoadMoreButton(totalPages, renderPage, badges);
-  }
+    BadgeService.setupLoadMoreButton(totalPages, renderPage);
+  },
 
   /**
    * Create a single badge element
    */
-  private static createBadgeElement(badge: BadgeData): HTMLDivElement {
+  createBadgeElement(badge: BadgeData): HTMLDivElement {
     const badgeContainer = document.createElement("div");
     badgeContainer.className =
       "bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-hidden group";
@@ -54,8 +57,8 @@ class BadgeService {
       <div class="flex justify-between items-center">
         <div class="flex items-center">
           <img src="${badge.imageURL}" alt="${
-            badge.title
-          }" class="h-8 w-8 rounded-full border-2 border-white/50" />
+      badge.title
+    }" class="h-8 w-8 rounded-full border-2 border-white/50" />
           <div class="ml-3">
             <div class="text-white font-bold">${badge.title}</div>
             <div class="text-sm text-gray-300">${badge.dateEarned}</div>
@@ -68,15 +71,14 @@ class BadgeService {
     `;
 
     return badgeContainer;
-  }
+  },
 
   /**
    * Setup load more button functionality
    */
-  private static setupLoadMoreButton(
+  setupLoadMoreButton(
     totalPages: number,
-    renderPage: () => void,
-    badges: BadgeData[],
+    renderPage: () => void
   ): void {
     const loadMoreButton =
       PopupUIService.querySelector<HTMLButtonElement>("#load-more");
@@ -95,45 +97,42 @@ class BadgeService {
     loadMoreButton.parentNode?.replaceChild(newButton, loadMoreButton);
 
     newButton.addEventListener("click", () => {
-      if (this.currentPage < totalPages) {
-        this.currentPage++;
+      if (BadgeService.currentPage < totalPages) {
+        BadgeService.currentPage++;
         renderPage();
       }
-      if (this.currentPage === totalPages) {
+      if (BadgeService.currentPage === totalPages) {
         newButton.classList.add("hidden");
       }
     });
-  }
+  },
 
   /**
    * Render no badges message
    */
-  private static renderNoBadgesMessage(activityElement: HTMLDivElement): void {
+  renderNoBadgesMessage(activityElement: HTMLDivElement): void {
     activityElement.innerHTML = `
       <div class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
         <span class="text-gray-400 font-medium">${browser.i18n.getMessage(
-          "messageNoDataAvailable",
+          "messageNoDataAvailable"
         )}</span>
       </div>
     `;
-  }
+  },
 
   /**
    * Update pagination information
    */
-  private static updatePaginationInfo(
-    currentPage: number,
-    totalPages: number,
-  ): void {
+  updatePaginationInfo(currentPage: number, totalPages: number): void {
     const paginationElement =
       PopupUIService.querySelector<HTMLDivElement>("#pagination-info");
     if (paginationElement) {
       paginationElement.textContent = `${browser.i18n.getMessage(
-        "labelPage",
+        "labelPage"
       )} ${currentPage}/${totalPages}`;
       paginationElement.classList.remove("hidden");
     }
-  }
-}
+  },
+};
 
 export default BadgeService;
