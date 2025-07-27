@@ -23,6 +23,10 @@ class PopupService {
     if (!this.profileUrl) {
       this.showAuthScreen();
     } else if (arcadeData) {
+      // Ensure lastUpdated is set for existing data
+      if (!arcadeData.lastUpdated) {
+        arcadeData.lastUpdated = new Date().toISOString();
+      }
       PopupUIService.updateMainUI(arcadeData);
       BadgeService.renderBadges(arcadeData.badges || []);
     } else {
@@ -52,7 +56,6 @@ class PopupService {
    */
   static async refreshData(): Promise<void> {
     if (!this.profileUrl) {
-      console.error("Profile URL is not set.");
       return;
     }
 

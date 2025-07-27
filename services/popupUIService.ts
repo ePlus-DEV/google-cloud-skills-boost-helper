@@ -1,79 +1,72 @@
-import type { ArcadeData, BadgeData, Milestone, UIUpdateData } from "../types";
+import type { ArcadeData, Milestone, UIUpdateData } from "../types";
 
 /**
  * Service to handle UI operations for popup and options
  */
-class PopupUIService {
-  private static readonly MILESTONES: Milestone[] = [
+const PopupUIService = {
+  MILESTONES: [
     { points: 20, league: "Arcade Novice" },
     { points: 40, league: "Arcade Trooper" },
     { points: 65, league: "Arcade Ranger" },
     { points: 75, league: "Arcade Champion" },
     { points: 85, league: "Arcade Legend" },
-  ];
+  ] as Milestone[],
 
   /**
    * Generic DOM element selector with type safety
    */
-  static querySelector<T extends HTMLElement>(selector: string): T | null {
+  querySelector<T extends HTMLElement>(selector: string): T | null {
     return document.querySelector(selector);
-  }
+  },
 
   /**
    * Update text content of an element
    */
-  static updateElementText(
+  updateElementText(
     selector: string,
     value: string | number | null | undefined
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
       element.textContent = value?.toString() || "N/A";
-    } else {
-      console.warn(
-        `PopupUIService: Element not found for selector: ${selector}`
-      );
     }
-  }
+  },
 
   /**
    * Update multiple elements at once
    */
-  static updateElements(updates: UIUpdateData[]): void {
+  updateElements(updates: UIUpdateData[]): void {
     updates.forEach(({ selector, value }) =>
       this.updateElementText(selector, value)
     );
-  }
+  },
 
   /**
    * Update avatar image
    */
-  static updateAvatar(profileImage?: string): void {
+  updateAvatar(profileImage?: string): void {
     const avatarElement = this.querySelector<HTMLImageElement>("#user-avatar");
     if (avatarElement) {
       avatarElement.src =
         profileImage ||
         "https://cdn.jsdelivr.net/gh/ePlus-DEV/cdn.eplus.dev/img/brand/logo.svg";
     }
-  }
+  },
 
   /**
    * Update progress bar
    */
-  static updateProgressBar(
-    totalPoints: number,
-    nextMilestonePoints: number
-  ): void {
+  updateProgressBar(totalPoints: number, nextMilestonePoints: number): void {
     const progressBar = this.querySelector<HTMLDivElement>("#progress-bar");
     if (progressBar) {
       progressBar.style.width = `${(totalPoints / nextMilestonePoints) * 100}%`;
     }
-  }
+  },
 
   /**
    * Calculate league information
    */
-  static calculateLeagueInfo(totalPoints: number) {
+  calculateLeagueInfo(totalPoints: number) {
     const roundedPoints = Math.floor(totalPoints);
     const currentLevel =
       this.MILESTONES.findIndex(
@@ -99,12 +92,12 @@ class PopupUIService {
       nextMilestone,
       roundedPoints,
     };
-  }
+  },
 
   /**
    * Update league information display
    */
-  static updateLeagueInfo(
+  updateLeagueInfo(
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
@@ -123,12 +116,12 @@ class PopupUIService {
             nextMilestonePoints - totalPoints
           } ${browser.i18n.getMessage("textPoints")}`
     );
-  }
+  },
 
   /**
    * Update last updated timestamp
    */
-  static updateLastUpdated(lastUpdated?: string): void {
+  updateLastUpdated(lastUpdated?: string): void {
     this.updateElementText(
       "#last-updated",
       `${browser.i18n.getMessage("labelLastUpdated")}: ${
@@ -137,22 +130,22 @@ class PopupUIService {
           : "N/A"
       }`
     );
-  }
+  },
 
   /**
    * Show/hide elements
    */
-  static toggleElementVisibility(selector: string, show: boolean): void {
+  toggleElementVisibility(selector: string, show: boolean): void {
     const element = this.querySelector(selector);
     if (element) {
       element.classList.toggle("hidden", !show);
     }
-  }
+  },
 
   /**
    * Show error state
    */
-  static showErrorState(): void {
+  showErrorState(): void {
     const updates: UIUpdateData[] = [
       { selector: "#user-name", value: "Error loading data" },
       { selector: "#league", value: "N/A" },
@@ -160,12 +153,12 @@ class PopupUIService {
       { selector: "#arcade-points", value: "0" },
     ];
     this.updateElements(updates);
-  }
+  },
 
   /**
    * Show loading state
    */
-  static showLoadingState(): void {
+  showLoadingState(): void {
     const updates: UIUpdateData[] = [
       { selector: "#user-name", value: "Loading..." },
       { selector: "#league", value: "Loading..." },
@@ -173,13 +166,13 @@ class PopupUIService {
       { selector: "#arcade-points", value: "Loading..." },
     ];
     this.updateElements(updates);
-  }
+  },
 
   /**
    * Update main UI with arcade data
    */
-  static updateMainUI(data: ArcadeData): void {
-    const { userDetails, arcadePoints, lastUpdated, badges } = data;
+  updateMainUI(data: ArcadeData): void {
+    const { userDetails, arcadePoints, lastUpdated } = data;
 
     // Handle both array and object formats for backward compatibility
     let userInfo;
@@ -234,13 +227,13 @@ class PopupUIService {
 
     // Show arcade points section
     this.toggleElementVisibility("#arcade-points", true);
-  }
+  },
 
   /**
    * Update options UI with arcade data (specific for options page)
    */
-  static updateOptionsUI(data: ArcadeData): void {
-    const { userDetails, arcadePoints, lastUpdated } = data;
+  updateOptionsUI(data: ArcadeData): void {
+    const { userDetails, arcadePoints } = data;
 
     // Handle both array and object formats for backward compatibility
     let userInfo;
@@ -269,12 +262,12 @@ class PopupUIService {
 
     // Show arcade points section
     this.toggleElementVisibility("#arcade-points", true);
-  }
+  },
 
   /**
    * Show message with styling
    */
-  static showMessage(
+  showMessage(
     selector: string,
     message: string,
     classes: string[],
@@ -287,28 +280,28 @@ class PopupUIService {
       element.classList.add(...classes);
       setTimeout(() => element.classList.add("hidden"), timeout);
     }
-  }
+  },
 
   /**
    * Toggle button states
    */
-  static toggleButtonState(
+  toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
     disabled: boolean
   ): void {
     buttons.forEach((button) => (button.disabled = disabled));
-  }
+  },
 
   /**
    * Toggle CSS classes on elements
    */
-  static toggleClass(
+  toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
     add: boolean
   ): void {
     elements.forEach((element) => element.classList.toggle(className, add));
-  }
-}
+  },
+};
 
 export default PopupUIService;
