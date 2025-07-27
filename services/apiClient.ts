@@ -52,7 +52,7 @@ const ApiClient = (() => {
    * Fetch posts of a publication using GraphQL
    */
   async function fetchPostsOfPublication(
-    params: SearchPostsParams
+    params: SearchPostsParams,
   ): Promise<SearchPostsOfPublicationData | null> {
     const {
       publicationId,
