@@ -16,13 +16,11 @@ class LabService {
       ?.closest("ul") as HTMLUListElement | null;
 
     if (!outlineContainer) {
-      console.warn("Outline container <ul> element not found.");
       return null;
     }
 
     const firstOutlineItem = outlineContainer.querySelector("li");
     if (!firstOutlineItem) {
-      console.warn("First outline item <li> element not found.");
       return null;
     }
 

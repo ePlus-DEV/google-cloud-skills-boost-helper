@@ -107,7 +107,6 @@ class OptionsService {
             element.textContent = translatedText;
           }
         } catch (error) {
-          console.warn(`Translation not found for key: ${messageKey}`);
         }
       }
     });
@@ -167,7 +166,6 @@ class OptionsService {
         await this.displayUserDetails(arcadeData);
         await StorageService.saveProfileUrl(profileUrl);
       } else {
-        console.error("Failed to fetch arcade data from API.");
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
@@ -175,7 +173,6 @@ class OptionsService {
         );
       }
     } catch (error) {
-      console.error("Error during submission:", error);
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
@@ -231,7 +228,6 @@ class OptionsService {
   ): Promise<void> {
     try {
       await StorageService.saveSearchFeatureEnabled(enabled);
-      console.log(`Search feature ${enabled ? "enabled" : "disabled"}`);
 
       // Show feedback message
       const messageKey = enabled
@@ -251,7 +247,6 @@ class OptionsService {
         messageElement.remove();
       }, 3000);
     } catch (error) {
-      console.error("Error saving search feature setting:", error);
     }
   }
 }
