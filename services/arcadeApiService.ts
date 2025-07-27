@@ -15,7 +15,6 @@ class ArcadeApiService {
       });
       return response.status === 200 ? response.data : null;
     } catch (error) {
-      console.error("Error fetching arcade data:", error);
       return null;
     }
   }

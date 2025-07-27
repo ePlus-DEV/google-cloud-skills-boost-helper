@@ -72,7 +72,6 @@ class UIComponents {
 
           if (googleBtn) {
             googleBtn.addEventListener("click", (e) => {
-              console.log("Google Search button clicked");
               e.preventDefault();
               e.stopPropagation();
               this.searchOnGoogle();
@@ -81,7 +80,6 @@ class UIComponents {
 
           if (youtubeBtn) {
             youtubeBtn.addEventListener("click", (e) => {
-              console.log("YouTube Search button clicked");
               e.preventDefault();
               e.stopPropagation();
               this.searchOnYouTube();
@@ -105,7 +103,6 @@ class UIComponents {
    * Search the current lab on Google
    */
   static searchOnGoogle(): void {
-    console.log("UIComponents.searchOnGoogle() called");
     try {
       // Get lab title
       const labTitle =
@@ -113,16 +110,11 @@ class UIComponents {
           .querySelector(".ql-display-large.lab-preamble__title")
           ?.textContent?.trim() || "";
 
-      console.log("Lab title found:", labTitle);
-
       // Use simple search with just the title
       const searchQuery = labTitle;
 
       const encodedQuery = encodeURIComponent(searchQuery);
       const googleSearchUrl = `https://www.google.com/search?q=${encodedQuery}`;
-
-      console.log("Opening Google search with query:", searchQuery);
-      console.log("URL:", googleSearchUrl);
       window.open(googleSearchUrl, "_blank");
     } catch (error) {
       console.error("Error opening Google search:", error);
@@ -136,7 +128,6 @@ class UIComponents {
    * Search the current lab on YouTube
    */
   static searchOnYouTube(): void {
-    console.log("UIComponents.searchOnYouTube() called");
     try {
       // Get lab title
       const labTitle =
@@ -144,16 +135,12 @@ class UIComponents {
           .querySelector(".ql-display-large.lab-preamble__title")
           ?.textContent?.trim() || "";
 
-      console.log("Lab title found:", labTitle);
-
       // Use simple search with just the title
       const searchQuery = labTitle;
 
       const encodedQuery = encodeURIComponent(searchQuery);
       const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
 
-      console.log("Opening YouTube search with query:", searchQuery);
-      console.log("URL:", youtubeSearchUrl);
       window.open(youtubeSearchUrl, "_blank");
     } catch (error) {
       console.error("Error opening YouTube search:", error);
