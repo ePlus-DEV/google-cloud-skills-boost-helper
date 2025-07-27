@@ -1,8 +1,5 @@
 import Fuse from "fuse.js";
-import type {
-  SearchPostsOfPublicationData,
-  FuseOptions,
-} from "../types/api";
+import type { SearchPostsOfPublicationData, FuseOptions } from "../types/api";
 
 class SearchService {
   private static readonly DEFAULT_FUSE_OPTIONS: FuseOptions = {
