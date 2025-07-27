@@ -9,7 +9,7 @@ class UIComponents {
    * Create a solution button element
    */
   static async createSolutionElement(
-    url: string | null
+    url: string | null,
   ): Promise<HTMLLIElement> {
     const solutionElement = document.createElement("li");
 
@@ -67,7 +67,7 @@ class UIComponents {
         setTimeout(() => {
           const googleBtn = solutionElement.querySelector("#google-search-btn");
           const youtubeBtn = solutionElement.querySelector(
-            "#youtube-search-btn"
+            "#youtube-search-btn",
           );
 
           if (googleBtn) {
@@ -146,7 +146,7 @@ class UIComponents {
       const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
       window.open(
         `https://www.youtube.com/results?search_query=${fallbackQuery}`,
-        "_blank"
+        "_blank",
       );
     }
   }
@@ -185,15 +185,15 @@ class UIComponents {
       await navigator.clipboard.writeText(href);
 
       const publicProfileElement = document.querySelector(
-        ".ql-body-medium.public-profile.public"
+        ".ql-body-medium.public-profile.public",
       );
 
       if (publicProfileElement) {
         publicProfileElement.insertAdjacentHTML(
           "afterend",
           `<ql-infobox id="clipboard" class="l-mtl"> ${browser.i18n.getMessage(
-            "messageLinkCopiedToClipboard"
-          )} </ql-infobox>`
+            "messageLinkCopiedToClipboard",
+          )} </ql-infobox>`,
         );
       }
 
