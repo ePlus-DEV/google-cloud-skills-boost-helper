@@ -85,5 +85,17 @@
   },
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Đường dẫn đã được sao chép vào clipboard!"
+  },
+  "labelEnableSearchFeature": {
+    "message": "Bật tính năng tìm kiếm"
+  },
+  "descriptionEnableSearchFeature": {
+    "message": "Hiển thị nút tìm kiếm Google và YouTube khi không tìm thấy giải pháp."
+  },
+  "messageSearchFeatureEnabled": {
+    "message": "Tính năng tìm kiếm đã được bật - Nút tìm kiếm Google và YouTube sẽ xuất hiện khi không tìm thấy giải pháp"
+  },
+  "messageSearchFeatureDisabled": {
+    "message": "Tính năng tìm kiếm đã được tắt - Chỉ hiển thị \"Không có giải pháp\" khi không tìm thấy giải pháp"
   }
 }
