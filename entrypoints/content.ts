@@ -23,7 +23,7 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
-    const { pathname, hash } = window.location;
+    const { pathname } = window.location;
 
     // Handle lab pages
     if (LabService.isLabPage()) {
