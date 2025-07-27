@@ -24,14 +24,14 @@ class PopupUIService {
    */
   static updateElementText(
     selector: string,
-    value: string | number | null | undefined,
+    value: string | number | null | undefined
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
       element.textContent = value?.toString() || "N/A";
     } else {
       console.warn(
-        `PopupUIService: Element not found for selector: ${selector}`,
+        `PopupUIService: Element not found for selector: ${selector}`
       );
     }
   }
@@ -41,7 +41,7 @@ class PopupUIService {
    */
   static updateElements(updates: UIUpdateData[]): void {
     updates.forEach(({ selector, value }) =>
-      this.updateElementText(selector, value),
+      this.updateElementText(selector, value)
     );
   }
 
@@ -62,7 +62,7 @@ class PopupUIService {
    */
   static updateProgressBar(
     totalPoints: number,
-    nextMilestonePoints: number,
+    nextMilestonePoints: number
   ): void {
     const progressBar = this.querySelector<HTMLDivElement>("#progress-bar");
     if (progressBar) {
@@ -80,7 +80,7 @@ class PopupUIService {
         (milestone, index) =>
           totalPoints <= milestone.points ||
           (this.MILESTONES[index + 1] &&
-            totalPoints < this.MILESTONES[index + 1].points),
+            totalPoints < this.MILESTONES[index + 1].points)
       ) + 1 || this.MILESTONES.length + 1;
 
     const nextMilestone =
@@ -108,11 +108,11 @@ class PopupUIService {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number,
+    totalPoints: number
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
     );
 
     this.updateElementText(
@@ -121,7 +121,7 @@ class PopupUIService {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`,
+          } ${browser.i18n.getMessage("textPoints")}`
     );
   }
 
@@ -135,7 +135,7 @@ class PopupUIService {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`,
+      }`
     );
   }
 
@@ -179,25 +179,16 @@ class PopupUIService {
    * Update main UI with arcade data
    */
   static updateMainUI(data: ArcadeData): void {
-    console.log("PopupUIService: updateMainUI called with data:", data);
-
     const { userDetails, arcadePoints, lastUpdated, badges } = data;
-    console.log("PopupUIService: userDetails:", userDetails);
-    console.log("PopupUIService: arcadePoints:", arcadePoints);
 
     // Handle both array and object formats for backward compatibility
     let userInfo;
     if (Array.isArray(userDetails)) {
       // Legacy format: userDetails is an array
       userInfo = userDetails[0] || {};
-      console.log(
-        "PopupUIService: userDetails is array, using first item:",
-        userInfo,
-      );
     } else {
       // New format: userDetails is an object
       userInfo = userDetails || {};
-      console.log("PopupUIService: userDetails is object:", userInfo);
     }
 
     const { userName, league, points, profileImage } = userInfo;
@@ -208,20 +199,6 @@ class PopupUIService {
       skillPoints = 0,
       specialPoints = 0,
     } = arcadePoints || {};
-
-    console.log("PopupUIService: extracted user data:", {
-      userName,
-      league,
-      points,
-      profileImage,
-    });
-    console.log("PopupUIService: extracted arcade points:", {
-      totalPoints,
-      gamePoints,
-      triviaPoints,
-      skillPoints,
-      specialPoints,
-    });
 
     // Update basic info
     const updates: UIUpdateData[] = [
@@ -238,8 +215,6 @@ class PopupUIService {
       { selector: "#special-points-count", value: specialPoints },
     ];
 
-    console.log("PopupUIService: UI updates to apply:", updates);
-
     this.updateElements(updates);
     this.updateAvatar(profileImage);
 
@@ -249,11 +224,11 @@ class PopupUIService {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      totalPoints,
+      totalPoints
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points,
+      leagueInfo.nextMilestone.points
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -265,8 +240,6 @@ class PopupUIService {
    * Update options UI with arcade data (specific for options page)
    */
   static updateOptionsUI(data: ArcadeData): void {
-    console.log("PopupUIService: updateOptionsUI called with data:", data);
-
     const { userDetails, arcadePoints, lastUpdated } = data;
 
     // Handle both array and object formats for backward compatibility
@@ -279,14 +252,6 @@ class PopupUIService {
 
     const { userName, league, points, profileImage } = userInfo;
     const { totalPoints = 0 } = arcadePoints || {};
-
-    console.log("PopupUIService: Options page - extracted user data:", {
-      userName,
-      league,
-      points,
-      profileImage,
-      totalPoints,
-    });
 
     // Update user info in options page (different selectors than popup)
     const updates: UIUpdateData[] = [
@@ -304,8 +269,6 @@ class PopupUIService {
 
     // Show arcade points section
     this.toggleElementVisibility("#arcade-points", true);
-
-    console.log("PopupUIService: Options UI updated successfully");
   }
 
   /**
@@ -315,7 +278,7 @@ class PopupUIService {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000,
+    timeout = 6000
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -331,7 +294,7 @@ class PopupUIService {
    */
   static toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean,
+    disabled: boolean
   ): void {
     buttons.forEach((button) => (button.disabled = disabled));
   }
@@ -342,7 +305,7 @@ class PopupUIService {
   static toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean,
+    add: boolean
   ): void {
     elements.forEach((element) => element.classList.toggle(className, add));
   }
