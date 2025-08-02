@@ -250,9 +250,8 @@ const MarkdownService = {
 
   /**
    * Show a user-friendly message when link opening fails
-   * @param url - The URL that couldn't be opened
    */
-  showLinkFallbackMessage(url: string): void {
+  showLinkFallbackMessage(): void {
     // Create a temporary notification element
     const notification = document.createElement("div");
     notification.className =
