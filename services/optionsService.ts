@@ -32,7 +32,7 @@ const OptionsService = {
     if (submitUrlElement) {
       submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
       submitUrlElement.addEventListener("click", () =>
-        OptionsService.handleSubmit()
+        OptionsService.handleSubmit(),
       );
     }
 
@@ -50,7 +50,7 @@ const OptionsService = {
 
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle"
+      "search-feature-toggle",
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
@@ -100,7 +100,7 @@ const OptionsService = {
       if (messageKey) {
         try {
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0]
+            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
           );
           if (translatedText) {
             element.textContent = translatedText;
@@ -118,7 +118,7 @@ const OptionsService = {
   async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url"
+      "#public-profile-url",
     );
 
     if (profileUrlInput) {
@@ -139,7 +139,7 @@ const OptionsService = {
   async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url"
+      "#public-profile-url",
     );
 
     if (submitUrlElement) {
@@ -153,7 +153,7 @@ const OptionsService = {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
       OptionsService.resetSubmitButton();
       return;
@@ -169,14 +169,14 @@ const OptionsService = {
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
         );
       }
     } catch (error) {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
     } finally {
       OptionsService.resetSubmitButton();
@@ -190,7 +190,7 @@ const OptionsService = {
     PopupUIService.showMessage(
       "#success-message",
       browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
     );
 
     await StorageService.saveArcadeData(data);
@@ -212,7 +212,7 @@ const OptionsService = {
    */
   async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle"
+      "search-feature-toggle",
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
@@ -264,7 +264,7 @@ const OptionsService = {
       await MarkdownService.loadAndRender(
         MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
       );
     } catch (error) {
       // Show error if loading fails
@@ -278,11 +278,11 @@ const OptionsService = {
    */
   showMarkdownLoading(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -300,11 +300,11 @@ const OptionsService = {
    */
   showMarkdownError(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
       );
       if (contentArea) {
         contentArea.innerHTML = `
