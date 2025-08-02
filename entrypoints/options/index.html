@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Options</title>
   <link rel="stylesheet" href="~/assets/tailwind.css" />
+  <link rel="stylesheet" href="~/assets/markdown.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
 </head>
 
@@ -25,17 +26,32 @@
         with our powerful and intuitive browser extension.
       </p>
     </div>
+
+    <!-- Important Notice/Announcement -->
+    <div id="markdown-container"
+      class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg p-6 shadow-md">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <i class="fa-solid fa-info-circle text-blue-500 text-xl mt-1"></i>
+        </div>
+        <div class="ml-4 prose prose-sm max-w-none text-gray-700">
+          <div class="text-blue-800 font-semibold mb-2">📢 Important Announcement</div>
+          <!-- Markdown content will be loaded here -->
+        </div>
+      </div>
+    </div>
+
     <div class="mt-4 space-y-4">
       <!-- BEGIN - Settings -->
       <!-- Card 1 -->
-      <div
+      <!-- <div
         class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
         <div>
           <h4 class="text-lg font-bold text-gray-800">Show Leaderboard</h4>
           <p class="text-gray-600 text-sm">(Coming soon)</p>
         </div>
         <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" disabled />
-      </div>
+      </div> -->
       <!-- Card 2 -->
       <div
         class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
@@ -131,16 +147,6 @@
         </div>
         <!-- Arcade -->
 
-        <div class="flex justify-center mt-6">
-          <a href="https://s3.eplus.dev/i/prize-tiers.png" target="_blank" rel="noopener noreferrer">
-            <img src="https://s3.eplus.dev/i/prize-tiers.png" alt="Arcade Prize Tiers"
-              class="rounded-lg shadow-md border border-indigo-200 max-w-full h-auto" id="prize-tiers" />
-            <div class="text-center text-sm text-gray-600 mt-2">
-              ARCADE PRIZE TIERS
-            </div>
-          </a>
-        </div>
-
         <div id="error-message"
           class="hidden bg-gradient-to-r from-red-400 to-red-600 border border-red-500 text-white px-4 py-3 rounded mb-4"
           role="alert">
@@ -168,36 +174,38 @@
             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
-      <!-- END - Settings -->
     </div>
-    <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
-      <div class="mb-4">
-        <a target="_blank" rel="noopener noreferrer"
-          href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
-          class="inline-block" aria-label="Chrome Web Store">
-          <img alt="Chrome Web Store Version" class="hidden" id="chrome-web-store-badge"
-            src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
-            class="mx-auto" />
-        </a>
+    <!-- END - Settings -->
+  </div>
 
-        <a target="_blank" rel="noopener noreferrer"
-          href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
-          class="inline-block" aria-label="Firefox Addon Store">
-          <img alt="Mozilla Add-on Version" class="hidden" id="firefox-addon-store"
-            src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white" />
-        </a>
-      </div>
-      <p class="text-sm">
-        This extension is not affiliated with Google Cloud Skills Boost. All
-        rights reserved.
-      </p>
-      <p class="text-sm mt-2">
-        <i class="fa-solid fa-copyright"></i> 2025 -
-        <a href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
-          ePlus.DEV
-        </a>
-      </p>
-    </footer>
+  <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
+    <div class="mb-4">
+      <a target="_blank" rel="noopener noreferrer"
+        href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
+        class="inline-block" aria-label="Chrome Web Store">
+        <img alt="Chrome Web Store Version" class="hidden" id="chrome-web-store-badge"
+          src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
+          class="mx-auto" />
+      </a>
+
+      <a target="_blank" rel="noopener noreferrer"
+        href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
+        class="inline-block" aria-label="Firefox Addon Store">
+        <img alt="Mozilla Add-on Version" class="hidden" id="firefox-addon-store"
+          src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white" />
+      </a>
+    </div>
+    <p class="text-sm">
+      This extension is not affiliated with Google Cloud Skills Boost. All
+      rights reserved.
+    </p>
+    <p class="text-sm mt-2">
+      <i class="fa-solid fa-copyright"></i> 2025 -
+      <a href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
+        ePlus.DEV
+      </a>
+    </p>
+  </footer>
   </div>
   <script type="module" src="main.tsx"></script>
 </body>
