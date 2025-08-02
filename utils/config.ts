@@ -28,5 +28,5 @@ export const APP_CONFIG = {
     "https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page",
   FIREFOX_ADDON_URL:
     "https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page",
-  DEVELOPER_URL: "http://eplus.dev",
+  DEVELOPER_URL: "https://eplus.dev",
 } as const;
