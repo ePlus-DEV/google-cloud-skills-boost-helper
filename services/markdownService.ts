@@ -20,9 +20,20 @@ const MarkdownService = {
   initialize(config?: MarkdownConfig): void {
     const finalConfig = { ...MarkdownService.defaultConfig, ...config };
 
+    // Set up custom renderer for links
+    const renderer = new marked.Renderer();
+
+    // Override link rendering to add target="_blank"
+    renderer.link = function ({ href, title, tokens }): string {
+      const titleAttr = title ? ` title="${title}"` : "";
+      const text = this.parser.parseInline(tokens);
+      return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
+    };
+
     marked.setOptions({
       gfm: finalConfig.gfm,
       breaks: finalConfig.breaks,
+      renderer,
     });
   },
 
@@ -89,6 +100,9 @@ const MarkdownService = {
         } else {
           contentArea.innerHTML = markdownHtml;
         }
+
+        // Handle links in popup context
+        MarkdownService.setupLinkHandlers(contentArea);
       } else {
         console.error(
           `Content area with selector '${contentSelector}' not found in container`
@@ -144,6 +158,46 @@ const MarkdownService = {
     }
 
     return await response.text();
+  },
+
+  /**
+   * Setup click handlers for links in markdown content
+   * Opens links in new tab for extension popup
+   * @param container - The container element with markdown content
+   */
+  setupLinkHandlers(container: Element): void {
+    const links = container.querySelectorAll("a[href]");
+
+    links.forEach((link) => {
+      const anchorElement = link as HTMLAnchorElement;
+
+      // Add click handler for extension context
+      anchorElement.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const href = anchorElement.href;
+        if (
+          href &&
+          (href.startsWith("http://") || href.startsWith("https://"))
+        ) {
+          // Use browser API to open in new tab (WXT provides polyfill)
+          if (
+            typeof browser !== "undefined" &&
+            browser.tabs &&
+            browser.tabs.create
+          ) {
+            browser.tabs.create({ url: href }).catch((error) => {
+              console.error("Failed to open link via browser.tabs:", error);
+              // Fallback to window.open
+              window.open(href, "_blank", "noopener,noreferrer");
+            });
+          } else {
+            // Fallback for cases where browser.tabs is not available
+            window.open(href, "_blank", "noopener,noreferrer");
+          }
+        }
+      });
+    });
   },
 };
 
