@@ -6,6 +6,7 @@
     <title>Google Cloud Skills Boost - Helper</title>
     <meta name="manifest.type" content="browser_action" />
     <link rel="stylesheet" href="~/assets/tailwind.css" />
+    <link rel="stylesheet" href="~/assets/markdown.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
@@ -56,6 +57,36 @@
             ></div>
           </div>
           <div class="relative z-10 p-4">
+            <!-- Collapsible Announcement -->
+            <div class="mb-4">
+              <button
+                id="announcement-toggle"
+                class="w-full bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center justify-between group"
+              >
+                <div class="flex items-center">
+                  <i
+                    class="fa-solid fa-bullhorn text-yellow-400 text-sm mr-2"
+                  ></i>
+                  <span class="text-yellow-300 font-semibold text-sm"
+                    >Announcement</span
+                  >
+                </div>
+                <i
+                  class="fa-solid fa-chevron-down text-white/70 text-xs transition-transform duration-300"
+                  id="announcement-chevron"
+                ></i>
+              </button>
+
+              <div
+                id="popup-markdown-container"
+                class="hidden mt-2 bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20 max-h-48 overflow-y-auto"
+              >
+                <div class="prose prose-sm max-w-none text-white">
+                  <!-- Markdown content will be loaded here -->
+                </div>
+              </div>
+            </div>
+
             <div class="relative mb-6 pt-6">
               <div
                 class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full blur-sm"
@@ -161,14 +192,6 @@
               <div class="mt-1 flex justify-between text-xs text-white/70">
                 <span id="current-level">Current Level: STANDARD</span>
                 <span id="next-level">Next level in 0 points</span>
-              </div>
-              <div class="flex justify-center mt-6">
-                <img
-                  src="https://s3.eplus.dev/i/prize-tiers.png"
-                  alt="Arcade Prize Tiers"
-                  class="rounded-lg shadow-md border border-indigo-200 max-w-full h-auto"
-                  id="prize-tiers"
-                />
               </div>
             </div>
             <div class="mb-4">

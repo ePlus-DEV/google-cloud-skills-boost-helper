@@ -2,6 +2,8 @@ import { UAParser } from "ua-parser-js";
 import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
 import PopupUIService from "./popupUIService";
+import MarkdownService from "./markdownService";
+import { MARKDOWN_CONFIG } from "../utils/config";
 import type { ArcadeData } from "../types";
 
 /**
@@ -18,6 +20,7 @@ const OptionsService = {
     OptionsService.setupI18n();
     await OptionsService.loadExistingData();
     await OptionsService.loadSearchFeatureSetting();
+    await OptionsService.initializeMarkdown();
   },
 
   /**
@@ -53,14 +56,6 @@ const OptionsService = {
       searchFeatureToggle.addEventListener("change", () => {
         OptionsService.handleSearchFeatureToggle(searchFeatureToggle.checked);
       });
-    }
-
-    // Prize tiers with cache busting
-    const prizeTiersElement =
-      PopupUIService.querySelector<HTMLImageElement>("#prize-tiers");
-    if (prizeTiersElement) {
-      const currentTime = new Date().getTime();
-      prizeTiersElement.src = `${prizeTiersElement.src}?t=${currentTime}`;
     }
   },
 
@@ -251,6 +246,74 @@ const OptionsService = {
       }, 3000);
     } catch (error) {
       console.error("Error saving search feature setting:", error);
+    }
+  },
+
+  /**
+   * Initialize markdown service and load content
+   */
+  async initializeMarkdown(): Promise<void> {
+    // Initialize markdown parser with configured options
+    MarkdownService.initialize(MARKDOWN_CONFIG.PARSER_OPTIONS);
+
+    // Show loading state
+    OptionsService.showMarkdownLoading();
+
+    try {
+      // Load markdown content from configured URL
+      await MarkdownService.loadAndRender(
+        MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
+        MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+      );
+    } catch (error) {
+      // Show error if loading fails
+      OptionsService.showMarkdownError();
+      console.error("Failed to load markdown content:", error);
+    }
+  },
+
+  /**
+   * Show loading state for markdown content
+   */
+  showMarkdownLoading(): void {
+    const container = document.getElementById(
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+    );
+    if (container) {
+      const contentArea = container.querySelector(
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+      );
+      if (contentArea) {
+        contentArea.innerHTML = `
+          <div class="flex items-center justify-center py-4 animate-pulse">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mr-3"></div>
+            <span class="text-blue-600 font-medium">Loading announcement...</span>
+          </div>
+        `;
+      }
+    }
+  },
+
+  /**
+   * Show error state for markdown content
+   */
+  showMarkdownError(): void {
+    const container = document.getElementById(
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+    );
+    if (container) {
+      const contentArea = container.querySelector(
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+      );
+      if (contentArea) {
+        contentArea.innerHTML = `
+          <div class="flex items-center text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+            <i class="fa-solid fa-exclamation-triangle mr-2 text-red-500"></i>
+            <span>❌ Không thể tải nội dung thông báo. Vui lòng kiểm tra kết nối internet.</span>
+          </div>
+        `;
+      }
     }
   },
 };
