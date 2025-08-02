@@ -9,7 +9,7 @@ export const MARKDOWN_CONFIG = {
 
   // Default markdown container settings
   DEFAULT_CONTAINER_ID: "markdown-container",
-  DEFAULT_CONTENT_SELECTOR: ".prose",
+  DEFAULT_CONTENT_SELECTOR: ".markdown-content",
 
   // Markdown parser options
   PARSER_OPTIONS: {
