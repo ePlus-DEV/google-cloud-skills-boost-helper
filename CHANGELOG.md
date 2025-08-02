@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5] - 2025-08-02
+### :sparkles: New Features
+- [`e8744f2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e8744f2a9207310a2dcf706ecb64f34e96c9fe43) - add markdown service and integrate markdown rendering in options page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`1b11f31`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1b11f31a7f9a73fc003c906e6f25a869b75cbfc1) - Enhance Markdown rendering and link handling in popup *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`325d243`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/325d2431497fcec1a3be3b6290959a868b6d8823) - enhance link opening functionality with improved error handling and user notifications *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`4bcc4e4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4bcc4e4b52da9586e1c56903463f4aeb4a08c6e0) - update developer URL to use HTTPS for improved security *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f159ff1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f159ff1bc80ba0348733d2bdb77af2aa63d4f82f) - remove unnecessary padding from blockquote styling in markdown *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f8daaf8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f8daaf82551437bcbff09aac5f14eac1777c67bb) - remove commented-out card for leaderboard from settings section *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a363c9b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a363c9bda860355911e279e5fa4a00608c22ba55) - remove unused parameter from showLinkFallbackMessage function *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`910e7d3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/910e7d33195613bf8628fb303bd5a16be8b513fd) - remove deprecated extensionApi property from config *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`25520ac`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/25520ac77373a9435e75439d4f29151bf028f599) - update markdown content selector and enhance loading/error handling *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`be0dc82`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/be0dc820058495b37be3b0064700fb2b51a78c87) - update version to 1.1.5 and add marked dependency *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.1.4] - 2025-07-27
 ### :sparkles: New Features
 - [`ea900ba`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ea900baa8a5c225c90d5f84f68d1b1dacd880c8f) - Add services for API client, arcade data, badges, and UI management *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -111,3 +131,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.1...1.1.2
 [1.1.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.2...1.1.3
 [1.1.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.3...1.1.4
+[1.1.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.4...1.1.5
