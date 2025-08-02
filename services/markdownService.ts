@@ -46,7 +46,7 @@ const MarkdownService = {
   async loadAndRender(
     urlOrOptions: string | MarkdownLoadOptions,
     containerId?: string,
-    contentSelector = ".prose",
+    contentSelector = ".markdown-content"
   ): Promise<void> {
     let options: MarkdownLoadOptions;
 
@@ -61,12 +61,12 @@ const MarkdownService = {
         url: urlOrOptions,
         containerId,
         contentSelector,
-        append: true,
+        append: false, // Changed to false to replace content instead of appending
       };
     } else {
       options = {
-        contentSelector: ".prose",
-        append: true,
+        contentSelector: ".markdown-content",
+        append: false, // Changed to false to replace content instead of appending
         ...urlOrOptions,
       };
     }
@@ -89,7 +89,7 @@ const MarkdownService = {
       const markdownText = await response.text();
 
       // Find the content area within the container
-      const contentSelector = options.contentSelector || ".prose";
+      const contentSelector = options.contentSelector || ".markdown-content";
       const contentArea = container.querySelector(contentSelector);
       if (contentArea) {
         // Parse and render markdown
@@ -105,7 +105,7 @@ const MarkdownService = {
         MarkdownService.setupLinkHandlers(contentArea);
       } else {
         console.error(
-          `Content area with selector '${contentSelector}' not found in container`,
+          `Content area with selector '${contentSelector}' not found in container`
         );
       }
     } catch (error) {
@@ -230,7 +230,7 @@ const MarkdownService = {
     try {
       await navigator.clipboard.writeText(url);
       console.info(
-        `Link could not be opened automatically. URL copied to clipboard: ${url}`,
+        `Link could not be opened automatically. URL copied to clipboard: ${url}`
       );
 
       // Show a user-friendly notification if possible
@@ -243,7 +243,7 @@ const MarkdownService = {
 
       // Last resort: show the URL to the user
       alert(
-        `Unable to open link automatically. Please copy and paste this URL into your browser:\n\n${url}`,
+        `Unable to open link automatically. Please copy and paste this URL into your browser:\n\n${url}`
       );
     }
   },
