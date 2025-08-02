@@ -1,4 +1,6 @@
 import { OptionsService } from "../../services";
 
-// Initialize options page when the script loads
-OptionsService.initialize();
+// Initialize options page when DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  OptionsService.initialize();
+});
