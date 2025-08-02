@@ -46,7 +46,7 @@ const MarkdownService = {
   async loadAndRender(
     urlOrOptions: string | MarkdownLoadOptions,
     containerId?: string,
-    contentSelector = ".prose"
+    contentSelector = ".prose",
   ): Promise<void> {
     let options: MarkdownLoadOptions;
 
@@ -105,7 +105,7 @@ const MarkdownService = {
         MarkdownService.setupLinkHandlers(contentArea);
       } else {
         console.error(
-          `Content area with selector '${contentSelector}' not found in container`
+          `Content area with selector '${contentSelector}' not found in container`,
         );
       }
     } catch (error) {

@@ -60,9 +60,15 @@
   margin-bottom: 0.375rem;
 }
 
-#popup-markdown-container .prose h1 { font-size: 1rem; }
-#popup-markdown-container .prose h2 { font-size: 0.9rem; }
-#popup-markdown-container .prose h3 { font-size: 0.8rem; }
+#popup-markdown-container .prose h1 {
+  font-size: 1rem;
+}
+#popup-markdown-container .prose h2 {
+  font-size: 0.9rem;
+}
+#popup-markdown-container .prose h3 {
+  font-size: 0.8rem;
+}
 
 #popup-markdown-container .prose p {
   margin-bottom: 0.5rem;
@@ -190,7 +196,7 @@
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
   font-size: 0.875em;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 .prose pre code {
