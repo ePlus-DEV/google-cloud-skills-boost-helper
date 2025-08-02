@@ -2,6 +2,8 @@ import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
 import PopupUIService from "./popupUIService";
 import BadgeService from "./badgeService";
+import MarkdownService from "./markdownService";
+import { MARKDOWN_CONFIG } from "../utils/config";
 
 /**
  * Main service to handle popup functionality
@@ -14,6 +16,9 @@ const PopupService = {
    * Initialize the popup
    */
   async initialize(): Promise<void> {
+    // Initialize markdown service
+    await this.initializeMarkdown();
+
     // Initialize profile URL
     this.profileUrl = await StorageService.getProfileUrl();
 
@@ -36,7 +41,6 @@ const PopupService = {
     }
 
     this.setupEventListeners();
-    this.setupPrizeTiers();
   },
 
   /**
@@ -106,17 +110,33 @@ const PopupService = {
         window.open(browser.runtime.getURL("/options.html"), "_blank");
       });
     });
+
+    // Announcement toggle
+    const announcementToggle = document.getElementById("announcement-toggle");
+    if (announcementToggle) {
+      announcementToggle.addEventListener("click", () =>
+        this.toggleAnnouncement(),
+      );
+    }
   },
 
   /**
-   * Setup prize tiers image with cache busting
+   * Toggle announcement visibility
    */
-  setupPrizeTiers(): void {
-    const prizeTiersElement =
-      PopupUIService.querySelector<HTMLImageElement>("#prize-tiers");
-    if (prizeTiersElement) {
-      const currentTime = new Date().getTime();
-      prizeTiersElement.src = `${prizeTiersElement.src}?t=${currentTime}`;
+  toggleAnnouncement(): void {
+    const container = document.getElementById("popup-markdown-container");
+    const chevron = document.getElementById("announcement-chevron");
+
+    if (container && chevron) {
+      const isHidden = container.classList.contains("hidden");
+
+      if (isHidden) {
+        container.classList.remove("hidden");
+        chevron.style.transform = "rotate(180deg)";
+      } else {
+        container.classList.add("hidden");
+        chevron.style.transform = "rotate(0deg)";
+      }
     }
   },
 
@@ -132,6 +152,21 @@ const PopupService = {
    */
   getProfileUrl(): string {
     return this.profileUrl;
+  },
+
+  /**
+   * Initialize markdown service and load announcement content
+   */
+  async initializeMarkdown(): Promise<void> {
+    // Initialize markdown parser
+    MarkdownService.initialize(MARKDOWN_CONFIG.PARSER_OPTIONS);
+
+    // Load markdown content into popup container
+    await MarkdownService.loadAndRender(
+      MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
+      "popup-markdown-container",
+      ".prose",
+    );
   },
 };
 
