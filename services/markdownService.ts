@@ -46,7 +46,7 @@ const MarkdownService = {
   async loadAndRender(
     urlOrOptions: string | MarkdownLoadOptions,
     containerId?: string,
-    contentSelector = ".prose",
+    contentSelector = ".prose"
   ): Promise<void> {
     let options: MarkdownLoadOptions;
 
@@ -105,7 +105,7 @@ const MarkdownService = {
         MarkdownService.setupLinkHandlers(contentArea);
       } else {
         console.error(
-          `Content area with selector '${contentSelector}' not found in container`,
+          `Content area with selector '${contentSelector}' not found in container`
         );
       }
     } catch (error) {
@@ -172,7 +172,7 @@ const MarkdownService = {
       const anchorElement = link as HTMLAnchorElement;
 
       // Add click handler for extension context
-      anchorElement.addEventListener("click", (event) => {
+      anchorElement.addEventListener("click", async (event) => {
         event.preventDefault();
 
         const href = anchorElement.href;
@@ -180,24 +180,98 @@ const MarkdownService = {
           href &&
           (href.startsWith("http://") || href.startsWith("https://"))
         ) {
-          // Use browser API to open in new tab (WXT provides polyfill)
-          if (
-            typeof browser !== "undefined" &&
-            browser.tabs &&
-            browser.tabs.create
-          ) {
-            browser.tabs.create({ url: href }).catch((error) => {
-              console.error("Failed to open link via browser.tabs:", error);
-              // Fallback to window.open
-              window.open(href, "_blank", "noopener,noreferrer");
-            });
-          } else {
-            // Fallback for cases where browser.tabs is not available
-            window.open(href, "_blank", "noopener,noreferrer");
-          }
+          await MarkdownService.openLink(href);
         }
       });
     });
+  },
+
+  /**
+   * Open a URL using the most appropriate method for the extension context
+   * @param url - The URL to open
+   */
+  async openLink(url: string): Promise<void> {
+    try {
+      // First attempt: Use browser.tabs.create if available (most reliable in extensions)
+      if (
+        typeof browser !== "undefined" &&
+        browser.tabs &&
+        browser.tabs.create
+      ) {
+        await browser.tabs.create({ url });
+        return;
+      }
+    } catch (error) {
+      console.warn("Failed to open link via browser.tabs:", error);
+    }
+
+    try {
+      // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
+      if (typeof chrome !== "undefined" && chrome.tabs && chrome.tabs.create) {
+        chrome.tabs.create({ url });
+        return;
+      }
+    } catch (error) {
+      console.warn("Failed to open link via chrome.tabs:", error);
+    }
+
+    try {
+      // Third attempt: Use window.open (may not work in all extension contexts)
+      const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+      if (newWindow) {
+        return;
+      }
+      throw new Error("window.open returned null");
+    } catch (error) {
+      console.warn("Failed to open link via window.open:", error);
+    }
+
+    // Final fallback: Copy URL to clipboard and notify user
+    try {
+      await navigator.clipboard.writeText(url);
+      console.info(
+        `Link could not be opened automatically. URL copied to clipboard: ${url}`
+      );
+
+      // Show a user-friendly notification if possible
+      MarkdownService.showLinkFallbackMessage(url);
+    } catch (clipboardError) {
+      console.error("All link opening methods failed:", {
+        url,
+        clipboardError,
+      });
+
+      // Last resort: show the URL to the user
+      alert(
+        `Unable to open link automatically. Please copy and paste this URL into your browser:\n\n${url}`
+      );
+    }
+  },
+
+  /**
+   * Show a user-friendly message when link opening fails
+   * @param url - The URL that couldn't be opened
+   */
+  showLinkFallbackMessage(url: string): void {
+    // Create a temporary notification element
+    const notification = document.createElement("div");
+    notification.className =
+      "fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg z-50";
+    notification.innerHTML = `
+      <div class="flex items-center">
+        <i class="fa-solid fa-link mr-2"></i>
+        <span>Link copied to clipboard!</span>
+      </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 3000);
   },
 };
 
