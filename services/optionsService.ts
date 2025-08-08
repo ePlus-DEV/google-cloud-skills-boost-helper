@@ -106,7 +106,7 @@ const OptionsService = {
             element.textContent = translatedText;
           }
         } catch (error: unknown) {
-          console.error("Error saving search feature setting:", error);
+          console.error("Error applying i18n translation:", error);
         }
       }
     });
