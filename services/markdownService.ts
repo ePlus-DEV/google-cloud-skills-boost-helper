@@ -250,18 +250,46 @@ const MarkdownService = {
 
   /**
    * Show a user-friendly message when link opening fails
+   * @param url - The URL that was copied to the clipboard
    */
-  showLinkFallbackMessage(): void {
+  showLinkFallbackMessage(url: string): void {
+    if (typeof url !== "string") {
+      console.warn("Invalid URL type for fallback message");
+      return;
+    }
+
+    let sanitizedUrl: string;
+    try {
+      const parsedUrl = new URL(url);
+      if (
+        parsedUrl.protocol !== "http:" &&
+        parsedUrl.protocol !== "https:"
+      ) {
+        throw new Error("Unsupported protocol");
+      }
+      sanitizedUrl = parsedUrl.toString();
+    } catch (e) {
+      console.warn("Invalid URL provided for fallback message", e);
+      return;
+    }
+
     // Create a temporary notification element
     const notification = document.createElement("div");
     notification.className =
       "fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg z-50";
-    notification.innerHTML = `
-      <div class="flex items-center">
-        <i class="fa-solid fa-link mr-2"></i>
-        <span>Link copied to clipboard!</span>
-      </div>
-    `;
+
+    const content = document.createElement("div");
+    content.className = "flex items-center";
+
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-link mr-2";
+
+    const message = document.createElement("span");
+    message.textContent = `Link copied to clipboard: ${sanitizedUrl}`;
+
+    content.appendChild(icon);
+    content.appendChild(message);
+    notification.appendChild(content);
 
     document.body.appendChild(notification);
 
