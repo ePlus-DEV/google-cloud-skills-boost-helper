@@ -251,7 +251,7 @@ const MarkdownService = {
   /**
    * Show a user-friendly message when link opening fails
    */
-  showLinkFallbackMessage(): void {
+  showLinkFallbackMessage(url: string): void {
     // Create a temporary notification element
     const notification = document.createElement("div");
     notification.className =
@@ -259,7 +259,7 @@ const MarkdownService = {
     notification.innerHTML = `
       <div class="flex items-center">
         <i class="fa-solid fa-link mr-2"></i>
-        <span>Link copied to clipboard!</span>
+        <span>Link copied to clipboard!<br/><code>${url}</code></span>
       </div>
     `;
 
