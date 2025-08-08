@@ -261,10 +261,7 @@ const MarkdownService = {
     let sanitizedUrl: string;
     try {
       const parsedUrl = new URL(url);
-      if (
-        parsedUrl.protocol !== "http:" &&
-        parsedUrl.protocol !== "https:"
-      ) {
+      if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
         throw new Error("Unsupported protocol");
       }
       sanitizedUrl = parsedUrl.toString();
