@@ -23,7 +23,8 @@
   max-width: 400px !important;
   min-width: 300px !important;
   z-index: 1000000 !important;
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  font-family:
+    "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
   pointer-events: auto !important;
   /* Ensure tooltip is not affected by transforms or positioning context */
   transform: none !important;
@@ -34,7 +35,9 @@
 .tour-highlight {
   position: relative !important;
   z-index: 999998 !important;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.6), 0 0 0 8px rgba(59, 130, 246, 0.3) !important;
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.6),
+    0 0 0 8px rgba(59, 130, 246, 0.3) !important;
   border-radius: 8px !important;
 }
 
@@ -46,7 +49,8 @@
 }
 
 .introjs-tooltiptext {
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  font-family:
+    "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
   font-size: 14px !important;
   line-height: 1.5 !important;
   color: #374151 !important;
@@ -127,7 +131,8 @@
 
 /* Custom animations */
 @keyframes introjs-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
   }
   50% {
@@ -141,15 +146,16 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .introjs-tooltip, .tour-tooltip {
+  .introjs-tooltip,
+  .tour-tooltip {
     max-width: 300px !important;
     margin: 10px !important;
   }
-  
+
   .introjs-tooltiptext {
     font-size: 13px !important;
   }
-  
+
   .introjs-button {
     padding: 6px 12px !important;
     font-size: 12px !important;
@@ -158,21 +164,24 @@
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .introjs-tooltip, .tour-tooltip {
+  .introjs-tooltip,
+  .tour-tooltip {
     border: 2px solid #000 !important;
   }
-  
-  .introjs-helperLayer, .tour-highlight {
+
+  .introjs-helperLayer,
+  .tour-highlight {
     border: 4px solid #000 !important;
   }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .introjs-helperLayer, .tour-highlight {
+  .introjs-helperLayer,
+  .tour-highlight {
     animation: none !important;
   }
-  
+
   .introjs-button {
     transition: none !important;
   }
