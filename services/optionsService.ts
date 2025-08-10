@@ -989,6 +989,9 @@ const OptionsService = {
       if (stepUrlInput) stepUrlInput.classList.add("hidden");
       if (stepNickname) stepNickname.classList.remove("hidden");
 
+      // Update preview with account data
+      this.updateAccountPreview(newAccount, userDetail, arcadeData);
+
       // Show nickname buttons
       const skipBtn = document.getElementById("skip-nickname-btn");
       const saveBtn = document.getElementById("save-nickname-btn");
@@ -1030,6 +1033,19 @@ const OptionsService = {
         await AccountService.updateAccount(accountId, {
           nickname: nicknameInput.value.trim(),
         });
+
+        // Update preview nickname
+        const previewNicknameDisplay = document.getElementById(
+          "preview-nickname-display"
+        );
+        const previewNicknameText = document.getElementById(
+          "preview-nickname-text"
+        );
+        if (previewNicknameDisplay && previewNicknameText) {
+          previewNicknameText.textContent = nicknameInput.value.trim();
+          previewNicknameDisplay.classList.remove("hidden");
+        }
+
         this.showMessage("Đã lưu biệt danh thành công!", "success");
       }
 
@@ -1487,10 +1503,10 @@ const OptionsService = {
       await this.loadAccounts();
       this.showMessage("Đã xóa tài khoản thành công!", "success");
 
-      // Reload page since active account changed
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      // // Reload page since active account changed
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
     } catch (error) {
       console.error("Error deleting account:", error);
       this.showMessage("Có lỗi xảy ra khi xóa tài khoản!", "error");
@@ -1569,6 +1585,103 @@ const OptionsService = {
         confirmBtn.textContent = "Nhập dữ liệu";
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
+    }
+  },
+
+  /**
+   * Update account preview with real data
+   */
+  updateAccountPreview(account: any, userDetail: any, arcadeData: any): void {
+    console.log("Updating account preview with:", {
+      account,
+      userDetail,
+      arcadeData,
+    });
+
+    // Update name
+    const previewName = document.getElementById("preview-name");
+    if (previewName) {
+      previewName.textContent =
+        userDetail.userName || account.name || "Không có tên";
+    }
+
+    // Update avatar if available
+    const previewAvatar = document.getElementById(
+      "preview-avatar"
+    ) as HTMLImageElement;
+    const previewAvatarPlaceholder = document.getElementById(
+      "preview-avatar-placeholder"
+    );
+
+    if (userDetail.profileImage && previewAvatar && previewAvatarPlaceholder) {
+      previewAvatar.src = userDetail.profileImage;
+      previewAvatar.style.display = "block";
+      previewAvatarPlaceholder.style.display = "none";
+
+      // Update placeholder to show first letter if no image
+      const firstLetter = (userDetail.userName || account.name || "U")
+        .charAt(0)
+        .toUpperCase();
+      previewAvatarPlaceholder.textContent = firstLetter;
+    } else if (previewAvatarPlaceholder) {
+      // Show first letter of name in placeholder
+      const firstLetter = (userDetail.userName || account.name || "U")
+        .charAt(0)
+        .toUpperCase();
+      previewAvatarPlaceholder.innerHTML = firstLetter;
+    }
+
+    // Update arcade points in main display
+    const previewArcadePoints = document.getElementById(
+      "preview-arcade-points"
+    );
+    if (previewArcadePoints && arcadeData) {
+      const points =
+        arcadeData.arcadePoints?.totalPoints ||
+        arcadeData.totalArcadePoints ||
+        0;
+      previewArcadePoints.textContent = `${points.toLocaleString()} points`;
+    } else if (previewArcadePoints) {
+      previewArcadePoints.textContent = "0 points";
+    }
+
+    // Update last updated
+    const previewLastUpdated = document.getElementById("preview-last-updated");
+    if (previewLastUpdated) {
+      previewLastUpdated.textContent = new Date().toLocaleDateString("vi-VN");
+    }
+
+    // Update stats - Total Badges
+    const previewTotalBadges = document.getElementById("preview-total-badges");
+    if (previewTotalBadges && userDetail.completedBadgeIds) {
+      previewTotalBadges.textContent =
+        userDetail.completedBadgeIds.length.toString();
+    } else if (previewTotalBadges) {
+      previewTotalBadges.textContent = "0";
+    }
+
+    // Update stats - Skill Badges
+    const previewSkillBadges = document.getElementById("preview-skill-badges");
+    if (previewSkillBadges && userDetail.completedBadgeIds) {
+      // Count skill badges (assuming they have a specific pattern or type)
+      const skillBadges = userDetail.completedBadgeIds.filter(
+        (badge: any) => badge.badgeType === "SKILL" || badge.type === "skill"
+      ).length;
+      previewSkillBadges.textContent = skillBadges.toString();
+    } else if (previewSkillBadges) {
+      previewSkillBadges.textContent = "0";
+    }
+
+    // Update stats - Arcade Points
+    const previewArcadeTotal = document.getElementById("preview-arcade-total");
+    if (previewArcadeTotal && arcadeData) {
+      const points =
+        arcadeData.arcadePoints?.totalPoints ||
+        arcadeData.totalArcadePoints ||
+        0;
+      previewArcadeTotal.textContent = points.toLocaleString();
+    } else if (previewArcadeTotal) {
+      previewArcadeTotal.textContent = "0";
     }
   },
 
