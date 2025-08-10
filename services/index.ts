@@ -11,3 +11,4 @@ export { default as PopupService } from "./popupService";
 export { default as OptionsService } from "./optionsService";
 export { default as MarkdownService } from "./markdownService";
 export { default as AccountService } from "./accountService";
+export { default as TourService } from "./tourService";
