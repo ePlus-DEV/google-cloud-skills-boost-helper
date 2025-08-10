@@ -272,11 +272,11 @@ const TourService = {
     // Final bounds check to ensure tooltip is fully visible
     top = Math.max(
       margin,
-      Math.min(top, viewportHeight - tooltipRect.height - margin)
+      Math.min(top, viewportHeight - tooltipRect.height - margin),
     );
     left = Math.max(
       margin,
-      Math.min(left, viewportWidth - tooltipRect.width - margin)
+      Math.min(left, viewportWidth - tooltipRect.width - margin),
     );
 
     tooltip.style.top = `${top}px`;
