@@ -23,16 +23,16 @@
 
 <body>
   <div
-    class="flex flex-col p-4 w-[800px] mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50">
+    class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50">
     <div
-      class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-8 rounded-lg shadow-lg relative border border-indigo-300">
-      <h3 class="text-4xl font-bold text-white inline-block relative">
+      class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300">
+      <h3 class="text-2xl sm:text-4xl font-bold text-white inline-block relative">
         Google Cloud Skills Boost - Helper
         <span
-          class="absolute top-0 right-[-60px] text-sm font-medium text-white bg-indigo-800 px-3 py-1 rounded-full shadow-md animate-pulse"
+          class="absolute top-0 right-[-40px] sm:right-[-60px] text-xs sm:text-sm font-medium text-white bg-indigo-800 px-2 py-1 sm:px-3 sm:py-1 rounded-full shadow-md animate-pulse"
           id="version-number">v1.0.0</span>
       </h3>
-      <p class="text-white mt-4 text-lg leading-relaxed">
+      <p class="text-white mt-4 text-sm sm:text-lg leading-relaxed">
         Take your Google Cloud Skills Boost experience to the next level
         with our powerful and intuitive browser extension.
       </p>
@@ -56,30 +56,8 @@
 
     <div class="mt-4 space-y-4">
       <!-- BEGIN - Settings -->
-      <!-- Card 2 -->
-      <div
-        class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
-        <div>
-          <h4 class="text-lg font-bold text-gray-800" data-i18n="labelEnableSearchFeature">Enable Search Feature</h4>
-          <p class="text-gray-600 text-sm" data-i18n="descriptionEnableSearchFeature">
-            Show Google Search and YouTube buttons when no solution is found.
-          </p>
-        </div>
-        <input type="checkbox" id="search-feature-toggle" class="form-checkbox h-5 w-5 text-indigo-600" checked />
-      </div>
-      <!-- Card 3 -->
-      <div
-        class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
-        <div>
-          <h4 class="text-lg font-bold text-gray-800">My Badges</h4>
-          <p class="text-gray-600 text-sm">View all your earned badges.</p>
-        </div>
-        <a href="https://www.cloudskillsboost.google/profile/badges" target="_blank" rel="noopener noreferrer"
-          class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-medium px-3 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-sm">
-          <i class="fa-solid fa-eye mr-1"></i> View Badges
-        </a>
-      </div>
-      <!-- Card 5 -->
+
+      <!-- Account Management Card (moved to top) -->
       <div class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200">
         <h4 class="text-xl font-semibold text-gray-800 mb-2">
           <i class="fa-solid fa-user-group mr-2 text-indigo-600"></i>
@@ -179,383 +157,497 @@
           </button>
         </div>
         <div class="flex justify-center mt-6" id="video-container" style="display: none">
-          <iframe class="rounded-lg shadow-md" width="560" height="315"
-            src="https://www.youtube.com/embed/lcQywccAT4A?si=zWZwa2nCP5CPA-2P" title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="w-full max-w-2xl">
+            <div class="relative pb-[56.25%] h-0 overflow-hidden">
+              <iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-md"
+                src="https://www.youtube.com/embed/lcQywccAT4A?si=zWZwa2nCP5CPA-2P" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- END - Settings -->
 
-    <!-- Add Account Modal -->
-    <div id="add-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-      <div class="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 shadow-2xl">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900">
-            <i class="fa-solid fa-user-plus mr-2 text-indigo-600"></i>
-            Thêm tài khoản mới
-          </h3>
-          <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-xl">
-            <i class="fa-solid fa-times"></i>
-          </button>
-        </div>
-
-        <!-- Step 1: URL Input -->
-        <div id="step-url-input" class="space-y-6">
-          <!-- How to get Profile URL Guide -->
-          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center">
-                <div class="bg-blue-500 p-2 rounded-lg mr-3">
-                  <i class="fa-solid fa-question-circle text-white text-lg"></i>
-                </div>
-                <div>
-                  <h4 class="text-lg font-semibold text-blue-900">Cách lấy URL Profile</h4>
-                  <p class="text-sm text-blue-700">Làm theo các bước dưới đây</p>
-                </div>
-              </div>
-              <button id="go-to-profile-page-btn"
-                class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm">
-                <i class="fa-solid fa-external-link-alt mr-1 text-xs"></i>
-                Mở trang Profile
-              </button>
+      <!-- Search Feature Card (redesigned) -->
+      <div
+        class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-start space-x-4">
+            <div class="bg-blue-500 p-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-search text-white text-lg"></i>
             </div>
-
-            <div class="grid md:grid-cols-2 gap-4">
-              <div class="space-y-3">
-                <div class="flex items-start">
-                  <span
-                    class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</span>
-                  <div>
-                    <p class="text-sm font-medium text-blue-900">Click nút "Mở trang Profile"</p>
-                    <p class="text-xs text-blue-700">Sẽ mở Google Cloud Skills Boost trong tab mới</p>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <span
-                    class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
-                  <div>
-                    <p class="text-sm font-medium text-blue-900">Đăng nhập (nếu chưa)</p>
-                    <p class="text-xs text-blue-700">Sử dụng tài khoản Google của bạn</p>
-                  </div>
-                </div>
-              </div>
-              <div class="space-y-3">
-                <div class="flex items-start">
-                  <span
-                    class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
-                  <div>
-                    <p class="text-sm font-medium text-blue-900">Tìm phần "Public profile"</p>
-                    <p class="text-xs text-blue-700">Cuộn xuống trong trang profile</p>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <span
-                    class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">4</span>
-                  <div>
-                    <p class="text-sm font-medium text-blue-900">Copy URL từ thanh địa chỉ</p>
-                    <p class="text-xs text-blue-700">Dán vào ô bên dưới</p>
-                  </div>
-                </div>
+            <div>
+              <h4 class="text-lg font-bold text-gray-800 mb-2" data-i18n="labelEnableSearchFeature">
+                <i class="fa-solid fa-globe mr-2 text-blue-600"></i>
+                Enable Search Feature
+              </h4>
+              <p class="text-gray-600 text-sm leading-relaxed" data-i18n="descriptionEnableSearchFeature">
+                Show Google Search and YouTube buttons when no solution is found.
+                <br><span class="text-blue-700 font-medium">Helps you find answers faster!</span>
+              </p>
+              <div class="mt-3 flex items-center space-x-4">
+                <span
+                  class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  <i class="fa-solid fa-bolt mr-1"></i>
+                  Quick Search
+                </span>
+                <span
+                  class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                  <i class="fa-brands fa-youtube mr-1"></i>
+                  YouTube Results
+                </span>
               </div>
             </div>
           </div>
+          <div class="flex flex-col items-center space-y-2">
+            <input type="checkbox" id="search-feature-toggle"
+              class="form-checkbox h-6 w-6 text-blue-600 rounded transition-all duration-200 cursor-pointer" checked />
+            <span class="text-xs text-gray-500 font-medium">Toggle</span>
+          </div>
+        </div>
+      </div>
 
-          <!-- Warning -->
-          <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+      <!-- My Badges Card (redesigned) -->
+      <div
+        class="bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 border border-yellow-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-start space-x-4">
+            <div class="bg-gradient-to-br from-yellow-500 to-orange-600 p-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-trophy text-white text-lg"></i>
+            </div>
+            <div>
+              <h4 class="text-lg font-bold text-gray-800 mb-2">
+                <i class="fa-solid fa-medal mr-2 text-yellow-600"></i>
+                My Badges
+              </h4>
+              <p class="text-gray-600 text-sm leading-relaxed">
+                View all your earned badges and achievements.
+                <br><span class="text-orange-700 font-medium">Track your learning progress!</span>
+              </p>
+              <div class="mt-3 flex items-center space-x-4">
+                <span
+                  class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                  <i class="fa-solid fa-star mr-1"></i>
+                  Achievements
+                </span>
+                <span
+                  class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                  <i class="fa-solid fa-chart-line mr-1"></i>
+                  Progress
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col items-center space-y-2">
+            <a href="https://www.cloudskillsboost.google/profile/badges" target="_blank" rel="noopener noreferrer"
+              class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-semibold px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-external-link-alt text-xs"></i>
+              <span>View Badges</span>
+            </a>
+            <span class="text-xs text-gray-500 font-medium">Open Profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <div id="error-message"
+    class="hidden bg-gradient-to-r from-red-400 to-red-600 border border-red-500 text-white px-4 py-3 rounded mb-4"
+    role="alert">
+    <strong class="font-bold">Error:</strong>
+    <span class="block sm:inline">Something went wrong. Please try again.</span>
+  </div>
+  <div id="success-message"
+    class="hidden bg-gradient-to-r from-green-400 to-green-600 border border-green-500 text-white px-4 py-3 rounded mb-4"
+    role="alert">
+    <strong class="font-bold">Success:</strong>
+    <span class="block sm:inline">Your action was successful!</span>
+  </div>
+  <div class="flex justify-center mt-6" id="video-container" style="display: none">
+    <div class="w-full max-w-2xl">
+      <div class="relative pb-[56.25%] h-0 overflow-hidden">
+        <iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-md"
+          src="https://www.youtube.com/embed/lcQywccAT4A?si=zWZwa2nCP5CPA-2P" title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <!-- END - Settings -->
+
+  <!-- Add Account Modal -->
+  <div id="add-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 shadow-2xl">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold text-gray-900">
+          <i class="fa-solid fa-user-plus mr-2 text-indigo-600"></i>
+          Thêm tài khoản mới
+        </h3>
+        <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-xl">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Step 1: URL Input -->
+      <div id="step-url-input" class="space-y-6">
+        <!-- How to get Profile URL Guide -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5">
+          <div class="flex items-center justify-between mb-3">
             <div class="flex items-center">
-              <div class="bg-amber-100 p-2 rounded-lg mr-3">
-                <i class="fa-solid fa-exclamation-triangle text-amber-600"></i>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-amber-800">Lưu ý quan trọng</p>
-                <p class="text-sm text-amber-700">Mỗi URL profile chỉ có thể thêm một lần. Hệ thống sẽ kiểm tra và thông
-                  báo nếu tài khoản đã tồn tại.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- URL Input -->
-          <div class="bg-white border border-gray-200 rounded-xl p-5">
-            <label class="block text-base font-semibold text-gray-800 mb-3">
-              <i class="fa-solid fa-link mr-2 text-indigo-600"></i>
-              Nhập URL Profile và tạo tài khoản
-            </label>
-            <div class="flex space-x-3">
-              <input type="url" id="account-url-input"
-                class="flex-1 border-2 border-gray-300 rounded-xl px-4 py-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
-                placeholder="https://www.cloudskillsboost.google/public_profiles/xxxxxxxxx" required>
-              <button id="create-account-btn"
-                class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm">
-                <i class="fa-solid fa-plus mr-1 text-xs"></i>
-                Tạo tài khoản
-              </button>
-            </div>
-            <div class="mt-3 p-3 bg-gray-50 rounded-lg">
-              <p class="text-xs text-gray-600">
-                <i class="fa-solid fa-info-circle mr-1 text-gray-500"></i>
-                <strong>Hướng dẫn:</strong> Nhập URL và click "Tạo tài khoản". Hệ thống sẽ tự động tải thông tin và tạo
-                tài khoản mới.
-              </p>
-            </div>
-          </div>
-
-          <!-- Loading State -->
-          <div id="loading-profile" class="hidden text-center py-8">
-            <div class="inline-flex items-center">
-              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mr-4"></div>
-              <span class="text-gray-700 font-medium">Đang tạo tài khoản...</span>
-            </div>
-          </div>
-
-          <!-- Success State -->
-          <div id="success-created" class="hidden text-center py-8">
-            <div class="mb-4">
-              <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-                <i class="fa-solid fa-check text-green-600 text-2xl"></i>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Tài khoản đã được tạo thành công!</h3>
-              <p class="text-gray-600">Bạn có thể thêm biệt danh để dễ dàng nhận diện tài khoản này.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2: Optional Nickname -->
-        <div id="step-add-nickname" class="hidden space-y-6">
-          <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
-            <div class="flex items-center mb-3">
               <div class="bg-blue-500 p-2 rounded-lg mr-3">
-                <i class="fa-solid fa-tag text-white"></i>
+                <i class="fa-solid fa-question-circle text-white text-lg"></i>
               </div>
               <div>
-                <h4 class="font-semibold text-blue-900">Thêm biệt danh (tùy chọn)</h4>
-                <p class="text-sm text-blue-700">Đặt biệt danh để dễ dàng phân biệt các tài khoản</p>
+                <h4 class="text-lg font-semibold text-blue-900">Cách lấy URL Profile</h4>
+                <p class="text-sm text-blue-700">Làm theo các bước dưới đây</p>
               </div>
             </div>
+            <button id="go-to-profile-page-btn"
+              class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm">
+              <i class="fa-solid fa-external-link-alt mr-1 text-xs"></i>
+              Mở trang Profile
+            </button>
           </div>
 
-          <!-- Account Preview -->
-          <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
-            <div class="flex items-center mb-3">
-              <div class="bg-green-500 p-2 rounded-lg mr-3">
-                <i class="fa-solid fa-eye text-white"></i>
-              </div>
-              <div>
-                <h4 class="font-semibold text-green-900">Preview tài khoản</h4>
-                <p class="text-sm text-green-700">Xem trước thông tin tài khoản vừa tạo</p>
-              </div>
-            </div>
-
-            <div id="account-preview" class="bg-white rounded-lg border-2 border-green-300 transition-all duration-200">
-              <div class="p-4">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-3 flex-1 min-w-0">
-                    <div id="preview-avatar-container">
-                      <img id="preview-avatar" src="" alt="Avatar"
-                        class="w-12 h-12 rounded-full border-2 border-white shadow-sm" style="display: none;">
-                      <div id="preview-avatar-placeholder"
-                        class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
-                        <i class="fa-solid fa-user"></i>
-                      </div>
-                    </div>
-
-                    <div class="flex-1 min-w-0">
-                      <div class="flex items-center space-x-2">
-                        <h4 id="preview-name" class="text-lg font-semibold text-gray-900 truncate">Đang tải...</h4>
-                        <span
-                          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <i class="fa-solid fa-plus mr-1"></i>Mới tạo
-                        </span>
-                      </div>
-
-                      <div id="preview-nickname-display" class="hidden">
-                        <p class="text-sm text-gray-500 truncate">
-                          Biệt danh: <span id="preview-nickname-text">Chưa có biệt danh</span>
-                        </p>
-                      </div>
-
-                      <div class="flex items-center space-x-4 mt-2">
-                        <span class="text-sm text-gray-600">
-                          <i class="fa-solid fa-trophy text-yellow-500 mr-1"></i>
-                          <span id="preview-arcade-points">0 points</span>
-                        </span>
-                        <span class="text-xs text-gray-400">
-                          Cập nhật: <span id="preview-last-updated">Vừa tạo</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center space-x-2 ml-3">
-                    <div class="text-green-600 p-2 rounded-lg bg-green-50" title="Tài khoản mới">
-                      <i class="fa-solid fa-check-circle"></i>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Additional Stats -->
-                <div class="mt-4 pt-4 border-t border-gray-200">
-                  <div class="grid grid-cols-3 gap-4 text-center">
-                    <div class="bg-blue-50 rounded-lg p-3">
-                      <div id="preview-total-badges" class="text-xl font-bold text-blue-600">-</div>
-                      <div class="text-xs text-blue-700">Total Badges</div>
-                    </div>
-                    <div class="bg-yellow-50 rounded-lg p-3">
-                      <div id="preview-skill-badges" class="text-xl font-bold text-yellow-600">-</div>
-                      <div class="text-xs text-yellow-700">Skill Badges</div>
-                    </div>
-                    <div class="bg-purple-50 rounded-lg p-3">
-                      <div id="preview-arcade-total" class="text-xl font-bold text-purple-600">-</div>
-                      <div class="text-xs text-purple-700">Arcade Points</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white border border-gray-200 rounded-xl p-5">
-            <label class="block text-base font-semibold text-gray-800 mb-3">
-              <i class="fa-solid fa-edit mr-2 text-indigo-600"></i>
-              Biệt danh cho tài khoản
-            </label>
+          <div class="grid md:grid-cols-2 gap-4">
             <div class="space-y-3">
-              <input type="text" id="account-nickname-input"
-                class="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
-                placeholder="VD: Tài khoản chính, Tài khoản công ty, Tài khoản học tập...">
-              <p class="text-xs text-gray-500">
-                <i class="fa-solid fa-lightbulb mr-1 text-yellow-500"></i>
-                Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau
-              </p>
+              <div class="flex items-start">
+                <span
+                  class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</span>
+                <div>
+                  <p class="text-sm font-medium text-blue-900">Click nút "Mở trang Profile"</p>
+                  <p class="text-xs text-blue-700">Sẽ mở Google Cloud Skills Boost trong tab mới</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <span
+                  class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
+                <div>
+                  <p class="text-sm font-medium text-blue-900">Đăng nhập (nếu chưa)</p>
+                  <p class="text-xs text-blue-700">Sử dụng tài khoản Google của bạn</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <span
+                  class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
+                <div>
+                  <p class="text-sm font-medium text-blue-900">Tìm phần "Public profile"</p>
+                  <p class="text-xs text-blue-700">Cuộn xuống trong trang profile</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <span
+                  class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">4</span>
+                <div>
+                  <p class="text-sm font-medium text-blue-900">Copy URL từ thanh địa chỉ</p>
+                  <p class="text-xs text-blue-700">Dán vào ô bên dưới</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Error State -->
-        <div id="error-profile" class="hidden">
-          <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-            <div class="flex items-center mb-2">
-              <i class="fa-solid fa-exclamation-triangle text-red-600 mr-2"></i>
-              <span class="text-sm font-medium text-red-800">Có lỗi xảy ra</span>
+        <!-- Warning -->
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div class="flex items-center">
+            <div class="bg-amber-100 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-exclamation-triangle text-amber-600"></i>
             </div>
-            <p id="error-message" class="text-sm text-red-700"></p>
+            <div>
+              <p class="text-sm font-medium text-amber-800">Lưu ý quan trọng</p>
+              <p class="text-sm text-amber-700">Mỗi URL profile chỉ có thể thêm một lần. Hệ thống sẽ kiểm tra và thông
+                báo nếu tài khoản đã tồn tại.</p>
+            </div>
           </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex space-x-3 mt-6 pt-4 border-t border-gray-200">
-          <button id="cancel-add-account-btn"
-            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
-            <i class="fa-solid fa-times mr-1 text-xs"></i>
-            Đóng
-          </button>
-          <button id="skip-nickname-btn"
-            class="hidden flex-1 bg-gray-500 hover:bg-gray-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
-            <i class="fa-solid fa-forward mr-1 text-xs"></i>
-            Bỏ qua
-          </button>
-          <button id="save-nickname-btn"
-            class="hidden flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
-            <i class="fa-solid fa-save mr-1 text-xs"></i>
-            Lưu biệt danh
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Import Accounts Modal -->
-    <div id="import-accounts-modal"
-      class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-      <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4 shadow-xl">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900">Nhập dữ liệu tài khoản</h3>
-          <button id="close-import-modal-btn" class="text-gray-400 hover:text-gray-600">
-            <i class="fa-solid fa-times"></i>
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Chọn file JSON:</label>
-            <input type="file" id="import-file-input" accept=".json"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <!-- URL Input -->
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+          <label class="block text-base font-semibold text-gray-800 mb-3">
+            <i class="fa-solid fa-link mr-2 text-indigo-600"></i>
+            Nhập URL Profile và tạo tài khoản
+          </label>
+          <div class="flex space-x-3">
+            <input type="url" id="account-url-input"
+              class="flex-1 border-2 border-gray-300 rounded-xl px-4 py-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
+              placeholder="https://www.cloudskillsboost.google/public_profiles/xxxxxxxxx" required>
+            <button id="create-account-btn"
+              class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm">
+              <i class="fa-solid fa-plus mr-1 text-xs"></i>
+              Tạo tài khoản
+            </button>
           </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Hoặc dán nội dung JSON:</label>
-            <textarea id="import-json-textarea" rows="8"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              placeholder='{"accounts": {...}, "settings": {...}}'></textarea>
-          </div>
-        </div>
-
-        <div class="flex space-x-3 mt-6">
-          <button id="cancel-import-btn"
-            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-            Hủy
-          </button>
-          <button id="confirm-import-btn"
-            class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-            Nhập dữ liệu
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Account Modal -->
-    <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900">Chỉnh sửa tài khoản</h3>
-          <button id="close-edit-modal-btn" class="text-gray-400 hover:text-gray-600">
-            <i class="fa-solid fa-times"></i>
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              <i class="fa-solid fa-user mr-1 text-indigo-600"></i>
-              Tên hiển thị:
-            </label>
-            <input type="text" id="edit-account-name-input" readonly
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-100 text-gray-600 cursor-not-allowed"
-              placeholder="Tên từ Google Cloud Skills Boost">
-            <p class="text-xs text-gray-500 mt-1">
-              <i class="fa-solid fa-info-circle mr-1"></i>
-              Tên hiển thị được lấy từ Google Cloud Skills Boost và không thể chỉnh sửa
-            </p>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              <i class="fa-solid fa-tag mr-1 text-indigo-600"></i>
-              Biệt danh:
-            </label>
-            <input type="text" id="edit-account-nickname-input"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              placeholder="Nhập biệt danh để dễ nhận biết...">
-            <p class="text-xs text-gray-500 mt-1">
-              <i class="fa-solid fa-lightbulb mr-1"></i>
-              Ví dụ: "Tài khoản chính", "Tài khoản công ty", "Tài khoản học tập"...
+          <div class="mt-3 p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs text-gray-600">
+              <i class="fa-solid fa-info-circle mr-1 text-gray-500"></i>
+              <strong>Hướng dẫn:</strong> Nhập URL và click "Tạo tài khoản". Hệ thống sẽ tự động tải thông tin và tạo
+              tài khoản mới.
             </p>
           </div>
         </div>
 
-        <div class="flex space-x-3 mt-6">
-          <button id="cancel-edit-account-btn"
-            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-            Hủy
-          </button>
-          <button id="confirm-edit-account-btn"
-            class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-            Lưu thay đổi
-          </button>
+        <!-- Loading State -->
+        <div id="loading-profile" class="hidden text-center py-8">
+          <div class="inline-flex items-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mr-4"></div>
+            <span class="text-gray-700 font-medium">Đang tạo tài khoản...</span>
+          </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="success-created" class="hidden text-center py-8">
+          <div class="mb-4">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+              <i class="fa-solid fa-check text-green-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Tài khoản đã được tạo thành công!</h3>
+            <p class="text-gray-600">Bạn có thể thêm biệt danh để dễ dàng nhận diện tài khoản này.</p>
+          </div>
         </div>
       </div>
+
+      <!-- Step 2: Optional Nickname -->
+      <div id="step-add-nickname" class="hidden space-y-6">
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+          <div class="flex items-center mb-3">
+            <div class="bg-blue-500 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-tag text-white"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-blue-900">Thêm biệt danh (tùy chọn)</h4>
+              <p class="text-sm text-blue-700">Đặt biệt danh để dễ dàng phân biệt các tài khoản</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Preview -->
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
+          <div class="flex items-center mb-3">
+            <div class="bg-green-500 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-eye text-white"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-green-900">Preview tài khoản</h4>
+              <p class="text-sm text-green-700">Xem trước thông tin tài khoản vừa tạo</p>
+            </div>
+          </div>
+
+          <div id="account-preview" class="bg-white rounded-lg border-2 border-green-300 transition-all duration-200">
+            <div class="p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3 flex-1 min-w-0">
+                  <div id="preview-avatar-container">
+                    <img id="preview-avatar" src="" alt="Avatar"
+                      class="w-12 h-12 rounded-full border-2 border-white shadow-sm" style="display: none;">
+                    <div id="preview-avatar-placeholder"
+                      class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+                  </div>
+
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center space-x-2">
+                      <h4 id="preview-name" class="text-lg font-semibold text-gray-900 truncate">Đang tải...</h4>
+                      <span
+                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <i class="fa-solid fa-plus mr-1"></i>Mới tạo
+                      </span>
+                    </div>
+
+                    <div id="preview-nickname-display" class="hidden">
+                      <p class="text-sm text-gray-500 truncate">
+                        Biệt danh: <span id="preview-nickname-text">Chưa có biệt danh</span>
+                      </p>
+                    </div>
+
+                    <div class="flex items-center space-x-4 mt-2">
+                      <span class="text-sm text-gray-600">
+                        <i class="fa-solid fa-trophy text-yellow-500 mr-1"></i>
+                        <span id="preview-arcade-points">0 points</span>
+                      </span>
+                      <span class="text-xs text-gray-400">
+                        Cập nhật: <span id="preview-last-updated">Vừa tạo</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-2 ml-3">
+                  <div class="text-green-600 p-2 rounded-lg bg-green-50" title="Tài khoản mới">
+                    <i class="fa-solid fa-check-circle"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Stats -->
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                  <div class="bg-blue-50 rounded-lg p-3">
+                    <div id="preview-total-badges" class="text-xl font-bold text-blue-600">-</div>
+                    <div class="text-xs text-blue-700">Total Badges</div>
+                  </div>
+                  <div class="bg-yellow-50 rounded-lg p-3">
+                    <div id="preview-skill-badges" class="text-xl font-bold text-yellow-600">-</div>
+                    <div class="text-xs text-yellow-700">Skill Badges</div>
+                  </div>
+                  <div class="bg-purple-50 rounded-lg p-3">
+                    <div id="preview-arcade-total" class="text-xl font-bold text-purple-600">-</div>
+                    <div class="text-xs text-purple-700">Arcade Points</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+          <label class="block text-base font-semibold text-gray-800 mb-3">
+            <i class="fa-solid fa-edit mr-2 text-indigo-600"></i>
+            Biệt danh cho tài khoản
+          </label>
+          <div class="space-y-3">
+            <input type="text" id="account-nickname-input"
+              class="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
+              placeholder="VD: Tài khoản chính, Tài khoản công ty, Tài khoản học tập...">
+            <p class="text-xs text-gray-500">
+              <i class="fa-solid fa-lightbulb mr-1 text-yellow-500"></i>
+              Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-profile" class="hidden">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div class="flex items-center mb-2">
+            <i class="fa-solid fa-exclamation-triangle text-red-600 mr-2"></i>
+            <span class="text-sm font-medium text-red-800">Có lỗi xảy ra</span>
+          </div>
+          <p id="error-message" class="text-sm text-red-700"></p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-3 mt-6 pt-4 border-t border-gray-200">
+        <button id="cancel-add-account-btn"
+          class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
+          <i class="fa-solid fa-times mr-1 text-xs"></i>
+          Đóng
+        </button>
+        <button id="skip-nickname-btn"
+          class="hidden flex-1 bg-gray-500 hover:bg-gray-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
+          <i class="fa-solid fa-forward mr-1 text-xs"></i>
+          Bỏ qua
+        </button>
+        <button id="save-nickname-btn"
+          class="hidden flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
+          <i class="fa-solid fa-save mr-1 text-xs"></i>
+          Lưu biệt danh
+        </button>
+      </div>
     </div>
+  </div>
+
+  <!-- Import Accounts Modal -->
+  <div id="import-accounts-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4 shadow-xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-900">Nhập dữ liệu tài khoản</h3>
+        <button id="close-import-modal-btn" class="text-gray-400 hover:text-gray-600">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Chọn file JSON:</label>
+          <input type="file" id="import-file-input" accept=".json"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Hoặc dán nội dung JSON:</label>
+          <textarea id="import-json-textarea" rows="8"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder='{"accounts": {...}, "settings": {...}}'></textarea>
+        </div>
+      </div>
+
+      <div class="flex space-x-3 mt-6">
+        <button id="cancel-import-btn"
+          class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
+          Hủy
+        </button>
+        <button id="confirm-import-btn"
+          class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
+          Nhập dữ liệu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Account Modal -->
+  <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-900">Chỉnh sửa tài khoản</h3>
+        <button id="close-edit-modal-btn" class="text-gray-400 hover:text-gray-600">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            <i class="fa-solid fa-user mr-1 text-indigo-600"></i>
+            Tên hiển thị:
+          </label>
+          <input type="text" id="edit-account-name-input" readonly
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-100 text-gray-600 cursor-not-allowed"
+            placeholder="Tên từ Google Cloud Skills Boost">
+          <p class="text-xs text-gray-500 mt-1">
+            <i class="fa-solid fa-info-circle mr-1"></i>
+            Tên hiển thị được lấy từ Google Cloud Skills Boost và không thể chỉnh sửa
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            <i class="fa-solid fa-tag mr-1 text-indigo-600"></i>
+            Biệt danh:
+          </label>
+          <input type="text" id="edit-account-nickname-input"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder="Nhập biệt danh để dễ nhận biết...">
+          <p class="text-xs text-gray-500 mt-1">
+            <i class="fa-solid fa-lightbulb mr-1"></i>
+            Ví dụ: "Tài khoản chính", "Tài khoản công ty", "Tài khoản học tập"...
+          </p>
+        </div>
+      </div>
+
+      <div class="flex space-x-3 mt-6">
+        <button id="cancel-edit-account-btn"
+          class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
+          Hủy
+        </button>
+        <button id="confirm-edit-account-btn"
+          class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
+          Lưu thay đổi
+        </button>
+      </div>
+    </div>
+  </div>
   </div>
 
   <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
