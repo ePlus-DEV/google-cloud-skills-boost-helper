@@ -93,7 +93,7 @@
     margin: 0 -1rem;
     border-radius: 0;
   }
-  
+
   .modal-overlay .bg-white {
     margin: 1rem;
     max-width: calc(100vw - 2rem);
@@ -106,13 +106,13 @@
     background: linear-gradient(135deg, #374151, #4b5563);
     border-color: #6b7280;
   }
-  
+
   #account-selector {
     background-color: #374151;
     border-color: #6b7280;
     color: #f9fafb;
   }
-  
+
   #current-account-info {
     background-color: #374151;
     border-color: #6b7280;
