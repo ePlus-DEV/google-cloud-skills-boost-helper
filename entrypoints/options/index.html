@@ -61,21 +61,6 @@
       <div
         class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
         <div>
-          <h4 class="text-lg font-bold text-gray-800">Public Profile</h4>
-          <p class="text-gray-600 text-sm">
-            View your public profile on Google Cloud Skills Boost.
-          </p>
-        </div>
-        <a href="https://www.cloudskillsboost.google/my_account/profile#public-profile" target="_blank"
-          rel="noopener noreferrer"
-          class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200">
-          <i class="fa-solid fa-eye"></i> View Profile
-        </a>
-      </div>
-      <!-- Card 4 -->
-      <div
-        class="bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-6 border border-indigo-300 flex justify-between items-center">
-        <div>
           <h4 class="text-lg font-bold text-gray-800">My Badges</h4>
           <p class="text-gray-600 text-sm">View all your earned badges.</p>
         </div>
@@ -119,6 +104,11 @@
               <i class="fa-solid fa-plus mr-1"></i>
               Thêm tài khoản
             </button>
+            <button id="view-active-profile-btn"
+              class="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
+              <i class="fa-solid fa-eye mr-1"></i>
+              Profile tài khoản đang dùng
+            </button>
           </div>
 
           <div class="flex space-x-2">
@@ -132,6 +122,33 @@
               <i class="fa-solid fa-upload mr-1"></i>
               Nhập dữ liệu
             </button>
+          </div>
+        </div>
+
+        <!-- Simple Account Creation Form -->
+        <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <h5 class="text-lg font-medium text-gray-700 mb-3">
+            <i class="fa-solid fa-link mr-2 text-blue-600"></i>
+            Tạo tài khoản nhanh
+          </h5>
+          <p class="text-sm text-blue-700 mb-4">
+            Nhập URL profile công khai để tạo tài khoản mới nhanh chóng.
+          </p>
+
+          <div class="space-y-3">
+            <div class="flex space-x-3">
+              <input type="url" id="public-profile-url"
+                class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                placeholder="https://www.cloudskillsboost.google/public_profiles/..." />
+              <button id="submit-url"
+                class="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-medium px-6 py-2 rounded-lg shadow-md transition duration-200">
+                <i class="fa-solid fa-plus mr-1"></i>
+                Tạo tài khoản
+              </button>
+            </div>
+            <p class="text-xs text-gray-500">
+              💡 Hoặc sử dụng nút "Thêm tài khoản" bên trên để có thêm tùy chọn preview và biệt danh
+            </p>
           </div>
         </div>
 
@@ -181,13 +198,24 @@
         <!-- Step 1: URL Input -->
         <div id="step-url-input" class="space-y-4">
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div class="flex items-center mb-2">
-              <i class="fa-solid fa-info-circle text-blue-600 mr-2"></i>
-              <span class="text-sm font-medium text-blue-800">Hướng dẫn</span>
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center">
+                <i class="fa-solid fa-info-circle text-blue-600 mr-2"></i>
+                <span class="text-sm font-medium text-blue-800">Hướng dẫn</span>
+              </div>
+              <button id="go-to-profile-page-btn"
+                class="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-medium px-3 py-1 rounded text-xs transition duration-200">
+                <i class="fa-solid fa-external-link-alt mr-1"></i>
+                Đi tới trang Profile
+              </button>
             </div>
-            <p class="text-sm text-blue-700">
+            <p class="text-sm text-blue-700 mb-3">
               Nhập URL profile công khai của bạn trên Google Cloud Skills Boost. Hệ thống sẽ tự động lấy thông tin và
               hiển thị preview.
+            </p>
+            <p class="text-xs text-blue-600 font-medium">
+              💡 <strong>Cách lấy URL:</strong> Click nút "Đi tới trang Profile" → Vào phần "Public profile" → Copy URL
+              từ thanh địa chỉ
             </p>
           </div>
 
