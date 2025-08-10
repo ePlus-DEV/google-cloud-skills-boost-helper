@@ -13,6 +13,21 @@ const TourService = {
   tooltip: null as HTMLElement | null,
 
   /**
+   * Get localized message
+   */
+  getMessage(key: string, substitutions?: string[]): string {
+    try {
+      // Type assertion for dynamic key access
+      const browserI18n = browser.i18n as {
+        getMessage: (key: string, substitutions?: string[]) => string;
+      };
+      return browserI18n.getMessage(key, substitutions) || key;
+    } catch (error) {
+      return key;
+    }
+  },
+
+  /**
    * Initialize the account creation tour
    */
   startAccountCreationTour(): void {
@@ -21,16 +36,14 @@ const TourService = {
     this.steps = [
       {
         element: "#add-account-btn",
-        title: "Thêm tài khoản mới",
-        content:
-          "Click vào nút này để bắt đầu thêm tài khoản Google Cloud Skills Boost đầu tiên của bạn.",
+        title: this.getMessage("tourAddAccountTitle"),
+        content: this.getMessage("tourAddAccountContent"),
         position: "bottom",
       },
       {
         element: "#accounts-list",
-        title: "Danh sách tài khoản",
-        content:
-          "Sau khi tạo tài khoản, chúng sẽ hiển thị ở đây. Bạn có thể quản lý nhiều tài khoản cùng lúc.",
+        title: this.getMessage("tourAccountListTitle"),
+        content: this.getMessage("tourAccountListContent"),
         position: "top",
       },
     ];
@@ -49,23 +62,24 @@ const TourService = {
       this.steps = [
         {
           element: "#go-to-profile-page-btn",
-          title: "Bước 1: Mở trang Profile",
-          content:
-            "Click vào nút này để mở Google Cloud Skills Boost Profile trong tab mới. Bạn sẽ cần đăng nhập và lấy URL từ trang profile.",
+          title: this.getMessage("tourModalStep1Title"),
+          content: this.getMessage("tourModalStep1Content"),
           position: "bottom",
         },
         {
           element: "#account-url-input",
-          title: "Bước 2: Nhập URL Profile",
-          content:
-            "Sau khi đăng nhập, copy URL từ thanh địa chỉ và dán vào đây. URL sẽ có dạng: https://www.cloudskillsboost.google/public_profiles/xxxxx",
+          title: this.getMessage("tourModalStep2Title"),
+          content: `${this.getMessage(
+            "tourModalStep2Content"
+          )}<br><div class="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2"><p class="text-xs text-yellow-800"><i class="fa-solid fa-lightbulb mr-1"></i>${this.getMessage(
+            "tourModalStep2Tip"
+          )}</p></div>`,
           position: "bottom",
         },
         {
           element: "#create-account-btn",
-          title: "Bước 3: Tạo tài khoản",
-          content:
-            "Click vào nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ profile và tạo tài khoản mới cho bạn.",
+          title: this.getMessage("tourModalStep3Title"),
+          content: this.getMessage("tourModalStep3Content"),
           position: "top",
         },
       ];
@@ -165,7 +179,7 @@ const TourService = {
               cursor: pointer;
               transition: all 0.2s ease;
             " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-              ← Quay lại
+              ← ${this.getMessage("tourButtonPrevious")}
             </button>
           `
               : ""
@@ -180,7 +194,7 @@ const TourService = {
             cursor: pointer;
             text-decoration: underline;
           " onmouseover="this.style.color='#374151'" onmouseout="this.style.color='#6b7280'">
-            Bỏ qua
+            ${this.getMessage("tourButtonSkip")}
           </button>
           <button class="tour-btn-next" style="
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -195,8 +209,8 @@ const TourService = {
           " onmouseover="this.style.background='linear-gradient(135deg, #2563eb, #1e40af)'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='linear-gradient(135deg, #3b82f6, #1d4ed8)'; this.style.transform='translateY(0)'">
             ${
               this.currentStep === this.steps.length - 1
-                ? "Hoàn thành"
-                : "Tiếp theo →"
+                ? this.getMessage("tourButtonComplete")
+                : this.getMessage("tourButtonNext") + " →"
             }
           </button>
         </div>
