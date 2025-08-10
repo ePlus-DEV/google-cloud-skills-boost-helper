@@ -66,7 +66,7 @@ const PopupService = {
    */
   async loadPopupAccounts(): Promise<void> {
     const selector = document.getElementById(
-      "popup-account-selector"
+      "popup-account-selector",
     ) as HTMLSelectElement;
     if (!selector) return;
 
@@ -115,7 +115,7 @@ const PopupService = {
    */
   setupAccountSelectorEvents(): void {
     const selector = document.getElementById(
-      "popup-account-selector"
+      "popup-account-selector",
     ) as HTMLSelectElement;
     if (selector) {
       selector.addEventListener("change", async (e) => {
@@ -157,7 +157,7 @@ const PopupService = {
   showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings")
+      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -172,10 +172,10 @@ const PopupService = {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button"
+      ".refresh-button",
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon"
+      ".refresh-icon",
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -184,7 +184,7 @@ const PopupService = {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl
+        this.profileUrl,
       );
 
       if (arcadeData) {
@@ -195,7 +195,7 @@ const PopupService = {
         if (this.currentAccount) {
           await AccountService.updateAccountArcadeData(
             this.currentAccount.id,
-            arcadeData
+            arcadeData,
           );
         }
 
@@ -233,7 +233,7 @@ const PopupService = {
     const announcementToggle = document.getElementById("announcement-toggle");
     if (announcementToggle) {
       announcementToggle.addEventListener("click", () =>
-        this.toggleAnnouncement()
+        this.toggleAnnouncement(),
       );
     }
   },
@@ -283,7 +283,7 @@ const PopupService = {
     await MarkdownService.loadAndRender(
       MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
       "popup-markdown-container",
-      ".prose"
+      ".prose",
     );
   },
 };
