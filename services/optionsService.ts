@@ -40,7 +40,9 @@ const OptionsService = {
    * Load and populate accounts in the selector
    */
   async loadAccounts(): Promise<void> {
-    const selector = document.getElementById("account-selector") as HTMLSelectElement;
+    const selector = document.getElementById(
+      "account-selector"
+    ) as HTMLSelectElement;
     if (!selector) return;
 
     // Clear existing options except the first one
@@ -56,7 +58,7 @@ const OptionsService = {
       const option = document.createElement("option");
       option.value = account.id;
       option.textContent = account.nickname || account.name;
-      
+
       if (activeAccount && account.id === activeAccount.id) {
         option.selected = true;
       }
@@ -75,10 +77,14 @@ const OptionsService = {
    */
   updateCurrentAccountInfo(account: Account): void {
     const infoContainer = document.getElementById("current-account-info");
-    const avatarImg = document.getElementById("account-avatar") as HTMLImageElement;
+    const avatarImg = document.getElementById(
+      "account-avatar"
+    ) as HTMLImageElement;
     const displayName = document.getElementById("account-display-name");
     const profileUrl = document.getElementById("account-profile-url");
-    const profileUrlInput = document.getElementById("public-profile-url") as HTMLInputElement;
+    const profileUrlInput = document.getElementById(
+      "public-profile-url"
+    ) as HTMLInputElement;
 
     if (!infoContainer || !displayName || !profileUrl) return;
 
@@ -92,8 +98,11 @@ const OptionsService = {
     }
 
     // Update avatar if available
-    if (account.arcadeData?.userDetails?.profileImage && avatarImg) {
-      avatarImg.src = account.arcadeData.userDetails.profileImage;
+    const userDetail = account.arcadeData
+      ? this.extractUserDetails(account.arcadeData)
+      : null;
+    if (userDetail?.profileImage && avatarImg) {
+      avatarImg.src = userDetail.profileImage;
       avatarImg.style.display = "block";
     } else if (avatarImg) {
       avatarImg.style.display = "none";
@@ -105,21 +114,15 @@ const OptionsService = {
    */
   setupAccountEventListeners(): void {
     // Account selector change
-    const selector = document.getElementById("account-selector") as HTMLSelectElement;
+    const selector = document.getElementById(
+      "account-selector"
+    ) as HTMLSelectElement;
     if (selector) {
       selector.addEventListener("change", async (e) => {
         const target = e.target as HTMLSelectElement;
         if (target.value) {
           await this.switchAccount(target.value);
         }
-      });
-    }
-
-    // Add account button
-    const addBtn = document.getElementById("add-account-btn");
-    if (addBtn) {
-      addBtn.addEventListener("click", () => {
-        this.showAddAccountModal();
       });
     }
 
@@ -155,6 +158,14 @@ const OptionsService = {
       });
     }
 
+    // Add account button
+    const addBtn = document.getElementById("add-account-btn");
+    if (addBtn) {
+      addBtn.addEventListener("click", () => {
+        this.showAddAccountModal();
+      });
+    }
+
     // Setup modal event listeners
     this.setupModalEventListeners();
   },
@@ -168,7 +179,7 @@ const OptionsService = {
       const account = await AccountService.getAccountById(accountId);
       if (account) {
         this.updateCurrentAccountInfo(account);
-        
+
         // Update arcade data if available
         if (account.arcadeData) {
           PopupUIService.updateOptionsUI(account.arcadeData);
@@ -183,15 +194,6 @@ const OptionsService = {
    * Setup event listeners for options page
    */
   setupEventListeners(): void {
-    // Submit URL button
-    const submitUrlElement = document.getElementById("submit-url");
-    if (submitUrlElement) {
-      submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
-      submitUrlElement.addEventListener("click", () =>
-        OptionsService.handleSubmit()
-      );
-    }
-
     // Video toggle button
     const toggleVideoButton = document.getElementById("toggle-video");
     if (toggleVideoButton) {
@@ -319,7 +321,24 @@ const OptionsService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(profileUrl);
 
       if (arcadeData) {
-        await OptionsService.displayUserDetails(arcadeData, profileUrl);
+        // Check if we have an active account selected
+        const activeAccount = await AccountService.getActiveAccount();
+
+        if (activeAccount) {
+          // Update existing account
+          await OptionsService.displayUserDetails(
+            arcadeData,
+            profileUrl,
+            "update"
+          );
+        } else {
+          // Create new account
+          await OptionsService.displayUserDetails(
+            arcadeData,
+            profileUrl,
+            "create"
+          );
+        }
       } else {
         PopupUIService.showMessage(
           "#error-message",
@@ -343,38 +362,51 @@ const OptionsService = {
    */
   async displayUserDetails(
     data: ArcadeData,
-    profileUrl?: string
+    profileUrl?: string,
+    action?: "create" | "update"
   ): Promise<void> {
-    PopupUIService.showMessage(
-      "#success-message",
-      browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
-    );
-
     // Check if we have an active account to update
     const activeAccount = await AccountService.getActiveAccount();
 
-    if (activeAccount) {
+    let messageText = "";
+
+    if (action === "create" || !activeAccount) {
+      // Create new account
+      if (profileUrl) {
+        try {
+          // Use userName from API if available
+          const userDetail = this.extractUserDetails(data);
+          const accountName = userDetail?.userName || "Tài khoản mới";
+
+          const newAccount = await AccountService.createAccount({
+            name: accountName,
+            profileUrl,
+            arcadeData: data,
+          });
+          // Set as active account
+          await AccountService.setActiveAccount(newAccount.id);
+          messageText = `Đã tạo tài khoản "${accountName}" thành công!`;
+        } catch {
+          // Fallback to old storage method
+          await StorageService.saveArcadeData(data);
+          await StorageService.saveProfileUrl(profileUrl);
+          messageText = "Đã lưu dữ liệu thành công!";
+        }
+      }
+    } else {
       // Update existing account
       await AccountService.updateAccountArcadeData(activeAccount.id, data);
       if (profileUrl) {
         await AccountService.updateAccount(activeAccount.id, { profileUrl });
       }
-    } else {
-      // Create new account if none exists or fallback to old storage
-      if (profileUrl) {
-        try {
-          await AccountService.createAccount({
-            profileUrl,
-            arcadeData: data,
-          });
-        } catch {
-          // Fallback to old storage method
-          await StorageService.saveArcadeData(data);
-          await StorageService.saveProfileUrl(profileUrl);
-        }
-      }
+      messageText = "Đã cập nhật tài khoản thành công!";
     }
+
+    PopupUIService.showMessage(
+      "#success-message",
+      messageText || browser.i18n.getMessage("successSettingsSaved"),
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
+    );
 
     PopupUIService.updateOptionsUI(data);
 
@@ -520,6 +552,8 @@ const OptionsService = {
     const closeBtn = document.getElementById("close-modal-btn");
     const cancelBtn = document.getElementById("cancel-add-account-btn");
     const confirmBtn = document.getElementById("confirm-add-account-btn");
+    const fetchBtn = document.getElementById("fetch-profile-btn");
+    const backBtn = document.getElementById("back-to-input-btn");
 
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
@@ -536,6 +570,28 @@ const OptionsService = {
     if (confirmBtn) {
       confirmBtn.addEventListener("click", async () => {
         await this.handleAddAccount();
+      });
+    }
+
+    if (fetchBtn) {
+      fetchBtn.addEventListener("click", async () => {
+        await this.fetchProfilePreview();
+      });
+    }
+
+    if (backBtn) {
+      backBtn.addEventListener("click", () => {
+        this.backToUrlInput();
+      });
+    }
+
+    // Allow Enter key to fetch profile in URL input
+    const urlInput = document.getElementById("account-url-input");
+    if (urlInput) {
+      urlInput.addEventListener("keypress", async (e) => {
+        if (e.key === "Enter") {
+          await this.fetchProfilePreview();
+        }
       });
     }
 
@@ -594,8 +650,12 @@ const OptionsService = {
     const closeBtn = document.getElementById("close-import-modal-btn");
     const cancelBtn = document.getElementById("cancel-import-btn");
     const confirmBtn = document.getElementById("confirm-import-btn");
-    const fileInput = document.getElementById("import-file-input") as HTMLInputElement;
-    const textArea = document.getElementById("import-json-textarea") as HTMLTextAreaElement;
+    const fileInput = document.getElementById(
+      "import-file-input"
+    ) as HTMLInputElement;
+    const textArea = document.getElementById(
+      "import-json-textarea"
+    ) as HTMLTextAreaElement;
 
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
@@ -647,16 +707,51 @@ const OptionsService = {
     if (modal) {
       modal.classList.remove("hidden");
       modal.classList.add("flex");
-      
-      // Clear form
-      const nameInput = document.getElementById("account-name-input") as HTMLInputElement;
-      const nicknameInput = document.getElementById("account-nickname-input") as HTMLInputElement;
-      const urlInput = document.getElementById("account-url-input") as HTMLInputElement;
-      
-      if (nameInput) nameInput.value = "";
-      if (nicknameInput) nicknameInput.value = "";
-      if (urlInput) urlInput.value = "";
+
+      // Reset to step 1
+      this.resetAddAccountModal();
     }
+  },
+
+  /**
+   * Reset add account modal to initial state
+   */
+  resetAddAccountModal(): void {
+    // Show step 1, hide others
+    const stepUrlInput = document.getElementById("step-url-input");
+    const stepPreview = document.getElementById("step-profile-preview");
+    const errorDiv = document.getElementById("error-profile");
+    const loadingDiv = document.getElementById("loading-profile");
+    const backBtn = document.getElementById("back-to-input-btn");
+    const confirmBtn = document.getElementById(
+      "confirm-add-account-btn"
+    ) as HTMLButtonElement;
+
+    if (stepUrlInput) stepUrlInput.classList.remove("hidden");
+    if (stepPreview) stepPreview.classList.add("hidden");
+    if (errorDiv) errorDiv.classList.add("hidden");
+    if (loadingDiv) loadingDiv.classList.add("hidden");
+    if (backBtn) backBtn.classList.add("hidden");
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML =
+        '<i class="fa-solid fa-plus mr-1"></i>Thêm tài khoản';
+    }
+
+    // Clear form inputs
+    const nameDisplay = document.getElementById(
+      "account-name-display"
+    ) as HTMLInputElement;
+    const nicknameInput = document.getElementById(
+      "account-nickname-input"
+    ) as HTMLInputElement;
+    const urlInput = document.getElementById(
+      "account-url-input"
+    ) as HTMLInputElement;
+
+    if (nameDisplay) nameDisplay.value = "";
+    if (nicknameInput) nicknameInput.value = "";
+    if (urlInput) urlInput.value = "";
   },
 
   /**
@@ -671,6 +766,237 @@ const OptionsService = {
   },
 
   /**
+   * Fetch and preview profile information
+   */
+  async fetchProfilePreview(): Promise<void> {
+    const urlInput = document.getElementById(
+      "account-url-input"
+    ) as HTMLInputElement;
+    const loadingDiv = document.getElementById("loading-profile");
+    const errorDiv = document.getElementById("error-profile");
+    const stepUrlInput = document.getElementById("step-url-input");
+    const stepPreview = document.getElementById("step-profile-preview");
+
+    if (!urlInput.value.trim()) {
+      this.showProfileError("Vui lòng nhập URL profile!");
+      return;
+    }
+
+    if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
+      this.showProfileError("URL profile không hợp lệ!");
+      return;
+    }
+
+    // Check if account already exists
+    try {
+      const existingAccount = await AccountService.isAccountExists(
+        urlInput.value.trim()
+      );
+      if (existingAccount) {
+        this.showProfileError(
+          `Tài khoản với URL này đã tồn tại: "${existingAccount.name}". Bạn có thể chuyển sang tài khoản đó thay vì tạo mới.`
+        );
+
+        // Show option to switch to existing account
+        this.showSwitchToExistingAccountOption(existingAccount);
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking existing account:", error);
+    }
+
+    // Show loading state
+    if (errorDiv) errorDiv.classList.add("hidden");
+    if (loadingDiv) loadingDiv.classList.remove("hidden");
+
+    try {
+      // Fetch arcade data
+      const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
+
+      if (!arcadeData) {
+        throw new Error("Không thể lấy thông tin từ profile này");
+      }
+
+      // Check if we have user details and can extract user name
+      const userDetail = this.extractUserDetails(arcadeData);
+      if (!userDetail?.userName) {
+        throw new Error("Không thể lấy tên người dùng từ profile này");
+      }
+
+      // Hide loading, show preview
+      if (loadingDiv) loadingDiv.classList.add("hidden");
+      if (stepUrlInput) stepUrlInput.classList.add("hidden");
+      if (stepPreview) stepPreview.classList.remove("hidden");
+
+      // Update preview UI
+      this.updateProfilePreview(arcadeData, urlInput.value);
+
+      // Enable confirm button
+      const confirmBtn = document.getElementById(
+        "confirm-add-account-btn"
+      ) as HTMLButtonElement;
+      const backBtn = document.getElementById("back-to-input-btn");
+      if (confirmBtn) confirmBtn.disabled = false;
+      if (backBtn) backBtn.classList.remove("hidden");
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      if (loadingDiv) loadingDiv.classList.add("hidden");
+      this.showProfileError(
+        error instanceof Error
+          ? error.message
+          : "Không thể lấy thông tin profile. Vui lòng kiểm tra URL và thử lại!"
+      );
+    }
+  },
+
+  /**
+   * Extract user details from ArcadeData (handle both array and object format)
+   */
+  extractUserDetails(arcadeData: ArcadeData) {
+    if (!arcadeData.userDetails) return null;
+
+    if (Array.isArray(arcadeData.userDetails)) {
+      return arcadeData.userDetails[0] || null;
+    }
+
+    return arcadeData.userDetails;
+  },
+
+  /**
+   * Update profile preview UI
+   */
+  updateProfilePreview(arcadeData: ArcadeData, profileUrl: string): void {
+    const previewAvatar = document.getElementById(
+      "preview-avatar"
+    ) as HTMLImageElement;
+    const previewName = document.getElementById("preview-name");
+    const previewEmail = document.getElementById("preview-email");
+    const previewPoints = document.getElementById("preview-points");
+    const nameDisplay = document.getElementById(
+      "account-name-display"
+    ) as HTMLInputElement;
+
+    // Extract user details using helper function
+    const userDetail = this.extractUserDetails(arcadeData);
+
+    if (previewAvatar && userDetail?.profileImage) {
+      previewAvatar.src = userDetail.profileImage;
+      previewAvatar.style.display = "block";
+    }
+
+    if (previewName && userDetail?.userName) {
+      previewName.textContent = userDetail.userName;
+      // Auto-fill name display with detected name
+      if (nameDisplay) {
+        nameDisplay.value = userDetail.userName;
+      }
+    }
+
+    if (previewEmail) {
+      // Show member since info if available, otherwise extract from URL
+      if (userDetail?.memberSince) {
+        previewEmail.textContent = userDetail.memberSince;
+      } else {
+        try {
+          const url = new URL(profileUrl);
+          const pathParts = url.pathname.split("/");
+          const profileId = pathParts[pathParts.length - 1];
+          previewEmail.textContent = profileId || "Profile ID không xác định";
+        } catch {
+          previewEmail.textContent = "Profile ID không xác định";
+        }
+      }
+    }
+
+    if (previewPoints) {
+      // Try to get points from userDetails first, then arcadePoints
+      let pointsText = "0 Arcade Points";
+
+      if (userDetail?.points && userDetail.points !== "") {
+        pointsText = userDetail.points;
+      } else if (arcadeData.arcadePoints?.totalPoints !== undefined) {
+        pointsText = `${arcadeData.arcadePoints.totalPoints.toLocaleString()} Arcade Points`;
+      }
+
+      previewPoints.textContent = pointsText;
+    }
+  },
+
+  /**
+   * Show profile fetch error
+   */
+  showProfileError(message: string): void {
+    const errorDiv = document.getElementById("error-profile");
+    const errorMessage = document.getElementById("error-message");
+    const loadingDiv = document.getElementById("loading-profile");
+
+    if (loadingDiv) loadingDiv.classList.add("hidden");
+    if (errorDiv) errorDiv.classList.remove("hidden");
+    if (errorMessage) errorMessage.textContent = message;
+  },
+
+  /**
+   * Show option to switch to existing account
+   */
+  showSwitchToExistingAccountOption(existingAccount: Account): void {
+    const errorDiv = document.getElementById("error-profile");
+    const errorMessage = document.getElementById("error-message");
+
+    if (errorDiv && errorMessage) {
+      // Add a button to switch to existing account
+      const switchButton = document.createElement("button");
+      switchButton.className =
+        "mt-3 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200";
+      switchButton.innerHTML = `<i class="fa-solid fa-arrow-right mr-1"></i>Chuyển sang tài khoản "${existingAccount.name}"`;
+
+      switchButton.addEventListener("click", async () => {
+        try {
+          await this.switchAccount(existingAccount.id);
+          this.hideAddAccountModal();
+          this.showMessage(
+            `Đã chuyển sang tài khoản "${existingAccount.name}"!`,
+            "success"
+          );
+        } catch (error) {
+          console.error("Error switching account:", error);
+          this.showMessage("Có lỗi khi chuyển tài khoản!", "error");
+        }
+      });
+
+      // Clear previous button if exists
+      const existingButton = errorMessage.parentNode?.querySelector("button");
+      if (existingButton) {
+        existingButton.remove();
+      }
+
+      errorMessage.parentNode?.appendChild(switchButton);
+    }
+  },
+
+  /**
+   * Go back to URL input step
+   */
+  backToUrlInput(): void {
+    const stepUrlInput = document.getElementById("step-url-input");
+    const stepPreview = document.getElementById("step-profile-preview");
+    const errorDiv = document.getElementById("error-profile");
+    const backBtn = document.getElementById("back-to-input-btn");
+    const confirmBtn = document.getElementById(
+      "confirm-add-account-btn"
+    ) as HTMLButtonElement;
+    const nameDisplay = document.getElementById(
+      "account-name-display"
+    ) as HTMLInputElement;
+
+    if (stepUrlInput) stepUrlInput.classList.remove("hidden");
+    if (stepPreview) stepPreview.classList.add("hidden");
+    if (errorDiv) errorDiv.classList.add("hidden");
+    if (backBtn) backBtn.classList.add("hidden");
+    if (confirmBtn) confirmBtn.disabled = true;
+    if (nameDisplay) nameDisplay.value = "";
+  },
+
+  /**
    * Show edit account modal
    */
   async showEditAccountModal(): Promise<void> {
@@ -678,8 +1004,12 @@ const OptionsService = {
     if (!activeAccount) return;
 
     const modal = document.getElementById("edit-account-modal");
-    const nameInput = document.getElementById("edit-account-name-input") as HTMLInputElement;
-    const nicknameInput = document.getElementById("edit-account-nickname-input") as HTMLInputElement;
+    const nameInput = document.getElementById(
+      "edit-account-name-input"
+    ) as HTMLInputElement;
+    const nicknameInput = document.getElementById(
+      "edit-account-nickname-input"
+    ) as HTMLInputElement;
 
     if (modal && nameInput && nicknameInput) {
       nameInput.value = activeAccount.name;
@@ -709,11 +1039,15 @@ const OptionsService = {
     if (modal) {
       modal.classList.remove("hidden");
       modal.classList.add("flex");
-      
+
       // Clear form
-      const fileInput = document.getElementById("import-file-input") as HTMLInputElement;
-      const textArea = document.getElementById("import-json-textarea") as HTMLTextAreaElement;
-      
+      const fileInput = document.getElementById(
+        "import-file-input"
+      ) as HTMLInputElement;
+      const textArea = document.getElementById(
+        "import-json-textarea"
+      ) as HTMLTextAreaElement;
+
       if (fileInput) fileInput.value = "";
       if (textArea) textArea.value = "";
     }
@@ -734,9 +1068,15 @@ const OptionsService = {
    * Handle adding a new account
    */
   async handleAddAccount(): Promise<void> {
-    const nameInput = document.getElementById("account-name-input") as HTMLInputElement;
-    const nicknameInput = document.getElementById("account-nickname-input") as HTMLInputElement;
-    const urlInput = document.getElementById("account-url-input") as HTMLInputElement;
+    const nameDisplay = document.getElementById(
+      "account-name-display"
+    ) as HTMLInputElement;
+    const nicknameInput = document.getElementById(
+      "account-nickname-input"
+    ) as HTMLInputElement;
+    const urlInput = document.getElementById(
+      "account-url-input"
+    ) as HTMLInputElement;
     const confirmBtn = document.getElementById("confirm-add-account-btn");
 
     if (!urlInput.value.trim()) {
@@ -749,36 +1089,56 @@ const OptionsService = {
       return;
     }
 
+    // Validate that we have a name from the API
+    if (!nameDisplay.value.trim()) {
+      this.showMessage(
+        "Không thể lấy tên từ profile. Vui lòng thử lại!",
+        "error"
+      );
+      return;
+    }
+
     if (confirmBtn) {
-      confirmBtn.textContent = "Đang thêm...";
+      confirmBtn.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Đang thêm...';
       (confirmBtn as HTMLButtonElement).disabled = true;
     }
 
     try {
-      // Fetch arcade data for the new account
+      // Fetch arcade data for the new account (re-fetch to ensure fresh data)
       const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
-      
+
+      // Use name from API (already populated in nameDisplay)
+      const accountName = nameDisplay.value.trim();
+
       const newAccount = await AccountService.createAccount({
-        name: nameInput.value.trim() || undefined,
+        name: accountName,
         nickname: nicknameInput.value.trim() || undefined,
         profileUrl: urlInput.value.trim(),
         arcadeData: arcadeData || undefined,
       });
 
       await this.loadAccounts();
-      
+
       // Switch to new account
       await this.switchAccount(newAccount.id);
-      
+
       this.hideAddAccountModal();
       this.showMessage("Đã thêm tài khoản thành công!", "success");
-      
     } catch (error) {
       console.error("Error adding account:", error);
-      this.showMessage("Có lỗi xảy ra khi thêm tài khoản. Vui lòng thử lại!", "error");
+
+      // Show specific error message if account already exists
+      let errorMessage = "Có lỗi xảy ra khi thêm tài khoản. Vui lòng thử lại!";
+      if (error instanceof Error && error.message.includes("đã tồn tại")) {
+        errorMessage = error.message;
+      }
+
+      this.showMessage(errorMessage, "error");
     } finally {
       if (confirmBtn) {
-        confirmBtn.textContent = "Thêm tài khoản";
+        confirmBtn.innerHTML =
+          '<i class="fa-solid fa-plus mr-1"></i>Thêm tài khoản';
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
     }
@@ -791,8 +1151,12 @@ const OptionsService = {
     const activeAccount = await AccountService.getActiveAccount();
     if (!activeAccount) return;
 
-    const nameInput = document.getElementById("edit-account-name-input") as HTMLInputElement;
-    const nicknameInput = document.getElementById("edit-account-nickname-input") as HTMLInputElement;
+    const nameInput = document.getElementById(
+      "edit-account-name-input"
+    ) as HTMLInputElement;
+    const nicknameInput = document.getElementById(
+      "edit-account-nickname-input"
+    ) as HTMLInputElement;
 
     if (!nameInput.value.trim()) {
       this.showMessage("Tên hiển thị không được để trống!", "error");
@@ -804,7 +1168,7 @@ const OptionsService = {
         name: nameInput.value.trim(),
         nickname: nicknameInput.value.trim() || undefined,
       });
-      
+
       await this.loadAccounts();
       this.hideEditAccountModal();
       this.showMessage("Đã cập nhật tài khoản thành công!", "success");
@@ -827,7 +1191,11 @@ const OptionsService = {
       return;
     }
 
-    if (!window.confirm(`Bạn có chắc chắn muốn xóa tài khoản "${activeAccount.name}"?`)) {
+    if (
+      !window.confirm(
+        `Bạn có chắc chắn muốn xóa tài khoản "${activeAccount.name}"?`
+      )
+    ) {
       return;
     }
 
@@ -835,7 +1203,7 @@ const OptionsService = {
       await AccountService.deleteAccount(activeAccount.id);
       await this.loadAccounts();
       this.showMessage("Đã xóa tài khoản thành công!", "success");
-      
+
       // Reload page since active account changed
       setTimeout(() => {
         window.location.reload();
@@ -852,18 +1220,20 @@ const OptionsService = {
   async handleExportAccounts(): Promise<void> {
     try {
       const data = await AccountService.exportAccounts();
-      
+
       // Create and download file
       const blob = new Blob([data], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `gcskills-accounts-${new Date().toISOString().slice(0, 10)}.json`;
+      link.download = `gcskills-accounts-${new Date()
+        .toISOString()
+        .slice(0, 10)}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      
+
       this.showMessage("Đã xuất dữ liệu thành công!", "success");
     } catch (error) {
       console.error("Error exporting accounts:", error);
@@ -875,7 +1245,9 @@ const OptionsService = {
    * Handle importing accounts
    */
   async handleImportAccounts(): Promise<void> {
-    const textArea = document.getElementById("import-json-textarea") as HTMLTextAreaElement;
+    const textArea = document.getElementById(
+      "import-json-textarea"
+    ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
     if (!textArea.value.trim()) {
@@ -890,18 +1262,21 @@ const OptionsService = {
 
     try {
       const success = await AccountService.importAccounts(textArea.value);
-      
+
       if (success) {
         await this.loadAccounts();
         this.hideImportModal();
         this.showMessage("Đã nhập dữ liệu thành công!", "success");
-        
+
         // Reload page to refresh UI
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        this.showMessage("Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!", "error");
+        this.showMessage(
+          "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!",
+          "error"
+        );
       }
     } catch (error) {
       console.error("Error importing accounts:", error);
@@ -920,9 +1295,7 @@ const OptionsService = {
   showMessage(message: string, type: "success" | "error" = "success"): void {
     const messageElement = document.createElement("div");
     messageElement.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
-      type === "success" 
-        ? "bg-green-500 text-white" 
-        : "bg-red-500 text-white"
+      type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
     }`;
     messageElement.textContent = message;
     document.body.appendChild(messageElement);
