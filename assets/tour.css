@@ -84,7 +84,7 @@
 }
 
 .tour-highlight::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -4px;
   left: -4px;
@@ -98,7 +98,8 @@
 }
 
 @keyframes pulse-green {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -114,11 +115,11 @@
     max-width: 90vw !important;
     margin: 10px !important;
   }
-  
+
   .introjs-tooltiptext {
     font-size: 13px !important;
   }
-  
+
   .introjs-button {
     padding: 6px 12px !important;
     font-size: 12px !important;
@@ -131,11 +132,11 @@
     background: #1f2937 !important;
     border-color: #374151 !important;
   }
-  
+
   .introjs-tooltiptext {
     color: #f3f4f6 !important;
   }
-  
+
   .introjs-tooltipbuttons {
     background: #111827 !important;
     border-color: #374151 !important;
