@@ -9,6 +9,16 @@
   <link rel="stylesheet" href="~/assets/markdown.css" />
   <link rel="stylesheet" href="~/assets/account-switcher.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
+  <style>
+    /* Global cursor pointer for all buttons */
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 
 <body>
@@ -98,30 +108,78 @@
             </div>
           </div>
 
-          <div class="flex space-x-2 mb-3">
-            <button id="add-account-btn"
-              class="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
-              <i class="fa-solid fa-plus mr-1"></i>
-              Thêm tài khoản
-            </button>
-            <button id="view-active-profile-btn"
-              class="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
-              <i class="fa-solid fa-eye mr-1"></i>
-              Profile tài khoản đang dùng
-            </button>
-          </div>
+          <!-- Action Buttons Section -->
+          <div class="space-y-4">
+            <!-- Primary Actions -->
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button id="add-account-btn"
+                class="flex-1 bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 hover:from-emerald-600 hover:via-green-600 hover:to-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 group cursor-pointer">
+                <div class="flex items-center justify-center">
+                  <div class="bg-white/20 p-2 rounded-lg mr-3 group-hover:bg-white/30 transition-colors duration-200">
+                    <i class="fa-solid fa-user-plus text-lg"></i>
+                  </div>
+                  <div class="text-left">
+                    <div class="font-bold text-base">Thêm tài khoản mới</div>
+                    <div class="text-xs text-green-100 opacity-90">Tạo và quản lý tài khoản</div>
+                  </div>
+                </div>
+              </button>
 
-          <div class="flex space-x-2">
-            <button id="export-accounts-btn"
-              class="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
-              <i class="fa-solid fa-download mr-1"></i>
-              Xuất dữ liệu
-            </button>
-            <button id="import-accounts-btn"
-              class="flex-1 bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
-              <i class="fa-solid fa-upload mr-1"></i>
-              Nhập dữ liệu
-            </button>
+              <button id="view-active-profile-btn"
+                class="flex-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:from-indigo-600 hover:via-purple-600 hover:to-indigo-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 group cursor-pointer">
+                <div class="flex items-center justify-center">
+                  <div class="bg-white/20 p-2 rounded-lg mr-3 group-hover:bg-white/30 transition-colors duration-200">
+                    <i class="fa-solid fa-eye text-lg"></i>
+                  </div>
+                  <div class="text-left">
+                    <div class="font-bold text-base">Xem Profile</div>
+                    <div class="text-xs text-purple-100 opacity-90">Tài khoản đang hoạt động</div>
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            <!-- Data Management -->
+            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+              <div class="flex items-center mb-3">
+                <div class="bg-gray-100 p-2 rounded-lg mr-3">
+                  <i class="fa-solid fa-database text-gray-600"></i>
+                </div>
+                <div>
+                  <h6 class="font-semibold text-gray-800">Quản lý dữ liệu</h6>
+                  <p class="text-xs text-gray-600">Sao lưu và khôi phục tài khoản</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button id="export-accounts-btn"
+                  class="group bg-white hover:bg-blue-50 text-blue-700 font-semibold px-4 py-3 rounded-lg border-2 border-blue-200 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+                  <div class="flex items-center justify-center">
+                    <div class="bg-blue-100 group-hover:bg-blue-200 p-2 rounded-lg mr-3 transition-colors duration-200">
+                      <i class="fa-solid fa-download text-blue-600"></i>
+                    </div>
+                    <div class="text-left">
+                      <div class="font-bold text-sm">Xuất dữ liệu</div>
+                      <div class="text-xs text-blue-600 opacity-80">Tải file JSON</div>
+                    </div>
+                  </div>
+                </button>
+
+                <button id="import-accounts-btn"
+                  class="group bg-white hover:bg-orange-50 text-orange-700 font-semibold px-4 py-3 rounded-lg border-2 border-orange-200 hover:border-orange-300 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+                  <div class="flex items-center justify-center">
+                    <div
+                      class="bg-orange-100 group-hover:bg-orange-200 p-2 rounded-lg mr-3 transition-colors duration-200">
+                      <i class="fa-solid fa-upload text-orange-600"></i>
+                    </div>
+                    <div class="text-left">
+                      <div class="font-bold text-sm">Nhập dữ liệu</div>
+                      <div class="text-xs text-orange-600 opacity-80">Từ file JSON</div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -139,7 +197,7 @@
         </div>
         <div class="flex justify-center mt-6">
           <button id="toggle-video"
-            class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200 flex items-center space-x-2">
+            class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200 flex items-center space-x-2 cursor-pointer">
             <i class="fa-solid fa-video"></i>
             <span>Show/Hide Video</span>
           </button>
@@ -183,7 +241,7 @@
                 </div>
               </div>
               <button id="go-to-profile-page-btn"
-                class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg transform hover:scale-105 transition duration-200">
+                class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg transform hover:scale-105 transition duration-200 cursor-pointer">
                 <i class="fa-solid fa-external-link-alt mr-2"></i>
                 Mở trang Profile
               </button>
@@ -254,7 +312,7 @@
                 class="flex-1 border-2 border-gray-300 rounded-xl px-4 py-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
                 placeholder="https://www.cloudskillsboost.google/public_profiles/xxxxxxxxx" required>
               <button id="fetch-profile-btn"
-                class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-200">
+                class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-200 cursor-pointer">
                 <i class="fa-solid fa-search mr-2"></i>
                 Lấy thông tin
               </button>
@@ -347,17 +405,17 @@
         <!-- Action Buttons -->
         <div class="flex space-x-3 mt-6 pt-4 border-t border-gray-200">
           <button id="cancel-add-account-btn"
-            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-3 rounded-lg transition duration-200">
+            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-3 rounded-lg transition duration-200 cursor-pointer">
             <i class="fa-solid fa-times mr-1"></i>
             Hủy
           </button>
           <button id="back-to-input-btn"
-            class="hidden flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-3 rounded-lg transition duration-200">
+            class="hidden flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-3 rounded-lg transition duration-200 cursor-pointer">
             <i class="fa-solid fa-arrow-left mr-1"></i>
             Quay lại
           </button>
           <button id="confirm-add-account-btn"
-            class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-3 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-3 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             disabled>
             <i class="fa-solid fa-plus mr-1"></i>
             Thêm tài khoản
