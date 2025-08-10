@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="~/assets/tailwind.css" />
   <link rel="stylesheet" href="~/assets/markdown.css" />
   <link rel="stylesheet" href="~/assets/account-switcher.css" />
+  <link rel="stylesheet" href="~/assets/intro-custom.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js@8.3.2/introjs.css" />
   <style>
     /* Global cursor pointer for all buttons */
     button {
@@ -36,6 +38,13 @@
         Take your Google Cloud Skills Boost experience to the next level
         with our powerful and intuitive browser extension.
       </p>
+      <div class="mt-4 flex justify-center">
+        <button id="start-tour-btn"
+          class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-play text-sm"></i>
+          <span>Hướng dẫn sử dụng</span>
+        </button>
+      </div>
     </div>
 
     <!-- Important Notice/Announcement -->
@@ -58,7 +67,9 @@
       <!-- BEGIN - Settings -->
 
       <!-- Account Management Card (moved to top) -->
-      <div class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200">
+      <div class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200"
+        data-intro="Đây là khu vực quản lý tài khoản của bạn. Bạn có thể thêm, chỉnh sửa và quản lý nhiều tài khoản Google Cloud Skills Boost tại đây."
+        data-step="1">
         <h4 class="text-xl font-semibold text-gray-800 mb-2">
           <i class="fa-solid fa-user-group mr-2 text-indigo-600"></i>
           Quản lý tài khoản & Arcade Points Calculator
@@ -76,7 +87,9 @@
                 Tài khoản của bạn
               </h5>
               <button id="add-account-btn"
-                class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold px-3 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+                class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold px-3 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                data-intro="Click vào nút này để thêm tài khoản mới. Đây là bước đầu tiên để bắt đầu sử dụng extension."
+                data-step="2">
                 <div class="flex items-center justify-center gap-2">
                   <i class="fa-solid fa-user-plus text-sm"></i>
                   <span class="text-sm">Thêm tài khoản</span>
@@ -85,7 +98,9 @@
             </div>
 
             <!-- Accounts List -->
-            <div id="accounts-list" class="space-y-3">
+            <div id="accounts-list" class="space-y-3"
+              data-intro="Danh sách tài khoản sẽ hiển thị ở đây. Bạn có thể chuyển đổi giữa các tài khoản, cập nhật dữ liệu, và quản lý chúng."
+              data-step="3">
               <!-- Account items will be dynamically inserted here -->
               <div id="no-accounts-message" class="text-center py-8 text-gray-500">
                 <i class="fa-solid fa-user-plus text-4xl mb-3 opacity-50"></i>
@@ -310,7 +325,9 @@
               </div>
             </div>
             <button id="go-to-profile-page-btn"
-              class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm">
+              class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm"
+              data-intro="Click vào đây để mở trang Google Cloud Skills Boost Profile. Đây là nơi bạn sẽ lấy URL profile để thêm tài khoản."
+              data-step="4">
               <i class="fa-solid fa-external-link-alt mr-1 text-xs"></i>
               Mở trang Profile
             </button>
@@ -379,9 +396,13 @@
           <div class="flex space-x-3">
             <input type="url" id="account-url-input"
               class="flex-1 border-2 border-gray-300 rounded-xl px-4 py-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
-              placeholder="https://www.cloudskillsboost.google/public_profiles/xxxxxxxxx" required>
+              placeholder="https://www.cloudskillsboost.google/public_profiles/xxxxxxxxx" required
+              data-intro="Dán URL profile từ Google Cloud Skills Boost vào đây. URL này sẽ được sử dụng để lấy thông tin tài khoản của bạn."
+              data-step="5">
             <button id="create-account-btn"
-              class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm">
+              class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm"
+              data-intro="Sau khi nhập URL, click vào nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ profile và tạo tài khoản mới."
+              data-step="6">
               <i class="fa-solid fa-plus mr-1 text-xs"></i>
               Tạo tài khoản
             </button>

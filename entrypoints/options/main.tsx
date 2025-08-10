@@ -1,4 +1,4 @@
-import { OptionsService } from "../../services";
+import { OptionsService, TourService } from "../../services";
 
 // Initialize options page when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
