@@ -843,10 +843,6 @@ const AccountUIService = {
           this.showMessage("Đã xóa tài khoản thành công!", "success");
           hideModal();
 
-          // Reload page since active account changed
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
         } catch (error) {
           console.error("Error deleting account:", error);
           this.showMessage("Có lỗi xảy ra khi xóa tài khoản!", "error");
