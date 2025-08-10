@@ -1,12 +1,16 @@
 // Types for popup and options functionality
 
+export interface UserDetail {
+  userName?: string;
+  memberSince?: string;
+  league?: string;
+  points?: string;
+  profileImage?: string;
+}
+
 export interface ArcadeData {
-  userDetails?: {
-    userName?: string;
-    league?: string;
-    points?: number;
-    profileImage?: string;
-  };
+  success?: boolean;
+  userDetails?: UserDetail | UserDetail[]; // Support both single object and array
   arcadePoints?: {
     totalPoints?: number;
     gamePoints?: number;
