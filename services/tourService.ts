@@ -70,9 +70,9 @@ const TourService = {
           element: "#account-url-input",
           title: this.getMessage("tourModalStep2Title"),
           content: `${this.getMessage(
-            "tourModalStep2Content"
+            "tourModalStep2Content",
           )}<br><div class="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2"><p class="text-xs text-yellow-800"><i class="fa-solid fa-lightbulb mr-1"></i>${this.getMessage(
-            "tourModalStep2Tip"
+            "tourModalStep2Tip",
           )}</p></div>`,
           position: "bottom",
         },
