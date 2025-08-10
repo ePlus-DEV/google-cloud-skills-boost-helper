@@ -138,8 +138,8 @@ const OptionsService = {
           <div class="flex items-center space-x-2 ml-3">
             ${
               !isActive
-                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}">
-                <i class="fa-solid fa-arrow-right mr-1"></i>Chuyển
+                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}" title="Đặt làm tài khoản mặc định">
+                <i class="fa-solid fa-star mr-1"></i>
               </button>`
                 : ""
             }
@@ -543,8 +543,6 @@ const OptionsService = {
             profileUrl,
             arcadeData: data,
           });
-          // Set as active account
-          await AccountService.setActiveAccount(newAccount.id);
           messageText = `Đã tạo tài khoản "${accountName}" thành công!`;
         } catch {
           // Fallback to old storage method
@@ -711,9 +709,9 @@ const OptionsService = {
     const modal = document.getElementById("add-account-modal");
     const closeBtn = document.getElementById("close-modal-btn");
     const cancelBtn = document.getElementById("cancel-add-account-btn");
-    const confirmBtn = document.getElementById("confirm-add-account-btn");
-    const fetchBtn = document.getElementById("fetch-profile-btn");
-    const backBtn = document.getElementById("back-to-input-btn");
+    const createBtn = document.getElementById("create-account-btn");
+    const skipBtn = document.getElementById("skip-nickname-btn");
+    const saveBtn = document.getElementById("save-nickname-btn");
 
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
@@ -727,30 +725,30 @@ const OptionsService = {
       });
     }
 
-    if (confirmBtn) {
-      confirmBtn.addEventListener("click", async () => {
-        await this.handleAddAccount();
+    if (createBtn) {
+      createBtn.addEventListener("click", async () => {
+        await this.handleCreateAccount();
       });
     }
 
-    if (fetchBtn) {
-      fetchBtn.addEventListener("click", async () => {
-        await this.fetchProfilePreview();
+    if (skipBtn) {
+      skipBtn.addEventListener("click", () => {
+        this.hideAddAccountModal();
       });
     }
 
-    if (backBtn) {
-      backBtn.addEventListener("click", () => {
-        this.backToUrlInput();
+    if (saveBtn) {
+      saveBtn.addEventListener("click", async () => {
+        await this.handleSaveNickname();
       });
     }
 
-    // Allow Enter key to fetch profile in URL input
+    // Allow Enter key to create account in URL input
     const urlInput = document.getElementById("account-url-input");
     if (urlInput) {
       urlInput.addEventListener("keypress", async (e) => {
         if (e.key === "Enter") {
-          await this.fetchProfilePreview();
+          await this.handleCreateAccount();
         }
       });
     }
@@ -891,29 +889,22 @@ const OptionsService = {
   resetAddAccountModal(): void {
     // Show step 1, hide others
     const stepUrlInput = document.getElementById("step-url-input");
-    const stepPreview = document.getElementById("step-profile-preview");
+    const stepNickname = document.getElementById("step-add-nickname");
     const errorDiv = document.getElementById("error-profile");
     const loadingDiv = document.getElementById("loading-profile");
-    const backBtn = document.getElementById("back-to-input-btn");
-    const confirmBtn = document.getElementById(
-      "confirm-add-account-btn"
-    ) as HTMLButtonElement;
+    const successDiv = document.getElementById("success-created");
+    const skipBtn = document.getElementById("skip-nickname-btn");
+    const saveBtn = document.getElementById("save-nickname-btn");
 
     if (stepUrlInput) stepUrlInput.classList.remove("hidden");
-    if (stepPreview) stepPreview.classList.add("hidden");
+    if (stepNickname) stepNickname.classList.add("hidden");
     if (errorDiv) errorDiv.classList.add("hidden");
     if (loadingDiv) loadingDiv.classList.add("hidden");
-    if (backBtn) backBtn.classList.add("hidden");
-    if (confirmBtn) {
-      confirmBtn.disabled = true;
-      confirmBtn.innerHTML =
-        '<i class="fa-solid fa-plus mr-1"></i>Thêm tài khoản';
-    }
+    if (successDiv) successDiv.classList.add("hidden");
+    if (skipBtn) skipBtn.classList.add("hidden");
+    if (saveBtn) saveBtn.classList.add("hidden");
 
     // Clear form inputs
-    const nameDisplay = document.getElementById(
-      "account-name-display"
-    ) as HTMLInputElement;
     const nicknameInput = document.getElementById(
       "account-nickname-input"
     ) as HTMLInputElement;
@@ -921,9 +912,134 @@ const OptionsService = {
       "account-url-input"
     ) as HTMLInputElement;
 
-    if (nameDisplay) nameDisplay.value = "";
     if (nicknameInput) nicknameInput.value = "";
     if (urlInput) urlInput.value = "";
+
+    // Store created account ID for nickname step
+    // this.createdAccountId = null;
+  },
+
+  /**
+   * Handle creating account directly from URL
+   */
+  async handleCreateAccount(): Promise<void> {
+    const urlInput = document.getElementById(
+      "account-url-input"
+    ) as HTMLInputElement;
+    const loadingDiv = document.getElementById("loading-profile");
+    const errorDiv = document.getElementById("error-profile");
+    const stepUrlInput = document.getElementById("step-url-input");
+    const stepNickname = document.getElementById("step-add-nickname");
+    const successDiv = document.getElementById("success-created");
+
+    if (!urlInput.value.trim()) {
+      this.showProfileError("Vui lòng nhập URL profile!");
+      return;
+    }
+
+    if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
+      this.showProfileError("URL profile không hợp lệ!");
+      return;
+    }
+
+    // Check if account already exists
+    try {
+      const existingAccount = await AccountService.isAccountExists(
+        urlInput.value.trim()
+      );
+      if (existingAccount) {
+        this.showProfileError(
+          `Tài khoản với URL này đã tồn tại: "${existingAccount.name}". Bạn có thể chuyển sang tài khoản đó thay vì tạo mới.`
+        );
+        this.showSwitchToExistingAccountOption(existingAccount);
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking existing account:", error);
+    }
+
+    // Show loading state
+    if (errorDiv) errorDiv.classList.add("hidden");
+    if (loadingDiv) loadingDiv.classList.remove("hidden");
+
+    try {
+      // Fetch arcade data
+      const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
+
+      if (!arcadeData) {
+        throw new Error("Không thể lấy thông tin từ profile này");
+      }
+
+      // Check if we have user details and can extract user name
+      const userDetail = this.extractUserDetails(arcadeData);
+      if (!userDetail?.userName) {
+        throw new Error("Không thể lấy tên người dùng từ profile này");
+      }
+
+      // Create account directly
+      const newAccount = await AccountService.createAccount({
+        name: userDetail.userName,
+        profileUrl: urlInput.value.trim(),
+        arcadeData: arcadeData,
+      });
+
+      // Hide loading, show success and nickname step
+      if (loadingDiv) loadingDiv.classList.add("hidden");
+      if (successDiv) successDiv.classList.remove("hidden");
+      if (stepUrlInput) stepUrlInput.classList.add("hidden");
+      if (stepNickname) stepNickname.classList.remove("hidden");
+
+      // Show nickname buttons
+      const skipBtn = document.getElementById("skip-nickname-btn");
+      const saveBtn = document.getElementById("save-nickname-btn");
+      if (skipBtn) skipBtn.classList.remove("hidden");
+      if (saveBtn) saveBtn.classList.remove("hidden");
+
+      // Store account ID for nickname update
+      (this as any).createdAccountId = newAccount.id;
+
+      // Reload accounts to show new account
+      await this.loadAccounts();
+    } catch (error) {
+      console.error("Error creating account:", error);
+      if (loadingDiv) loadingDiv.classList.add("hidden");
+      this.showProfileError(
+        error instanceof Error
+          ? error.message
+          : "Không thể tạo tài khoản. Vui lòng kiểm tra URL và thử lại!"
+      );
+    }
+  },
+
+  /**
+   * Handle saving nickname for created account
+   */
+  async handleSaveNickname(): Promise<void> {
+    const nicknameInput = document.getElementById(
+      "account-nickname-input"
+    ) as HTMLInputElement;
+    const accountId = (this as any).createdAccountId;
+
+    if (!accountId) {
+      this.showMessage("Không tìm thấy tài khoản để cập nhật!", "error");
+      return;
+    }
+
+    try {
+      if (nicknameInput.value.trim()) {
+        await AccountService.updateAccount(accountId, {
+          nickname: nicknameInput.value.trim(),
+        });
+        this.showMessage("Đã lưu biệt danh thành công!", "success");
+      }
+
+      // Reload accounts and close modal
+      await this.loadAccounts();
+      this.hideAddAccountModal();
+    } catch (error) {
+      console.error("Error saving nickname:", error);
+      this.showMessage("Có lỗi khi lưu biệt danh!", "error");
+    }
   },
 
   /**
