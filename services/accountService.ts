@@ -46,7 +46,7 @@ const AccountService = {
   async getAllAccounts(): Promise<Account[]> {
     const data = await this.getAccountsData();
     return Object.values(data.accounts).sort(
-      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime()
+      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime(),
     );
   },
 
@@ -86,7 +86,8 @@ const AccountService = {
     const accounts = Object.values(data.accounts);
 
     const existingAccount = accounts.find(
-      (account) => account.profileUrl.toLowerCase() === profileUrl.toLowerCase()
+      (account) =>
+        account.profileUrl.toLowerCase() === profileUrl.toLowerCase(),
     );
 
     return existingAccount || null;
@@ -100,7 +101,7 @@ const AccountService = {
     const existingAccount = await this.isAccountExists(options.profileUrl);
     if (existingAccount) {
       throw new Error(
-        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`
+        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`,
       );
     }
 
@@ -154,7 +155,7 @@ const AccountService = {
    */
   async updateAccount(
     accountId: string,
-    updates: Partial<Account>
+    updates: Partial<Account>,
   ): Promise<boolean> {
     const data = await this.getAccountsData();
     if (!data.accounts[accountId]) {
@@ -176,7 +177,7 @@ const AccountService = {
    */
   async updateAccountArcadeData(
     accountId: string,
-    arcadeData: ArcadeData
+    arcadeData: ArcadeData,
   ): Promise<boolean> {
     return this.updateAccount(accountId, { arcadeData });
   },
@@ -223,7 +224,7 @@ const AccountService = {
         account.name.toLowerCase().includes(searchTerm) ||
         (account.nickname &&
           account.nickname.toLowerCase().includes(searchTerm)) ||
-        account.profileUrl.toLowerCase().includes(searchTerm)
+        account.profileUrl.toLowerCase().includes(searchTerm),
     );
   },
 
@@ -232,9 +233,8 @@ const AccountService = {
    */
   async migrateExistingData(): Promise<void> {
     // Check if we already have accounts data
-    const existingAccountsData = await storage.getItem<AccountsData>(
-      "local:accountsData"
-    );
+    const existingAccountsData =
+      await storage.getItem<AccountsData>("local:accountsData");
     if (existingAccountsData) {
       return; // Already migrated
     }
@@ -243,7 +243,7 @@ const AccountService = {
     const oldProfileUrl = await storage.getItem<string>("local:urlProfile");
     const oldArcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
     const oldSearchFeature = await storage.getItem<boolean>(
-      "local:enableSearchFeature"
+      "local:enableSearchFeature",
     );
 
     // Create new accounts data structure
@@ -260,7 +260,7 @@ const AccountService = {
     if (oldProfileUrl) {
       const account = await this.createAccountFromOldData(
         oldProfileUrl,
-        oldArcadeData || undefined
+        oldArcadeData || undefined,
       );
       accountsData.accounts[account.id] = account;
       accountsData.activeAccountId = account.id;
@@ -293,7 +293,7 @@ const AccountService = {
    */
   async createAccountFromOldData(
     profileUrl: string,
-    arcadeData?: ArcadeData
+    arcadeData?: ArcadeData,
   ): Promise<Account> {
     const accountId = this.generateAccountId();
     const now = new Date().toISOString();
@@ -372,7 +372,7 @@ const AccountService = {
    * Update settings
    */
   async updateSettings(
-    settings: Partial<AccountsData["settings"]>
+    settings: Partial<AccountsData["settings"]>,
   ): Promise<void> {
     const data = await this.getAccountsData();
     data.settings = { ...data.settings, ...settings };
