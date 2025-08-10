@@ -79,9 +79,31 @@ const AccountService = {
   },
 
   /**
+   * Check if an account with the same profile URL already exists
+   */
+  async isAccountExists(profileUrl: string): Promise<Account | null> {
+    const data = await this.getAccountsData();
+    const accounts = Object.values(data.accounts);
+
+    const existingAccount = accounts.find(
+      (account) => account.profileUrl.toLowerCase() === profileUrl.toLowerCase()
+    );
+
+    return existingAccount || null;
+  },
+
+  /**
    * Create a new account
    */
   async createAccount(options: CreateAccountOptions): Promise<Account> {
+    // Check if account already exists
+    const existingAccount = await this.isAccountExists(options.profileUrl);
+    if (existingAccount) {
+      throw new Error(
+        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`
+      );
+    }
+
     const accountId = this.generateAccountId();
     const now = new Date().toISOString();
 
@@ -254,6 +276,19 @@ const AccountService = {
   },
 
   /**
+   * Extract user details from ArcadeData (handle both array and object format)
+   */
+  extractUserDetails(arcadeData?: ArcadeData) {
+    if (!arcadeData?.userDetails) return null;
+
+    if (Array.isArray(arcadeData.userDetails)) {
+      return arcadeData.userDetails[0] || null;
+    }
+
+    return arcadeData.userDetails;
+  },
+
+  /**
    * Create account from old data format
    */
   async createAccountFromOldData(
@@ -264,8 +299,9 @@ const AccountService = {
     const now = new Date().toISOString();
 
     let accountName = "Tài khoản chính";
-    if (arcadeData?.userDetails?.userName) {
-      accountName = arcadeData.userDetails.userName;
+    const userDetail = this.extractUserDetails(arcadeData);
+    if (userDetail?.userName) {
+      accountName = userDetail.userName;
     }
 
     return {
