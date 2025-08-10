@@ -1,31 +1,41 @@
 import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
+import AccountService from "./accountService";
 import PopupUIService from "./popupUIService";
 import BadgeService from "./badgeService";
 import MarkdownService from "./markdownService";
 import { MARKDOWN_CONFIG } from "../utils/config";
+import type { Account } from "../types";
 
 /**
  * Main service to handle popup functionality
  */
 const PopupService = {
   profileUrl: "",
+  currentAccount: null as Account | null,
   SPINNER_CLASS: "animate-spin",
 
   /**
    * Initialize the popup
    */
   async initialize(): Promise<void> {
+    // Initialize migration first
+    await StorageService.initializeMigration();
+
     // Initialize markdown service
     await this.initializeMarkdown();
 
-    // Initialize profile URL
+    // Initialize account management
+    await this.initializeAccountManagement();
+
+    // Load current account and data
+    this.currentAccount = await AccountService.getActiveAccount();
     this.profileUrl = await StorageService.getProfileUrl();
 
     // Load existing data
     const arcadeData = await StorageService.getArcadeData();
 
-    if (!this.profileUrl) {
+    if (!this.profileUrl && !this.currentAccount) {
       this.showAuthScreen();
     } else if (arcadeData) {
       // Ensure lastUpdated is set for existing data
@@ -44,12 +54,110 @@ const PopupService = {
   },
 
   /**
+   * Initialize account management in popup
+   */
+  async initializeAccountManagement(): Promise<void> {
+    await this.loadPopupAccounts();
+    this.setupAccountSelectorEvents();
+  },
+
+  /**
+   * Load accounts into popup selector
+   */
+  async loadPopupAccounts(): Promise<void> {
+    const selector = document.getElementById(
+      "popup-account-selector"
+    ) as HTMLSelectElement;
+    if (!selector) return;
+
+    // Clear existing options except the first one
+    while (selector.children.length > 1) {
+      selector.removeChild(selector.lastChild!);
+    }
+
+    // Load accounts
+    const accounts = await AccountService.getAllAccounts();
+    const activeAccount = await AccountService.getActiveAccount();
+
+    accounts.forEach((account) => {
+      const option = document.createElement("option");
+      option.value = account.id;
+      option.textContent = account.nickname || account.name;
+
+      if (activeAccount && account.id === activeAccount.id) {
+        option.selected = true;
+      }
+
+      selector.appendChild(option);
+    });
+
+    // Update current account info
+    if (activeAccount) {
+      this.updatePopupAccountInfo(activeAccount);
+    }
+  },
+
+  /**
+   * Update popup account info display
+   */
+  updatePopupAccountInfo(account: Account): void {
+    const infoContainer = document.getElementById("popup-current-account-info");
+    const accountUrl = document.getElementById("popup-account-url");
+
+    if (!infoContainer || !accountUrl) return;
+
+    infoContainer.classList.remove("hidden");
+    accountUrl.textContent = account.profileUrl;
+  },
+
+  /**
+   * Setup account selector events
+   */
+  setupAccountSelectorEvents(): void {
+    const selector = document.getElementById(
+      "popup-account-selector"
+    ) as HTMLSelectElement;
+    if (selector) {
+      selector.addEventListener("change", async (e) => {
+        const target = e.target as HTMLSelectElement;
+        if (target.value) {
+          await this.switchAccount(target.value);
+        }
+      });
+    }
+  },
+
+  /**
+   * Switch to a different account
+   */
+  async switchAccount(accountId: string): Promise<void> {
+    const success = await AccountService.setActiveAccount(accountId);
+    if (success) {
+      const account = await AccountService.getAccountById(accountId);
+      if (account) {
+        this.currentAccount = account;
+        this.profileUrl = account.profileUrl;
+        this.updatePopupAccountInfo(account);
+
+        // Refresh data for the new account
+        if (account.arcadeData) {
+          PopupUIService.updateMainUI(account.arcadeData);
+          BadgeService.renderBadges(account.arcadeData.badges || []);
+        } else {
+          PopupUIService.showLoadingState();
+          await this.refreshData();
+        }
+      }
+    }
+  },
+
+  /**
    * Show authentication screen
    */
   showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
+      browser.i18n.getMessage("textPleaseSetUpTheSettings")
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -64,10 +172,10 @@ const PopupService = {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon",
+      ".refresh-icon"
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -76,11 +184,21 @@ const PopupService = {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl,
+        this.profileUrl
       );
 
       if (arcadeData) {
+        // Save to both new and old storage systems
         await StorageService.saveArcadeData(arcadeData);
+
+        // Update current account if exists
+        if (this.currentAccount) {
+          await AccountService.updateAccountArcadeData(
+            this.currentAccount.id,
+            arcadeData
+          );
+        }
+
         PopupUIService.updateMainUI(arcadeData);
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
@@ -115,7 +233,7 @@ const PopupService = {
     const announcementToggle = document.getElementById("announcement-toggle");
     if (announcementToggle) {
       announcementToggle.addEventListener("click", () =>
-        this.toggleAnnouncement(),
+        this.toggleAnnouncement()
       );
     }
   },
@@ -165,7 +283,7 @@ const PopupService = {
     await MarkdownService.loadAndRender(
       MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
       "popup-markdown-container",
-      ".prose",
+      ".prose"
     );
   },
 };
