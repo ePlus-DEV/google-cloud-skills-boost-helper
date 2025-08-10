@@ -1,10 +1,12 @@
 import { UAParser } from "ua-parser-js";
 import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
+import AccountService from "./accountService";
 import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import type { ArcadeData } from "../types";
+import { AccountUIService } from "../components";
 
 /**
  * Service to handle options page functionality
@@ -14,13 +16,30 @@ const OptionsService = {
    * Initialize options page
    */
   async initialize(): Promise<void> {
+    // Initialize migration first
+    await StorageService.initializeMigration();
+
     OptionsService.setupEventListeners();
     OptionsService.setupVersion();
     OptionsService.setupBrowserBadges();
     OptionsService.setupI18n();
+    await OptionsService.initializeAccountManagement();
     await OptionsService.loadExistingData();
     await OptionsService.loadSearchFeatureSetting();
     await OptionsService.initializeMarkdown();
+  },
+
+  /**
+   * Initialize account management UI
+   */
+  async initializeAccountManagement(): Promise<void> {
+    const container = document.querySelector(".mt-4.space-y-4");
+    if (container) {
+      // Insert account switcher at the beginning
+      await AccountUIService.initializeAccountSwitcher(
+        container as HTMLElement
+      );
+    }
   },
 
   /**
@@ -32,7 +51,7 @@ const OptionsService = {
     if (submitUrlElement) {
       submitUrlElement.textContent = browser.i18n.getMessage("labelSave");
       submitUrlElement.addEventListener("click", () =>
-        OptionsService.handleSubmit(),
+        OptionsService.handleSubmit()
       );
     }
 
@@ -50,7 +69,7 @@ const OptionsService = {
 
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
@@ -100,7 +119,7 @@ const OptionsService = {
       if (messageKey) {
         try {
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
+            messageKey as Parameters<typeof browser.i18n.getMessage>[0]
           );
           if (translatedText) {
             element.textContent = translatedText;
@@ -118,7 +137,7 @@ const OptionsService = {
   async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (profileUrlInput) {
@@ -139,7 +158,7 @@ const OptionsService = {
   async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (submitUrlElement) {
@@ -153,7 +172,7 @@ const OptionsService = {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
       OptionsService.resetSubmitButton();
       return;
@@ -163,20 +182,19 @@ const OptionsService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(profileUrl);
 
       if (arcadeData) {
-        await OptionsService.displayUserDetails(arcadeData);
-        await StorageService.saveProfileUrl(profileUrl);
+        await OptionsService.displayUserDetails(arcadeData, profileUrl);
       } else {
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
         );
       }
     } catch (error) {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
     } finally {
       OptionsService.resetSubmitButton();
@@ -186,15 +204,45 @@ const OptionsService = {
   /**
    * Display user details after successful data fetch
    */
-  async displayUserDetails(data: ArcadeData): Promise<void> {
+  async displayUserDetails(
+    data: ArcadeData,
+    profileUrl?: string
+  ): Promise<void> {
     PopupUIService.showMessage(
       "#success-message",
       browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
     );
 
-    await StorageService.saveArcadeData(data);
+    // Check if we have an active account to update
+    const activeAccount = await AccountService.getActiveAccount();
+
+    if (activeAccount) {
+      // Update existing account
+      await AccountService.updateAccountArcadeData(activeAccount.id, data);
+      if (profileUrl) {
+        await AccountService.updateAccount(activeAccount.id, { profileUrl });
+      }
+    } else {
+      // Create new account if none exists or fallback to old storage
+      if (profileUrl) {
+        try {
+          await AccountService.createAccount({
+            profileUrl,
+            arcadeData: data,
+          });
+        } catch {
+          // Fallback to old storage method
+          await StorageService.saveArcadeData(data);
+          await StorageService.saveProfileUrl(profileUrl);
+        }
+      }
+    }
+
     PopupUIService.updateOptionsUI(data);
+
+    // Reload account switcher to reflect changes
+    await AccountUIService.loadAccounts();
   },
 
   /**
@@ -212,7 +260,7 @@ const OptionsService = {
    */
   async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
@@ -264,7 +312,7 @@ const OptionsService = {
       await MarkdownService.loadAndRender(
         MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
     } catch (error) {
       // Show error if loading fails
@@ -278,11 +326,11 @@ const OptionsService = {
    */
   showMarkdownLoading(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -300,11 +348,11 @@ const OptionsService = {
    */
   showMarkdownError(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
