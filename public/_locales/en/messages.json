@@ -97,5 +97,77 @@
   },
   "messageSearchFeatureDisabled": {
     "message": "Search feature disabled - Only \"No solution\" will be shown when no solution is found"
+  },
+  "tourStartButton": {
+    "message": "User Guide"
+  },
+  "tourWelcomeTitle": {
+    "message": "Welcome to the Account Creation Guide!"
+  },
+  "tourWelcomeContent": {
+    "message": "We will guide you step by step to create your first Google Cloud Skills Boost account."
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>Tip:</strong> You can skip this guide at any time by clicking \"Skip\"."
+  },
+  "tourAddAccountTitle": {
+    "message": "Add New Account"
+  },
+  "tourAddAccountContent": {
+    "message": "Click this button to add your first Google Cloud Skills Boost account. You can manage multiple accounts simultaneously."
+  },
+  "tourAccountListTitle": {
+    "message": "Account List"
+  },
+  "tourAccountListContent": {
+    "message": "After creating accounts, they will appear here. You can:<br>• Switch between accounts<br>• Update arcade points data<br>• Edit nicknames<br>• View public profiles"
+  },
+  "tourModalStep1Title": {
+    "message": "Step 1: Open Profile Page"
+  },
+  "tourModalStep1Content": {
+    "message": "Click this button to open Google Cloud Skills Boost Profile in a new tab. You will need to log in and get the URL from the profile page."
+  },
+  "tourModalStep2Title": {
+    "message": "Step 2: Enter Profile URL"
+  },
+  "tourModalStep2Content": {
+    "message": "After logging in, copy the URL from the address bar and paste it here."
+  },
+  "tourModalStep2Tip": {
+    "message": "The URL will look like: https://www.cloudskillsboost.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "Step 3: Create Account"
+  },
+  "tourModalStep3Content": {
+    "message": "Click this button to create the account. The system will automatically fetch information from the profile and create a new account for you."
+  },
+  "tourCompletedTitle": {
+    "message": "Guide Completed!"
+  },
+  "tourCompletedContent": {
+    "message": "Now you can start creating your first account."
+  },
+  "tourModalCompletedTitle": {
+    "message": "Ready to create account!"
+  },
+  "tourModalCompletedContent": {
+    "message": "Try entering a profile URL and create your first account."
+  },
+  "tourButtonNext": {
+    "message": "Next"
+  },
+  "tourButtonPrevious": {
+    "message": "Back"
+  },
+  "tourButtonSkip": {
+    "message": "Skip"
+  },
+  "tourButtonComplete": {
+    "message": "Done"
+  },
+  "tourCloseButton": {
+    "message": "Close"
   }
 }

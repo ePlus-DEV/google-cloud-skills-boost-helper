@@ -100,5 +100,77 @@
   },
   "messageSearchFeatureDisabled": {
     "message": "Fonction de recherche désactivée - Seul \"Aucune solution\" sera affiché quand aucune solution n'est trouvée"
+  },
+  "tourStartButton": {
+    "message": "Guide d'utilisation"
+  },
+  "tourWelcomeTitle": {
+    "message": "Bienvenue dans le guide de création de compte !"
+  },
+  "tourWelcomeContent": {
+    "message": "Nous vous guiderons étape par étape pour créer votre premier compte Google Cloud Skills Boost."
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>Astuce :</strong> Vous pouvez ignorer ce guide à tout moment en cliquant sur \"Ignorer\"."
+  },
+  "tourAddAccountTitle": {
+    "message": "Ajouter un nouveau compte"
+  },
+  "tourAddAccountContent": {
+    "message": "Cliquez sur ce bouton pour ajouter votre premier compte Google Cloud Skills Boost. Vous pouvez gérer plusieurs comptes simultanément."
+  },
+  "tourAccountListTitle": {
+    "message": "Liste des comptes"
+  },
+  "tourAccountListContent": {
+    "message": "Après avoir créé des comptes, ils apparaîtront ici. Vous pouvez :<br>• Basculer entre les comptes<br>• Mettre à jour les données des points d'arcade<br>• Modifier les surnoms<br>• Voir les profils publics"
+  },
+  "tourModalStep1Title": {
+    "message": "Étape 1 : Ouvrir la page de profil"
+  },
+  "tourModalStep1Content": {
+    "message": "Cliquez sur ce bouton pour ouvrir Google Cloud Skills Boost Profile dans un nouvel onglet. Vous devrez vous connecter et obtenir l'URL de la page de profil."
+  },
+  "tourModalStep2Title": {
+    "message": "Étape 2 : Entrer l'URL du profil"
+  },
+  "tourModalStep2Content": {
+    "message": "Après vous être connecté, copiez l'URL de la barre d'adresse et collez-la ici."
+  },
+  "tourModalStep2Tip": {
+    "message": "L'URL ressemblera à : https://www.cloudskillsboost.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "Étape 3 : Créer le compte"
+  },
+  "tourModalStep3Content": {
+    "message": "Cliquez sur ce bouton pour créer le compte. Le système récupérera automatiquement les informations du profil et créera un nouveau compte pour vous."
+  },
+  "tourCompletedTitle": {
+    "message": "Guide terminé !"
+  },
+  "tourCompletedContent": {
+    "message": "Vous pouvez maintenant commencer à créer votre premier compte."
+  },
+  "tourModalCompletedTitle": {
+    "message": "Prêt à créer un compte !"
+  },
+  "tourModalCompletedContent": {
+    "message": "Essayez d'entrer une URL de profil et créez votre premier compte."
+  },
+  "tourButtonNext": {
+    "message": "Suivant"
+  },
+  "tourButtonPrevious": {
+    "message": "Retour"
+  },
+  "tourButtonSkip": {
+    "message": "Ignorer"
+  },
+  "tourButtonComplete": {
+    "message": "Terminé"
+  },
+  "tourCloseButton": {
+    "message": "Fermer"
   }
 }

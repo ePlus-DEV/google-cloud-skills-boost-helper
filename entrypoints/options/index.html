@@ -42,7 +42,7 @@
         <button id="start-tour-btn"
           class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm flex items-center gap-2">
           <i class="fa-solid fa-play text-sm"></i>
-          <span>Hướng dẫn sử dụng</span>
+          <span data-i18n="tourStartButton">User Guide</span>
         </button>
       </div>
     </div>
@@ -68,14 +68,14 @@
 
       <!-- Account Management Card (moved to top) -->
       <div class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200"
-        data-intro="Đây là khu vực quản lý tài khoản của bạn. Bạn có thể thêm, chỉnh sửa và quản lý nhiều tài khoản Google Cloud Skills Boost tại đây."
+        data-intro="This is your account management area. You can add, edit and manage multiple Google Cloud Skills Boost accounts here."
         data-step="1">
         <h4 class="text-xl font-semibold text-gray-800 mb-2">
           <i class="fa-solid fa-user-group mr-2 text-indigo-600"></i>
-          Quản lý tài khoản & Arcade Points Calculator
+          Account Management & Arcade Points Calculator
         </h4>
         <p class="text-gray-500 text-sm mb-4">
-          Quản lý nhiều tài khoản và tính toán arcade points.
+          Manage multiple accounts and calculate arcade points.
         </p>
 
         <!-- Account Management Section -->
@@ -84,28 +84,28 @@
             <div class="flex justify-between items-center mb-3">
               <h5 class="text-lg font-medium text-gray-700">
                 <i class="fa-solid fa-users mr-2 text-purple-600"></i>
-                Tài khoản của bạn
+                Your Accounts
               </h5>
               <button id="add-account-btn"
                 class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold px-3 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-                data-intro="Click vào nút này để thêm tài khoản mới. Đây là bước đầu tiên để bắt đầu sử dụng extension."
+                data-intro="Click this button to add a new account. This is the first step to start using the extension."
                 data-step="2">
                 <div class="flex items-center justify-center gap-2">
                   <i class="fa-solid fa-user-plus text-sm"></i>
-                  <span class="text-sm">Thêm tài khoản</span>
+                  <span class="text-sm">Add Account</span>
                 </div>
               </button>
             </div>
 
             <!-- Accounts List -->
             <div id="accounts-list" class="space-y-3"
-              data-intro="Danh sách tài khoản sẽ hiển thị ở đây. Bạn có thể chuyển đổi giữa các tài khoản, cập nhật dữ liệu, và quản lý chúng."
+              data-intro="Account list will be displayed here. You can switch between accounts, update data, and manage them."
               data-step="3">
               <!-- Account items will be dynamically inserted here -->
               <div id="no-accounts-message" class="text-center py-8 text-gray-500">
                 <i class="fa-solid fa-user-plus text-4xl mb-3 opacity-50"></i>
-                <p class="text-lg">Chưa có tài khoản nào</p>
-                <p class="text-sm">Hãy thêm tài khoản đầu tiên của bạn!</p>
+                <p class="text-lg">No accounts yet</p>
+                <p class="text-sm">Add your first account!</p>
               </div>
             </div>
           </div>
@@ -121,8 +121,8 @@
                     <i class="fa-solid fa-database text-gray-600 text-sm"></i>
                   </div>
                   <div class="text-left">
-                    <h6 class="font-semibold text-gray-800 text-sm">Quản lý dữ liệu</h6>
-                    <p class="text-xs text-gray-600">Sao lưu và khôi phục</p>
+                    <h6 class="font-semibold text-gray-800 text-sm">Data Management</h6>
+                    <p class="text-xs text-gray-600">Backup and restore</p>
                   </div>
                 </div>
                 <i id="data-management-chevron"
@@ -135,7 +135,7 @@
                     class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
                     <div class="flex items-center justify-center gap-1">
                       <i class="fa-solid fa-download text-xs"></i>
-                      <span class="text-xs">Xuất dữ liệu</span>
+                      <span class="text-xs">Export Data</span>
                     </div>
                   </button>
 
@@ -143,7 +143,7 @@
                     class="bg-orange-500 hover:bg-orange-600 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
                     <div class="flex items-center justify-center gap-1">
                       <i class="fa-solid fa-upload text-xs"></i>
-                      <span class="text-xs">Nhập dữ liệu</span>
+                      <span class="text-xs">Import Data</span>
                     </div>
                   </button>
                 </div>
@@ -303,7 +303,7 @@
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-2xl font-bold text-gray-900">
           <i class="fa-solid fa-user-plus mr-2 text-indigo-600"></i>
-          Thêm tài khoản mới
+          Add New Account
         </h3>
         <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-xl">
           <i class="fa-solid fa-times"></i>
@@ -320,16 +320,16 @@
                 <i class="fa-solid fa-question-circle text-white text-lg"></i>
               </div>
               <div>
-                <h4 class="text-lg font-semibold text-blue-900">Cách lấy URL Profile</h4>
-                <p class="text-sm text-blue-700">Làm theo các bước dưới đây</p>
+                <h4 class="text-lg font-semibold text-blue-900">How to get Profile URL</h4>
+                <p class="text-sm text-blue-700">Follow the steps below</p>
               </div>
             </div>
             <button id="go-to-profile-page-btn"
               class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm"
-              data-intro="Click vào đây để mở trang Google Cloud Skills Boost Profile. Đây là nơi bạn sẽ lấy URL profile để thêm tài khoản."
+              data-intro="Click here to open Google Cloud Skills Boost Profile page. This is where you will get the profile URL to add an account."
               data-step="4">
               <i class="fa-solid fa-external-link-alt mr-1 text-xs"></i>
-              Mở trang Profile
+              Open Profile Page
             </button>
           </div>
 
@@ -339,16 +339,16 @@
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Click nút "Mở trang Profile"</p>
-                  <p class="text-xs text-blue-700">Sẽ mở Google Cloud Skills Boost trong tab mới</p>
+                  <p class="text-sm font-medium text-blue-900">Click "Open Profile Page" button</p>
+                  <p class="text-xs text-blue-700">Will open Google Cloud Skills Boost in new tab</p>
                 </div>
               </div>
               <div class="flex items-start">
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Đăng nhập (nếu chưa)</p>
-                  <p class="text-xs text-blue-700">Sử dụng tài khoản Google của bạn</p>
+                  <p class="text-sm font-medium text-blue-900">Log in (if not already)</p>
+                  <p class="text-xs text-blue-700">Use your Google account</p>
                 </div>
               </div>
             </div>
@@ -357,16 +357,16 @@
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Tìm phần "Public profile"</p>
-                  <p class="text-xs text-blue-700">Cuộn xuống trong trang profile</p>
+                  <p class="text-sm font-medium text-blue-900">Find "Public profile" section</p>
+                  <p class="text-xs text-blue-700">Scroll down in the profile page</p>
                 </div>
               </div>
               <div class="flex items-start">
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">4</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Copy URL từ thanh địa chỉ</p>
-                  <p class="text-xs text-blue-700">Dán vào ô bên dưới</p>
+                  <p class="text-sm font-medium text-blue-900">Copy URL from address bar</p>
+                  <p class="text-xs text-blue-700">Paste into the field below</p>
                 </div>
               </div>
             </div>
@@ -380,9 +380,9 @@
               <i class="fa-solid fa-exclamation-triangle text-amber-600"></i>
             </div>
             <div>
-              <p class="text-sm font-medium text-amber-800">Lưu ý quan trọng</p>
-              <p class="text-sm text-amber-700">Mỗi URL profile chỉ có thể thêm một lần. Hệ thống sẽ kiểm tra và thông
-                báo nếu tài khoản đã tồn tại.</p>
+              <p class="text-sm font-medium text-amber-800">Important Notice</p>
+              <p class="text-sm text-amber-700">Each profile URL can only be added once. The system will check and
+                notify if the account already exists.</p>
             </div>
           </div>
         </div>
@@ -391,27 +391,27 @@
         <div class="bg-white border border-gray-200 rounded-xl p-5">
           <label class="block text-base font-semibold text-gray-800 mb-3">
             <i class="fa-solid fa-link mr-2 text-indigo-600"></i>
-            Nhập URL Profile và tạo tài khoản
+            Enter Profile URL and Create Account
           </label>
           <div class="flex space-x-3">
             <input type="url" id="account-url-input"
               class="flex-1 border-2 border-gray-300 rounded-xl px-4 py-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
               placeholder="https://www.cloudskillsboost.google/public_profiles/xxxxxxxxx" required
-              data-intro="Dán URL profile từ Google Cloud Skills Boost vào đây. URL này sẽ được sử dụng để lấy thông tin tài khoản của bạn."
+              data-intro="Paste the profile URL from Google Cloud Skills Boost here. This URL will be used to fetch your account information."
               data-step="5">
             <button id="create-account-btn"
               class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer text-sm"
-              data-intro="Sau khi nhập URL, click vào nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ profile và tạo tài khoản mới."
+              data-intro="After entering the URL, click this button to create the account. The system will automatically fetch information from the profile and create a new account."
               data-step="6">
               <i class="fa-solid fa-plus mr-1 text-xs"></i>
-              Tạo tài khoản
+              Create Account
             </button>
           </div>
           <div class="mt-3 p-3 bg-gray-50 rounded-lg">
             <p class="text-xs text-gray-600">
               <i class="fa-solid fa-info-circle mr-1 text-gray-500"></i>
-              <strong>Hướng dẫn:</strong> Nhập URL và click "Tạo tài khoản". Hệ thống sẽ tự động tải thông tin và tạo
-              tài khoản mới.
+              <strong>Instructions:</strong> Enter URL and click "Create Account". The system will automatically load
+              information and create a new account.
             </p>
           </div>
         </div>
@@ -420,7 +420,7 @@
         <div id="loading-profile" class="hidden text-center py-8">
           <div class="inline-flex items-center">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mr-4"></div>
-            <span class="text-gray-700 font-medium">Đang tạo tài khoản...</span>
+            <span class="text-gray-700 font-medium">Creating account...</span>
           </div>
         </div>
 
@@ -430,8 +430,8 @@
             <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
               <i class="fa-solid fa-check text-green-600 text-2xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Tài khoản đã được tạo thành công!</h3>
-            <p class="text-gray-600">Bạn có thể thêm biệt danh để dễ dàng nhận diện tài khoản này.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Account created successfully!</h3>
+            <p class="text-gray-600">You can add a nickname to easily identify this account.</p>
           </div>
         </div>
       </div>
@@ -444,8 +444,8 @@
               <i class="fa-solid fa-tag text-white"></i>
             </div>
             <div>
-              <h4 class="font-semibold text-blue-900">Thêm biệt danh (tùy chọn)</h4>
-              <p class="text-sm text-blue-700">Đặt biệt danh để dễ dàng phân biệt các tài khoản</p>
+              <h4 class="font-semibold text-blue-900">Add nickname (optional)</h4>
+              <p class="text-sm text-blue-700">Set a nickname to easily distinguish between accounts</p>
             </div>
           </div>
         </div>
@@ -457,8 +457,8 @@
               <i class="fa-solid fa-eye text-white"></i>
             </div>
             <div>
-              <h4 class="font-semibold text-green-900">Preview tài khoản</h4>
-              <p class="text-sm text-green-700">Xem trước thông tin tài khoản vừa tạo</p>
+              <h4 class="font-semibold text-green-900">Account preview</h4>
+              <p class="text-sm text-green-700">Preview newly created account information</p>
             </div>
           </div>
 
@@ -477,16 +477,16 @@
 
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center space-x-2">
-                      <h4 id="preview-name" class="text-lg font-semibold text-gray-900 truncate">Đang tải...</h4>
+                      <h4 id="preview-name" class="text-lg font-semibold text-gray-900 truncate">Loading...</h4>
                       <span
                         class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        <i class="fa-solid fa-plus mr-1"></i>Mới tạo
+                        <i class="fa-solid fa-plus mr-1"></i>Newly created
                       </span>
                     </div>
 
                     <div id="preview-nickname-display" class="hidden">
                       <p class="text-sm text-gray-500 truncate">
-                        Biệt danh: <span id="preview-nickname-text">Chưa có biệt danh</span>
+                        Nickname: <span id="preview-nickname-text">No nickname yet</span>
                       </p>
                     </div>
 
@@ -496,14 +496,14 @@
                         <span id="preview-arcade-points">0 points</span>
                       </span>
                       <span class="text-xs text-gray-400">
-                        Cập nhật: <span id="preview-last-updated">Vừa tạo</span>
+                        Updated: <span id="preview-last-updated">Just created</span>
                       </span>
                     </div>
                   </div>
                 </div>
 
                 <div class="flex items-center space-x-2 ml-3">
-                  <div class="text-green-600 p-2 rounded-lg bg-green-50" title="Tài khoản mới">
+                  <div class="text-green-600 p-2 rounded-lg bg-green-50" title="New account">
                     <i class="fa-solid fa-check-circle"></i>
                   </div>
                 </div>
@@ -533,15 +533,15 @@
         <div class="bg-white border border-gray-200 rounded-xl p-5">
           <label class="block text-base font-semibold text-gray-800 mb-3">
             <i class="fa-solid fa-edit mr-2 text-indigo-600"></i>
-            Biệt danh cho tài khoản
+            Account nickname
           </label>
           <div class="space-y-3">
             <input type="text" id="account-nickname-input"
               class="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
-              placeholder="VD: Tài khoản chính, Tài khoản công ty, Tài khoản học tập...">
+              placeholder="e.g: Main account, Work account, Study account...">
             <p class="text-xs text-gray-500">
               <i class="fa-solid fa-lightbulb mr-1 text-yellow-500"></i>
-              Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau
+              Nicknames help you easily identify accounts when you have multiple different accounts
             </p>
           </div>
         </div>
@@ -552,7 +552,7 @@
         <div class="bg-red-50 border border-red-200 rounded-lg p-4">
           <div class="flex items-center mb-2">
             <i class="fa-solid fa-exclamation-triangle text-red-600 mr-2"></i>
-            <span class="text-sm font-medium text-red-800">Có lỗi xảy ra</span>
+            <span class="text-sm font-medium text-red-800">An error occurred</span>
           </div>
           <p id="error-message" class="text-sm text-red-700"></p>
         </div>
@@ -563,17 +563,17 @@
         <button id="cancel-add-account-btn"
           class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
           <i class="fa-solid fa-times mr-1 text-xs"></i>
-          Đóng
+          Close
         </button>
         <button id="skip-nickname-btn"
           class="hidden flex-1 bg-gray-500 hover:bg-gray-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
           <i class="fa-solid fa-forward mr-1 text-xs"></i>
-          Bỏ qua
+          Skip
         </button>
         <button id="save-nickname-btn"
           class="hidden flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm">
           <i class="fa-solid fa-save mr-1 text-xs"></i>
-          Lưu biệt danh
+          Save nickname
         </button>
       </div>
     </div>
@@ -583,7 +583,7 @@
   <div id="import-accounts-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4 shadow-xl">
       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold text-gray-900">Nhập dữ liệu tài khoản</h3>
+        <h3 class="text-lg font-bold text-gray-900">Import account data</h3>
         <button id="close-import-modal-btn" class="text-gray-400 hover:text-gray-600">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -591,13 +591,13 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Chọn file JSON:</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Select JSON file:</label>
           <input type="file" id="import-file-input" accept=".json"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Hoặc dán nội dung JSON:</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Or paste JSON content:</label>
           <textarea id="import-json-textarea" rows="8"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             placeholder='{"accounts": {...}, "settings": {...}}'></textarea>
@@ -607,11 +607,11 @@
       <div class="flex space-x-3 mt-6">
         <button id="cancel-import-btn"
           class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-          Hủy
+          Cancel
         </button>
         <button id="confirm-import-btn"
           class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-          Nhập dữ liệu
+          Import Data
         </button>
       </div>
     </div>
@@ -621,7 +621,7 @@
   <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold text-gray-900">Chỉnh sửa tài khoản</h3>
+        <h3 class="text-lg font-bold text-gray-900">Edit account</h3>
         <button id="close-edit-modal-btn" class="text-gray-400 hover:text-gray-600">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -631,28 +631,28 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
             <i class="fa-solid fa-user mr-1 text-indigo-600"></i>
-            Tên hiển thị:
+            Display name:
           </label>
           <input type="text" id="edit-account-name-input" readonly
             class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-100 text-gray-600 cursor-not-allowed"
-            placeholder="Tên từ Google Cloud Skills Boost">
+            placeholder="Name from Google Cloud Skills Boost">
           <p class="text-xs text-gray-500 mt-1">
             <i class="fa-solid fa-info-circle mr-1"></i>
-            Tên hiển thị được lấy từ Google Cloud Skills Boost và không thể chỉnh sửa
+            Display name is taken from Google Cloud Skills Boost and cannot be edited
           </p>
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
             <i class="fa-solid fa-tag mr-1 text-indigo-600"></i>
-            Biệt danh:
+            Nickname:
           </label>
           <input type="text" id="edit-account-nickname-input"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            placeholder="Nhập biệt danh để dễ nhận biết...">
+            placeholder="Enter nickname for easy identification...">
           <p class="text-xs text-gray-500 mt-1">
             <i class="fa-solid fa-lightbulb mr-1"></i>
-            Ví dụ: "Tài khoản chính", "Tài khoản công ty", "Tài khoản học tập"...
+            Example: "Main account", "Work account", "Study account"...
           </p>
         </div>
       </div>
@@ -660,11 +660,11 @@
       <div class="flex space-x-3 mt-6">
         <button id="cancel-edit-account-btn"
           class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-          Hủy
+          Cancel
         </button>
         <button id="confirm-edit-account-btn"
           class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-          Lưu thay đổi
+          Save changes
         </button>
       </div>
     </div>
