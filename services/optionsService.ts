@@ -382,24 +382,6 @@ const OptionsService = {
         OptionsService.handleSearchFeatureToggle(searchFeatureToggle.checked);
       });
     }
-
-    // Submit URL button for quick account creation
-    const submitUrlButton = document.getElementById("submit-url");
-    if (submitUrlButton) {
-      submitUrlButton.addEventListener("click", async () => {
-        await OptionsService.handleSubmit();
-      });
-    }
-
-    // Allow Enter key in URL input
-    const profileUrlInput = document.getElementById("public-profile-url");
-    if (profileUrlInput) {
-      profileUrlInput.addEventListener("keypress", async (e) => {
-        if (e.key === "Enter") {
-          await OptionsService.handleSubmit();
-        }
-      });
-    }
   },
 
   /**
