@@ -348,63 +348,68 @@
               </div>
             </div>
 
-            <div id="account-preview" class="bg-white rounded-lg border border-green-200 p-4">
-              <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0">
-                  <img id="preview-avatar" src="" alt="Avatar"
-                    class="w-12 h-12 rounded-full border-2 border-green-300 shadow-sm" style="display: none;">
-                  <div id="preview-avatar-placeholder"
-                    class="w-12 h-12 rounded-full bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center border-2 border-green-300">
-                    <i class="fa-solid fa-user text-green-600 text-lg"></i>
-                  </div>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center space-x-2 mb-1">
-                    <h5 id="preview-name" class="text-lg font-semibold text-gray-900 truncate">Đang tải...</h5>
-                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">Mới</span>
-                  </div>
-
-                  <div class="space-y-1">
-                    <div class="flex items-center text-sm text-gray-600">
-                      <i class="fa-solid fa-link mr-2 text-green-500"></i>
-                      <span id="preview-profile-url" class="truncate">Đang tải...</span>
-                    </div>
-
-                    <div id="preview-nickname-display" class="hidden">
-                      <div class="flex items-center text-sm text-gray-600">
-                        <i class="fa-solid fa-tag mr-2 text-blue-500"></i>
-                        <span id="preview-nickname-text">Chưa có biệt danh</span>
+            <div id="account-preview" class="bg-white rounded-lg border-2 border-green-300 transition-all duration-200">
+              <div class="p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3 flex-1 min-w-0">
+                    <div id="preview-avatar-container">
+                      <img id="preview-avatar" src="" alt="Avatar"
+                        class="w-12 h-12 rounded-full border-2 border-white shadow-sm" style="display: none;">
+                      <div id="preview-avatar-placeholder"
+                        class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
+                        <i class="fa-solid fa-user"></i>
                       </div>
                     </div>
 
-                    <div class="flex items-center text-sm text-gray-600">
-                      <i class="fa-solid fa-trophy mr-2 text-yellow-500"></i>
-                      <span id="preview-badges" class="truncate">Đang tải thông tin badges...</span>
-                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center space-x-2">
+                        <h4 id="preview-name" class="text-lg font-semibold text-gray-900 truncate">Đang tải...</h4>
+                        <span
+                          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <i class="fa-solid fa-plus mr-1"></i>Mới tạo
+                        </span>
+                      </div>
 
-                    <div class="flex items-center text-sm text-gray-600">
-                      <i class="fa-solid fa-gamepad mr-2 text-purple-500"></i>
-                      <span id="preview-arcade-points" class="truncate">Đang tải arcade points...</span>
+                      <div id="preview-nickname-display" class="hidden">
+                        <p class="text-sm text-gray-500 truncate">
+                          Biệt danh: <span id="preview-nickname-text">Chưa có biệt danh</span>
+                        </p>
+                      </div>
+
+                      <div class="flex items-center space-x-4 mt-2">
+                        <span class="text-sm text-gray-600">
+                          <i class="fa-solid fa-trophy text-yellow-500 mr-1"></i>
+                          <span id="preview-arcade-points">0 points</span>
+                        </span>
+                        <span class="text-xs text-gray-400">
+                          Cập nhật: <span id="preview-last-updated">Vừa tạo</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center space-x-2 ml-3">
+                    <div class="text-green-600 p-2 rounded-lg bg-green-50" title="Tài khoản mới">
+                      <i class="fa-solid fa-check-circle"></i>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Account Stats -->
-              <div class="mt-4 pt-4 border-t border-gray-200">
-                <div class="grid grid-cols-3 gap-4 text-center">
-                  <div class="bg-blue-50 rounded-lg p-3">
-                    <div id="preview-total-badges" class="text-xl font-bold text-blue-600">-</div>
-                    <div class="text-xs text-blue-700">Badges</div>
-                  </div>
-                  <div class="bg-purple-50 rounded-lg p-3">
-                    <div id="preview-total-arcade" class="text-xl font-bold text-purple-600">-</div>
-                    <div class="text-xs text-purple-700">Arcade Points</div>
-                  </div>
-                  <div class="bg-green-50 rounded-lg p-3">
-                    <div id="preview-skill-badge" class="text-xl font-bold text-green-600">-</div>
-                    <div class="text-xs text-green-700">Skill Badges</div>
+                <!-- Additional Stats -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                  <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-blue-50 rounded-lg p-3">
+                      <div id="preview-total-badges" class="text-xl font-bold text-blue-600">-</div>
+                      <div class="text-xs text-blue-700">Total Badges</div>
+                    </div>
+                    <div class="bg-yellow-50 rounded-lg p-3">
+                      <div id="preview-skill-badges" class="text-xl font-bold text-yellow-600">-</div>
+                      <div class="text-xs text-yellow-700">Skill Badges</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-3">
+                      <div id="preview-arcade-total" class="text-xl font-bold text-purple-600">-</div>
+                      <div class="text-xs text-purple-700">Arcade Points</div>
+                    </div>
                   </div>
                 </div>
               </div>
