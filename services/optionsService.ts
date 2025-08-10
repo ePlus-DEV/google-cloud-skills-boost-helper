@@ -4,6 +4,7 @@ import StorageService from "./storageService";
 import AccountService from "./accountService";
 import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
+import TourService from "./tourService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import type { ArcadeData, Account } from "../types";
 
@@ -26,6 +27,26 @@ const OptionsService = {
     await OptionsService.loadExistingData();
     await OptionsService.loadSearchFeatureSetting();
     await OptionsService.initializeMarkdown();
+
+    // Check if we should show the tour for first-time users
+    await OptionsService.initializeTour();
+  },
+
+  /**
+   * Initialize tour functionality
+   */
+  async initializeTour(): Promise<void> {
+    const shouldShowTour = await TourService.shouldShowTour();
+    const accounts = await AccountService.getAllAccounts();
+
+    // If no accounts exist and user hasn't seen tour, show it automatically
+    if (accounts.length === 0 && shouldShowTour) {
+      // Wait a bit for page to fully load
+      setTimeout(() => {
+        TourService.startAccountCreationTour();
+        TourService.markTourCompleted();
+      }, 1500);
+    }
   },
 
   /**
@@ -380,6 +401,14 @@ const OptionsService = {
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
         OptionsService.handleSearchFeatureToggle(searchFeatureToggle.checked);
+      });
+    }
+
+    // Tour start button
+    const startTourBtn = document.getElementById("start-tour-btn");
+    if (startTourBtn) {
+      startTourBtn.addEventListener("click", () => {
+        TourService.startAccountCreationTour();
       });
     }
   },
@@ -880,6 +909,30 @@ const OptionsService = {
 
       // Reset to step 1
       this.resetAddAccountModal();
+
+      // Check if user has no accounts and hasn't seen modal tour
+      this.checkAndShowModalTour();
+    }
+  },
+
+  /**
+   * Check if modal tour should be shown
+   */
+  async checkAndShowModalTour(): Promise<void> {
+    try {
+      const accounts = await AccountService.getAllAccounts();
+      const result = await browser.storage.local.get(["modalTourCompleted"]);
+
+      // Show modal tour if no accounts exist and tour hasn't been completed
+      if (accounts.length === 0 && !result.modalTourCompleted) {
+        setTimeout(() => {
+          TourService.startModalTour();
+          // Mark modal tour as completed
+          browser.storage.local.set({ modalTourCompleted: true });
+        }, 500);
+      }
+    } catch (error) {
+      console.error("Error checking modal tour status:", error);
     }
   },
 
