@@ -97,5 +97,77 @@
   },
   "messageSearchFeatureDisabled": {
     "message": "Tính năng tìm kiếm đã được tắt - Chỉ hiển thị \"Không có giải pháp\" khi không tìm thấy giải pháp"
+  },
+  "tourStartButton": {
+    "message": "Hướng dẫn sử dụng"
+  },
+  "tourWelcomeTitle": {
+    "message": "Chào mừng đến với hướng dẫn tạo tài khoản!"
+  },
+  "tourWelcomeContent": {
+    "message": "Chúng tôi sẽ hướng dẫn bạn từng bước để tạo tài khoản Google Cloud Skills Boost đầu tiên."
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>Mẹo:</strong> Bạn có thể bỏ qua hướng dẫn này bất cứ lúc nào bằng cách nhấn \"Bỏ qua\"."
+  },
+  "tourAddAccountTitle": {
+    "message": "Thêm tài khoản mới"
+  },
+  "tourAddAccountContent": {
+    "message": "Click vào nút này để thêm tài khoản Google Cloud Skills Boost đầu tiên. Bạn có thể quản lý nhiều tài khoản cùng lúc."
+  },
+  "tourAccountListTitle": {
+    "message": "Danh sách tài khoản"
+  },
+  "tourAccountListContent": {
+    "message": "Sau khi tạo tài khoản, chúng sẽ hiển thị ở đây. Bạn có thể:<br>• Chuyển đổi giữa các tài khoản<br>• Cập nhật dữ liệu arcade points<br>• Chỉnh sửa biệt danh<br>• Xem profile công khai"
+  },
+  "tourModalStep1Title": {
+    "message": "Bước 1: Mở trang Profile"
+  },
+  "tourModalStep1Content": {
+    "message": "Click vào nút này để mở Google Cloud Skills Boost Profile trong tab mới. Bạn sẽ cần đăng nhập và lấy URL từ trang profile."
+  },
+  "tourModalStep2Title": {
+    "message": "Bước 2: Nhập URL Profile"
+  },
+  "tourModalStep2Content": {
+    "message": "Sau khi đăng nhập, copy URL từ thanh địa chỉ và dán vào đây."
+  },
+  "tourModalStep2Tip": {
+    "message": "URL sẽ có dạng: https://www.cloudskillsboost.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "Bước 3: Tạo tài khoản"
+  },
+  "tourModalStep3Content": {
+    "message": "Click vào nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ profile và tạo tài khoản mới cho bạn."
+  },
+  "tourCompletedTitle": {
+    "message": "Hoàn thành hướng dẫn!"
+  },
+  "tourCompletedContent": {
+    "message": "Bây giờ bạn có thể bắt đầu tạo tài khoản đầu tiên."
+  },
+  "tourModalCompletedTitle": {
+    "message": "Sẵn sàng tạo tài khoản!"
+  },
+  "tourModalCompletedContent": {
+    "message": "Hãy thử nhập URL profile và tạo tài khoản đầu tiên của bạn."
+  },
+  "tourButtonNext": {
+    "message": "Tiếp theo"
+  },
+  "tourButtonPrevious": {
+    "message": "Quay lại"
+  },
+  "tourButtonSkip": {
+    "message": "Bỏ qua"
+  },
+  "tourButtonComplete": {
+    "message": "Hoàn thành"
+  },
+  "tourCloseButton": {
+    "message": "Đóng"
   }
 }
