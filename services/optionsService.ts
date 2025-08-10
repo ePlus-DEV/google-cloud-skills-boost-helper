@@ -149,6 +149,12 @@ const OptionsService = {
             }" title="Cập nhật tài khoản">
               <i class="fa-solid fa-sync-alt"></i>
             </button>
+
+            <button class="view-profile-btn text-purple-600 hover:text-purple-800 p-2 rounded-lg hover:bg-purple-50 transition duration-200" data-account-id="${
+              account.id
+            }" title="Xem profile công khai">
+              <i class="fa-solid fa-eye"></i>
+            </button>
             
             <button class="edit-account-btn text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition duration-200" data-account-id="${
               account.id
@@ -239,6 +245,50 @@ const OptionsService = {
   },
 
   /**
+   * Handle viewing account profile
+   */
+  async handleViewProfile(accountId: string): Promise<void> {
+    try {
+      const account = await AccountService.getAccountById(accountId);
+      if (!account || !account.profileUrl) {
+        this.showMessage(
+          "Không tìm thấy URL profile cho tài khoản này",
+          "error"
+        );
+        return;
+      }
+
+      // Open profile URL in new tab
+      window.open(account.profileUrl, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      console.error("Error viewing profile:", error);
+      this.showMessage("Có lỗi khi mở profile", "error");
+    }
+  },
+
+  /**
+   * Handle viewing active account profile
+   */
+  async handleViewActiveProfile(): Promise<void> {
+    try {
+      const activeAccount = await AccountService.getActiveAccount();
+      if (!activeAccount || !activeAccount.profileUrl) {
+        this.showMessage(
+          "Không có tài khoản đang hoạt động hoặc không có URL profile",
+          "error"
+        );
+        return;
+      }
+
+      // Open profile URL in new tab
+      window.open(activeAccount.profileUrl, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      console.error("Error viewing active profile:", error);
+      this.showMessage("Có lỗi khi mở profile", "error");
+    }
+  },
+
+  /**
    * Setup account-related event listeners
    */
   setupAccountEventListeners(): void {
@@ -259,6 +309,8 @@ const OptionsService = {
           await this.switchAccount(accountId);
         } else if (button.classList.contains("update-account-btn")) {
           await this.handleUpdateAccount(accountId);
+        } else if (button.classList.contains("view-profile-btn")) {
+          await this.handleViewProfile(accountId);
         } else if (button.classList.contains("edit-account-btn")) {
           await this.showEditAccountModal(accountId);
         } else if (button.classList.contains("delete-account-btn")) {
@@ -291,6 +343,16 @@ const OptionsService = {
       });
     }
 
+    // View active profile button
+    const viewActiveProfileBtn = document.getElementById(
+      "view-active-profile-btn"
+    );
+    if (viewActiveProfileBtn) {
+      viewActiveProfileBtn.addEventListener("click", async () => {
+        await this.handleViewActiveProfile();
+      });
+    }
+
     // Setup modal event listeners
     this.setupModalEventListeners();
   },
@@ -318,6 +380,24 @@ const OptionsService = {
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
         OptionsService.handleSearchFeatureToggle(searchFeatureToggle.checked);
+      });
+    }
+
+    // Submit URL button for quick account creation
+    const submitUrlButton = document.getElementById("submit-url");
+    if (submitUrlButton) {
+      submitUrlButton.addEventListener("click", async () => {
+        await OptionsService.handleSubmit();
+      });
+    }
+
+    // Allow Enter key in URL input
+    const profileUrlInput = document.getElementById("public-profile-url");
+    if (profileUrlInput) {
+      profileUrlInput.addEventListener("keypress", async (e) => {
+        if (e.key === "Enter") {
+          await OptionsService.handleSubmit();
+        }
       });
     }
   },
@@ -690,6 +770,18 @@ const OptionsService = {
         if (e.key === "Enter") {
           await this.fetchProfilePreview();
         }
+      });
+    }
+
+    // Go to profile page button
+    const goToProfileBtn = document.getElementById("go-to-profile-page-btn");
+    if (goToProfileBtn) {
+      goToProfileBtn.addEventListener("click", () => {
+        window.open(
+          "https://www.cloudskillsboost.google/my_account/profile#public-profile",
+          "_blank",
+          "noopener,noreferrer"
+        );
       });
     }
 
