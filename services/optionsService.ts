@@ -37,75 +37,204 @@ const OptionsService = {
   },
 
   /**
-   * Load and populate accounts in the selector
+   * Load and display accounts as cards
    */
   async loadAccounts(): Promise<void> {
-    const selector = document.getElementById(
-      "account-selector"
-    ) as HTMLSelectElement;
-    if (!selector) return;
+    const accountsList = document.getElementById("accounts-list");
+    const noAccountsMessage = document.getElementById("no-accounts-message");
 
-    // Clear existing options except the first one
-    while (selector.children.length > 1) {
-      selector.removeChild(selector.lastChild as Node);
-    }
+    if (!accountsList) return;
 
     // Load accounts
     const accounts = await AccountService.getAllAccounts();
     const activeAccount = await AccountService.getActiveAccount();
 
-    accounts.forEach((account) => {
-      const option = document.createElement("option");
-      option.value = account.id;
-      option.textContent = account.nickname || account.name;
+    // Clear existing account cards (keep no-accounts message)
+    const existingCards = accountsList.querySelectorAll(".account-card");
+    existingCards.forEach((card) => card.remove());
 
-      if (activeAccount && account.id === activeAccount.id) {
-        option.selected = true;
+    if (accounts.length === 0) {
+      // Show no accounts message
+      if (noAccountsMessage) {
+        noAccountsMessage.classList.remove("hidden");
+      }
+    } else {
+      // Hide no accounts message
+      if (noAccountsMessage) {
+        noAccountsMessage.classList.add("hidden");
       }
 
-      selector.appendChild(option);
-    });
-
-    // Update current account info
-    if (activeAccount) {
-      this.updateCurrentAccountInfo(activeAccount);
+      // Create account cards
+      accounts.forEach((account) => {
+        const isActive = activeAccount?.id === account.id;
+        const accountCard = this.createAccountCard(account, isActive);
+        accountsList.appendChild(accountCard);
+      });
     }
   },
 
   /**
-   * Update current account info display
+   * Create account card element
    */
-  updateCurrentAccountInfo(account: Account): void {
-    const infoContainer = document.getElementById("current-account-info");
-    const avatarImg = document.getElementById(
-      "account-avatar"
-    ) as HTMLImageElement;
-    const displayName = document.getElementById("account-display-name");
-    const profileUrl = document.getElementById("account-profile-url");
-    const profileUrlInput = document.getElementById(
-      "public-profile-url"
-    ) as HTMLInputElement;
+  createAccountCard(account: Account, isActive: boolean): HTMLElement {
+    const card = document.createElement("div");
+    card.className = `account-card bg-white rounded-lg border-2 transition-all duration-200 hover:shadow-md ${
+      isActive
+        ? "border-indigo-500 bg-gradient-to-r from-indigo-50 to-purple-50"
+        : "border-gray-200 hover:border-gray-300"
+    }`;
+    card.dataset.accountId = account.id;
 
-    if (!infoContainer || !displayName || !profileUrl) return;
-
-    infoContainer.classList.remove("hidden");
-    displayName.textContent = account.nickname || account.name;
-    profileUrl.textContent = account.profileUrl;
-
-    // Update profile URL input
-    if (profileUrlInput) {
-      profileUrlInput.value = account.profileUrl;
-    }
-
-    // Update avatar if available
     const userDetail = account.arcadeData
       ? this.extractUserDetails(account.arcadeData)
       : null;
-    if (userDetail?.profileImage && avatarImg) {
-      avatarImg.src = userDetail.profileImage;
-      avatarImg.style.display = "block";
-    } else if (avatarImg) {
-      avatarImg.style.display = "none";
+    const avatarSrc = userDetail?.profileImage || "";
+    const displayName = account.name;
+    const nickname = account.nickname;
+    const arcadePoints = account.arcadeData?.arcadePoints?.totalPoints || 0;
+
+    card.innerHTML = `
+      <div class="p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3 flex-1 min-w-0">
+            ${
+              avatarSrc
+                ? `<img src="${avatarSrc}" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-white shadow-sm">`
+                : `<div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">${displayName
+                    .charAt(0)
+                    .toUpperCase()}</div>`
+            }
+            
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center space-x-2">
+                <h4 class="text-lg font-semibold text-gray-900 truncate">${displayName}</h4>
+                ${
+                  isActive
+                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i>Đang sử dụng</span>'
+                    : ""
+                }
+              </div>
+              
+              ${
+                nickname
+                  ? `<p class="text-sm text-gray-500 truncate">Biệt danh: ${nickname}</p>`
+                  : ""
+              }
+              
+              <div class="flex items-center space-x-4 mt-2">
+                <span class="text-sm text-gray-600">
+                  <i class="fa-solid fa-trophy text-yellow-500 mr-1"></i>
+                  ${arcadePoints.toLocaleString()} points
+                </span>
+                <span class="text-xs text-gray-400">
+                  Cập nhật: ${new Date(account.lastUsed).toLocaleDateString(
+                    "vi-VN"
+                  )}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 ml-3">
+            ${
+              !isActive
+                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}">
+                <i class="fa-solid fa-arrow-right mr-1"></i>Chuyển
+              </button>`
+                : ""
+            }
+            
+            <button class="update-account-btn text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition duration-200" data-account-id="${
+              account.id
+            }" title="Cập nhật tài khoản">
+              <i class="fa-solid fa-sync-alt"></i>
+            </button>
+            
+            <button class="edit-account-btn text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition duration-200" data-account-id="${
+              account.id
+            }" title="Sửa tài khoản">
+              <i class="fa-solid fa-edit"></i>
+            </button>
+            
+            <button class="delete-account-btn text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition duration-200" data-account-id="${
+              account.id
+            }" title="Xóa tài khoản">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    return card;
+  },
+
+  /**
+   * Switch to a different account
+   */
+  async switchAccount(accountId: string): Promise<void> {
+    try {
+      await AccountService.setActiveAccount(accountId);
+
+      // Reload accounts to update UI
+      await this.loadAccounts();
+
+      // Show success message
+      this.showMessage("Đã chuyển tài khoản thành công!", "success");
+    } catch (error) {
+      console.error("Error switching account:", error);
+      this.showMessage("Lỗi khi chuyển tài khoản", "error");
+    }
+  },
+
+  /**
+   * Handle updating account data
+   */
+  async handleUpdateAccount(accountId: string): Promise<void> {
+    try {
+      const account = await AccountService.getAccountById(accountId);
+      if (!account) {
+        this.showMessage("Không tìm thấy tài khoản", "error");
+        return;
+      }
+
+      // Show loading message
+      this.showMessage("Đang cập nhật dữ liệu tài khoản...", "success");
+
+      // Fetch fresh data from API
+      const arcadeData = await ArcadeApiService.fetchArcadeData(
+        account.profileUrl
+      );
+
+      if (arcadeData) {
+        // Update account with new data
+        const updatedAccount = {
+          ...account,
+          arcadeData,
+          lastUsed: new Date().toISOString(),
+        };
+
+        // Update name if it changed in the API
+        const userDetail = this.extractUserDetails(arcadeData);
+        if (userDetail?.userName && userDetail.userName !== account.name) {
+          updatedAccount.name = userDetail.userName;
+        }
+
+        await AccountService.updateAccount(updatedAccount.id, updatedAccount);
+
+        // Reload accounts to show updated data
+        await this.loadAccounts();
+
+        this.showMessage(
+          "Đã cập nhật dữ liệu tài khoản thành công!",
+          "success"
+        );
+      } else {
+        this.showMessage("Không thể lấy dữ liệu từ API", "error");
+      }
+    } catch (error) {
+      console.error("Error updating account:", error);
+      this.showMessage("Lỗi khi cập nhật tài khoản", "error");
     }
   },
 
@@ -113,32 +242,28 @@ const OptionsService = {
    * Setup account-related event listeners
    */
   setupAccountEventListeners(): void {
-    // Account selector change
-    const selector = document.getElementById(
-      "account-selector"
-    ) as HTMLSelectElement;
-    if (selector) {
-      selector.addEventListener("change", async (e) => {
-        const target = e.target as HTMLSelectElement;
-        if (target.value) {
-          await this.switchAccount(target.value);
+    // Use event delegation for account cards
+    const accountsList = document.getElementById("accounts-list");
+    if (accountsList) {
+      accountsList.addEventListener("click", async (e) => {
+        const target = e.target as HTMLElement;
+        const button = target.closest("button");
+
+        if (!button) return;
+
+        const accountId = button.dataset.accountId;
+        if (!accountId) return;
+
+        // Handle different button types
+        if (button.classList.contains("switch-account-btn")) {
+          await this.switchAccount(accountId);
+        } else if (button.classList.contains("update-account-btn")) {
+          await this.handleUpdateAccount(accountId);
+        } else if (button.classList.contains("edit-account-btn")) {
+          await this.showEditAccountModal(accountId);
+        } else if (button.classList.contains("delete-account-btn")) {
+          await this.handleDeleteAccount(accountId);
         }
-      });
-    }
-
-    // Edit account button
-    const editBtn = document.getElementById("edit-account-btn");
-    if (editBtn) {
-      editBtn.addEventListener("click", async () => {
-        await this.showEditAccountModal();
-      });
-    }
-
-    // Delete account button
-    const deleteBtn = document.getElementById("delete-account-btn");
-    if (deleteBtn) {
-      deleteBtn.addEventListener("click", async () => {
-        await this.handleDeleteAccount();
       });
     }
 
@@ -168,26 +293,6 @@ const OptionsService = {
 
     // Setup modal event listeners
     this.setupModalEventListeners();
-  },
-
-  /**
-   * Switch to a different account
-   */
-  async switchAccount(accountId: string): Promise<void> {
-    const success = await AccountService.setActiveAccount(accountId);
-    if (success) {
-      const account = await AccountService.getAccountById(accountId);
-      if (account) {
-        this.updateCurrentAccountInfo(account);
-
-        // Update arcade data if available
-        if (account.arcadeData) {
-          PopupUIService.updateOptionsUI(account.arcadeData);
-        } else {
-          PopupUIService.toggleElementVisibility("#arcade-points", false);
-        }
-      }
-    }
   },
 
   /**
@@ -281,13 +386,6 @@ const OptionsService = {
 
     if (profileUrlInput) {
       profileUrlInput.value = profileUrl;
-    }
-
-    const arcadeData = await StorageService.getArcadeData();
-    if (arcadeData) {
-      PopupUIService.updateOptionsUI(arcadeData);
-    } else {
-      PopupUIService.toggleElementVisibility("#arcade-points", false);
     }
   },
 
@@ -999,9 +1097,12 @@ const OptionsService = {
   /**
    * Show edit account modal
    */
-  async showEditAccountModal(): Promise<void> {
-    const activeAccount = await AccountService.getActiveAccount();
-    if (!activeAccount) return;
+  async showEditAccountModal(accountId?: string): Promise<void> {
+    const account = accountId
+      ? await AccountService.getAccountById(accountId)
+      : await AccountService.getActiveAccount();
+
+    if (!account) return;
 
     const modal = document.getElementById("edit-account-modal");
     const nameInput = document.getElementById(
@@ -1012,8 +1113,8 @@ const OptionsService = {
     ) as HTMLInputElement;
 
     if (modal && nameInput && nicknameInput) {
-      nameInput.value = activeAccount.name;
-      nicknameInput.value = activeAccount.nickname || "";
+      nameInput.value = account.name;
+      nicknameInput.value = account.nickname || "";
 
       modal.classList.remove("hidden");
       modal.classList.add("flex");
@@ -1151,27 +1252,18 @@ const OptionsService = {
     const activeAccount = await AccountService.getActiveAccount();
     if (!activeAccount) return;
 
-    const nameInput = document.getElementById(
-      "edit-account-name-input"
-    ) as HTMLInputElement;
     const nicknameInput = document.getElementById(
       "edit-account-nickname-input"
     ) as HTMLInputElement;
 
-    if (!nameInput.value.trim()) {
-      this.showMessage("Tên hiển thị không được để trống!", "error");
-      return;
-    }
-
     try {
       await AccountService.updateAccount(activeAccount.id, {
-        name: nameInput.value.trim(),
         nickname: nicknameInput.value.trim() || undefined,
       });
 
       await this.loadAccounts();
       this.hideEditAccountModal();
-      this.showMessage("Đã cập nhật tài khoản thành công!", "success");
+      this.showMessage("Đã cập nhật biệt danh thành công!", "success");
     } catch (error) {
       console.error("Error updating account:", error);
       this.showMessage("Có lỗi xảy ra khi cập nhật tài khoản!", "error");
@@ -1179,11 +1271,14 @@ const OptionsService = {
   },
 
   /**
-   * Handle deleting current account
+   * Handle deleting account
    */
-  async handleDeleteAccount(): Promise<void> {
-    const activeAccount = await AccountService.getActiveAccount();
-    if (!activeAccount) return;
+  async handleDeleteAccount(accountId?: string): Promise<void> {
+    const account = accountId
+      ? await AccountService.getAccountById(accountId)
+      : await AccountService.getActiveAccount();
+
+    if (!account) return;
 
     const allAccounts = await AccountService.getAllAccounts();
     if (allAccounts.length <= 1) {
@@ -1192,15 +1287,13 @@ const OptionsService = {
     }
 
     if (
-      !window.confirm(
-        `Bạn có chắc chắn muốn xóa tài khoản "${activeAccount.name}"?`
-      )
+      !window.confirm(`Bạn có chắc chắn muốn xóa tài khoản "${account.name}"?`)
     ) {
       return;
     }
 
     try {
-      await AccountService.deleteAccount(activeAccount.id);
+      await AccountService.deleteAccount(account.id);
       await this.loadAccounts();
       this.showMessage("Đã xóa tài khoản thành công!", "success");
 
