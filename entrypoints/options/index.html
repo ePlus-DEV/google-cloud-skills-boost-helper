@@ -87,20 +87,83 @@
       <!-- Card 5 -->
       <div class="bg-gradient-to-r from-white to-indigo-50 shadow-lg rounded-lg p-6 border border-indigo-200">
         <h4 class="text-xl font-semibold text-gray-800 mb-2">
-          Arcade Points Calculator
+          <i class="fa-solid fa-user-group mr-2 text-indigo-600"></i>
+          Quản lý tài khoản & Arcade Points Calculator
         </h4>
         <p class="text-gray-500 text-sm mb-4">
-          Enter your public profile URL to calculate your arcade points.
+          Quản lý nhiều tài khoản và tính toán arcade points.
         </p>
-        <div class="flex items-center space-x-3">
-          <input type="url" id="public-profile-url"
-            class="border border-gray-300 rounded-lg px-4 py-2 flex-grow focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            placeholder="Enter public profile URL" required />
-          <button
-            class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200"
-            id="submit-url">
-            Save
-          </button>
+
+        <!-- Account Management Section -->
+        <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex justify-between items-center mb-3">
+            <h5 class="text-lg font-medium text-gray-700">
+              <i class="fa-solid fa-users mr-2 text-purple-600"></i>
+              Tài khoản của bạn
+            </h5>
+            <button id="add-account-btn" class="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-medium px-3 py-1 rounded-lg shadow-md transition duration-200 text-sm">
+              <i class="fa-solid fa-plus mr-1"></i>
+              Thêm tài khoản
+            </button>
+          </div>
+          
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tài khoản hiện tại:</label>
+            <div class="relative">
+              <select id="account-selector" class="w-full border border-gray-300 rounded-lg px-3 py-2 pr-8 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
+                <option value="">Chọn tài khoản...</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <i class="fa-solid fa-chevron-down text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <div id="current-account-info" class="hidden bg-white rounded-lg p-3 border border-gray-200 mb-3">
+            <div class="flex items-center space-x-3">
+              <img id="account-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300" style="display: none;">
+              <div class="flex-1">
+                <div class="text-sm font-medium text-gray-900" id="account-display-name"></div>
+                <div class="text-xs text-gray-500" id="account-profile-url"></div>
+              </div>
+              <div class="flex space-x-1">
+                <button id="edit-account-btn" class="text-blue-600 hover:text-blue-800 transition duration-200" title="Sửa tài khoản">
+                  <i class="fa-solid fa-edit"></i>
+                </button>
+                <button id="delete-account-btn" class="text-red-600 hover:text-red-800 transition duration-200" title="Xóa tài khoản">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex space-x-2">
+            <button id="export-accounts-btn" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
+              <i class="fa-solid fa-download mr-1"></i>
+              Xuất dữ liệu
+            </button>
+            <button id="import-accounts-btn" class="flex-1 bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
+              <i class="fa-solid fa-upload mr-1"></i>
+              Nhập dữ liệu
+            </button>
+          </div>
+        </div>
+
+        <!-- Profile URL Input for current account -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Cập nhật URL Profile cho tài khoản hiện tại:
+          </label>
+          <div class="flex items-center space-x-3">
+            <input type="url" id="public-profile-url"
+              class="border border-gray-300 rounded-lg px-4 py-2 flex-grow focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              placeholder="https://www.cloudskillsboost.google/public_profiles/..." required />
+            <button
+              class="bg-gradient-to-r from-purple-500 to-indigo-700 hover:from-purple-600 hover:to-indigo-800 text-white font-medium px-4 py-2 rounded-lg shadow-md transition duration-200"
+              id="submit-url">
+              Cập nhật
+            </button>
+          </div>
         </div>
         <!-- Arcade -->
         <div id="arcade-points"
@@ -170,6 +233,110 @@
       </div>
     </div>
     <!-- END - Settings -->
+
+    <!-- Add Account Modal -->
+    <div id="add-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-900">Thêm tài khoản mới</h3>
+          <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tên hiển thị (tùy chọn):</label>
+            <input type="text" id="account-name-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Nhập tên hiển thị...">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Biệt danh (tùy chọn):</label>
+            <input type="text" id="account-nickname-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Nhập biệt danh...">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">URL Profile:</label>
+            <input type="url" id="account-url-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="https://www.cloudskillsboost.google/public_profiles/..." required>
+          </div>
+        </div>
+        
+        <div class="flex space-x-3 mt-6">
+          <button id="cancel-add-account-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-2 rounded-lg transition duration-200">
+            Hủy
+          </button>
+          <button id="confirm-add-account-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
+            Thêm tài khoản
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Accounts Modal -->
+    <div id="import-accounts-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-900">Nhập dữ liệu tài khoản</h3>
+          <button id="close-import-modal-btn" class="text-gray-400 hover:text-gray-600">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Chọn file JSON:</label>
+            <input type="file" id="import-file-input" accept=".json" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Hoặc dán nội dung JSON:</label>
+            <textarea id="import-json-textarea" rows="8" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder='{"accounts": {...}, "settings": {...}}'></textarea>
+          </div>
+        </div>
+        
+        <div class="flex space-x-3 mt-6">
+          <button id="cancel-import-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-2 rounded-lg transition duration-200">
+            Hủy
+          </button>
+          <button id="confirm-import-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
+            Nhập dữ liệu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Account Modal -->
+    <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-900">Chỉnh sửa tài khoản</h3>
+          <button id="close-edit-modal-btn" class="text-gray-400 hover:text-gray-600">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tên hiển thị:</label>
+            <input type="text" id="edit-account-name-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Nhập tên hiển thị...">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Biệt danh:</label>
+            <input type="text" id="edit-account-nickname-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Nhập biệt danh...">
+          </div>
+        </div>
+        
+        <div class="flex space-x-3 mt-6">
+          <button id="cancel-edit-account-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-2 rounded-lg transition duration-200">
+            Hủy
+          </button>
+          <button id="confirm-edit-account-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
+            Lưu thay đổi
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
