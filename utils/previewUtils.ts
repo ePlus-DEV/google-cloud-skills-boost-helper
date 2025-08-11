@@ -32,7 +32,7 @@ export const PreviewUtils = {
     const previewAvatar =
       DOMUtils.getElementById<HTMLImageElement>("preview-avatar");
     const previewAvatarPlaceholder = DOMUtils.getElementById(
-      "preview-avatar-placeholder"
+      "preview-avatar-placeholder",
     );
 
     if (userDetail.profileImage && previewAvatar) {
@@ -62,7 +62,7 @@ export const PreviewUtils = {
     DOMUtils.updateTextWithFallback(
       "preview-arcade-points",
       `${points.toLocaleString()} points`,
-      "0 points"
+      "0 points",
     );
   },
 
@@ -75,7 +75,7 @@ export const PreviewUtils = {
     DOMUtils.updateTextWithFallback(
       "preview-arcade-total",
       points.toLocaleString(),
-      "0"
+      "0",
     );
   },
 
@@ -87,7 +87,7 @@ export const PreviewUtils = {
     DOMUtils.updateTextWithFallback(
       "preview-total-badges",
       totalBadges.toString(),
-      "0"
+      "0",
     );
   },
 
@@ -99,13 +99,13 @@ export const PreviewUtils = {
     if (userDetail.completedBadgeIds) {
       skillBadges = userDetail.completedBadgeIds.filter(
         (badge: CompletedBadge) =>
-          badge.badgeType === "SKILL" || badge.type === "skill"
+          badge.badgeType === "SKILL" || badge.type === "skill",
       ).length;
     }
     DOMUtils.updateTextWithFallback(
       "preview-skill-badges",
       skillBadges.toString(),
-      "0"
+      "0",
     );
   },
 
@@ -138,7 +138,7 @@ export const PreviewUtils = {
   updateAccountPreview(
     account: Account,
     userDetail: UserDetail,
-    arcadeData: ArcadeData
+    arcadeData: ArcadeData,
   ): void {
     this.updateName(account, userDetail);
     this.updateEmail(userDetail);
