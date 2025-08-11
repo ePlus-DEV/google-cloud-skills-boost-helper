@@ -1,4 +1,3 @@
-import { UAParser } from "ua-parser-js";
 import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
 import AccountService from "./accountService";
@@ -974,9 +973,11 @@ const OptionsService = {
       );
       if (existingAccount) {
         this.showProfileError(
-          `An account with this URL already exists: "${existingAccount.name}". You can switch to that account instead of creating a new one.`
+          `An account with this URL already exists: "${existingAccount.name}".`,
+          "Account already exists",
+          true,
+          existingAccount
         );
-        this.showSwitchToExistingAccountOption(existingAccount);
         return;
       }
     } catch (error) {
@@ -1123,11 +1124,11 @@ const OptionsService = {
       );
       if (existingAccount) {
         this.showProfileError(
-          `An account with this URL already exists: "${existingAccount.name}". You can switch to that account instead of creating a new one.`
+          `An account with this URL already exists: "${existingAccount.name}".`,
+          "Account already exists",
+          true,
+          existingAccount
         );
-
-        // Show option to switch to existing account
-        this.showSwitchToExistingAccountOption(existingAccount);
         return;
       }
     } catch (error) {
@@ -1254,14 +1255,31 @@ const OptionsService = {
   /**
    * Show profile fetch error
    */
-  showProfileError(message: string): void {
+  showProfileError(
+    message: string,
+    title?: string,
+    showSwitchBtn?: boolean,
+    existingAccount?: Account
+  ): void {
     const errorDiv = document.getElementById("error-profile");
+    const errorTitle = document.getElementById("error-title");
     const errorMessage = document.getElementById("error-message");
     const loadingDiv = document.getElementById("loading-profile");
 
     if (loadingDiv) loadingDiv.classList.add("hidden");
     if (errorDiv) errorDiv.classList.remove("hidden");
+    if (errorTitle && title) errorTitle.textContent = title;
     if (errorMessage) errorMessage.textContent = message;
+
+    // Remove any previous switch button
+    if (errorMessage && errorMessage.parentNode) {
+      const prevBtn = errorMessage.parentNode.querySelector("button");
+      if (prevBtn) prevBtn.remove();
+    }
+    // Add switch button if needed
+    if (showSwitchBtn && existingAccount) {
+      this.showSwitchToExistingAccountOption(existingAccount);
+    }
   },
 
   /**
@@ -1275,7 +1293,7 @@ const OptionsService = {
       // Add a button to switch to existing account
       const switchButton = document.createElement("button");
       switchButton.className =
-        "mt-3 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200";
+        "mt-1 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200";
       switchButton.innerHTML = `<i class="fa-solid fa-arrow-right mr-1"></i>Switch to account "${existingAccount.name}"`;
 
       switchButton.addEventListener("click", async () => {
@@ -1293,12 +1311,13 @@ const OptionsService = {
       });
 
       // Clear previous button if exists
-      const existingButton = errorMessage.parentNode?.querySelector("button");
-      if (existingButton) {
-        existingButton.remove();
+      const parent = errorMessage.parentNode;
+      if (parent) {
+        const existingButton = parent.querySelector("button");
+        if (existingButton) existingButton.remove();
+        // Insert button after error-message
+        errorMessage.insertAdjacentElement("afterend", switchButton);
       }
-
-      errorMessage.parentNode?.appendChild(switchButton);
     }
   },
 
@@ -1421,6 +1440,28 @@ const OptionsService = {
       return;
     }
 
+    // Check if account already exists
+    try {
+      const existingAccount = await AccountService.isAccountExists(
+        urlInput.value.trim()
+      );
+      if (existingAccount) {
+        // Show error UI with switch button
+        const errorDiv = document.getElementById("error-profile");
+        const errorTitle = document.getElementById("error-title");
+        const errorMessage = document.getElementById("error-message");
+        if (errorDiv && errorTitle && errorMessage) {
+          errorDiv.classList.remove("hidden");
+          errorTitle.textContent = "Account already exists";
+          errorMessage.textContent = `An account with this URL already exists: "${existingAccount.name}".`;
+          this.showSwitchToExistingAccountOption(existingAccount);
+        }
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking existing account:", error);
+    }
+
     // Validate that we have a name from the API
     if (!nameDisplay.value.trim()) {
       this.showMessage(
@@ -1521,11 +1562,43 @@ const OptionsService = {
       return;
     }
 
-    if (
-      !window.confirm(
-        `Are you sure you want to delete the account "${account.name}"?`
-      )
-    ) {
+    // Show a custom confirmation modal instead of window.confirm
+    const confirmed = await new Promise<boolean>((resolve) => {
+      const modal = document.createElement("div");
+      modal.className =
+        "fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50";
+      modal.innerHTML = `
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+          <div class="mb-4 text-gray-800 font-semibold">
+            Are you sure you want to delete the account "${account.name}"?
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button id="cancel-delete-account-btn" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700">Cancel</button>
+            <button id="confirm-delete-account-btn" class="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white">Delete</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const cleanup = () => {
+        document.body.removeChild(modal);
+      };
+
+      modal
+        .querySelector("#cancel-delete-account-btn")
+        ?.addEventListener("click", () => {
+          cleanup();
+          resolve(false);
+        });
+      modal
+        .querySelector("#confirm-delete-account-btn")
+        ?.addEventListener("click", () => {
+          cleanup();
+          resolve(true);
+        });
+    });
+
+    if (!confirmed) {
       return;
     }
 
@@ -1533,11 +1606,6 @@ const OptionsService = {
       await AccountService.deleteAccount(account.id);
       await this.loadAccounts();
       this.showMessage("Account deleted successfully!", "success");
-
-      // // Reload page since active account changed
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 1000);
     } catch (error) {
       console.error("Error deleting account:", error);
       this.showMessage(
@@ -1623,12 +1691,6 @@ const OptionsService = {
    * Update account preview with real data
    */
   updateAccountPreview(account: any, userDetail: any, arcadeData: any): void {
-    console.log("Updating account preview with:", {
-      account,
-      userDetail,
-      arcadeData,
-    });
-
     // Update name
     const previewName = document.getElementById("preview-name");
     if (previewName) {

@@ -549,12 +549,13 @@
 
       <!-- Error State -->
       <div id="error-profile" class="hidden">
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex flex-col">
           <div class="flex items-center mb-2">
             <i class="fa-solid fa-exclamation-triangle text-red-600 mr-2"></i>
-            <span class="text-sm font-medium text-red-800">An error occurred</span>
+            <span id="error-title" class="text-sm font-medium text-red-800">An error occurred</span>
           </div>
-          <p id="error-message" class="text-sm text-red-700"></p>
+          <p id="error-message" class="text-sm text-red-700 mb-2"></p>
+          <!-- Switch button will be inserted here by JS after error-message -->
         </div>
       </div>
 
