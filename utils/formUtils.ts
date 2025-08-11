@@ -101,7 +101,7 @@ export const FormUtils = {
    */
   isValidUrl(url: string): boolean {
     try {
-      new URL(url);
+      const _ = new URL(url);
       return true;
     } catch {
       return false;
