@@ -28,8 +28,7 @@
     "marked": "^16.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.16",
-    "ua-parser-js": "^2.0.3"
+    "tailwindcss": "^4.0.16"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.280",
