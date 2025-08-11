@@ -149,7 +149,7 @@ const OptionsService = {
                 </span>
                 <span class="text-xs text-gray-400">
                   Updated: ${new Date(account.lastUsed).toLocaleDateString(
-                    "en-US",
+                    "en-US"
                   )}
                 </span>
               </div>
@@ -209,7 +209,7 @@ const OptionsService = {
       // Show success message
       this.showMessage(
         browser.i18n.getMessage("successSwitchedAccount"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error switching account:", error);
@@ -226,7 +226,7 @@ const OptionsService = {
       if (!account) {
         this.showMessage(
           browser.i18n.getMessage("errorAccountNotFound"),
-          "error",
+          "error"
         );
         return;
       }
@@ -234,12 +234,12 @@ const OptionsService = {
       // Show loading message
       this.showMessage(
         browser.i18n.getMessage("infoUpdatingAccountData"),
-        "success",
+        "success"
       );
 
       // Fetch fresh data from API
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        account.profileUrl,
+        account.profileUrl
       );
 
       if (arcadeData) {
@@ -263,19 +263,19 @@ const OptionsService = {
 
         this.showMessage(
           browser.i18n.getMessage("successAccountDataUpdated"),
-          "success",
+          "success"
         );
       } else {
         this.showMessage(
           browser.i18n.getMessage("errorFetchDataFromApi"),
-          "error",
+          "error"
         );
       }
     } catch (error) {
       console.error("Error updating account:", error);
       this.showMessage(
         browser.i18n.getMessage("errorUpdatingAccount"),
-        "error",
+        "error"
       );
     }
   },
@@ -289,7 +289,7 @@ const OptionsService = {
       if (!account?.profileUrl) {
         this.showMessage(
           browser.i18n.getMessage("errorProfileUrlNotFound"),
-          "error",
+          "error"
         );
         return;
       }
@@ -311,7 +311,7 @@ const OptionsService = {
       if (!activeAccount?.profileUrl) {
         this.showMessage(
           browser.i18n.getMessage("errorNoActiveAccountOrProfileUrl"),
-          "error",
+          "error"
         );
         return;
       }
@@ -381,7 +381,7 @@ const OptionsService = {
 
     // View active profile button
     const viewActiveProfileBtn = document.getElementById(
-      "view-active-profile-btn",
+      "view-active-profile-btn"
     );
     if (viewActiveProfileBtn) {
       viewActiveProfileBtn.addEventListener("click", async () => {
@@ -399,7 +399,7 @@ const OptionsService = {
   setupEventListeners(): void {
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
@@ -439,7 +439,7 @@ const OptionsService = {
       if (messageKey) {
         try {
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
+            messageKey as Parameters<typeof browser.i18n.getMessage>[0]
           );
           if (translatedText) {
             element.textContent = translatedText;
@@ -457,7 +457,7 @@ const OptionsService = {
   async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (profileUrlInput) {
@@ -471,7 +471,7 @@ const OptionsService = {
   async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (submitUrlElement) {
@@ -485,7 +485,7 @@ const OptionsService = {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
       OptionsService.resetSubmitButton();
       return;
@@ -503,21 +503,21 @@ const OptionsService = {
           await OptionsService.displayUserDetails(
             arcadeData,
             profileUrl,
-            "update",
+            "update"
           );
         } else {
           // Create new account
           await OptionsService.displayUserDetails(
             arcadeData,
             profileUrl,
-            "create",
+            "create"
           );
         }
       } else {
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
         );
       }
     } catch (error) {
@@ -525,7 +525,7 @@ const OptionsService = {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
     } finally {
       OptionsService.resetSubmitButton();
@@ -538,7 +538,7 @@ const OptionsService = {
   async displayUserDetails(
     data: ArcadeData,
     profileUrl?: string,
-    action?: "create" | "update",
+    action?: "create" | "update"
   ): Promise<void> {
     // Check if we have an active account to update
     const activeAccount = await AccountService.getActiveAccount();
@@ -578,7 +578,7 @@ const OptionsService = {
     PopupUIService.showMessage(
       "#success-message",
       messageText || browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
     );
 
     PopupUIService.updateOptionsUI(data);
@@ -602,7 +602,7 @@ const OptionsService = {
    */
   async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
@@ -654,7 +654,7 @@ const OptionsService = {
       await MarkdownService.loadAndRender(
         MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
     } catch (error) {
       // Show error if loading fails
@@ -668,11 +668,11 @@ const OptionsService = {
    */
   showMarkdownLoading(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -690,11 +690,11 @@ const OptionsService = {
    */
   showMarkdownError(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -733,7 +733,7 @@ const OptionsService = {
       {
         id: "create-account-btn",
         event: "click",
-        handler: () => void this.handleCreateAccount(),
+        handler: () => this.handleCreateAccount(),
       },
       {
         id: "save-nickname-btn",
@@ -757,7 +757,7 @@ const OptionsService = {
           window.open(
             "https://www.cloudskillsboost.google/my_account/profile#public-profile",
             "_blank",
-            "noopener,noreferrer",
+            "noopener,noreferrer"
           );
         },
       },
@@ -866,7 +866,7 @@ const OptionsService = {
    */
   async handleCreateAccount(): Promise<void> {
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const loadingDiv = document.getElementById("loading-profile");
     const errorDiv = document.getElementById("error-profile");
@@ -887,14 +887,14 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         this.showProfileError(
           `An account with this URL already exists: "${existingAccount.name}".`,
           "Account already exists",
           true,
-          existingAccount,
+          existingAccount
         );
         return;
       }
@@ -953,7 +953,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Unable to create account. Please check the URL and try again!",
+          : "Unable to create account. Please check the URL and try again!"
       );
     }
   },
@@ -963,14 +963,14 @@ const OptionsService = {
    */
   async handleSaveNickname(): Promise<void> {
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const accountId = this.createdAccountId;
 
     if (!accountId) {
       this.showMessage(
         browser.i18n.getMessage("errorAccountNotFoundToUpdate"),
-        "error",
+        "error"
       );
       return;
     }
@@ -983,10 +983,10 @@ const OptionsService = {
 
         // Update preview nickname
         const previewNicknameDisplay = document.getElementById(
-          "preview-nickname-display",
+          "preview-nickname-display"
         );
         const previewNicknameText = document.getElementById(
-          "preview-nickname-text",
+          "preview-nickname-text"
         );
         if (previewNicknameDisplay && previewNicknameText) {
           previewNicknameText.textContent = nicknameInput.value.trim();
@@ -995,7 +995,7 @@ const OptionsService = {
 
         this.showMessage(
           browser.i18n.getMessage("successNicknameSaved"),
-          "success",
+          "success"
         );
       }
 
@@ -1020,7 +1020,7 @@ const OptionsService = {
    */
   async fetchProfilePreview(): Promise<void> {
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const loadingDiv = document.getElementById("loading-profile");
     const errorDiv = document.getElementById("error-profile");
@@ -1040,14 +1040,14 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         this.showProfileError(
           `An account with this URL already exists: "${existingAccount.name}".`,
           "Account already exists",
           true,
-          existingAccount,
+          existingAccount
         );
         return;
       }
@@ -1083,7 +1083,7 @@ const OptionsService = {
 
       // Enable confirm button
       const confirmBtn = document.getElementById(
-        "confirm-add-account-btn",
+        "confirm-add-account-btn"
       ) as HTMLButtonElement;
       const backBtn = document.getElementById("back-to-input-btn");
       if (confirmBtn) confirmBtn.disabled = false;
@@ -1094,7 +1094,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Unable to fetch profile information. Please check the URL and try again!",
+          : "Unable to fetch profile information. Please check the URL and try again!"
       );
     }
   },
@@ -1158,7 +1158,7 @@ const OptionsService = {
     message: string,
     title?: string,
     showSwitchBtn?: boolean,
-    existingAccount?: Account,
+    existingAccount?: Account
   ): void {
     const errorDiv = document.getElementById("error-profile");
     const errorTitle = document.getElementById("error-title");
@@ -1201,7 +1201,7 @@ const OptionsService = {
           this.hideAddAccountModal();
           this.showMessage(
             `Switched to account "${existingAccount.name}"!`,
-            "success",
+            "success"
           );
         } catch (error) {
           console.error("Error switching account:", error);
@@ -1229,10 +1229,10 @@ const OptionsService = {
     const errorDiv = document.getElementById("error-profile");
     const backBtn = document.getElementById("back-to-input-btn");
     const confirmBtn = document.getElementById(
-      "confirm-add-account-btn",
+      "confirm-add-account-btn"
     ) as HTMLButtonElement;
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
 
     if (stepUrlInput) stepUrlInput.classList.remove("hidden");
@@ -1257,7 +1257,7 @@ const OptionsService = {
     DOMUtils.setInputValue("edit-account-name-input", account.name);
     DOMUtils.setInputValue(
       "edit-account-nickname-input",
-      account.nickname || "",
+      account.nickname || ""
     );
 
     // Show modal
@@ -1292,20 +1292,20 @@ const OptionsService = {
    */
   async handleAddAccount(): Promise<void> {
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const confirmBtn = document.getElementById("confirm-add-account-btn");
 
     if (!urlInput.value.trim()) {
       this.showMessage(
         browser.i18n.getMessage("errorEnterProfileUrl"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1313,7 +1313,7 @@ const OptionsService = {
     if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
       this.showMessage(
         browser.i18n.getMessage("errorInvalidProfileUrl"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1321,7 +1321,7 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         // Show error UI with switch button
@@ -1331,11 +1331,11 @@ const OptionsService = {
         if (errorDiv && errorTitle && errorMessage) {
           errorDiv.classList.remove("hidden");
           errorTitle.textContent = browser.i18n.getMessage(
-            "errorAccountExistsTitle",
+            "errorAccountExistsTitle"
           );
           errorMessage.textContent = browser.i18n.getMessage(
             "errorAccountExistsMsg",
-            [existingAccount.name],
+            [existingAccount.name]
           );
           this.showSwitchToExistingAccountOption(existingAccount);
         }
@@ -1349,14 +1349,14 @@ const OptionsService = {
     if (!nameDisplay.value.trim()) {
       this.showMessage(
         browser.i18n.getMessage("errorNoNameFromProfile"),
-        "error",
+        "error"
       );
       return;
     }
 
     if (confirmBtn) {
       confirmBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i>${browser.i18n.getMessage(
-        "labelAdding",
+        "labelAdding"
       )}`;
       (confirmBtn as HTMLButtonElement).disabled = true;
     }
@@ -1383,7 +1383,7 @@ const OptionsService = {
       this.hideAddAccountModal();
       this.showMessage(
         browser.i18n.getMessage("successAccountAdded"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error adding account:", error);
@@ -1397,7 +1397,7 @@ const OptionsService = {
     } finally {
       if (confirmBtn) {
         confirmBtn.innerHTML = `<i class="fa-solid fa-plus mr-1"></i>${browser.i18n.getMessage(
-          "labelAddAccount",
+          "labelAddAccount"
         )}`;
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
@@ -1412,7 +1412,7 @@ const OptionsService = {
     if (!activeAccount) return;
 
     const nicknameInput = document.getElementById(
-      "edit-account-nickname-input",
+      "edit-account-nickname-input"
     ) as HTMLInputElement;
 
     try {
@@ -1424,13 +1424,13 @@ const OptionsService = {
       this.hideEditAccountModal();
       this.showMessage(
         browser.i18n.getMessage("successNicknameUpdated"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error updating account:", error);
       this.showMessage(
         browser.i18n.getMessage("errorUpdatingAccountGeneric"),
-        "error",
+        "error"
       );
     }
   },
@@ -1449,7 +1449,7 @@ const OptionsService = {
     if (allAccounts.length <= 1) {
       this.showMessage(
         browser.i18n.getMessage("errorCannotDeleteLastAccount"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1502,13 +1502,13 @@ const OptionsService = {
       await this.loadAccounts();
       this.showMessage(
         browser.i18n.getMessage("successAccountDeleted"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error deleting account:", error);
       this.showMessage(
         browser.i18n.getMessage("errorDeletingAccountGeneric"),
-        "error",
+        "error"
       );
     }
   },
@@ -1535,7 +1535,7 @@ const OptionsService = {
 
       this.showMessage(
         browser.i18n.getMessage("successDataExported"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error exporting accounts:", error);
@@ -1548,7 +1548,7 @@ const OptionsService = {
    */
   async handleImportAccounts(): Promise<void> {
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
@@ -1570,7 +1570,7 @@ const OptionsService = {
         this.hideImportModal();
         this.showMessage(
           browser.i18n.getMessage("successDataImported"),
-          "success",
+          "success"
         );
 
         // Reload page to refresh UI
@@ -1580,7 +1580,7 @@ const OptionsService = {
       } else {
         this.showMessage(
           browser.i18n.getMessage("errorInvalidImportData"),
-          "error",
+          "error"
         );
       }
     } catch (error) {
@@ -1600,7 +1600,7 @@ const OptionsService = {
   updateAccountPreview(
     account: Account,
     userDetail: UserDetail,
-    arcadeData: ArcadeData,
+    arcadeData: ArcadeData
   ): void {
     PreviewUtils.updateAccountPreview(account, userDetail, arcadeData);
   },
