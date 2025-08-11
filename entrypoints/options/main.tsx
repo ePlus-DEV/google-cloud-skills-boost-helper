@@ -5,9 +5,8 @@ function localizeElements() {
   const elements = document.querySelectorAll("[data-i18n]");
   elements.forEach((element) => {
     const key = element.getAttribute("data-i18n");
-    if (key && browser.i18n) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const message = (browser.i18n as any).getMessage(key);
+    if (key && chrome.i18n) {
+      const message = chrome.i18n.getMessage(key);
       if (message) {
         element.textContent = message;
       }
