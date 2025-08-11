@@ -186,5 +186,47 @@
     "message": "An error occurred while adding the account. Please try again!"
   },
   "errorAccountExistsMsgSimple": { "message": "Account already exists." },
-  "labelAddAccount": { "message": "Add account" }
+  "labelAddAccount": { "message": "Add account" },
+  "successSwitchedAccount": { "message": "Switched account successfully!" },
+  "errorSwitchAccount": { "message": "Error switching account." },
+  "errorAccountNotFound": { "message": "Account not found." },
+  "infoUpdatingAccountData": { "message": "Updating account data..." },
+  "successAccountDataUpdated": {
+    "message": "Account data updated successfully!"
+  },
+  "errorFetchDataFromApi": { "message": "Could not fetch data from API." },
+  "errorUpdatingAccount": { "message": "Error updating account." },
+  "errorProfileUrlNotFound": {
+    "message": "Profile URL not found for this account."
+  },
+  "errorOpeningProfile": { "message": "Error opening profile." },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "No active account or profile URL found."
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "Could not find account to update!"
+  },
+  "successNicknameSaved": { "message": "Nickname saved successfully!" },
+  "errorSavingNickname": { "message": "Error saving nickname!" },
+  "successNicknameUpdated": { "message": "Nickname updated successfully!" },
+  "errorUpdatingAccountGeneric": {
+    "message": "An error occurred while updating the account!"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "Cannot delete the last account!"
+  },
+  "successAccountDeleted": { "message": "Account deleted successfully!" },
+  "errorDeletingAccountGeneric": {
+    "message": "An error occurred while deleting the account!"
+  },
+  "successDataExported": { "message": "Data exported successfully!" },
+  "errorExportingData": {
+    "message": "An error occurred while exporting data!"
+  },
+  "errorNoImportData": {
+    "message": "Please select a file or paste JSON content!"
+  },
+  "successDataImported": { "message": "Data imported successfully!" },
+  "errorInvalidImportData": { "message": "Invalid data. Please check again!" },
+  "errorImportingData": { "message": "An error occurred while importing data!" }
 }

@@ -185,5 +185,47 @@
     "message": "Có lỗi khi thêm tài khoản. Vui lòng thử lại!"
   },
   "errorAccountExistsMsgSimple": { "message": "Tài khoản đã tồn tại." },
-  "labelAddAccount": { "message": "Thêm tài khoản" }
+  "labelAddAccount": { "message": "Thêm tài khoản" },
+  "successSwitchedAccount": { "message": "Chuyển tài khoản thành công!" },
+  "errorSwitchAccount": { "message": "Lỗi khi chuyển tài khoản." },
+  "errorAccountNotFound": { "message": "Không tìm thấy tài khoản." },
+  "infoUpdatingAccountData": {
+    "message": "Đang cập nhật dữ liệu tài khoản..."
+  },
+  "successAccountDataUpdated": {
+    "message": "Cập nhật dữ liệu tài khoản thành công!"
+  },
+  "errorFetchDataFromApi": { "message": "Không thể lấy dữ liệu từ API." },
+  "errorUpdatingAccount": { "message": "Lỗi khi cập nhật tài khoản." },
+  "errorProfileUrlNotFound": {
+    "message": "Không tìm thấy URL hồ sơ cho tài khoản này."
+  },
+  "errorOpeningProfile": { "message": "Lỗi khi mở hồ sơ." },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "Không có tài khoản hoạt động hoặc URL hồ sơ."
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "Không tìm thấy tài khoản để cập nhật!"
+  },
+  "successNicknameSaved": { "message": "Lưu biệt danh thành công!" },
+  "errorSavingNickname": { "message": "Lỗi khi lưu biệt danh!" },
+  "successNicknameUpdated": { "message": "Cập nhật biệt danh thành công!" },
+  "errorUpdatingAccountGeneric": {
+    "message": "Có lỗi khi cập nhật tài khoản!"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "Không thể xóa tài khoản cuối cùng!"
+  },
+  "successAccountDeleted": { "message": "Xóa tài khoản thành công!" },
+  "errorDeletingAccountGeneric": { "message": "Có lỗi khi xóa tài khoản!" },
+  "successDataExported": { "message": "Xuất dữ liệu thành công!" },
+  "errorExportingData": { "message": "Có lỗi khi xuất dữ liệu!" },
+  "errorNoImportData": {
+    "message": "Vui lòng chọn file hoặc dán nội dung JSON!"
+  },
+  "successDataImported": { "message": "Nhập dữ liệu thành công!" },
+  "errorInvalidImportData": {
+    "message": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!"
+  },
+  "errorImportingData": { "message": "Có lỗi khi nhập dữ liệu!" }
 }
