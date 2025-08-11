@@ -72,7 +72,9 @@ const PopupService = {
 
     // Clear existing options except the first one
     while (selector.children.length > 1) {
-      selector.removeChild(selector.lastChild!);
+      if (selector.lastChild) {
+        selector.removeChild(selector.lastChild);
+      }
     }
 
     // Load accounts
