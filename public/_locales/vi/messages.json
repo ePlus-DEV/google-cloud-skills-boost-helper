@@ -169,5 +169,21 @@
   },
   "tourCloseButton": {
     "message": "Đóng"
-  }
+  },
+  "errorEnterProfileUrl": { "message": "Vui lòng nhập URL hồ sơ!" },
+  "errorInvalidProfileUrl": { "message": "URL hồ sơ không hợp lệ!" },
+  "errorAccountExistsTitle": { "message": "Tài khoản đã tồn tại" },
+  "errorAccountExistsMsg": {
+    "message": "Đã tồn tại tài khoản với URL này: \"$1\"."
+  },
+  "errorNoNameFromProfile": {
+    "message": "Không lấy được tên từ hồ sơ. Vui lòng thử lại!"
+  },
+  "labelAdding": { "message": "Đang thêm..." },
+  "successAccountAdded": { "message": "Thêm tài khoản thành công!" },
+  "errorAddAccountGeneric": {
+    "message": "Có lỗi khi thêm tài khoản. Vui lòng thử lại!"
+  },
+  "errorAccountExistsMsgSimple": { "message": "Tài khoản đã tồn tại." },
+  "labelAddAccount": { "message": "Thêm tài khoản" }
 }

@@ -169,5 +169,22 @@
   },
   "tourCloseButton": {
     "message": "Close"
-  }
+  },
+
+  "errorEnterProfileUrl": { "message": "Please enter a profile URL!" },
+  "errorInvalidProfileUrl": { "message": "Invalid profile URL!" },
+  "errorAccountExistsTitle": { "message": "Account already exists" },
+  "errorAccountExistsMsg": {
+    "message": "An account with this URL already exists: \"$1\"."
+  },
+  "errorNoNameFromProfile": {
+    "message": "Unable to get name from profile. Please try again!"
+  },
+  "labelAdding": { "message": "Adding..." },
+  "successAccountAdded": { "message": "Account added successfully!" },
+  "errorAddAccountGeneric": {
+    "message": "An error occurred while adding the account. Please try again!"
+  },
+  "errorAccountExistsMsgSimple": { "message": "Account already exists." },
+  "labelAddAccount": { "message": "Add account" }
 }
