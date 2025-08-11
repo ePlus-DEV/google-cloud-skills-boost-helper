@@ -1,6 +1,6 @@
 // Export all utilities for easy importing
 export * from "./config";
-export * as storage from "./storage";
+// Note: './storage' does not export anything, so we do not re-export it here.
 export * from "./modalUtils";
 export * from "./domUtils";
 export * from "./previewUtils";
