@@ -7,6 +7,7 @@
     <meta name="manifest.type" content="browser_action" />
     <link rel="stylesheet" href="~/assets/tailwind.css" />
     <link rel="stylesheet" href="~/assets/markdown.css" />
+    <link rel="stylesheet" href="~/assets/account-switcher.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
@@ -57,6 +58,36 @@
             ></div>
           </div>
           <div class="relative z-10 p-4">
+            <!-- Account Switcher -->
+            <div class="mb-4">
+              <div
+                class="bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <i
+                      class="fa-solid fa-user text-purple-400 text-sm mr-2"
+                    ></i>
+                    <span class="text-white text-sm font-medium">Account:</span>
+                  </div>
+                  <select
+                    id="popup-account-selector"
+                    class="bg-white/20 text-white text-sm rounded px-2 py-1 border border-white/30 focus:outline-none focus:border-purple-400 max-w-[180px]"
+                  >
+                    <option value="">Select account...</option>
+                  </select>
+                </div>
+                <div
+                  id="popup-current-account-info"
+                  class="hidden mt-2 pt-2 border-t border-white/20"
+                >
+                  <div
+                    class="text-xs text-white/70"
+                    id="popup-account-url"
+                  ></div>
+                </div>
+              </div>
+            </div>
             <!-- Collapsible Announcement -->
             <div class="mb-4">
               <button

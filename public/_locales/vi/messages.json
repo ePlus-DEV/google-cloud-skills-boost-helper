@@ -97,5 +97,135 @@
   },
   "messageSearchFeatureDisabled": {
     "message": "Tính năng tìm kiếm đã được tắt - Chỉ hiển thị \"Không có giải pháp\" khi không tìm thấy giải pháp"
-  }
+  },
+  "tourStartButton": {
+    "message": "Hướng dẫn sử dụng"
+  },
+  "tourWelcomeTitle": {
+    "message": "Chào mừng đến với hướng dẫn tạo tài khoản!"
+  },
+  "tourWelcomeContent": {
+    "message": "Chúng tôi sẽ hướng dẫn bạn từng bước để tạo tài khoản Google Cloud Skills Boost đầu tiên."
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>Mẹo:</strong> Bạn có thể bỏ qua hướng dẫn này bất cứ lúc nào bằng cách nhấn \"Bỏ qua\"."
+  },
+  "tourAddAccountTitle": {
+    "message": "Thêm tài khoản mới"
+  },
+  "tourAddAccountContent": {
+    "message": "Click vào nút này để thêm tài khoản Google Cloud Skills Boost đầu tiên. Bạn có thể quản lý nhiều tài khoản cùng lúc."
+  },
+  "tourAccountListTitle": {
+    "message": "Danh sách tài khoản"
+  },
+  "tourAccountListContent": {
+    "message": "Sau khi tạo tài khoản, chúng sẽ hiển thị ở đây. Bạn có thể:<br>• Chuyển đổi giữa các tài khoản<br>• Cập nhật dữ liệu arcade points<br>• Chỉnh sửa biệt danh<br>• Xem profile công khai"
+  },
+  "tourModalStep1Title": {
+    "message": "Bước 1: Mở trang Profile"
+  },
+  "tourModalStep1Content": {
+    "message": "Click vào nút này để mở Google Cloud Skills Boost Profile trong tab mới. Bạn sẽ cần đăng nhập và lấy URL từ trang profile."
+  },
+  "tourModalStep2Title": {
+    "message": "Bước 2: Nhập URL Profile"
+  },
+  "tourModalStep2Content": {
+    "message": "Sau khi đăng nhập, copy URL từ thanh địa chỉ và dán vào đây."
+  },
+  "tourModalStep2Tip": {
+    "message": "URL sẽ có dạng: https://www.cloudskillsboost.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "Bước 3: Tạo tài khoản"
+  },
+  "tourModalStep3Content": {
+    "message": "Click vào nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ profile và tạo tài khoản mới cho bạn."
+  },
+  "tourCompletedTitle": {
+    "message": "Hoàn thành hướng dẫn!"
+  },
+  "tourCompletedContent": {
+    "message": "Bây giờ bạn có thể bắt đầu tạo tài khoản đầu tiên."
+  },
+  "tourModalCompletedTitle": {
+    "message": "Sẵn sàng tạo tài khoản!"
+  },
+  "tourModalCompletedContent": {
+    "message": "Hãy thử nhập URL profile và tạo tài khoản đầu tiên của bạn."
+  },
+  "tourButtonNext": {
+    "message": "Tiếp theo"
+  },
+  "tourButtonPrevious": {
+    "message": "Quay lại"
+  },
+  "tourButtonSkip": {
+    "message": "Bỏ qua"
+  },
+  "tourButtonComplete": {
+    "message": "Hoàn thành"
+  },
+  "tourCloseButton": {
+    "message": "Đóng"
+  },
+  "errorEnterProfileUrl": { "message": "Vui lòng nhập URL hồ sơ!" },
+  "errorInvalidProfileUrl": { "message": "URL hồ sơ không hợp lệ!" },
+  "errorAccountExistsTitle": { "message": "Tài khoản đã tồn tại" },
+  "errorAccountExistsMsg": {
+    "message": "Đã tồn tại tài khoản với URL này: \"$1\"."
+  },
+  "errorNoNameFromProfile": {
+    "message": "Không lấy được tên từ hồ sơ. Vui lòng thử lại!"
+  },
+  "labelAdding": { "message": "Đang thêm..." },
+  "successAccountAdded": { "message": "Thêm tài khoản thành công!" },
+  "errorAddAccountGeneric": {
+    "message": "Có lỗi khi thêm tài khoản. Vui lòng thử lại!"
+  },
+  "errorAccountExistsMsgSimple": { "message": "Tài khoản đã tồn tại." },
+  "labelAddAccount": { "message": "Thêm tài khoản" },
+  "successSwitchedAccount": { "message": "Chuyển tài khoản thành công!" },
+  "errorSwitchAccount": { "message": "Lỗi khi chuyển tài khoản." },
+  "errorAccountNotFound": { "message": "Không tìm thấy tài khoản." },
+  "infoUpdatingAccountData": {
+    "message": "Đang cập nhật dữ liệu tài khoản..."
+  },
+  "successAccountDataUpdated": {
+    "message": "Cập nhật dữ liệu tài khoản thành công!"
+  },
+  "errorFetchDataFromApi": { "message": "Không thể lấy dữ liệu từ API." },
+  "errorUpdatingAccount": { "message": "Lỗi khi cập nhật tài khoản." },
+  "errorProfileUrlNotFound": {
+    "message": "Không tìm thấy URL hồ sơ cho tài khoản này."
+  },
+  "errorOpeningProfile": { "message": "Lỗi khi mở hồ sơ." },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "Không có tài khoản hoạt động hoặc URL hồ sơ."
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "Không tìm thấy tài khoản để cập nhật!"
+  },
+  "successNicknameSaved": { "message": "Lưu biệt danh thành công!" },
+  "errorSavingNickname": { "message": "Lỗi khi lưu biệt danh!" },
+  "successNicknameUpdated": { "message": "Cập nhật biệt danh thành công!" },
+  "errorUpdatingAccountGeneric": {
+    "message": "Có lỗi khi cập nhật tài khoản!"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "Không thể xóa tài khoản cuối cùng!"
+  },
+  "successAccountDeleted": { "message": "Xóa tài khoản thành công!" },
+  "errorDeletingAccountGeneric": { "message": "Có lỗi khi xóa tài khoản!" },
+  "successDataExported": { "message": "Xuất dữ liệu thành công!" },
+  "errorExportingData": { "message": "Có lỗi khi xuất dữ liệu!" },
+  "errorNoImportData": {
+    "message": "Vui lòng chọn file hoặc dán nội dung JSON!"
+  },
+  "successDataImported": { "message": "Nhập dữ liệu thành công!" },
+  "errorInvalidImportData": {
+    "message": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!"
+  },
+  "errorImportingData": { "message": "Có lỗi khi nhập dữ liệu!" }
 }
