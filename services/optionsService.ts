@@ -5,7 +5,8 @@ import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
 import TourService from "./tourService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import type { ArcadeData, Account, UserDetail, CompletedBadge } from "../types";
+import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
+import type { ArcadeData, Account, UserDetail } from "../types";
 
 /**
  * Service to handle options page functionality
@@ -148,7 +149,7 @@ const OptionsService = {
                 </span>
                 <span class="text-xs text-gray-400">
                   Updated: ${new Date(account.lastUsed).toLocaleDateString(
-                    "en-US",
+                    "en-US"
                   )}
                 </span>
               </div>
@@ -208,7 +209,7 @@ const OptionsService = {
       // Show success message
       this.showMessage(
         browser.i18n.getMessage("successSwitchedAccount"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error switching account:", error);
@@ -225,7 +226,7 @@ const OptionsService = {
       if (!account) {
         this.showMessage(
           browser.i18n.getMessage("errorAccountNotFound"),
-          "error",
+          "error"
         );
         return;
       }
@@ -233,12 +234,12 @@ const OptionsService = {
       // Show loading message
       this.showMessage(
         browser.i18n.getMessage("infoUpdatingAccountData"),
-        "success",
+        "success"
       );
 
       // Fetch fresh data from API
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        account.profileUrl,
+        account.profileUrl
       );
 
       if (arcadeData) {
@@ -262,19 +263,19 @@ const OptionsService = {
 
         this.showMessage(
           browser.i18n.getMessage("successAccountDataUpdated"),
-          "success",
+          "success"
         );
       } else {
         this.showMessage(
           browser.i18n.getMessage("errorFetchDataFromApi"),
-          "error",
+          "error"
         );
       }
     } catch (error) {
       console.error("Error updating account:", error);
       this.showMessage(
         browser.i18n.getMessage("errorUpdatingAccount"),
-        "error",
+        "error"
       );
     }
   },
@@ -288,7 +289,7 @@ const OptionsService = {
       if (!account?.profileUrl) {
         this.showMessage(
           browser.i18n.getMessage("errorProfileUrlNotFound"),
-          "error",
+          "error"
         );
         return;
       }
@@ -307,10 +308,10 @@ const OptionsService = {
   async handleViewActiveProfile(): Promise<void> {
     try {
       const activeAccount = await AccountService.getActiveAccount();
-      if (!activeAccount || !activeAccount.profileUrl) {
+      if (!activeAccount?.profileUrl) {
         this.showMessage(
           browser.i18n.getMessage("errorNoActiveAccountOrProfileUrl"),
-          "error",
+          "error"
         );
         return;
       }
@@ -380,7 +381,7 @@ const OptionsService = {
 
     // View active profile button
     const viewActiveProfileBtn = document.getElementById(
-      "view-active-profile-btn",
+      "view-active-profile-btn"
     );
     if (viewActiveProfileBtn) {
       viewActiveProfileBtn.addEventListener("click", async () => {
@@ -410,7 +411,7 @@ const OptionsService = {
 
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
@@ -450,7 +451,7 @@ const OptionsService = {
       if (messageKey) {
         try {
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
+            messageKey as Parameters<typeof browser.i18n.getMessage>[0]
           );
           if (translatedText) {
             element.textContent = translatedText;
@@ -468,7 +469,7 @@ const OptionsService = {
   async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (profileUrlInput) {
@@ -482,7 +483,7 @@ const OptionsService = {
   async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (submitUrlElement) {
@@ -496,7 +497,7 @@ const OptionsService = {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
       OptionsService.resetSubmitButton();
       return;
@@ -514,28 +515,29 @@ const OptionsService = {
           await OptionsService.displayUserDetails(
             arcadeData,
             profileUrl,
-            "update",
+            "update"
           );
         } else {
           // Create new account
           await OptionsService.displayUserDetails(
             arcadeData,
             profileUrl,
-            "create",
+            "create"
           );
         }
       } else {
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
         );
       }
     } catch (error) {
+      console.error("Error in handleSubmit:", error);
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
     } finally {
       OptionsService.resetSubmitButton();
@@ -548,7 +550,7 @@ const OptionsService = {
   async displayUserDetails(
     data: ArcadeData,
     profileUrl?: string,
-    action?: "create" | "update",
+    action?: "create" | "update"
   ): Promise<void> {
     // Check if we have an active account to update
     const activeAccount = await AccountService.getActiveAccount();
@@ -588,7 +590,7 @@ const OptionsService = {
     PopupUIService.showMessage(
       "#success-message",
       messageText || browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
     );
 
     PopupUIService.updateOptionsUI(data);
@@ -612,7 +614,7 @@ const OptionsService = {
    */
   async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
@@ -664,7 +666,7 @@ const OptionsService = {
       await MarkdownService.loadAndRender(
         MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
     } catch (error) {
       // Show error if loading fails
@@ -678,11 +680,11 @@ const OptionsService = {
    */
   showMarkdownLoading(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -700,11 +702,11 @@ const OptionsService = {
    */
   showMarkdownError(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -731,184 +733,103 @@ const OptionsService = {
    * Setup add account modal events
    */
   setupAddAccountModalEvents(): void {
-    const modal = document.getElementById("add-account-modal");
-    const closeBtn = document.getElementById("close-modal-btn");
-    const cancelBtn = document.getElementById("cancel-add-account-btn");
-    const createBtn = document.getElementById("create-account-btn");
-    const skipBtn = document.getElementById("skip-nickname-btn");
-    const saveBtn = document.getElementById("save-nickname-btn");
+    // Setup standard modal close events
+    ModalUtils.setupStandardModal("add-account-modal", [
+      "close-modal-btn",
+      "cancel-add-account-btn",
+      "skip-nickname-btn",
+    ]);
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        this.hideAddAccountModal();
-      });
-    }
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => {
-        this.hideAddAccountModal();
-      });
-    }
-
-    if (createBtn) {
-      createBtn.addEventListener("click", async () => {
-        await this.handleCreateAccount();
-      });
-    }
-
-    if (skipBtn) {
-      skipBtn.addEventListener("click", () => {
-        this.hideAddAccountModal();
-      });
-    }
-
-    if (saveBtn) {
-      saveBtn.addEventListener("click", async () => {
-        await this.handleSaveNickname();
-      });
-    }
-
-    // Allow Enter key to create account in URL input
-    const urlInput = document.getElementById("account-url-input");
-    if (urlInput) {
-      urlInput.addEventListener("keypress", async (e) => {
-        if (e.key === "Enter") {
-          await this.handleCreateAccount();
-        }
-      });
-    }
-
-    // Go to profile page button
-    const goToProfileBtn = document.getElementById("go-to-profile-page-btn");
-    if (goToProfileBtn) {
-      goToProfileBtn.addEventListener("click", () => {
-        window.open(
-          "https://www.cloudskillsboost.google/my_account/profile#public-profile",
-          "_blank",
-          "noopener,noreferrer",
-        );
-      });
-    }
-
-    // Close modal when clicking outside
-    if (modal) {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          this.hideAddAccountModal();
-        }
-      });
-    }
+    // Setup specific action buttons
+    DOMUtils.setupEventListeners([
+      {
+        id: "create-account-btn",
+        event: "click",
+        handler: () => void this.handleCreateAccount(),
+      },
+      {
+        id: "save-nickname-btn",
+        event: "click",
+        handler: () => void this.handleSaveNickname(),
+      },
+      {
+        id: "account-url-input",
+        event: "keypress",
+        handler: (e: Event) => {
+          const keyboardEvent = e as KeyboardEvent;
+          if (keyboardEvent.key === "Enter") {
+            void this.handleCreateAccount();
+          }
+        },
+      },
+      {
+        id: "go-to-profile-page-btn",
+        event: "click",
+        handler: () => {
+          window.open(
+            "https://www.cloudskillsboost.google/my_account/profile#public-profile",
+            "_blank",
+            "noopener,noreferrer"
+          );
+        },
+      },
+    ]);
   },
 
   /**
    * Setup edit account modal events
    */
   setupEditAccountModalEvents(): void {
-    const modal = document.getElementById("edit-account-modal");
-    const closeBtn = document.getElementById("close-edit-modal-btn");
-    const cancelBtn = document.getElementById("cancel-edit-account-btn");
-    const confirmBtn = document.getElementById("confirm-edit-account-btn");
+    ModalUtils.setupStandardModal("edit-account-modal", [
+      "close-edit-modal-btn",
+      "cancel-edit-account-btn",
+    ]);
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        this.hideEditAccountModal();
-      });
-    }
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => {
-        this.hideEditAccountModal();
-      });
-    }
-
-    if (confirmBtn) {
-      confirmBtn.addEventListener("click", async () => {
-        await this.handleEditAccount();
-      });
-    }
-
-    // Close modal when clicking outside
-    if (modal) {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          this.hideEditAccountModal();
-        }
-      });
-    }
+    DOMUtils.addEventListener("confirm-edit-account-btn", "click", () => {
+      void this.handleEditAccount();
+    });
   },
 
   /**
    * Setup import modal events
    */
   setupImportModalEvents(): void {
-    const modal = document.getElementById("import-accounts-modal");
-    const closeBtn = document.getElementById("close-import-modal-btn");
-    const cancelBtn = document.getElementById("cancel-import-btn");
-    const confirmBtn = document.getElementById("confirm-import-btn");
-    const fileInput = document.getElementById(
-      "import-file-input",
-    ) as HTMLInputElement;
-    const textArea = document.getElementById(
-      "import-json-textarea",
-    ) as HTMLTextAreaElement;
+    ModalUtils.setupStandardModal("import-accounts-modal", [
+      "close-import-modal-btn",
+      "cancel-import-btn",
+    ]);
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        this.hideImportModal();
-      });
-    }
+    DOMUtils.addEventListener("confirm-import-btn", "click", () => {
+      void this.handleImportAccounts();
+    });
 
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => {
-        this.hideImportModal();
-      });
-    }
+    // File input change handler
+    DOMUtils.addEventListener("import-file-input", "change", (e: Event) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      const textArea = DOMUtils.getTextAreaElement("import-json-textarea");
 
-    if (confirmBtn) {
-      confirmBtn.addEventListener("click", async () => {
-        await this.handleImportAccounts();
-      });
-    }
-
-    // File input change
-    if (fileInput) {
-      fileInput.addEventListener("change", (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file && textArea) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            textArea.value = e.target?.result as string;
-          };
-          reader.readAsText(file);
-        }
-      });
-    }
-
-    // Close modal when clicking outside
-    if (modal) {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          this.hideImportModal();
-        }
-      });
-    }
+      if (file && textArea) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          textArea.value = event.target?.result as string;
+        };
+        reader.readAsText(file);
+      }
+    });
   },
 
   /**
    * Show add account modal
    */
   showAddAccountModal(): void {
-    const modal = document.getElementById("add-account-modal");
-    if (modal) {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-
-      // Reset to step 1
-      this.resetAddAccountModal();
-
-      // Check if user has no accounts and hasn't seen modal tour
-      this.checkAndShowModalTour();
-    }
+    ModalUtils.showModal("add-account-modal", {
+      onOpen: () => {
+        // Reset to step 1
+        this.resetAddAccountModal();
+        // Check if user has no accounts and hasn't seen modal tour
+        this.checkAndShowModalTour();
+      },
+    });
   },
 
   /**
@@ -937,32 +858,16 @@ const OptionsService = {
    */
   resetAddAccountModal(): void {
     // Show step 1, hide others
-    const stepUrlInput = document.getElementById("step-url-input");
-    const stepNickname = document.getElementById("step-add-nickname");
-    const errorDiv = document.getElementById("error-profile");
-    const loadingDiv = document.getElementById("loading-profile");
-    const successDiv = document.getElementById("success-created");
-    const skipBtn = document.getElementById("skip-nickname-btn");
-    const saveBtn = document.getElementById("save-nickname-btn");
-
-    if (stepUrlInput) stepUrlInput.classList.remove("hidden");
-    if (stepNickname) stepNickname.classList.add("hidden");
-    if (errorDiv) errorDiv.classList.add("hidden");
-    if (loadingDiv) loadingDiv.classList.add("hidden");
-    if (successDiv) successDiv.classList.add("hidden");
-    if (skipBtn) skipBtn.classList.add("hidden");
-    if (saveBtn) saveBtn.classList.add("hidden");
+    DOMUtils.toggleElementVisibility("step-url-input", true);
+    DOMUtils.toggleElementVisibility("step-add-nickname", false);
+    DOMUtils.toggleElementVisibility("error-profile", false);
+    DOMUtils.toggleElementVisibility("loading-profile", false);
+    DOMUtils.toggleElementVisibility("success-created", false);
+    DOMUtils.toggleElementVisibility("skip-nickname-btn", false);
+    DOMUtils.toggleElementVisibility("save-nickname-btn", false);
 
     // Clear form inputs
-    const nicknameInput = document.getElementById(
-      "account-nickname-input",
-    ) as HTMLInputElement;
-    const urlInput = document.getElementById(
-      "account-url-input",
-    ) as HTMLInputElement;
-
-    if (nicknameInput) nicknameInput.value = "";
-    if (urlInput) urlInput.value = "";
+    DOMUtils.clearInputs(["account-nickname-input", "account-url-input"]);
 
     // Store created account ID for nickname step
     // this.createdAccountId = null;
@@ -973,7 +878,7 @@ const OptionsService = {
    */
   async handleCreateAccount(): Promise<void> {
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const loadingDiv = document.getElementById("loading-profile");
     const errorDiv = document.getElementById("error-profile");
@@ -994,14 +899,14 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         this.showProfileError(
           `An account with this URL already exists: "${existingAccount.name}".`,
           "Account already exists",
           true,
-          existingAccount,
+          existingAccount
         );
         return;
       }
@@ -1060,7 +965,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Unable to create account. Please check the URL and try again!",
+          : "Unable to create account. Please check the URL and try again!"
       );
     }
   },
@@ -1070,14 +975,14 @@ const OptionsService = {
    */
   async handleSaveNickname(): Promise<void> {
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const accountId = this.createdAccountId;
 
     if (!accountId) {
       this.showMessage(
         browser.i18n.getMessage("errorAccountNotFoundToUpdate"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1090,10 +995,10 @@ const OptionsService = {
 
         // Update preview nickname
         const previewNicknameDisplay = document.getElementById(
-          "preview-nickname-display",
+          "preview-nickname-display"
         );
         const previewNicknameText = document.getElementById(
-          "preview-nickname-text",
+          "preview-nickname-text"
         );
         if (previewNicknameDisplay && previewNicknameText) {
           previewNicknameText.textContent = nicknameInput.value.trim();
@@ -1102,7 +1007,7 @@ const OptionsService = {
 
         this.showMessage(
           browser.i18n.getMessage("successNicknameSaved"),
-          "success",
+          "success"
         );
       }
 
@@ -1119,11 +1024,7 @@ const OptionsService = {
    * Hide add account modal
    */
   hideAddAccountModal(): void {
-    const modal = document.getElementById("add-account-modal");
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
+    ModalUtils.hideModal("add-account-modal");
   },
 
   /**
@@ -1131,7 +1032,7 @@ const OptionsService = {
    */
   async fetchProfilePreview(): Promise<void> {
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const loadingDiv = document.getElementById("loading-profile");
     const errorDiv = document.getElementById("error-profile");
@@ -1151,14 +1052,14 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         this.showProfileError(
           `An account with this URL already exists: "${existingAccount.name}".`,
           "Account already exists",
           true,
-          existingAccount,
+          existingAccount
         );
         return;
       }
@@ -1194,7 +1095,7 @@ const OptionsService = {
 
       // Enable confirm button
       const confirmBtn = document.getElementById(
-        "confirm-add-account-btn",
+        "confirm-add-account-btn"
       ) as HTMLButtonElement;
       const backBtn = document.getElementById("back-to-input-btn");
       if (confirmBtn) confirmBtn.disabled = false;
@@ -1205,7 +1106,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Unable to fetch profile information. Please check the URL and try again!",
+          : "Unable to fetch profile information. Please check the URL and try again!"
       );
     }
   },
@@ -1227,34 +1128,23 @@ const OptionsService = {
    * Update profile preview UI
    */
   updateProfilePreview(arcadeData: ArcadeData, profileUrl: string): void {
-    const previewAvatar = document.getElementById(
-      "preview-avatar",
-    ) as HTMLImageElement;
-    const previewName = document.getElementById("preview-name");
-    const previewEmail = document.getElementById("preview-email");
-    const previewPoints = document.getElementById("preview-points");
-    const nameDisplay = document.getElementById(
-      "account-name-display",
-    ) as HTMLInputElement;
-
     // Extract user details using helper function
     const userDetail = this.extractUserDetails(arcadeData);
 
-    if (previewAvatar && userDetail?.profileImage) {
-      previewAvatar.src = userDetail.profileImage;
-      previewAvatar.style.display = "block";
-    }
+    if (userDetail) {
+      // Update avatar
+      PreviewUtils.updateAvatar(userDetail);
 
-    if (previewName && userDetail?.userName) {
-      previewName.textContent = userDetail.userName;
-      // Auto-fill name display with detected name
-      if (nameDisplay) {
-        nameDisplay.value = userDetail.userName;
+      // Update name and auto-fill name display
+      if (userDetail.userName) {
+        DOMUtils.setTextContent("preview-name", userDetail.userName);
+        DOMUtils.setInputValue("account-name-display", userDetail.userName);
       }
     }
 
+    // Update email/member info
+    const previewEmail = DOMUtils.getElementById("preview-email");
     if (previewEmail) {
-      // Show member since info if available, otherwise extract from URL
       if (userDetail?.memberSince) {
         previewEmail.textContent = userDetail.memberSince;
       } else {
@@ -1269,18 +1159,8 @@ const OptionsService = {
       }
     }
 
-    if (previewPoints) {
-      // Try to get points from userDetails first, then arcadePoints
-      let pointsText = "0 Arcade Points";
-
-      if (userDetail?.points && userDetail.points !== "") {
-        pointsText = userDetail.points;
-      } else if (arcadeData.arcadePoints?.totalPoints !== undefined) {
-        pointsText = `${arcadeData.arcadePoints.totalPoints.toLocaleString()} Arcade Points`;
-      }
-
-      previewPoints.textContent = pointsText;
-    }
+    // Update points using PreviewUtils
+    PreviewUtils.updateMainPoints(arcadeData);
   },
 
   /**
@@ -1290,7 +1170,7 @@ const OptionsService = {
     message: string,
     title?: string,
     showSwitchBtn?: boolean,
-    existingAccount?: Account,
+    existingAccount?: Account
   ): void {
     const errorDiv = document.getElementById("error-profile");
     const errorTitle = document.getElementById("error-title");
@@ -1333,7 +1213,7 @@ const OptionsService = {
           this.hideAddAccountModal();
           this.showMessage(
             `Switched to account "${existingAccount.name}"!`,
-            "success",
+            "success"
           );
         } catch (error) {
           console.error("Error switching account:", error);
@@ -1361,10 +1241,10 @@ const OptionsService = {
     const errorDiv = document.getElementById("error-profile");
     const backBtn = document.getElementById("back-to-input-btn");
     const confirmBtn = document.getElementById(
-      "confirm-add-account-btn",
+      "confirm-add-account-btn"
     ) as HTMLButtonElement;
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
 
     if (stepUrlInput) stepUrlInput.classList.remove("hidden");
@@ -1385,65 +1265,38 @@ const OptionsService = {
 
     if (!account) return;
 
-    const modal = document.getElementById("edit-account-modal");
-    const nameInput = document.getElementById(
-      "edit-account-name-input",
-    ) as HTMLInputElement;
-    const nicknameInput = document.getElementById(
+    // Set form values
+    DOMUtils.setInputValue("edit-account-name-input", account.name);
+    DOMUtils.setInputValue(
       "edit-account-nickname-input",
-    ) as HTMLInputElement;
+      account.nickname || ""
+    );
 
-    if (modal && nameInput && nicknameInput) {
-      nameInput.value = account.name;
-      nicknameInput.value = account.nickname || "";
-
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    }
+    // Show modal
+    ModalUtils.showModal("edit-account-modal");
   },
 
   /**
    * Hide edit account modal
    */
   hideEditAccountModal(): void {
-    const modal = document.getElementById("edit-account-modal");
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
+    ModalUtils.hideModal("edit-account-modal");
   },
 
   /**
    * Show import modal
    */
   showImportModal(): void {
-    const modal = document.getElementById("import-accounts-modal");
-    if (modal) {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-
-      // Clear form
-      const fileInput = document.getElementById(
-        "import-file-input",
-      ) as HTMLInputElement;
-      const textArea = document.getElementById(
-        "import-json-textarea",
-      ) as HTMLTextAreaElement;
-
-      if (fileInput) fileInput.value = "";
-      if (textArea) textArea.value = "";
-    }
+    ModalUtils.showModal("import-accounts-modal", {
+      clearFields: ["import-file-input", "import-json-textarea"],
+    });
   },
 
   /**
    * Hide import modal
    */
   hideImportModal(): void {
-    const modal = document.getElementById("import-accounts-modal");
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
+    ModalUtils.hideModal("import-accounts-modal");
   },
 
   /**
@@ -1451,20 +1304,20 @@ const OptionsService = {
    */
   async handleAddAccount(): Promise<void> {
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const confirmBtn = document.getElementById("confirm-add-account-btn");
 
     if (!urlInput.value.trim()) {
       this.showMessage(
         browser.i18n.getMessage("errorEnterProfileUrl"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1472,7 +1325,7 @@ const OptionsService = {
     if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
       this.showMessage(
         browser.i18n.getMessage("errorInvalidProfileUrl"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1480,7 +1333,7 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         // Show error UI with switch button
@@ -1490,11 +1343,11 @@ const OptionsService = {
         if (errorDiv && errorTitle && errorMessage) {
           errorDiv.classList.remove("hidden");
           errorTitle.textContent = browser.i18n.getMessage(
-            "errorAccountExistsTitle",
+            "errorAccountExistsTitle"
           );
           errorMessage.textContent = browser.i18n.getMessage(
             "errorAccountExistsMsg",
-            [existingAccount.name],
+            [existingAccount.name]
           );
           this.showSwitchToExistingAccountOption(existingAccount);
         }
@@ -1508,14 +1361,14 @@ const OptionsService = {
     if (!nameDisplay.value.trim()) {
       this.showMessage(
         browser.i18n.getMessage("errorNoNameFromProfile"),
-        "error",
+        "error"
       );
       return;
     }
 
     if (confirmBtn) {
       confirmBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i>${browser.i18n.getMessage(
-        "labelAdding",
+        "labelAdding"
       )}`;
       (confirmBtn as HTMLButtonElement).disabled = true;
     }
@@ -1542,7 +1395,7 @@ const OptionsService = {
       this.hideAddAccountModal();
       this.showMessage(
         browser.i18n.getMessage("successAccountAdded"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error adding account:", error);
@@ -1556,7 +1409,7 @@ const OptionsService = {
     } finally {
       if (confirmBtn) {
         confirmBtn.innerHTML = `<i class="fa-solid fa-plus mr-1"></i>${browser.i18n.getMessage(
-          "labelAddAccount",
+          "labelAddAccount"
         )}`;
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
@@ -1571,7 +1424,7 @@ const OptionsService = {
     if (!activeAccount) return;
 
     const nicknameInput = document.getElementById(
-      "edit-account-nickname-input",
+      "edit-account-nickname-input"
     ) as HTMLInputElement;
 
     try {
@@ -1583,13 +1436,13 @@ const OptionsService = {
       this.hideEditAccountModal();
       this.showMessage(
         browser.i18n.getMessage("successNicknameUpdated"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error updating account:", error);
       this.showMessage(
         browser.i18n.getMessage("errorUpdatingAccountGeneric"),
-        "error",
+        "error"
       );
     }
   },
@@ -1608,7 +1461,7 @@ const OptionsService = {
     if (allAccounts.length <= 1) {
       this.showMessage(
         browser.i18n.getMessage("errorCannotDeleteLastAccount"),
-        "error",
+        "error"
       );
       return;
     }
@@ -1661,13 +1514,13 @@ const OptionsService = {
       await this.loadAccounts();
       this.showMessage(
         browser.i18n.getMessage("successAccountDeleted"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error deleting account:", error);
       this.showMessage(
         browser.i18n.getMessage("errorDeletingAccountGeneric"),
-        "error",
+        "error"
       );
     }
   },
@@ -1694,7 +1547,7 @@ const OptionsService = {
 
       this.showMessage(
         browser.i18n.getMessage("successDataExported"),
-        "success",
+        "success"
       );
     } catch (error) {
       console.error("Error exporting accounts:", error);
@@ -1707,7 +1560,7 @@ const OptionsService = {
    */
   async handleImportAccounts(): Promise<void> {
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
@@ -1729,7 +1582,7 @@ const OptionsService = {
         this.hideImportModal();
         this.showMessage(
           browser.i18n.getMessage("successDataImported"),
-          "success",
+          "success"
         );
 
         // Reload page to refresh UI
@@ -1739,7 +1592,7 @@ const OptionsService = {
       } else {
         this.showMessage(
           browser.i18n.getMessage("errorInvalidImportData"),
-          "error",
+          "error"
         );
       }
     } catch (error) {
@@ -1759,124 +1612,9 @@ const OptionsService = {
   updateAccountPreview(
     account: Account,
     userDetail: UserDetail,
-    arcadeData: ArcadeData,
+    arcadeData: ArcadeData
   ): void {
-    this.updatePreviewName(account, userDetail);
-    this.updatePreviewAvatar(account, userDetail);
-    this.updatePreviewArcadePoints(arcadeData);
-    this.updatePreviewLastUpdated();
-    this.updatePreviewTotalBadges(userDetail);
-    this.updatePreviewSkillBadges(userDetail);
-    this.updatePreviewArcadeTotal(arcadeData);
-  },
-
-  /**
-   * Update preview name
-   */
-  updatePreviewName(account: Account, userDetail: UserDetail): void {
-    const previewName = document.getElementById("preview-name");
-    if (previewName) {
-      previewName.textContent =
-        userDetail.userName || account.name || "No name";
-    }
-  },
-
-  /**
-   * Update preview avatar and placeholder
-   */
-  updatePreviewAvatar(account: Account, userDetail: UserDetail): void {
-    const previewAvatar = document.getElementById(
-      "preview-avatar",
-    ) as HTMLImageElement;
-    const previewAvatarPlaceholder = document.getElementById(
-      "preview-avatar-placeholder",
-    );
-
-    const firstLetter = (userDetail.userName || account.name || "U")
-      .charAt(0)
-      .toUpperCase();
-
-    if (userDetail.profileImage && previewAvatar && previewAvatarPlaceholder) {
-      previewAvatar.src = userDetail.profileImage;
-      previewAvatar.style.display = "block";
-      previewAvatarPlaceholder.style.display = "none";
-      previewAvatarPlaceholder.textContent = firstLetter;
-    } else if (previewAvatarPlaceholder) {
-      previewAvatarPlaceholder.innerHTML = firstLetter;
-    }
-  },
-
-  /**
-   * Update preview arcade points in main display
-   */
-  updatePreviewArcadePoints(arcadeData: ArcadeData): void {
-    const previewArcadePoints = document.getElementById(
-      "preview-arcade-points",
-    );
-    if (previewArcadePoints && arcadeData) {
-      const points =
-        arcadeData.arcadePoints?.totalPoints ||
-        arcadeData.totalArcadePoints ||
-        0;
-      previewArcadePoints.textContent = `${points.toLocaleString()} points`;
-    } else if (previewArcadePoints) {
-      previewArcadePoints.textContent = "0 points";
-    }
-  },
-
-  /**
-   * Update preview last updated date
-   */
-  updatePreviewLastUpdated(): void {
-    const previewLastUpdated = document.getElementById("preview-last-updated");
-    if (previewLastUpdated) {
-      previewLastUpdated.textContent = new Date().toLocaleDateString("vi-VN");
-    }
-  },
-
-  /**
-   * Update preview total badges
-   */
-  updatePreviewTotalBadges(userDetail: UserDetail): void {
-    const previewTotalBadges = document.getElementById("preview-total-badges");
-    if (previewTotalBadges && userDetail.completedBadgeIds) {
-      previewTotalBadges.textContent =
-        userDetail.completedBadgeIds.length.toString();
-    } else if (previewTotalBadges) {
-      previewTotalBadges.textContent = "0";
-    }
-  },
-
-  /**
-   * Update preview skill badges
-   */
-  updatePreviewSkillBadges(userDetail: UserDetail): void {
-    const previewSkillBadges = document.getElementById("preview-skill-badges");
-    if (previewSkillBadges && userDetail.completedBadgeIds) {
-      const skillBadges = userDetail.completedBadgeIds.filter(
-        (badge: CompletedBadge) =>
-          badge.badgeType === "SKILL" || badge.type === "skill",
-      ).length;
-      previewSkillBadges.textContent = skillBadges.toString();
-    } else if (previewSkillBadges) {
-      previewSkillBadges.textContent = "0";
-    }
-  },
-
-  /**
-   * Update preview arcade total points
-   */
-  updatePreviewArcadeTotal(arcadeData: ArcadeData): void {
-    const previewArcadeTotal = document.getElementById("preview-arcade-total");
-    if (previewArcadeTotal && arcadeData) {
-      const points =
-        arcadeData.arcadePoints?.totalPoints ||
-        arcadeData.totalArcadePoints ||
-        0;
-      previewArcadeTotal.textContent = points.toLocaleString();
-    } else if (previewArcadeTotal) {
-      previewArcadeTotal.textContent = "0";
-    }
+    PreviewUtils.updateAccountPreview(account, userDetail, arcadeData);
   },
 
   /**

@@ -2,6 +2,7 @@
  * UI components for account management functionality
  */
 import { AccountService, ArcadeApiService } from "../services";
+import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
 import type { Account, CreateAccountOptions } from "../types";
 
 const AccountUIService = {
@@ -184,7 +185,7 @@ const AccountUIService = {
    */
   async loadAccounts(): Promise<void> {
     const selector = document.getElementById(
-      "account-selector",
+      "account-selector"
     ) as HTMLSelectElement;
     if (!selector) return;
 
@@ -224,7 +225,7 @@ const AccountUIService = {
   updateCurrentAccountInfo(account: Account): void {
     const infoContainer = document.getElementById("current-account-info");
     const avatarImg = document.getElementById(
-      "account-avatar",
+      "account-avatar"
     ) as HTMLImageElement;
     const displayName = document.getElementById("account-display-name");
     const profileUrl = document.getElementById("account-profile-url");
@@ -254,7 +255,7 @@ const AccountUIService = {
   setupEventListeners(): void {
     // Account selector change
     const selector = document.getElementById(
-      "account-selector",
+      "account-selector"
     ) as HTMLSelectElement;
     if (selector) {
       selector.addEventListener("change", async (e) => {
@@ -352,10 +353,10 @@ const AccountUIService = {
     const cancelBtn = document.getElementById("cancel-import-btn");
     const confirmBtn = document.getElementById("confirm-import-btn");
     const fileInput = document.getElementById(
-      "import-file-input",
+      "import-file-input"
     ) as HTMLInputElement;
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
 
     if (closeBtn) {
@@ -440,53 +441,32 @@ const AccountUIService = {
    * Show add account modal
    */
   showAddAccountModal(): void {
-    const modal = document.getElementById("add-account-modal");
-    if (modal) {
-      modal.classList.remove("hidden");
-
-      // Clear form
-      const nameInput = document.getElementById(
+    ModalUtils.showModal("add-account-modal", {
+      clearFields: [
         "account-name-input",
-      ) as HTMLInputElement;
-      const nicknameInput = document.getElementById(
         "account-nickname-input",
-      ) as HTMLInputElement;
-      const urlInput = document.getElementById(
         "account-url-input",
-      ) as HTMLInputElement;
-
-      if (nameInput) nameInput.value = "";
-      if (nicknameInput) nicknameInput.value = "";
-      if (urlInput) urlInput.value = "";
-    }
+      ],
+    });
   },
 
   /**
    * Hide add account modal
    */
   hideAddAccountModal(): void {
-    const modal = document.getElementById("add-account-modal");
-    if (modal) {
-      modal.classList.add("hidden");
-    }
+    ModalUtils.hideModal("add-account-modal");
   },
 
   /**
    * Handle adding a new account
    */
   async handleAddAccount(): Promise<void> {
-    const nameInput = document.getElementById(
-      "account-name-input",
-    ) as HTMLInputElement;
-    const nicknameInput = document.getElementById(
-      "account-nickname-input",
-    ) as HTMLInputElement;
-    const urlInput = document.getElementById(
-      "account-url-input",
-    ) as HTMLInputElement;
-    const confirmBtn = document.getElementById("confirm-add-account-btn");
+    const confirmBtn = DOMUtils.getElementById("confirm-add-account-btn");
+    const nameInput = DOMUtils.getInputElement("account-name-input");
+    const nicknameInput = DOMUtils.getInputElement("account-nickname-input");
+    const urlInput = DOMUtils.getInputElement("account-url-input");
 
-    if (!urlInput.value.trim()) {
+    if (!urlInput?.value.trim()) {
       this.showMessage("Vui lòng nhập URL profile!", "error");
       return;
     }
@@ -506,8 +486,8 @@ const AccountUIService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
 
       const options: CreateAccountOptions = {
-        name: nameInput.value.trim() || undefined,
-        nickname: nicknameInput.value.trim() || undefined,
+        name: nameInput?.value.trim() || undefined,
+        nickname: nicknameInput?.value.trim() || undefined,
         profileUrl: urlInput.value.trim(),
         arcadeData: arcadeData || undefined,
       };
@@ -526,7 +506,7 @@ const AccountUIService = {
       console.error("Error adding account:", error);
       this.showMessage(
         "Có lỗi xảy ra khi thêm tài khoản. Vui lòng thử lại!",
-        "error",
+        "error"
       );
     } finally {
       if (confirmBtn) {
@@ -540,31 +520,16 @@ const AccountUIService = {
    * Show import modal
    */
   showImportModal(): void {
-    const modal = document.getElementById("import-accounts-modal");
-    if (modal) {
-      modal.classList.remove("hidden");
-
-      // Clear form
-      const fileInput = document.getElementById(
-        "import-file-input",
-      ) as HTMLInputElement;
-      const textArea = document.getElementById(
-        "import-json-textarea",
-      ) as HTMLTextAreaElement;
-
-      if (fileInput) fileInput.value = "";
-      if (textArea) textArea.value = "";
-    }
+    ModalUtils.showModal("import-accounts-modal", {
+      clearFields: ["import-file-input", "import-json-textarea"],
+    });
   },
 
   /**
    * Hide import modal
    */
   hideImportModal(): void {
-    const modal = document.getElementById("import-accounts-modal");
-    if (modal) {
-      modal.classList.add("hidden");
-    }
+    ModalUtils.hideModal("import-accounts-modal");
   },
 
   /**
@@ -599,7 +564,7 @@ const AccountUIService = {
    */
   async handleImportAccounts(): Promise<void> {
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
@@ -628,7 +593,7 @@ const AccountUIService = {
       } else {
         this.showMessage(
           "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!",
-          "error",
+          "error"
         );
       }
     } catch (error) {
@@ -734,10 +699,10 @@ const AccountUIService = {
     if (confirmBtn) {
       confirmBtn.addEventListener("click", async () => {
         const nameInput = modal.querySelector(
-          "#edit-account-name-input",
+          "#edit-account-name-input"
         ) as HTMLInputElement;
         const nicknameInput = modal.querySelector(
-          "#edit-account-nickname-input",
+          "#edit-account-nickname-input"
         ) as HTMLInputElement;
 
         try {
