@@ -1303,9 +1303,9 @@ const OptionsService = {
     if (errorMessage) errorMessage.textContent = message;
 
     // Remove any previous switch button
-    if (errorMessage && errorMessage.parentNode) {
+    if (errorMessage?.parentNode) {
       const prevBtn = errorMessage.parentNode.querySelector("button");
-      if (prevBtn) prevBtn.remove();
+      prevBtn?.remove();
     }
     // Add switch button if needed
     if (showSwitchBtn && existingAccount) {
