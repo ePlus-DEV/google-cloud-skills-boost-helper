@@ -117,7 +117,7 @@ export const DOMUtils = {
   updateTextWithFallback(
     id: string,
     content: string | number | undefined,
-    fallback: string = "0",
+    fallback = "0",
   ): void {
     const element = this.getElementById(id);
     if (element) {
