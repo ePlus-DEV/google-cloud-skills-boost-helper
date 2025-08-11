@@ -191,7 +191,7 @@ const AccountService = {
       return false;
     }
 
-    delete data.accounts[accountId];
+    data.accounts[accountId] = undefined as unknown as Account;
 
     // If deleted account was active, set new active account
     if (data.activeAccountId === accountId) {
