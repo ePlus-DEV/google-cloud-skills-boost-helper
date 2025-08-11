@@ -1,0 +1,144 @@
+/* Custom styles for intro.js tour */
+.introjs-tooltip {
+  max-width: 400px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.introjs-tooltip-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 12px 12px 0 0 !important;
+  color: white !important;
+  padding: 12px 16px !important;
+  font-weight: 600 !important;
+}
+
+.introjs-tooltiptext {
+  padding: 16px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #374151 !important;
+}
+
+.introjs-tooltipbuttons {
+  border-top: 1px solid #e5e7eb !important;
+  padding: 12px 16px !important;
+  background: #f9fafb !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+.introjs-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  color: white !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.introjs-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+.introjs-skipbutton {
+  background: transparent !important;
+  color: #6b7280 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.introjs-skipbutton:hover {
+  background: #f3f4f6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.introjs-progressbar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 4px !important;
+  height: 6px !important;
+}
+
+.introjs-progress {
+  background: #e5e7eb !important;
+  border-radius: 4px !important;
+}
+
+.introjs-helperLayer {
+  border-radius: 8px !important;
+  border: 3px solid #667eea !important;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3) !important;
+}
+
+.introjs-overlay {
+  background: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Custom tour styles for specific steps */
+.tour-highlight {
+  position: relative;
+}
+
+.tour-highlight::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid #10b981;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  pointer-events: none;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .introjs-tooltip {
+    max-width: 90vw !important;
+    margin: 10px !important;
+  }
+
+  .introjs-tooltiptext {
+    font-size: 13px !important;
+  }
+
+  .introjs-button {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .introjs-tooltip {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+
+  .introjs-tooltiptext {
+    color: #f3f4f6 !important;
+  }
+
+  .introjs-tooltipbuttons {
+    background: #111827 !important;
+    border-color: #374151 !important;
+  }
+}

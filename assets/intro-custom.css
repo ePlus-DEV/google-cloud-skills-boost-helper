@@ -1,0 +1,185 @@
+/* Custom styles for intro.js tour */
+
+/* Tour overlay styles */
+.tour-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  z-index: 999999 !important;
+  pointer-events: none !important;
+}
+
+/* Tour tooltip styles */
+.tour-tooltip {
+  position: fixed !important;
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 20px !important;
+  max-width: 400px !important;
+  min-width: 300px !important;
+  z-index: 1000000 !important;
+  font-family:
+    "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+  pointer-events: auto !important;
+  /* Ensure tooltip is not affected by transforms or positioning context */
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Tour highlight styles */
+.tour-highlight {
+  position: relative !important;
+  z-index: 999998 !important;
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.6),
+    0 0 0 8px rgba(59, 130, 246, 0.3) !important;
+  border-radius: 8px !important;
+}
+
+.introjs-tooltip {
+  max-width: 400px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.introjs-tooltiptext {
+  font-family:
+    "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #374151 !important;
+}
+
+.introjs-button {
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.introjs-nextbutton {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  color: white !important;
+}
+
+.introjs-nextbutton:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+  transform: translateY(-1px) !important;
+}
+
+.introjs-prevbutton {
+  background: #f3f4f6 !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.introjs-prevbutton:hover {
+  background: #e5e7eb !important;
+}
+
+.introjs-skipbutton {
+  background: transparent !important;
+  color: #6b7280 !important;
+  text-decoration: underline !important;
+}
+
+.introjs-skipbutton:hover {
+  color: #374151 !important;
+}
+
+.introjs-progressbar {
+  background: #e5e7eb !important;
+  border-radius: 8px !important;
+  height: 6px !important;
+}
+
+.introjs-progress {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  border-radius: 8px !important;
+}
+
+.introjs-overlay {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+.introjs-tooltipReferenceLayer {
+  z-index: 10000001 !important;
+}
+
+.introjs-helperNumberLayer {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  border: 3px solid white !important;
+  color: white !important;
+  font-weight: bold !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Custom animations */
+@keyframes introjs-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1);
+  }
+}
+
+.introjs-helperLayer {
+  border: 3px solid #3b82f6 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3) !important;
+  animation: introjs-pulse 2s infinite !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .introjs-tooltip,
+  .tour-tooltip {
+    max-width: 300px !important;
+    margin: 10px !important;
+  }
+
+  .introjs-tooltiptext {
+    font-size: 13px !important;
+  }
+
+  .introjs-button {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .introjs-tooltip,
+  .tour-tooltip {
+    border: 2px solid #000 !important;
+  }
+
+  .introjs-helperLayer,
+  .tour-highlight {
+    border: 4px solid #000 !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .introjs-helperLayer,
+  .tour-highlight {
+    animation: none !important;
+  }
+
+  .introjs-button {
+    transition: none !important;
+  }
+}
