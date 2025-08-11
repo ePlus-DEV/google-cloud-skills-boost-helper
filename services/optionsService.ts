@@ -5,12 +5,7 @@ import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
 import TourService from "./tourService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import type {
-  ArcadeData,
-  Account,
-  UserDetail,
-  CompletedBadge,
-} from "../types";
+import type { ArcadeData, Account, UserDetail, CompletedBadge } from "../types";
 
 /**
  * Service to handle options page functionality
