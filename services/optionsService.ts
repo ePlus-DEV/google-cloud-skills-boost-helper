@@ -285,7 +285,7 @@ const OptionsService = {
   async handleViewProfile(accountId: string): Promise<void> {
     try {
       const account = await AccountService.getAccountById(accountId);
-      if (!account || !account.profileUrl) {
+      if (!account?.profileUrl) {
         this.showMessage(
           browser.i18n.getMessage("errorProfileUrlNotFound"),
           "error",
