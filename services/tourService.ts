@@ -70,9 +70,9 @@ const TourService = {
           element: "#account-url-input",
           title: this.getMessage("tourModalStep2Title"),
           content: `${this.getMessage(
-            "tourModalStep2Content",
+            "tourModalStep2Content"
           )}<br><div class="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2"><p class="text-xs text-yellow-800"><i class="fa-solid fa-lightbulb mr-1"></i>${this.getMessage(
-            "tourModalStep2Tip",
+            "tourModalStep2Tip"
           )}</p></div>`,
           position: "bottom",
         },
@@ -286,11 +286,11 @@ const TourService = {
     // Final bounds check to ensure tooltip is fully visible
     top = Math.max(
       margin,
-      Math.min(top, viewportHeight - tooltipRect.height - margin),
+      Math.min(top, viewportHeight - tooltipRect.height - margin)
     );
     left = Math.max(
       margin,
-      Math.min(left, viewportWidth - tooltipRect.width - margin),
+      Math.min(left, viewportWidth - tooltipRect.width - margin)
     );
 
     tooltip.style.top = `${top}px`;
@@ -395,8 +395,10 @@ const TourService = {
           <i class="fa-solid fa-check-circle text-xl"></i>
         </div>
         <div class="ml-3">
-          <h4 class="font-semibold">Hoàn thành hướng dẫn!</h4>
-          <p class="text-sm mt-1">Bây giờ bạn có thể bắt đầu tạo tài khoản đầu tiên.</p>
+          <h4 class="font-semibold">${this.getMessage(
+            "tourCompletedTitle"
+          )}</h4>
+          <p class="text-sm mt-1">${this.getMessage("tourCompletedContent")}</p>
         </div>
         <button class="ml-2 text-white hover:text-gray-200" onclick="this.parentElement.parentElement.remove()">
           <i class="fa-solid fa-times"></i>
