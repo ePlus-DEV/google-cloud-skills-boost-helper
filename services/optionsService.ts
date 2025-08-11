@@ -21,7 +21,6 @@ const OptionsService = {
 
     OptionsService.setupEventListeners();
     OptionsService.setupVersion();
-    OptionsService.setupBrowserBadges();
     OptionsService.setupI18n();
     await OptionsService.initializeAccountManagement();
     await OptionsService.loadExistingData();
@@ -131,14 +130,14 @@ const OptionsService = {
                 <h4 class="text-lg font-semibold text-gray-900 truncate">${displayName}</h4>
                 ${
                   isActive
-                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i>Đang sử dụng</span>'
+                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i>Active</span>'
                     : ""
                 }
               </div>
               
               ${
                 nickname
-                  ? `<p class="text-sm text-gray-500 truncate">Biệt danh: ${nickname}</p>`
+                  ? `<p class="text-sm text-gray-500 truncate">Nickname: ${nickname}</p>`
                   : ""
               }
               
@@ -148,8 +147,8 @@ const OptionsService = {
                   ${arcadePoints.toLocaleString()} points
                 </span>
                 <span class="text-xs text-gray-400">
-                  Cập nhật: ${new Date(account.lastUsed).toLocaleDateString(
-                    "vi-VN",
+                  Updated: ${new Date(account.lastUsed).toLocaleDateString(
+                    "en-US"
                   )}
                 </span>
               </div>
@@ -159,7 +158,7 @@ const OptionsService = {
           <div class="flex items-center space-x-2 ml-3">
             ${
               !isActive
-                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}" title="Đặt làm tài khoản mặc định">
+                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}" title="Set as default account">
                 <i class="fa-solid fa-star mr-1"></i>
               </button>`
                 : ""
@@ -167,25 +166,25 @@ const OptionsService = {
             
             <button class="update-account-btn text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Cập nhật tài khoản">
+            }" title="Update account">
               <i class="fa-solid fa-sync-alt"></i>
             </button>
 
             <button class="view-profile-btn text-purple-600 hover:text-purple-800 p-2 rounded-lg hover:bg-purple-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Xem profile công khai">
+            }" title="View public profile">
               <i class="fa-solid fa-eye"></i>
             </button>
             
             <button class="edit-account-btn text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Sửa tài khoản">
+            }" title="Edit account">
               <i class="fa-solid fa-edit"></i>
             </button>
             
             <button class="delete-account-btn text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Xóa tài khoản">
+            }" title="Delete account">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -207,10 +206,10 @@ const OptionsService = {
       await this.loadAccounts();
 
       // Show success message
-      this.showMessage("Đã chuyển tài khoản thành công!", "success");
+      this.showMessage("Switched account successfully!", "success");
     } catch (error) {
       console.error("Error switching account:", error);
-      this.showMessage("Lỗi khi chuyển tài khoản", "error");
+      this.showMessage("Error switching account", "error");
     }
   },
 
@@ -221,16 +220,16 @@ const OptionsService = {
     try {
       const account = await AccountService.getAccountById(accountId);
       if (!account) {
-        this.showMessage("Không tìm thấy tài khoản", "error");
+        this.showMessage("Account not found", "error");
         return;
       }
 
       // Show loading message
-      this.showMessage("Đang cập nhật dữ liệu tài khoản...", "success");
+      this.showMessage("Updating account data...", "success");
 
       // Fetch fresh data from API
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        account.profileUrl,
+        account.profileUrl
       );
 
       if (arcadeData) {
@@ -252,16 +251,13 @@ const OptionsService = {
         // Reload accounts to show updated data
         await this.loadAccounts();
 
-        this.showMessage(
-          "Đã cập nhật dữ liệu tài khoản thành công!",
-          "success",
-        );
+        this.showMessage("Account data updated successfully!", "success");
       } else {
-        this.showMessage("Không thể lấy dữ liệu từ API", "error");
+        this.showMessage("Could not fetch data from API", "error");
       }
     } catch (error) {
       console.error("Error updating account:", error);
-      this.showMessage("Lỗi khi cập nhật tài khoản", "error");
+      this.showMessage("Error updating account", "error");
     }
   },
 
@@ -272,10 +268,7 @@ const OptionsService = {
     try {
       const account = await AccountService.getAccountById(accountId);
       if (!account || !account.profileUrl) {
-        this.showMessage(
-          "Không tìm thấy URL profile cho tài khoản này",
-          "error",
-        );
+        this.showMessage("Profile URL not found for this account", "error");
         return;
       }
 
@@ -283,7 +276,7 @@ const OptionsService = {
       window.open(account.profileUrl, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Error viewing profile:", error);
-      this.showMessage("Có lỗi khi mở profile", "error");
+      this.showMessage("Error opening profile", "error");
     }
   },
 
@@ -294,10 +287,7 @@ const OptionsService = {
     try {
       const activeAccount = await AccountService.getActiveAccount();
       if (!activeAccount || !activeAccount.profileUrl) {
-        this.showMessage(
-          "Không có tài khoản đang hoạt động hoặc không có URL profile",
-          "error",
-        );
+        this.showMessage("No active account or profile URL found", "error");
         return;
       }
 
@@ -305,7 +295,7 @@ const OptionsService = {
       window.open(activeAccount.profileUrl, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Error viewing active profile:", error);
-      this.showMessage("Có lỗi khi mở profile", "error");
+      this.showMessage("Error opening profile", "error");
     }
   },
 
@@ -366,7 +356,7 @@ const OptionsService = {
 
     // View active profile button
     const viewActiveProfileBtn = document.getElementById(
-      "view-active-profile-btn",
+      "view-active-profile-btn"
     );
     if (viewActiveProfileBtn) {
       viewActiveProfileBtn.addEventListener("click", async () => {
@@ -396,7 +386,7 @@ const OptionsService = {
 
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       searchFeatureToggle.addEventListener("change", () => {
@@ -425,24 +415,6 @@ const OptionsService = {
   },
 
   /**
-   * Setup browser-specific badges
-   */
-  setupBrowserBadges(): void {
-    const parser = new UAParser();
-    const browserName = parser.getBrowser().name;
-
-    const badgeSelectors: Record<string, string> = {
-      Chrome: "#chrome-web-store-badge",
-      Firefox: "#firefox-addon-store",
-    };
-
-    const badgeSelector = badgeSelectors[browserName || ""];
-    if (badgeSelector) {
-      PopupUIService.querySelector(badgeSelector)?.classList.remove("hidden");
-    }
-  },
-
-  /**
    * Setup i18n translations
    */
   setupI18n(): void {
@@ -454,7 +426,7 @@ const OptionsService = {
       if (messageKey) {
         try {
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
+            messageKey as Parameters<typeof browser.i18n.getMessage>[0]
           );
           if (translatedText) {
             element.textContent = translatedText;
@@ -472,7 +444,7 @@ const OptionsService = {
   async loadExistingData(): Promise<void> {
     const profileUrl = await StorageService.getProfileUrl();
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (profileUrlInput) {
@@ -486,7 +458,7 @@ const OptionsService = {
   async handleSubmit(): Promise<void> {
     const submitUrlElement = document.getElementById("submit-url");
     const profileUrlInput = PopupUIService.querySelector<HTMLInputElement>(
-      "#public-profile-url",
+      "#public-profile-url"
     );
 
     if (submitUrlElement) {
@@ -500,7 +472,7 @@ const OptionsService = {
       PopupUIService.showMessage(
         "#error-message",
         browser.i18n.getMessage("errorInvalidUrl"),
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
       OptionsService.resetSubmitButton();
       return;
@@ -518,28 +490,28 @@ const OptionsService = {
           await OptionsService.displayUserDetails(
             arcadeData,
             profileUrl,
-            "update",
+            "update"
           );
         } else {
           // Create new account
           await OptionsService.displayUserDetails(
             arcadeData,
             profileUrl,
-            "create",
+            "create"
           );
         }
       } else {
         PopupUIService.showMessage(
           "#error-message",
           "Failed to fetch data. Please try again later.",
-          ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+          ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
         );
       }
     } catch (error) {
       PopupUIService.showMessage(
         "#error-message",
         "An error occurred. Please try again.",
-        ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
+        ["text-red-500", "font-bold", "mt-2", "animate-pulse"]
       );
     } finally {
       OptionsService.resetSubmitButton();
@@ -552,7 +524,7 @@ const OptionsService = {
   async displayUserDetails(
     data: ArcadeData,
     profileUrl?: string,
-    action?: "create" | "update",
+    action?: "create" | "update"
   ): Promise<void> {
     // Check if we have an active account to update
     const activeAccount = await AccountService.getActiveAccount();
@@ -565,19 +537,19 @@ const OptionsService = {
         try {
           // Use userName from API if available
           const userDetail = this.extractUserDetails(data);
-          const accountName = userDetail?.userName || "Tài khoản mới";
+          const accountName = userDetail?.userName || "New account";
 
           const newAccount = await AccountService.createAccount({
             name: accountName,
             profileUrl,
             arcadeData: data,
           });
-          messageText = `Đã tạo tài khoản "${accountName}" thành công!`;
+          messageText = `Created account "${accountName}" successfully!`;
         } catch {
           // Fallback to old storage method
           await StorageService.saveArcadeData(data);
           await StorageService.saveProfileUrl(profileUrl);
-          messageText = "Đã lưu dữ liệu thành công!";
+          messageText = "Data saved successfully!";
         }
       }
     } else {
@@ -586,13 +558,13 @@ const OptionsService = {
       if (profileUrl) {
         await AccountService.updateAccount(activeAccount.id, { profileUrl });
       }
-      messageText = "Đã cập nhật tài khoản thành công!";
+      messageText = "Account updated successfully!";
     }
 
     PopupUIService.showMessage(
       "#success-message",
       messageText || browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
+      ["text-green-500", "font-bold", "mt-2", "animate-pulse"]
     );
 
     PopupUIService.updateOptionsUI(data);
@@ -616,7 +588,7 @@ const OptionsService = {
    */
   async loadSearchFeatureSetting(): Promise<void> {
     const searchFeatureToggle = document.getElementById(
-      "search-feature-toggle",
+      "search-feature-toggle"
     ) as HTMLInputElement;
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
@@ -668,7 +640,7 @@ const OptionsService = {
       await MarkdownService.loadAndRender(
         MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
     } catch (error) {
       // Show error if loading fails
@@ -682,11 +654,11 @@ const OptionsService = {
    */
   showMarkdownLoading(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
@@ -704,17 +676,17 @@ const OptionsService = {
    */
   showMarkdownError(): void {
     const container = document.getElementById(
-      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+      MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID
     );
     if (container) {
       const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR
       );
       if (contentArea) {
         contentArea.innerHTML = `
           <div class="flex items-center text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
             <i class="fa-solid fa-exclamation-triangle mr-2 text-red-500"></i>
-            <span>❌ Không thể tải nội dung thông báo. Vui lòng kiểm tra kết nối internet.</span>
+            <span>❌ Unable to load announcement content. Please check your internet connection.</span>
           </div>
         `;
       }
@@ -789,7 +761,7 @@ const OptionsService = {
         window.open(
           "https://www.cloudskillsboost.google/my_account/profile#public-profile",
           "_blank",
-          "noopener,noreferrer",
+          "noopener,noreferrer"
         );
       });
     }
@@ -850,10 +822,10 @@ const OptionsService = {
     const cancelBtn = document.getElementById("cancel-import-btn");
     const confirmBtn = document.getElementById("confirm-import-btn");
     const fileInput = document.getElementById(
-      "import-file-input",
+      "import-file-input"
     ) as HTMLInputElement;
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
 
     if (closeBtn) {
@@ -959,10 +931,10 @@ const OptionsService = {
 
     // Clear form inputs
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
 
     if (nicknameInput) nicknameInput.value = "";
@@ -977,7 +949,7 @@ const OptionsService = {
    */
   async handleCreateAccount(): Promise<void> {
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const loadingDiv = document.getElementById("loading-profile");
     const errorDiv = document.getElementById("error-profile");
@@ -986,23 +958,23 @@ const OptionsService = {
     const successDiv = document.getElementById("success-created");
 
     if (!urlInput.value.trim()) {
-      this.showProfileError("Vui lòng nhập URL profile!");
+      this.showProfileError("Please enter a profile URL!");
       return;
     }
 
     if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
-      this.showProfileError("URL profile không hợp lệ!");
+      this.showProfileError("Invalid profile URL!");
       return;
     }
 
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         this.showProfileError(
-          `Tài khoản với URL này đã tồn tại: "${existingAccount.name}". Bạn có thể chuyển sang tài khoản đó thay vì tạo mới.`,
+          `An account with this URL already exists: "${existingAccount.name}". You can switch to that account instead of creating a new one.`
         );
         this.showSwitchToExistingAccountOption(existingAccount);
         return;
@@ -1020,13 +992,13 @@ const OptionsService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
 
       if (!arcadeData) {
-        throw new Error("Không thể lấy thông tin từ profile này");
+        throw new Error("Unable to fetch information from this profile");
       }
 
       // Check if we have user details and can extract user name
       const userDetail = this.extractUserDetails(arcadeData);
       if (!userDetail?.userName) {
-        throw new Error("Không thể lấy tên người dùng từ profile này");
+        throw new Error("Unable to get user name from this profile");
       }
 
       // Create account directly
@@ -1062,7 +1034,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Không thể tạo tài khoản. Vui lòng kiểm tra URL và thử lại!",
+          : "Unable to create account. Please check the URL and try again!"
       );
     }
   },
@@ -1072,12 +1044,12 @@ const OptionsService = {
    */
   async handleSaveNickname(): Promise<void> {
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const accountId = (this as any).createdAccountId;
 
     if (!accountId) {
-      this.showMessage("Không tìm thấy tài khoản để cập nhật!", "error");
+      this.showMessage("Could not find account to update!", "error");
       return;
     }
 
@@ -1089,17 +1061,17 @@ const OptionsService = {
 
         // Update preview nickname
         const previewNicknameDisplay = document.getElementById(
-          "preview-nickname-display",
+          "preview-nickname-display"
         );
         const previewNicknameText = document.getElementById(
-          "preview-nickname-text",
+          "preview-nickname-text"
         );
         if (previewNicknameDisplay && previewNicknameText) {
           previewNicknameText.textContent = nicknameInput.value.trim();
           previewNicknameDisplay.classList.remove("hidden");
         }
 
-        this.showMessage("Đã lưu biệt danh thành công!", "success");
+        this.showMessage("Nickname saved successfully!", "success");
       }
 
       // Reload accounts and close modal
@@ -1107,7 +1079,7 @@ const OptionsService = {
       this.hideAddAccountModal();
     } catch (error) {
       console.error("Error saving nickname:", error);
-      this.showMessage("Có lỗi khi lưu biệt danh!", "error");
+      this.showMessage("Error saving nickname!", "error");
     }
   },
 
@@ -1127,7 +1099,7 @@ const OptionsService = {
    */
   async fetchProfilePreview(): Promise<void> {
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const loadingDiv = document.getElementById("loading-profile");
     const errorDiv = document.getElementById("error-profile");
@@ -1135,23 +1107,23 @@ const OptionsService = {
     const stepPreview = document.getElementById("step-profile-preview");
 
     if (!urlInput.value.trim()) {
-      this.showProfileError("Vui lòng nhập URL profile!");
+      this.showProfileError("Please enter a profile URL!");
       return;
     }
 
     if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
-      this.showProfileError("URL profile không hợp lệ!");
+      this.showProfileError("Invalid profile URL!");
       return;
     }
 
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
+        urlInput.value.trim()
       );
       if (existingAccount) {
         this.showProfileError(
-          `Tài khoản với URL này đã tồn tại: "${existingAccount.name}". Bạn có thể chuyển sang tài khoản đó thay vì tạo mới.`,
+          `An account with this URL already exists: "${existingAccount.name}". You can switch to that account instead of creating a new one.`
         );
 
         // Show option to switch to existing account
@@ -1171,13 +1143,13 @@ const OptionsService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
 
       if (!arcadeData) {
-        throw new Error("Không thể lấy thông tin từ profile này");
+        throw new Error("Unable to fetch information from this profile");
       }
 
       // Check if we have user details and can extract user name
       const userDetail = this.extractUserDetails(arcadeData);
       if (!userDetail?.userName) {
-        throw new Error("Không thể lấy tên người dùng từ profile này");
+        throw new Error("Unable to get user name from this profile");
       }
 
       // Hide loading, show preview
@@ -1190,7 +1162,7 @@ const OptionsService = {
 
       // Enable confirm button
       const confirmBtn = document.getElementById(
-        "confirm-add-account-btn",
+        "confirm-add-account-btn"
       ) as HTMLButtonElement;
       const backBtn = document.getElementById("back-to-input-btn");
       if (confirmBtn) confirmBtn.disabled = false;
@@ -1201,7 +1173,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Không thể lấy thông tin profile. Vui lòng kiểm tra URL và thử lại!",
+          : "Unable to fetch profile information. Please check the URL and try again!"
       );
     }
   },
@@ -1224,13 +1196,13 @@ const OptionsService = {
    */
   updateProfilePreview(arcadeData: ArcadeData, profileUrl: string): void {
     const previewAvatar = document.getElementById(
-      "preview-avatar",
+      "preview-avatar"
     ) as HTMLImageElement;
     const previewName = document.getElementById("preview-name");
     const previewEmail = document.getElementById("preview-email");
     const previewPoints = document.getElementById("preview-points");
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
 
     // Extract user details using helper function
@@ -1258,9 +1230,9 @@ const OptionsService = {
           const url = new URL(profileUrl);
           const pathParts = url.pathname.split("/");
           const profileId = pathParts[pathParts.length - 1];
-          previewEmail.textContent = profileId || "Profile ID không xác định";
+          previewEmail.textContent = profileId || "Profile ID not found";
         } catch {
-          previewEmail.textContent = "Profile ID không xác định";
+          previewEmail.textContent = "Profile ID not found";
         }
       }
     }
@@ -1304,19 +1276,19 @@ const OptionsService = {
       const switchButton = document.createElement("button");
       switchButton.className =
         "mt-3 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200";
-      switchButton.innerHTML = `<i class="fa-solid fa-arrow-right mr-1"></i>Chuyển sang tài khoản "${existingAccount.name}"`;
+      switchButton.innerHTML = `<i class="fa-solid fa-arrow-right mr-1"></i>Switch to account "${existingAccount.name}"`;
 
       switchButton.addEventListener("click", async () => {
         try {
           await this.switchAccount(existingAccount.id);
           this.hideAddAccountModal();
           this.showMessage(
-            `Đã chuyển sang tài khoản "${existingAccount.name}"!`,
-            "success",
+            `Switched to account "${existingAccount.name}"!`,
+            "success"
           );
         } catch (error) {
           console.error("Error switching account:", error);
-          this.showMessage("Có lỗi khi chuyển tài khoản!", "error");
+          this.showMessage("Error switching account!", "error");
         }
       });
 
@@ -1339,10 +1311,10 @@ const OptionsService = {
     const errorDiv = document.getElementById("error-profile");
     const backBtn = document.getElementById("back-to-input-btn");
     const confirmBtn = document.getElementById(
-      "confirm-add-account-btn",
+      "confirm-add-account-btn"
     ) as HTMLButtonElement;
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
 
     if (stepUrlInput) stepUrlInput.classList.remove("hidden");
@@ -1365,10 +1337,10 @@ const OptionsService = {
 
     const modal = document.getElementById("edit-account-modal");
     const nameInput = document.getElementById(
-      "edit-account-name-input",
+      "edit-account-name-input"
     ) as HTMLInputElement;
     const nicknameInput = document.getElementById(
-      "edit-account-nickname-input",
+      "edit-account-nickname-input"
     ) as HTMLInputElement;
 
     if (modal && nameInput && nicknameInput) {
@@ -1402,10 +1374,10 @@ const OptionsService = {
 
       // Clear form
       const fileInput = document.getElementById(
-        "import-file-input",
+        "import-file-input"
       ) as HTMLInputElement;
       const textArea = document.getElementById(
-        "import-json-textarea",
+        "import-json-textarea"
       ) as HTMLTextAreaElement;
 
       if (fileInput) fileInput.value = "";
@@ -1429,38 +1401,38 @@ const OptionsService = {
    */
   async handleAddAccount(): Promise<void> {
     const nameDisplay = document.getElementById(
-      "account-name-display",
+      "account-name-display"
     ) as HTMLInputElement;
     const nicknameInput = document.getElementById(
-      "account-nickname-input",
+      "account-nickname-input"
     ) as HTMLInputElement;
     const urlInput = document.getElementById(
-      "account-url-input",
+      "account-url-input"
     ) as HTMLInputElement;
     const confirmBtn = document.getElementById("confirm-add-account-btn");
 
     if (!urlInput.value.trim()) {
-      this.showMessage("Vui lòng nhập URL profile!", "error");
+      this.showMessage("Please enter a profile URL!", "error");
       return;
     }
 
     if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
-      this.showMessage("URL profile không hợp lệ!", "error");
+      this.showMessage("Invalid profile URL!", "error");
       return;
     }
 
     // Validate that we have a name from the API
     if (!nameDisplay.value.trim()) {
       this.showMessage(
-        "Không thể lấy tên từ profile. Vui lòng thử lại!",
-        "error",
+        "Unable to get name from profile. Please try again!",
+        "error"
       );
       return;
     }
 
     if (confirmBtn) {
       confirmBtn.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Đang thêm...';
+        '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Adding...';
       (confirmBtn as HTMLButtonElement).disabled = true;
     }
 
@@ -1484,13 +1456,14 @@ const OptionsService = {
       await this.switchAccount(newAccount.id);
 
       this.hideAddAccountModal();
-      this.showMessage("Đã thêm tài khoản thành công!", "success");
+      this.showMessage("Account added successfully!", "success");
     } catch (error) {
       console.error("Error adding account:", error);
 
       // Show specific error message if account already exists
-      let errorMessage = "Có lỗi xảy ra khi thêm tài khoản. Vui lòng thử lại!";
-      if (error instanceof Error && error.message.includes("đã tồn tại")) {
+      let errorMessage =
+        "An error occurred while adding the account. Please try again!";
+      if (error instanceof Error && error.message.includes("already exists")) {
         errorMessage = error.message;
       }
 
@@ -1498,7 +1471,7 @@ const OptionsService = {
     } finally {
       if (confirmBtn) {
         confirmBtn.innerHTML =
-          '<i class="fa-solid fa-plus mr-1"></i>Thêm tài khoản';
+          '<i class="fa-solid fa-plus mr-1"></i>Add account';
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
     }
@@ -1512,7 +1485,7 @@ const OptionsService = {
     if (!activeAccount) return;
 
     const nicknameInput = document.getElementById(
-      "edit-account-nickname-input",
+      "edit-account-nickname-input"
     ) as HTMLInputElement;
 
     try {
@@ -1522,10 +1495,13 @@ const OptionsService = {
 
       await this.loadAccounts();
       this.hideEditAccountModal();
-      this.showMessage("Đã cập nhật biệt danh thành công!", "success");
+      this.showMessage("Nickname updated successfully!", "success");
     } catch (error) {
       console.error("Error updating account:", error);
-      this.showMessage("Có lỗi xảy ra khi cập nhật tài khoản!", "error");
+      this.showMessage(
+        "An error occurred while updating the account!",
+        "error"
+      );
     }
   },
 
@@ -1541,12 +1517,14 @@ const OptionsService = {
 
     const allAccounts = await AccountService.getAllAccounts();
     if (allAccounts.length <= 1) {
-      this.showMessage("Không thể xóa tài khoản cuối cùng!", "error");
+      this.showMessage("Cannot delete the last account!", "error");
       return;
     }
 
     if (
-      !window.confirm(`Bạn có chắc chắn muốn xóa tài khoản "${account.name}"?`)
+      !window.confirm(
+        `Are you sure you want to delete the account "${account.name}"?`
+      )
     ) {
       return;
     }
@@ -1554,7 +1532,7 @@ const OptionsService = {
     try {
       await AccountService.deleteAccount(account.id);
       await this.loadAccounts();
-      this.showMessage("Đã xóa tài khoản thành công!", "success");
+      this.showMessage("Account deleted successfully!", "success");
 
       // // Reload page since active account changed
       // setTimeout(() => {
@@ -1562,7 +1540,10 @@ const OptionsService = {
       // }, 1000);
     } catch (error) {
       console.error("Error deleting account:", error);
-      this.showMessage("Có lỗi xảy ra khi xóa tài khoản!", "error");
+      this.showMessage(
+        "An error occurred while deleting the account!",
+        "error"
+      );
     }
   },
 
@@ -1586,10 +1567,10 @@ const OptionsService = {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      this.showMessage("Đã xuất dữ liệu thành công!", "success");
+      this.showMessage("Data exported successfully!", "success");
     } catch (error) {
       console.error("Error exporting accounts:", error);
-      this.showMessage("Có lỗi xảy ra khi xuất dữ liệu!", "error");
+      this.showMessage("An error occurred while exporting data!", "error");
     }
   },
 
@@ -1598,17 +1579,17 @@ const OptionsService = {
    */
   async handleImportAccounts(): Promise<void> {
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
     if (!textArea.value.trim()) {
-      this.showMessage("Vui lòng chọn file hoặc dán nội dung JSON!", "error");
+      this.showMessage("Please select a file or paste JSON content!", "error");
       return;
     }
 
     if (confirmBtn) {
-      confirmBtn.textContent = "Đang nhập...";
+      confirmBtn.textContent = "Importing...";
       (confirmBtn as HTMLButtonElement).disabled = true;
     }
 
@@ -1618,24 +1599,21 @@ const OptionsService = {
       if (success) {
         await this.loadAccounts();
         this.hideImportModal();
-        this.showMessage("Đã nhập dữ liệu thành công!", "success");
+        this.showMessage("Data imported successfully!", "success");
 
         // Reload page to refresh UI
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        this.showMessage(
-          "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!",
-          "error",
-        );
+        this.showMessage("Invalid data. Please check again!", "error");
       }
     } catch (error) {
       console.error("Error importing accounts:", error);
-      this.showMessage("Có lỗi xảy ra khi nhập dữ liệu!", "error");
+      this.showMessage("An error occurred while importing data!", "error");
     } finally {
       if (confirmBtn) {
-        confirmBtn.textContent = "Nhập dữ liệu";
+        confirmBtn.textContent = "Import data";
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
     }
@@ -1655,15 +1633,15 @@ const OptionsService = {
     const previewName = document.getElementById("preview-name");
     if (previewName) {
       previewName.textContent =
-        userDetail.userName || account.name || "Không có tên";
+        userDetail.userName || account.name || "No name";
     }
 
     // Update avatar if available
     const previewAvatar = document.getElementById(
-      "preview-avatar",
+      "preview-avatar"
     ) as HTMLImageElement;
     const previewAvatarPlaceholder = document.getElementById(
-      "preview-avatar-placeholder",
+      "preview-avatar-placeholder"
     );
 
     if (userDetail.profileImage && previewAvatar && previewAvatarPlaceholder) {
@@ -1686,7 +1664,7 @@ const OptionsService = {
 
     // Update arcade points in main display
     const previewArcadePoints = document.getElementById(
-      "preview-arcade-points",
+      "preview-arcade-points"
     );
     if (previewArcadePoints && arcadeData) {
       const points =
@@ -1718,7 +1696,7 @@ const OptionsService = {
     if (previewSkillBadges && userDetail.completedBadgeIds) {
       // Count skill badges (assuming they have a specific pattern or type)
       const skillBadges = userDetail.completedBadgeIds.filter(
-        (badge: any) => badge.badgeType === "SKILL" || badge.type === "skill",
+        (badge: any) => badge.badgeType === "SKILL" || badge.type === "skill"
       ).length;
       previewSkillBadges.textContent = skillBadges.toString();
     } else if (previewSkillBadges) {
