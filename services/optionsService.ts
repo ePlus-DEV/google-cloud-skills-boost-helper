@@ -1761,14 +1761,30 @@ const OptionsService = {
     userDetail: UserDetail,
     arcadeData: ArcadeData
   ): void {
-    // Update name
+    this.updatePreviewName(account, userDetail);
+    this.updatePreviewAvatar(account, userDetail);
+    this.updatePreviewArcadePoints(arcadeData);
+    this.updatePreviewLastUpdated();
+    this.updatePreviewTotalBadges(userDetail);
+    this.updatePreviewSkillBadges(userDetail);
+    this.updatePreviewArcadeTotal(arcadeData);
+  },
+
+  /**
+   * Update preview name
+   */
+  updatePreviewName(account: Account, userDetail: UserDetail): void {
     const previewName = document.getElementById("preview-name");
     if (previewName) {
       previewName.textContent =
         userDetail.userName || account.name || "No name";
     }
+  },
 
-    // Update avatar if available
+  /**
+   * Update preview avatar and placeholder
+   */
+  updatePreviewAvatar(account: Account, userDetail: UserDetail): void {
     const previewAvatar = document.getElementById(
       "preview-avatar"
     ) as HTMLImageElement;
@@ -1776,25 +1792,24 @@ const OptionsService = {
       "preview-avatar-placeholder"
     );
 
+    const firstLetter = (userDetail.userName || account.name || "U")
+      .charAt(0)
+      .toUpperCase();
+
     if (userDetail.profileImage && previewAvatar && previewAvatarPlaceholder) {
       previewAvatar.src = userDetail.profileImage;
       previewAvatar.style.display = "block";
       previewAvatarPlaceholder.style.display = "none";
-
-      // Update placeholder to show first letter if no image
-      const firstLetter = (userDetail.userName || account.name || "U")
-        .charAt(0)
-        .toUpperCase();
       previewAvatarPlaceholder.textContent = firstLetter;
     } else if (previewAvatarPlaceholder) {
-      // Show first letter of name in placeholder
-      const firstLetter = (userDetail.userName || account.name || "U")
-        .charAt(0)
-        .toUpperCase();
       previewAvatarPlaceholder.innerHTML = firstLetter;
     }
+  },
 
-    // Update arcade points in main display
+  /**
+   * Update preview arcade points in main display
+   */
+  updatePreviewArcadePoints(arcadeData: ArcadeData): void {
     const previewArcadePoints = document.getElementById(
       "preview-arcade-points"
     );
@@ -1807,14 +1822,22 @@ const OptionsService = {
     } else if (previewArcadePoints) {
       previewArcadePoints.textContent = "0 points";
     }
+  },
 
-    // Update last updated
+  /**
+   * Update preview last updated date
+   */
+  updatePreviewLastUpdated(): void {
     const previewLastUpdated = document.getElementById("preview-last-updated");
     if (previewLastUpdated) {
       previewLastUpdated.textContent = new Date().toLocaleDateString("vi-VN");
     }
+  },
 
-    // Update stats - Total Badges
+  /**
+   * Update preview total badges
+   */
+  updatePreviewTotalBadges(userDetail: UserDetail): void {
     const previewTotalBadges = document.getElementById("preview-total-badges");
     if (previewTotalBadges && userDetail.completedBadgeIds) {
       previewTotalBadges.textContent =
@@ -1822,11 +1845,14 @@ const OptionsService = {
     } else if (previewTotalBadges) {
       previewTotalBadges.textContent = "0";
     }
+  },
 
-    // Update stats - Skill Badges
+  /**
+   * Update preview skill badges
+   */
+  updatePreviewSkillBadges(userDetail: UserDetail): void {
     const previewSkillBadges = document.getElementById("preview-skill-badges");
     if (previewSkillBadges && userDetail.completedBadgeIds) {
-      // Count skill badges (assuming they have a specific pattern or type)
       const skillBadges = userDetail.completedBadgeIds.filter(
         (badge: CompletedBadge) =>
           badge.badgeType === "SKILL" || badge.type === "skill"
@@ -1835,8 +1861,12 @@ const OptionsService = {
     } else if (previewSkillBadges) {
       previewSkillBadges.textContent = "0";
     }
+  },
 
-    // Update stats - Arcade Points
+  /**
+   * Update preview arcade total points
+   */
+  updatePreviewArcadeTotal(arcadeData: ArcadeData): void {
     const previewArcadeTotal = document.getElementById("preview-arcade-total");
     if (previewArcadeTotal && arcadeData) {
       const points =
