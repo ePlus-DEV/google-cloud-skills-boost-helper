@@ -5,12 +5,18 @@ import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
 import TourService from "./tourService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import type { ArcadeData, Account } from "../types";
+import type {
+  ArcadeData,
+  Account,
+  UserDetail,
+  CompletedBadge,
+} from "../types";
 
 /**
  * Service to handle options page functionality
  */
 const OptionsService = {
+  createdAccountId: undefined as string | undefined,
   /**
    * Initialize options page
    */
@@ -1049,7 +1055,7 @@ const OptionsService = {
       if (saveBtn) saveBtn.classList.remove("hidden");
 
       // Store account ID for nickname update
-      (this as any).createdAccountId = newAccount.id;
+      this.createdAccountId = newAccount.id;
 
       // Reload accounts to show new account
       await this.loadAccounts();
@@ -1071,7 +1077,7 @@ const OptionsService = {
     const nicknameInput = document.getElementById(
       "account-nickname-input",
     ) as HTMLInputElement;
-    const accountId = (this as any).createdAccountId;
+    const accountId = this.createdAccountId;
 
     if (!accountId) {
       this.showMessage(
@@ -1752,7 +1758,11 @@ const OptionsService = {
   /**
    * Update account preview with real data
    */
-  updateAccountPreview(account: any, userDetail: any, arcadeData: any): void {
+  updateAccountPreview(
+    account: Account,
+    userDetail: UserDetail,
+    arcadeData: ArcadeData,
+  ): void {
     // Update name
     const previewName = document.getElementById("preview-name");
     if (previewName) {
@@ -1820,7 +1830,8 @@ const OptionsService = {
     if (previewSkillBadges && userDetail.completedBadgeIds) {
       // Count skill badges (assuming they have a specific pattern or type)
       const skillBadges = userDetail.completedBadgeIds.filter(
-        (badge: any) => badge.badgeType === "SKILL" || badge.type === "skill",
+        (badge: CompletedBadge) =>
+          badge.badgeType === "SKILL" || badge.type === "skill",
       ).length;
       previewSkillBadges.textContent = skillBadges.toString();
     } else if (previewSkillBadges) {
