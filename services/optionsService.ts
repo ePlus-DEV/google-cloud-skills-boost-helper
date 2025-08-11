@@ -563,7 +563,7 @@ const OptionsService = {
           const userDetail = this.extractUserDetails(data);
           const accountName = userDetail?.userName || "New account";
 
-          const newAccount = await AccountService.createAccount({
+          await AccountService.createAccount({
             name: accountName,
             profileUrl,
             arcadeData: data,
