@@ -1,11 +1,17 @@
 // Types for popup and options functionality
 
+export interface CompletedBadge {
+  badgeType?: string;
+  type?: string;
+}
+
 export interface UserDetail {
   userName?: string;
   memberSince?: string;
   league?: string;
   points?: string;
   profileImage?: string;
+  completedBadgeIds?: CompletedBadge[];
 }
 
 export interface ArcadeData {
@@ -18,6 +24,7 @@ export interface ArcadeData {
     skillPoints?: number;
     specialPoints?: number;
   };
+  totalArcadePoints?: number;
   badges?: BadgeData[];
   lastUpdated?: string;
 }
