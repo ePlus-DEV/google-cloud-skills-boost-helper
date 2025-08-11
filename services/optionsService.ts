@@ -205,10 +205,13 @@ const OptionsService = {
       await this.loadAccounts();
 
       // Show success message
-      this.showMessage("Switched account successfully!", "success");
+      this.showMessage(
+        browser.i18n.getMessage("successSwitchedAccount"),
+        "success"
+      );
     } catch (error) {
       console.error("Error switching account:", error);
-      this.showMessage("Error switching account", "error");
+      this.showMessage(browser.i18n.getMessage("errorSwitchAccount"), "error");
     }
   },
 
@@ -219,12 +222,18 @@ const OptionsService = {
     try {
       const account = await AccountService.getAccountById(accountId);
       if (!account) {
-        this.showMessage("Account not found", "error");
+        this.showMessage(
+          browser.i18n.getMessage("errorAccountNotFound"),
+          "error"
+        );
         return;
       }
 
       // Show loading message
-      this.showMessage("Updating account data...", "success");
+      this.showMessage(
+        browser.i18n.getMessage("infoUpdatingAccountData"),
+        "success"
+      );
 
       // Fetch fresh data from API
       const arcadeData = await ArcadeApiService.fetchArcadeData(
@@ -250,13 +259,22 @@ const OptionsService = {
         // Reload accounts to show updated data
         await this.loadAccounts();
 
-        this.showMessage("Account data updated successfully!", "success");
+        this.showMessage(
+          browser.i18n.getMessage("successAccountDataUpdated"),
+          "success"
+        );
       } else {
-        this.showMessage("Could not fetch data from API", "error");
+        this.showMessage(
+          browser.i18n.getMessage("errorFetchDataFromApi"),
+          "error"
+        );
       }
     } catch (error) {
       console.error("Error updating account:", error);
-      this.showMessage("Error updating account", "error");
+      this.showMessage(
+        browser.i18n.getMessage("errorUpdatingAccount"),
+        "error"
+      );
     }
   },
 
@@ -267,7 +285,10 @@ const OptionsService = {
     try {
       const account = await AccountService.getAccountById(accountId);
       if (!account || !account.profileUrl) {
-        this.showMessage("Profile URL not found for this account", "error");
+        this.showMessage(
+          browser.i18n.getMessage("errorProfileUrlNotFound"),
+          "error"
+        );
         return;
       }
 
@@ -275,7 +296,7 @@ const OptionsService = {
       window.open(account.profileUrl, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Error viewing profile:", error);
-      this.showMessage("Error opening profile", "error");
+      this.showMessage(browser.i18n.getMessage("errorOpeningProfile"), "error");
     }
   },
 
@@ -286,7 +307,10 @@ const OptionsService = {
     try {
       const activeAccount = await AccountService.getActiveAccount();
       if (!activeAccount || !activeAccount.profileUrl) {
-        this.showMessage("No active account or profile URL found", "error");
+        this.showMessage(
+          browser.i18n.getMessage("errorNoActiveAccountOrProfileUrl"),
+          "error"
+        );
         return;
       }
 
@@ -294,7 +318,7 @@ const OptionsService = {
       window.open(activeAccount.profileUrl, "_blank", "noopener,noreferrer");
     } catch (error) {
       console.error("Error viewing active profile:", error);
-      this.showMessage("Error opening profile", "error");
+      this.showMessage(browser.i18n.getMessage("errorOpeningProfile"), "error");
     }
   },
 
@@ -1050,7 +1074,10 @@ const OptionsService = {
     const accountId = (this as any).createdAccountId;
 
     if (!accountId) {
-      this.showMessage("Could not find account to update!", "error");
+      this.showMessage(
+        browser.i18n.getMessage("errorAccountNotFoundToUpdate"),
+        "error"
+      );
       return;
     }
 
@@ -1072,7 +1099,10 @@ const OptionsService = {
           previewNicknameDisplay.classList.remove("hidden");
         }
 
-        this.showMessage("Nickname saved successfully!", "success");
+        this.showMessage(
+          browser.i18n.getMessage("successNicknameSaved"),
+          "success"
+        );
       }
 
       // Reload accounts and close modal
@@ -1080,7 +1110,7 @@ const OptionsService = {
       this.hideAddAccountModal();
     } catch (error) {
       console.error("Error saving nickname:", error);
-      this.showMessage("Error saving nickname!", "error");
+      this.showMessage(browser.i18n.getMessage("errorSavingNickname"), "error");
     }
   },
 
@@ -1550,11 +1580,14 @@ const OptionsService = {
 
       await this.loadAccounts();
       this.hideEditAccountModal();
-      this.showMessage("Nickname updated successfully!", "success");
+      this.showMessage(
+        browser.i18n.getMessage("successNicknameUpdated"),
+        "success"
+      );
     } catch (error) {
       console.error("Error updating account:", error);
       this.showMessage(
-        "An error occurred while updating the account!",
+        browser.i18n.getMessage("errorUpdatingAccountGeneric"),
         "error"
       );
     }
@@ -1572,7 +1605,10 @@ const OptionsService = {
 
     const allAccounts = await AccountService.getAllAccounts();
     if (allAccounts.length <= 1) {
-      this.showMessage("Cannot delete the last account!", "error");
+      this.showMessage(
+        browser.i18n.getMessage("errorCannotDeleteLastAccount"),
+        "error"
+      );
       return;
     }
 
@@ -1619,11 +1655,14 @@ const OptionsService = {
     try {
       await AccountService.deleteAccount(account.id);
       await this.loadAccounts();
-      this.showMessage("Account deleted successfully!", "success");
+      this.showMessage(
+        browser.i18n.getMessage("successAccountDeleted"),
+        "success"
+      );
     } catch (error) {
       console.error("Error deleting account:", error);
       this.showMessage(
-        "An error occurred while deleting the account!",
+        browser.i18n.getMessage("errorDeletingAccountGeneric"),
         "error"
       );
     }
@@ -1649,10 +1688,13 @@ const OptionsService = {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      this.showMessage("Data exported successfully!", "success");
+      this.showMessage(
+        browser.i18n.getMessage("successDataExported"),
+        "success"
+      );
     } catch (error) {
       console.error("Error exporting accounts:", error);
-      this.showMessage("An error occurred while exporting data!", "error");
+      this.showMessage(browser.i18n.getMessage("errorExportingData"), "error");
     }
   },
 
@@ -1666,7 +1708,7 @@ const OptionsService = {
     const confirmBtn = document.getElementById("confirm-import-btn");
 
     if (!textArea.value.trim()) {
-      this.showMessage("Please select a file or paste JSON content!", "error");
+      this.showMessage(browser.i18n.getMessage("errorNoImportData"), "error");
       return;
     }
 
@@ -1681,18 +1723,24 @@ const OptionsService = {
       if (success) {
         await this.loadAccounts();
         this.hideImportModal();
-        this.showMessage("Data imported successfully!", "success");
+        this.showMessage(
+          browser.i18n.getMessage("successDataImported"),
+          "success"
+        );
 
         // Reload page to refresh UI
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        this.showMessage("Invalid data. Please check again!", "error");
+        this.showMessage(
+          browser.i18n.getMessage("errorInvalidImportData"),
+          "error"
+        );
       }
     } catch (error) {
       console.error("Error importing accounts:", error);
-      this.showMessage("An error occurred while importing data!", "error");
+      this.showMessage(browser.i18n.getMessage("errorImportingData"), "error");
     } finally {
       if (confirmBtn) {
         confirmBtn.textContent = "Import data";

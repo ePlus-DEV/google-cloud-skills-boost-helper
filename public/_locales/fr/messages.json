@@ -188,5 +188,59 @@
     "message": "Une erreur s'est produite lors de l'ajout du compte. Veuillez réessayer !"
   },
   "errorAccountExistsMsgSimple": { "message": "Le compte existe déjà." },
-  "labelAddAccount": { "message": "Ajouter un compte" }
+  "labelAddAccount": { "message": "Ajouter un compte" },
+  "successSwitchedAccount": { "message": "Changement de compte réussi !" },
+  "errorSwitchAccount": { "message": "Erreur lors du changement de compte." },
+  "errorAccountNotFound": { "message": "Compte introuvable." },
+  "infoUpdatingAccountData": {
+    "message": "Mise à jour des données du compte..."
+  },
+  "successAccountDataUpdated": {
+    "message": "Données du compte mises à jour avec succès !"
+  },
+  "errorFetchDataFromApi": {
+    "message": "Impossible de récupérer les données depuis l'API."
+  },
+  "errorUpdatingAccount": {
+    "message": "Erreur lors de la mise à jour du compte."
+  },
+  "errorProfileUrlNotFound": {
+    "message": "URL du profil introuvable pour ce compte."
+  },
+  "errorOpeningProfile": { "message": "Erreur lors de l'ouverture du profil." },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "Aucun compte actif ou URL de profil trouvée."
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "Impossible de trouver le compte à mettre à jour !"
+  },
+  "successNicknameSaved": { "message": "Surnom enregistré avec succès !" },
+  "errorSavingNickname": {
+    "message": "Erreur lors de l'enregistrement du surnom !"
+  },
+  "successNicknameUpdated": { "message": "Surnom mis à jour avec succès !" },
+  "errorUpdatingAccountGeneric": {
+    "message": "Une erreur s'est produite lors de la mise à jour du compte !"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "Impossible de supprimer le dernier compte !"
+  },
+  "successAccountDeleted": { "message": "Compte supprimé avec succès !" },
+  "errorDeletingAccountGeneric": {
+    "message": "Une erreur s'est produite lors de la suppression du compte !"
+  },
+  "successDataExported": { "message": "Données exportées avec succès !" },
+  "errorExportingData": {
+    "message": "Une erreur s'est produite lors de l'exportation des données !"
+  },
+  "errorNoImportData": {
+    "message": "Veuillez sélectionner un fichier ou coller le contenu JSON !"
+  },
+  "successDataImported": { "message": "Données importées avec succès !" },
+  "errorInvalidImportData": {
+    "message": "Données invalides. Veuillez vérifier à nouveau !"
+  },
+  "errorImportingData": {
+    "message": "Une erreur s'est produite lors de l'importation des données !"
+  }
 }
