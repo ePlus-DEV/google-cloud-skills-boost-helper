@@ -1031,7 +1031,7 @@ const OptionsService = {
       const newAccount = await AccountService.createAccount({
         name: userDetail.userName,
         profileUrl: urlInput.value.trim(),
-        arcadeData: arcadeData,
+        arcadeData,
       });
 
       // Hide loading, show success and nickname step
