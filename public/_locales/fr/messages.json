@@ -172,5 +172,21 @@
   },
   "tourCloseButton": {
     "message": "Fermer"
-  }
+  },
+  "errorEnterProfileUrl": { "message": "Veuillez saisir l'URL du profil !" },
+  "errorInvalidProfileUrl": { "message": "URL du profil invalide !" },
+  "errorAccountExistsTitle": { "message": "Le compte existe déjà" },
+  "errorAccountExistsMsg": {
+    "message": "Un compte avec cette URL existe déjà : \"$1\"."
+  },
+  "errorNoNameFromProfile": {
+    "message": "Impossible d'obtenir le nom depuis le profil. Veuillez réessayer !"
+  },
+  "labelAdding": { "message": "Ajout en cours..." },
+  "successAccountAdded": { "message": "Compte ajouté avec succès !" },
+  "errorAddAccountGeneric": {
+    "message": "Une erreur s'est produite lors de l'ajout du compte. Veuillez réessayer !"
+  },
+  "errorAccountExistsMsgSimple": { "message": "Le compte existe déjà." },
+  "labelAddAccount": { "message": "Ajouter un compte" }
 }
