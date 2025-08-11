@@ -976,7 +976,7 @@ const OptionsService = {
           `An account with this URL already exists: "${existingAccount.name}".`,
           "Account already exists",
           true,
-          existingAccount
+          existingAccount,
         );
         return;
       }
@@ -1127,7 +1127,7 @@ const OptionsService = {
           `An account with this URL already exists: "${existingAccount.name}".`,
           "Account already exists",
           true,
-          existingAccount
+          existingAccount,
         );
         return;
       }
@@ -1259,7 +1259,7 @@ const OptionsService = {
     message: string,
     title?: string,
     showSwitchBtn?: boolean,
-    existingAccount?: Account
+    existingAccount?: Account,
   ): void {
     const errorDiv = document.getElementById("error-profile");
     const errorTitle = document.getElementById("error-title");
@@ -1443,7 +1443,7 @@ const OptionsService = {
     // Check if account already exists
     try {
       const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim()
+        urlInput.value.trim(),
       );
       if (existingAccount) {
         // Show error UI with switch button
