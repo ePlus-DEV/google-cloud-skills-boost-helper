@@ -235,9 +235,13 @@ const AccountUIService = {
     displayName.textContent = account.nickname || account.name;
     profileUrl.textContent = account.profileUrl;
 
-    // Update avatar if available
-    if (account.arcadeData?.userDetails?.profileImage && avatarImg) {
-      avatarImg.src = account.arcadeData.userDetails.profileImage;
+    // Update avatar if available, handling both object and array responses
+    const userDetails = Array.isArray(account.arcadeData?.userDetails)
+      ? account.arcadeData?.userDetails[0]
+      : account.arcadeData?.userDetails;
+
+    if (userDetails?.profileImage && avatarImg) {
+      avatarImg.src = userDetails.profileImage;
       avatarImg.style.display = "block";
     } else if (avatarImg) {
       avatarImg.style.display = "none";
