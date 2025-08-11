@@ -2,7 +2,7 @@
  * UI components for account management functionality
  */
 import { AccountService, ArcadeApiService } from "../services";
-import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
+import { ModalUtils, DOMUtils } from "../utils";
 import type { Account, CreateAccountOptions } from "../types";
 
 const AccountUIService = {
