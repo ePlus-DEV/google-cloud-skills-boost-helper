@@ -107,12 +107,6 @@
   border-radius: 8px !important;
 }
 
-.introjs-helperLayer {
-  border: 3px solid #3b82f6 !important;
-  border-radius: 8px !important;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3) !important;
-}
-
 .introjs-overlay {
   background: rgba(0, 0, 0, 0.7) !important;
 }
@@ -141,6 +135,9 @@
 }
 
 .introjs-helperLayer {
+  border: 3px solid #3b82f6 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3) !important;
   animation: introjs-pulse 2s infinite !important;
 }
 
