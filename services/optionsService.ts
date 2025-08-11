@@ -397,18 +397,6 @@ const OptionsService = {
    * Setup event listeners for options page
    */
   setupEventListeners(): void {
-    // Video toggle button
-    const toggleVideoButton = document.getElementById("toggle-video");
-    if (toggleVideoButton) {
-      toggleVideoButton.addEventListener("click", () => {
-        const videoContainer = document.getElementById("video-container");
-        if (videoContainer) {
-          videoContainer.style.display =
-            videoContainer.style.display === "none" ? "flex" : "none";
-        }
-      });
-    }
-
     // Search feature toggle
     const searchFeatureToggle = document.getElementById(
       "search-feature-toggle"
@@ -1174,7 +1162,7 @@ const OptionsService = {
   ): void {
     const errorDiv = document.getElementById("error-profile");
     const errorTitle = document.getElementById("error-title");
-    const errorMessage = document.getElementById("error-message");
+    const errorMessage = document.getElementById("profile-error-message");
     const loadingDiv = document.getElementById("loading-profile");
 
     if (loadingDiv) loadingDiv.classList.add("hidden");
@@ -1198,7 +1186,7 @@ const OptionsService = {
    */
   showSwitchToExistingAccountOption(existingAccount: Account): void {
     const errorDiv = document.getElementById("error-profile");
-    const errorMessage = document.getElementById("error-message");
+    const errorMessage = document.getElementById("profile-error-message");
 
     if (errorDiv && errorMessage) {
       // Add a button to switch to existing account
@@ -1339,7 +1327,7 @@ const OptionsService = {
         // Show error UI with switch button
         const errorDiv = document.getElementById("error-profile");
         const errorTitle = document.getElementById("error-title");
-        const errorMessage = document.getElementById("error-message");
+        const errorMessage = document.getElementById("profile-error-message");
         if (errorDiv && errorTitle && errorMessage) {
           errorDiv.classList.remove("hidden");
           errorTitle.textContent = browser.i18n.getMessage(
