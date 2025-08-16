@@ -101,11 +101,25 @@ const PopupService = {
 
       const isActive = activeAccount && account.id === activeAccount.id;
 
+      // Get user profile image if available
+      const userDetail = account.arcadeData?.userDetails
+        ? AccountService.extractUserDetails(account.arcadeData)
+        : null;
+      const profileImage = userDetail?.profileImage;
+
+      // Create avatar HTML - use real avatar if available, fallback to initial
+      const avatarHTML = profileImage
+        ? `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+             ${displayText.charAt(0).toUpperCase()}
+           </div>`
+        : `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+             ${displayText.charAt(0).toUpperCase()}
+           </div>`;
+
       accountItem.innerHTML = `
         <div class="flex items-center flex-1 min-w-0">
-          <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-            ${displayText.charAt(0).toUpperCase()}
-          </div>
+          ${avatarHTML}
           <div class="min-w-0 flex-1">
             <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
             ${
