@@ -65,37 +65,83 @@ const PopupService = {
    * Load accounts into popup selector
    */
   async loadPopupAccounts(): Promise<void> {
-    const selector = document.getElementById(
-      "popup-account-selector",
-    ) as HTMLSelectElement;
-    if (!selector) return;
+    const accountList = document.getElementById("account-list");
+    const accountCount = document.getElementById("account-count");
+    if (!accountList) return;
 
-    // Clear existing options except the first one
-    while (selector.children.length > 1) {
-      if (selector.lastChild) {
-        selector.removeChild(selector.lastChild);
-      }
-    }
+    // Clear existing options
+    accountList.innerHTML = "";
 
     // Load accounts
     const accounts = await AccountService.getAllAccounts();
     const activeAccount = await AccountService.getActiveAccount();
 
-    accounts.forEach((account) => {
-      const option = document.createElement("option");
-      option.value = account.id;
-      option.textContent = account.nickname || account.name;
+    // Update account count
+    if (accountCount) {
+      accountCount.textContent = accounts.length.toString();
+    }
 
-      if (activeAccount && account.id === activeAccount.id) {
-        option.selected = true;
+    accounts.forEach((account) => {
+      const accountItem = document.createElement("div");
+      accountItem.className =
+        "px-3 py-2 hover:bg-white/20 cursor-pointer transition-all duration-200 flex items-center justify-between group";
+      accountItem.dataset.accountId = account.id;
+
+      // Create display text with priority: nickname > userName from arcadeData > account name
+      let displayText = account.nickname;
+      if (!displayText && account.arcadeData?.userDetails) {
+        const userDetail = AccountService.extractUserDetails(
+          account.arcadeData
+        );
+        displayText = userDetail?.userName;
+      }
+      if (!displayText) {
+        displayText = account.name;
       }
 
-      selector.appendChild(option);
+      const isActive = activeAccount && account.id === activeAccount.id;
+
+      accountItem.innerHTML = `
+        <div class="flex items-center flex-1 min-w-0">
+          <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+            ${displayText.charAt(0).toUpperCase()}
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-white text-sm font-medium truncate">${displayText}</div>
+            ${
+              account.name !== displayText
+                ? `<div class="text-white/50 text-xs truncate">${account.name}</div>`
+                : ""
+            }
+          </div>
+        </div>
+        <div class="flex items-center">
+          ${
+            isActive
+              ? '<div class="bg-green-400/20 text-green-400 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
+              : '<i class="fa-solid fa-arrow-right text-white/40 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
+          }
+        </div>
+      `;
+
+      if (isActive) {
+        accountItem.classList.add("bg-white/10");
+      }
+
+      accountItem.addEventListener("click", () => {
+        if (!isActive) {
+          this.switchAccount(account.id);
+          this.hideAccountDropdown();
+        }
+      });
+
+      accountList.appendChild(accountItem);
     });
 
     // Update current account info
     if (activeAccount) {
       this.updatePopupAccountInfo(activeAccount);
+      this.updateUserNameFromAccount(activeAccount);
     }
   },
 
@@ -116,16 +162,117 @@ const PopupService = {
    * Setup account selector events
    */
   setupAccountSelectorEvents(): void {
-    const selector = document.getElementById(
-      "popup-account-selector",
-    ) as HTMLSelectElement;
-    if (selector) {
-      selector.addEventListener("change", async (e) => {
-        const target = e.target as HTMLSelectElement;
-        if (target.value) {
-          await this.switchAccount(target.value);
+    // Account switcher button
+    const accountSwitcherBtn = document.getElementById("account-switcher-btn");
+    const accountDropdown = document.getElementById("account-dropdown");
+
+    if (accountSwitcherBtn && accountDropdown) {
+      accountSwitcherBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.toggleAccountDropdown();
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        if (
+          !accountSwitcherBtn.contains(target) &&
+          !accountDropdown.contains(target)
+        ) {
+          this.hideAccountDropdown();
         }
       });
+    }
+
+    // Copy profile URL functionality
+    const copyUrlBtn = document.getElementById("copy-profile-url");
+    if (copyUrlBtn) {
+      copyUrlBtn.addEventListener("click", async () => {
+        const profileUrl = this.profileUrl;
+        if (profileUrl) {
+          try {
+            await navigator.clipboard.writeText(profileUrl);
+
+            // Show visual feedback
+            const originalText = copyUrlBtn.innerHTML;
+            copyUrlBtn.innerHTML =
+              '<i class="fa-solid fa-check text-xs mr-1"></i>Copied!';
+            copyUrlBtn.classList.add("text-green-400");
+            copyUrlBtn.classList.remove("text-blue-400");
+
+            setTimeout(() => {
+              copyUrlBtn.innerHTML = originalText;
+              copyUrlBtn.classList.remove("text-green-400");
+              copyUrlBtn.classList.add("text-blue-400");
+            }, 1500);
+          } catch (error) {
+            console.error("Failed to copy URL:", error);
+          }
+        }
+      });
+    }
+  },
+
+  /**
+   * Toggle account dropdown visibility
+   */
+  toggleAccountDropdown(): void {
+    const dropdown = document.getElementById("account-dropdown");
+    if (!dropdown) return;
+
+    if (dropdown.classList.contains("hidden")) {
+      dropdown.classList.remove("hidden");
+      // Focus on dropdown for better accessibility
+      dropdown.focus();
+    } else {
+      dropdown.classList.add("hidden");
+    }
+  },
+
+  /**
+   * Hide account dropdown
+   */
+  hideAccountDropdown(): void {
+    const dropdown = document.getElementById("account-dropdown");
+    if (dropdown && !dropdown.classList.contains("hidden")) {
+      dropdown.classList.add("hidden");
+    }
+  },
+
+  /**
+   * Update user name display from account data
+   */
+  updateUserNameFromAccount(account: Account): void {
+    const userNameElement = document.getElementById("user-name");
+    if (userNameElement) {
+      // Priority: nickname > userName from arcadeData > account name
+      let displayName = account.nickname;
+
+      if (!displayName && account.arcadeData?.userDetails) {
+        const userDetail = AccountService.extractUserDetails(
+          account.arcadeData
+        );
+        displayName = userDetail?.userName;
+      }
+
+      if (!displayName) {
+        displayName = account.name;
+      }
+
+      // Add transition effect when changing name
+      userNameElement.style.transform = "scale(0.95)";
+      userNameElement.style.opacity = "0.7";
+
+      setTimeout(() => {
+        userNameElement.textContent = displayName || "Anonymous";
+        userNameElement.title = `Account: ${account.name}${
+          account.nickname ? ` (${account.nickname})` : ""
+        }`;
+
+        // Restore normal appearance with animation
+        userNameElement.style.transform = "scale(1)";
+        userNameElement.style.opacity = "1";
+      }, 150);
     }
   },
 
@@ -140,6 +287,12 @@ const PopupService = {
         this.currentAccount = account;
         this.profileUrl = account.profileUrl;
         this.updatePopupAccountInfo(account);
+
+        // Update the user name immediately with account data
+        this.updateUserNameFromAccount(account);
+
+        // Reload account list to update active status
+        await this.loadPopupAccounts();
 
         // Refresh data for the new account
         if (account.arcadeData) {
@@ -159,7 +312,7 @@ const PopupService = {
   showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
+      browser.i18n.getMessage("textPleaseSetUpTheSettings")
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -174,10 +327,10 @@ const PopupService = {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon",
+      ".refresh-icon"
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -186,7 +339,7 @@ const PopupService = {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl,
+        this.profileUrl
       );
 
       if (arcadeData) {
@@ -197,7 +350,7 @@ const PopupService = {
         if (this.currentAccount) {
           await AccountService.updateAccountArcadeData(
             this.currentAccount.id,
-            arcadeData,
+            arcadeData
           );
         }
 
@@ -235,7 +388,7 @@ const PopupService = {
     const announcementToggle = document.getElementById("announcement-toggle");
     if (announcementToggle) {
       announcementToggle.addEventListener("click", () =>
-        this.toggleAnnouncement(),
+        this.toggleAnnouncement()
       );
     }
   },
@@ -285,7 +438,7 @@ const PopupService = {
     await MarkdownService.loadAndRender(
       MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
       "popup-markdown-container",
-      ".prose",
+      ".prose"
     );
   },
 };
