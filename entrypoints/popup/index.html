@@ -140,25 +140,27 @@
                     <div id="account-list" class="py-1">
                       <!-- Account options will be populated here -->
                     </div>
-                    <div class="p-2 border-t border-white/20">
-                      <button id="copy-profile-url"
-                        class="w-full text-xs text-blue-400 hover:text-blue-300 bg-blue-400/20 hover:bg-blue-400/30 px-2 py-1.5 rounded flex items-center justify-center transition-all duration-200">
-                        <i class="fa-solid fa-copy text-xs mr-1"></i>
-                        Copy Profile URL
-                      </button>
-                    </div>
                   </div>
                 </div>
 
-                <div class="flex items-center mt-1">
-                  <div
-                    class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
-                    <i class="fa-solid fa-crown text-white"></i>
-                    <span class="ml-1" id="league">VIP</span>
+                <div class="flex items-center justify-between mt-2">
+                  <div class="flex items-center">
+                    <div
+                      class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
+                      <i class="fa-solid fa-crown text-white"></i>
+                      <span class="ml-1" id="league">VIP</span>
+                    </div>
+                    <div class="ml-2 text-xs text-white/70" id="total-points">
+                      0 points
+                    </div>
                   </div>
-                  <div class="ml-2 text-xs text-white/70" id="total-points">
-                    0 points
-                  </div>
+
+                  <!-- Copy Profile URL Button -->
+                  <button id="copy-profile-url" title="Copy Profile URL" onclick="window.testCopy && window.testCopy()"
+                    class="text-xs text-blue-400 hover:text-blue-300 bg-blue-400/20 hover:bg-blue-400/30 p-2 rounded-full flex items-center justify-center transition-all duration-200 border border-blue-400/30 hover:border-blue-400/50 w-8 h-8 cursor-pointer"
+                    style="pointer-events: auto; z-index: 100;">
+                    <i class="fa-solid fa-copy text-xs"></i>
+                  </button>
                 </div>
               </div>
             </div>
