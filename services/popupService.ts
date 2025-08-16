@@ -184,33 +184,129 @@ const PopupService = {
       });
     }
 
-    // Copy profile URL functionality
-    const copyUrlBtn = document.getElementById("copy-profile-url");
-    if (copyUrlBtn) {
-      copyUrlBtn.addEventListener("click", async () => {
-        const profileUrl = this.profileUrl;
-        if (profileUrl) {
-          try {
-            await navigator.clipboard.writeText(profileUrl);
+    // Copy profile URL functionality with timeout to ensure DOM is ready
+    setTimeout(() => {
+      const copyUrlBtn = document.getElementById("copy-profile-url");
+      if (copyUrlBtn) {
+        // Remove any existing listeners
+        const newCopyBtn = copyUrlBtn.cloneNode(true) as HTMLElement;
+        copyUrlBtn.parentNode?.replaceChild(newCopyBtn, copyUrlBtn);
 
-            // Show visual feedback
-            const originalText = copyUrlBtn.innerHTML;
-            copyUrlBtn.innerHTML =
-              '<i class="fa-solid fa-check text-xs mr-1"></i>Copied!';
-            copyUrlBtn.classList.add("text-green-400");
-            copyUrlBtn.classList.remove("text-blue-400");
+        newCopyBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Get profile URL from current account or fallback to stored profileUrl
+          let profileUrl = this.profileUrl;
+          if (!profileUrl && this.currentAccount) {
+            profileUrl = this.currentAccount.profileUrl;
+          }
+
+          if (profileUrl) {
+            try {
+              await navigator.clipboard.writeText(profileUrl);
+
+              // Show visual feedback - just change icon for compact button
+              const originalIcon = newCopyBtn.innerHTML;
+              newCopyBtn.innerHTML =
+                '<i class="fa-solid fa-check text-xs"></i>';
+              newCopyBtn.classList.add(
+                "text-green-400",
+                "bg-green-400/20",
+                "border-green-400/50"
+              );
+              newCopyBtn.classList.remove(
+                "text-blue-400",
+                "bg-blue-400/20",
+                "border-blue-400/30"
+              );
+              newCopyBtn.title = "Copied!";
+
+              setTimeout(() => {
+                newCopyBtn.innerHTML = originalIcon;
+                newCopyBtn.classList.remove(
+                  "text-green-400",
+                  "bg-green-400/20",
+                  "border-green-400/50"
+                );
+                newCopyBtn.classList.add(
+                  "text-blue-400",
+                  "bg-blue-400/20",
+                  "border-blue-400/30"
+                );
+                newCopyBtn.title = "Copy Profile URL";
+              }, 1500);
+            } catch (error) {
+              console.error("DEBUG: Failed to copy URL:", error);
+
+              // Show error feedback
+              const originalIcon = newCopyBtn.innerHTML;
+              newCopyBtn.innerHTML =
+                '<i class="fa-solid fa-times text-xs"></i>';
+              newCopyBtn.classList.add(
+                "text-red-400",
+                "bg-red-400/20",
+                "border-red-400/50"
+              );
+              newCopyBtn.classList.remove(
+                "text-blue-400",
+                "bg-blue-400/20",
+                "border-blue-400/30"
+              );
+              newCopyBtn.title = "Failed to copy";
+
+              setTimeout(() => {
+                newCopyBtn.innerHTML = originalIcon;
+                newCopyBtn.classList.remove(
+                  "text-red-400",
+                  "bg-red-400/20",
+                  "border-red-400/50"
+                );
+                newCopyBtn.classList.add(
+                  "text-blue-400",
+                  "bg-blue-400/20",
+                  "border-blue-400/30"
+                );
+                newCopyBtn.title = "Copy Profile URL";
+              }, 1500);
+            }
+          } else {
+            // No URL available
+            const originalIcon = newCopyBtn.innerHTML;
+            newCopyBtn.innerHTML =
+              '<i class="fa-solid fa-exclamation text-xs"></i>';
+            newCopyBtn.classList.add(
+              "text-yellow-400",
+              "bg-yellow-400/20",
+              "border-yellow-400/50"
+            );
+            newCopyBtn.classList.remove(
+              "text-blue-400",
+              "bg-blue-400/20",
+              "border-blue-400/30"
+            );
+            newCopyBtn.title = "No URL available";
 
             setTimeout(() => {
-              copyUrlBtn.innerHTML = originalText;
-              copyUrlBtn.classList.remove("text-green-400");
-              copyUrlBtn.classList.add("text-blue-400");
+              newCopyBtn.innerHTML = originalIcon;
+              newCopyBtn.classList.remove(
+                "text-yellow-400",
+                "bg-yellow-400/20",
+                "border-yellow-400/50"
+              );
+              newCopyBtn.classList.add(
+                "text-blue-400",
+                "bg-blue-400/20",
+                "border-blue-400/30"
+              );
+              newCopyBtn.title = "Copy Profile URL";
             }, 1500);
-          } catch (error) {
-            console.error("Failed to copy URL:", error);
           }
-        }
-      });
-    }
+        });
+      } else {
+        // Optionally handle missing copy button here (e.g., show UI feedback)
+      }
+    }, 1000); // Wait 1 second to ensure DOM is ready
   },
 
   /**
