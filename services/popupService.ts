@@ -84,7 +84,7 @@ const PopupService = {
     accounts.forEach((account) => {
       const accountItem = document.createElement("div");
       accountItem.className =
-        "px-3 py-2 hover:bg-white/20 cursor-pointer transition-all duration-200 flex items-center justify-between group";
+        "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
       accountItem.dataset.accountId = account.id;
 
       // Create display text with priority: nickname > userName from arcadeData > account name
@@ -107,10 +107,10 @@ const PopupService = {
             ${displayText.charAt(0).toUpperCase()}
           </div>
           <div class="min-w-0 flex-1">
-            <div class="text-white text-sm font-medium truncate">${displayText}</div>
+            <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
             ${
               account.name !== displayText
-                ? `<div class="text-white/50 text-xs truncate">${account.name}</div>`
+                ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
                 : ""
             }
           </div>
@@ -118,14 +118,14 @@ const PopupService = {
         <div class="flex items-center">
           ${
             isActive
-              ? '<div class="bg-green-400/20 text-green-400 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
-              : '<i class="fa-solid fa-arrow-right text-white/40 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
+              ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
+              : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
           }
         </div>
       `;
 
       if (isActive) {
-        accountItem.classList.add("bg-white/10");
+        accountItem.classList.add("bg-slate-700/60");
       }
 
       accountItem.addEventListener("click", () => {
