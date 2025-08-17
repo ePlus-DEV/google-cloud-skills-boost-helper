@@ -1,310 +1,415 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Cloud Skills Boost - Helper</title>
+    <meta name="manifest.type" content="browser_action" />
+    <link rel="stylesheet" href="~/assets/tailwind.css" />
+    <link rel="stylesheet" href="~/assets/markdown.css" />
+    <link rel="stylesheet" href="~/assets/account-switcher.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google Cloud Skills Boost - Helper</title>
-  <meta name="manifest.type" content="browser_action" />
-  <link rel="stylesheet" href="~/assets/tailwind.css" />
-  <link rel="stylesheet" href="~/assets/markdown.css" />
-  <link rel="stylesheet" href="~/assets/account-switcher.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
-</head>
-
-<body>
-  <div class="relative">
-    <!-- Auth -->
-    <div class="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50 invisible" id="auth-screen">
-      <span id="settings-message" class="text-white text-lg font-semibold mr-3">Please configure your settings</span>
-      <button
-        class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 rounded-full disabled:opacity-50 transition-transform duration-300 hover:scale-105 shadow-lg hover:shadow-blue-600/50 flex items-center justify-center settings-button">
-        <i class="fa-solid fa-cog transition-transform duration-300 fa-2x hover:rotate-180"></i>
-      </button>
-    </div>
-    <!-- Auth -->
-
-    <!-- Popup Content -->
-    <div
-      class="w-[400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 shadow-lg rounded-lg p-1"
-      id="popup-content">
+  <body>
+    <div class="relative">
+      <!-- Auth -->
       <div
-        class="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl">
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
-          <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-purple-500 blur-3xl"></div>
-          <div class="absolute bottom-10 right-10 w-40 h-40 rounded-full bg-blue-500 blur-3xl"></div>
+        class="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50 invisible"
+        id="auth-screen"
+      >
+        <span
+          id="settings-message"
+          class="text-white text-lg font-semibold mr-3"
+          >Please configure your settings</span
+        >
+        <button
+          class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 rounded-full disabled:opacity-50 transition-transform duration-300 hover:scale-105 shadow-lg hover:shadow-blue-600/50 flex items-center justify-center settings-button"
+        >
+          <i
+            class="fa-solid fa-cog transition-transform duration-300 fa-2x hover:rotate-180"
+          ></i>
+        </button>
+      </div>
+      <!-- Auth -->
+
+      <!-- Popup Content -->
+      <div
+        class="w-[400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 shadow-lg rounded-lg p-1"
+        id="popup-content"
+      >
+        <div
+          class="w-[400px] mx-auto bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-[700px] relative overflow-hidden shadow-2xl rounded-xl"
+        >
           <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 rounded-full bg-pink-500 blur-3xl opacity-20">
-          </div>
-        </div>
-        <div class="relative z-10 p-4">
-          <!-- Collapsible Announcement -->
-          <div class="mb-4">
-            <button id="announcement-toggle"
-              class="w-full bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center justify-between group">
-              <div class="flex items-center">
-                <i class="fa-solid fa-bullhorn text-yellow-400 text-sm mr-2"></i>
-                <span class="text-yellow-300 font-semibold text-sm">Announcement</span>
-              </div>
-              <i class="fa-solid fa-chevron-down text-white/70 text-xs transition-transform duration-300"
-                id="announcement-chevron"></i>
-            </button>
-
-            <div id="popup-markdown-container"
-              class="hidden mt-2 bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20 max-h-48 overflow-y-auto">
-              <div class="prose prose-sm max-w-none text-white">
-                <!-- Markdown content will be loaded here -->
-              </div>
-            </div>
-          </div>
-
-          <div class="relative mb-6 pt-6">
+            class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none"
+          >
             <div
-              class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full blur-sm">
-            </div>
-            <div class="text-center">
-              <h1
-                class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
-                Arcade Points
-              </h1>
-              <div class="relative mt-2">
-                <div class="text-6xl font-black text-white tracking-tighter" id="arcade-points">
-                  0
-                </div>
-                <div
-                  class="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
-                  +0
-                </div>
-              </div>
-            </div>
-            <!-- Button Setting -->
-            <button
-              class="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center hover:rotate-90 settings-button">
-              <i class="fa-solid fa-cog transition-transform duration-300 fa-2x"></i>
-            </button>
-            <!-- Button Setting -->
-            <!-- Button Refresh -->
-            <button
-              class="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center hover:rotate-90 refresh-button">
-              <i class="fa-solid fa-arrows-rotate transition-transform duration-300 fa-2x refresh-icon"></i>
-            </button>
-            <!-- Button Refresh -->
-          </div>
-          <div class="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 group">
+              class="absolute top-10 left-10 w-40 h-40 rounded-full bg-purple-500 blur-3xl"
+            ></div>
             <div
-              class="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            </div>
-            <div class="flex items-center">
-              <div class="relative">
-                <div
-                  class="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-spin-slow blur-md">
+              class="absolute bottom-10 right-10 w-40 h-40 rounded-full bg-blue-500 blur-3xl"
+            ></div>
+            <div
+              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 rounded-full bg-pink-500 blur-3xl opacity-20"
+            ></div>
+          </div>
+          <div class="relative z-10 p-4">
+            <!-- Collapsible Announcement -->
+            <div class="mb-4">
+              <button
+                id="announcement-toggle"
+                class="w-full bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center justify-between group"
+              >
+                <div class="flex items-center">
+                  <i
+                    class="fa-solid fa-bullhorn text-yellow-400 text-sm mr-2"
+                  ></i>
+                  <span class="text-yellow-300 font-semibold text-sm"
+                    >Announcement</span
+                  >
                 </div>
-                <div class="relative z-10">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAOxAAADsQH1g%2B1JAAAABHNCSVQICAgIfAhkiAAAEUVJREFUeNrtnQl0FFXahotZVBD9Z35BEfTXUUeHxeUfHUdHRxQYlkEGGCACoqIsw6aogIDDCIJAQCDBgGQIJBBAMEGIZCMx6ap0ks7W2feFpG8HSAQJAUJCAul3%2BnLo05lIkFR91el013fOew4cQk5VvU%2Fd5avv3iu4WgDoEsPwkMjwqsTwrmTCRpEhWDRBEhlyrTppVY1VdVaB69qfa679W%2B61nw3i%2F5f%2FDp0JI%2FnvBNBF0MK5IrYSfXQMHhLDZpHBYNV5q6CSzksMiSKDt8QwIdqM3oIWjg2xAreJlRjODZdMKObGdLCKrPLSmTEsohS3ClrQR1A%2BbuFNuo4hUGI4R2YevWolht28yzAa8UtBC2URV4nfigyeVlVbhU6mat5K6Rj6C1q0L0SGF60KtcpiFVxACRLDKG0Q%2BROjd8mEsSJDplVwRUkM6TozRmsgtArJhBEig9EquInS%2BKBRcPfQleMxkSHMKripvhPNGCC4W4SeRLdrCZrLVsHN1SQxrDNUoqvgDiEyDJEYjmnG%2F0ilsSYMElww7AkcBk8dQ7NmdpuySAz%2F5i2k4EoRU4knRIY8zeCbVo7L5A8kMyaJDHWaqe1WvVVvCZ01goCf8xy5szzQhMJzSEkzIVPMQl54HPJCRRSERIGtWoWK9RtQutUP%2BftCkP2tDkmZVc4DghkbVgA%2FE2hD%2Fdy9xPB1RzwwfUk9uMllew%2Bg2nMlzi%2BcgctTRwATX7quGvv1ROPvevxYT9yL%2Bhf64tzoV3Bqzjso3vkV9CV1HQXBIT6GEjpDiKfQXWKIcuQDMiYUomKHP2qXzIVl8qA2zG4HAG2p391oeOlxnJ4%2BBYWBwRArmh0Jgi6iFHcKzhwx5biHpzsd8UBSU8th%2FvJLNMz2aG2qHADk6cn7UPPGeGSF6h0FgTGqDHcLTjrNe5DPZVXNpVdcRsHhKJz7aHZLEykAUKyG5x%2FF8U%2BWIa6sXm0ISvizFpwp9FXoyQsjVOvXSxtQuvdrXJo13mYcNQB0euo%2BVM2fi4S8GjUhKBMr0EtwhuD9Em%2F21Xrjiw%2BE4NLMv9OZTg9Am4PI6vdmIa6sQZ3W0IRssQK%2FcoZKnWg1bjBTzETd%2FLdkmEoAAKEuPf0ASn18VRsYdlgZGp%2Bb8spZ8vl6QS2%2B9%2FyUwFwCAAh1YeQLSI0vpIfAhMM85yI4OtRI8uRGJqBxxhhujCsBYNfjvXDM6ws1Ck3WCY4MnQmTSW%2Bg%2FAqYry8waSA3xUUBsKvW46%2FUSSULrzRy2IcdieEi1cUbck8TTOscCgDRtPExpMdmUkLwQ9wJ3O%2BIT7o5ZMmclGNomDWBG%2BFOANj1RG%2FkBUVQjgeSVS1HF83wobrYrBgjrrw1jJvgvgBw9e%2BF4h17KVsCT9UqeajKtHOiDGieMoQboAFgFb%2BGijVr6cYDlRhIXsPHs08k5kcn2T7YaAC0UPkbryO4kGxWkE%2FaFfACTpKvdolFtmZfA6Cl%2BVMmY20SsDYZCC4iyxQuolmeZUJfXrmq9IKSM0%2Bgcfpo%2FtA1AH5sPhcpBHymFluOB5T3%2FSZEKr2YxLwfUD9vcoeb3fTGUJye%2ByaOvz8bx5YsQsHyT3F6%2BJ9xdtAzOP%2Fi46h%2F5jcOBaL89Ul24%2Bkh4AomWLGjtCm6gjrDM8C%2F%2Bjnc8FNzpyL5820I2RWD7REMnoZm%2FoBvKM%2FEKwg8kAH9Cm8cHz8KF599BI19ezrIfHoIdAyDZa%2FVExlSlV4AK1wKZAiwpP%2FcIRB8%2F%2B47EH32wTeykj9IEu38Jh%2BFM2ah7rlHiZp9u%2FlqQyAxJMp9%2B8cqnuuXxcCS8TMOgOoQVH44F8FfJWKtwcIfnmoK8Q0D7zYa%2BxL0%2BY6CwIw%2FC%2B0Npat0E0xn0Jh5j838VhD0JzPevGAeAr4tlmGmMh30%2B46PGwiaffUh4DWacpI%2BUKKT%2BdNbm0%2FaElx8%2B28I2xkh442nVfLSNWh8sg%2B1%2BfQQmPEHh438M8rigYwu3GxVICj5eCm8xHMEBtLoy4jjODvkWSV9vvoQmHC4PduyWOSP%2Bi%2BjLrt%2FG8Yr6w4sk16G3nsXxVtPr8RmFMycbTW8J82bTw%2BBJdaMh4WfCl5coOTtLyrxa200RUvA5%2FB8kEdsHL30n3rz9QMEbz49BJIJq4UbBc8fiwxVcs2PY41oyPoNN5YUAm7%2BV0EZKplGrwivAyh5%2B22C30UOQRX3%2BEZv%2Fyglb39JsY%2FNVHkQfNL%2FuubvDzLym9ZEAUElht9o9L9H%2FlSjCZey%2BrRlsJwxAe%2FzebOvGU0LQUCb1T5KNmHMKw1qaSZJSxDvHaAZTA%2FBWV7OL7QO3jQoaf5rcgdzA8kgqNrgwXP3mrnqQDDkev3%2FZrnmp5QX2ub9JLqY3hM%2BhhOaqWpBYMaG6%2FX%2FJfI%2F%2BCzhxpHpUMpBzUwVIeAVQz%2Facl1J838x6zEy803GVzQTHQCB3oR7W1b7via7tLs8n8x8%2FuXQPyVDM9ABEOhMGEfS%2F5cXrSIDoDhtjGacYyDgAGxq2f8b5AJQm%2FMCGQCBKdqc34EQJLRc5XtBbuq3OfM2EvOrjU9pZjkWgloAXfj8%2FxG5b396WTLZ2x%2BTukkzysEQ8KphRfn%2F0mJvIgC6wCdZm%2Fc7GgJe9CvoGN6TC0B1%2FhSi5v%2F%2FnfKBLdz7PYZPiHR6zfc7LgsCyYzZilb9nMt5ngSApLQlGgAEALQXAh3DekFkCJYJgK3oU7EOpoRoADgMADsE%2BwtgECSGODnm6011ZPn%2FLcmVGgAOBoDLJx01gtxt3FPL80jMb0zvzi9GA6ADAPjCiIscgJOyKn%2BPJZAAcDq9vwZABwHgnYYmDkCtvFU%2F0SQAlBuHagB0EACb0tDMAaiXA0Bu6SESAIqM4zQAOgiADSmwcACuyAGgoGQPCQB5xikaAB0EgKdV8gEo3asB4CR6P%2BCk7Myggi7gsNYFOIkW7jsl6%2F7WWaUNAl0AgCUHz8i6v8%2F5GEBiOCFvGphINA3spwGgUMuOyFsouzEFV3gLkNuRiaCmjNs1ABTqk6MX5eYB6nk9oNjRqeCtyUwDQIE%2Bi7ssLxWcgTNO8THoUMo3GgAyNXqqTvb9bU2H2Uk%2BBy%2FWAJCpiQtSZd%2Ff9iwkCxLDux1fEPKUBoBMTVudL%2Fv%2BdmRjP%2B8CXpVdElbkRVUSZvsk7BZaEd2AER40AMzbJn%2F85J%2BDZUIMw0Oyi0KPpZAVhcambnQbAOb4VNDlAIJr5AOQjz8KALrIXRYusSY0Z3YlAeCUcYDbADBudgKJ%2BSMnR2NNQrO8JFAyLLAdSi0xJDrDwpA9KQkub%2F6S4DNkb%2F%2Fri%2BXvnLI5DedargzydoalYaXGUS4PwORFaWQAzN1qkn0dvplIa7k2cALB4lACdUFAcrrLmr84iO7t5%2FpX%2BAXZ1xKQ1eJomWgzeitaHp79OzIImHGgawJgsGD83EQy88dOj1N0Pbtz8UTrzaGLnWWDiMMpwS4HwAf%2BJ0jf%2FlleZbKvxSsNlwRbUIwDkstLSLeIqc%2FogU0ulBf49LsGjHozlg4Aj6NYHt0g%2B3r%2BnYlUoXXozBimbJOoQaStwNq4v2N1UrMrNP08XUv59vOBpKJr8s%2FGwusdA38rLw6Rv03cQTLzdyX0xW2hczA0JrzTA%2FCPjaXk6d8PdlfJvh5eBLI1H93b2il0t4JNovlGkWTm33JkLm4NnYepcTmd1vwFgdUY4XGU1PwxM%2BKwOtEif2fzTBTf6FDokQRbxZKYb9Ptoe9jRlxR50v37juGv06MUqsCWLb8c7FUaCtE4Bd8pRDBZtEk5reEYKa%2B80Dwtx1RGPpaGLn5Y2fEYU2iRUnz3xxqRLefOi3EU9l28TtJzbdD8AHekrKd3vyhRw7iuZk71Cn%2F3qlsE43tmUgQfir4ljHKD4zoR2i%2BXbcemYdBMSFY44QHRvAZy%2BNfr0e3zeNxx6ZJeH7aLkrz%2BQckxfcdWHiTZwpLDOHKjozR87wAmfmtNSBqG5YlXnCewV5cFXrs%2BAe4%2BTbd4TURz0%2F3J5v3L%2FnmrKJr9DGiWrjZiDVhkPJDo2aQmt9a%2FxO6CKNjxQ5vDV4O2YduW16zGa8KBNPWFiq%2Bzl15mCu0JySGdCUAxJtqcSmrN7n5rfVI5EbMizc53PjxkSJ%2BvX1aK9PpIRjzjojP9FcUXetmIy4I7Q2dGaOVtgLZZRF8%2B9e2zCfVY0c3Y5q%2BAGuS1G0RxkZ8h7v8ZnJzb0aKxgS8bGzRgdPKTz7NxnJBTkgMKQRHx8owX77uC1%2BNEbFHsSChmsz0eboyDDiwDt23vd620fQtAc8iKr52byPqbJU%2FclqBYRSHR5dkPC3DfOXqE7EKL8ccwiQpFR%2FGV93Ut4VVhiZMj83D4CNf48E9S2WYTgPB5IWpJOObnblYIMgIshkBV3hZJR6OXuFA89vOJfQOX4mHIz9Hv6Nb8XS0P%2B7d9T567JzF%2B3Or2VPQ7YsJMsylhWDMNAkrdU3KD7RMBxOUBs8LSAyNSiHYX%2FoD7olYSmAkqayGkxhLNiYYOSUGy0LPKzZ%2FfQosu3LwtCAjiA%2BTtMuvyIw7wj50DQDoWwJe5Wsr81as7dn4VqAKQyW6igylFBCsyMhHtyPzXQAAWgj%2BMjEUM%2FYVkpjvnYaGIAO6CmRhTw5ZKCD4LLMYd4YtdHMA7BD8ceYOjPQNtRlIk%2FShD3vZGIU255xAj7B%2FujcAXD4ePKlEZT4v90oUSKN11ZAZWVQQ%2BOaeRq%2FwFW4LwO1bJ%2BHtmEwy83nGz%2Fa5V7XQMfQXGeqoINiVfx6%2FjdzkdgD8r98MfCjRnZHAR%2F1%2B2XhOcERIJoylGg9wHSxuxrDYcF4C5hYAPLJvOVYn0ha87sjFZ4Ijg58%2Byc2j0qFiYLo%2BH3eF%2FdNlAbh9y2t4NSyMznj7Mi%2BD4NCwHzZ1gBKCw8XAiqSLeDYqkBd%2FuBQA%2Fxf4EZbqz5CbvyUdbAXwC6EjwmjEL0WGo9QQrEsGZunLcH%2FE6k4PwJ2%2Bb8AjMo7WeHuRR83eZNwpdGQkFOEOkcGoBgT84814MZFPFzsdAN2%2FnIznvtmOVUmXVTHfOw11X%2BXiHsEZQjyJHiJDkRoQ8JtdaWjCGJ2Iu8M%2FcXoAum%2B9Zryhid54%2BzbvTTuyMUBwphAr8KDIUEI9MPRM%2Fu%2FCy8lSGh6N9OJjBCIA6KZ1Lx3eY3vj1TM%2FFU3%2BufiT4IwRcxx3iWYkqdUStBQv%2BBgc8y1PJHUYALxWoO%2F%2BNZijK2nDMPpmf28G%2BgnOHOIpdFdnYNj2g5kffxy8CujRSG90DX1PPQB8PMBrB54K9sKb0akyTFQ24NuWhT5CZ4igfNwimrDfcRDYtdLQiNn6Yxit04FPJx%2BKWM8riNsNAJ%2Bz%2F9pvOh7Ysxi%2FD96McZGxBP267B09TwRk4lcCbaifJ7hWR2ChHxO0X8sN9eDdBp9eTpVyMEXKwEQxFQND9mBo6EGMCT%2BKSVGJmBlbgI%2FjCb7JEyZ5HDvPp%2F%2BCOMSqavqWwLXF1%2FHZqnk7fYjHcZ%2FIEK9BcPODvcAsvCi4TNhXHq%2FQMTRrELQt3wxk2T7pumToKjFQZMijGxO4zFvfQF%2FJ49ytwXyrzrt7S7Du6rJtSLZtW9wq%2BP6EOoZAd4VgSwaqA3gRh7uHjmGwyKB3l%2B6Al25dXbGjxX9HrBkv8Syiq0LAR%2FdXp3Za3Dh05XjyWtdwxRW6gy%2BMOOOfhVWCFu2LuBO4X2RYLJnBOhsEG1LQvD0LSbvz8IqgBcGsoRLDRYYAq87edHfg%2BOydZVsGSgKy8XFABW4TtFDnQ5PE8Bd%2B2pnEkE8EgaKNl%2Fne%2B%2F45%2BOjqVE4Lhxei9NKZMM6qTSJDglW19BDYj1nhJ234ZiDdLxvrr1blaOGUUDwomTBCZ8YcHcP6AwXQ%2B6Sjhh%2BVuikVlzeloZk3154tFlXwv%2FOzdL1T0cB%2Fllfb%2BmYhhR%2Btxk%2FXulqF44LxH6hcs87tJ6aMAAAAAElFTkSuQmCC"
-                    alt="Avatar" width="80" height="80" class="rounded-full border-2 border-white/50 p-0.5"
-                    id="user-avatar" />
-                </div>
-                <div
-                  class="absolute -bottom-1 -right-1 bg-gradient-to-r text-white from-yellow-400 to-orange-500 rounded-full p-1 z-20">
-                  <i class="fa-solid fa-web-awesome"></i>
+                <i
+                  class="fa-solid fa-chevron-down text-white/70 text-xs transition-transform duration-300"
+                  id="announcement-chevron"
+                ></i>
+              </button>
+
+              <div
+                id="popup-markdown-container"
+                class="hidden mt-2 bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20 max-h-48 overflow-y-auto"
+              >
+                <div class="prose prose-sm max-w-none text-white">
+                  <!-- Markdown content will be loaded here -->
                 </div>
               </div>
-              <div class="ml-4 flex-1">
-                <!-- User name with integrated account switcher -->
-                <div class="relative">
-                  <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-bold text-white truncate max-w-[160px] transition-all duration-300"
-                      title="Anonymous" id="user-name">
-                      Anonymous
-                    </h2>
-                    <!-- Compact account switcher button -->
-                    <button id="account-switcher-btn"
-                      class="bg-white/20 hover:bg-white/30 text-white text-xs px-2 py-1 rounded border border-white/30 transition-all duration-300 flex items-center space-x-1 focus:outline-none focus:border-purple-400">
-                      <i class="fa-solid fa-user-group text-purple-400 text-xs"></i>
-                      <span id="account-count" class="font-medium">1</span>
-                      <i class="fa-solid fa-chevron-down transition-transform duration-300 text-xs"
-                        id="switcher-chevron"></i>
-                    </button>
+            </div>
+
+            <div class="relative mb-6 pt-6">
+              <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full blur-sm"
+              ></div>
+              <div class="text-center">
+                <h1
+                  class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
+                >
+                  Arcade Points
+                </h1>
+                <div class="relative mt-2">
+                  <div
+                    class="text-6xl font-black text-white tracking-tighter"
+                    id="arcade-points"
+                  >
+                    0
                   </div>
+                  <div
+                    class="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse"
+                  >
+                    +0
+                  </div>
+                </div>
+              </div>
+              <!-- Button Setting -->
+              <button
+                class="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center hover:rotate-90 settings-button"
+              >
+                <i
+                  class="fa-solid fa-cog transition-transform duration-300 fa-2x"
+                ></i>
+              </button>
+              <!-- Button Setting -->
+              <!-- Button Refresh -->
+              <button
+                class="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center hover:rotate-90 refresh-button"
+              >
+                <i
+                  class="fa-solid fa-arrows-rotate transition-transform duration-300 fa-2x refresh-icon"
+                ></i>
+              </button>
+              <!-- Button Refresh -->
+            </div>
+            <div
+              class="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 group"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              ></div>
+              <div class="flex items-center">
+                <div class="relative">
+                  <div
+                    class="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 animate-spin-slow blur-md"
+                  ></div>
+                  <div class="relative z-10">
+                    <img
+                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAOxAAADsQH1g%2B1JAAAABHNCSVQICAgIfAhkiAAAEUVJREFUeNrtnQl0FFXahotZVBD9Z35BEfTXUUeHxeUfHUdHRxQYlkEGGCACoqIsw6aogIDDCIJAQCDBgGQIJBBAMEGIZCMx6ap0ks7W2feFpG8HSAQJAUJCAul3%2BnLo05lIkFR91el013fOew4cQk5VvU%2Fd5avv3iu4WgDoEsPwkMjwqsTwrmTCRpEhWDRBEhlyrTppVY1VdVaB69qfa679W%2B61nw3i%2F5f%2FDp0JI%2FnvBNBF0MK5IrYSfXQMHhLDZpHBYNV5q6CSzksMiSKDt8QwIdqM3oIWjg2xAreJlRjODZdMKObGdLCKrPLSmTEsohS3ClrQR1A%2BbuFNuo4hUGI4R2YevWolht28yzAa8UtBC2URV4nfigyeVlVbhU6mat5K6Rj6C1q0L0SGF60KtcpiFVxACRLDKG0Q%2BROjd8mEsSJDplVwRUkM6TozRmsgtArJhBEig9EquInS%2BKBRcPfQleMxkSHMKripvhPNGCC4W4SeRLdrCZrLVsHN1SQxrDNUoqvgDiEyDJEYjmnG%2F0ilsSYMElww7AkcBk8dQ7NmdpuySAz%2F5i2k4EoRU4knRIY8zeCbVo7L5A8kMyaJDHWaqe1WvVVvCZ01goCf8xy5szzQhMJzSEkzIVPMQl54HPJCRRSERIGtWoWK9RtQutUP%2BftCkP2tDkmZVc4DghkbVgA%2FE2hD%2Fdy9xPB1RzwwfUk9uMllew%2Bg2nMlzi%2BcgctTRwATX7quGvv1ROPvevxYT9yL%2Bhf64tzoV3Bqzjso3vkV9CV1HQXBIT6GEjpDiKfQXWKIcuQDMiYUomKHP2qXzIVl8qA2zG4HAG2p391oeOlxnJ4%2BBYWBwRArmh0Jgi6iFHcKzhwx5biHpzsd8UBSU8th%2FvJLNMz2aG2qHADk6cn7UPPGeGSF6h0FgTGqDHcLTjrNe5DPZVXNpVdcRsHhKJz7aHZLEykAUKyG5x%2FF8U%2BWIa6sXm0ISvizFpwp9FXoyQsjVOvXSxtQuvdrXJo13mYcNQB0euo%2BVM2fi4S8GjUhKBMr0EtwhuD9Em%2F21Xrjiw%2BE4NLMv9OZTg9Am4PI6vdmIa6sQZ3W0IRssQK%2FcoZKnWg1bjBTzETd%2FLdkmEoAAKEuPf0ASn18VRsYdlgZGp%2Bb8spZ8vl6QS2%2B9%2FyUwFwCAAh1YeQLSI0vpIfAhMM85yI4OtRI8uRGJqBxxhhujCsBYNfjvXDM6ws1Ck3WCY4MnQmTSW%2Bg%2FAqYry8waSA3xUUBsKvW46%2FUSSULrzRy2IcdieEi1cUbck8TTOscCgDRtPExpMdmUkLwQ9wJ3O%2BIT7o5ZMmclGNomDWBG%2BFOANj1RG%2FkBUVQjgeSVS1HF83wobrYrBgjrrw1jJvgvgBw9e%2BF4h17KVsCT9UqeajKtHOiDGieMoQboAFgFb%2BGijVr6cYDlRhIXsPHs08k5kcn2T7YaAC0UPkbryO4kGxWkE%2FaFfACTpKvdolFtmZfA6Cl%2BVMmY20SsDYZCC4iyxQuolmeZUJfXrmq9IKSM0%2Bgcfpo%2FtA1AH5sPhcpBHymFluOB5T3%2FSZEKr2YxLwfUD9vcoeb3fTGUJye%2ByaOvz8bx5YsQsHyT3F6%2BJ9xdtAzOP%2Fi46h%2F5jcOBaL89Ul24%2Bkh4AomWLGjtCm6gjrDM8C%2F%2Bjnc8FNzpyL5820I2RWD7REMnoZm%2FoBvKM%2FEKwg8kAH9Cm8cHz8KF599BI19ezrIfHoIdAyDZa%2FVExlSlV4AK1wKZAiwpP%2FcIRB8%2F%2B47EH32wTeykj9IEu38Jh%2BFM2ah7rlHiZp9u%2FlqQyAxJMp9%2B8cqnuuXxcCS8TMOgOoQVH44F8FfJWKtwcIfnmoK8Q0D7zYa%2BxL0%2BY6CwIw%2FC%2B0Npat0E0xn0Jh5j838VhD0JzPevGAeAr4tlmGmMh30%2B46PGwiaffUh4DWacpI%2BUKKT%2BdNbm0%2FaElx8%2B28I2xkh442nVfLSNWh8sg%2B1%2BfQQmPEHh438M8rigYwu3GxVICj5eCm8xHMEBtLoy4jjODvkWSV9vvoQmHC4PduyWOSP%2Bi%2BjLrt%2FG8Yr6w4sk16G3nsXxVtPr8RmFMycbTW8J82bTw%2BBJdaMh4WfCl5coOTtLyrxa200RUvA5%2FB8kEdsHL30n3rz9QMEbz49BJIJq4UbBc8fiwxVcs2PY41oyPoNN5YUAm7%2BV0EZKplGrwivAyh5%2B22C30UOQRX3%2BEZv%2Fyglb39JsY%2FNVHkQfNL%2FuubvDzLym9ZEAUElht9o9L9H%2FlSjCZey%2BrRlsJwxAe%2FzebOvGU0LQUCb1T5KNmHMKw1qaSZJSxDvHaAZTA%2FBWV7OL7QO3jQoaf5rcgdzA8kgqNrgwXP3mrnqQDDkev3%2FZrnmp5QX2ub9JLqY3hM%2BhhOaqWpBYMaG6%2FX%2FJfI%2F%2BCzhxpHpUMpBzUwVIeAVQz%2Facl1J838x6zEy803GVzQTHQCB3oR7W1b7via7tLs8n8x8%2FuXQPyVDM9ABEOhMGEfS%2F5cXrSIDoDhtjGacYyDgAGxq2f8b5AJQm%2FMCGQCBKdqc34EQJLRc5XtBbuq3OfM2EvOrjU9pZjkWgloAXfj8%2FxG5b396WTLZ2x%2BTukkzysEQ8KphRfn%2F0mJvIgC6wCdZm%2Fc7GgJe9CvoGN6TC0B1%2FhSi5v%2F%2FnfKBLdz7PYZPiHR6zfc7LgsCyYzZilb9nMt5ngSApLQlGgAEALQXAh3DekFkCJYJgK3oU7EOpoRoADgMADsE%2BwtgECSGODnm6011ZPn%2FLcmVGgAOBoDLJx01gtxt3FPL80jMb0zvzi9GA6ADAPjCiIscgJOyKn%2BPJZAAcDq9vwZABwHgnYYmDkCtvFU%2F0SQAlBuHagB0EACb0tDMAaiXA0Bu6SESAIqM4zQAOgiADSmwcACuyAGgoGQPCQB5xikaAB0EgKdV8gEo3asB4CR6P%2BCk7Myggi7gsNYFOIkW7jsl6%2F7WWaUNAl0AgCUHz8i6v8%2F5GEBiOCFvGphINA3spwGgUMuOyFsouzEFV3gLkNuRiaCmjNs1ABTqk6MX5eYB6nk9oNjRqeCtyUwDQIE%2Bi7ssLxWcgTNO8THoUMo3GgAyNXqqTvb9bU2H2Uk%2BBy%2FWAJCpiQtSZd%2Ff9iwkCxLDux1fEPKUBoBMTVudL%2Fv%2BdmRjP%2B8CXpVdElbkRVUSZvsk7BZaEd2AER40AMzbJn%2F85J%2BDZUIMw0Oyi0KPpZAVhcambnQbAOb4VNDlAIJr5AOQjz8KALrIXRYusSY0Z3YlAeCUcYDbADBudgKJ%2BSMnR2NNQrO8JFAyLLAdSi0xJDrDwpA9KQkub%2F6S4DNkb%2F%2Fri%2BXvnLI5DedargzydoalYaXGUS4PwORFaWQAzN1qkn0dvplIa7k2cALB4lACdUFAcrrLmr84iO7t5%2FpX%2BAXZ1xKQ1eJomWgzeitaHp79OzIImHGgawJgsGD83EQy88dOj1N0Pbtz8UTrzaGLnWWDiMMpwS4HwAf%2BJ0jf%2FlleZbKvxSsNlwRbUIwDkstLSLeIqc%2FogU0ulBf49LsGjHozlg4Aj6NYHt0g%2B3r%2BnYlUoXXozBimbJOoQaStwNq4v2N1UrMrNP08XUv59vOBpKJr8s%2FGwusdA38rLw6Rv03cQTLzdyX0xW2hczA0JrzTA%2FCPjaXk6d8PdlfJvh5eBLI1H93b2il0t4JNovlGkWTm33JkLm4NnYepcTmd1vwFgdUY4XGU1PwxM%2BKwOtEif2fzTBTf6FDokQRbxZKYb9Ptoe9jRlxR50v37juGv06MUqsCWLb8c7FUaCtE4Bd8pRDBZtEk5reEYKa%2B80Dwtx1RGPpaGLn5Y2fEYU2iRUnz3xxqRLefOi3EU9l28TtJzbdD8AHekrKd3vyhRw7iuZk71Cn%2F3qlsE43tmUgQfir4ljHKD4zoR2i%2BXbcemYdBMSFY44QHRvAZy%2BNfr0e3zeNxx6ZJeH7aLkrz%2BQckxfcdWHiTZwpLDOHKjozR87wAmfmtNSBqG5YlXnCewV5cFXrs%2BAe4%2BTbd4TURz0%2F3J5v3L%2FnmrKJr9DGiWrjZiDVhkPJDo2aQmt9a%2FxO6CKNjxQ5vDV4O2YduW16zGa8KBNPWFiq%2Bzl15mCu0JySGdCUAxJtqcSmrN7n5rfVI5EbMizc53PjxkSJ%2BvX1aK9PpIRjzjojP9FcUXetmIy4I7Q2dGaOVtgLZZRF8%2B9e2zCfVY0c3Y5q%2BAGuS1G0RxkZ8h7v8ZnJzb0aKxgS8bGzRgdPKTz7NxnJBTkgMKQRHx8owX77uC1%2BNEbFHsSChmsz0eboyDDiwDt23vd620fQtAc8iKr52byPqbJU%2FclqBYRSHR5dkPC3DfOXqE7EKL8ccwiQpFR%2FGV93Ut4VVhiZMj83D4CNf48E9S2WYTgPB5IWpJOObnblYIMgIshkBV3hZJR6OXuFA89vOJfQOX4mHIz9Hv6Nb8XS0P%2B7d9T567JzF%2B3Or2VPQ7YsJMsylhWDMNAkrdU3KD7RMBxOUBs8LSAyNSiHYX%2FoD7olYSmAkqayGkxhLNiYYOSUGy0LPKzZ%2FfQosu3LwtCAjiA%2BTtMuvyIw7wj50DQDoWwJe5Wsr81as7dn4VqAKQyW6igylFBCsyMhHtyPzXQAAWgj%2BMjEUM%2FYVkpjvnYaGIAO6CmRhTw5ZKCD4LLMYd4YtdHMA7BD8ceYOjPQNtRlIk%2FShD3vZGIU255xAj7B%2FujcAXD4ePKlEZT4v90oUSKN11ZAZWVQQ%2BOaeRq%2FwFW4LwO1bJ%2BHtmEwy83nGz%2Fa5V7XQMfQXGeqoINiVfx6%2FjdzkdgD8r98MfCjRnZHAR%2F1%2B2XhOcERIJoylGg9wHSxuxrDYcF4C5hYAPLJvOVYn0ha87sjFZ4Ijg58%2Byc2j0qFiYLo%2BH3eF%2FdNlAbh9y2t4NSyMznj7Mi%2BD4NCwHzZ1gBKCw8XAiqSLeDYqkBd%2FuBQA%2Fxf4EZbqz5CbvyUdbAXwC6EjwmjEL0WGo9QQrEsGZunLcH%2FE6k4PwJ2%2Bb8AjMo7WeHuRR83eZNwpdGQkFOEOkcGoBgT84814MZFPFzsdAN2%2FnIznvtmOVUmXVTHfOw11X%2BXiHsEZQjyJHiJDkRoQ8JtdaWjCGJ2Iu8M%2FcXoAum%2B9Zryhid54%2BzbvTTuyMUBwphAr8KDIUEI9MPRM%2Fu%2FCy8lSGh6N9OJjBCIA6KZ1Lx3eY3vj1TM%2FFU3%2BufiT4IwRcxx3iWYkqdUStBQv%2BBgc8y1PJHUYALxWoO%2F%2BNZijK2nDMPpmf28G%2BgnOHOIpdFdnYNj2g5kffxy8CujRSG90DX1PPQB8PMBrB54K9sKb0akyTFQ24NuWhT5CZ4igfNwimrDfcRDYtdLQiNn6Yxit04FPJx%2BKWM8riNsNAJ%2Bz%2F9pvOh7Ysxi%2FD96McZGxBP267B09TwRk4lcCbaifJ7hWR2ChHxO0X8sN9eDdBp9eTpVyMEXKwEQxFQND9mBo6EGMCT%2BKSVGJmBlbgI%2FjCb7JEyZ5HDvPp%2F%2BCOMSqavqWwLXF1%2FHZqnk7fYjHcZ%2FIEK9BcPODvcAsvCi4TNhXHq%2FQMTRrELQt3wxk2T7pumToKjFQZMijGxO4zFvfQF%2FJ49ytwXyrzrt7S7Du6rJtSLZtW9wq%2BP6EOoZAd4VgSwaqA3gRh7uHjmGwyKB3l%2B6Al25dXbGjxX9HrBkv8Syiq0LAR%2FdXp3Za3Dh05XjyWtdwxRW6gy%2BMOOOfhVWCFu2LuBO4X2RYLJnBOhsEG1LQvD0LSbvz8IqgBcGsoRLDRYYAq87edHfg%2BOydZVsGSgKy8XFABW4TtFDnQ5PE8Bd%2B2pnEkE8EgaKNl%2Fne%2B%2F45%2BOjqVE4Lhxei9NKZMM6qTSJDglW19BDYj1nhJ234ZiDdLxvrr1blaOGUUDwomTBCZ8YcHcP6AwXQ%2B6Sjhh%2BVuikVlzeloZk3154tFlXwv%2FOzdL1T0cB%2Fllfb%2BmYhhR%2Btxk%2FXulqF44LxH6hcs87tJ6aMAAAAAElFTkSuQmCC"
+                      alt="Avatar"
+                      width="80"
+                      height="80"
+                      class="rounded-full border-2 border-white/50 p-0.5"
+                      id="user-avatar"
+                    />
+                  </div>
+                  <div
+                    class="absolute -bottom-1 -right-1 bg-gradient-to-r text-white from-yellow-400 to-orange-500 rounded-full p-1 z-20"
+                  >
+                    <i class="fa-solid fa-web-awesome"></i>
+                  </div>
+                </div>
+                <div class="ml-4 flex-1">
+                  <!-- User name with integrated account switcher -->
+                  <div class="relative">
+                    <div class="flex items-center justify-between">
+                      <h2
+                        class="text-xl font-bold text-white truncate max-w-[160px] transition-all duration-300"
+                        title="Anonymous"
+                        id="user-name"
+                      >
+                        Anonymous
+                      </h2>
+                      <!-- Compact account switcher button -->
+                      <button
+                        id="account-switcher-btn"
+                        class="bg-white/20 hover:bg-white/30 text-white text-xs px-2 py-1 rounded border border-white/30 transition-all duration-300 flex items-center space-x-1 focus:outline-none focus:border-purple-400"
+                      >
+                        <i
+                          class="fa-solid fa-user-group text-purple-400 text-xs"
+                        ></i>
+                        <span id="account-count" class="font-medium">1</span>
+                        <i
+                          class="fa-solid fa-chevron-down transition-transform duration-300 text-xs"
+                          id="switcher-chevron"
+                        ></i>
+                      </button>
+                    </div>
 
-                  <!-- Account dropdown -->
-                  <div id="account-dropdown"
-                    class="absolute right-0 top-full mt-1 w-72 bg-slate-900/95 backdrop-blur-md border border-white/40 rounded-lg shadow-2xl hidden max-h-48 overflow-y-auto z-[200]">
-                    <div class="p-2 border-b border-white/30 bg-slate-800/80">
-                      <div class="text-xs text-white/90 font-medium flex items-center">
-                        <i class="fa-solid fa-user-group text-purple-400 mr-1"></i>
-                        Switch Account
+                    <!-- Account dropdown -->
+                    <div
+                      id="account-dropdown"
+                      class="absolute right-0 top-full mt-1 w-72 bg-slate-900/95 backdrop-blur-md border border-white/40 rounded-lg shadow-2xl hidden max-h-48 overflow-y-auto z-[200]"
+                    >
+                      <div class="p-2 border-b border-white/30 bg-slate-800/80">
+                        <div
+                          class="text-xs text-white/90 font-medium flex items-center"
+                        >
+                          <i
+                            class="fa-solid fa-user-group text-purple-400 mr-1"
+                          ></i>
+                          Switch Account
+                        </div>
+                      </div>
+                      <div id="account-list" class="py-1">
+                        <!-- Account options will be populated here -->
                       </div>
                     </div>
-                    <div id="account-list" class="py-1">
-                      <!-- Account options will be populated here -->
+                  </div>
+
+                  <div class="flex items-center justify-between mt-2">
+                    <div class="flex items-center">
+                      <div
+                        class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center"
+                      >
+                        <i class="fa-solid fa-crown text-white"></i>
+                        <span class="ml-1" id="league">VIP</span>
+                      </div>
+                      <div class="ml-2 text-xs text-white/70" id="total-points">
+                        0 points
+                      </div>
                     </div>
+
+                    <!-- Copy Profile URL Button -->
+                    <button
+                      id="copy-profile-url"
+                      title="Copy Profile URL"
+                      onclick="window.testCopy && window.testCopy()"
+                      class="text-xs text-blue-400 hover:text-blue-300 bg-blue-400/20 hover:bg-blue-400/30 p-2 rounded-full flex items-center justify-center transition-all duration-200 border border-blue-400/30 hover:border-blue-400/50 w-8 h-8 cursor-pointer"
+                      style="pointer-events: auto; z-index: 100"
+                    >
+                      <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
                   </div>
                 </div>
-
-                <div class="flex items-center justify-between mt-2">
+              </div>
+              <div class="mt-4 w-full bg-white/10 rounded-full h-1.5">
+                <div
+                  class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 h-full rounded-full relative overflow-hidden"
+                  style="width: 66.6667%"
+                  id="progress-bar"
+                >
+                  <div
+                    class="absolute inset-0 bg-white/30 animate-pulse-slow"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-1 flex justify-between text-xs text-white/70">
+                <span id="current-level">Current Level: STANDARD</span>
+                <span id="next-level">Next level in 0 points</span>
+              </div>
+            </div>
+            <div class="mb-4">
+              <h3 class="text-white font-bold mb-3 flex items-center">
+                <i class="fa-solid fa-award mr-2 fa-xl text-pink-400"></i>
+                Badges & Achievements
+              </h3>
+              <div class="grid grid-cols-2 gap-3">
+                <div
+                  class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden"
+                >
+                  <div
+                    class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  ></div>
                   <div class="flex items-center">
                     <div
-                      class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center">
-                      <i class="fa-solid fa-crown text-white"></i>
-                      <span class="ml-1" id="league">VIP</span>
+                      class="h-10 w-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-trophy text-yellow-400"></i>
                     </div>
-                    <div class="ml-2 text-xs text-white/70" id="total-points">
-                      0 points
+                    <div class="ml-3">
+                      <div class="text-white font-bold" id="game-badge-count">
+                        0
+                      </div>
+                      <div class="text-xs text-white/70" id="game-badge-label">
+                        Game Badge
+                      </div>
                     </div>
                   </div>
-
-                  <!-- Copy Profile URL Button -->
-                  <button id="copy-profile-url" title="Copy Profile URL" onclick="window.testCopy && window.testCopy()"
-                    class="text-xs text-blue-400 hover:text-blue-300 bg-blue-400/20 hover:bg-blue-400/30 p-2 rounded-full flex items-center justify-center transition-all duration-200 border border-blue-400/30 hover:border-blue-400/50 w-8 h-8 cursor-pointer"
-                    style="pointer-events: auto; z-index: 100;">
-                    <i class="fa-solid fa-copy text-xs"></i>
-                  </button>
                 </div>
-              </div>
-            </div>
-            <div class="mt-4 w-full bg-white/10 rounded-full h-1.5">
-              <div
-                class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 h-full rounded-full relative overflow-hidden"
-                style="width: 66.6667%" id="progress-bar">
-                <div class="absolute inset-0 bg-white/30 animate-pulse-slow"></div>
-              </div>
-            </div>
-            <div class="mt-1 flex justify-between text-xs text-white/70">
-              <span id="current-level">Current Level: STANDARD</span>
-              <span id="next-level">Next level in 0 points</span>
-            </div>
-          </div>
-          <div class="mb-4">
-            <h3 class="text-white font-bold mb-3 flex items-center">
-              <i class="fa-solid fa-award mr-2 fa-xl text-pink-400"></i>
-              Badges & Achievements
-            </h3>
-            <div class="grid grid-cols-2 gap-3">
-              <div
-                class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
                 <div
-                  class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                </div>
-                <div class="flex items-center">
+                  class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden"
+                >
                   <div
-                    class="h-10 w-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-                    <i class="fa-solid fa-trophy text-yellow-400"></i>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white font-bold" id="game-badge-count">
-                      0
+                    class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  ></div>
+                  <div class="flex items-center">
+                    <div
+                      class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center"
+                    >
+                      <i class="fa-regular fa-star text-purple-400"></i>
                     </div>
-                    <div class="text-xs text-white/70" id="game-badge-label">
-                      Game Badge
+                    <div class="ml-3">
+                      <div class="text-white font-bold" id="trivia-badge-count">
+                        0
+                      </div>
+                      <div
+                        class="text-xs text-white/70"
+                        id="trivia-badge-label"
+                      >
+                        Trivia Badge
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
                 <div
-                  class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                </div>
-                <div class="flex items-center">
+                  class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden"
+                >
                   <div
-                    class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center">
-                    <i class="fa-regular fa-star text-purple-400"></i>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white font-bold" id="trivia-badge-count">
-                      0
+                    class="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  ></div>
+                  <div class="flex items-center">
+                    <div
+                      class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-bolt text-blue-400"></i>
                     </div>
-                    <div class="text-xs text-white/70" id="trivia-badge-label">
-                      Trivia Badge
+                    <div class="ml-3">
+                      <div class="text-white font-bold" id="skill-badge-count">
+                        0
+                      </div>
+                      <div class="text-xs text-white/70" id="skill-badge-label">
+                        Skill Badge
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
                 <div
-                  class="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                </div>
-                <div class="flex items-center">
+                  class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden"
+                >
                   <div
-                    class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center">
-                    <i class="fa-solid fa-bolt text-blue-400"></i>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white font-bold" id="skill-badge-count">
-                      0
+                    class="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  ></div>
+                  <div class="flex items-center">
+                    <div
+                      class="h-10 w-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-medal text-green-400"></i>
                     </div>
-                    <div class="text-xs text-white/70" id="skill-badge-label">
-                      Skill Badge
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
-                <div
-                  class="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                </div>
-                <div class="flex items-center">
-                  <div
-                    class="h-10 w-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center">
-                    <i class="fa-solid fa-medal text-green-400"></i>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white font-bold" id="special-points-count">
-                      0
-                    </div>
-                    <div class="text-xs text-white/70" id="special-points-label">
-                      Special Points
+                    <div class="ml-3">
+                      <div
+                        class="text-white font-bold"
+                        id="special-points-count"
+                      >
+                        0
+                      </div>
+                      <div
+                        class="text-xs text-white/70"
+                        id="special-points-label"
+                      >
+                        Special Points
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <h3 id="recent-activity" class="text-white font-bold mb-3 flex items-center">
-              <i class="fa-solid fa-fire text-orange-400 fa-xl mr-2"></i>
-              Recent Activity
-            </h3>
-            <div class="space-y-3 max-h-72 overflow-y-auto" id="activity-list">
+            <div>
+              <h3
+                id="recent-activity"
+                class="text-white font-bold mb-3 flex items-center"
+              >
+                <i class="fa-solid fa-fire text-orange-400 fa-xl mr-2"></i>
+                Recent Activity
+              </h3>
               <div
-                class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm">
-                <span class="text-gray-400 font-medium">
-                  No data available
-                </span>
+                class="space-y-3 max-h-72 overflow-y-auto"
+                id="activity-list"
+              >
+                <div
+                  class="text-center bg-gradient-to-r from-gray-800 via-gray-900 to-black py-4 px-6 rounded-xl shadow-sm"
+                >
+                  <span class="text-gray-400 font-medium">
+                    No data available
+                  </span>
+                </div>
               </div>
-            </div>
-            <div id="pagination-info" class="text-center text-white mt-3 hidden">
-              Page
-            </div>
-            <button id="load-more"
-              class="button w-full py-2.5 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white font-bold rounded-xl mt-3 relative overflow-hidden group hover:from-teal-500 hover:via-blue-500 hover:to-green-500 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
               <div
-                class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                id="pagination-info"
+                class="text-center text-white mt-3 hidden"
+              >
+                Page
               </div>
-              <span class="relative z-10" id="load-more-text">Load More</span>
-            </button>
-          </div>
-          <div class="flex items-center space-x-2 mt-3">
-            <button
-              class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300 refresh-button cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-              Update Points
-              <i
-                class="fa-solid fa-arrows-rotate transition-transform duration-300 hover:rotate-90 ml-2 refresh-icon"></i>
-            </button>
-          </div>
-          <div id="last-updated" class="mt-6 text-center text-xs text-white/50">
-            Last Updated
+              <button
+                id="load-more"
+                class="button w-full py-2.5 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 text-white font-bold rounded-xl mt-3 relative overflow-hidden group hover:from-teal-500 hover:via-blue-500 hover:to-green-500 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <div
+                  class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                ></div>
+                <span class="relative z-10" id="load-more-text">Load More</span>
+              </button>
+            </div>
+            <div class="flex items-center space-x-2 mt-3">
+              <button
+                class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold rounded-xl relative overflow-hidden group hover:from-purple-500 hover:via-indigo-500 hover:to-pink-500 transition-all duration-300 refresh-button cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Update Points
+                <i
+                  class="fa-solid fa-arrows-rotate transition-transform duration-300 hover:rotate-90 ml-2 refresh-icon"
+                ></i>
+              </button>
+            </div>
+            <div
+              id="last-updated"
+              class="mt-6 text-center text-xs text-white/50"
+            >
+              Last Updated
+            </div>
           </div>
         </div>
       </div>
+      <!-- Popup Content -->
     </div>
-    <!-- Popup Content -->
-  </div>
-  <script type="module" src="main.tsx"></script>
-</body>
-
+    <script type="module" src="main.tsx"></script>
+  </body>
 </html>
