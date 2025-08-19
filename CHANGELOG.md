@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.6] - 2025-08-11
+### :sparkles: New Features
+- [`b057c95`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b057c95ce2b57630fa3d7d731f51d17295de208a) - implement multi-account management system *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`51df6e2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/51df6e2f48e072cadce3d645db0a0423523f1049) - enhance account management UI with add, edit, and import functionalities *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d6687fc`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d6687fc9593251b7093da4accc75bb9a7bdf6df8) - add account existence check and user detail extraction *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`20653fb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/20653fb56402fca41c8806990a4261fe387daecf) - enhance account management UI with dynamic account cards and improved event handling *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`2a9cfac`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2a9cfac1088a93e57f8d6d1753207bc7c744ff0c) - add profile viewing functionality and quick account creation form to account management UI *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f696dd8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f696dd8bee8e0502969d326efa21adedfc5ecb44) - remove quick account creation form and related event listeners from account management UI *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`5d3c8d4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/5d3c8d4df9fca8e8ca9da4763c530d7eecbda610) - enhance account management UI with improved button styles and accessibility features *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e6b666a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e6b666a91aeaebb81fb8d2d1c1a713a58afe8c5a) - streamline account creation process by removing unnecessary reload and updating UI interactions *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4d3d91a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4d3d91a8b5ec500004c6aea91e7531bc68e1f4c8) - add account preview section with dynamic nickname display and statistics *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`2e4cd5f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2e4cd5fb0c490c2e2d025e5a44f634071573cb3c) - update account preview with dynamic data and improved display *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`8774fab`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8774fab1c748860b669ca73a08d85f98107cb280) - implement guided tour functionality with custom styles and service integration *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`24e2591`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/24e25911b5167763921737f5e4fc8d605bd9793e) - add guided tour functionality with localization support and new messages *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`55d3f75`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/55d3f756cb618a79d17d06684d2274f45d4edac9) - add error messages and success notifications for account management *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3d11ec1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3d11ec11445c7ebbd407e22ab40ef6105ed81133) - add success and error messages for account management functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`059a3f5`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/059a3f59815fb06788cab52547fb3b9454b99c78) - add utility functions for DOM manipulation, form validation, modal handling, and preview updates *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`1456b7e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1456b7e3aff2a785582a7fb584ebd4e159760af1) - validate URL in link fallback *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`fd0e2af`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/fd0e2af9417e83b59e8c91861bac6f4cb37696a4) - improve i18n error message *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`cf80bc4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cf80bc42eb96f1cd46b35a46969feed4390b87ba) - handle userDetails array for profile image *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`031fdfd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/031fdfdc693ad210992f35b3be7767a438adc77f) - update tour modal content and tooltip positioning for better visibility *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`5589766`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/55897665230b76f9131d06b80c9fdc39c319e62d) - enhance error handling in account management with improved UI feedback *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`cedf28c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cedf28c670623a76908d15bb14b1c5390417db3a) - remove unnecessary await in account creation process *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`65433d0`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/65433d0fdf04f6bdefac199961ec32bb4aa40ed3) - ensure safe removal of last child in account selector *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ad73995`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ad7399565a5a6af44b88d714bff3ba5b4bcc6c95) - simplify arcadeData parameter in account creation *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`02c744c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/02c744c53e73e7093a9b0b88041023e1873cd524) - clean up string interpolation in tour service messages *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b7c74b9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b7c74b9aa3615e2a679bf8d3a1bf89b188bcc908) - ensure safe deletion of account data by setting it to undefined *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4f2ddd0`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4f2ddd0b2dade09f4f2d1f21d63fadb8db9bf94f) - clean up string formatting and remove unnecessary line breaks in options service *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b8e710a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b8e710aa2ca4b00344ed4432868819f4b29e75e4) - use optional chaining to simplify error message handling in options service *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`13ecbf3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/13ecbf3f78512019a3cb72d387ae7fbede24b54b) - refactor account preview updates for improved readability and maintainability *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ae20462`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ae204628542257c1822093db3e3a70fd37b47fdc) - use optional chaining to simplify profile URL check in handleViewProfile *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`116b3b6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/116b3b67187a1a200deceecda7327bcb966019f8) - move helper layer styles to the correct section for better organization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`168fbfb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/168fbfb2be3b9ee2304a84da0c0fdda367a90914) - rename error and success message IDs for account management clarity *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e7c1c63`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e7c1c6325d8d30cf050b7030ef1cbc6ec567bb46) - remove unused PreviewUtils import from account UI components *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`95b76b9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/95b76b985d14bb911090296f5874f90b61607398) - prevent unused variable warning in isValidUrl function *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`09f20a3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/09f20a30bb848a0660f9398d031cf10385a56e68) - update UI text to English and remove unused browser badge setup *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7ac37d7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7ac37d776e2250e62c42f709bb5dffc9098d2ee9) - remove i18n any cast *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`969ca18`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/969ca1857e68bf6a2e54092e92c36f88f43b8d46) - remove any type usage *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`2c0a893`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2c0a893903f0a61314fc2e513af4ee0bb111675c) - correct storage item types *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6232c05`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6232c058d5fb12c09d6450dd276894147d939f0c) - bump version to 1.1.6 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`dbc7cc4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/dbc7cc497aa5763789e46c00a723aadb0ff6a65e) - remove unused dependencies from package.json and yarn.lock *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.1.5] - 2025-08-02
 ### :sparkles: New Features
 - [`e8744f2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e8744f2a9207310a2dcf706ecb64f34e96c9fe43) - add markdown service and integrate markdown rendering in options page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -132,3 +181,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.2...1.1.3
 [1.1.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.3...1.1.4
 [1.1.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.4...1.1.5
+[1.1.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.5...1.1.6
