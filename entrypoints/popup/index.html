@@ -58,36 +58,6 @@
             ></div>
           </div>
           <div class="relative z-10 p-4">
-            <!-- Account Switcher -->
-            <div class="mb-4">
-              <div
-                class="bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
-              >
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center">
-                    <i
-                      class="fa-solid fa-user text-purple-400 text-sm mr-2"
-                    ></i>
-                    <span class="text-white text-sm font-medium">Account:</span>
-                  </div>
-                  <select
-                    id="popup-account-selector"
-                    class="bg-white/20 text-white text-sm rounded px-2 py-1 border border-white/30 focus:outline-none focus:border-purple-400 max-w-[180px]"
-                  >
-                    <option value="">Select account...</option>
-                  </select>
-                </div>
-                <div
-                  id="popup-current-account-info"
-                  class="hidden mt-2 pt-2 border-t border-white/20"
-                >
-                  <div
-                    class="text-xs text-white/70"
-                    id="popup-account-url"
-                  ></div>
-                </div>
-              </div>
-            </div>
             <!-- Collapsible Announcement -->
             <div class="mb-4">
               <button
@@ -162,7 +132,7 @@
               <!-- Button Refresh -->
             </div>
             <div
-              class="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 overflow-hidden group"
+              class="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 group"
             >
               <div
                 class="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -188,24 +158,77 @@
                     <i class="fa-solid fa-web-awesome"></i>
                   </div>
                 </div>
-                <div class="ml-4">
-                  <h2
-                    class="text-xl font-bold text-white truncate max-w-[200px]"
-                    title="Anonymous"
-                    id="user-name"
-                  >
-                    Anonymous
-                  </h2>
-                  <div class="flex items-center mt-1">
+                <div class="ml-4 flex-1">
+                  <!-- User name with integrated account switcher -->
+                  <div class="relative">
+                    <div class="flex items-center justify-between">
+                      <h2
+                        class="text-xl font-bold text-white truncate max-w-[160px] transition-all duration-300"
+                        title="Anonymous"
+                        id="user-name"
+                      >
+                        Anonymous
+                      </h2>
+                      <!-- Compact account switcher button -->
+                      <button
+                        id="account-switcher-btn"
+                        class="bg-white/20 hover:bg-white/30 text-white text-xs px-2 py-1 rounded border border-white/30 transition-all duration-300 flex items-center space-x-1 focus:outline-none focus:border-purple-400"
+                      >
+                        <i
+                          class="fa-solid fa-user-group text-purple-400 text-xs"
+                        ></i>
+                        <span id="account-count" class="font-medium">1</span>
+                        <i
+                          class="fa-solid fa-chevron-down transition-transform duration-300 text-xs"
+                          id="switcher-chevron"
+                        ></i>
+                      </button>
+                    </div>
+
+                    <!-- Account dropdown -->
                     <div
-                      class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center"
+                      id="account-dropdown"
+                      class="absolute right-0 top-full mt-1 w-72 bg-slate-900/95 backdrop-blur-md border border-white/40 rounded-lg shadow-2xl hidden max-h-48 overflow-y-auto z-[200]"
                     >
-                      <i class="fa-solid fa-crown text-white"></i>
-                      <span class="ml-1" id="league">VIP</span>
+                      <div class="p-2 border-b border-white/30 bg-slate-800/80">
+                        <div
+                          class="text-xs text-white/90 font-medium flex items-center"
+                        >
+                          <i
+                            class="fa-solid fa-user-group text-purple-400 mr-1"
+                          ></i>
+                          Switch Account
+                        </div>
+                      </div>
+                      <div id="account-list" class="py-1">
+                        <!-- Account options will be populated here -->
+                      </div>
                     </div>
-                    <div class="ml-2 text-xs text-white/70" id="total-points">
-                      0 points
+                  </div>
+
+                  <div class="flex items-center justify-between mt-2">
+                    <div class="flex items-center">
+                      <div
+                        class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center"
+                      >
+                        <i class="fa-solid fa-crown text-white"></i>
+                        <span class="ml-1" id="league">VIP</span>
+                      </div>
+                      <div class="ml-2 text-xs text-white/70" id="total-points">
+                        0 points
+                      </div>
                     </div>
+
+                    <!-- Copy Profile URL Button -->
+                    <button
+                      id="copy-profile-url"
+                      title="Copy Profile URL"
+                      onclick="window.testCopy && window.testCopy()"
+                      class="text-xs text-blue-400 hover:text-blue-300 bg-blue-400/20 hover:bg-blue-400/30 p-2 rounded-full flex items-center justify-center transition-all duration-200 border border-blue-400/30 hover:border-blue-400/50 w-8 h-8 cursor-pointer"
+                      style="pointer-events: auto; z-index: 100"
+                    >
+                      <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
                   </div>
                 </div>
               </div>
