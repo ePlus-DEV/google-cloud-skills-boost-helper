@@ -19,7 +19,6 @@ declare global {
 
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
-
   // Add copy button event listener after initialization
   setTimeout(() => {
     const copyBtn = document.getElementById("copy-profile-url");
