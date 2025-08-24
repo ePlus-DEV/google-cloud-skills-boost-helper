@@ -5,11 +5,11 @@ import type { ArcadeData, Milestone, UIUpdateData } from "../types";
  */
 const PopupUIService = {
   MILESTONES: [
-    { points: 20, league: "Arcade Novice" },
-    { points: 40, league: "Arcade Trooper" },
+    { points: 25, league: "Arcade Novice" },
+    { points: 45, league: "Arcade Trooper" },
     { points: 65, league: "Arcade Ranger" },
     { points: 75, league: "Arcade Champion" },
-    { points: 85, league: "Arcade Legend" },
+    { points: 95, league: "Arcade Legend" },
   ] as Milestone[],
 
   /**
