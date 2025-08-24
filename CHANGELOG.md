@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.7] - 2025-08-24
+### :bug: Bug Fixes
+- [`38284a1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/38284a1982c00f2e98cfdf9f20def5b449a18267) - update milestone points and improve code formatting *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d70fe27`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d70fe2799af41d5c764ddcc8d64b845546cb1faa) - update version to 1.1.7 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`3de7b25`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3de7b25aab4ed2463d902bd3a6ae41a5bdce62a7) - improve testCopy function and remove console alerts *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`ef537fa`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ef537fad0e575c3bee3974a589e79bd06cfa45d4) - remove outdated MULTI_ACCOUNT_FEATURE documentation *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.1.6] - 2025-08-11
 ### :sparkles: New Features
 - [`b057c95`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b057c95ce2b57630fa3d7d731f51d17295de208a) - implement multi-account management system *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -182,3 +194,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.3...1.1.4
 [1.1.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.4...1.1.5
 [1.1.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.5...1.1.6
+[1.1.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.6...1.1.7
