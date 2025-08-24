@@ -24,7 +24,7 @@ const PopupUIService = {
    */
   updateElementText(
     selector: string,
-    value: string | number | null | undefined
+    value: string | number | null | undefined,
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
@@ -37,7 +37,7 @@ const PopupUIService = {
    */
   updateElements(updates: UIUpdateData[]): void {
     updates.forEach(({ selector, value }) =>
-      this.updateElementText(selector, value)
+      this.updateElementText(selector, value),
     );
   },
 
@@ -73,7 +73,7 @@ const PopupUIService = {
         (milestone, index) =>
           totalPoints <= milestone.points ||
           (this.MILESTONES[index + 1] &&
-            totalPoints < this.MILESTONES[index + 1].points)
+            totalPoints < this.MILESTONES[index + 1].points),
       ) + 1 || this.MILESTONES.length + 1;
 
     const nextMilestone =
@@ -101,11 +101,11 @@ const PopupUIService = {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number
+    totalPoints: number,
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
     );
 
     this.updateElementText(
@@ -114,7 +114,7 @@ const PopupUIService = {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`
+          } ${browser.i18n.getMessage("textPoints")}`,
     );
   },
 
@@ -128,7 +128,7 @@ const PopupUIService = {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`
+      }`,
     );
   },
 
@@ -217,11 +217,11 @@ const PopupUIService = {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      totalPoints
+      totalPoints,
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points
+      leagueInfo.nextMilestone.points,
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -271,7 +271,7 @@ const PopupUIService = {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000
+    timeout = 6000,
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -287,7 +287,7 @@ const PopupUIService = {
    */
   toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean
+    disabled: boolean,
   ): void {
     buttons.forEach((button) => (button.disabled = disabled));
   },
@@ -298,7 +298,7 @@ const PopupUIService = {
   toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean
+    add: boolean,
   ): void {
     elements.forEach((element) => element.classList.toggle(className, add));
   },
