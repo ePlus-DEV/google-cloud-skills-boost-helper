@@ -1,31 +1,30 @@
 import { PopupService, AccountService } from "../../services";
 
-// Test function for copy button
-(window as any).testCopy = async () => {
-  console.log("TEST: Button clicked via inline onclick!");
+// Extend Window interface to include testCopy
+declare global {
+  interface Window {
+    testCopy: () => Promise<void>;
+  }
+}
 
+// Test function for copy button
+(window as Window & typeof globalThis).testCopy = async () => {
   try {
     const testUrl = "https://www.cloudskillsboost.google/public_profiles/test";
     await navigator.clipboard.writeText(testUrl);
-    console.log("TEST: Copy successful!");
-    alert("Copy test successful!");
   } catch (error) {
     console.error("TEST: Copy failed:", error);
-    alert("Copy test failed: " + (error as Error).message);
   }
 };
 
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
-  console.log("PopupService initialized");
 
   // Add copy button event listener after initialization
   setTimeout(() => {
     const copyBtn = document.getElementById("copy-profile-url");
-    console.log("Main.tsx: Copy button found:", !!copyBtn);
     if (copyBtn) {
       copyBtn.addEventListener("click", async (e) => {
-        console.log("Main.tsx: Copy button clicked!");
         e.preventDefault();
         e.stopPropagation();
 
@@ -33,12 +32,9 @@ PopupService.initialize().then(() => {
         const activeAccount = await AccountService.getActiveAccount();
         const profileUrl = activeAccount?.profileUrl || PopupService.profileUrl;
 
-        console.log("Main.tsx: Profile URL:", profileUrl);
-
         if (profileUrl) {
           try {
             await navigator.clipboard.writeText(profileUrl);
-            console.log("Main.tsx: Copy successful!");
 
             // Visual feedback
             const originalIcon = copyBtn.innerHTML;
@@ -72,8 +68,6 @@ PopupService.initialize().then(() => {
           } catch (error) {
             console.error("Main.tsx: Copy failed:", error);
           }
-        } else {
-          console.log("Main.tsx: No URL available");
         }
       });
     }
