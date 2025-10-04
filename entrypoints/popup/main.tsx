@@ -1,9 +1,11 @@
 import { PopupService, AccountService } from "../../services";
+import PopupUIService from "../../services/popupUIService";
 
-// Extend Window interface to include testCopy
+// Extend Window interface to include testCopy and testMilestone
 declare global {
   interface Window {
     testCopy: () => Promise<void>;
+    testMilestone: () => void;
   }
 }
 
@@ -15,6 +17,11 @@ declare global {
   } catch (error) {
     console.error("TEST: Copy failed:", error);
   }
+};
+
+// Test function for milestone data
+(window as Window & typeof globalThis).testMilestone = () => {
+  PopupUIService.testMilestoneWithAPIData();
 };
 
 // Initialize the popup when the script loads
