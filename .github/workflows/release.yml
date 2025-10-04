@@ -30,7 +30,7 @@ jobs:
         run: mkdir -p ~/Library/Caches/Yarn/v6
 
       - name: Setup Node.js with Yarn cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22.x
           cache: "yarn"
