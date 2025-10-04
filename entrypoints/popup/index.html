@@ -6,7 +6,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Google Cloud Skills Boost - Helper</title>
   <meta name="manifest.type" content="browser_action" />
-  <link rel="stylesheet" href="~/assets/tailwind.css" />
+  <link rel="style          <!-- Total Bonus Summary -->
+          <div class=" bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-md rounded-lg p-3 mb-3 border
+    border-green-400/30">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center">
+      <i class="fa-solid fa-coins text-green-400 text-lg mr-2"></i>
+      <span class="text-white font-bold text-sm">Total Bonus Earned:</span>
+    </div>
+    <div class="text-green-400 font-bold text-lg" id="total-facilitator-bonus">
+      0 points
+    </div>
+  </div>
+  <div class="text-xs text-green-300/70 mt-1">
+    Maximum possible: 50 points (2+8+15+25)
+  </div>
+  </div>
+
+  <!-- Milestone Bonus Breakdown -->
+  <div class="bg-white/10 backdrop-blur-md rounded-lg p-3 mb-3 border border-white/20 hidden"
+    id="milestone-bonus-breakdown">
+    <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center">
+        <i class="fa-solid fa-trophy text-yellow-400 text-sm mr-2"></i>
+        <span class="text-white font-bold text-sm">Milestone Bonus Breakdown</span>
+      </div>
+      <i class="fa-solid fa-info-circle text-blue-400 cursor-help text-xs"
+        title="Bonus points earned from each completed milestone"></i>
+    </div>
+    <div class="space-y-1 text-xs">
+      <div class="flex justify-between items-center">
+        <span class="text-white/70 flex items-center">
+          <i class="fa-solid fa-trophy text-yellow-400 text-xs mr-1"></i>
+          Milestone 1:
+        </span>
+        <span class="font-bold milestone-1-bonus" id="milestone-1-bonus">+0 points</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-white/70 flex items-center">
+          <i class="fa-solid fa-trophy text-purple-400 text-xs mr-1"></i>
+          Milestone 2:
+        </span>
+        <span class="font-bold milestone-2-bonus" id="milestone-2-bonus">+0 points</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-white/70 flex items-center">
+          <i class="fa-solid fa-trophy text-blue-400 text-xs mr-1"></i>
+          Milestone 3:
+        </span>
+        <span class="font-bold milestone-3-bonus" id="milestone-3-bonus">+0 points</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-white/70 flex items-center">
+          <i class="fa-solid fa-crown text-pink-400 text-xs mr-1"></i>
+          Ultimate:
+        </span>
+        <span class="font-bold milestone-ultimate-bonus" id="milestone-ultimate-bonus">+0 points</span>
+      </div>
+      <div class="border-t border-white/20 pt-1 mt-1">
+        <div class="flex justify-between items-center">
+          <span class="text-white font-bold">Total:</span>
+          <span class="text-green-400 font-bold" id="milestone-bonus-total">0 points</span>
+        </div>
+      </div>
+    </div>
+  </div>assets/tailwind.css" />
   <link rel="stylesheet" href="~/assets/markdown.css" />
   <link rel="stylesheet" href="~/assets/account-switcher.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
@@ -274,6 +338,58 @@
               Facilitator
             </span>
           </h3>
+
+          <!-- Total Bonus Summary -->
+          <div
+            class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-md rounded-lg p-3 mb-3 border border-green-400/30">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <i class="fa-solid fa-coins text-green-400 text-lg mr-2"></i>
+                <span class="text-white font-bold text-sm">Total Bonus Earned:</span>
+              </div>
+              <div class="text-green-400 font-bold text-lg" id="total-facilitator-bonus">
+                0 points
+              </div>
+            </div>
+            <div class="text-xs text-green-300/70 mt-1">
+              Maximum possible: 50 points (2+8+15+25)
+            </div>
+          </div>
+
+          <!-- Points Breakdown Card -->
+          <div
+            class="bg-white/10 backdrop-blur-md rounded-lg p-3 mb-3 border border-white/20 hidden cursor-pointer hover:bg-white/15 transition-colors"
+            id="points-breakdown-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <i class="fa-solid fa-calculator text-blue-400 text-sm mr-2"></i>
+                <span class="text-white font-bold text-sm">Points Breakdown</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa-solid fa-info-circle text-blue-400 cursor-help text-xs mr-2"
+                  title="How your total arcade points are calculated"></i>
+                <i class="fa-solid fa-chevron-down text-white/70 text-xs transition-transform"
+                  id="breakdown-toggle"></i>
+              </div>
+            </div>
+            <div class="mt-2 space-y-1 text-xs hidden" id="breakdown-details">
+              <div class="flex justify-between items-center">
+                <span class="text-white/70">Arcade Base:</span>
+                <span class="text-white font-bold" id="base-points">0 points</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-green-300">Facilitator Bonus:</span>
+                <span class="text-green-400 font-bold" id="bonus-points">+0 points</span>
+              </div>
+              <div class="border-t border-white/20 pt-1 mt-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-white font-bold">Total:</span>
+                  <span class="text-yellow-400 font-bold" id="total-combined-points">0 points</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-2 gap-3">
             <!-- Milestone 1 -->
             <div
