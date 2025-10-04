@@ -201,14 +201,23 @@ const PopupUIService = {
       specialPoints = 0,
     } = arcadePoints || {};
 
+    // Calculate facilitator bonus points if available
+    let facilitatorBonus = 0;
+    if (faciCounts) {
+      facilitatorBonus = this.calculateFacilitatorBonusPoints(faciCounts);
+    }
+
+    // Add bonus points to total
+    const finalTotalPoints = totalPoints + facilitatorBonus;
+
     // Update basic info
     const updates: UIUpdateData[] = [
-      { selector: "#arcade-points", value: totalPoints },
+      { selector: "#arcade-points", value: finalTotalPoints },
       { selector: "#user-name", value: userName || "Anonymous" },
       { selector: "#league", value: league || "VIP" },
       {
         selector: "#total-points",
-        value: `${points || totalPoints || 0} points`,
+        value: `${points || finalTotalPoints || 0} points`,
       },
       { selector: "#game-badge-count", value: gamePoints },
       { selector: "#trivia-badge-count", value: triviaPoints },
@@ -216,16 +225,37 @@ const PopupUIService = {
       { selector: "#special-points-count", value: specialPoints },
     ];
 
+    // Show detailed breakdown if facilitator bonus exists
+    if (facilitatorBonus > 0) {
+      const breakdownCard = this.querySelector("#points-breakdown-card");
+      if (breakdownCard) {
+        breakdownCard.classList.remove("hidden");
+
+        // Update breakdown values
+        this.updateElementText("#base-points", `${totalPoints} points`);
+        this.updateElementText("#bonus-points", `+${facilitatorBonus} points`);
+        this.updateElementText(
+          "#total-combined-points",
+          `${finalTotalPoints} points`
+        );
+      }
+    } else {
+      const breakdownCard = this.querySelector("#points-breakdown-card");
+      if (breakdownCard) {
+        breakdownCard.classList.add("hidden");
+      }
+    }
+
     this.updateElements(updates);
     this.updateAvatar(profileImage);
 
-    // Update league info
-    const leagueInfo = this.calculateLeagueInfo(totalPoints);
+    // Update league info with bonus points included
+    const leagueInfo = this.calculateLeagueInfo(finalTotalPoints);
     this.updateLeagueInfo(
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      totalPoints
+      finalTotalPoints
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
@@ -380,6 +410,9 @@ const PopupUIService = {
       faciCompletion = 0,
     } = faciCounts;
 
+    // Calculate bonus breakdown
+    const bonusBreakdown = this.calculateMilestoneBonusBreakdown(faciCounts);
+
     // Update each milestone
     Object.entries(this.MILESTONE_REQUIREMENTS).forEach(
       ([milestone, requirements]) => {
@@ -396,8 +429,228 @@ const PopupUIService = {
       }
     );
 
+    // Update total bonus summary
+    const totalBonus = this.calculateFacilitatorBonusPoints(faciCounts);
+    this.updateElementText("#total-facilitator-bonus", `${totalBonus} points`);
+
+    // Update milestone bonus breakdown display
+    const breakdownItems = document.querySelectorAll(".breakdown-item");
+    if (breakdownItems.length >= 4) {
+      const milestones = ["1", "2", "3", "ultimate"];
+      milestones.forEach((milestone, index) => {
+        const item = breakdownItems[index];
+        const pointsElement = item.querySelector(".breakdown-points");
+        if (pointsElement) {
+          const points =
+            bonusBreakdown.milestones[
+              milestone as keyof typeof bonusBreakdown.milestones
+            ];
+          pointsElement.textContent = points > 0 ? `+${points}` : `+0`;
+
+          // Update styling based on earned status
+          if (points > 0) {
+            pointsElement.classList.remove("text-gray-400");
+            pointsElement.classList.add("text-green-600", "font-semibold");
+          } else {
+            pointsElement.classList.remove("text-green-600", "font-semibold");
+            pointsElement.classList.add("text-gray-400");
+          }
+        }
+      });
+    }
+
+    // Update breakdown total
+    const breakdownTotal = document.querySelector("#breakdown-total");
+    if (breakdownTotal) {
+      breakdownTotal.textContent = `+${bonusBreakdown.total}`;
+    }
+
     // Setup milestone card click handlers
     this.setupMilestoneCardHandlers();
+
+    // Setup breakdown card toggle
+    this.setupBreakdownToggle();
+  },
+
+  /**
+   * Setup click handler for points breakdown card toggle
+   */
+  setupBreakdownToggle(): void {
+    const breakdownCard = this.querySelector("#points-breakdown-card");
+    const breakdownDetails = this.querySelector("#breakdown-details");
+    const toggleIcon = this.querySelector("#breakdown-toggle");
+
+    if (breakdownCard && breakdownDetails && toggleIcon) {
+      breakdownCard.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const isCollapsed = breakdownDetails.classList.contains("hidden");
+
+        if (isCollapsed) {
+          breakdownDetails.classList.remove("hidden");
+          toggleIcon.classList.remove("fa-chevron-down");
+          toggleIcon.classList.add("fa-chevron-up");
+        } else {
+          breakdownDetails.classList.add("hidden");
+          toggleIcon.classList.remove("fa-chevron-up");
+          toggleIcon.classList.add("fa-chevron-down");
+        }
+      });
+    }
+  },
+
+  /**
+   * Calculate bonus points from completed facilitator milestones
+   */
+  calculateFacilitatorBonusPoints(faciCounts: any): number {
+    if (!faciCounts) return 0;
+
+    const {
+      faciGame = 0,
+      faciTrivia = 0,
+      faciSkill = 0,
+      faciCompletion = 0,
+    } = faciCounts;
+
+    const milestonePoints = {
+      1: 2, // +2 Bonus Points
+      2: 8, // +8 Bonus Points
+      3: 15, // +15 Bonus Points
+      ultimate: 25, // +25 Bonus Points
+    };
+
+    const currentStats = {
+      games: faciGame,
+      trivia: faciTrivia,
+      skills: faciSkill,
+      labfree: faciCompletion,
+    };
+
+    let highestCompletedMilestone = 0;
+    let highestBonusPoints = 0;
+
+    // Check each milestone completion to find the highest one
+    Object.entries(this.MILESTONE_REQUIREMENTS).forEach(
+      ([milestone, requirements]) => {
+        const isCompleted =
+          currentStats.games >= requirements.games &&
+          currentStats.trivia >= requirements.trivia &&
+          currentStats.skills >= requirements.skills &&
+          currentStats.labfree >= requirements.labfree;
+
+        console.log(`Milestone ${milestone} check:`, {
+          current: currentStats,
+          required: requirements,
+          isCompleted,
+        });
+
+        if (isCompleted) {
+          const points =
+            milestonePoints[milestone as keyof typeof milestonePoints] || 0;
+
+          // Keep track of highest milestone completed
+          const milestoneNum =
+            milestone === "ultimate" ? 4 : parseInt(milestone);
+          if (milestoneNum > highestCompletedMilestone) {
+            highestCompletedMilestone = milestoneNum;
+            highestBonusPoints = points;
+          }
+
+          console.log(`✅ Milestone ${milestone} COMPLETED! Points: ${points}`);
+        } else {
+          console.log(`❌ Milestone ${milestone} NOT completed`);
+        }
+      }
+    );
+
+    console.log(`💰 BONUS CALCULATION SUMMARY:`);
+    console.log(
+      `   Highest Completed Milestone: ${
+        highestCompletedMilestone === 4
+          ? "Ultimate"
+          : highestCompletedMilestone || "None"
+      }`
+    );
+    console.log(`   Total Facilitator Bonus Points: ${highestBonusPoints}`);
+    console.log(
+      `   Logic: Only award points for the HIGHEST milestone reached`
+    );
+
+    return highestBonusPoints;
+  },
+
+  /**
+   * Calculate detailed milestone bonus breakdown for UI display
+   */
+  calculateMilestoneBonusBreakdown(faciCounts: any): any {
+    if (!faciCounts) {
+      return {
+        milestones: { 1: 0, 2: 0, 3: 0, ultimate: 0 },
+        total: 0,
+        highestCompleted: 0,
+      };
+    }
+
+    const {
+      faciGame = 0,
+      faciTrivia = 0,
+      faciSkill = 0,
+      faciCompletion = 0,
+    } = faciCounts;
+
+    const milestonePoints = {
+      1: 2, // +2 Bonus Points
+      2: 8, // +8 Bonus Points
+      3: 15, // +15 Bonus Points
+      ultimate: 25, // +25 Bonus Points
+    };
+
+    const milestoneBonus = { 1: 0, 2: 0, 3: 0, ultimate: 0 };
+    const currentStats = {
+      games: faciGame,
+      trivia: faciTrivia,
+      skills: faciSkill,
+      labfree: faciCompletion,
+    };
+
+    let highestCompletedMilestone = 0;
+    let highestBonusPoints = 0;
+
+    // Check each milestone completion to find the highest one
+    Object.entries(this.MILESTONE_REQUIREMENTS).forEach(
+      ([milestone, requirements]) => {
+        const isCompleted =
+          currentStats.games >= requirements.games &&
+          currentStats.trivia >= requirements.trivia &&
+          currentStats.skills >= requirements.skills &&
+          currentStats.labfree >= requirements.labfree;
+
+        if (isCompleted) {
+          const points =
+            milestonePoints[milestone as keyof typeof milestonePoints] || 0;
+
+          // Keep track of highest milestone completed
+          const milestoneNum =
+            milestone === "ultimate" ? 4 : parseInt(milestone);
+          if (milestoneNum > highestCompletedMilestone) {
+            highestCompletedMilestone = milestoneNum;
+            highestBonusPoints = points;
+
+            // Reset all bonuses and set only the highest one
+            Object.keys(milestoneBonus).forEach((key) => {
+              milestoneBonus[key as keyof typeof milestoneBonus] = 0;
+            });
+            milestoneBonus[milestone as keyof typeof milestoneBonus] = points;
+          }
+        }
+      }
+    );
+
+    return {
+      milestones: milestoneBonus,
+      total: highestBonusPoints,
+      highestCompleted: highestCompletedMilestone,
+    };
   },
 
   /**
@@ -419,6 +672,65 @@ const PopupUIService = {
         }
       });
     });
+  },
+
+  /**
+   * Calculate progress using different methods
+   */
+  calculateProgressMethods(current: any, requirements: any): any {
+    // Method 1: Binary Completion (current default)
+    const completed = [
+      current.games >= requirements.games,
+      current.trivia >= requirements.trivia,
+      current.skills >= requirements.skills,
+      current.labfree >= requirements.labfree,
+    ];
+    const completedCount = completed.filter(Boolean).length;
+    const binary = Math.round((completedCount / 4) * 100);
+
+    // Method 2: Weighted Average Progress
+    const gameProgress = Math.min(current.games / requirements.games, 1) * 100;
+    const triviaProgress =
+      Math.min(current.trivia / requirements.trivia, 1) * 100;
+    const skillProgress =
+      Math.min(current.skills / requirements.skills, 1) * 100;
+    const labfreeProgress =
+      Math.min(current.labfree / requirements.labfree, 1) * 100;
+    const weighted = Math.round(
+      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4
+    );
+
+    // Method 3: Proportional Total Progress
+    const currentTotal =
+      current.games + current.trivia + current.skills + current.labfree;
+    const requiredTotal =
+      requirements.games +
+      requirements.trivia +
+      requirements.skills +
+      requirements.labfree;
+    const proportional = Math.round((currentTotal / requiredTotal) * 100);
+
+    // Method 4: Minimum Requirement Progress
+    const minimum = Math.round(
+      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress)
+    );
+
+    // Completion status (same for all methods)
+    const isCompleted = completedCount === 4;
+
+    return {
+      binary,
+      weighted,
+      proportional,
+      minimum,
+      isCompleted,
+      details: {
+        gameProgress: Math.round(gameProgress * 100) / 100,
+        triviaProgress: Math.round(triviaProgress * 100) / 100,
+        skillProgress: Math.round(skillProgress * 100) / 100,
+        labfreeProgress: Math.round(labfreeProgress * 100) / 100,
+      },
+    };
   },
 
   /**
@@ -470,23 +782,41 @@ const PopupUIService = {
       }${current.labfree >= requirements.labfree ? " ✓" : ""}`
     );
 
-    // Calculate overall progress
-    const completed = [
-      current.games >= requirements.games,
-      current.trivia >= requirements.trivia,
-      current.skills >= requirements.skills,
-      current.labfree >= requirements.labfree,
-    ];
-
-    const completedCount = completed.filter(Boolean).length;
-    const progressPercent = Math.round((completedCount / 4) * 100);
-    const isCompleted = completedCount === 4;
-
-    // Update progress percentage
-    this.updateElementText(
-      `.milestone-${milestone}-progress`,
-      `${progressPercent}%`
+    // Calculate overall progress using different methods
+    const progressMethods = this.calculateProgressMethods(
+      current,
+      requirements
     );
+
+    // Use Binary Completion method as default
+    const progressPercent = progressMethods.binary; // Binary: completion-based (3/4 = 75%)
+    const isCompleted = progressMethods.isCompleted;
+
+    // Update progress percentage with tooltip showing alternatives
+    const progressElement = this.querySelector(
+      `.milestone-${milestone}-progress`
+    );
+    if (progressElement) {
+      progressElement.textContent = `${progressPercent}%`;
+
+      // Add tooltip with alternative calculations
+      const tooltip = `Progress Methods:
+• Binary: ${progressMethods.binary}% (completion-based) ★ ACTIVE
+• Weighted: ${progressMethods.weighted}% (average progress)
+• Proportional: ${progressMethods.proportional}% (total ratio)
+• Minimum: ${progressMethods.minimum}% (bottleneck)
+
+Details:
+• Games: ${progressMethods.details.gameProgress}%
+• Trivia: ${progressMethods.details.triviaProgress}%
+• Skills: ${progressMethods.details.skillProgress}%
+• Lab-free: ${progressMethods.details.labfreeProgress}%
+
+Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
+
+      progressElement.setAttribute("title", tooltip);
+      progressElement.style.cursor = "help";
+    }
 
     // Update status icon
     const statusIcon = this.querySelector(`.milestone-${milestone}-status`);
@@ -503,10 +833,7 @@ const PopupUIService = {
       }
     }
 
-    // Update progress text color
-    const progressElement = this.querySelector(
-      `.milestone-${milestone}-progress`
-    );
+    // Update progress text color and add tooltip
     if (progressElement) {
       progressElement.className = isCompleted
         ? "text-green-400 font-bold"
@@ -521,16 +848,388 @@ const PopupUIService = {
 (window as any).testMilestone = function () {
   const testData = {
     faciCounts: {
-      faciGame: 5,
-      faciTrivia: 4,
-      faciSkill: 30,
-      faciCompletion: 15,
+      faciGame: 12, // Complete all milestones
+      faciTrivia: 8,
+      faciSkill: 52,
+      faciCompletion: 24,
     },
   };
 
   console.log("Testing milestone data:", testData);
   PopupUIService.updateMilestoneData(testData);
-  console.log("Milestone data updated successfully!");
+
+  // Test bonus calculation
+  const bonusPoints = PopupUIService.calculateFacilitatorBonusPoints(
+    testData.faciCounts
+  );
+  console.log("🎯 Facilitator Bonus Breakdown:");
+  console.log("  - Milestone 1: +2 points ✅");
+  console.log("  - Milestone 2: +8 points ✅");
+  console.log("  - Milestone 3: +15 points ✅");
+  console.log("  - Ultimate: +25 points ✅");
+  console.log(`  📊 Total bonus: ${bonusPoints} points`);
+
+  console.log(
+    "✅ All milestones completed! Bonus will be added to arcade total."
+  );
 };
+
+// Test function for partial completion
+(window as any).testMilestonePartial = function () {
+  const testData = {
+    faciCounts: {
+      faciGame: 8, // Only Milestone 1 & 2 complete
+      faciTrivia: 6,
+      faciSkill: 28,
+      faciCompletion: 12,
+    },
+  };
+
+  console.log("Testing partial milestone data:", testData);
+  PopupUIService.updateMilestoneData(testData);
+
+  // Test bonus calculation
+  const bonusPoints = PopupUIService.calculateFacilitatorBonusPoints(
+    testData.faciCounts
+  );
+  console.log("🎯 Facilitator Bonus Breakdown:");
+  console.log("  - Milestone 1: +2 points ✅");
+  console.log("  - Milestone 2: +8 points ✅");
+  console.log("  - Milestone 3: +15 points ❌");
+  console.log("  - Ultimate: +25 points ❌");
+  console.log(`  📊 Total bonus: ${bonusPoints} points`);
+
+  console.log("⚡ Partial completion! Bonus will be added to arcade total.");
+};
+
+// Test function with actual failing case
+(window as any).testMilestoneRealistic = function () {
+  const testData = {
+    faciCounts: {
+      faciGame: 5, // NOT enough for any milestone (need 6 for milestone 1)
+      faciTrivia: 3, // NOT enough for any milestone (need 5 for milestone 1)
+      faciSkill: 10, // NOT enough for any milestone (need 14 for milestone 1)
+      faciCompletion: 4, // NOT enough for any milestone (need 6 for milestone 1)
+    },
+  };
+
+  console.log("Testing realistic (low) milestone data:", testData);
+  PopupUIService.updateMilestoneData(testData.faciCounts);
+
+  // Test bonus calculation
+  const bonusPoints = PopupUIService.calculateFacilitatorBonusPoints(
+    testData.faciCounts
+  );
+  console.log("🎯 Facilitator Bonus Breakdown:");
+  console.log(
+    "  - Milestone 1: +2 points ❌ (need 6 games, 5 trivia, 14 skills, 6 labfree)"
+  );
+  console.log("  - Milestone 2: +8 points ❌");
+  console.log("  - Milestone 3: +15 points ❌");
+  console.log("  - Ultimate: +25 points ❌");
+  console.log(`  📊 Total bonus: ${bonusPoints} points (should be 0)`);
+
+  console.log("❌ No milestones completed! No bonus points awarded.");
+};
+
+// Test function for user's specific case (11/12 games)
+(window as any).testUserCase = function () {
+  const testData = {
+    faciCounts: {
+      faciGame: 11, // 11/12 - NOT enough for Ultimate (need 12)
+      faciTrivia: 8, // 8/8 - Complete ✓
+      faciSkill: 52, // 52/52 - Complete ✓
+      faciCompletion: 24, // 24/24 - Complete ✓
+    },
+  };
+
+  console.log("🔍 Testing User's Specific Case:");
+  console.log("Data:", testData.faciCounts);
+  console.log(
+    "Ultimate Requirements: games: 12, trivia: 8, skills: 52, labfree: 24"
+  );
+  console.log("");
+
+  PopupUIService.updateMilestoneData(testData.faciCounts);
+
+  const bonusPoints = PopupUIService.calculateFacilitatorBonusPoints(
+    testData.faciCounts
+  );
+
+  console.log("");
+  console.log("🎯 EXPECTED RESULT:");
+  console.log("   Progress: ~99% (proportional: 95/96 total points)");
+  console.log("   Bonus Points: 0 (because games 11 < 12 required)");
+  console.log("   Status: NOT completed until games >= 12");
+  console.log("");
+  console.log(`📊 ACTUAL RESULT: ${bonusPoints} bonus points`);
+
+  if (bonusPoints === 0) {
+    console.log("✅ CORRECT! No bonus awarded until ALL requirements met.");
+  } else {
+    console.log(
+      "❌ ERROR! Bonus should be 0 because games requirement not met."
+    );
+  }
+};
+
+// Test function to compare different progress calculation methods
+(window as any).testProgressMethods = function () {
+  const testData = {
+    faciCounts: {
+      faciGame: 11, // Almost complete Ultimate milestone
+      faciTrivia: 8, // Complete
+      faciSkill: 52, // Complete
+      faciCompletion: 24, // Complete
+    },
+  };
+
+  console.log("🧮 Testing Different Progress Calculation Methods:");
+  console.log("Data:", testData.faciCounts);
+  console.log(
+    "Ultimate Requirements: games: 12, trivia: 8, skills: 52, labfree: 24"
+  );
+  console.log("");
+
+  const requirements = { games: 12, trivia: 8, skills: 52, labfree: 24 };
+  const current = {
+    games: testData.faciCounts.faciGame,
+    trivia: testData.faciCounts.faciTrivia,
+    skills: testData.faciCounts.faciSkill,
+    labfree: testData.faciCounts.faciCompletion,
+  };
+
+  const methods = PopupUIService.calculateProgressMethods(
+    current,
+    requirements
+  );
+
+  console.log("📊 Progress Calculation Results:");
+  console.log(`1. Binary Completion: ${methods.binary}% ★ ACTIVE`);
+  console.log(`   └─ 3 completed requirements / 4 total = 75%`);
+
+  console.log(`2. Weighted Average: ${methods.weighted}%`);
+  console.log(`   └─ (91.67% + 100% + 100% + 100%) / 4 = 97.92%`);
+
+  console.log(`3. Proportional Total: ${methods.proportional}%`);
+  console.log(`   └─ (11+8+52+24) / (12+8+52+24) = 95/96 = 98.96%`);
+
+  console.log(`4. Minimum Progress: ${methods.minimum}%`);
+  console.log(`   └─ min(91.67%, 100%, 100%, 100%) = 91.67%`);
+
+  console.log("");
+  console.log("📈 Individual Progress:");
+  console.log(`   Games: ${methods.details.gameProgress}% (11/12)`);
+  console.log(`   Trivia: ${methods.details.triviaProgress}% (8/8)`);
+  console.log(`   Skills: ${methods.details.skillProgress}% (52/52)`);
+  console.log(`   Lab-free: ${methods.details.labfreeProgress}% (24/24)`);
+
+  console.log("");
+  console.log("💡 Which method do you prefer?");
+  console.log("   - Binary: Shows completion status clearly");
+  console.log("   - Weighted: Shows actual progress more accurately");
+  console.log("   - Proportional: Based on total points earned");
+  console.log("   - Minimum: Conservative, shows bottleneck");
+};
+
+// Test function for progressive milestone completion
+(window as any).testProgressiveMilestones = function () {
+  console.log("🎯 Testing Progressive Milestone Completion:");
+  console.log("");
+
+  // Test Case 1: Only Milestone 1 completed
+  console.log("📍 TEST CASE 1: Only Milestone 1 should be completed");
+  const case1 = {
+    faciCounts: {
+      faciGame: 6, // Exact requirement for Milestone 1
+      faciTrivia: 5, // Exact requirement for Milestone 1
+      faciSkill: 14, // Exact requirement for Milestone 1
+      faciCompletion: 6, // Exact requirement for Milestone 1
+    },
+  };
+  console.log("Data:", case1.faciCounts);
+  let bonus1 = PopupUIService.calculateFacilitatorBonusPoints(case1.faciCounts);
+  console.log(
+    `Expected: 2 points (only Milestone 1), Actual: ${bonus1} points`
+  );
+  console.log("");
+
+  // Test Case 2: Milestone 1 + 2 completed
+  console.log("📍 TEST CASE 2: Milestone 1 + 2 should be completed");
+  const case2 = {
+    faciCounts: {
+      faciGame: 8, // Requirement for Milestone 2
+      faciTrivia: 6, // Requirement for Milestone 2
+      faciSkill: 28, // Requirement for Milestone 2
+      faciCompletion: 12, // Requirement for Milestone 2
+    },
+  };
+  console.log("Data:", case2.faciCounts);
+  let bonus2 = PopupUIService.calculateFacilitatorBonusPoints(case2.faciCounts);
+  console.log(`Expected: 10 points (2+8), Actual: ${bonus2} points`);
+  console.log("");
+
+  // Test Case 3: Almost complete Milestone 1 (missing 1 game)
+  console.log("📍 TEST CASE 3: Almost Milestone 1 (missing 1 game)");
+  const case3 = {
+    faciCounts: {
+      faciGame: 5, // 1 short for Milestone 1 (need 6)
+      faciTrivia: 5, // Complete for Milestone 1
+      faciSkill: 14, // Complete for Milestone 1
+      faciCompletion: 6, // Complete for Milestone 1
+    },
+  };
+  console.log("Data:", case3.faciCounts);
+  let bonus3 = PopupUIService.calculateFacilitatorBonusPoints(case3.faciCounts);
+  console.log(`Expected: 0 points (not complete), Actual: ${bonus3} points`);
+  console.log("");
+
+  console.log("💡 Progressive Logic Explanation:");
+  console.log("   ✅ Milestone 1 (6/5/14/6): +2 points");
+  console.log("   ✅ Milestone 2 (8/6/28/12): +2+8 = 10 points total");
+  console.log("   ✅ Milestone 3 (10/7/38/18): +2+8+15 = 25 points total");
+  console.log("   ✅ Ultimate (12/8/52/24): +2+8+15+25 = 50 points total");
+  console.log("");
+  console.log("🔍 Current Logic: Each milestone checked INDEPENDENTLY");
+  console.log(
+    "   If you have 8/6/28/12, you get bonus for BOTH Milestone 1 AND 2"
+  );
+};
+
+// CRITICAL: Test function for user's EXACT issue (11/12 games = shouldn't get 25 points)
+(window as any).testUserExactIssue = function () {
+  console.log("🚨 TESTING USER'S EXACT ISSUE:");
+  console.log(
+    "User reported: 11/12 games but getting 25 points Ultimate milestone"
+  );
+  console.log("Expected: Should get 0 points because games 11 < 12 required");
+  console.log("");
+
+  const problemData = {
+    faciCounts: {
+      faciGame: 11, // 11 < 12 = FALSE ❌
+      faciTrivia: 8, // 8 >= 8 = TRUE ✅
+      faciSkill: 52, // 52 >= 52 = TRUE ✅
+      faciCompletion: 24, // 24 >= 24 = TRUE ✅
+    },
+  };
+
+  console.log("Problem Data:", problemData.faciCounts);
+  console.log(
+    "Ultimate Requirements: {games: 12, trivia: 8, skills: 52, labfree: 24}"
+  );
+  console.log("");
+
+  // Test each requirement manually
+  console.log("Manual Check:");
+  console.log(
+    `  games: ${problemData.faciCounts.faciGame} >= 12 = ${
+      problemData.faciCounts.faciGame >= 12
+    } ❌`
+  );
+  console.log(
+    `  trivia: ${problemData.faciCounts.faciTrivia} >= 8 = ${
+      problemData.faciCounts.faciTrivia >= 8
+    } ✅`
+  );
+  console.log(
+    `  skills: ${problemData.faciCounts.faciSkill} >= 52 = ${
+      problemData.faciCounts.faciSkill >= 52
+    } ✅`
+  );
+  console.log(
+    `  labfree: ${problemData.faciCounts.faciCompletion} >= 24 = ${
+      problemData.faciCounts.faciCompletion >= 24
+    } ✅`
+  );
+  console.log("");
+
+  // Should be FALSE because games requirement not met
+  const shouldBeCompleted =
+    problemData.faciCounts.faciGame >= 12 &&
+    problemData.faciCounts.faciTrivia >= 8 &&
+    problemData.faciCounts.faciSkill >= 52 &&
+    problemData.faciCounts.faciCompletion >= 24;
+  console.log(
+    `Manual isCompleted calculation: ${shouldBeCompleted} (should be FALSE)`
+  );
+  console.log("");
+
+  // Now test actual function
+  const actualBonus = PopupUIService.calculateFacilitatorBonusPoints(
+    problemData.faciCounts
+  );
+  console.log(`ACTUAL FUNCTION RESULT: ${actualBonus} points`);
+  console.log("");
+
+  if (actualBonus === 0) {
+    console.log(
+      "✅ CORRECT! Function working properly - no bonus for incomplete milestone"
+    );
+  } else {
+    console.log("❌ BUG FOUND! Function incorrectly awarding bonus points");
+    console.log(
+      "   Check console logs above to see which milestone is incorrectly passing"
+    );
+  }
+
+  console.log("");
+  console.log("🔍 If bug found, check:");
+  console.log("   1. Are requirements correct in MILESTONE_REQUIREMENTS?");
+  console.log(
+    "   2. Is the actual test data different from what user reported?"
+  );
+  console.log(
+    "   3. Is there a logic error in calculateFacilitatorBonusPoints?"
+  );
+  console.log("");
+  console.log(
+    "💡 IMPORTANT: 25 points might be CORRECT if user completed Milestone 1+2+3:"
+  );
+  console.log("   Milestone 1 (6/5/14/6): +2 points ✅");
+  console.log("   Milestone 2 (8/6/28/12): +8 points ✅");
+  console.log("   Milestone 3 (10/7/38/18): +15 points ✅");
+  console.log("   Ultimate (12/8/52/24): +0 points ❌ (games 11 < 12)");
+  console.log("   Total: 2+8+15 = 25 points");
+};
+
+/**
+ * Test milestone bonus breakdown display (run in console)
+ */
+function testMilestoneBreakdown() {
+  console.log("🧪 Testing Milestone Bonus Breakdown (NEW LOGIC)...");
+
+  // Test case: User with 11/12 games
+  const testData = {
+    faciCounts: {
+      faciGame: 11, // 11/12 games (not ultimate yet)
+      faciTrivia: 8, // 8/8 trivia (completed all)
+      faciSkill: 52, // 52/52 skills (completed all)
+      faciCompletion: 24, // 24/24 lab-free (completed all)
+    },
+  };
+
+  console.log("📊 Test Data:", testData.faciCounts);
+
+  // Calculate breakdown
+  const breakdown = PopupUIService.calculateMilestoneBonusBreakdown(
+    testData.faciCounts
+  );
+  console.log("💰 Bonus Breakdown:", breakdown);
+
+  // NEW LOGIC: Only highest milestone gets points
+  console.log("📋 Expected Breakdown (NEW LOGIC):");
+  console.log("  Milestone 1: +0 points (superseded by higher milestone)");
+  console.log("  Milestone 2: +0 points (superseded by higher milestone)");
+  console.log("  Milestone 3: +15 points ✅ (HIGHEST COMPLETED)");
+  console.log("  Ultimate: +0 points (11/12 games - not completed)");
+  console.log("  Total: +15 points (only highest milestone counts)");
+
+  // Update UI
+  PopupUIService.updateMilestoneData(testData.faciCounts);
+
+  console.log("✅ Breakdown UI updated!");
+  console.log("👀 Check the 'Points Breakdown' card for detailed display");
+}
 
 export default PopupUIService;
