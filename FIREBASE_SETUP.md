@@ -58,25 +58,28 @@ If environment variables are not provided, the service will use fallback values.
 
 Set up these parameters in Firebase Console > Remote Config:
 
-| Parameter | Type | Default Value | Description |
-|-----------|------|---------------|-------------|
-| `countdown_deadline` | String | `"2025-10-14T23:59:59+05:30"` | ISO 8601 datetime string for countdown deadline |
-| `countdown_timezone` | String | `"+05:30"` | Timezone offset (IST in this case) |
-| `countdown_enabled` | Boolean | `true` | Whether to show countdown timer (when `false`, hides entire countdown section) |
+| Parameter            | Type    | Default Value                 | Description                                                                    |
+| -------------------- | ------- | ----------------------------- | ------------------------------------------------------------------------------ |
+| `countdown_deadline` | String  | `"2025-10-14T23:59:59+05:30"` | ISO 8601 datetime string for countdown deadline                                |
+| `countdown_timezone` | String  | `"+05:30"`                    | Timezone offset (IST in this case)                                             |
+| `countdown_enabled`  | Boolean | `true`                        | Whether to show countdown timer (when `false`, hides entire countdown section) |
 
 ### 4. Parameter Examples
 
 **countdown_deadline:**
+
 ```
 2025-10-14T23:59:59+05:30
 ```
 
 **countdown_timezone:**
+
 ```
 +05:30
 ```
 
 **countdown_enabled:**
+
 ```
 true
 ```
@@ -86,7 +89,7 @@ true
 ### Service Structure
 
 - **`services/firebaseService.ts`**: Main Firebase Remote Config service
-- **`types/firebase.ts`**: TypeScript type definitions  
+- **`types/firebase.ts`**: TypeScript type definitions
 - **`services/popupUIService.ts`**: Updated to use Remote Config for countdown
 - **`entrypoints/popup/main.tsx`**: Updated to use Firebase-powered countdown
 
@@ -116,10 +119,10 @@ Open browser DevTools console and run:
 await firebaseService.initialize();
 
 // Get current config
-(firebaseService.getAllParams());
+firebaseService.getAllParams();
 
 // Check configuration source and settings
-(firebaseService.getConfigInfo());
+firebaseService.getConfigInfo();
 
 // Test countdown with current config
 PopupUIService.startFacilitatorCountdown();
@@ -185,13 +188,13 @@ Enable debug logging by checking browser console:
 
 ```javascript
 // Check Firebase initialization status
-('Firebase initialized:', firebaseService.isInitialized());
+("Firebase initialized:", firebaseService.isInitialized());
 
 // Check current Remote Config values
-('Config:', firebaseService.getAllParams());
+("Config:", firebaseService.getAllParams());
 
 // Check countdown configuration
-('Countdown config:', firebaseService.getCountdownConfig());
+("Countdown config:", firebaseService.getCountdownConfig());
 ```
 
 ## Future Enhancements
@@ -239,7 +242,7 @@ The extension automatically monitors Remote Config changes every 5 minutes and a
 The implementation automatically falls back to hardcoded values if Firebase fails, ensuring backward compatibility. Original hardcoded deadline was:
 
 ```javascript
-const deadline = new Date('2025-10-14T23:59:59+05:30');
+const deadline = new Date("2025-10-14T23:59:59+05:30");
 ```
 
 This is now the default value in Remote Config, maintaining the same behavior while enabling remote updates.
