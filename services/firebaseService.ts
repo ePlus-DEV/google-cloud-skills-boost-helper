@@ -12,7 +12,6 @@ import type {
   RemoteConfigDefaults,
   FirebaseServiceOptions,
   CountdownConfig,
-  CountdownStateRefreshResult,
 } from "../types/firebase";
 
 /**
@@ -66,20 +65,11 @@ class FirebaseService {
   async initialize(config?: Partial<FirebaseConfig>): Promise<void> {
     try {
       if (this.initialized) {
-        ("🔥 Firebase already initialized");
         return;
       }
 
-      ("🔥 Initializing Firebase...");
-
       // Log configuration source
       const configInfo = this.getConfigInfo();
-      `📋 Using ${configInfo.source} configuration`;
-      if (configInfo.source === "environment") {
-        ("✅ Environment variables loaded successfully");
-      } else {
-        ("⚠️ Using fallback configuration - check .env file");
-      }
 
       // Use provided config or default
       const firebaseConfig = { ...this.defaultConfig, ...config };
@@ -103,10 +93,7 @@ class FirebaseService {
         ), // 1 minute
       };
 
-      "⚙️ Remote Config settings:", this.remoteConfig.settings;
-
       this.initialized = true;
-      ("✅ Firebase initialized successfully");
 
       // Fetch initial config
       await this.fetchConfig();
@@ -123,19 +110,10 @@ class FirebaseService {
   async fetchConfig(): Promise<boolean> {
     try {
       if (!this.remoteConfig) {
-        console.warn("⚠️ Remote Config not initialized, using defaults");
         return false;
       }
 
-      ("🔄 Fetching Remote Config...");
-
       const activated = await fetchAndActivate(this.remoteConfig);
-
-      if (activated) {
-        ("✅ Remote Config fetched and activated");
-      } else {
-        ("ℹ️ Using cached Remote Config values");
-      }
 
       return activated;
     } catch (error) {
@@ -150,7 +128,6 @@ class FirebaseService {
   getCountdownDeadline(): string {
     try {
       if (!this.remoteConfig) {
-        console.warn("⚠️ Remote Config not available, using default deadline");
         return this.defaultValues.countdown_deadline;
       }
 
@@ -158,7 +135,6 @@ class FirebaseService {
         this.remoteConfig,
         "countdown_deadline"
       ).asString();
-      "📅 Retrieved countdown deadline:", deadline;
       return deadline || this.defaultValues.countdown_deadline;
     } catch (error) {
       console.error("❌ Failed to get countdown deadline:", error);
@@ -192,9 +168,6 @@ class FirebaseService {
   isCountdownEnabled(): boolean {
     try {
       if (!this.remoteConfig) {
-        console.warn(
-          "⚠️ Remote Config not initialized, using default (enabled)"
-        );
         return true; // Default to enabled
       }
 
@@ -202,11 +175,9 @@ class FirebaseService {
         this.remoteConfig,
         "countdown_enabled"
       ).asBoolean();
-      "⏰ Countdown enabled:", enabled;
       return enabled;
     } catch (error) {
       console.error("❌ Failed to get countdown enabled status:", error);
-      ("🔄 Using default value (enabled) due to error");
       return true; // Default to enabled
     }
   }
@@ -238,53 +209,7 @@ class FirebaseService {
    * Manually refresh Remote Config (for testing)
    */
   async refreshConfig(): Promise<boolean> {
-    ("🔄 Manually refreshing Remote Config...");
     return await this.fetchConfig();
-  }
-
-  /**
-   * Refresh Remote Config and return updated countdown state
-   */
-  async refreshCountdownState(): Promise<CountdownStateRefreshResult> {
-    ("🔄 Refreshing countdown state from Remote Config...");
-
-    // Get current state
-    const currentState = {
-      enabled: this.isCountdownEnabled(),
-      deadline: this.getCountdownDeadline(),
-      timezone: this.getCountdownTimezone(),
-    };
-
-    // Refresh config
-    const refreshed = await this.fetchConfig();
-
-    // Get new state
-    const newState = {
-      enabled: this.isCountdownEnabled(),
-      deadline: this.getCountdownDeadline(),
-      timezone: this.getCountdownTimezone(),
-    };
-
-    // Check if anything changed
-    const changed =
-      currentState.enabled !== newState.enabled ||
-      currentState.deadline !== newState.deadline ||
-      currentState.timezone !== newState.timezone;
-
-    if (changed) {
-      "🔄 Countdown configuration changed:",
-        {
-          old: currentState,
-          new: newState,
-        };
-    } else {
-      ("ℹ️ No changes in countdown configuration");
-    }
-
-    return {
-      ...newState,
-      changed,
-    };
   }
 
   /**
@@ -338,75 +263,6 @@ class FirebaseService {
       },
       defaults: this.getDefaultValues(),
     };
-  }
-
-  /**
-   * Force set countdown enabled state (for testing only)
-   * This temporarily overrides Remote Config value
-   */
-  private tempCountdownEnabled: boolean | null = null;
-
-  setCountdownEnabledOverride(enabled: boolean | null): void {
-    this.tempCountdownEnabled = enabled;
-    `🔧 Countdown override set to: ${enabled}`;
-  }
-
-  /**
-   * Check if countdown is enabled from Remote Config (with override support)
-   */
-  isCountdownEnabledWithOverride(): boolean {
-    // Check for temporary override first
-    if (this.tempCountdownEnabled !== null) {
-      `🔧 Using countdown override: ${this.tempCountdownEnabled}`;
-      return this.tempCountdownEnabled;
-    }
-
-    return this.isCountdownEnabled();
-  }
-
-  /**
-   * Debug method to check all Remote Config values and their sources
-   */
-  async debugRemoteConfig(): Promise<void> {
-    ("🔍 === REMOTE CONFIG DEBUG ===");
-
-    if (!this.remoteConfig) {
-      ("❌ Remote Config not initialized");
-      return;
-    }
-
-    try {
-      // Get all values
-      const allValues = getAll(this.remoteConfig);
-
-      ("📊 All Remote Config Values:");
-      for (const [key, value] of Object.entries(allValues)) {
-        `  ${key}:`;
-        `    - Value: ${value.asString()}`;
-        `    - Source: ${value.getSource()}`;
-        if (key === "countdown_enabled") {
-          `    - Boolean: ${value.asBoolean()}`;
-        }
-      }
-
-      // Test specific countdown values
-      ("🎯 Countdown Specific Values:");
-      `  - Enabled: ${this.isCountdownEnabled()}`;
-      `  - Deadline: ${this.getCountdownDeadline()}`;
-      `  - Timezone: ${this.getCountdownTimezone()}`;
-
-      // Show fetch info
-      const lastFetchTime = this.remoteConfig.fetchTimeMillis;
-      const lastFetchStatus = this.remoteConfig.lastFetchStatus;
-
-      ("📡 Fetch Information:");
-      `  - Last fetch time: ${new Date(lastFetchTime).toLocaleString()}`;
-      `  - Last fetch status: ${lastFetchStatus}`;
-    } catch (error) {
-      console.error("❌ Error debugging Remote Config:", error);
-    }
-
-    ("🔍 === END DEBUG ===");
   }
 }
 
