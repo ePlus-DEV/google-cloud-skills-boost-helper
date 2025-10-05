@@ -152,10 +152,7 @@ const AccountService = {
       arcadeData: options.arcadeData,
       createdAt: now,
       lastUsed: now,
-      facilitatorProgram:
-        options.facilitatorProgram !== undefined
-          ? options.facilitatorProgram
-          : true,
+      facilitatorProgram: options.facilitatorProgram ?? true,
     };
 
     const data = await this.getAccountsData();
