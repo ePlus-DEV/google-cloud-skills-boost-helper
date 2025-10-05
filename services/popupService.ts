@@ -88,7 +88,9 @@ const PopupService = {
         ? AccountService.extractUserDetails(account.arcadeData)
         : null;
       const profileImage = userDetail?.profileImage;
-      const isActive = Boolean(activeAccount && account.id === activeAccount.id);
+      const isActive = Boolean(
+        activeAccount && account.id === activeAccount.id,
+      );
 
       const accountItem = this.createAccountItem(
         account,
