@@ -20,6 +20,14 @@ const PopupUIService = {
     ultimate: { games: 12, trivia: 8, skills: 52, labfree: 24 },
   },
 
+  // Points awarded for each milestone
+  FACILITATOR_MILESTONE_POINTS: {
+    1: 2,
+    2: 8,
+    3: 15,
+    ultimate: 25,
+  } as Record<string | number, number>,
+
   /**
    * Generic DOM element selector with type safety
    */
@@ -28,11 +36,40 @@ const PopupUIService = {
   },
 
   /**
+   * Normalize userDetails payload to a consistent object shape
+   */
+  normalizeUserInfo(userDetails: any): any {
+    if (Array.isArray(userDetails)) {
+      return userDetails[0] || {};
+    }
+    return userDetails || {};
+  },
+
+  /**
+   * Helper to convert milestone id to numeric order (ultimate -> 4)
+   */
+  getMilestoneNumber(milestone: string): number {
+    return milestone === "ultimate" ? 4 : Number.parseInt(milestone);
+  },
+
+  /**
+   * Check whether current stats meet a milestone's requirements
+   */
+  isMilestoneCompleted(current: any, requirements: any): boolean {
+    return (
+      current.games >= requirements.games &&
+      current.trivia >= requirements.trivia &&
+      current.skills >= requirements.skills &&
+      current.labfree >= requirements.labfree
+    );
+  },
+
+  /**
    * Update text content of an element
    */
   updateElementText(
     selector: string,
-    value: string | number | null | undefined,
+    value: string | number | null | undefined
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
@@ -81,7 +118,7 @@ const PopupUIService = {
         (milestone, index) =>
           totalPoints <= milestone.points ||
           (this.MILESTONES[index + 1] &&
-            totalPoints < this.MILESTONES[index + 1].points),
+            totalPoints < this.MILESTONES[index + 1].points)
       ) + 1 || this.MILESTONES.length + 1;
 
     const nextMilestone =
@@ -109,11 +146,11 @@ const PopupUIService = {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number,
+    totalPoints: number
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
     );
 
     this.updateElementText(
@@ -122,7 +159,7 @@ const PopupUIService = {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`,
+          } ${browser.i18n.getMessage("textPoints")}`
     );
   },
 
@@ -136,7 +173,7 @@ const PopupUIService = {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`,
+      }`
     );
   },
 
@@ -181,17 +218,7 @@ const PopupUIService = {
    */
   updateMainUI(data: ArcadeData): void {
     const { userDetails, arcadePoints, lastUpdated, faciCounts } = data;
-
-    // Handle both array and object formats for backward compatibility
-    let userInfo;
-    if (Array.isArray(userDetails)) {
-      // Legacy format: userDetails is an array
-      userInfo = userDetails[0] || {};
-    } else {
-      // New format: userDetails is an object
-      userInfo = userDetails || {};
-    }
-
+    const userInfo = this.normalizeUserInfo(userDetails);
     const { userName, league, points, profileImage } = userInfo;
     const {
       totalPoints = 0,
@@ -202,10 +229,9 @@ const PopupUIService = {
     } = arcadePoints || {};
 
     // Calculate facilitator bonus points if available
-    let facilitatorBonus = 0;
-    if (faciCounts) {
-      facilitatorBonus = this.calculateFacilitatorBonusPoints(faciCounts);
-    }
+    const facilitatorBonus = faciCounts
+      ? this.calculateFacilitatorBonusPoints(faciCounts)
+      : 0;
 
     // Add bonus points to total
     const finalTotalPoints = totalPoints + facilitatorBonus;
@@ -225,23 +251,18 @@ const PopupUIService = {
       { selector: "#special-points-count", value: specialPoints },
     ];
 
-    // Show detailed breakdown if facilitator bonus exists
-    if (facilitatorBonus > 0) {
-      const breakdownCard = this.querySelector("#points-breakdown-card");
-      if (breakdownCard) {
+    // Show/hide detailed breakdown card
+    const breakdownCard = this.querySelector("#points-breakdown-card");
+    if (breakdownCard) {
+      if (facilitatorBonus > 0) {
         breakdownCard.classList.remove("hidden");
-
-        // Update breakdown values
         this.updateElementText("#base-points", `${totalPoints} points`);
         this.updateElementText("#bonus-points", `+${facilitatorBonus} points`);
         this.updateElementText(
           "#total-combined-points",
-          `${finalTotalPoints} points`,
+          `${finalTotalPoints} points`
         );
-      }
-    } else {
-      const breakdownCard = this.querySelector("#points-breakdown-card");
-      if (breakdownCard) {
+      } else {
         breakdownCard.classList.add("hidden");
       }
     }
@@ -255,11 +276,11 @@ const PopupUIService = {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      finalTotalPoints,
+      finalTotalPoints
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points,
+      leagueInfo.nextMilestone.points
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -304,15 +325,7 @@ const PopupUIService = {
    */
   updateOptionsUI(data: ArcadeData): void {
     const { userDetails, arcadePoints } = data;
-
-    // Handle both array and object formats for backward compatibility
-    let userInfo;
-    if (Array.isArray(userDetails)) {
-      userInfo = userDetails[0] || {};
-    } else {
-      userInfo = userDetails || {};
-    }
-
+    const userInfo = this.normalizeUserInfo(userDetails);
     const { userName, league, points, profileImage } = userInfo;
     const { totalPoints = 0 } = arcadePoints || {};
 
@@ -341,7 +354,7 @@ const PopupUIService = {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000,
+    timeout = 6000
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -357,7 +370,7 @@ const PopupUIService = {
    */
   toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean,
+    disabled: boolean
   ): void {
     for (const button of buttons) {
       button.disabled = disabled;
@@ -370,7 +383,7 @@ const PopupUIService = {
   toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean,
+    add: boolean
   ): void {
     for (const element of elements) {
       element.classList.toggle(className, add);
@@ -421,7 +434,7 @@ const PopupUIService = {
 
     // Update each milestone
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.MILESTONE_REQUIREMENTS
     )) {
       this.updateSingleMilestone(
         milestone,
@@ -431,7 +444,7 @@ const PopupUIService = {
           skills: faciSkill,
           labfree: faciCompletion,
         },
-        requirements,
+        requirements
       );
     }
 
@@ -529,13 +542,6 @@ const PopupUIService = {
       faciCompletion = 0,
     } = faciCounts;
 
-    const milestonePoints = {
-      1: 2, // +2 Bonus Points
-      2: 8, // +8 Bonus Points
-      3: 15, // +15 Bonus Points
-      ultimate: 25, // +25 Bonus Points
-    };
-
     const currentStats = {
       games: faciGame,
       trivia: faciTrivia,
@@ -548,21 +554,17 @@ const PopupUIService = {
 
     // Check each milestone completion to find the highest one
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.MILESTONE_REQUIREMENTS
     )) {
-      const isCompleted =
-        currentStats.games >= requirements.games &&
-        currentStats.trivia >= requirements.trivia &&
-        currentStats.skills >= requirements.skills &&
-        currentStats.labfree >= requirements.labfree;
+      const isCompleted = this.isMilestoneCompleted(currentStats, requirements);
 
       if (isCompleted) {
         const points =
-          milestonePoints[milestone as keyof typeof milestonePoints] || 0;
+          this.FACILITATOR_MILESTONE_POINTS[
+            milestone as keyof typeof this.FACILITATOR_MILESTONE_POINTS
+          ] || 0;
 
-        // Keep track of highest milestone completed
-        const milestoneNum =
-          milestone === "ultimate" ? 4 : Number.parseInt(milestone);
+        const milestoneNum = this.getMilestoneNumber(milestone);
         if (milestoneNum > highestCompletedMilestone) {
           highestCompletedMilestone = milestoneNum;
           highestBonusPoints = points;
@@ -592,13 +594,6 @@ const PopupUIService = {
       faciCompletion = 0,
     } = faciCounts;
 
-    const milestonePoints = {
-      1: 2, // +2 Bonus Points
-      2: 8, // +8 Bonus Points
-      3: 15, // +15 Bonus Points
-      ultimate: 25, // +25 Bonus Points
-    };
-
     const milestoneBonus = { 1: 0, 2: 0, 3: 0, ultimate: 0 };
     const currentStats = {
       games: faciGame,
@@ -612,21 +607,17 @@ const PopupUIService = {
 
     // Check each milestone completion to find the highest one
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.MILESTONE_REQUIREMENTS
     )) {
-      const isCompleted =
-        currentStats.games >= requirements.games &&
-        currentStats.trivia >= requirements.trivia &&
-        currentStats.skills >= requirements.skills &&
-        currentStats.labfree >= requirements.labfree;
+      const isCompleted = this.isMilestoneCompleted(currentStats, requirements);
 
       if (isCompleted) {
         const points =
-          milestonePoints[milestone as keyof typeof milestonePoints] || 0;
+          this.FACILITATOR_MILESTONE_POINTS[
+            milestone as keyof typeof this.FACILITATOR_MILESTONE_POINTS
+          ] || 0;
 
-        // Keep track of highest milestone completed
-        const milestoneNum =
-          milestone === "ultimate" ? 4 : Number.parseInt(milestone);
+        const milestoneNum = this.getMilestoneNumber(milestone);
         if (milestoneNum > highestCompletedMilestone) {
           highestCompletedMilestone = milestoneNum;
           highestBonusPoints = points;
@@ -691,7 +682,7 @@ const PopupUIService = {
     const labfreeProgress =
       Math.min(current.labfree / requirements.labfree, 1) * 100;
     const weighted = Math.round(
-      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4,
+      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4
     );
 
     // Method 3: Proportional Total Progress
@@ -706,7 +697,7 @@ const PopupUIService = {
 
     // Method 4: Minimum Requirement Progress
     const minimum = Math.round(
-      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress),
+      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress)
     );
 
     // Completion status (same for all methods)
@@ -732,7 +723,7 @@ const PopupUIService = {
    */
   toggleMilestoneDetails(milestone: string): void {
     const detailsElement = this.querySelector(
-      `.milestone-card[data-milestone="${milestone}"] .milestone-details`,
+      `.milestone-card[data-milestone="${milestone}"] .milestone-details`
     );
     if (detailsElement) {
       detailsElement.classList.toggle("hidden");
@@ -745,41 +736,41 @@ const PopupUIService = {
   updateSingleMilestone(
     milestone: string,
     current: any,
-    requirements: any,
+    requirements: any
   ): void {
     // Update individual counts
     this.updateElementText(
       `.milestone-${milestone}-games`,
       `${Math.min(current.games, requirements.games)}/${requirements.games}${
         current.games >= requirements.games ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-trivia`,
       `${Math.min(current.trivia, requirements.trivia)}/${requirements.trivia}${
         current.trivia >= requirements.trivia ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-skills`,
       `${Math.min(current.skills, requirements.skills)}/${requirements.skills}${
         current.skills >= requirements.skills ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-labfree`,
       `${Math.min(current.labfree, requirements.labfree)}/${
         requirements.labfree
-      }${current.labfree >= requirements.labfree ? " ✓" : ""}`,
+      }${current.labfree >= requirements.labfree ? " ✓" : ""}`
     );
 
     // Calculate overall progress using different methods
     const progressMethods = this.calculateProgressMethods(
       current,
-      requirements,
+      requirements
     );
 
     // Use Binary Completion method as default
@@ -797,10 +788,10 @@ const PopupUIService = {
   updateProgressElement(
     milestone: string,
     progressPercent: number,
-    progressMethods: any,
+    progressMethods: any
   ): void {
     const progressElement = this.querySelector(
-      `.milestone-${milestone}-progress`,
+      `.milestone-${milestone}-progress`
     );
     if (!progressElement) return;
 
@@ -839,7 +830,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   updateStatusIcon(
     milestone: string,
     isCompleted: boolean,
-    progressPercent: number,
+    progressPercent: number
   ): void {
     const statusIcon = this.querySelector(`.milestone-${milestone}-status`);
     if (!statusIcon) return;
@@ -924,7 +915,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       // Log the error so failures are visible in console and telemetry
       console.error(
         "Error initializing Firebase for facilitator countdown:",
-        error,
+        error
       );
 
       // Fallback to hardcoded deadline if Firebase fails
@@ -965,7 +956,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       // Calculate time components
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
-        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
       const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
