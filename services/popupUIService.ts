@@ -273,6 +273,9 @@ const PopupUIService = {
     if (faciCounts) {
       this.updateMilestoneData(faciCounts);
     }
+
+    // Start countdown timer
+    this.startFacilitatorCountdown();
   },
 
   /**
@@ -383,6 +386,11 @@ const PopupUIService = {
       const AccountService = (await import("./accountService")).default;
       const currentAccount = await AccountService.getActiveAccount();
 
+      // Temporarily always show milestone section for testing countdown
+      console.log("🔧 Force showing milestone section for testing");
+      milestoneSection.classList.remove("hidden");
+
+      /* Original logic - commented for testing
       if (currentAccount?.facilitatorProgram) {
         // Show milestone section for facilitator accounts
         milestoneSection.classList.remove("hidden");
@@ -390,10 +398,11 @@ const PopupUIService = {
         // Hide milestone section for non-facilitator accounts
         milestoneSection.classList.add("hidden");
       }
+      */
     } catch (error) {
       console.error("Error updating milestone section:", error);
-      // Hide milestone section on error
-      milestoneSection.classList.add("hidden");
+      // Force show milestone section even on error for testing
+      milestoneSection.classList.remove("hidden");
     }
   },
 
@@ -842,6 +851,81 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
         : "text-gray-400 font-bold";
     }
   },
+
+  /**
+   * Start facilitator program countdown timer
+   */
+  startFacilitatorCountdown(): void {
+    console.log("🕐 Starting Facilitator Countdown Timer...");
+
+    // Facilitator program deadline: October 14, 2025 11:59 PM IST
+    const deadline = new Date("2025-10-14T23:59:59+05:30"); // IST timezone
+    console.log("📅 Deadline:", deadline.toLocaleString());
+
+    let countdownLogged = false;
+
+    const updateCountdown = () => {
+      const now = new Date();
+      const timeDiff = deadline.getTime() - now.getTime();
+
+      if (timeDiff <= 0) {
+        // Program has ended
+        console.log("⏰ Program has ended");
+        this.updateElementText("#countdown-days", "00");
+        this.updateElementText("#countdown-hours", "00");
+        this.updateElementText("#countdown-minutes", "00");
+        this.updateElementText("#countdown-seconds", "00");
+
+        // Show expired message
+        const countdownContainer =
+          this.querySelector("#countdown-days")?.parentElement?.parentElement;
+        if (countdownContainer) {
+          countdownContainer.innerHTML = `
+            <div class="text-center text-red-400">
+              <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
+              <div class="font-bold">Program Ended</div>
+              <div class="text-xs text-red-300/70">Facilitator program deadline has passed</div>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      // Calculate time components
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+      // Update countdown display
+      const formattedDays = days.toString().padStart(2, "0");
+      const formattedHours = hours.toString().padStart(2, "0");
+      const formattedMinutes = minutes.toString().padStart(2, "0");
+      const formattedSeconds = seconds.toString().padStart(2, "0");
+
+      this.updateElementText("#countdown-days", formattedDays);
+      this.updateElementText("#countdown-hours", formattedHours);
+      this.updateElementText("#countdown-minutes", formattedMinutes);
+      this.updateElementText("#countdown-seconds", formattedSeconds);
+
+      // Log first update only
+      if (!countdownLogged) {
+        console.log(
+          `⏱️ Time remaining: ${formattedDays}d ${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`
+        );
+        countdownLogged = true;
+      }
+    };
+
+    // Update immediately
+    updateCountdown();
+
+    // Update every second
+    setInterval(updateCountdown, 1000);
+    console.log("✅ Countdown timer started");
+  },
 };
 
 // Test function for milestone functionality
@@ -1230,6 +1314,67 @@ function testMilestoneBreakdown() {
 
   console.log("✅ Breakdown UI updated!");
   console.log("👀 Check the 'Points Breakdown' card for detailed display");
+}
+
+/**
+ * Test countdown display (run in console)
+ */
+function testCountdown() {
+  console.log("🧪 Testing Facilitator Countdown...");
+
+  // Force show milestone section
+  const milestoneSection = document.querySelector("#milestones-section");
+  if (milestoneSection) {
+    milestoneSection.classList.remove("hidden");
+    console.log("✅ Milestone section shown");
+  } else {
+    console.log("❌ Milestone section not found");
+    return;
+  }
+
+  // Start countdown
+  PopupUIService.startFacilitatorCountdown();
+  console.log("✅ Countdown started");
+
+  // Check if countdown elements exist
+  const countdownElements = [
+    "#countdown-days",
+    "#countdown-hours",
+    "#countdown-minutes",
+    "#countdown-seconds",
+  ];
+
+  countdownElements.forEach((selector) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      console.log(`✅ ${selector} found:`, element.textContent);
+    } else {
+      console.log(`❌ ${selector} not found`);
+    }
+  });
+}
+
+/**
+ * Force show countdown for testing (run in console)
+ */
+function showCountdown() {
+  console.log("🧪 Force showing countdown...");
+
+  // Force show milestone section
+  const milestoneSection = document.querySelector("#milestones-section");
+  if (milestoneSection) {
+    milestoneSection.classList.remove("hidden");
+    console.log("✅ Milestone section shown");
+  } else {
+    console.log("❌ Milestone section not found");
+    return;
+  }
+
+  // Start countdown
+  PopupUIService.startFacilitatorCountdown();
+  console.log("✅ Countdown started");
+
+  console.log("👀 Check the popup for countdown display");
 }
 
 export default PopupUIService;

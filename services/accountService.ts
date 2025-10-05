@@ -36,7 +36,7 @@ const AccountService = {
     for (const accountId in data.accounts) {
       const account = data.accounts[accountId];
       if (account.facilitatorProgram === undefined) {
-        account.facilitatorProgram = false; // Default to false for existing accounts
+        account.facilitatorProgram = true; // Default to true for existing accounts
         needsUpdate = true;
       }
     }
@@ -151,7 +151,10 @@ const AccountService = {
       arcadeData: options.arcadeData,
       createdAt: now,
       lastUsed: now,
-      facilitatorProgram: options.facilitatorProgram || false,
+      facilitatorProgram:
+        options.facilitatorProgram !== undefined
+          ? options.facilitatorProgram
+          : true,
     };
 
     const data = await this.getAccountsData();
