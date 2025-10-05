@@ -96,10 +96,10 @@ class FirebaseService {
       // Configure Remote Config settings
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "0"
-        ), // Default to 0 for immediate fetching during development
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+        ), // 1 hour
         fetchTimeoutMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ), // 1 minute
       };
 
@@ -156,7 +156,7 @@ class FirebaseService {
 
       const deadline = getValue(
         this.remoteConfig,
-        "countdown_deadline"
+        "countdown_deadline",
       ).asString();
       "📅 Retrieved countdown deadline:", deadline;
       return deadline || this.defaultValues.countdown_deadline;
@@ -177,7 +177,7 @@ class FirebaseService {
 
       const timezone = getValue(
         this.remoteConfig,
-        "countdown_timezone"
+        "countdown_timezone",
       ).asString();
       return timezone || this.defaultValues.countdown_timezone;
     } catch (error) {
@@ -198,15 +198,11 @@ class FirebaseService {
         return true; // Default to enabled
       }
 
-      const value = getValue(this.remoteConfig, "countdown_enabled");
-      const enabled = value.asBoolean();
-      const source = value.getSource();
-
-      ("⏰ Countdown enabled check:");
-      "  - Value:", enabled;
-      "  - Source:", source;
-      "  - Raw value:", value.asString();
-
+      const enabled = getValue(
+        this.remoteConfig,
+        "countdown_enabled",
+      ).asBoolean();
+      console.log("⏰ Countdown enabled:", enabled);
       return enabled;
     } catch (error) {
       console.error("❌ Failed to get countdown enabled status:", error);
@@ -334,10 +330,10 @@ class FirebaseService {
       config: this.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ),
         fetchTimeoutMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
       },
       defaults: this.getDefaultValues(),
