@@ -96,14 +96,14 @@ class FirebaseService {
       // Configure Remote Config settings
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ), // 1 hour
         fetchTimeoutMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ), // 1 minute
       };
 
-      "⚙️ Remote Config settings:", this.remoteConfig.settings;
+      ("⚙️ Remote Config settings:", this.remoteConfig.settings);
 
       this.initialized = true;
       ("✅ Firebase initialized successfully");
@@ -156,9 +156,9 @@ class FirebaseService {
 
       const deadline = getValue(
         this.remoteConfig,
-        "countdown_deadline"
+        "countdown_deadline",
       ).asString();
-      "📅 Retrieved countdown deadline:", deadline;
+      ("📅 Retrieved countdown deadline:", deadline);
       return deadline || this.defaultValues.countdown_deadline;
     } catch (error) {
       console.error("❌ Failed to get countdown deadline:", error);
@@ -177,7 +177,7 @@ class FirebaseService {
 
       const timezone = getValue(
         this.remoteConfig,
-        "countdown_timezone"
+        "countdown_timezone",
       ).asString();
       return timezone || this.defaultValues.countdown_timezone;
     } catch (error) {
@@ -193,16 +193,16 @@ class FirebaseService {
     try {
       if (!this.remoteConfig) {
         console.warn(
-          "⚠️ Remote Config not initialized, using default (enabled)"
+          "⚠️ Remote Config not initialized, using default (enabled)",
         );
         return true; // Default to enabled
       }
 
       const enabled = getValue(
         this.remoteConfig,
-        "countdown_enabled"
+        "countdown_enabled",
       ).asBoolean();
-      "⏰ Countdown enabled:", enabled;
+      ("⏰ Countdown enabled:", enabled);
       return enabled;
     } catch (error) {
       console.error("❌ Failed to get countdown enabled status:", error);
@@ -272,11 +272,11 @@ class FirebaseService {
       currentState.timezone !== newState.timezone;
 
     if (changed) {
-      "🔄 Countdown configuration changed:",
+      ("🔄 Countdown configuration changed:",
         {
           old: currentState,
           new: newState,
-        };
+        });
     } else {
       ("ℹ️ No changes in countdown configuration");
     }
@@ -330,10 +330,10 @@ class FirebaseService {
       config: this.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ),
         fetchTimeoutMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
       },
       defaults: this.getDefaultValues(),
