@@ -34,7 +34,7 @@ PopupService.initialize().then(() => {
     // Start countdown configuration monitor for remote toggle
     PopupUIService.startCountdownConfigMonitor();
   });
-  
+
   // Add copy button event listener after initialization
   setTimeout(() => {
     const copyBtn = document.getElementById("copy-profile-url");
