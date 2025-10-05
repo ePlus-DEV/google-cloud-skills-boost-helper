@@ -200,10 +200,10 @@ class FirebaseService {
       source: isUsingEnv ? "environment" : "fallback",
       config: this.getFirebaseConfig(),
       settings: {
-        minimumFetchIntervalMillis: parseInt(
+        minimumFetchIntervalMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
         ),
-        fetchTimeoutMillis: parseInt(
+        fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
         ),
       },
