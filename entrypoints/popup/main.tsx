@@ -7,9 +7,6 @@ PopupService.initialize().then(() => {
   PopupUIService.updateMilestoneSection().then(async () => {
     // Start Firebase-powered countdown
     await PopupUIService.startFacilitatorCountdown();
-
-    // Start countdown configuration monitor for remote toggle
-    PopupUIService.startCountdownConfigMonitor();
   });
 
   // Add copy button event listener after initialization
