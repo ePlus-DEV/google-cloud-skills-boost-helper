@@ -66,7 +66,9 @@ class SearchService {
 
     return words.filter(
       (word) =>
-        word.length > 2 && !commonWords.has(word) && /^[a-zA-Z0-9]+$/.test(word) // Only alphanumeric words
+        word.length > 2 &&
+        !commonWords.has(word) &&
+        /^[a-zA-Z0-9]+$/.test(word), // Only alphanumeric words
     );
   }
 
@@ -75,7 +77,7 @@ class SearchService {
    */
   private static hasMatchingDistinctiveWords(
     query: string,
-    title: string
+    title: string,
   ): boolean {
     const queryDistinctive = this.extractDistinctiveWords(query);
     const titleDistinctive = this.extractDistinctiveWords(title);
@@ -100,7 +102,7 @@ class SearchService {
    */
   private static calculateAdvancedSimilarity(
     query: string,
-    title: string
+    title: string,
   ): number {
     const queryWords = query.toLowerCase().split(/\s+/);
     const titleWords = title.toLowerCase().split(/\s+/);
@@ -149,7 +151,7 @@ class SearchService {
     const monthYearMatch = title.match(/([A-Za-z]+)\s+(\d{4})/);
     if (monthYearMatch) {
       identifiers.push(
-        `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`
+        `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`,
       );
     }
 
@@ -161,7 +163,7 @@ class SearchService {
    */
   private static hasCompatibleIdentifiers(
     title1: string,
-    title2: string
+    title2: string,
   ): boolean {
     const identifiers1 = this.extractKeyIdentifiers(title1);
     const identifiers2 = this.extractKeyIdentifiers(title2);
@@ -191,7 +193,7 @@ class SearchService {
   static findBestMatchUrl(
     postsData: SearchPostsOfPublicationData | null,
     searchQuery: string,
-    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS
+    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
   ): string | null {
     if (!postsData) return null;
 
@@ -218,7 +220,7 @@ class SearchService {
       // 3. Must meet advanced similarity threshold
       const similarityScore = this.calculateAdvancedSimilarity(
         searchQuery,
-        title
+        title,
       );
       if (similarityScore < 0.75) {
         // 75% similarity threshold

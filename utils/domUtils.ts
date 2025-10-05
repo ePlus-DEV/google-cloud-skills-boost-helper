@@ -84,7 +84,7 @@ export const DOMUtils = {
       id: string;
       event: string;
       handler: (event: Event) => void | Promise<void>;
-    }>
+    }>,
   ): void {
     for (const { id, event, handler } of config) {
       this.addEventListener(id, event, handler as EventListener);
@@ -117,7 +117,7 @@ export const DOMUtils = {
   updateTextWithFallback(
     id: string,
     content: string | number | undefined,
-    fallback = "0"
+    fallback = "0",
   ): void {
     const element = this.getElementById(id);
     if (element) {
