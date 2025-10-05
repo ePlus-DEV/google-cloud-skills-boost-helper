@@ -65,7 +65,7 @@ export const FormUtils = {
     // Clear previous errors
     this.clearFormErrors();
 
-    errors.forEach((error) => {
+    for (const error of errors) {
       const element = DOMUtils.getElementById(error.id);
       if (element) {
         element.classList.add("border-red-500");
@@ -78,7 +78,7 @@ export const FormUtils = {
 
         element.parentNode?.insertBefore(errorElement, element.nextSibling);
       }
-    });
+    }
   },
 
   /**
@@ -86,14 +86,14 @@ export const FormUtils = {
    */
   clearFormErrors(): void {
     // Remove error styling from all inputs
-    document.querySelectorAll(".border-red-500").forEach((element) => {
+    for (const element of document.querySelectorAll(".border-red-500")) {
       element.classList.remove("border-red-500");
-    });
+    }
 
     // Remove error messages
-    document.querySelectorAll('[id$="-error"]').forEach((element) => {
+    for (const element of document.querySelectorAll('[id$="-error"]')) {
       element.remove();
-    });
+    }
   },
 
   /**
