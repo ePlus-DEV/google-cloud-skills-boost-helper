@@ -853,14 +853,91 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   },
 
   /**
-   * Start facilitator program countdown timer
+   * Hide countdown display when disabled
    */
-  startFacilitatorCountdown(): void {
+  hideCountdownDisplay(): void {
+    const countdownSection = this.querySelector("#countdown-container");
+    if (countdownSection) {
+      countdownSection.classList.add("hidden");
+    }
+
+    const milestoneSection = this.querySelector("#milestones-section");
+    if (milestoneSection) {
+      const countdownCard = milestoneSection.querySelector(".countdown-card");
+      if (countdownCard) {
+        countdownCard.classList.add("hidden");
+      }
+    }
+
+    console.log("⏰ Countdown display hidden");
+  },
+
+  /**
+   * Show countdown display when enabled
+   */
+  showCountdownDisplay(): void {
+    const countdownSection = this.querySelector("#countdown-container");
+    if (countdownSection) {
+      countdownSection.classList.remove("hidden");
+    }
+
+    const milestoneSection = this.querySelector("#milestones-section");
+    if (milestoneSection) {
+      const countdownCard = milestoneSection.querySelector(".countdown-card");
+      if (countdownCard) {
+        countdownCard.classList.remove("hidden");
+      }
+    }
+
+    console.log("⏰ Countdown display shown");
+  },
+
+  /**
+   * Start facilitator program countdown timer with Firebase Remote Config
+   */
+  async startFacilitatorCountdown(): Promise<void> {
     console.log("🕐 Starting Facilitator Countdown Timer...");
 
-    // Facilitator program deadline: October 14, 2025 11:59 PM IST
-    const deadline = new Date("2025-10-14T23:59:59+05:30"); // IST timezone
-    console.log("📅 Deadline:", deadline.toLocaleString());
+    // Import Firebase service dynamically to avoid circular dependency
+    let deadline: Date;
+
+    try {
+      const firebaseService = (await import("./firebaseService")).default;
+
+      // Initialize Firebase if not already done
+      if (!firebaseService.isInitialized()) {
+        await firebaseService.initialize();
+      }
+
+      // Get countdown deadline from Remote Config
+      const countdownDeadline = firebaseService.getCountdownDeadline();
+      const countdownTimezone = firebaseService.getCountdownTimezone();
+      const isEnabled = firebaseService.isCountdownEnabled();
+
+      if (!isEnabled) {
+        console.log("⏰ Countdown is disabled via Remote Config");
+        this.hideCountdownDisplay();
+        return;
+      }
+
+      // Show countdown display if enabled
+      this.showCountdownDisplay();
+
+      deadline = new Date(countdownDeadline);
+      console.log("📅 Deadline from Remote Config:", deadline.toLocaleString());
+      console.log("🌍 Timezone:", countdownTimezone);
+    } catch (error) {
+      console.error(
+        "❌ Failed to load Remote Config, using default deadline:",
+        error
+      );
+      // Fallback to hardcoded deadline if Firebase fails
+      deadline = new Date("2025-10-14T23:59:59+05:30");
+      console.log("📅 Fallback deadline:", deadline.toLocaleString());
+
+      // Show countdown display on fallback
+      this.showCountdownDisplay();
+    }
 
     let countdownLogged = false;
 
