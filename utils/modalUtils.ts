@@ -48,14 +48,14 @@ export const ModalUtils = {
    * Clear form fields
    */
   clearFormFields(fieldIds: string[]): void {
-    fieldIds.forEach((fieldId) => {
+    for (const fieldId of fieldIds) {
       const element = document.getElementById(fieldId) as
         | HTMLInputElement
         | HTMLTextAreaElement;
       if (element) {
         element.value = "";
       }
-    });
+    }
   },
 
   /**
@@ -64,14 +64,14 @@ export const ModalUtils = {
   setupModalEvents(config: ModalConfig): void {
     // Setup close buttons
     if (config.closeButtonIds) {
-      config.closeButtonIds.forEach((buttonId) => {
+      for (const buttonId of config.closeButtonIds) {
         const button = document.getElementById(buttonId);
         if (button) {
           button.addEventListener("click", () => {
             this.hideModal(config.modalId, config);
           });
         }
-      });
+      }
     }
 
     // Setup click outside to close
@@ -92,7 +92,7 @@ export const ModalUtils = {
     modalId: string,
     closeButtonIds: string[] = [],
     clearFields: string[] = [],
-    callbacks?: { onOpen?: () => void; onClose?: () => void },
+    callbacks?: { onOpen?: () => void; onClose?: () => void }
   ): void {
     const config: ModalConfig = {
       modalId,
