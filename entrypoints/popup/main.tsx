@@ -31,7 +31,7 @@ PopupService.initialize().then(() => {
     // Start Firebase-powered countdown
     await PopupUIService.startFacilitatorCountdown();
   });
-  
+
   // Add copy button event listener after initialization
   setTimeout(() => {
     const copyBtn = document.getElementById("copy-profile-url");
