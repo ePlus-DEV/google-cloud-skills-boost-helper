@@ -70,9 +70,9 @@ const TourService = {
           element: "#account-url-input",
           title: this.getMessage("tourModalStep2Title"),
           content: `${this.getMessage(
-            "tourModalStep2Content",
+            "tourModalStep2Content"
           )}<br><div class="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2"><p class="text-xs text-yellow-800"><i class="fa-solid fa-lightbulb mr-1"></i>${this.getMessage(
-            "tourModalStep2Tip",
+            "tourModalStep2Tip"
           )}</p></div>`,
           position: "bottom",
         },
@@ -286,11 +286,11 @@ const TourService = {
     // Final bounds check to ensure tooltip is fully visible
     top = Math.max(
       margin,
-      Math.min(top, viewportHeight - tooltipRect.height - margin),
+      Math.min(top, viewportHeight - tooltipRect.height - margin)
     );
     left = Math.max(
       margin,
-      Math.min(left, viewportWidth - tooltipRect.width - margin),
+      Math.min(left, viewportWidth - tooltipRect.width - margin)
     );
 
     tooltip.style.top = `${top}px`;
@@ -302,9 +302,9 @@ const TourService = {
    */
   highlightElement(element: HTMLElement): void {
     // Remove previous highlights
-    document.querySelectorAll(".tour-highlight").forEach((el) => {
+    for (const el of document.querySelectorAll(".tour-highlight")) {
       el.classList.remove("tour-highlight");
-    });
+    }
 
     // Add highlight to current element
     element.classList.add("tour-highlight");
@@ -325,12 +325,12 @@ const TourService = {
    * Remove highlight from element
    */
   removeHighlight(): void {
-    document.querySelectorAll(".tour-highlight").forEach((el) => {
+    for (const el of document.querySelectorAll(".tour-highlight")) {
       el.classList.remove("tour-highlight");
       (el as HTMLElement).style.zIndex = "";
       (el as HTMLElement).style.boxShadow = "";
       (el as HTMLElement).style.borderRadius = "";
-    });
+    }
   },
 
   /**
@@ -396,7 +396,7 @@ const TourService = {
         </div>
         <div class="ml-3">
           <h4 class="font-semibold">${this.getMessage(
-            "tourCompletedTitle",
+            "tourCompletedTitle"
           )}</h4>
           <p class="text-sm mt-1">${this.getMessage("tourCompletedContent")}</p>
         </div>
