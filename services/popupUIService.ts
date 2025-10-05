@@ -32,7 +32,7 @@ const PopupUIService = {
    */
   updateElementText(
     selector: string,
-    value: string | number | null | undefined,
+    value: string | number | null | undefined
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
@@ -81,7 +81,7 @@ const PopupUIService = {
         (milestone, index) =>
           totalPoints <= milestone.points ||
           (this.MILESTONES[index + 1] &&
-            totalPoints < this.MILESTONES[index + 1].points),
+            totalPoints < this.MILESTONES[index + 1].points)
       ) + 1 || this.MILESTONES.length + 1;
 
     const nextMilestone =
@@ -109,11 +109,11 @@ const PopupUIService = {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number,
+    totalPoints: number
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
     );
 
     this.updateElementText(
@@ -122,7 +122,7 @@ const PopupUIService = {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`,
+          } ${browser.i18n.getMessage("textPoints")}`
     );
   },
 
@@ -136,7 +136,7 @@ const PopupUIService = {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`,
+      }`
     );
   },
 
@@ -236,7 +236,7 @@ const PopupUIService = {
         this.updateElementText("#bonus-points", `+${facilitatorBonus} points`);
         this.updateElementText(
           "#total-combined-points",
-          `${finalTotalPoints} points`,
+          `${finalTotalPoints} points`
         );
       }
     } else {
@@ -255,11 +255,11 @@ const PopupUIService = {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      finalTotalPoints,
+      finalTotalPoints
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points,
+      leagueInfo.nextMilestone.points
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -341,7 +341,7 @@ const PopupUIService = {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000,
+    timeout = 6000
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -357,7 +357,7 @@ const PopupUIService = {
    */
   toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean,
+    disabled: boolean
   ): void {
     for (const button of buttons) {
       button.disabled = disabled;
@@ -370,7 +370,7 @@ const PopupUIService = {
   toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean,
+    add: boolean
   ): void {
     for (const element of elements) {
       element.classList.toggle(className, add);
@@ -421,7 +421,7 @@ const PopupUIService = {
 
     // Update each milestone
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.MILESTONE_REQUIREMENTS
     )) {
       this.updateSingleMilestone(
         milestone,
@@ -431,51 +431,62 @@ const PopupUIService = {
           skills: faciSkill,
           labfree: faciCompletion,
         },
-        requirements,
+        requirements
       );
     }
 
     // Update total bonus summary
     const totalBonus = this.calculateFacilitatorBonusPoints(faciCounts);
     this.updateElementText("#total-facilitator-bonus", `${totalBonus} points`);
-
-    // Update milestone bonus breakdown display
-    const breakdownItems = document.querySelectorAll(".breakdown-item");
-    if (breakdownItems.length >= 4) {
-      const milestones = ["1", "2", "3", "ultimate"];
-      for (const [index, milestone] of milestones.entries()) {
-        const item = breakdownItems[index];
-        const pointsElement = item.querySelector(".breakdown-points");
-        if (pointsElement) {
-          const points =
-            bonusBreakdown.milestones[
-              milestone as keyof typeof bonusBreakdown.milestones
-            ];
-          pointsElement.textContent = points > 0 ? `+${points}` : `+0`;
-
-          // Update styling based on earned status
-          if (points > 0) {
-            pointsElement.classList.remove("text-gray-400");
-            pointsElement.classList.add("text-green-600", "font-semibold");
-          } else {
-            pointsElement.classList.remove("text-green-600", "font-semibold");
-            pointsElement.classList.add("text-gray-400");
-          }
-        }
-      }
-    }
-
-    // Update breakdown total
-    const breakdownTotal = document.querySelector("#breakdown-total");
-    if (breakdownTotal) {
-      breakdownTotal.textContent = `+${bonusBreakdown.total}`;
-    }
+    // Update milestone bonus breakdown display and total
+    this.updateBreakdownItems(bonusBreakdown);
+    this.updateBreakdownTotal(bonusBreakdown);
 
     // Setup milestone card click handlers
     this.setupMilestoneCardHandlers();
 
     // Setup breakdown card toggle
     this.setupBreakdownToggle();
+  },
+
+  /**
+   * Update the individual breakdown items in the UI
+   */
+  updateBreakdownItems(bonusBreakdown: any): void {
+    const breakdownItems = document.querySelectorAll(".breakdown-item");
+    if (breakdownItems.length < 4) return;
+
+    const milestones = ["1", "2", "3", "ultimate"];
+    for (const [index, milestone] of milestones.entries()) {
+      const item = breakdownItems[index];
+      const pointsElement = item.querySelector(".breakdown-points");
+      if (!pointsElement) continue;
+
+      const points =
+        bonusBreakdown.milestones[
+          milestone as keyof typeof bonusBreakdown.milestones
+        ];
+      pointsElement.textContent = points > 0 ? `+${points}` : `+0`;
+
+      // Update styling based on earned status
+      if (points > 0) {
+        pointsElement.classList.remove("text-gray-400");
+        pointsElement.classList.add("text-green-600", "font-semibold");
+      } else {
+        pointsElement.classList.remove("text-green-600", "font-semibold");
+        pointsElement.classList.add("text-gray-400");
+      }
+    }
+  },
+
+  /**
+   * Update the breakdown total display
+   */
+  updateBreakdownTotal(bonusBreakdown: any): void {
+    const breakdownTotal = document.querySelector("#breakdown-total");
+    if (breakdownTotal) {
+      breakdownTotal.textContent = `+${bonusBreakdown.total}`;
+    }
   },
 
   /**
@@ -537,7 +548,7 @@ const PopupUIService = {
 
     // Check each milestone completion to find the highest one
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.MILESTONE_REQUIREMENTS
     )) {
       const isCompleted =
         currentStats.games >= requirements.games &&
@@ -601,7 +612,7 @@ const PopupUIService = {
 
     // Check each milestone completion to find the highest one
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.MILESTONE_REQUIREMENTS
     )) {
       const isCompleted =
         currentStats.games >= requirements.games &&
@@ -680,7 +691,7 @@ const PopupUIService = {
     const labfreeProgress =
       Math.min(current.labfree / requirements.labfree, 1) * 100;
     const weighted = Math.round(
-      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4,
+      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4
     );
 
     // Method 3: Proportional Total Progress
@@ -695,7 +706,7 @@ const PopupUIService = {
 
     // Method 4: Minimum Requirement Progress
     const minimum = Math.round(
-      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress),
+      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress)
     );
 
     // Completion status (same for all methods)
@@ -721,7 +732,7 @@ const PopupUIService = {
    */
   toggleMilestoneDetails(milestone: string): void {
     const detailsElement = this.querySelector(
-      `.milestone-card[data-milestone="${milestone}"] .milestone-details`,
+      `.milestone-card[data-milestone="${milestone}"] .milestone-details`
     );
     if (detailsElement) {
       detailsElement.classList.toggle("hidden");
@@ -734,56 +745,68 @@ const PopupUIService = {
   updateSingleMilestone(
     milestone: string,
     current: any,
-    requirements: any,
+    requirements: any
   ): void {
     // Update individual counts
     this.updateElementText(
       `.milestone-${milestone}-games`,
       `${Math.min(current.games, requirements.games)}/${requirements.games}${
         current.games >= requirements.games ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-trivia`,
       `${Math.min(current.trivia, requirements.trivia)}/${requirements.trivia}${
         current.trivia >= requirements.trivia ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-skills`,
       `${Math.min(current.skills, requirements.skills)}/${requirements.skills}${
         current.skills >= requirements.skills ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-labfree`,
       `${Math.min(current.labfree, requirements.labfree)}/${
         requirements.labfree
-      }${current.labfree >= requirements.labfree ? " ✓" : ""}`,
+      }${current.labfree >= requirements.labfree ? " ✓" : ""}`
     );
 
     // Calculate overall progress using different methods
     const progressMethods = this.calculateProgressMethods(
       current,
-      requirements,
+      requirements
     );
 
     // Use Binary Completion method as default
     const progressPercent = progressMethods.binary; // Binary: completion-based (3/4 = 75%)
     const isCompleted = progressMethods.isCompleted;
 
-    // Update progress percentage with tooltip showing alternatives
-    const progressElement = this.querySelector(
-      `.milestone-${milestone}-progress`,
-    );
-    if (progressElement) {
-      progressElement.textContent = `${progressPercent}%`;
+    // Update progress element and status icon via helpers
+    this.updateProgressElement(milestone, progressPercent, progressMethods);
+    this.updateStatusIcon(milestone, isCompleted, progressPercent);
+  },
 
-      // Add tooltip with alternative calculations
-      const tooltip = `Progress Methods:
+  /**
+   * Update the progress element text, tooltip and cursor
+   */
+  updateProgressElement(
+    milestone: string,
+    progressPercent: number,
+    progressMethods: any
+  ): void {
+    const progressElement = this.querySelector(
+      `.milestone-${milestone}-progress`
+    );
+    if (!progressElement) return;
+
+    progressElement.textContent = `${progressPercent}%`;
+
+    const tooltip = `Progress Methods:
 • Binary: ${progressMethods.binary}% (completion-based) ★ ACTIVE
 • Weighted: ${progressMethods.weighted}% (average progress)
 • Proportional: ${progressMethods.proportional}% (total ratio)
@@ -797,32 +820,38 @@ Details:
 
 Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
-      progressElement.setAttribute("title", tooltip);
-      progressElement.style.cursor = "help";
-    }
+    progressElement.setAttribute("title", tooltip);
+    progressElement.style.cursor = "help";
 
-    // Update status icon
-    const statusIcon = this.querySelector(`.milestone-${milestone}-status`);
-    if (statusIcon) {
-      if (isCompleted) {
-        statusIcon.className = `fa-solid fa-check-circle text-green-400 text-sm milestone-${milestone}-status`;
-        statusIcon.title = "Completed";
-      } else if (progressPercent > 0) {
-        statusIcon.className = `fa-solid fa-clock text-orange-400 text-sm milestone-${milestone}-status`;
-        statusIcon.title = "In Progress";
-      } else {
-        statusIcon.className = `fa-solid fa-circle text-gray-400 text-sm milestone-${milestone}-status`;
-        statusIcon.title = "Not Started";
-      }
-    }
-
-    // Update progress text color and add tooltip
-    if (progressElement) {
-      progressElement.className = isCompleted
+    // Update progress text color
+    progressElement.className =
+      progressPercent === 100
         ? "text-green-400 font-bold"
         : progressPercent > 0
-          ? "text-orange-400 font-bold"
-          : "text-gray-400 font-bold";
+        ? "text-orange-400 font-bold"
+        : "text-gray-400 font-bold";
+  },
+
+  /**
+   * Update the status icon element based on completion and progress
+   */
+  updateStatusIcon(
+    milestone: string,
+    isCompleted: boolean,
+    progressPercent: number
+  ): void {
+    const statusIcon = this.querySelector(`.milestone-${milestone}-status`);
+    if (!statusIcon) return;
+
+    if (isCompleted) {
+      statusIcon.className = `fa-solid fa-check-circle text-green-400 text-sm milestone-${milestone}-status`;
+      statusIcon.title = "Completed";
+    } else if (progressPercent > 0) {
+      statusIcon.className = `fa-solid fa-clock text-orange-400 text-sm milestone-${milestone}-status`;
+      statusIcon.title = "In Progress";
+    } else {
+      statusIcon.className = `fa-solid fa-circle text-gray-400 text-sm milestone-${milestone}-status`;
+      statusIcon.title = "Not Started";
     }
   },
 
@@ -929,7 +958,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       // Calculate time components
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
-        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
       const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
