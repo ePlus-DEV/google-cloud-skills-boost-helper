@@ -86,9 +86,9 @@ export const DOMUtils = {
       handler: (event: Event) => void | Promise<void>;
     }>,
   ): void {
-    config.forEach(({ id, event, handler }) => {
+    for (const { id, event, handler } of config) {
       this.addEventListener(id, event, handler as EventListener);
-    });
+    }
   },
 
   /**
@@ -106,9 +106,9 @@ export const DOMUtils = {
    * Clear multiple input fields
    */
   clearInputs(ids: string[]): void {
-    ids.forEach((id) => {
+    for (const id of ids) {
       this.setInputValue(id, "");
-    });
+    }
   },
 
   /**

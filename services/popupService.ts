@@ -47,6 +47,8 @@ const PopupService = {
     } else {
       // Profile URL exists but no data - show loading state and try to fetch
       PopupUIService.showLoadingState();
+      // Update milestone section even without arcade data
+      await PopupUIService.updateMilestoneSection();
       this.refreshData();
     }
 
@@ -72,75 +74,30 @@ const PopupService = {
     // Clear existing options
     accountList.innerHTML = "";
 
-    // Load accounts
     const accounts = await AccountService.getAllAccounts();
     const activeAccount = await AccountService.getActiveAccount();
 
-    // Update account count
+    // Update account count if present
     if (accountCount) {
       accountCount.textContent = accounts.length.toString();
     }
 
-    accounts.forEach((account) => {
-      const accountItem = document.createElement("div");
-      accountItem.className =
-        "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
-      accountItem.dataset.accountId = account.id;
-
-      // Create display text with priority: nickname > userName from arcadeData > account name
-      let displayText = account.nickname;
-      if (!displayText && account.arcadeData?.userDetails) {
-        const userDetail = AccountService.extractUserDetails(
-          account.arcadeData,
-        );
-        displayText = userDetail?.userName;
-      }
-      if (!displayText) {
-        displayText = account.name;
-      }
-
-      const isActive = activeAccount && account.id === activeAccount.id;
-
-      // Get user profile image if available
+    for (const account of accounts) {
+      const displayText = this.createAccountDisplayText(account);
       const userDetail = account.arcadeData?.userDetails
         ? AccountService.extractUserDetails(account.arcadeData)
         : null;
       const profileImage = userDetail?.profileImage;
+      const isActive = Boolean(
+        activeAccount && account.id === activeAccount.id,
+      );
 
-      // Create avatar HTML - use real avatar if available, fallback to initial
-      const avatarHTML = profileImage
-        ? `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
-             ${displayText.charAt(0).toUpperCase()}
-           </div>`
-        : `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-             ${displayText.charAt(0).toUpperCase()}
-           </div>`;
-
-      accountItem.innerHTML = `
-        <div class="flex items-center flex-1 min-w-0">
-          ${avatarHTML}
-          <div class="min-w-0 flex-1">
-            <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
-            ${
-              account.name !== displayText
-                ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
-                : ""
-            }
-          </div>
-        </div>
-        <div class="flex items-center">
-          ${
-            isActive
-              ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
-              : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
-          }
-        </div>
-      `;
-
-      if (isActive) {
-        accountItem.classList.add("bg-slate-700/60");
-      }
+      const accountItem = this.createAccountItem(
+        account,
+        displayText,
+        profileImage,
+        isActive,
+      );
 
       accountItem.addEventListener("click", () => {
         if (!isActive) {
@@ -150,13 +107,90 @@ const PopupService = {
       });
 
       accountList.appendChild(accountItem);
-    });
+    }
 
-    // Update current account info
     if (activeAccount) {
       this.updatePopupAccountInfo(activeAccount);
       this.updateUserNameFromAccount(activeAccount);
     }
+  },
+
+  /**
+   * Create display text for an account with priority: nickname > userName from arcadeData > account name
+   */
+  createAccountDisplayText(account: Account): string {
+    let displayText = account.nickname;
+
+    if (!displayText && account.arcadeData?.userDetails) {
+      const userDetail = AccountService.extractUserDetails(account.arcadeData);
+      displayText = userDetail?.userName;
+    }
+
+    if (!displayText) {
+      displayText = account.name;
+    }
+
+    return displayText;
+  },
+
+  /**
+   * Create avatar HTML string given display text and optional profile image
+   */
+  createAvatarHTML(displayText: string, profileImage?: string | null): string {
+    if (profileImage) {
+      return `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+             ${displayText.charAt(0).toUpperCase()}
+           </div>`;
+    }
+
+    return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+             ${displayText.charAt(0).toUpperCase()}
+           </div>`;
+  },
+
+  /**
+   * Create account item element for the dropdown
+   */
+  createAccountItem(
+    account: Account,
+    displayText: string,
+    profileImage: string | undefined | null,
+    isActive: boolean,
+  ): HTMLElement {
+    const accountItem = document.createElement("div");
+    accountItem.className =
+      "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
+    accountItem.dataset.accountId = account.id;
+
+    const avatarHTML = this.createAvatarHTML(displayText, profileImage);
+
+    accountItem.innerHTML = `
+      <div class="flex items-center flex-1 min-w-0">
+        ${avatarHTML}
+        <div class="min-w-0 flex-1">
+          <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
+          ${
+            account.name !== displayText
+              ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
+              : ""
+          }
+        </div>
+      </div>
+      <div class="flex items-center">
+        ${
+          isActive
+            ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
+            : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
+        }
+      </div>
+    `;
+
+    if (isActive) {
+      accountItem.classList.add("bg-slate-700/60");
+    }
+
+    return accountItem;
   },
 
   /**
@@ -412,6 +446,9 @@ const PopupService = {
           PopupUIService.showLoadingState();
           await this.refreshData();
         }
+
+        // Always update milestone section when switching accounts
+        await PopupUIService.updateMilestoneSection();
       }
     }
   },
@@ -483,16 +520,20 @@ const PopupService = {
    */
   setupEventListeners(): void {
     // Refresh buttons
-    document.querySelectorAll(".refresh-button").forEach((button) => {
+    for (const button of document.querySelectorAll(
+      ".refresh-button",
+    ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => this.refreshData());
-    });
+    }
 
     // Settings buttons
-    document.querySelectorAll(".settings-button").forEach((button) => {
+    for (const button of document.querySelectorAll(
+      ".settings-button",
+    ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => {
         window.open(browser.runtime.getURL("/options.html"), "_blank");
       });
-    });
+    }
 
     // Announcement toggle
     const announcementToggle = document.getElementById("announcement-toggle");

@@ -1,24 +1,14 @@
 import { PopupService, AccountService } from "../../services";
-
-// Extend Window interface to include testCopy
-declare global {
-  interface Window {
-    testCopy: () => Promise<void>;
-  }
-}
-
-// Test function for copy button
-(window as Window & typeof globalThis).testCopy = async () => {
-  try {
-    const testUrl = "https://www.cloudskillsboost.google/public_profiles/test";
-    await navigator.clipboard.writeText(testUrl);
-  } catch (error) {
-    console.error("TEST: Copy failed:", error);
-  }
-};
+import PopupUIService from "../../services/popupUIService";
 
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
+  // Initialize milestones section and countdown with Firebase Remote Config
+  PopupUIService.updateMilestoneSection().then(async () => {
+    // Start Firebase-powered countdown
+    await PopupUIService.startFacilitatorCountdown();
+  });
+
   // Add copy button event listener after initialization
   setTimeout(() => {
     const copyBtn = document.getElementById("copy-profile-url");

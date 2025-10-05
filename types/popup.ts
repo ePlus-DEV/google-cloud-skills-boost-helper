@@ -24,6 +24,12 @@ export interface ArcadeData {
     skillPoints?: number;
     specialPoints?: number;
   };
+  faciCounts?: {
+    faciGame?: number;
+    faciTrivia?: number;
+    faciSkill?: number;
+    faciCompletion?: number;
+  };
   totalArcadePoints?: number;
   badges?: BadgeData[];
   lastUpdated?: string;
@@ -56,6 +62,7 @@ export interface Account {
   createdAt: string;
   lastUsed: string;
   isActive?: boolean;
+  facilitatorProgram?: boolean;
 }
 
 export interface AccountsData {
@@ -71,6 +78,7 @@ export interface CreateAccountOptions {
   nickname?: string;
   profileUrl: string;
   arcadeData?: ArcadeData;
+  facilitatorProgram?: boolean;
 }
 
 export interface StorageKeys {

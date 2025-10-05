@@ -2,3 +2,4 @@
 export * from "./api";
 export * from "./popup";
 export * from "./markdown";
+export * from "./firebase";

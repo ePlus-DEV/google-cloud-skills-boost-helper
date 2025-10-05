@@ -30,6 +30,22 @@ const AccountService = {
         },
       };
     }
+
+    // Migration: Add facilitatorProgram property to existing accounts
+    let needsUpdate = false;
+    for (const accountId in data.accounts) {
+      const account = data.accounts[accountId];
+      if (account.facilitatorProgram === undefined) {
+        account.facilitatorProgram = true; // Default to true for existing accounts
+        needsUpdate = true;
+      }
+    }
+
+    // Save updated data if migration was needed
+    if (needsUpdate) {
+      await this.saveAccountsData(data);
+    }
+
     return data;
   },
 
@@ -136,6 +152,7 @@ const AccountService = {
       arcadeData: options.arcadeData,
       createdAt: now,
       lastUsed: now,
+      facilitatorProgram: options.facilitatorProgram ?? true,
     };
 
     const data = await this.getAccountsData();

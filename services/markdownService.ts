@@ -168,7 +168,7 @@ const MarkdownService = {
   setupLinkHandlers(container: Element): void {
     const links = container.querySelectorAll("a[href]");
 
-    links.forEach((link) => {
+    for (const link of links) {
       const anchorElement = link as HTMLAnchorElement;
 
       // Add click handler for extension context
@@ -183,7 +183,7 @@ const MarkdownService = {
           await MarkdownService.openLink(href);
         }
       });
-    });
+    }
   },
 
   /**
