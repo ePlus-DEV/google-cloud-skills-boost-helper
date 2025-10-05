@@ -466,7 +466,7 @@ const PopupUIService = {
         bonusBreakdown.milestones[
           milestone as keyof typeof bonusBreakdown.milestones
         ];
-      pointsElement.textContent = points > 0 ? `+${points}` : `+0`;
+      pointsElement.textContent = points > 0 ? `+${points}` : "+0";
 
       // Update styling based on earned status
       if (points > 0) {
