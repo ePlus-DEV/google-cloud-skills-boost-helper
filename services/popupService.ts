@@ -94,7 +94,7 @@ const PopupService = {
         account,
         displayText,
         profileImage,
-        isActive
+        isActive,
       );
 
       accountItem.addEventListener("click", () => {
@@ -154,7 +154,7 @@ const PopupService = {
     account: Account,
     displayText: string,
     profileImage: string | undefined | null,
-    isActive: boolean
+    isActive: boolean,
   ): HTMLElement {
     const accountItem = document.createElement("div");
     accountItem.className =
@@ -259,12 +259,12 @@ const PopupService = {
               newCopyBtn.classList.add(
                 "text-green-400",
                 "bg-green-400/20",
-                "border-green-400/50"
+                "border-green-400/50",
               );
               newCopyBtn.classList.remove(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30"
+                "border-blue-400/30",
               );
               newCopyBtn.title = "Copied!";
 
@@ -273,12 +273,12 @@ const PopupService = {
                 newCopyBtn.classList.remove(
                   "text-green-400",
                   "bg-green-400/20",
-                  "border-green-400/50"
+                  "border-green-400/50",
                 );
                 newCopyBtn.classList.add(
                   "text-blue-400",
                   "bg-blue-400/20",
-                  "border-blue-400/30"
+                  "border-blue-400/30",
                 );
                 newCopyBtn.title = "Copy Profile URL";
               }, 1500);
@@ -292,12 +292,12 @@ const PopupService = {
               newCopyBtn.classList.add(
                 "text-red-400",
                 "bg-red-400/20",
-                "border-red-400/50"
+                "border-red-400/50",
               );
               newCopyBtn.classList.remove(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30"
+                "border-blue-400/30",
               );
               newCopyBtn.title = "Failed to copy";
 
@@ -306,12 +306,12 @@ const PopupService = {
                 newCopyBtn.classList.remove(
                   "text-red-400",
                   "bg-red-400/20",
-                  "border-red-400/50"
+                  "border-red-400/50",
                 );
                 newCopyBtn.classList.add(
                   "text-blue-400",
                   "bg-blue-400/20",
-                  "border-blue-400/30"
+                  "border-blue-400/30",
                 );
                 newCopyBtn.title = "Copy Profile URL";
               }, 1500);
@@ -324,12 +324,12 @@ const PopupService = {
             newCopyBtn.classList.add(
               "text-yellow-400",
               "bg-yellow-400/20",
-              "border-yellow-400/50"
+              "border-yellow-400/50",
             );
             newCopyBtn.classList.remove(
               "text-blue-400",
               "bg-blue-400/20",
-              "border-blue-400/30"
+              "border-blue-400/30",
             );
             newCopyBtn.title = "No URL available";
 
@@ -338,12 +338,12 @@ const PopupService = {
               newCopyBtn.classList.remove(
                 "text-yellow-400",
                 "bg-yellow-400/20",
-                "border-yellow-400/50"
+                "border-yellow-400/50",
               );
               newCopyBtn.classList.add(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30"
+                "border-blue-400/30",
               );
               newCopyBtn.title = "Copy Profile URL";
             }, 1500);
@@ -392,7 +392,7 @@ const PopupService = {
 
       if (!displayName && account.arcadeData?.userDetails) {
         const userDetail = AccountService.extractUserDetails(
-          account.arcadeData
+          account.arcadeData,
         );
         displayName = userDetail?.userName;
       }
@@ -457,7 +457,7 @@ const PopupService = {
   showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings")
+      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -472,10 +472,10 @@ const PopupService = {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button"
+      ".refresh-button",
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon"
+      ".refresh-icon",
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -484,7 +484,7 @@ const PopupService = {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl
+        this.profileUrl,
       );
 
       if (arcadeData) {
@@ -495,7 +495,7 @@ const PopupService = {
         if (this.currentAccount) {
           await AccountService.updateAccountArcadeData(
             this.currentAccount.id,
-            arcadeData
+            arcadeData,
           );
         }
 
@@ -519,14 +519,14 @@ const PopupService = {
   setupEventListeners(): void {
     // Refresh buttons
     for (const button of document.querySelectorAll(
-      ".refresh-button"
+      ".refresh-button",
     ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => this.refreshData());
     }
 
     // Settings buttons
     for (const button of document.querySelectorAll(
-      ".settings-button"
+      ".settings-button",
     ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => {
         window.open(browser.runtime.getURL("/options.html"), "_blank");
@@ -537,7 +537,7 @@ const PopupService = {
     const announcementToggle = document.getElementById("announcement-toggle");
     if (announcementToggle) {
       announcementToggle.addEventListener("click", () =>
-        this.toggleAnnouncement()
+        this.toggleAnnouncement(),
       );
     }
   },
@@ -587,7 +587,7 @@ const PopupService = {
     await MarkdownService.loadAndRender(
       MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
       "popup-markdown-container",
-      ".prose"
+      ".prose",
     );
   },
 };
