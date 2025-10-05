@@ -58,3 +58,13 @@ export interface CountdownConfig {
   enabled: boolean;
   title?: string;
 }
+
+/**
+ * Countdown state refresh result
+ */
+export interface CountdownStateRefreshResult {
+  enabled: boolean;
+  deadline: string;
+  timezone: string;
+  changed: boolean;
+}
