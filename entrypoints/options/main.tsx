@@ -3,7 +3,7 @@ import { OptionsService } from "../../services";
 // Function to localize elements with data-i18n attributes
 function localizeElements() {
   const elements = document.querySelectorAll("[data-i18n]");
-  elements.forEach((element) => {
+  for (const element of elements) {
     const key = element.getAttribute("data-i18n");
     if (key && chrome.i18n) {
       const message = chrome.i18n.getMessage(key);
@@ -11,7 +11,7 @@ function localizeElements() {
         element.textContent = message;
       }
     }
-  });
+  }
 }
 
 // Initialize options page when DOM is ready

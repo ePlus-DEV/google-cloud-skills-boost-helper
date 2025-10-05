@@ -15,11 +15,11 @@ class SearchService {
     const titleWords = title.toLowerCase().split(/\s+/);
 
     let exactMatches = 0;
-    queryWords.forEach((queryWord) => {
+    for (const queryWord of queryWords) {
       if (titleWords.includes(queryWord)) {
         exactMatches++;
       }
-    });
+    }
 
     return exactMatches / queryWords.length;
   }

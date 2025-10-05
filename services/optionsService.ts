@@ -72,7 +72,9 @@ const OptionsService = {
 
     // Clear existing account cards (keep no-accounts message)
     const existingCards = accountsList.querySelectorAll(".account-card");
-    existingCards.forEach((card) => card.remove());
+    for (const card of existingCards) {
+      card.remove();
+    }
 
     if (accounts.length === 0) {
       // Show no accounts message
@@ -86,11 +88,11 @@ const OptionsService = {
       }
 
       // Create account cards
-      accounts.forEach((account) => {
+      for (const account of accounts) {
         const isActive = activeAccount?.id === account.id;
         const accountCard = this.createAccountCard(account, isActive);
         accountsList.appendChild(accountCard);
-      });
+      }
     }
   },
 
@@ -134,6 +136,11 @@ const OptionsService = {
                     ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i>Active</span>'
                     : ""
                 }
+                ${
+                  account.facilitatorProgram
+                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"><i class="fa-solid fa-chalkboard-teacher mr-1"></i>Facilitator</span>'
+                    : ""
+                }
               </div>
               
               ${
@@ -164,6 +171,17 @@ const OptionsService = {
               </button>`
                 : ""
             }
+            
+            <!-- Facilitator Program Button -->
+            <button class="facilitator-btn ${
+              account.facilitatorProgram
+                ? "bg-purple-500 hover:bg-purple-600 text-white"
+                : "bg-gray-200 hover:bg-gray-300 text-gray-600"
+            } p-2 rounded-lg transition duration-200" data-account-id="${
+              account.id
+            }" title="Toggle Facilitator Program">
+              <i class="fa-solid fa-chalkboard-teacher"></i>
+            </button>
             
             <button class="update-account-btn text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition duration-200" data-account-id="${
               account.id
@@ -205,6 +223,10 @@ const OptionsService = {
 
       // Reload accounts to update UI
       await this.loadAccounts();
+
+      // Update milestone section visibility for new active account
+      const PopupUIService = (await import("./popupUIService")).default;
+      await PopupUIService.updateMilestoneSection();
 
       // Show success message
       this.showMessage(
@@ -331,6 +353,7 @@ const OptionsService = {
     // Use event delegation for account cards
     const accountsList = document.getElementById("accounts-list");
     if (accountsList) {
+      // Handle button clicks
       accountsList.addEventListener("click", async (e) => {
         const target = e.target as HTMLElement;
         const button = target.closest("button");
@@ -351,6 +374,14 @@ const OptionsService = {
           await this.showEditAccountModal(accountId);
         } else if (button.classList.contains("delete-account-btn")) {
           await this.handleDeleteAccount(accountId);
+        } else if (button.classList.contains("facilitator-btn")) {
+          const account = await AccountService.getAccountById(accountId);
+          if (account) {
+            await this.handleAccountFacilitatorToggle(
+              accountId,
+              !account.facilitatorProgram,
+            );
+          }
         }
       });
     }
@@ -417,6 +448,46 @@ const OptionsService = {
   },
 
   /**
+   * Handle facilitator program toggle for specific account
+   */
+  async handleAccountFacilitatorToggle(
+    accountId: string,
+    enabled: boolean,
+  ): Promise<void> {
+    try {
+      const account = await AccountService.getAccountById(accountId);
+      if (!account) return;
+
+      await AccountService.updateAccount(accountId, {
+        facilitatorProgram: enabled,
+      });
+
+      await this.loadAccounts(); // Reload to update badges and buttons
+
+      // Update milestone section visibility if this is the active account
+      const activeAccount = await AccountService.getActiveAccount();
+      if (activeAccount && activeAccount.id === accountId) {
+        // Import PopupUIService to update milestone section
+        const PopupUIService = (await import("./popupUIService")).default;
+        await PopupUIService.updateMilestoneSection();
+      }
+
+      this.showMessage(
+        `Facilitator Program ${enabled ? "enabled" : "disabled"} for ${
+          account.name
+        }`,
+        "success",
+      );
+    } catch (error) {
+      console.error("Error updating facilitator program:", error);
+      this.showMessage("Error updating Facilitator Program setting", "error");
+
+      // UI will be corrected on next loadAccounts() call
+      await this.loadAccounts();
+    }
+  },
+
+  /**
    * Setup version display
    */
   setupVersion(): void {
@@ -434,7 +505,7 @@ const OptionsService = {
     // Find all elements with data-i18n attribute
     const i18nElements = document.querySelectorAll("[data-i18n]");
 
-    i18nElements.forEach((element) => {
+    for (const element of i18nElements) {
       const messageKey = element.getAttribute("data-i18n");
       if (messageKey) {
         try {
@@ -448,7 +519,7 @@ const OptionsService = {
           console.error("Error applying i18n translation:", error);
         }
       }
-    });
+    }
   },
 
   /**
@@ -921,10 +992,15 @@ const OptionsService = {
       }
 
       // Create account directly
+      const facilitatorToggle = document.getElementById(
+        "account-facilitator-toggle",
+      ) as HTMLInputElement;
+
       const newAccount = await AccountService.createAccount({
         name: userDetail.userName,
         profileUrl: urlInput.value.trim(),
         arcadeData,
+        facilitatorProgram: facilitatorToggle?.checked || true,
       });
 
       // Hide loading, show success and nickname step
@@ -1260,6 +1336,20 @@ const OptionsService = {
       account.nickname || "",
     );
 
+    // Set facilitator program toggle
+    const facilitatorToggle = document.getElementById(
+      "edit-account-facilitator-toggle",
+    ) as HTMLInputElement;
+    if (facilitatorToggle) {
+      facilitatorToggle.checked = account.facilitatorProgram || false;
+    }
+
+    // Store account ID for editing
+    const modal = document.getElementById("edit-account-modal");
+    if (modal) {
+      modal.dataset.accountId = account.id;
+    }
+
     // Show modal
     ModalUtils.showModal("edit-account-modal");
   },
@@ -1408,16 +1498,23 @@ const OptionsService = {
    * Handle editing current account
    */
   async handleEditAccount(): Promise<void> {
-    const activeAccount = await AccountService.getActiveAccount();
-    if (!activeAccount) return;
+    const modal = document.getElementById("edit-account-modal");
+    const accountId = modal?.dataset.accountId;
+
+    if (!accountId) return;
 
     const nicknameInput = document.getElementById(
       "edit-account-nickname-input",
     ) as HTMLInputElement;
 
+    const facilitatorToggle = document.getElementById(
+      "edit-account-facilitator-toggle",
+    ) as HTMLInputElement;
+
     try {
-      await AccountService.updateAccount(activeAccount.id, {
+      await AccountService.updateAccount(accountId, {
         nickname: nicknameInput.value.trim() || undefined,
+        facilitatorProgram: facilitatorToggle.checked,
       });
 
       await this.loadAccounts();

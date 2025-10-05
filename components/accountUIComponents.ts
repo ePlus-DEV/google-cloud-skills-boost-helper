@@ -201,7 +201,7 @@ const AccountUIService = {
     const accounts = await AccountService.getAllAccounts();
     const activeAccount = await AccountService.getActiveAccount();
 
-    accounts.forEach((account) => {
+    for (const account of accounts) {
       const option = document.createElement("option");
       option.value = account.id;
       option.textContent = account.nickname || account.name;
@@ -211,7 +211,7 @@ const AccountUIService = {
       }
 
       selector.appendChild(option);
-    });
+    }
 
     // Update current account info
     if (activeAccount) {
@@ -359,17 +359,10 @@ const AccountUIService = {
       "import-json-textarea",
     ) as HTMLTextAreaElement;
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        this.hideImportModal();
-      });
-    }
+    const hideModal = () => this.hideImportModal();
 
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => {
-        this.hideImportModal();
-      });
-    }
+    // Wire up basic hide/close handlers and outside-click behavior via helper
+    this.setupModalHideHandlers(modal, closeBtn, cancelBtn, hideModal);
 
     if (confirmBtn) {
       confirmBtn.addEventListener("click", async () => {
@@ -377,28 +370,55 @@ const AccountUIService = {
       });
     }
 
-    // File input change
-    if (fileInput) {
-      fileInput.addEventListener("change", (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file && textArea) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            textArea.value = e.target?.result as string;
-          };
-          reader.readAsText(file);
-        }
-      });
+    // File input change handling extracted to helper
+    this.setupFileInputHandler(fileInput, textArea);
+  },
+
+  /**
+   * Attach close/cancel handlers and outside-click behavior for a modal
+   */
+  setupModalHideHandlers(
+    modal: HTMLElement | null,
+    closeBtn: Element | null,
+    cancelBtn: Element | null,
+    hideCallback: () => void,
+  ): void {
+    if (closeBtn) {
+      closeBtn.addEventListener("click", hideCallback);
     }
 
-    // Close modal when clicking outside
+    if (cancelBtn) {
+      cancelBtn.addEventListener("click", hideCallback);
+    }
+
     if (modal) {
       modal.addEventListener("click", (e) => {
         if (e.target === modal) {
-          this.hideImportModal();
+          hideCallback();
         }
       });
     }
+  },
+
+  /**
+   * Attach file input change handler that copies file contents into textarea
+   */
+  setupFileInputHandler(
+    fileInput: HTMLInputElement | null,
+    textArea: HTMLTextAreaElement | null,
+  ): void {
+    if (!fileInput || !textArea) return;
+
+    fileInput.addEventListener("change", (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        textArea.value = ev.target?.result as string;
+      };
+      reader.readAsText(file);
+    });
   },
 
   /**

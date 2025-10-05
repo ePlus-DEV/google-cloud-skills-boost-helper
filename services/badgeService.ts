@@ -32,10 +32,10 @@ const BadgeService = {
       const start = 0;
       const end = BadgeService.currentPage * BadgeService.INCREMENT_COUNT;
 
-      badges.slice(start, end).forEach((badge) => {
+      for (const badge of badges.slice(start, end)) {
         const badgeElement = BadgeService.createBadgeElement(badge);
         activityElement.appendChild(badgeElement);
-      });
+      }
 
       BadgeService.updatePaginationInfo(BadgeService.currentPage, totalPages);
     };

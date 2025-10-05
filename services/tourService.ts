@@ -302,9 +302,9 @@ const TourService = {
    */
   highlightElement(element: HTMLElement): void {
     // Remove previous highlights
-    document.querySelectorAll(".tour-highlight").forEach((el) => {
+    for (const el of document.querySelectorAll(".tour-highlight")) {
       el.classList.remove("tour-highlight");
-    });
+    }
 
     // Add highlight to current element
     element.classList.add("tour-highlight");
@@ -325,12 +325,12 @@ const TourService = {
    * Remove highlight from element
    */
   removeHighlight(): void {
-    document.querySelectorAll(".tour-highlight").forEach((el) => {
+    for (const el of document.querySelectorAll(".tour-highlight")) {
       el.classList.remove("tour-highlight");
       (el as HTMLElement).style.zIndex = "";
       (el as HTMLElement).style.boxShadow = "";
       (el as HTMLElement).style.borderRadius = "";
-    });
+    }
   },
 
   /**
