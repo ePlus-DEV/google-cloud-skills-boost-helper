@@ -571,16 +571,16 @@ const PopupUIService = {
       },
     );
 
-    console.log(`💰 BONUS CALCULATION SUMMARY:`);
-    console.log(
+    (`💰 BONUS CALCULATION SUMMARY:`);
+    (
       `   Highest Completed Milestone: ${
         highestCompletedMilestone === 4
           ? "Ultimate"
           : highestCompletedMilestone || "None"
       }`,
     );
-    console.log(`   Total Facilitator Bonus Points: ${highestBonusPoints}`);
-    console.log(
+    (`   Total Facilitator Bonus Points: ${highestBonusPoints}`);
+    (
       `   Logic: Only award points for the HIGHEST milestone reached`,
     );
 
@@ -1022,7 +1022,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
       // Log first update only
       if (!countdownLogged) {
-        console.log(
+        (
           `⏱️ Time remaining: ${formattedDays}d ${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`,
         );
         countdownLogged = true;
@@ -1121,7 +1121,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   ("  - Ultimate: +25 points ✅");
   `  📊 Total bonus: ${bonusPoints} points`;
 
-  console.log(
+  (
     "✅ All milestones completed! Bonus will be added to arcade total.",
   );
 };
@@ -1172,14 +1172,14 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   const bonusPoints = PopupUIService.calculateFacilitatorBonusPoints(
     testData.faciCounts,
   );
-  console.log("🎯 Facilitator Bonus Breakdown:");
-  console.log(
+  ("🎯 Facilitator Bonus Breakdown:");
+  (
     "  - Milestone 1: +2 points ❌ (need 6 games, 5 trivia, 14 skills, 6 labfree)",
   );
-  console.log("  - Milestone 2: +8 points ❌");
-  console.log("  - Milestone 3: +15 points ❌");
-  console.log("  - Ultimate: +25 points ❌");
-  console.log(`  📊 Total bonus: ${bonusPoints} points (should be 0)`);
+  ("  - Milestone 2: +8 points ❌");
+  ("  - Milestone 3: +15 points ❌");
+  ("  - Ultimate: +25 points ❌");
+  (`  📊 Total bonus: ${bonusPoints} points (should be 0)`);
 
   ("❌ No milestones completed! No bonus points awarded.");
 };
@@ -1195,12 +1195,12 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     },
   };
 
-  console.log("🔍 Testing User's Specific Case:");
-  console.log("Data:", testData.faciCounts);
-  console.log(
+  ("🔍 Testing User's Specific Case:");
+  ("Data:", testData.faciCounts);
+  (
     "Ultimate Requirements: games: 12, trivia: 8, skills: 52, labfree: 24",
   );
-  console.log("");
+  ("");
 
   PopupUIService.updateMilestoneData(testData.faciCounts);
 
@@ -1219,7 +1219,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   if (bonusPoints === 0) {
     ("✅ CORRECT! No bonus awarded until ALL requirements met.");
   } else {
-    console.log(
+    (
       "❌ ERROR! Bonus should be 0 because games requirement not met.",
     );
   }
@@ -1236,12 +1236,12 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     },
   };
 
-  console.log("🧮 Testing Different Progress Calculation Methods:");
-  console.log("Data:", testData.faciCounts);
-  console.log(
+  ("🧮 Testing Different Progress Calculation Methods:");
+  ("Data:", testData.faciCounts);
+  (
     "Ultimate Requirements: games: 12, trivia: 8, skills: 52, labfree: 24",
   );
-  console.log("");
+  ("");
 
   const requirements = { games: 12, trivia: 8, skills: 52, labfree: 24 };
   const current = {
@@ -1301,10 +1301,10 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   };
   "Data:", case1.faciCounts;
   let bonus1 = PopupUIService.calculateFacilitatorBonusPoints(case1.faciCounts);
-  console.log(
+  (
     `Expected: 2 points (only Milestone 1), Actual: ${bonus1} points`,
   );
-  console.log("");
+  ("");
 
   // Test Case 2: Milestone 1 + 2 completed
   ("📍 TEST CASE 2: Milestone 1 + 2 should be completed");
@@ -1336,26 +1336,26 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   `Expected: 0 points (not complete), Actual: ${bonus3} points`;
   ("");
 
-  console.log("💡 Progressive Logic Explanation:");
-  console.log("   ✅ Milestone 1 (6/5/14/6): +2 points");
-  console.log("   ✅ Milestone 2 (8/6/28/12): +2+8 = 10 points total");
-  console.log("   ✅ Milestone 3 (10/7/38/18): +2+8+15 = 25 points total");
-  console.log("   ✅ Ultimate (12/8/52/24): +2+8+15+25 = 50 points total");
-  console.log("");
-  console.log("🔍 Current Logic: Each milestone checked INDEPENDENTLY");
-  console.log(
+  ("💡 Progressive Logic Explanation:");
+  ("   ✅ Milestone 1 (6/5/14/6): +2 points");
+  ("   ✅ Milestone 2 (8/6/28/12): +2+8 = 10 points total");
+  ("   ✅ Milestone 3 (10/7/38/18): +2+8+15 = 25 points total");
+  ("   ✅ Ultimate (12/8/52/24): +2+8+15+25 = 50 points total");
+  ("");
+  ("🔍 Current Logic: Each milestone checked INDEPENDENTLY");
+  (
     "   If you have 8/6/28/12, you get bonus for BOTH Milestone 1 AND 2",
   );
 };
 
 // CRITICAL: Test function for user's EXACT issue (11/12 games = shouldn't get 25 points)
 (window as any).testUserExactIssue = function () {
-  console.log("🚨 TESTING USER'S EXACT ISSUE:");
-  console.log(
+  ("🚨 TESTING USER'S EXACT ISSUE:");
+  (
     "User reported: 11/12 games but getting 25 points Ultimate milestone",
   );
-  console.log("Expected: Should get 0 points because games 11 < 12 required");
-  console.log("");
+  ("Expected: Should get 0 points because games 11 < 12 required");
+  ("");
 
   const problemData = {
     faciCounts: {
@@ -1366,35 +1366,35 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     },
   };
 
-  console.log("Problem Data:", problemData.faciCounts);
-  console.log(
+  ("Problem Data:", problemData.faciCounts);
+  (
     "Ultimate Requirements: {games: 12, trivia: 8, skills: 52, labfree: 24}",
   );
-  console.log("");
+  ("");
 
   // Test each requirement manually
-  console.log("Manual Check:");
-  console.log(
+  ("Manual Check:");
+  (
     `  games: ${problemData.faciCounts.faciGame} >= 12 = ${
       problemData.faciCounts.faciGame >= 12
     } ❌`,
   );
-  console.log(
+  (
     `  trivia: ${problemData.faciCounts.faciTrivia} >= 8 = ${
       problemData.faciCounts.faciTrivia >= 8
     } ✅`,
   );
-  console.log(
+  (
     `  skills: ${problemData.faciCounts.faciSkill} >= 52 = ${
       problemData.faciCounts.faciSkill >= 52
     } ✅`,
   );
-  console.log(
+  (
     `  labfree: ${problemData.faciCounts.faciCompletion} >= 24 = ${
       problemData.faciCounts.faciCompletion >= 24
     } ✅`,
   );
-  console.log("");
+  ("");
 
   // Should be FALSE because games requirement not met
   const shouldBeCompleted =
@@ -1402,10 +1402,10 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     problemData.faciCounts.faciTrivia >= 8 &&
     problemData.faciCounts.faciSkill >= 52 &&
     problemData.faciCounts.faciCompletion >= 24;
-  console.log(
+  (
     `Manual isCompleted calculation: ${shouldBeCompleted} (should be FALSE)`,
   );
-  console.log("");
+  ("");
 
   // Now test actual function
   const actualBonus = PopupUIService.calculateFacilitatorBonusPoints(
@@ -1415,34 +1415,34 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   ("");
 
   if (actualBonus === 0) {
-    console.log(
+    (
       "✅ CORRECT! Function working properly - no bonus for incomplete milestone",
     );
   } else {
-    console.log("❌ BUG FOUND! Function incorrectly awarding bonus points");
-    console.log(
+    ("❌ BUG FOUND! Function incorrectly awarding bonus points");
+    (
       "   Check console logs above to see which milestone is incorrectly passing",
     );
   }
 
-  console.log("");
-  console.log("🔍 If bug found, check:");
-  console.log("   1. Are requirements correct in MILESTONE_REQUIREMENTS?");
-  console.log(
+  ("");
+  ("🔍 If bug found, check:");
+  ("   1. Are requirements correct in MILESTONE_REQUIREMENTS?");
+  (
     "   2. Is the actual test data different from what user reported?",
   );
-  console.log(
+  (
     "   3. Is there a logic error in calculateFacilitatorBonusPoints?",
   );
-  console.log("");
-  console.log(
+  ("");
+  (
     "💡 IMPORTANT: 25 points might be CORRECT if user completed Milestone 1+2+3:",
   );
-  console.log("   Milestone 1 (6/5/14/6): +2 points ✅");
-  console.log("   Milestone 2 (8/6/28/12): +8 points ✅");
-  console.log("   Milestone 3 (10/7/38/18): +15 points ✅");
-  console.log("   Ultimate (12/8/52/24): +0 points ❌ (games 11 < 12)");
-  console.log("   Total: 2+8+15 = 25 points");
+  ("   Milestone 1 (6/5/14/6): +2 points ✅");
+  ("   Milestone 2 (8/6/28/12): +8 points ✅");
+  ("   Milestone 3 (10/7/38/18): +15 points ✅");
+  ("   Ultimate (12/8/52/24): +0 points ❌ (games 11 < 12)");
+  ("   Total: 2+8+15 = 25 points");
 };
 
 /**
