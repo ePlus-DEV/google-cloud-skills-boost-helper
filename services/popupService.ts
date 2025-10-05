@@ -74,75 +74,28 @@ const PopupService = {
     // Clear existing options
     accountList.innerHTML = "";
 
-    // Load accounts
     const accounts = await AccountService.getAllAccounts();
     const activeAccount = await AccountService.getActiveAccount();
 
-    // Update account count
+    // Update account count if present
     if (accountCount) {
       accountCount.textContent = accounts.length.toString();
     }
 
     for (const account of accounts) {
-      const accountItem = document.createElement("div");
-      accountItem.className =
-        "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
-      accountItem.dataset.accountId = account.id;
-
-      // Create display text with priority: nickname > userName from arcadeData > account name
-      let displayText = account.nickname;
-      if (!displayText && account.arcadeData?.userDetails) {
-        const userDetail = AccountService.extractUserDetails(
-          account.arcadeData,
-        );
-        displayText = userDetail?.userName;
-      }
-      if (!displayText) {
-        displayText = account.name;
-      }
-
-      const isActive = activeAccount && account.id === activeAccount.id;
-
-      // Get user profile image if available
+      const displayText = this.createAccountDisplayText(account);
       const userDetail = account.arcadeData?.userDetails
         ? AccountService.extractUserDetails(account.arcadeData)
         : null;
       const profileImage = userDetail?.profileImage;
+      const isActive = !!(activeAccount && account.id === activeAccount.id);
 
-      // Create avatar HTML - use real avatar if available, fallback to initial
-      const avatarHTML = profileImage
-        ? `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
-             ${displayText.charAt(0).toUpperCase()}
-           </div>`
-        : `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-             ${displayText.charAt(0).toUpperCase()}
-           </div>`;
-
-      accountItem.innerHTML = `
-        <div class="flex items-center flex-1 min-w-0">
-          ${avatarHTML}
-          <div class="min-w-0 flex-1">
-            <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
-            ${
-              account.name !== displayText
-                ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
-                : ""
-            }
-          </div>
-        </div>
-        <div class="flex items-center">
-          ${
-            isActive
-              ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
-              : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
-          }
-        </div>
-      `;
-
-      if (isActive) {
-        accountItem.classList.add("bg-slate-700/60");
-      }
+      const accountItem = this.createAccountItem(
+        account,
+        displayText,
+        profileImage,
+        isActive
+      );
 
       accountItem.addEventListener("click", () => {
         if (!isActive) {
@@ -154,11 +107,88 @@ const PopupService = {
       accountList.appendChild(accountItem);
     }
 
-    // Update current account info
     if (activeAccount) {
       this.updatePopupAccountInfo(activeAccount);
       this.updateUserNameFromAccount(activeAccount);
     }
+  },
+
+  /**
+   * Create display text for an account with priority: nickname > userName from arcadeData > account name
+   */
+  createAccountDisplayText(account: Account): string {
+    let displayText = account.nickname;
+
+    if (!displayText && account.arcadeData?.userDetails) {
+      const userDetail = AccountService.extractUserDetails(account.arcadeData);
+      displayText = userDetail?.userName;
+    }
+
+    if (!displayText) {
+      displayText = account.name;
+    }
+
+    return displayText;
+  },
+
+  /**
+   * Create avatar HTML string given display text and optional profile image
+   */
+  createAvatarHTML(displayText: string, profileImage?: string | null): string {
+    if (profileImage) {
+      return `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+             ${displayText.charAt(0).toUpperCase()}
+           </div>`;
+    }
+
+    return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+             ${displayText.charAt(0).toUpperCase()}
+           </div>`;
+  },
+
+  /**
+   * Create account item element for the dropdown
+   */
+  createAccountItem(
+    account: Account,
+    displayText: string,
+    profileImage: string | undefined | null,
+    isActive: boolean
+  ): HTMLElement {
+    const accountItem = document.createElement("div");
+    accountItem.className =
+      "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
+    accountItem.dataset.accountId = account.id;
+
+    const avatarHTML = this.createAvatarHTML(displayText, profileImage);
+
+    accountItem.innerHTML = `
+      <div class="flex items-center flex-1 min-w-0">
+        ${avatarHTML}
+        <div class="min-w-0 flex-1">
+          <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
+          ${
+            account.name !== displayText
+              ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
+              : ""
+          }
+        </div>
+      </div>
+      <div class="flex items-center">
+        ${
+          isActive
+            ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
+            : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
+        }
+      </div>
+    `;
+
+    if (isActive) {
+      accountItem.classList.add("bg-slate-700/60");
+    }
+
+    return accountItem;
   },
 
   /**
@@ -229,12 +259,12 @@ const PopupService = {
               newCopyBtn.classList.add(
                 "text-green-400",
                 "bg-green-400/20",
-                "border-green-400/50",
+                "border-green-400/50"
               );
               newCopyBtn.classList.remove(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30",
+                "border-blue-400/30"
               );
               newCopyBtn.title = "Copied!";
 
@@ -243,12 +273,12 @@ const PopupService = {
                 newCopyBtn.classList.remove(
                   "text-green-400",
                   "bg-green-400/20",
-                  "border-green-400/50",
+                  "border-green-400/50"
                 );
                 newCopyBtn.classList.add(
                   "text-blue-400",
                   "bg-blue-400/20",
-                  "border-blue-400/30",
+                  "border-blue-400/30"
                 );
                 newCopyBtn.title = "Copy Profile URL";
               }, 1500);
@@ -262,12 +292,12 @@ const PopupService = {
               newCopyBtn.classList.add(
                 "text-red-400",
                 "bg-red-400/20",
-                "border-red-400/50",
+                "border-red-400/50"
               );
               newCopyBtn.classList.remove(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30",
+                "border-blue-400/30"
               );
               newCopyBtn.title = "Failed to copy";
 
@@ -276,12 +306,12 @@ const PopupService = {
                 newCopyBtn.classList.remove(
                   "text-red-400",
                   "bg-red-400/20",
-                  "border-red-400/50",
+                  "border-red-400/50"
                 );
                 newCopyBtn.classList.add(
                   "text-blue-400",
                   "bg-blue-400/20",
-                  "border-blue-400/30",
+                  "border-blue-400/30"
                 );
                 newCopyBtn.title = "Copy Profile URL";
               }, 1500);
@@ -294,12 +324,12 @@ const PopupService = {
             newCopyBtn.classList.add(
               "text-yellow-400",
               "bg-yellow-400/20",
-              "border-yellow-400/50",
+              "border-yellow-400/50"
             );
             newCopyBtn.classList.remove(
               "text-blue-400",
               "bg-blue-400/20",
-              "border-blue-400/30",
+              "border-blue-400/30"
             );
             newCopyBtn.title = "No URL available";
 
@@ -308,12 +338,12 @@ const PopupService = {
               newCopyBtn.classList.remove(
                 "text-yellow-400",
                 "bg-yellow-400/20",
-                "border-yellow-400/50",
+                "border-yellow-400/50"
               );
               newCopyBtn.classList.add(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30",
+                "border-blue-400/30"
               );
               newCopyBtn.title = "Copy Profile URL";
             }, 1500);
@@ -362,7 +392,7 @@ const PopupService = {
 
       if (!displayName && account.arcadeData?.userDetails) {
         const userDetail = AccountService.extractUserDetails(
-          account.arcadeData,
+          account.arcadeData
         );
         displayName = userDetail?.userName;
       }
@@ -427,7 +457,7 @@ const PopupService = {
   showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
+      browser.i18n.getMessage("textPleaseSetUpTheSettings")
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -442,10 +472,10 @@ const PopupService = {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon",
+      ".refresh-icon"
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -454,7 +484,7 @@ const PopupService = {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl,
+        this.profileUrl
       );
 
       if (arcadeData) {
@@ -465,7 +495,7 @@ const PopupService = {
         if (this.currentAccount) {
           await AccountService.updateAccountArcadeData(
             this.currentAccount.id,
-            arcadeData,
+            arcadeData
           );
         }
 
@@ -489,14 +519,14 @@ const PopupService = {
   setupEventListeners(): void {
     // Refresh buttons
     for (const button of document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => this.refreshData());
     }
 
     // Settings buttons
     for (const button of document.querySelectorAll(
-      ".settings-button",
+      ".settings-button"
     ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => {
         window.open(browser.runtime.getURL("/options.html"), "_blank");
@@ -507,7 +537,7 @@ const PopupService = {
     const announcementToggle = document.getElementById("announcement-toggle");
     if (announcementToggle) {
       announcementToggle.addEventListener("click", () =>
-        this.toggleAnnouncement(),
+        this.toggleAnnouncement()
       );
     }
   },
@@ -557,7 +587,7 @@ const PopupService = {
     await MarkdownService.loadAndRender(
       MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
       "popup-markdown-container",
-      ".prose",
+      ".prose"
     );
   },
 };
