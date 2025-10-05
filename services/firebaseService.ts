@@ -4,15 +4,8 @@ import {
   RemoteConfig,
   fetchAndActivate,
   getValue,
-  getAll,
 } from "firebase/remote-config";
-import type {
-  FirebaseConfig,
-  RemoteConfigParams,
-  RemoteConfigDefaults,
-  FirebaseServiceOptions,
-  CountdownConfig,
-} from "../types/firebase";
+import type { FirebaseConfig, RemoteConfigDefaults } from "../types/firebase";
 
 /**
  * Service to handle Firebase Remote Config functionality
@@ -86,10 +79,10 @@ class FirebaseService {
       // Configure Remote Config settings
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
         ), // 1 hour
         fetchTimeoutMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
         ), // 1 minute
       };
 
@@ -133,7 +126,7 @@ class FirebaseService {
 
       const deadline = getValue(
         this.remoteConfig,
-        "countdown_deadline",
+        "countdown_deadline"
       ).asString();
       return deadline || this.defaultValues.countdown_deadline;
     } catch (error) {
@@ -153,7 +146,7 @@ class FirebaseService {
 
       const timezone = getValue(
         this.remoteConfig,
-        "countdown_timezone",
+        "countdown_timezone"
       ).asString();
       return timezone || this.defaultValues.countdown_timezone;
     } catch (error) {
@@ -173,7 +166,7 @@ class FirebaseService {
 
       const enabled = getValue(
         this.remoteConfig,
-        "countdown_enabled",
+        "countdown_enabled"
       ).asBoolean();
       return enabled;
     } catch (error) {
@@ -183,54 +176,10 @@ class FirebaseService {
   }
 
   /**
-   * Get all Remote Config parameters
-   */
-  getAllParams(): RemoteConfigParams {
-    return {
-      countdown_deadline: this.getCountdownDeadline(),
-      countdown_timezone: this.getCountdownTimezone(),
-      countdown_enabled: this.isCountdownEnabled(),
-    };
-  }
-
-  /**
-   * Get countdown configuration as structured object
-   */
-  getCountdownConfig(): CountdownConfig {
-    return {
-      deadline: this.getCountdownDeadline(),
-      timezone: this.getCountdownTimezone(),
-      enabled: this.isCountdownEnabled(),
-      title: "Google Cloud Skills Boost Challenge Countdown",
-    };
-  }
-
-  /**
-   * Manually refresh Remote Config (for testing)
-   */
-  async refreshConfig(): Promise<boolean> {
-    return await this.fetchConfig();
-  }
-
-  /**
    * Get initialization status
    */
   isInitialized(): boolean {
     return this.initialized;
-  }
-
-  /**
-   * Get Firebase app instance
-   */
-  getApp(): FirebaseApp | null {
-    return this.app;
-  }
-
-  /**
-   * Get Remote Config instance
-   */
-  getRemoteConfig(): RemoteConfig | null {
-    return this.remoteConfig;
   }
 
   /**
@@ -255,10 +204,10 @@ class FirebaseService {
       config: this.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
         ),
         fetchTimeoutMillis: parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
         ),
       },
       defaults: this.getDefaultValues(),
