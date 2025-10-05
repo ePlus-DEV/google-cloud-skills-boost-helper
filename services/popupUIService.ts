@@ -875,7 +875,6 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
       // Get countdown deadline from Remote Config
       const countdownDeadline = firebaseService.getCountdownDeadline();
-      const countdownTimezone = firebaseService.getCountdownTimezone();
       const isEnabled = firebaseService.isCountdownEnabled();
 
       if (!isEnabled) {
