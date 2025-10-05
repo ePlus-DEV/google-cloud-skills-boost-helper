@@ -185,7 +185,7 @@ const AccountUIService = {
    */
   async loadAccounts(): Promise<void> {
     const selector = document.getElementById(
-      "account-selector",
+      "account-selector"
     ) as HTMLSelectElement;
     if (!selector) return;
 
@@ -225,7 +225,7 @@ const AccountUIService = {
   updateCurrentAccountInfo(account: Account): void {
     const infoContainer = document.getElementById("current-account-info");
     const avatarImg = document.getElementById(
-      "account-avatar",
+      "account-avatar"
     ) as HTMLImageElement;
     const displayName = document.getElementById("account-display-name");
     const profileUrl = document.getElementById("account-profile-url");
@@ -255,7 +255,7 @@ const AccountUIService = {
   setupEventListeners(): void {
     // Account selector change
     const selector = document.getElementById(
-      "account-selector",
+      "account-selector"
     ) as HTMLSelectElement;
     if (selector) {
       selector.addEventListener("change", async (e) => {
@@ -353,23 +353,16 @@ const AccountUIService = {
     const cancelBtn = document.getElementById("cancel-import-btn");
     const confirmBtn = document.getElementById("confirm-import-btn");
     const fileInput = document.getElementById(
-      "import-file-input",
+      "import-file-input"
     ) as HTMLInputElement;
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        this.hideImportModal();
-      });
-    }
+    const hideModal = () => this.hideImportModal();
 
-    if (cancelBtn) {
-      cancelBtn.addEventListener("click", () => {
-        this.hideImportModal();
-      });
-    }
+    // Wire up basic hide/close handlers and outside-click behavior via helper
+    this.setupModalHideHandlers(modal, closeBtn, cancelBtn, hideModal);
 
     if (confirmBtn) {
       confirmBtn.addEventListener("click", async () => {
@@ -377,28 +370,55 @@ const AccountUIService = {
       });
     }
 
-    // File input change
-    if (fileInput) {
-      fileInput.addEventListener("change", (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file && textArea) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            textArea.value = e.target?.result as string;
-          };
-          reader.readAsText(file);
-        }
-      });
+    // File input change handling extracted to helper
+    this.setupFileInputHandler(fileInput, textArea);
+  },
+
+  /**
+   * Attach close/cancel handlers and outside-click behavior for a modal
+   */
+  setupModalHideHandlers(
+    modal: HTMLElement | null,
+    closeBtn: Element | null,
+    cancelBtn: Element | null,
+    hideCallback: () => void
+  ): void {
+    if (closeBtn) {
+      closeBtn.addEventListener("click", hideCallback);
     }
 
-    // Close modal when clicking outside
+    if (cancelBtn) {
+      cancelBtn.addEventListener("click", hideCallback);
+    }
+
     if (modal) {
       modal.addEventListener("click", (e) => {
         if (e.target === modal) {
-          this.hideImportModal();
+          hideCallback();
         }
       });
     }
+  },
+
+  /**
+   * Attach file input change handler that copies file contents into textarea
+   */
+  setupFileInputHandler(
+    fileInput: HTMLInputElement | null,
+    textArea: HTMLTextAreaElement | null
+  ): void {
+    if (!fileInput || !textArea) return;
+
+    fileInput.addEventListener("change", (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        textArea.value = ev.target?.result as string;
+      };
+      reader.readAsText(file);
+    });
   },
 
   /**
@@ -506,7 +526,7 @@ const AccountUIService = {
       console.error("Error adding account:", error);
       this.showMessage(
         "Có lỗi xảy ra khi thêm tài khoản. Vui lòng thử lại!",
-        "error",
+        "error"
       );
     } finally {
       if (confirmBtn) {
@@ -564,7 +584,7 @@ const AccountUIService = {
    */
   async handleImportAccounts(): Promise<void> {
     const textArea = document.getElementById(
-      "import-json-textarea",
+      "import-json-textarea"
     ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
@@ -593,7 +613,7 @@ const AccountUIService = {
       } else {
         this.showMessage(
           "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!",
-          "error",
+          "error"
         );
       }
     } catch (error) {
@@ -699,10 +719,10 @@ const AccountUIService = {
     if (confirmBtn) {
       confirmBtn.addEventListener("click", async () => {
         const nameInput = modal.querySelector(
-          "#edit-account-name-input",
+          "#edit-account-name-input"
         ) as HTMLInputElement;
         const nicknameInput = modal.querySelector(
-          "#edit-account-nickname-input",
+          "#edit-account-nickname-input"
         ) as HTMLInputElement;
 
         try {
