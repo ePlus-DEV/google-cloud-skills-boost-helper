@@ -92,7 +92,7 @@ export const ModalUtils = {
     modalId: string,
     closeButtonIds: string[] = [],
     clearFields: string[] = [],
-    callbacks?: { onOpen?: () => void; onClose?: () => void }
+    callbacks?: { onOpen?: () => void; onClose?: () => void },
   ): void {
     const config: ModalConfig = {
       modalId,
