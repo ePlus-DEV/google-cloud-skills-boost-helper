@@ -19,7 +19,7 @@ export default defineContentScript({
     "https://www.cloudskillsboost.google/course_templates/*/labs/*",
     "https://www.cloudskillsboost.google/focuses/*",
     "https://www.cloudskillsboost.google/my_account/profile*",
-    "https://www.cloudskillsboost.google/paths/*/course_templates/*/labs/*"
+    "https://www.cloudskillsboost.google/paths/*/course_templates/*/labs/*",
   ],
   cssInjectionMode: "ui",
 
