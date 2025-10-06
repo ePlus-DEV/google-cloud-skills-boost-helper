@@ -1,5 +1,7 @@
 import { LabService, ProfileService } from "../services";
 import UIComponents from "../components/uiComponents";
+// Import styles for content script so wxt emits content-scripts/content.css
+import "../assets/tailwind.css";
 
 // Extend Window interface for custom properties
 declare global {
@@ -19,7 +21,7 @@ export default defineContentScript({
     "https://www.cloudskillsboost.google/course_templates/*/labs/*",
     "https://www.cloudskillsboost.google/focuses/*",
     "https://www.cloudskillsboost.google/my_account/profile*",
-    "https://www.cloudskillsboost.google/paths/*/course_templates/*/labs/*"
+    "https://www.cloudskillsboost.google/paths/*/course_templates/*/labs/*",
   ],
   cssInjectionMode: "ui",
 
