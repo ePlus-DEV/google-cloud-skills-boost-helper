@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-10-06
+### :sparkles: New Features
+- [`3b2712a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3b2712a211491997c1a025f0bf9038d1f25340a6) - Enhance milestone functionality in popup service *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a74edc4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a74edc4b47ae9105bea94487d0a4b52dfae1f759) - Implement facilitator bonus points calculation and UI updates *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b85f69f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b85f69fc92c81a30eef25889777cf6a266ce54b9) - Add facilitator program countdown timer and update milestone section visibility *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3976c12`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3976c12bac285a89cd77bd3d0f6f6f6d41b3aca4) - Implement countdown configuration monitoring and refresh functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ab52838`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ab52838f22fdf42c02de039404452ee47cfb185d) - enhance PopupUIService with milestone handling and user info normalization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`414f181`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/414f181cff41862d89fa82322627d9679cbbb62f) - Clean up console log statements in Firebase and Popup UI services *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`8777406`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/87774066812655f049901d6595065fcc50f24b36) - Remove unused methods and types from Firebase service and types *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c583ed1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c583ed15d99ce1035e781a556189dceaf1dd03d4) - Update milestone section visibility logic in PopupUIService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0000612`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/000061271fe40ec2ce5e600cf4d333d6d23e31b4) - remove unused countdownTimezone retrieval in PopupUIService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ee961a6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ee961a61033706c89d495309925e6aa940430779) - simplify facilitatorProgram assignment in createAccount method *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7223946`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7223946bcfdbf73fa65f95ab9f2c089749df7995) - replace parseInt with Number.parseInt for consistency in FirebaseService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`227b61a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/227b61aa557fdd5e4fcfba034f5c356a860b9d61) - replace parseInt with Number.parseInt for consistency in FirebaseService and PopupUIService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ed47556`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ed47556f1fbfb9ff915401c4a6f74d3f24fcf6a1) - replace forEach with for...of loops for improved readability and performance *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`993c16d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/993c16d31acf2cea5850f8e05ad2a2ae050e19f8) - streamline modal event handling and file input processing in AccountUIService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3a29c0b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3a29c0bd0fbeb1d4e973e9ccd244d6d5b7e7cc3f) - simplify account loading logic by extracting display text and avatar creation into dedicated methods *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`9ce6a9b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9ce6a9be36a591da8c3898f25c48b9c3632b1d47) - improve code readability by standardizing parameter formatting and enhancing milestone update logic *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.1.7] - 2025-08-24
 ### :bug: Bug Fixes
 - [`38284a1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/38284a1982c00f2e98cfdf9f20def5b449a18267) - update milestone points and improve code formatting *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -195,3 +217,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.4...1.1.5
 [1.1.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.5...1.1.6
 [1.1.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.6...1.1.7
+[1.2.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.7...1.2.1
