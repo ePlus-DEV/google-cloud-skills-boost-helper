@@ -80,6 +80,27 @@ const PopupUIService = {
   },
 
   /**
+   * Parse numeric points from various API shapes (string or number)
+   */
+  parseNumericPoints(value: any): number {
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+    if (typeof value === "string") {
+      const m = /-?\d+(?:\.\d+)?/.exec(value);
+      return m ? Number.parseFloat(m[0]) : 0;
+    }
+    return 0;
+  },
+
+  /**
+   * Format points into thousands with 3 decimal places (38969 -> "38.969")
+   */
+  formatPointsThousands(value: any): string {
+    const num = this.parseNumericPoints(value);
+    if (!Number.isFinite(num)) return "0.000";
+    return (num / 1000).toFixed(3);
+  },
+
+  /**
    * Update multiple elements at once
    */
   updateElements(updates: UIUpdateData[]): void {
@@ -273,7 +294,10 @@ const PopupUIService = {
       { selector: "#league", value: league || browser.i18n.getMessage("vip") },
       {
         selector: "#total-points",
-        value: `${points || finalTotalPoints || 0} points`,
+        // Show API points if present, otherwise finalTotalPoints. Format as thousands with 3 decimals.
+        value: `${this.formatPointsThousands(
+          points ?? finalTotalPoints ?? 0
+        )} ${browser.i18n.getMessage("textPoints")}`,
       },
       { selector: "#game-badge-count", value: gamePoints },
       { selector: "#trivia-badge-count", value: triviaPoints },
@@ -368,9 +392,16 @@ const PopupUIService = {
       { selector: "#league", value: league || "VIP" },
       {
         selector: "#total-points",
-        value: `${points || totalPoints || 0} points`,
+        value: `${this.formatPointsThousands(
+          points ?? totalPoints ?? 0
+        )} ${browser.i18n.getMessage("textPoints")}`,
       },
-      { selector: "#arcade-total-points", value: totalPoints },
+      {
+        selector: "#arcade-total-points",
+        value: `${this.formatPointsThousands(
+          totalPoints
+        )} ${browser.i18n.getMessage("textPoints")}`,
+      },
     ];
 
     this.updateElements(updates);
