@@ -39,7 +39,7 @@ export function calculateFacilitatorBonus(faciCounts: any): number {
   let highestBonusPoints = 0;
 
   for (const [milestone, requirements] of Object.entries(
-    FACILITATOR_MILESTONE_REQUIREMENTS
+    FACILITATOR_MILESTONE_REQUIREMENTS,
   )) {
     const isCompleted =
       current.games >= requirements.games &&
@@ -97,7 +97,7 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
   let highestBonusPoints = 0;
 
   for (const [milestone, requirements] of Object.entries(
-    FACILITATOR_MILESTONE_REQUIREMENTS
+    FACILITATOR_MILESTONE_REQUIREMENTS,
   )) {
     const isCompleted =
       current.games >= requirements.games &&

@@ -175,7 +175,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 
     console.debug(
       "No action API available to set extension badge. Badge text would be:",
-      text
+      text,
     );
   } catch (e) {
     console.debug("Unexpected error while updating extension badge:", e);
@@ -237,7 +237,7 @@ async function saveProfileUrl(url: string): Promise<void> {
  * @returns {Promise<string>} The profile URL from storage or the input element's value, or an empty string if none found.
  */
 async function initializeProfileUrl(
-  inputElement?: HTMLInputElement
+  inputElement?: HTMLInputElement,
 ): Promise<string> {
   const storedUrl = await getProfileUrl();
   return storedUrl || inputElement?.value || "";
@@ -255,7 +255,7 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
   } catch {
     // Fallback: log and default to true
     console.debug(
-      "Failed to read search feature setting; defaulting to enabled"
+      "Failed to read search feature setting; defaulting to enabled",
     );
     return true;
   }
@@ -272,7 +272,7 @@ async function isBadgeDisplayEnabled(): Promise<boolean> {
   } catch (e) {
     console.debug(
       "Failed to read badge display setting; defaulting to enabled",
-      e
+      e,
     );
     return true;
   }

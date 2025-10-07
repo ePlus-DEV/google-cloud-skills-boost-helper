@@ -8,7 +8,7 @@
 export type RuntimeMessage = Record<string, unknown>;
 
 export async function sendRuntimeMessage(
-  message: RuntimeMessage
+  message: RuntimeMessage,
 ): Promise<unknown | null> {
   try {
     // Prefer WebExtension `browser.runtime.sendMessage` which returns a Promise
