@@ -75,7 +75,8 @@ const LabService = {
       href.startsWith(
         "https://www.cloudskillsboost.google/course_templates/",
       ) ||
-      href.startsWith("https://www.cloudskillsboost.google/focuses/")
+      href.startsWith("https://www.cloudskillsboost.google/focuses/") ||
+      href.startsWith("https://www.cloudskillsboost.google/paths/")
     );
   },
 };
