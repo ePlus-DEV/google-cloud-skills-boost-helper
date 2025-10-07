@@ -4,7 +4,8 @@ import type { ArcadeData, Milestone, UIUpdateData } from "../types";
  * Service to handle UI operations for popup and options
  */
 const PopupUIService = {
-  MILESTONES: [
+  // Arcade program: League-based progression system
+  ARCADE_MILESTONES: [
     { points: 25, league: "Arcade Novice" },
     { points: 45, league: "Arcade Trooper" },
     { points: 65, league: "Arcade Ranger" },
@@ -12,15 +13,15 @@ const PopupUIService = {
     { points: 95, league: "Arcade Legend" },
   ] as Milestone[],
 
-  // Milestone requirements for facilitator program
-  MILESTONE_REQUIREMENTS: {
+  // Facilitator program: Milestone requirements for bonus points
+  FACILITATOR_MILESTONE_REQUIREMENTS: {
     1: { games: 6, trivia: 5, skills: 14, labfree: 6 },
     2: { games: 8, trivia: 6, skills: 28, labfree: 12 },
     3: { games: 10, trivia: 7, skills: 38, labfree: 18 },
     ultimate: { games: 12, trivia: 8, skills: 52, labfree: 24 },
   },
 
-  // Points awarded for each milestone
+  // Facilitator program: Points awarded for each milestone
   FACILITATOR_MILESTONE_POINTS: {
     1: 2,
     2: 8,
@@ -73,8 +74,30 @@ const PopupUIService = {
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
-      element.textContent = value?.toString() || "N/A";
+      element.textContent =
+        value?.toString() || browser.i18n.getMessage("errorLoadingData");
     }
+  },
+
+  /**
+   * Parse numeric points from various API shapes (string or number)
+   */
+  parseNumericPoints(value: unknown): number {
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+    if (typeof value === "string") {
+      const match = /-?\d+(?:\.\d+)?/.exec(value);
+      return match ? Number.parseFloat(match[0]) : 0;
+    }
+    return 0;
+  },
+
+  /**
+   * Format points into thousands with 3 decimal places (38969 -> "38.969")
+   */
+  formatPointsThousands(value: unknown): string {
+    const num = this.parseNumericPoints(value);
+    if (!Number.isFinite(num)) return "0.000";
+    return (num / 1000).toFixed(3);
   },
 
   /**
@@ -109,27 +132,37 @@ const PopupUIService = {
   },
 
   /**
-   * Calculate league information
+   * Calculate league information (Arcade program)
+   *
+   * This implementation determines the next milestone strictly using
+   * the rounded total points and derives the current league from the
+   * milestone immediately below the next one. If there is no next
+   * milestone the user is at MAX LEVEL.
    */
   calculateLeagueInfo(totalPoints: number) {
     const roundedPoints = Math.floor(totalPoints);
-    const currentLevel =
-      this.MILESTONES.findIndex(
-        (milestone, index) =>
-          totalPoints <= milestone.points ||
-          (this.MILESTONES[index + 1] &&
-            totalPoints < this.MILESTONES[index + 1].points),
-      ) + 1 || this.MILESTONES.length + 1;
 
-    const nextMilestone =
-      this.MILESTONES.find((milestone) => milestone.points > roundedPoints) ||
-      this.MILESTONES[this.MILESTONES.length - 1];
+    // Find the first milestone that requires more points than the user has
+    const nextIndex = this.ARCADE_MILESTONES.findIndex(
+      (milestone) => milestone.points > roundedPoints,
+    );
 
-    const isMaxLevel =
-      nextMilestone.points ===
-      this.MILESTONES[this.MILESTONES.length - 1].points;
-    const currentLeague =
-      this.MILESTONES[currentLevel - 1]?.league || "MAX LEVEL";
+    const lastIndex = this.ARCADE_MILESTONES.length - 1;
+    const isMaxLevel = nextIndex === -1;
+
+    const nextMilestone = isMaxLevel
+      ? this.ARCADE_MILESTONES[lastIndex]
+      : this.ARCADE_MILESTONES[nextIndex];
+
+    let currentLeague: string;
+    if (isMaxLevel) {
+      currentLeague = this.ARCADE_MILESTONES[lastIndex].league;
+    } else if (nextIndex === 0) {
+      // Not yet reached the first milestone -> show the first league as current
+      currentLeague = this.ARCADE_MILESTONES[0].league;
+    } else {
+      currentLeague = this.ARCADE_MILESTONES[nextIndex - 1].league;
+    }
 
     return {
       currentLeague,
@@ -192,9 +225,15 @@ const PopupUIService = {
    */
   showErrorState(): void {
     const updates: UIUpdateData[] = [
-      { selector: "#user-name", value: "Error loading data" },
-      { selector: "#league", value: "N/A" },
-      { selector: "#total-points", value: "0 points" },
+      {
+        selector: "#user-name",
+        value: browser.i18n.getMessage("errorLoadingData"),
+      },
+      { selector: "#league", value: browser.i18n.getMessage("textPoints") },
+      {
+        selector: "#total-points",
+        value: `0 ${browser.i18n.getMessage("textPoints")}`,
+      },
       { selector: "#arcade-points", value: "0" },
     ];
     this.updateElements(updates);
@@ -205,10 +244,19 @@ const PopupUIService = {
    */
   showLoadingState(): void {
     const updates: UIUpdateData[] = [
-      { selector: "#user-name", value: "Loading..." },
-      { selector: "#league", value: "Loading..." },
-      { selector: "#total-points", value: "Loading..." },
-      { selector: "#arcade-points", value: "Loading..." },
+      {
+        selector: "#user-name",
+        value: browser.i18n.getMessage("labelLoading"),
+      },
+      { selector: "#league", value: browser.i18n.getMessage("labelLoading") },
+      {
+        selector: "#total-points",
+        value: browser.i18n.getMessage("labelLoading"),
+      },
+      {
+        selector: "#arcade-points",
+        value: browser.i18n.getMessage("labelLoading"),
+      },
     ];
     this.updateElements(updates);
   },
@@ -239,11 +287,17 @@ const PopupUIService = {
     // Update basic info
     const updates: UIUpdateData[] = [
       { selector: "#arcade-points", value: finalTotalPoints },
-      { selector: "#user-name", value: userName || "Anonymous" },
-      { selector: "#league", value: league || "VIP" },
+      {
+        selector: "#user-name",
+        value: userName || browser.i18n.getMessage("anonymous"),
+      },
+      { selector: "#league", value: league || browser.i18n.getMessage("vip") },
       {
         selector: "#total-points",
-        value: `${points || finalTotalPoints || 0} points`,
+        // Show API points if present, otherwise finalTotalPoints. Format as thousands with 3 decimals.
+        value: `${this.formatPointsThousands(
+          points ?? finalTotalPoints ?? 0,
+        )} ${browser.i18n.getMessage("textPoints")}`,
       },
       { selector: "#game-badge-count", value: gamePoints },
       { selector: "#trivia-badge-count", value: triviaPoints },
@@ -257,10 +311,13 @@ const PopupUIService = {
       if (facilitatorBonus > 0) {
         breakdownCard.classList.remove("hidden");
         this.updateElementText("#base-points", `${totalPoints} points`);
-        this.updateElementText("#bonus-points", `+${facilitatorBonus} points`);
+        this.updateElementText(
+          "#bonus-points",
+          `+${facilitatorBonus} ${browser.i18n.getMessage("textPoints")}`,
+        );
         this.updateElementText(
           "#total-combined-points",
-          `${finalTotalPoints} points`,
+          `${finalTotalPoints} ${browser.i18n.getMessage("textPoints")}`,
         );
       } else {
         breakdownCard.classList.add("hidden");
@@ -335,9 +392,16 @@ const PopupUIService = {
       { selector: "#league", value: league || "VIP" },
       {
         selector: "#total-points",
-        value: `${points || totalPoints || 0} points`,
+        value: `${this.formatPointsThousands(
+          points ?? totalPoints ?? 0,
+        )} ${browser.i18n.getMessage("textPoints")}`,
       },
-      { selector: "#arcade-total-points", value: totalPoints },
+      {
+        selector: "#arcade-total-points",
+        value: `${this.formatPointsThousands(
+          totalPoints,
+        )} ${browser.i18n.getMessage("textPoints")}`,
+      },
     ];
 
     this.updateElements(updates);
@@ -432,9 +496,9 @@ const PopupUIService = {
     // Calculate bonus breakdown
     const bonusBreakdown = this.calculateMilestoneBonusBreakdown(faciCounts);
 
-    // Update each milestone
+    // Update each facilitator milestone
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.FACILITATOR_MILESTONE_REQUIREMENTS,
     )) {
       this.updateSingleMilestone(
         milestone,
@@ -552,9 +616,9 @@ const PopupUIService = {
     let highestCompletedMilestone = 0;
     let highestBonusPoints = 0;
 
-    // Check each milestone completion to find the highest one
+    // Check each facilitator milestone completion to find the highest one
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.FACILITATOR_MILESTONE_REQUIREMENTS,
     )) {
       const isCompleted = this.isMilestoneCompleted(currentStats, requirements);
 
@@ -576,7 +640,7 @@ const PopupUIService = {
   },
 
   /**
-   * Calculate detailed milestone bonus breakdown for UI display
+   * Calculate detailed facilitator milestone bonus breakdown for UI display
    */
   calculateMilestoneBonusBreakdown(faciCounts: any): any {
     if (!faciCounts) {
@@ -605,9 +669,9 @@ const PopupUIService = {
     let highestCompletedMilestone = 0;
     let highestBonusPoints = 0;
 
-    // Check each milestone completion to find the highest one
+    // Check each facilitator milestone completion to find the highest one
     for (const [milestone, requirements] of Object.entries(
-      this.MILESTONE_REQUIREMENTS,
+      this.FACILITATOR_MILESTONE_REQUIREMENTS,
     )) {
       const isCompleted = this.isMilestoneCompleted(currentStats, requirements);
 
@@ -837,13 +901,13 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
     if (isCompleted) {
       statusIcon.className = `fa-solid fa-check-circle text-green-400 text-sm milestone-${milestone}-status`;
-      statusIcon.title = "Completed";
+      statusIcon.title = browser.i18n.getMessage("statusCompleted");
     } else if (progressPercent > 0) {
       statusIcon.className = `fa-solid fa-clock text-orange-400 text-sm milestone-${milestone}-status`;
-      statusIcon.title = "In Progress";
+      statusIcon.title = browser.i18n.getMessage("statusInProgress");
     } else {
       statusIcon.className = `fa-solid fa-circle text-gray-400 text-sm milestone-${milestone}-status`;
-      statusIcon.title = "Not Started";
+      statusIcon.title = browser.i18n.getMessage("statusNotStarted");
     }
   },
 
@@ -943,12 +1007,16 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
           this.querySelector("#countdown-days")?.parentElement?.parentElement;
         if (countdownContainer) {
           countdownContainer.innerHTML = `
-            <div class="text-center text-red-400">
-              <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
-              <div class="font-bold">Program Ended</div>
-              <div class="text-xs text-red-300/70">Facilitator program deadline has passed</div>
-            </div>
-          `;
+              <div class="text-center text-red-400">
+                <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
+                <div class="font-bold">${browser.i18n.getMessage(
+                  "programEnded",
+                )}</div>
+                <div class="text-xs text-red-300/70">${browser.i18n.getMessage(
+                  "facilitatorDeadlinePassed",
+                )}</div>
+              </div>
+            `;
         }
         return;
       }
