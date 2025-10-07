@@ -197,10 +197,19 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-center space-y-2">
-            <input type="checkbox" id="search-feature-toggle"
-              class="form-checkbox h-6 w-6 text-blue-600 rounded transition-all duration-200 cursor-pointer" checked />
-            <span class="text-xs text-gray-500 font-medium">Toggle</span>
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="search-feature-toggle" class="sr-only peer" checked />
+                <div
+                  class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 transition-colors duration-200 peer-checked:bg-blue-600">
+                </div>
+                <div
+                  class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6">
+                </div>
+              </label>
+              <span id="search-feature-status" class="text-sm font-medium text-gray-700">Enabled</span>
+            </div>
           </div>
         </div>
       </div>
@@ -753,6 +762,21 @@
         updateBadgeStatus();
         if ('addEventListener' in badgeToggle) {
           badgeToggle.addEventListener('change', updateBadgeStatus);
+        }
+      }
+
+      // Sync search feature status label with checkbox
+      const searchToggle = document.getElementById('search-feature-toggle');
+      const searchStatus = document.getElementById('search-feature-status');
+      function updateSearchStatus() {
+        if (!searchToggle || !searchStatus) return;
+        const checked = 'checked' in searchToggle ? searchToggle.checked : false;
+        searchStatus.textContent = checked ? 'Enabled' : 'Disabled';
+      }
+      if (searchToggle) {
+        updateSearchStatus();
+        if ('addEventListener' in searchToggle) {
+          searchToggle.addEventListener('change', updateSearchStatus);
         }
       }
     });
