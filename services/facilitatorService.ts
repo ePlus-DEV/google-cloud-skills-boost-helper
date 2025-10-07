@@ -37,7 +37,9 @@ export function getMilestoneNumber(milestone: string): number {
   return milestone === "ultimate" ? 4 : Number.parseInt(milestone, 10) || 0;
 }
 
-export function calculateFacilitatorBonus(faciCounts: FacilitatorCounts | null | undefined): number {
+export function calculateFacilitatorBonus(
+  faciCounts: FacilitatorCounts | null | undefined,
+): number {
   if (!faciCounts) return 0;
   const {
     faciGame = 0,
