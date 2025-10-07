@@ -30,3 +30,9 @@ export const APP_CONFIG = {
     "https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page",
   DEVELOPER_URL: "https://eplus.dev",
 } as const;
+
+// UI color tokens used across the extension. Keep badge color here so it's
+// consistent between background and services that update the badge.
+export const UI_COLORS = {
+  BADGE: "#155dfc",
+} as const;

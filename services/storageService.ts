@@ -2,6 +2,7 @@ import type { ArcadeData } from "../types";
 import AccountService from "./accountService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import sendRuntimeMessage from "./runtimeMessage";
+import { UI_COLORS } from "../utils/config";
 
 /**
  * Service to handle storage operations
@@ -110,7 +111,7 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
  */
 async function updateExtensionBadge(totalPoints: number): Promise<void> {
   const enabled = await isBadgeDisplayEnabled();
-  const color = "#FF6B00";
+  const color = UI_COLORS?.BADGE || "#FF6B00";
 
   // If badge display is disabled, request background to clear badge and return
   if (!enabled) {

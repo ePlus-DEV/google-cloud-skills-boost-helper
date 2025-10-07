@@ -1,3 +1,5 @@
+import { UI_COLORS } from "../utils/config";
+
 export default defineBackground(() => {
   // Lightweight typed accessors for extension action APIs (avoid `as any` cast)
   type BadgeAction = {
@@ -40,11 +42,12 @@ export default defineBackground(() => {
   // Helper to set badge text/color in a robust way
   function setBadge(totalPoints: number) {
     const num = Math.floor(Number(totalPoints) || 0);
-    let text = "0";
+    let text: string;
     if (num <= 999) text = String(num);
     else if (num <= 9999) text = `${Math.floor(num / 1000)}k`;
     else text = "999+";
-    const color = "#155dfc";
+    // use shared badge color from config
+    const color = UI_COLORS?.BADGE || "#155dfc";
 
     try {
       const browserAction = getBrowserAction();
@@ -144,7 +147,7 @@ export default defineBackground(() => {
   // Listen for messages (from popup/options) requesting badge updates
   async function handleSetBadge(message: Record<string, any>) {
     const text = message.text || "0";
-    const color = message.color || "#155dfc";
+    const color = message.color || UI_COLORS?.BADGE || "#155dfc";
 
     try {
       const browserAction = getBrowserAction();
@@ -232,7 +235,7 @@ export default defineBackground(() => {
   // Listen for messages (from popup/options) requesting badge updates
   browser.runtime.onMessage.addListener(async (message) => {
     try {
-      if (!message || !message.type) return;
+      if (!message?.type) return;
 
       switch (message.type) {
         case "setBadge":
