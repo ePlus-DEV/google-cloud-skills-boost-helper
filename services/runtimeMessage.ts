@@ -21,7 +21,6 @@ export async function sendRuntimeMessage(
       return await new Promise<unknown>((resolve, reject) => {
         try {
           chrome.runtime.sendMessage(message, (response) => {
-            // @ts-ignore - chrome.runtime.lastError may be present and is typed by @types/chrome
             if (chrome.runtime.lastError) {
               // forward the lastError if present
               reject(chrome.runtime.lastError);
