@@ -203,6 +203,36 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 }
 
 /**
+ * Public helper to refresh the extension badge for the active account.
+ * This can be called from UI flows after account changes (create/update/delete,
+ * facilitator toggle, settings change) to ensure the badge shows the latest
+ * computed total.
+ */
+async function refreshBadgeForActiveAccount(): Promise<void> {
+  try {
+    const active = await AccountService.getActiveAccount();
+    if (!active) {
+      // No active account: clear badge
+      await clearBadge();
+      return;
+    }
+
+    const arcade = active.arcadeData;
+    const basePoints = arcade?.arcadePoints?.totalPoints || arcade?.totalArcadePoints || 0;
+    const faciBonus = active.facilitatorProgram
+      ? calculateFacilitatorBonus(arcade?.faciCounts)
+      : 0;
+    const finalPoints = (Number(basePoints) || 0) + (Number(faciBonus) || 0);
+
+    await updateExtensionBadge(finalPoints);
+  } catch (e) {
+    // Non-fatal
+    // eslint-disable-next-line no-console
+    console.debug("Failed to refresh badge for active account:", e);
+  }
+}
+
+/**
  * Clear the extension badge using the background helper, or fall back to
  * direct action APIs when available.
  */
@@ -410,6 +440,7 @@ const StorageService = {
   saveBadgeDisplayEnabled,
   saveSearchFeatureEnabled,
   initializeMigration,
+  refreshBadgeForActiveAccount,
 };
 
 export default StorageService;

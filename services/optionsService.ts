@@ -1,5 +1,6 @@
 import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
+import sendRuntimeMessage from "./runtimeMessage";
 import AccountService from "./accountService";
 import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
@@ -237,22 +238,20 @@ const OptionsService = {
 
       // Notify background to refresh badge for the newly active account
       try {
-        if (
-          typeof browser !== "undefined" &&
-          typeof (browser.runtime as any)?.sendMessage === "function"
-        ) {
-          (browser.runtime as any).sendMessage({ type: "refreshBadge" });
-        } else if (
-          typeof chrome !== "undefined" &&
-          typeof (chrome.runtime as any)?.sendMessage === "function"
-        ) {
-          (chrome.runtime as any).sendMessage({ type: "refreshBadge" });
-        }
+        // Use the typed runtime messaging helper instead of casting to `any`.
+        await sendRuntimeMessage({ type: "refreshBadge" });
       } catch (err) {
         console.debug(
           "Failed to send runtime message to background for badge refresh:",
           err
         );
+      }
+
+      // Ensure badge is refreshed from options page as a fallback
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Fallback refreshBadgeForActiveAccount failed:", err);
       }
 
       // Show success message
@@ -310,6 +309,12 @@ const OptionsService = {
         // Reload accounts to show updated data
         await this.loadAccounts();
 
+        // Refresh badge after updating account data
+        try {
+          await StorageService.refreshBadgeForActiveAccount();
+        } catch (err) {
+          console.debug("Failed to refresh badge after account update:", err);
+        }
         this.showMessage(
           browser.i18n.getMessage("successAccountDataUpdated"),
           "success"
@@ -509,22 +514,19 @@ const OptionsService = {
         await PopupUIService.updateMilestoneSection();
         // If the active account's facilitator setting changed, refresh the extension badge
         try {
-          if (
-            typeof browser !== "undefined" &&
-            typeof (browser.runtime as any)?.sendMessage === "function"
-          ) {
-            (browser.runtime as any).sendMessage({ type: "refreshBadge" });
-          } else if (
-            typeof chrome !== "undefined" &&
-            typeof (chrome.runtime as any)?.sendMessage === "function"
-          ) {
-            (chrome.runtime as any).sendMessage({ type: "refreshBadge" });
-          }
+          await sendRuntimeMessage({ type: "refreshBadge" });
         } catch (err) {
           console.debug(
             "Failed to send runtime message to background for badge refresh:",
             err
           );
+        }
+
+        // Also refresh badge locally as a fallback
+        try {
+          await StorageService.refreshBadgeForActiveAccount();
+        } catch (err) {
+          console.debug("Failed to refresh badge after facilitator toggle:", err);
         }
       }
 
@@ -712,6 +714,13 @@ const OptionsService = {
 
     // Reload account switcher to reflect changes
     await this.loadAccounts();
+
+    // Ensure badge is refreshed after create/update flows
+    try {
+      await StorageService.refreshBadgeForActiveAccount();
+    } catch (err) {
+      console.debug("Failed to refresh badge after displayUserDetails:", err);
+    }
   },
 
   /**
@@ -1140,6 +1149,13 @@ const OptionsService = {
 
       // Reload accounts to show new account
       await this.loadAccounts();
+
+      // Refresh badge for the newly created account
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after createAccount:", err);
+      }
     } catch (error) {
       console.error("Error creating account:", error);
       if (loadingDiv) loadingDiv.classList.add("hidden");
@@ -1194,6 +1210,11 @@ const OptionsService = {
 
       // Reload accounts and close modal
       await this.loadAccounts();
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after saving nickname:", err);
+      }
       this.hideAddAccountModal();
     } catch (error) {
       console.error("Error saving nickname:", error);
@@ -1592,6 +1613,13 @@ const OptionsService = {
         browser.i18n.getMessage("successAccountAdded"),
         "success"
       );
+
+      // Refresh badge (switchAccount will already attempt, but call again as fallback)
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after handleAddAccount:", err);
+      }
     } catch (error) {
       console.error("Error adding account:", error);
 
@@ -1635,6 +1663,11 @@ const OptionsService = {
       });
 
       await this.loadAccounts();
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after editAccount:", err);
+      }
       this.hideEditAccountModal();
       this.showMessage(
         browser.i18n.getMessage("successNicknameUpdated"),
@@ -1714,6 +1747,11 @@ const OptionsService = {
     try {
       await AccountService.deleteAccount(account.id);
       await this.loadAccounts();
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after deleteAccount:", err);
+      }
       this.showMessage(
         browser.i18n.getMessage("successAccountDeleted"),
         "success"
