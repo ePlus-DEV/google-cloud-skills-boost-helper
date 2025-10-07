@@ -33,7 +33,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text
+        text,
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
@@ -56,13 +56,20 @@ export default defineBackground(() => {
     // Try to set badge from stored data on install
     try {
       // dynamic import to avoid bundling issues
-      const StorageService = (await import("../services/storageService")).default;
-      const { calculateFacilitatorBonus } = await import("../services/facilitatorService");
+      const StorageService = (await import("../services/storageService"))
+        .default;
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
-          arcadeData.arcadePoints?.totalPoints || arcadeData.totalArcadePoints || 0;
-        const bonus = arcadeData.faciCounts ? calculateFacilitatorBonus(arcadeData.faciCounts) : 0;
+          arcadeData.arcadePoints?.totalPoints ||
+          arcadeData.totalArcadePoints ||
+          0;
+        const bonus = arcadeData.faciCounts
+          ? calculateFacilitatorBonus(arcadeData.faciCounts)
+          : 0;
         setBadge(base + bonus);
       }
     } catch (e) {
@@ -73,13 +80,20 @@ export default defineBackground(() => {
   // On startup, update the badge as well
   browser.runtime.onStartup.addListener(async () => {
     try {
-      const StorageService = (await import("../services/storageService")).default;
-      const { calculateFacilitatorBonus } = await import("../services/facilitatorService");
+      const StorageService = (await import("../services/storageService"))
+        .default;
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
-          arcadeData.arcadePoints?.totalPoints || arcadeData.totalArcadePoints || 0;
-        const bonus = arcadeData.faciCounts ? calculateFacilitatorBonus(arcadeData.faciCounts) : 0;
+          arcadeData.arcadePoints?.totalPoints ||
+          arcadeData.totalArcadePoints ||
+          0;
+        const bonus = arcadeData.faciCounts
+          ? calculateFacilitatorBonus(arcadeData.faciCounts)
+          : 0;
         setBadge(base + bonus);
       }
     } catch (e) {
