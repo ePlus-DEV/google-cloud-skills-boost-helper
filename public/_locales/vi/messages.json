@@ -227,5 +227,16 @@
   "errorInvalidImportData": {
     "message": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!"
   },
-  "errorImportingData": { "message": "Có lỗi khi nhập dữ liệu!" }
+  "errorImportingData": { "message": "Có lỗi khi nhập dữ liệu!" },
+  "labelFacilitatorProgram": { "message": "Chương trình Facilitator" },
+  "facilitatorDeadlinePassed": {
+    "message": "Hạn chót chương trình Facilitator đã qua"
+  },
+  "programEnded": { "message": "Chương trình kết thúc" },
+  "statusCompleted": { "message": "Hoàn thành" },
+  "statusInProgress": { "message": "Đang tiến hành" },
+  "statusNotStarted": { "message": "Chưa bắt đầu" },
+  "anonymous": { "message": "Ẩn danh" },
+  "vip": { "message": "VIP" },
+  "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" }
 }

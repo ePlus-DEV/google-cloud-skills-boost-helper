@@ -228,5 +228,18 @@
   },
   "successDataImported": { "message": "Data imported successfully!" },
   "errorInvalidImportData": { "message": "Invalid data. Please check again!" },
-  "errorImportingData": { "message": "An error occurred while importing data!" }
+  "errorImportingData": {
+    "message": "An error occurred while importing data!"
+  },
+  "labelFacilitatorProgram": { "message": "Facilitator Program" },
+  "facilitatorDeadlinePassed": {
+    "message": "Facilitator program deadline has passed"
+  },
+  "programEnded": { "message": "Program Ended" },
+  "statusCompleted": { "message": "Completed" },
+  "statusInProgress": { "message": "In Progress" },
+  "statusNotStarted": { "message": "Not Started" },
+  "anonymous": { "message": "Anonymous" },
+  "vip": { "message": "VIP" },
+  "errorLoadingData": { "message": "Error loading data" }
 }
