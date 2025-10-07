@@ -143,7 +143,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
         if (maybeBrowser && typeof maybeBrowser === "object") {
           const mb = maybeBrowser as Record<string, unknown>;
           if ("action" in mb && typeof mb.action === "object") {
-            return (mb.action as unknown) as BadgeAction;
+            return mb.action as unknown as BadgeAction;
           }
         }
       } catch {
@@ -159,7 +159,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
         if (maybeChrome && typeof maybeChrome === "object") {
           const mc = maybeChrome as Record<string, unknown>;
           if ("action" in mc && typeof mc.action === "object") {
-            return (mc.action as unknown) as BadgeAction;
+            return mc.action as unknown as BadgeAction;
           }
         }
       } catch {
@@ -256,7 +256,7 @@ async function clearBadge(): Promise<void> {
         if (maybeBrowser && typeof maybeBrowser === "object") {
           const mb = maybeBrowser as Record<string, unknown>;
           if ("action" in mb && typeof mb.action === "object") {
-            return (mb.action as unknown) as {
+            return mb.action as unknown as {
               setBadgeText: (details: { text: string }) => void;
             };
           }
@@ -283,7 +283,7 @@ async function clearBadge(): Promise<void> {
         if (maybeChrome && typeof maybeChrome === "object") {
           const mc = maybeChrome as Record<string, unknown>;
           if ("action" in mc && typeof mc.action === "object") {
-            return (mc.action as unknown) as {
+            return mc.action as unknown as {
               setBadgeText: (details: { text: string }) => void;
             };
           }
