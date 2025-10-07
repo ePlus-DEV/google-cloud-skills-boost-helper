@@ -218,7 +218,8 @@ async function refreshBadgeForActiveAccount(): Promise<void> {
     }
 
     const arcade = active.arcadeData;
-    const basePoints = arcade?.arcadePoints?.totalPoints || arcade?.totalArcadePoints || 0;
+    const basePoints =
+      arcade?.arcadePoints?.totalPoints || arcade?.totalArcadePoints || 0;
     const faciBonus = active.facilitatorProgram
       ? calculateFacilitatorBonus(arcade?.faciCounts)
       : 0;

@@ -526,7 +526,10 @@ const OptionsService = {
         try {
           await StorageService.refreshBadgeForActiveAccount();
         } catch (err) {
-          console.debug("Failed to refresh badge after facilitator toggle:", err);
+          console.debug(
+            "Failed to refresh badge after facilitator toggle:",
+            err,
+          );
         }
       }
 
