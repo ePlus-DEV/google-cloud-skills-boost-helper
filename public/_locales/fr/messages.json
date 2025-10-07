@@ -244,6 +244,12 @@
     "message": "Une erreur s'est produite lors de l'importation des données !"
   },
   "labelFacilitatorProgram": { "message": "Programme Facilitateur" },
+  "messageBadgeEnabled": { "message": "Affichage du badge activé" },
+  "messageBadgeDisabled": { "message": "Affichage du badge désactivé" },
+  "labelShowBadge": { "message": "Afficher le badge sur l'icône" },
+  "descriptionShowBadge": {
+    "message": "Activer/désactiver l'affichage du total des points sur l'icône de la barre d'outils du navigateur."
+  },
   "facilitatorDeadlinePassed": {
     "message": "La date limite du programme Facilitateur est passée"
   },

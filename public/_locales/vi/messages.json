@@ -229,6 +229,12 @@
   },
   "errorImportingData": { "message": "Có lỗi khi nhập dữ liệu!" },
   "labelFacilitatorProgram": { "message": "Chương trình Facilitator" },
+  "messageBadgeEnabled": { "message": "Đã bật hiển thị huy hiệu" },
+  "messageBadgeDisabled": { "message": "Đã tắt hiển thị huy hiệu" },
+  "labelShowBadge": { "message": "Hiển thị huy hiệu trên biểu tượng" },
+  "descriptionShowBadge": {
+    "message": "Bật/tắt hiển thị tổng điểm trên biểu tượng tiện ích trình duyệt."
+  },
   "facilitatorDeadlinePassed": {
     "message": "Hạn chót chương trình Facilitator đã qua"
   },

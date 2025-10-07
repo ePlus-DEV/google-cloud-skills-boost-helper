@@ -56,13 +56,20 @@ export default defineBackground(() => {
     // Try to set badge from stored data on install
     try {
       // dynamic import to avoid bundling issues
-      const StorageService = (await import("../services/storageService")).default;
-      const { calculateFacilitatorBonus } = await import("../services/facilitatorService");
+      const StorageService = (await import("../services/storageService"))
+        .default;
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
-          arcadeData.arcadePoints?.totalPoints || arcadeData.totalArcadePoints || 0;
-        const bonus = arcadeData.faciCounts ? calculateFacilitatorBonus(arcadeData.faciCounts) : 0;
+          arcadeData.arcadePoints?.totalPoints ||
+          arcadeData.totalArcadePoints ||
+          0;
+        const bonus = arcadeData.faciCounts
+          ? calculateFacilitatorBonus(arcadeData.faciCounts)
+          : 0;
         setBadge(base + bonus);
       }
     } catch (e) {
@@ -73,13 +80,20 @@ export default defineBackground(() => {
   // On startup, update the badge as well
   browser.runtime.onStartup.addListener(async () => {
     try {
-      const StorageService = (await import("../services/storageService")).default;
-      const { calculateFacilitatorBonus } = await import("../services/facilitatorService");
+      const StorageService = (await import("../services/storageService"))
+        .default;
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
-          arcadeData.arcadePoints?.totalPoints || arcadeData.totalArcadePoints || 0;
-        const bonus = arcadeData.faciCounts ? calculateFacilitatorBonus(arcadeData.faciCounts) : 0;
+          arcadeData.arcadePoints?.totalPoints ||
+          arcadeData.totalArcadePoints ||
+          0;
+        const bonus = arcadeData.faciCounts
+          ? calculateFacilitatorBonus(arcadeData.faciCounts)
+          : 0;
         setBadge(base + bonus);
       }
     } catch (e) {
@@ -88,9 +102,11 @@ export default defineBackground(() => {
   });
 
   // Listen for messages (from popup/options) requesting badge updates
-  browser.runtime.onMessage.addListener((message) => {
+  browser.runtime.onMessage.addListener(async (message) => {
     try {
-      if (message && message.type === "setBadge") {
+      if (!message || !message.type) return;
+
+      if (message.type === "setBadge") {
         const text = message.text || "0";
         const color = message.color || "#155dfc";
         try {
@@ -112,6 +128,61 @@ export default defineBackground(() => {
           }
         } catch (err) {
           console.debug("chrome.action set via message failed:", err);
+        }
+      }
+
+      if (message.type === "clearBadge") {
+        try {
+          if ((browser as any).action) {
+            (browser as any).action.setBadgeText({ text: "" });
+            return;
+          }
+        } catch (err) {
+          console.debug("browser.action clear failed:", err);
+        }
+
+        try {
+          if ((chrome as any).action) {
+            (chrome as any).action.setBadgeText({ text: "" });
+          }
+        } catch (err) {
+          console.debug("chrome.action clear failed:", err);
+        }
+      }
+
+      if (message.type === "refreshBadge") {
+        try {
+          const StorageService = (await import("../services/storageService"))
+            .default;
+          const { calculateFacilitatorBonus } = await import(
+            "../services/facilitatorService"
+          );
+          const enabled = await StorageService.isBadgeDisplayEnabled();
+          if (!enabled) {
+            // clear
+            if ((browser as any).action) {
+              (browser as any).action.setBadgeText({ text: "" });
+              return;
+            }
+            if ((chrome as any).action) {
+              (chrome as any).action.setBadgeText({ text: "" });
+              return;
+            }
+            return;
+          }
+
+          const arcadeData = await StorageService.getArcadeData();
+          if (!arcadeData) return;
+          const base =
+            arcadeData.arcadePoints?.totalPoints ||
+            arcadeData.totalArcadePoints ||
+            0;
+          const bonus = arcadeData.faciCounts
+            ? calculateFacilitatorBonus(arcadeData.faciCounts)
+            : 0;
+          setBadge(base + bonus);
+        } catch (err) {
+          console.debug("Failed to refresh badge:", err);
         }
       }
     } catch (e) {
