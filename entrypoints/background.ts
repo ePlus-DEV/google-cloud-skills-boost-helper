@@ -33,7 +33,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text
+        text,
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
