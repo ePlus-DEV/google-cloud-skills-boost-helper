@@ -6,9 +6,9 @@ export default defineBackground(() => {
   };
 
   function getBrowserAction(): BadgeAction | null {
-    const g = globalThis as unknown as Record<string, unknown>;
+    const globalObj = globalThis as unknown as Record<string, unknown>;
     try {
-      const maybeBrowser = g.browser;
+      const maybeBrowser = globalObj.browser;
       if (maybeBrowser && typeof maybeBrowser === "object") {
         const mb = maybeBrowser as Record<string, unknown>;
         if ("action" in mb && typeof mb.action === "object") {
@@ -22,9 +22,9 @@ export default defineBackground(() => {
   }
 
   function getChromeAction(): BadgeAction | null {
-    const g = globalThis as unknown as Record<string, unknown>;
+    const globalObj = globalThis as unknown as Record<string, unknown>;
     try {
-      const maybeChrome = g.chrome;
+      const maybeChrome = globalObj.chrome;
       if (maybeChrome && typeof maybeChrome === "object") {
         const mc = maybeChrome as Record<string, unknown>;
         if ("action" in mc && typeof mc.action === "object") {
@@ -142,94 +142,110 @@ export default defineBackground(() => {
   });
 
   // Listen for messages (from popup/options) requesting badge updates
+  async function handleSetBadge(message: Record<string, any>) {
+    const text = message.text || "0";
+    const color = message.color || "#155dfc";
+
+    try {
+      const browserAction = getBrowserAction();
+      if (browserAction) {
+        browserAction.setBadgeText({ text });
+        if (browserAction.setBadgeBackgroundColor)
+          browserAction.setBadgeBackgroundColor({ color });
+        return;
+      }
+    } catch (err) {
+      console.debug("browser.action set via message failed:", err);
+    }
+
+    try {
+      const chromeAction = getChromeAction();
+      if (chromeAction) {
+        chromeAction.setBadgeText({ text });
+        if (chromeAction.setBadgeBackgroundColor)
+          chromeAction.setBadgeBackgroundColor({ color });
+      }
+    } catch (err) {
+      console.debug("chrome.action set via message failed:", err);
+    }
+  }
+
+  async function handleClearBadge() {
+    try {
+      const browserAction = getBrowserAction();
+      if (browserAction) {
+        browserAction.setBadgeText({ text: "" });
+        return;
+      }
+    } catch (err) {
+      console.debug("browser.action clear failed:", err);
+    }
+
+    try {
+      const chromeAction = getChromeAction();
+      if (chromeAction) {
+        chromeAction.setBadgeText({ text: "" });
+      }
+    } catch (err) {
+      console.debug("chrome.action clear failed:", err);
+    }
+  }
+
+  async function handleRefreshBadge() {
+    try {
+      const StorageService = (await import("../services/storageService"))
+        .default;
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
+      const enabled = await StorageService.isBadgeDisplayEnabled();
+      if (!enabled) {
+        // clear
+        const browserAction = getBrowserAction();
+        if (browserAction) {
+          browserAction.setBadgeText({ text: "" });
+          return;
+        }
+        const chromeAction = getChromeAction();
+        if (chromeAction) {
+          chromeAction.setBadgeText({ text: "" });
+          return;
+        }
+        return;
+      }
+
+      const arcadeData = await StorageService.getArcadeData();
+      if (!arcadeData) return;
+      const base =
+        arcadeData.arcadePoints?.totalPoints ||
+        arcadeData.totalArcadePoints ||
+        0;
+      const bonus = arcadeData.faciCounts
+        ? calculateFacilitatorBonus(arcadeData.faciCounts)
+        : 0;
+      setBadge(base + bonus);
+    } catch (err) {
+      console.debug("Failed to refresh badge:", err);
+    }
+  }
+
+  // Listen for messages (from popup/options) requesting badge updates
   browser.runtime.onMessage.addListener(async (message) => {
     try {
       if (!message || !message.type) return;
 
-      if (message.type === "setBadge") {
-        const text = message.text || "0";
-        const color = message.color || "#155dfc";
-        try {
-          const browserAction = getBrowserAction();
-          if (browserAction) {
-            browserAction.setBadgeText({ text });
-            if (browserAction.setBadgeBackgroundColor)
-              browserAction.setBadgeBackgroundColor({ color });
-            return;
-          }
-        } catch (err) {
-          console.debug("browser.action set via message failed:", err);
-        }
-
-        try {
-          const chromeAction = getChromeAction();
-          if (chromeAction) {
-            chromeAction.setBadgeText({ text });
-            if (chromeAction.setBadgeBackgroundColor)
-              chromeAction.setBadgeBackgroundColor({ color });
-          }
-        } catch (err) {
-          console.debug("chrome.action set via message failed:", err);
-        }
-      }
-
-      if (message.type === "clearBadge") {
-        try {
-          const browserAction = getBrowserAction();
-          if (browserAction) {
-            browserAction.setBadgeText({ text: "" });
-            return;
-          }
-        } catch (err) {
-          console.debug("browser.action clear failed:", err);
-        }
-
-        try {
-          const chromeAction = getChromeAction();
-          if (chromeAction) {
-            chromeAction.setBadgeText({ text: "" });
-          }
-        } catch (err) {
-          console.debug("chrome.action clear failed:", err);
-        }
-      }
-
-      if (message.type === "refreshBadge") {
-        try {
-          const StorageService = (await import("../services/storageService"))
-            .default;
-          const { calculateFacilitatorBonus } = await import(
-            "../services/facilitatorService"
-          );
-          const enabled = await StorageService.isBadgeDisplayEnabled();
-          if (!enabled) {
-            // clear
-            const browserAction = getBrowserAction();
-            if (browserAction) {
-              browserAction.setBadgeText({ text: "" });
-              return;
-            }
-            const chromeAction = getChromeAction();
-            if (chromeAction) {
-              chromeAction.setBadgeText({ text: "" });
-              return;
-            }
-            return;
-          }
-
-          const arcadeData = await StorageService.getArcadeData();
-          if (!arcadeData) return;
-          const base =
-            arcadeData.arcadePoints?.totalPoints ||
-            arcadeData.totalArcadePoints ||
-            0;
-          const bonus = arcadeData.faciCounts
-            ? calculateFacilitatorBonus(arcadeData.faciCounts)
-            : 0;
-          setBadge(base + bonus);
-        } catch (err) {
-          console.debug("Failed to refresh badge:", err);
-        }
+      switch (message.type) {
+        case "setBadge":
+          await handleSetBadge(message);
+          break;
+        case "clearBadge":
+          await handleClearBadge();
+          break;
+        case "refreshBadge":
+          await handleRefreshBadge();
+          break;
+        default:
+          return;
       }
     } catch (e) {
       console.debug("Error handling runtime message in background:", e);
