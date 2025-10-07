@@ -114,24 +114,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 
   // If badge display is disabled, request background to clear badge and return
   if (!enabled) {
-    try {
-      // Ask background to clear the badge via helper
-      await sendRuntimeMessage({ type: "clearBadge" });
-      return;
-
-      // Last resort: try clearing via action API directly
-      if (typeof browser !== "undefined" && (browser as any).action) {
-        (browser as any).action.setBadgeText({ text: "" });
-        return;
-      }
-      if (typeof chrome !== "undefined" && (chrome as any).action) {
-        (chrome as any).action.setBadgeText({ text: "" });
-        return;
-      }
-    } catch (e) {
-      console.debug("Failed to clear extension badge:", e);
-    }
-
+    await clearBadge();
     return;
   }
 
@@ -147,11 +130,47 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
       console.debug("sendRuntimeMessage failed to request badge update:", err);
     }
 
-    if (typeof browser !== "undefined" && (browser as any).action) {
+    // Helper to safely access global action APIs without leaking `any`.
+    type BadgeAction = {
+      setBadgeText: (details: { text: string }) => void;
+      setBadgeBackgroundColor?: (details: { color: string }) => void;
+    };
+
+    function getBrowserAction(): BadgeAction | null {
+      const g = globalThis as unknown;
       try {
-        (browser as any).action.setBadgeText({ text });
-        if ((browser as any).action.setBadgeBackgroundColor) {
-          (browser as any).action.setBadgeBackgroundColor({ color });
+        // Detect WebExtension `browser` API
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const maybeBrowser = (g as any).browser;
+        if (maybeBrowser && typeof maybeBrowser.action === "object") {
+          return maybeBrowser.action as BadgeAction;
+        }
+      } catch {
+        // ignore
+      }
+      return null;
+    }
+
+    function getChromeAction(): BadgeAction | null {
+      const g = globalThis as unknown;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const maybeChrome = (g as any).chrome;
+        if (maybeChrome && typeof maybeChrome.action === "object") {
+          return maybeChrome.action as BadgeAction;
+        }
+      } catch {
+        // ignore
+      }
+      return null;
+    }
+
+    const browserAction = getBrowserAction();
+    if (browserAction) {
+      try {
+        browserAction.setBadgeText({ text });
+        if (browserAction.setBadgeBackgroundColor) {
+          browserAction.setBadgeBackgroundColor({ color });
         }
         console.debug("Extension badge updated via browser.action:", text);
         return;
@@ -160,11 +179,12 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
       }
     }
 
-    if (typeof chrome !== "undefined" && (chrome as any).action) {
+    const chromeAction = getChromeAction();
+    if (chromeAction) {
       try {
-        (chrome as any).action.setBadgeText({ text });
-        if ((chrome as any).action.setBadgeBackgroundColor) {
-          (chrome as any).action.setBadgeBackgroundColor({ color });
+        chromeAction.setBadgeText({ text });
+        if (chromeAction.setBadgeBackgroundColor) {
+          chromeAction.setBadgeBackgroundColor({ color });
         }
         console.debug("Extension badge updated via chrome.action:", text);
         return;
@@ -179,6 +199,73 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
     );
   } catch (e) {
     console.debug("Unexpected error while updating extension badge:", e);
+  }
+}
+
+/**
+ * Clear the extension badge using the background helper, or fall back to
+ * direct action APIs when available.
+ */
+async function clearBadge(): Promise<void> {
+  try {
+    try {
+      await sendRuntimeMessage({ type: "clearBadge" });
+      return;
+    } catch (err) {
+      console.debug("sendRuntimeMessage failed to request badge clear:", err);
+    }
+
+    const browserAction = (function getBrowserActionInline() {
+      const g = globalThis as unknown;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const maybeBrowser = (g as any).browser;
+        if (maybeBrowser && typeof maybeBrowser.action === "object") {
+          return maybeBrowser.action as {
+            setBadgeText: (details: { text: string }) => void;
+          };
+        }
+      } catch {
+        // ignore
+      }
+      return null;
+    })();
+
+    if (browserAction) {
+      try {
+        browserAction.setBadgeText({ text: "" });
+        return;
+      } catch (err) {
+        console.debug("browser.action failed to clear badge:", err);
+      }
+    }
+
+    const chromeAction = (function getChromeActionInline() {
+      const g = globalThis as unknown;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const maybeChrome = (g as any).chrome;
+        if (maybeChrome && typeof maybeChrome.action === "object") {
+          return maybeChrome.action as {
+            setBadgeText: (details: { text: string }) => void;
+          };
+        }
+      } catch {
+        // ignore
+      }
+      return null;
+    })();
+
+    if (chromeAction) {
+      try {
+        chromeAction.setBadgeText({ text: "" });
+        return;
+      } catch (err) {
+        console.debug("chrome.action failed to clear badge:", err);
+      }
+    }
+  } catch (e) {
+    console.debug("Failed to clear extension badge:", e);
   }
 }
 
