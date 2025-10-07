@@ -12,7 +12,7 @@ export default defineBackground(() => {
       if (maybeBrowser && typeof maybeBrowser === "object") {
         const mb = maybeBrowser as Record<string, unknown>;
         if ("action" in mb && typeof mb.action === "object") {
-          return (mb.action as unknown) as BadgeAction;
+          return mb.action as unknown as BadgeAction;
         }
       }
     } catch {
@@ -28,7 +28,7 @@ export default defineBackground(() => {
       if (maybeChrome && typeof maybeChrome === "object") {
         const mc = maybeChrome as Record<string, unknown>;
         if ("action" in mc && typeof mc.action === "object") {
-          return (mc.action as unknown) as BadgeAction;
+          return mc.action as unknown as BadgeAction;
         }
       }
     } catch {
