@@ -21,7 +21,10 @@ const PopupUIService = {
 
   // Use shared facilitator definitions from facilitatorService
   FACILITATOR_MILESTONE_REQUIREMENTS: SHARED_FACI_REQUIREMENTS,
-  FACILITATOR_MILESTONE_POINTS: SHARED_FACI_POINTS as Record<string | number, number>,
+  FACILITATOR_MILESTONE_POINTS: SHARED_FACI_POINTS as Record<
+    string | number,
+    number
+  >,
 
   /**
    * Generic DOM element selector with type safety
@@ -283,7 +286,9 @@ const PopupUIService = {
 
     // Calculate facilitator bonus points only if caller indicates facilitator program is enabled
     const facilitatorBonus =
-      includeFacilitator && faciCounts ? calculateFacilitatorBonus(faciCounts) : 0;
+      includeFacilitator && faciCounts
+        ? calculateFacilitatorBonus(faciCounts)
+        : 0;
 
     // Add bonus points to total
     const finalTotalPoints = totalPoints + facilitatorBonus;
@@ -513,8 +518,8 @@ const PopupUIService = {
       faciCompletion = 0,
     } = faciCounts;
 
-  // Calculate bonus breakdown using shared facilitator service
-  const bonusBreakdown = calculateMilestoneBonusBreakdown(faciCounts);
+    // Calculate bonus breakdown using shared facilitator service
+    const bonusBreakdown = calculateMilestoneBonusBreakdown(faciCounts);
 
     // Update each facilitator milestone
     for (const [milestone, requirements] of Object.entries(
@@ -532,8 +537,8 @@ const PopupUIService = {
       );
     }
 
-  // Update total bonus summary
-  const totalBonus = calculateFacilitatorBonus(faciCounts);
+    // Update total bonus summary
+    const totalBonus = calculateFacilitatorBonus(faciCounts);
     this.updateElementText("#total-facilitator-bonus", `${totalBonus} points`);
     // Update milestone bonus breakdown display and total
     this.updateBreakdownItems(bonusBreakdown);

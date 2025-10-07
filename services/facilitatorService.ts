@@ -22,13 +22,25 @@ export function getMilestoneNumber(milestone: string): number {
 export function calculateFacilitatorBonus(faciCounts: any): number {
   if (!faciCounts) return 0;
 
-  const { faciGame = 0, faciTrivia = 0, faciSkill = 0, faciCompletion = 0 } = faciCounts;
-  const current = { games: faciGame, trivia: faciTrivia, skills: faciSkill, labfree: faciCompletion };
+  const {
+    faciGame = 0,
+    faciTrivia = 0,
+    faciSkill = 0,
+    faciCompletion = 0,
+  } = faciCounts;
+  const current = {
+    games: faciGame,
+    trivia: faciTrivia,
+    skills: faciSkill,
+    labfree: faciCompletion,
+  };
 
   let highestCompletedMilestone = 0;
   let highestBonusPoints = 0;
 
-  for (const [milestone, requirements] of Object.entries(FACILITATOR_MILESTONE_REQUIREMENTS)) {
+  for (const [milestone, requirements] of Object.entries(
+    FACILITATOR_MILESTONE_REQUIREMENTS
+  )) {
     const isCompleted =
       current.games >= requirements.games &&
       current.trivia >= requirements.trivia &&
@@ -36,7 +48,10 @@ export function calculateFacilitatorBonus(faciCounts: any): number {
       current.labfree >= requirements.labfree;
 
     if (isCompleted) {
-      const points = FACILITATOR_MILESTONE_POINTS[milestone as keyof typeof FACILITATOR_MILESTONE_POINTS] || 0;
+      const points =
+        FACILITATOR_MILESTONE_POINTS[
+          milestone as keyof typeof FACILITATOR_MILESTONE_POINTS
+        ] || 0;
       const milestoneNum = getMilestoneNumber(milestone);
       if (milestoneNum > highestCompletedMilestone) {
         highestCompletedMilestone = milestoneNum;
@@ -50,17 +65,38 @@ export function calculateFacilitatorBonus(faciCounts: any): number {
 
 export function calculateMilestoneBonusBreakdown(faciCounts: any) {
   if (!faciCounts) {
-    return { milestones: { 1: 0, 2: 0, 3: 0, ultimate: 0 }, total: 0, highestCompleted: 0 };
+    return {
+      milestones: { 1: 0, 2: 0, 3: 0, ultimate: 0 },
+      total: 0,
+      highestCompleted: 0,
+    };
   }
 
-  const { faciGame = 0, faciTrivia = 0, faciSkill = 0, faciCompletion = 0 } = faciCounts;
-  const current = { games: faciGame, trivia: faciTrivia, skills: faciSkill, labfree: faciCompletion };
+  const {
+    faciGame = 0,
+    faciTrivia = 0,
+    faciSkill = 0,
+    faciCompletion = 0,
+  } = faciCounts;
+  const current = {
+    games: faciGame,
+    trivia: faciTrivia,
+    skills: faciSkill,
+    labfree: faciCompletion,
+  };
 
-  const milestoneBonus: Record<string, number> = { 1: 0, 2: 0, 3: 0, ultimate: 0 };
+  const milestoneBonus: Record<string, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    ultimate: 0,
+  };
   let highestCompletedMilestone = 0;
   let highestBonusPoints = 0;
 
-  for (const [milestone, requirements] of Object.entries(FACILITATOR_MILESTONE_REQUIREMENTS)) {
+  for (const [milestone, requirements] of Object.entries(
+    FACILITATOR_MILESTONE_REQUIREMENTS
+  )) {
     const isCompleted =
       current.games >= requirements.games &&
       current.trivia >= requirements.trivia &&
@@ -68,7 +104,10 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
       current.labfree >= requirements.labfree;
 
     if (isCompleted) {
-      const points = FACILITATOR_MILESTONE_POINTS[milestone as keyof typeof FACILITATOR_MILESTONE_POINTS] || 0;
+      const points =
+        FACILITATOR_MILESTONE_POINTS[
+          milestone as keyof typeof FACILITATOR_MILESTONE_POINTS
+        ] || 0;
       const milestoneNum = getMilestoneNumber(milestone);
       if (milestoneNum > highestCompletedMilestone) {
         highestCompletedMilestone = milestoneNum;
@@ -81,5 +120,9 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
     }
   }
 
-  return { milestones: milestoneBonus, total: highestBonusPoints, highestCompleted: highestCompletedMilestone };
+  return {
+    milestones: milestoneBonus,
+    total: highestBonusPoints,
+    highestCompleted: highestCompletedMilestone,
+  };
 }

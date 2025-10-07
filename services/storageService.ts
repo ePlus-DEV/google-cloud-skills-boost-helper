@@ -10,6 +10,7 @@ const STORAGE_KEYS = {
   arcadeData: "local:arcadeData" as const,
   urlProfile: "local:urlProfile" as const,
   enableSearchFeature: "local:enableSearchFeature" as const,
+  showBadge: "local:showBadge" as const,
   accountsData: "local:accountsData" as const,
 };
 
@@ -66,7 +67,7 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
     await AccountService.updateAccountArcadeData(activeAccount.id, updatedData);
     // Update extension badge to show total points for the active account
     try {
-      updateExtensionBadge(finalTotalPoints);
+      await updateExtensionBadge(finalTotalPoints);
     } catch (e) {
       // Non-fatal: do not block saving if badge update fails
       // eslint-disable-next-line no-console
@@ -94,7 +95,7 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
   await storage.setItem(STORAGE_KEYS.arcadeData, updatedData);
   // Also update extension badge for legacy storage
   try {
-    updateExtensionBadge(legacyFinalTotal);
+    await updateExtensionBadge(legacyFinalTotal);
   } catch (e) {
     // Non-fatal
     // eslint-disable-next-line no-console
@@ -106,20 +107,44 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
  * Try to set extension action badge text and color in a robust way.
  * Tries `browser.action` then `chrome.action` and logs for debugging.
  */
-function updateExtensionBadge(totalPoints: number): void {
-  const text = formatBadgeText(totalPoints);
+async function updateExtensionBadge(totalPoints: number): Promise<void> {
+  const enabled = await isBadgeDisplayEnabled();
   const color = "#FF6B00";
+
+  // If badge display is disabled, request background to clear badge and return
+  if (!enabled) {
+    try {
+      if (typeof browser !== "undefined" && browser.runtime?.sendMessage) {
+        (browser.runtime as any).sendMessage({ type: "clearBadge" });
+        return;
+      }
+      if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
+        (chrome.runtime as any).sendMessage({ type: "clearBadge" });
+        return;
+      }
+
+      // Last resort: try clearing via action API directly
+      if (typeof browser !== "undefined" && (browser as any).action) {
+        (browser as any).action.setBadgeText({ text: "" });
+        return;
+      }
+      if (typeof chrome !== "undefined" && (chrome as any).action) {
+        (chrome as any).action.setBadgeText({ text: "" });
+        return;
+      }
+    } catch (e) {
+      console.debug("Failed to clear extension badge:", e);
+    }
+
+    return;
+  }
+
+  const text = formatBadgeText(totalPoints);
 
   try {
     // Prefer sending a message to the background script to perform the badge update.
-    // This avoids context issues where action APIs may not be available in options/popup pages.
-    if (
-      typeof browser !== "undefined" &&
-      browser.runtime &&
-      browser.runtime.sendMessage
-    ) {
+    if (typeof browser !== "undefined" && browser.runtime?.sendMessage) {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (browser.runtime as any).sendMessage({ type: "setBadge", text, color });
         console.debug(
           "Requested badge update via browser.runtime.sendMessage:",
@@ -131,13 +156,8 @@ function updateExtensionBadge(totalPoints: number): void {
       }
     }
 
-    if (
-      typeof chrome !== "undefined" &&
-      chrome.runtime &&
-      chrome.runtime.sendMessage
-    ) {
+    if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (chrome.runtime as any).sendMessage({ type: "setBadge", text, color });
         console.debug(
           "Requested badge update via chrome.runtime.sendMessage:",
@@ -149,10 +169,8 @@ function updateExtensionBadge(totalPoints: number): void {
       }
     }
 
-    if (typeof browser !== "undefined" && browser.action) {
+    if (typeof browser !== "undefined" && (browser as any).action) {
       try {
-        // Firefox & browsers supporting the WebExtensions browser API
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (browser as any).action.setBadgeText({ text });
         if ((browser as any).action.setBadgeBackgroundColor) {
           (browser as any).action.setBadgeBackgroundColor({ color });
@@ -161,14 +179,11 @@ function updateExtensionBadge(totalPoints: number): void {
         return;
       } catch (err) {
         console.debug("browser.action failed to set badge:", err);
-        // fallthrough to chrome
       }
     }
 
-    if (typeof chrome !== "undefined" && chrome.action) {
+    if (typeof chrome !== "undefined" && (chrome as any).action) {
       try {
-        // Chrome compatibility
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (chrome as any).action.setBadgeText({ text });
         if ((chrome as any).action.setBadgeBackgroundColor) {
           (chrome as any).action.setBadgeBackgroundColor({ color });
@@ -269,6 +284,30 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
 }
 
 /**
+ * Get whether the extension should display the badge on the toolbar icon.
+ * Defaults to true if not set.
+ */
+async function isBadgeDisplayEnabled(): Promise<boolean> {
+  try {
+    const result = await storage.getItem<boolean>(STORAGE_KEYS.showBadge);
+    return result ?? true;
+  } catch (e) {
+    return true;
+  }
+}
+
+/**
+ * Save badge display enabled/disabled to storage
+ */
+async function saveBadgeDisplayEnabled(enabled: boolean): Promise<void> {
+  try {
+    await storage.setItem(STORAGE_KEYS.showBadge, enabled);
+  } catch (e) {
+    console.debug("Failed to save badge display setting:", e);
+  }
+}
+
+/**
  * Saves the search feature enabled state to storage.
  * @param {boolean} enabled - Whether the search feature is enabled.
  * @returns {Promise<void>}
@@ -298,6 +337,8 @@ const StorageService = {
   saveProfileUrl,
   initializeProfileUrl,
   isSearchFeatureEnabled,
+  isBadgeDisplayEnabled,
+  saveBadgeDisplayEnabled,
   saveSearchFeatureEnabled,
   initializeMigration,
 };
