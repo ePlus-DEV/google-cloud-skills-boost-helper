@@ -1,4 +1,42 @@
 export default defineBackground(() => {
+  // Lightweight typed accessors for extension action APIs (avoid `as any` cast)
+  type BadgeAction = {
+    setBadgeText: (details: { text: string }) => void;
+    setBadgeBackgroundColor?: (details: { color: string }) => void;
+  };
+
+  function getBrowserAction(): BadgeAction | null {
+    const g = globalThis as unknown as Record<string, unknown>;
+    try {
+      const maybeBrowser = g.browser;
+      if (maybeBrowser && typeof maybeBrowser === "object") {
+        const mb = maybeBrowser as Record<string, unknown>;
+        if ("action" in mb && typeof mb.action === "object") {
+          return (mb.action as unknown) as BadgeAction;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  }
+
+  function getChromeAction(): BadgeAction | null {
+    const g = globalThis as unknown as Record<string, unknown>;
+    try {
+      const maybeChrome = g.chrome;
+      if (maybeChrome && typeof maybeChrome === "object") {
+        const mc = maybeChrome as Record<string, unknown>;
+        if ("action" in mc && typeof mc.action === "object") {
+          return (mc.action as unknown) as BadgeAction;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  }
+
   // Helper to set badge text/color in a robust way
   function setBadge(totalPoints: number) {
     const num = Math.floor(Number(totalPoints) || 0);
@@ -9,22 +47,24 @@ export default defineBackground(() => {
     const color = "#155dfc";
 
     try {
-      if (typeof browser !== "undefined" && (browser as any).action) {
+      const browserAction = getBrowserAction();
+      if (browserAction) {
         try {
-          (browser as any).action.setBadgeText({ text });
-          if ((browser as any).action.setBadgeBackgroundColor)
-            (browser as any).action.setBadgeBackgroundColor({ color });
+          browserAction.setBadgeText({ text });
+          if (browserAction.setBadgeBackgroundColor)
+            browserAction.setBadgeBackgroundColor({ color });
           return;
         } catch (e) {
           console.debug("browser.action.setBadgeText failed:", e);
         }
       }
 
-      if (typeof chrome !== "undefined" && (chrome as any).action) {
+      const chromeAction = getChromeAction();
+      if (chromeAction) {
         try {
-          (chrome as any).action.setBadgeText({ text });
-          if ((chrome as any).action.setBadgeBackgroundColor)
-            (chrome as any).action.setBadgeBackgroundColor({ color });
+          chromeAction.setBadgeText({ text });
+          if (chromeAction.setBadgeBackgroundColor)
+            chromeAction.setBadgeBackgroundColor({ color });
           return;
         } catch (e) {
           console.debug("chrome.action.setBadgeText failed:", e);
@@ -110,10 +150,11 @@ export default defineBackground(() => {
         const text = message.text || "0";
         const color = message.color || "#155dfc";
         try {
-          if ((browser as any).action) {
-            (browser as any).action.setBadgeText({ text });
-            if ((browser as any).action.setBadgeBackgroundColor)
-              (browser as any).action.setBadgeBackgroundColor({ color });
+          const browserAction = getBrowserAction();
+          if (browserAction) {
+            browserAction.setBadgeText({ text });
+            if (browserAction.setBadgeBackgroundColor)
+              browserAction.setBadgeBackgroundColor({ color });
             return;
           }
         } catch (err) {
@@ -121,10 +162,11 @@ export default defineBackground(() => {
         }
 
         try {
-          if ((chrome as any).action) {
-            (chrome as any).action.setBadgeText({ text });
-            if ((chrome as any).action.setBadgeBackgroundColor)
-              (chrome as any).action.setBadgeBackgroundColor({ color });
+          const chromeAction = getChromeAction();
+          if (chromeAction) {
+            chromeAction.setBadgeText({ text });
+            if (chromeAction.setBadgeBackgroundColor)
+              chromeAction.setBadgeBackgroundColor({ color });
           }
         } catch (err) {
           console.debug("chrome.action set via message failed:", err);
@@ -133,8 +175,9 @@ export default defineBackground(() => {
 
       if (message.type === "clearBadge") {
         try {
-          if ((browser as any).action) {
-            (browser as any).action.setBadgeText({ text: "" });
+          const browserAction = getBrowserAction();
+          if (browserAction) {
+            browserAction.setBadgeText({ text: "" });
             return;
           }
         } catch (err) {
@@ -142,8 +185,9 @@ export default defineBackground(() => {
         }
 
         try {
-          if ((chrome as any).action) {
-            (chrome as any).action.setBadgeText({ text: "" });
+          const chromeAction = getChromeAction();
+          if (chromeAction) {
+            chromeAction.setBadgeText({ text: "" });
           }
         } catch (err) {
           console.debug("chrome.action clear failed:", err);
@@ -160,12 +204,14 @@ export default defineBackground(() => {
           const enabled = await StorageService.isBadgeDisplayEnabled();
           if (!enabled) {
             // clear
-            if ((browser as any).action) {
-              (browser as any).action.setBadgeText({ text: "" });
+            const browserAction = getBrowserAction();
+            if (browserAction) {
+              browserAction.setBadgeText({ text: "" });
               return;
             }
-            if ((chrome as any).action) {
-              (chrome as any).action.setBadgeText({ text: "" });
+            const chromeAction = getChromeAction();
+            if (chromeAction) {
+              chromeAction.setBadgeText({ text: "" });
               return;
             }
             return;

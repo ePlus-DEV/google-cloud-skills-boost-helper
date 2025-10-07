@@ -137,13 +137,14 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
     };
 
     function getBrowserAction(): BadgeAction | null {
-      const g = globalThis as unknown;
+      const g = globalThis as unknown as Record<string, unknown>;
       try {
-        // Detect WebExtension `browser` API
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const maybeBrowser = (g as any).browser;
-        if (maybeBrowser && typeof maybeBrowser.action === "object") {
-          return maybeBrowser.action as BadgeAction;
+        const maybeBrowser = g.browser;
+        if (maybeBrowser && typeof maybeBrowser === "object") {
+          const mb = maybeBrowser as Record<string, unknown>;
+          if ("action" in mb && typeof mb.action === "object") {
+            return (mb.action as unknown) as BadgeAction;
+          }
         }
       } catch {
         // ignore
@@ -152,12 +153,14 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
     }
 
     function getChromeAction(): BadgeAction | null {
-      const g = globalThis as unknown;
+      const g = globalThis as unknown as Record<string, unknown>;
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const maybeChrome = (g as any).chrome;
-        if (maybeChrome && typeof maybeChrome.action === "object") {
-          return maybeChrome.action as BadgeAction;
+        const maybeChrome = g.chrome;
+        if (maybeChrome && typeof maybeChrome === "object") {
+          const mc = maybeChrome as Record<string, unknown>;
+          if ("action" in mc && typeof mc.action === "object") {
+            return (mc.action as unknown) as BadgeAction;
+          }
         }
       } catch {
         // ignore
@@ -247,14 +250,16 @@ async function clearBadge(): Promise<void> {
     }
 
     const browserAction = (function getBrowserActionInline() {
-      const g = globalThis as unknown;
+      const g = globalThis as unknown as Record<string, unknown>;
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const maybeBrowser = (g as any).browser;
-        if (maybeBrowser && typeof maybeBrowser.action === "object") {
-          return maybeBrowser.action as {
-            setBadgeText: (details: { text: string }) => void;
-          };
+        const maybeBrowser = g.browser;
+        if (maybeBrowser && typeof maybeBrowser === "object") {
+          const mb = maybeBrowser as Record<string, unknown>;
+          if ("action" in mb && typeof mb.action === "object") {
+            return (mb.action as unknown) as {
+              setBadgeText: (details: { text: string }) => void;
+            };
+          }
         }
       } catch {
         // ignore
@@ -272,14 +277,16 @@ async function clearBadge(): Promise<void> {
     }
 
     const chromeAction = (function getChromeActionInline() {
-      const g = globalThis as unknown;
+      const g = globalThis as unknown as Record<string, unknown>;
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const maybeChrome = (g as any).chrome;
-        if (maybeChrome && typeof maybeChrome.action === "object") {
-          return maybeChrome.action as {
-            setBadgeText: (details: { text: string }) => void;
-          };
+        const maybeChrome = g.chrome;
+        if (maybeChrome && typeof maybeChrome === "object") {
+          const mc = maybeChrome as Record<string, unknown>;
+          if ("action" in mc && typeof mc.action === "object") {
+            return (mc.action as unknown) as {
+              setBadgeText: (details: { text: string }) => void;
+            };
+          }
         }
       } catch {
         // ignore
