@@ -1,6 +1,7 @@
 import type { ArcadeData } from "../types";
 import AccountService from "./accountService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
+import sendRuntimeMessage from "./runtimeMessage";
 
 /**
  * Service to handle storage operations
@@ -114,14 +115,9 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
   // If badge display is disabled, request background to clear badge and return
   if (!enabled) {
     try {
-      if (typeof browser !== "undefined" && browser.runtime?.sendMessage) {
-        (browser.runtime as any).sendMessage({ type: "clearBadge" });
-        return;
-      }
-      if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
-        (chrome.runtime as any).sendMessage({ type: "clearBadge" });
-        return;
-      }
+      // Ask background to clear the badge via helper
+      await sendRuntimeMessage({ type: "clearBadge" });
+      return;
 
       // Last resort: try clearing via action API directly
       if (typeof browser !== "undefined" && (browser as any).action) {
@@ -142,31 +138,13 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
   const text = formatBadgeText(totalPoints);
 
   try {
-    // Prefer sending a message to the background script to perform the badge update.
-    if (typeof browser !== "undefined" && browser.runtime?.sendMessage) {
-      try {
-        (browser.runtime as any).sendMessage({ type: "setBadge", text, color });
-        console.debug(
-          "Requested badge update via browser.runtime.sendMessage:",
-          text,
-        );
-        return;
-      } catch (err) {
-        console.debug("browser.runtime.sendMessage failed:", err);
-      }
-    }
-
-    if (typeof chrome !== "undefined" && chrome.runtime?.sendMessage) {
-      try {
-        (chrome.runtime as any).sendMessage({ type: "setBadge", text, color });
-        console.debug(
-          "Requested badge update via chrome.runtime.sendMessage:",
-          text,
-        );
-        return;
-      } catch (err) {
-        console.debug("chrome.runtime.sendMessage failed:", err);
-      }
+    // Prefer asking the background to perform the badge update via helper
+    try {
+      await sendRuntimeMessage({ type: "setBadge", text, color });
+      console.debug("Requested badge update via runtime message:", text);
+      return;
+    } catch (err) {
+      console.debug("sendRuntimeMessage failed to request badge update:", err);
     }
 
     if (typeof browser !== "undefined" && (browser as any).action) {
@@ -197,7 +175,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 
     console.debug(
       "No action API available to set extension badge. Badge text would be:",
-      text,
+      text
     );
   } catch (e) {
     console.debug("Unexpected error while updating extension badge:", e);
@@ -259,7 +237,7 @@ async function saveProfileUrl(url: string): Promise<void> {
  * @returns {Promise<string>} The profile URL from storage or the input element's value, or an empty string if none found.
  */
 async function initializeProfileUrl(
-  inputElement?: HTMLInputElement,
+  inputElement?: HTMLInputElement
 ): Promise<string> {
   const storedUrl = await getProfileUrl();
   return storedUrl || inputElement?.value || "";
@@ -275,11 +253,11 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
     const settings = await AccountService.getSettings();
     return settings.enableSearchFeature;
   } catch {
-    // Fallback to legacy storage
-    const enabled = await storage.getItem<boolean>(
-      STORAGE_KEYS.enableSearchFeature,
+    // Fallback: log and default to true
+    console.debug(
+      "Failed to read search feature setting; defaulting to enabled"
     );
-    return enabled !== null ? enabled : true; // Default to true
+    return true;
   }
 }
 
@@ -292,6 +270,10 @@ async function isBadgeDisplayEnabled(): Promise<boolean> {
     const result = await storage.getItem<boolean>(STORAGE_KEYS.showBadge);
     return result ?? true;
   } catch (e) {
+    console.debug(
+      "Failed to read badge display setting; defaulting to enabled",
+      e
+    );
     return true;
   }
 }
