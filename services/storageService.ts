@@ -148,7 +148,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
         (browser.runtime as any).sendMessage({ type: "setBadge", text, color });
         console.debug(
           "Requested badge update via browser.runtime.sendMessage:",
-          text
+          text,
         );
         return;
       } catch (err) {
@@ -161,7 +161,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
         (chrome.runtime as any).sendMessage({ type: "setBadge", text, color });
         console.debug(
           "Requested badge update via chrome.runtime.sendMessage:",
-          text
+          text,
         );
         return;
       } catch (err) {
@@ -197,7 +197,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 
     console.debug(
       "No action API available to set extension badge. Badge text would be:",
-      text
+      text,
     );
   } catch (e) {
     console.debug("Unexpected error while updating extension badge:", e);
@@ -259,7 +259,7 @@ async function saveProfileUrl(url: string): Promise<void> {
  * @returns {Promise<string>} The profile URL from storage or the input element's value, or an empty string if none found.
  */
 async function initializeProfileUrl(
-  inputElement?: HTMLInputElement
+  inputElement?: HTMLInputElement,
 ): Promise<string> {
   const storedUrl = await getProfileUrl();
   return storedUrl || inputElement?.value || "";
@@ -277,7 +277,7 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
   } catch {
     // Fallback to legacy storage
     const enabled = await storage.getItem<boolean>(
-      STORAGE_KEYS.enableSearchFeature
+      STORAGE_KEYS.enableSearchFeature,
     );
     return enabled !== null ? enabled : true; // Default to true
   }

@@ -34,6 +34,18 @@ export function calculateFacilitatorBonus(faciCounts: any): number {
     skills: faciSkill,
     labfree: faciCompletion,
   };
+  const {
+    faciGame = 0,
+    faciTrivia = 0,
+    faciSkill = 0,
+    faciCompletion = 0,
+  } = faciCounts;
+  const current = {
+    games: faciGame,
+    trivia: faciTrivia,
+    skills: faciSkill,
+    labfree: faciCompletion,
+  };
 
   let highestCompletedMilestone = 0;
   let highestBonusPoints = 0;
@@ -48,6 +60,10 @@ export function calculateFacilitatorBonus(faciCounts: any): number {
       current.labfree >= requirements.labfree;
 
     if (isCompleted) {
+      const points =
+        FACILITATOR_MILESTONE_POINTS[
+          milestone as keyof typeof FACILITATOR_MILESTONE_POINTS
+        ] || 0;
       const points =
         FACILITATOR_MILESTONE_POINTS[
           milestone as keyof typeof FACILITATOR_MILESTONE_POINTS
@@ -70,6 +86,11 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
       total: 0,
       highestCompleted: 0,
     };
+    return {
+      milestones: { 1: 0, 2: 0, 3: 0, ultimate: 0 },
+      total: 0,
+      highestCompleted: 0,
+    };
   }
 
   const {
@@ -84,7 +105,25 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
     skills: faciSkill,
     labfree: faciCompletion,
   };
+  const {
+    faciGame = 0,
+    faciTrivia = 0,
+    faciSkill = 0,
+    faciCompletion = 0,
+  } = faciCounts;
+  const current = {
+    games: faciGame,
+    trivia: faciTrivia,
+    skills: faciSkill,
+    labfree: faciCompletion,
+  };
 
+  const milestoneBonus: Record<string, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    ultimate: 0,
+  };
   const milestoneBonus: Record<string, number> = {
     1: 0,
     2: 0,
@@ -108,6 +147,10 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
         FACILITATOR_MILESTONE_POINTS[
           milestone as keyof typeof FACILITATOR_MILESTONE_POINTS
         ] || 0;
+      const points =
+        FACILITATOR_MILESTONE_POINTS[
+          milestone as keyof typeof FACILITATOR_MILESTONE_POINTS
+        ] || 0;
       const milestoneNum = getMilestoneNumber(milestone);
       if (milestoneNum > highestCompletedMilestone) {
         highestCompletedMilestone = milestoneNum;
@@ -120,6 +163,11 @@ export function calculateMilestoneBonusBreakdown(faciCounts: any) {
     }
   }
 
+  return {
+    milestones: milestoneBonus,
+    total: highestBonusPoints,
+    highestCompleted: highestCompletedMilestone,
+  };
   return {
     milestones: milestoneBonus,
     total: highestBonusPoints,
