@@ -85,8 +85,8 @@ const PopupUIService = {
   parseNumericPoints(value: any): number {
     if (typeof value === "number" && Number.isFinite(value)) return value;
     if (typeof value === "string") {
-      const m = /-?\d+(?:\.\d+)?/.exec(value);
-      return m ? Number.parseFloat(m[0]) : 0;
+      const match = /-?\d+(?:\.\d+)?/.exec(value);
+      return match ? Number.parseFloat(match[0]) : 0;
     }
     return 0;
   },
