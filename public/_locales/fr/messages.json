@@ -242,5 +242,16 @@
   },
   "errorImportingData": {
     "message": "Une erreur s'est produite lors de l'importation des données !"
-  }
+  },
+  "labelFacilitatorProgram": { "message": "Programme Facilitateur" },
+  "facilitatorDeadlinePassed": {
+    "message": "La date limite du programme Facilitateur est passée"
+  },
+  "programEnded": { "message": "Programme terminé" },
+  "statusCompleted": { "message": "Terminé" },
+  "statusInProgress": { "message": "En cours" },
+  "statusNotStarted": { "message": "Pas commencé" },
+  "anonymous": { "message": "Anonyme" },
+  "vip": { "message": "VIP" },
+  "errorLoadingData": { "message": "Erreur lors du chargement des données" }
 }
