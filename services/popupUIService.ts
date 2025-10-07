@@ -296,7 +296,7 @@ const PopupUIService = {
         selector: "#total-points",
         // Show API points if present, otherwise finalTotalPoints. Format as thousands with 3 decimals.
         value: `${this.formatPointsThousands(
-          points ?? finalTotalPoints ?? 0
+          points ?? finalTotalPoints ?? 0,
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
       { selector: "#game-badge-count", value: gamePoints },
@@ -393,13 +393,13 @@ const PopupUIService = {
       {
         selector: "#total-points",
         value: `${this.formatPointsThousands(
-          points ?? totalPoints ?? 0
+          points ?? totalPoints ?? 0,
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
       {
         selector: "#arcade-total-points",
         value: `${this.formatPointsThousands(
-          totalPoints
+          totalPoints,
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
     ];
