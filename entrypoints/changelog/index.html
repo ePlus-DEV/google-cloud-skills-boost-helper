@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Changelog</title>
+  <link rel="stylesheet" href="/assets/tailwind.css">
+  <link rel="stylesheet" href="/assets/changelog.css">
+
+</head>
+
+<body>
+  <main class="px-6 py-8 max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">Changelog</h1>
+
+    <div id="changelog-content">
+      <div class="markdown-content prose">
+        <p class="text-sm text-slate-500">Loading changelog...</p>
+      </div>
+    </div>
+
+    <p class="mt-8 text-sm text-slate-500">This page loads a remote announcement markdown file. If the remote file is
+      unavailable, a local changelog fallback will be used.</p>
+  </main>
+  <script type="module" src="main.ts"></script>
+</body>
+
+</html>
