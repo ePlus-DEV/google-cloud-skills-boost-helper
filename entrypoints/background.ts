@@ -83,8 +83,9 @@ export default defineBackground(() => {
     }
   }
 
-  // On install, open options and update badge
-  browser.runtime.onInstalled.addListener(async ({ reason }) => {
+  // On install/update, open options or changelog and update badge
+  browser.runtime.onInstalled.addListener(async (details: { reason: string; previousVersion?: string }) => {
+    const { reason, previousVersion } = details;
     if (reason === "install") {
       try {
         await browser.tabs.create({
@@ -93,6 +94,27 @@ export default defineBackground(() => {
         });
       } catch (e) {
         console.debug("Failed to open options tab on install:", e);
+      }
+    }
+
+    if (reason === "update") {
+      try {
+        const manifest = browser.runtime.getManifest();
+        const currentVersion = manifest?.version || "";
+        if (previousVersion && previousVersion !== currentVersion) {
+          // build the path as a string and assert `any` to avoid narrow typing on getURL
+          const path = `/changelog.html?version=${encodeURIComponent(currentVersion)}&from=${encodeURIComponent(previousVersion)}`;
+          const url = browser.runtime.getURL(path as any);
+          await browser.tabs.create({ url, active: true });
+        } else {
+          // fallback to options page
+          await browser.tabs.create({
+            url: browser.runtime.getURL("/options.html"),
+            active: true,
+          });
+        }
+      } catch (e) {
+        console.debug("Failed to open changelog/options tab on update:", e);
       }
     }
 
@@ -254,4 +276,23 @@ export default defineBackground(() => {
       console.debug("Error handling runtime message in background:", e);
     }
   });
+
+    // Dev/test: respond to explicit test message to open changelog
+    browser.runtime.onMessage.addListener(async (msg: Record<string, any>) => {
+      try {
+        if (msg?._openChangelogTest) {
+          const from = msg.from || "";
+          const version = msg.version || "";
+          const path = `/changelog.html?version=${encodeURIComponent(version)}&from=${encodeURIComponent(from)}`;
+          const url = browser.runtime.getURL(path as any);
+          try {
+            await browser.tabs.create({ url, active: true });
+          } catch (e) {
+            console.debug('Failed to open changelog test tab:', e);
+          }
+        }
+      } catch (e) {
+        console.debug('Error in test message handler:', e);
+      }
+    });
 });
