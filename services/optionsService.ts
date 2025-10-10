@@ -1,9 +1,11 @@
 import ArcadeApiService from "./arcadeApiService";
 import StorageService from "./storageService";
+import sendRuntimeMessage from "./runtimeMessage";
 import AccountService from "./accountService";
 import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
 import TourService from "./tourService";
+import { calculateFacilitatorBonus } from "./facilitatorService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
 import type { ArcadeData, Account, UserDetail } from "../types";
@@ -26,6 +28,7 @@ const OptionsService = {
     await OptionsService.initializeAccountManagement();
     await OptionsService.loadExistingData();
     await OptionsService.loadSearchFeatureSetting();
+    await OptionsService.loadBadgeDisplaySetting();
     await OptionsService.initializeMarkdown();
 
     // Check if we should show the tour for first-time users
@@ -115,6 +118,11 @@ const OptionsService = {
     const displayName = account.name;
     const nickname = account.nickname;
     const arcadePoints = account.arcadeData?.arcadePoints?.totalPoints || 0;
+    // If facilitator program is enabled, compute facilitator bonus and add to total
+    const facilitatorBonus = account.facilitatorProgram
+      ? calculateFacilitatorBonus(account.arcadeData?.faciCounts)
+      : 0;
+    const finalPoints = (arcadePoints || 0) + (facilitatorBonus || 0);
 
     card.innerHTML = `
       <div class="p-4">
@@ -152,7 +160,7 @@ const OptionsService = {
               <div class="flex items-center space-x-4 mt-2">
                 <span class="text-sm text-gray-600">
                   <i class="fa-solid fa-trophy text-yellow-500 mr-1"></i>
-                  ${arcadePoints.toLocaleString()} points
+                  ${finalPoints.toLocaleString()} points
                 </span>
                 <span class="text-xs text-gray-400">
                   Updated: ${new Date(account.lastUsed).toLocaleDateString(
@@ -228,6 +236,24 @@ const OptionsService = {
       const PopupUIService = (await import("./popupUIService")).default;
       await PopupUIService.updateMilestoneSection();
 
+      // Notify background to refresh badge for the newly active account
+      try {
+        // Use the typed runtime messaging helper instead of casting to `any`.
+        await sendRuntimeMessage({ type: "refreshBadge" });
+      } catch (err) {
+        console.debug(
+          "Failed to send runtime message to background for badge refresh:",
+          err,
+        );
+      }
+
+      // Ensure badge is refreshed from options page as a fallback
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Fallback refreshBadgeForActiveAccount failed:", err);
+      }
+
       // Show success message
       this.showMessage(
         browser.i18n.getMessage("successSwitchedAccount"),
@@ -283,6 +309,12 @@ const OptionsService = {
         // Reload accounts to show updated data
         await this.loadAccounts();
 
+        // Refresh badge after updating account data
+        try {
+          await StorageService.refreshBadgeForActiveAccount();
+        } catch (err) {
+          console.debug("Failed to refresh badge after account update:", err);
+        }
         this.showMessage(
           browser.i18n.getMessage("successAccountDataUpdated"),
           "success",
@@ -438,6 +470,16 @@ const OptionsService = {
       });
     }
 
+    // Badge display toggle
+    const badgeToggle = document.getElementById(
+      "badge-display-toggle",
+    ) as HTMLInputElement;
+    if (badgeToggle) {
+      badgeToggle.addEventListener("change", () => {
+        OptionsService.handleBadgeDisplayToggle(badgeToggle.checked);
+      });
+    }
+
     // Tour start button
     const startTourBtn = document.getElementById("start-tour-btn");
     if (startTourBtn) {
@@ -470,6 +512,25 @@ const OptionsService = {
         // Import PopupUIService to update milestone section
         const PopupUIService = (await import("./popupUIService")).default;
         await PopupUIService.updateMilestoneSection();
+        // If the active account's facilitator setting changed, refresh the extension badge
+        try {
+          await sendRuntimeMessage({ type: "refreshBadge" });
+        } catch (err) {
+          console.debug(
+            "Failed to send runtime message to background for badge refresh:",
+            err,
+          );
+        }
+
+        // Also refresh badge locally as a fallback
+        try {
+          await StorageService.refreshBadgeForActiveAccount();
+        } catch (err) {
+          console.debug(
+            "Failed to refresh badge after facilitator toggle:",
+            err,
+          );
+        }
       }
 
       this.showMessage(
@@ -656,6 +717,13 @@ const OptionsService = {
 
     // Reload account switcher to reflect changes
     await this.loadAccounts();
+
+    // Ensure badge is refreshed after create/update flows
+    try {
+      await StorageService.refreshBadgeForActiveAccount();
+    } catch (err) {
+      console.debug("Failed to refresh badge after displayUserDetails:", err);
+    }
   },
 
   /**
@@ -678,6 +746,57 @@ const OptionsService = {
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
+    }
+  },
+
+  /**
+   * Load badge display setting and update UI
+   */
+  async loadBadgeDisplaySetting(): Promise<void> {
+    const badgeToggle = document.getElementById(
+      "badge-display-toggle",
+    ) as HTMLInputElement;
+    if (!badgeToggle) return;
+    try {
+      const enabled = await StorageService.isBadgeDisplayEnabled();
+      badgeToggle.checked = Boolean(enabled);
+    } catch (e) {
+      console.error("Failed to load badge display setting:", e);
+    }
+  },
+
+  /**
+   * Handle badge display toggle change
+   */
+  async handleBadgeDisplayToggle(enabled: boolean): Promise<void> {
+    try {
+      await StorageService.saveBadgeDisplayEnabled(Boolean(enabled));
+
+      // Notify background to refresh or clear badge immediately
+      try {
+        await (
+          await import("./runtimeMessage")
+        ).default({
+          type: enabled ? "refreshBadge" : "clearBadge",
+        });
+      } catch (err) {
+        console.debug(
+          "Failed to send runtime message to background for badge refresh:",
+          err,
+        );
+      }
+
+      this.showMessage(
+        enabled
+          ? browser.i18n.getMessage("messageBadgeEnabled") ||
+              "Badge display enabled"
+          : browser.i18n.getMessage("messageBadgeDisabled") ||
+              "Badge display disabled",
+        "success",
+      );
+    } catch (error) {
+      console.error("Error saving badge display setting:", error);
+      this.showMessage("Failed to save setting", "error");
     }
   },
 
@@ -741,41 +860,51 @@ const OptionsService = {
     const container = document.getElementById(
       MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
     );
-    if (container) {
-      const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
-      );
-      if (contentArea) {
-        contentArea.innerHTML = `
-          <div class="flex items-center justify-center py-4 animate-pulse">
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mr-3"></div>
-            <span class="text-blue-600 font-medium">Loading announcement...</span>
-          </div>
-        `;
-      }
-    }
+    if (!container) return;
+
+    const contentArea = container.querySelector(
+      MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+    ) as HTMLElement | null;
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+      <div class="flex items-center justify-center py-4 animate-pulse">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mr-3"></div>
+        <span class="text-blue-600 font-medium">Loading announcement...</span>
+      </div>
+    `;
+
+    // Attempt to refresh the badge in the background while loading
+    import("./runtimeMessage")
+      .then((mod) => mod.default?.({ type: "refreshBadge" }))
+      .catch((err) => {
+        console.debug(
+          "Failed to import or send runtime message for badge refresh:",
+          err,
+        );
+      });
   },
 
   /**
-   * Show error state for markdown content
+   * Show error state for markdown content area
    */
   showMarkdownError(): void {
     const container = document.getElementById(
       MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
     );
-    if (container) {
-      const contentArea = container.querySelector(
-        MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
-      );
-      if (contentArea) {
-        contentArea.innerHTML = `
-          <div class="flex items-center text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
-            <i class="fa-solid fa-exclamation-triangle mr-2 text-red-500"></i>
-            <span>❌ Unable to load announcement content. Please check your internet connection.</span>
-          </div>
-        `;
-      }
-    }
+    if (!container) return;
+
+    const contentArea = container.querySelector(
+      MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
+    ) as HTMLElement | null;
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+      <div class="flex items-center text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+        <i class="fa-solid fa-exclamation-triangle mr-2 text-red-500"></i>
+        <span>❌ Unable to load announcement content. Please check your internet connection.</span>
+      </div>
+    `;
   },
 
   /**
@@ -1023,6 +1152,13 @@ const OptionsService = {
 
       // Reload accounts to show new account
       await this.loadAccounts();
+
+      // Refresh badge for the newly created account
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after createAccount:", err);
+      }
     } catch (error) {
       console.error("Error creating account:", error);
       if (loadingDiv) loadingDiv.classList.add("hidden");
@@ -1077,6 +1213,11 @@ const OptionsService = {
 
       // Reload accounts and close modal
       await this.loadAccounts();
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after saving nickname:", err);
+      }
       this.hideAddAccountModal();
     } catch (error) {
       console.error("Error saving nickname:", error);
@@ -1475,6 +1616,13 @@ const OptionsService = {
         browser.i18n.getMessage("successAccountAdded"),
         "success",
       );
+
+      // Refresh badge (switchAccount will already attempt, but call again as fallback)
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after handleAddAccount:", err);
+      }
     } catch (error) {
       console.error("Error adding account:", error);
 
@@ -1518,6 +1666,11 @@ const OptionsService = {
       });
 
       await this.loadAccounts();
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after editAccount:", err);
+      }
       this.hideEditAccountModal();
       this.showMessage(
         browser.i18n.getMessage("successNicknameUpdated"),
@@ -1597,6 +1750,11 @@ const OptionsService = {
     try {
       await AccountService.deleteAccount(account.id);
       await this.loadAccounts();
+      try {
+        await StorageService.refreshBadgeForActiveAccount();
+      } catch (err) {
+        console.debug("Failed to refresh badge after deleteAccount:", err);
+      }
       this.showMessage(
         browser.i18n.getMessage("successAccountDeleted"),
         "success",

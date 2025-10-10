@@ -232,6 +232,12 @@
     "message": "An error occurred while importing data!"
   },
   "labelFacilitatorProgram": { "message": "Facilitator Program" },
+  "messageBadgeEnabled": { "message": "Badge display enabled" },
+  "messageBadgeDisabled": { "message": "Badge display disabled" },
+  "labelShowBadge": { "message": "Show badge on extension icon" },
+  "descriptionShowBadge": {
+    "message": "Toggle whether the extension shows the total points on the browser toolbar icon."
+  },
   "facilitatorDeadlinePassed": {
     "message": "Facilitator program deadline has passed"
   },
@@ -241,5 +247,8 @@
   "statusNotStarted": { "message": "Not Started" },
   "anonymous": { "message": "Anonymous" },
   "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Error loading data" }
+  "errorLoadingData": { "message": "Error loading data" },
+  "labelBack": { "message": "Back" },
+  "labelSettings": { "message": "Settings" },
+  "labelReturnToSettings": { "message": "Return to settings" }
 }

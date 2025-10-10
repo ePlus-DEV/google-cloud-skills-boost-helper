@@ -166,7 +166,7 @@
         </div>
       </div>
 
-      <!-- Search Feature Card (redesigned) -->
+      <!-- Search Feature Card -->
       <div
         class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
         <div class="flex items-center justify-between">
@@ -197,15 +197,65 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-center space-y-2">
-            <input type="checkbox" id="search-feature-toggle"
-              class="form-checkbox h-6 w-6 text-blue-600 rounded transition-all duration-200 cursor-pointer" checked />
-            <span class="text-xs text-gray-500 font-medium">Toggle</span>
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="search-feature-toggle" class="sr-only peer" checked />
+                <div
+                  class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 transition-colors duration-200 peer-checked:bg-blue-600">
+                </div>
+                <div
+                  class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6">
+                </div>
+              </label>
+              <span id="search-feature-status" class="text-sm font-medium text-gray-700">Enabled</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- My Badges Card (redesigned) -->
+      <!-- Badge Display Card -->
+      <div
+        class="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-start space-x-4">
+            <div class="bg-gray-100 p-3 rounded-lg shadow-sm">
+              <i class="fa-solid fa-bell text-gray-600 text-lg"></i>
+            </div>
+            <div>
+              <h4 class="text-lg font-bold text-gray-800 mb-2" data-i18n="labelShowBadge">
+                <i class="fa-solid fa-bell mr-2 text-gray-600"></i>
+                Show badge on extension icon
+              </h4>
+              <p class="text-gray-600 text-sm leading-relaxed" data-i18n="descriptionShowBadge">
+                Toggle whether the extension shows the total points on the browser toolbar icon.
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                When enabled, the extension will update the toolbar badge with your total points (includes facilitator
+                bonus when active).
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <!-- Redesigned switch with status label -->
+            <div class="flex items-center space-x-3">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="badge-display-toggle" class="sr-only peer" checked />
+                <div
+                  class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 transition-colors duration-200 peer-checked:bg-orange-500">
+                </div>
+                <div
+                  class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6">
+                </div>
+              </label>
+              <span id="badge-display-status" class="text-sm font-medium text-gray-700">Enabled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Badges Card -->
       <div
         class="bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 border border-yellow-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
         <div class="flex items-center justify-between">
@@ -247,23 +297,19 @@
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  </div>
-  </div>
 
-  <div id="error-message"
-    class="hidden bg-gradient-to-r from-red-400 to-red-600 border border-red-500 text-white px-4 py-3 rounded mb-4"
-    role="alert">
-    <strong class="font-bold">Error:</strong>
-    <span class="block sm:inline">Something went wrong. Please try again.</span>
-  </div>
-  <div id="success-message"
-    class="hidden bg-gradient-to-r from-green-400 to-green-600 border border-green-500 text-white px-4 py-3 rounded mb-4"
-    role="alert">
-    <strong class="font-bold">Success:</strong>
-    <span class="block sm:inline">Your action was successful!</span>
-  </div>
+    <div id="error-message"
+      class="hidden bg-gradient-to-r from-red-400 to-red-600 border border-red-500 text-white px-4 py-3 rounded mb-4"
+      role="alert">
+      <strong class="font-bold">Error:</strong>
+      <span class="block sm:inline">Something went wrong. Please try again.</span>
+    </div>
+    <div id="success-message"
+      class="hidden bg-gradient-to-r from-green-400 to-green-600 border border-green-500 text-white px-4 py-3 rounded mb-4"
+      role="alert">
+      <strong class="font-bold">Success:</strong>
+      <span class="block sm:inline">Your action was successful!</span>
+    </div>
   </div>
   </div>
   <!-- END - Settings -->
@@ -701,6 +747,37 @@
             previewNicknameDisplay.classList.add('hidden');
           }
         });
+      }
+
+      // Sync badge display status label with checkbox (plain JS, no TS assertions)
+      const badgeToggle = document.getElementById('badge-display-toggle');
+      const badgeStatus = document.getElementById('badge-display-status');
+      function updateBadgeStatus() {
+        if (!badgeToggle || !badgeStatus) return;
+        // Some build outputs may not preserve element types, so guard access
+        const checked = 'checked' in badgeToggle ? badgeToggle.checked : false;
+        badgeStatus.textContent = checked ? 'Enabled' : 'Disabled';
+      }
+      if (badgeToggle) {
+        updateBadgeStatus();
+        if ('addEventListener' in badgeToggle) {
+          badgeToggle.addEventListener('change', updateBadgeStatus);
+        }
+      }
+
+      // Sync search feature status label with checkbox
+      const searchToggle = document.getElementById('search-feature-toggle');
+      const searchStatus = document.getElementById('search-feature-status');
+      function updateSearchStatus() {
+        if (!searchToggle || !searchStatus) return;
+        const checked = 'checked' in searchToggle ? searchToggle.checked : false;
+        searchStatus.textContent = checked ? 'Enabled' : 'Disabled';
+      }
+      if (searchToggle) {
+        updateSearchStatus();
+        if ('addEventListener' in searchToggle) {
+          searchToggle.addEventListener('change', updateSearchStatus);
+        }
       }
     });
   </script>

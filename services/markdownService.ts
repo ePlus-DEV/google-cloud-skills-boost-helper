@@ -101,6 +101,35 @@ const MarkdownService = {
           contentArea.innerHTML = markdownHtml;
         }
 
+        // Rewrite relative image srcs to absolute URLs based on source URL
+        try {
+          const imgs = contentArea.querySelectorAll("img[src]");
+          imgs.forEach((img) => {
+            const src = img.getAttribute("src") || "";
+            if (!src) return;
+            if (
+              /^https?:\/\//i.test(src) ||
+              /^data:\//i.test(src) ||
+              /^blob:\//i.test(src)
+            )
+              return;
+            try {
+              const base = options.url;
+              const baseNoQuery = base.split("?")[0];
+              const resolved = new URL(src, baseNoQuery).toString();
+              img.setAttribute("src", resolved);
+            } catch (e) {
+              console.debug(
+                "MarkdownService: failed to resolve image src",
+                src,
+                e,
+              );
+            }
+          });
+        } catch (e) {
+          console.debug("MarkdownService: error rewriting image srcs", e);
+        }
+
         // Handle links in popup context
         MarkdownService.setupLinkHandlers(contentArea);
       } else {
@@ -161,6 +190,69 @@ const MarkdownService = {
   },
 
   /**
+   * Fetch a markdown URL and render it into a container element.
+   * Returns true on success, false on failure so callers can try fallbacks.
+   */
+  async renderUrlToContainer(
+    url: string,
+    containerId: string,
+    contentSelector = ".markdown-content",
+  ): Promise<boolean> {
+    const container = document.getElementById(containerId);
+    if (!container) return false;
+
+    try {
+      const fetchUrl = `${url}?t=${Date.now()}`;
+      const response = await fetch(fetchUrl, { cache: "no-store" });
+      if (!response.ok) return false;
+
+      const markdownText = await response.text();
+      const markdownHtml = await marked.parse(markdownText);
+
+      const contentArea = container.querySelector(contentSelector);
+      if (!contentArea) return false;
+
+      (contentArea as HTMLElement).innerHTML = markdownHtml;
+
+      // Rewrite relative image srcs based on the source URL
+      try {
+        const imgs = contentArea.querySelectorAll("img[src]");
+        const baseNoQuery = url.split("?")[0];
+        imgs.forEach((img) => {
+          const src = img.getAttribute("src") || "";
+          if (!src) return;
+          if (
+            /^https?:\/\//i.test(src) ||
+            /^data:\//i.test(src) ||
+            /^blob:\//i.test(src)
+          )
+            return;
+          try {
+            const resolved = new URL(src, baseNoQuery).toString();
+            img.setAttribute("src", resolved);
+          } catch (e) {
+            console.debug(
+              "MarkdownService: failed to resolve image src",
+              src,
+              e,
+            );
+          }
+        });
+      } catch (e) {
+        console.debug("MarkdownService: error rewriting image srcs", e);
+      }
+
+      // Setup link handlers
+      MarkdownService.setupLinkHandlers(contentArea);
+
+      return true;
+    } catch (error) {
+      console.debug("MarkdownService.renderUrlToContainer failed:", error);
+      return false;
+    }
+  },
+
+  /**
    * Setup click handlers for links in markdown content
    * Opens links in new tab for extension popup
    * @param container - The container element with markdown content
@@ -193,11 +285,7 @@ const MarkdownService = {
   async openLink(url: string): Promise<void> {
     try {
       // First attempt: Use browser.tabs.create if available (most reliable in extensions)
-      if (
-        typeof browser !== "undefined" &&
-        browser.tabs &&
-        browser.tabs.create
-      ) {
+      if (typeof browser !== "undefined" && browser.tabs?.create) {
         await browser.tabs.create({ url });
         return;
       }
@@ -207,7 +295,7 @@ const MarkdownService = {
 
     try {
       // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
-      if (typeof chrome !== "undefined" && chrome.tabs && chrome.tabs.create) {
+      if (typeof chrome !== "undefined" && chrome.tabs?.create) {
         chrome.tabs.create({ url });
         return;
       }

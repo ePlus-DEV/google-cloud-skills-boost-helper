@@ -6,18 +6,12 @@ import BadgeService from "./badgeService";
 import MarkdownService from "./markdownService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import type { Account } from "../types";
-
-/**
- * Main service to handle popup functionality
- */
+import sendRuntimeMessage from "./runtimeMessage";
 const PopupService = {
   profileUrl: "",
   currentAccount: null as Account | null,
   SPINNER_CLASS: "animate-spin",
 
-  /**
-   * Initialize the popup
-   */
   async initialize(): Promise<void> {
     // Initialize migration first
     await StorageService.initializeMigration();
@@ -42,7 +36,10 @@ const PopupService = {
       if (!arcadeData.lastUpdated) {
         arcadeData.lastUpdated = new Date().toISOString();
       }
-      PopupUIService.updateMainUI(arcadeData);
+      PopupUIService.updateMainUI(
+        arcadeData,
+        Boolean(this.currentAccount?.facilitatorProgram),
+      );
       BadgeService.renderBadges(arcadeData.badges || []);
     } else {
       // Profile URL exists but no data - show loading state and try to fetch
@@ -440,11 +437,24 @@ const PopupService = {
 
         // Refresh data for the new account
         if (account.arcadeData) {
-          PopupUIService.updateMainUI(account.arcadeData);
+          PopupUIService.updateMainUI(
+            account.arcadeData,
+            Boolean(account.facilitatorProgram),
+          );
           BadgeService.renderBadges(account.arcadeData.badges || []);
         } else {
           PopupUIService.showLoadingState();
           await this.refreshData();
+        }
+
+        // Request background to refresh the toolbar badge for the newly active account
+        try {
+          await sendRuntimeMessage({ type: "refreshBadge" });
+        } catch (err) {
+          console.debug(
+            "Failed to request badge refresh after account switch:",
+            err,
+          );
         }
 
         // Always update milestone section when switching accounts
@@ -501,7 +511,10 @@ const PopupService = {
           );
         }
 
-        PopupUIService.updateMainUI(arcadeData);
+        PopupUIService.updateMainUI(
+          arcadeData,
+          Boolean(this.currentAccount?.facilitatorProgram),
+        );
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
         PopupUIService.showErrorState();
