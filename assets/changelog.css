@@ -27,6 +27,48 @@ h1 {
   font-weight: 600;
 }
 
+.changelog-header {
+  border-bottom: 1px solid #eef2ff;
+  padding-bottom: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #334155;
+}
+
+.btn-primary {
+  background: #1d4ed8;
+  color: white;
+  border-color: #1e40af;
+}
+
+#changelog-content {
+  margin-top: 12px;
+}
+
+.markdown-content.prose {
+  max-width: none;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(17,24,39,0.06);
+}
+
 #changes-list li {
   margin-bottom: 8px;
 }

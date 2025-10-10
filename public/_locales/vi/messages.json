@@ -244,5 +244,8 @@
   "statusNotStarted": { "message": "Chưa bắt đầu" },
   "anonymous": { "message": "Ẩn danh" },
   "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" }
+  "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" },
+  "labelBack": { "message": "Quay lại" },
+  "labelSettings": { "message": "Cài đặt" },
+  "labelReturnToSettings": { "message": "Quay về cài đặt" }
 }

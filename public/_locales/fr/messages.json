@@ -259,5 +259,8 @@
   "statusNotStarted": { "message": "Pas commencé" },
   "anonymous": { "message": "Anonyme" },
   "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Erreur lors du chargement des données" }
+  "errorLoadingData": { "message": "Erreur lors du chargement des données" },
+  "labelBack": { "message": "Retour" },
+  "labelSettings": { "message": "Paramètres" },
+  "labelReturnToSettings": { "message": "Retour aux paramètres" }
 }

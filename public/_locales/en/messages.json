@@ -247,5 +247,8 @@
   "statusNotStarted": { "message": "Not Started" },
   "anonymous": { "message": "Anonymous" },
   "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Error loading data" }
+  "errorLoadingData": { "message": "Error loading data" },
+  "labelBack": { "message": "Back" },
+  "labelSettings": { "message": "Settings" },
+  "labelReturnToSettings": { "message": "Return to settings" }
 }
