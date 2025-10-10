@@ -15,7 +15,7 @@ async function loadChangelog() {
   const success = await MarkdownService.renderUrlToContainer(
     CHANGELOG_URL,
     containerId,
-    ".markdown-content"
+    ".markdown-content",
   );
 
   if (!success) {
