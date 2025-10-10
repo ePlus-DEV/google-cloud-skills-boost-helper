@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2025-10-10
+### :sparkles: New Features
+- [`4964bb7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4964bb74d133ed02740b1d5b386f03b3abe18ef5) - add facilitator service for milestone requirements and bonus calculations
+- [`6e16222`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6e1622200d5d0dc9576be7b3240820c5b902772e) - add badge display toggle functionality and UI updates
+- [`cd85636`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cd85636e02a345b39b26e7917e245842f7416885) - update badge display functionality and integrate facilitator bonus calculation
+- [`b782dbe`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b782dbebeb83ecc5b07984000c911346b683289a) - enhance search feature toggle with improved UI and status synchronization
+- [`53fb842`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/53fb84244440d6cefaa56f94ee31fac048aee43e) - refactor badge update logic and implement clearBadge helper function
+- [`ec1e530`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ec1e530629584708a873fa4e66a3a1cbae90c0a8) - implement refreshBadgeForActiveAccount helper and update badge handling in OptionsService
+- [`6c6614a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6c6614afa76ce2a724fdeb4408b8c7a79fb42358) - enhance badge action handling with typed accessors for browser and chrome APIs
+- [`f620bc6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f620bc61b215c800ce58ae81161bbed31b65c20a) - add UI color configuration for consistent badge color usage across services
+- [`712e7c7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/712e7c7b512bcc7a9d22f8e752fde2f8e4ead122) - add example environment variables for local configuration
+- [`226efe5`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/226efe56b39a4c64a3509463ba9ae9ae34b6900a) - add changelog functionality with test button in popup
+- [`e241884`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e2418846a315619e1e985f4c5aa6a4fe27674701) - implement changelog page with remote markdown loading
+- [`944cf9c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/944cf9c24bbcb877a5ba6db72c643a5eee5e7b17) - enhance changelog UI with new styles and localization support
+
+### :bug: Bug Fixes
+- [`d19b78c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d19b78cb6b68c8e21c8c66243eacb96a2d71e906) - correct formatting in loadChangelog function and ensure version is displayed in page title
+
+### :recycle: Refactors
+- [`42eb94e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/42eb94e7374b533da0b750afda68061c36619f85) - streamline badge handling functions and improve message processing
+
+### :wrench: Chores
+- [`bedb7c9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/bedb7c934d995382c746aba9fd804242f8688b80) - update version to 1.2.3 in package.json
+
+
 ## [1.2.2] - 2025-10-07
 ### :sparkles: New Features
 - [`59a75f1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/59a75f1f7dffa5c293da0abdb511e1f022b04284) - enhance user profile handling and data initialization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -438,3 +463,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.6...1.1.7
 [1.2.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.1.7...1.2.1
 [1.2.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.1...1.2.2
+[1.2.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.2...1.2.3
