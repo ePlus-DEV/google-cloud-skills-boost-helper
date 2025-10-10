@@ -76,7 +76,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text,
+        text
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
@@ -84,63 +84,67 @@ export default defineBackground(() => {
   }
 
   // On install/update, open options or changelog and update badge
-  browser.runtime.onInstalled.addListener(async (details: { reason: string; previousVersion?: string }) => {
-    const { reason, previousVersion } = details;
-    if (reason === "install") {
-      try {
-        await browser.tabs.create({
-          url: browser.runtime.getURL("/options.html"),
-          active: true,
-        });
-      } catch (e) {
-        console.debug("Failed to open options tab on install:", e);
-      }
-    }
-
-    if (reason === "update") {
-      try {
-        const manifest = browser.runtime.getManifest();
-        const currentVersion = manifest?.version || "";
-        if (previousVersion && previousVersion !== currentVersion) {
-          // build the path as a string and assert `any` to avoid narrow typing on getURL
-          const path = `/changelog.html?version=${encodeURIComponent(currentVersion)}&from=${encodeURIComponent(previousVersion)}`;
-          const url = browser.runtime.getURL(path as any);
-          await browser.tabs.create({ url, active: true });
-        } else {
-          // fallback to options page
+  browser.runtime.onInstalled.addListener(
+    async (details: { reason: string; previousVersion?: string }) => {
+      const { reason, previousVersion } = details;
+      if (reason === "install") {
+        try {
           await browser.tabs.create({
             url: browser.runtime.getURL("/options.html"),
             active: true,
           });
+        } catch (e) {
+          console.debug("Failed to open options tab on install:", e);
+        }
+      }
+
+      if (reason === "update") {
+        try {
+          const manifest = browser.runtime.getManifest();
+          const currentVersion = manifest?.version || "";
+          if (previousVersion && previousVersion !== currentVersion) {
+            // build the path as a string and assert `any` to avoid narrow typing on getURL
+            const path = `/changelog.html?version=${encodeURIComponent(
+              currentVersion
+            )}&from=${encodeURIComponent(previousVersion)}`;
+            const url = browser.runtime.getURL(path as any);
+            await browser.tabs.create({ url, active: true });
+          } else {
+            // fallback to options page
+            await browser.tabs.create({
+              url: browser.runtime.getURL("/options.html"),
+              active: true,
+            });
+          }
+        } catch (e) {
+          console.debug("Failed to open changelog/options tab on update:", e);
+        }
+      }
+
+      // Try to set badge from stored data on install
+      try {
+        // dynamic import to avoid bundling issues
+        const StorageService = (await import("../services/storageService"))
+          .default;
+        const { calculateFacilitatorBonus } = await import(
+          "../services/facilitatorService"
+        );
+        const arcadeData = await StorageService.getArcadeData();
+        if (arcadeData) {
+          const base =
+            arcadeData.arcadePoints?.totalPoints ||
+            arcadeData.totalArcadePoints ||
+            0;
+          const bonus = arcadeData.faciCounts
+            ? calculateFacilitatorBonus(arcadeData.faciCounts)
+            : 0;
+          setBadge(base + bonus);
         }
       } catch (e) {
-        console.debug("Failed to open changelog/options tab on update:", e);
+        console.debug("Failed to set badge on install/start:", e);
       }
     }
-
-    // Try to set badge from stored data on install
-    try {
-      // dynamic import to avoid bundling issues
-      const StorageService = (await import("../services/storageService"))
-        .default;
-      const { calculateFacilitatorBonus } = await import(
-        "../services/facilitatorService"
-      );
-      const arcadeData = await StorageService.getArcadeData();
-      if (arcadeData) {
-        const base =
-          arcadeData.arcadePoints?.totalPoints ||
-          arcadeData.totalArcadePoints ||
-          0;
-        const bonus = arcadeData.faciCounts
-          ? calculateFacilitatorBonus(arcadeData.faciCounts)
-          : 0;
-        setBadge(base + bonus);
-      }
-    } catch (e) {
-      console.debug("Failed to set badge on install/start:", e);
-    }
-  });
+  );
 
   // On startup, update the badge as well
   browser.runtime.onStartup.addListener(async () => {
@@ -263,6 +267,7 @@ export default defineBackground(() => {
         case "setBadge":
           await handleSetBadge(message);
           break;
+
         case "clearBadge":
           await handleClearBadge();
           break;
@@ -277,22 +282,24 @@ export default defineBackground(() => {
     }
   });
 
-    // Dev/test: respond to explicit test message to open changelog
-    browser.runtime.onMessage.addListener(async (msg: Record<string, any>) => {
-      try {
-        if (msg?._openChangelogTest) {
-          const from = msg.from || "";
-          const version = msg.version || "";
-          const path = `/changelog.html?version=${encodeURIComponent(version)}&from=${encodeURIComponent(from)}`;
-          const url = browser.runtime.getURL(path as any);
-          try {
-            await browser.tabs.create({ url, active: true });
-          } catch (e) {
-            console.debug('Failed to open changelog test tab:', e);
-          }
+  // Dev/test: respond to explicit test message to open changelog
+  browser.runtime.onMessage.addListener(async (msg: Record<string, any>) => {
+    try {
+      if (msg?._openChangelogTest) {
+        const from = msg.from || "";
+        const version = msg.version || "";
+        const path = `/changelog.html?version=${encodeURIComponent(
+          version
+        )}&from=${encodeURIComponent(from)}`;
+        const url = browser.runtime.getURL(path as any);
+        try {
+          await browser.tabs.create({ url, active: true });
+        } catch (e) {
+          console.debug("Failed to open changelog test tab:", e);
         }
-      } catch (e) {
-        console.debug('Error in test message handler:', e);
       }
-    });
+    } catch (e) {
+      console.debug("Error in test message handler:", e);
+    }
+  });
 });
