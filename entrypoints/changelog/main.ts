@@ -15,7 +15,7 @@ async function loadChangelog() {
   const success = await MarkdownService.renderUrlToContainer(
     CHANGELOG_URL,
     containerId,
-    ".markdown-content",
+    ".markdown-content"
   );
 
   if (!success) {
@@ -40,6 +40,16 @@ const versionBadge = document.getElementById("version-number");
 if (versionBadge) {
   const version = getQueryParam("version");
   versionBadge.textContent = version ? `v${version}` : "";
+}
+
+// Show version in page title if provided
+const versionParam = getQueryParam("version");
+if (versionParam) {
+  try {
+    document.title = `Changelog - v${versionParam}`;
+  } catch (err) {
+    console.debug("changelog: set title failed", err);
+  }
 }
 
 // Localize static UI texts if browser.i18n is available
