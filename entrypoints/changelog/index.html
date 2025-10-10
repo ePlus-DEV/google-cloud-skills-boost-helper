@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Changelog</title>
+    <link rel="stylesheet" href="~/assets/tailwind.css" />
+    <link rel="stylesheet" href="~/assets/markdown.css" />
+    <link rel="stylesheet" href="/assets/changelog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div
+      class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50"
+    >
+      <main class="px-6 py-6 w-full">
+        <div
+          class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300"
+        >
+          <div class="flex items-center justify-between max-w-4xl mx-auto">
+            <div class="flex items-center gap-4">
+              <button
+                id="back-button"
+                class="bg-white/20 text-white px-3 py-2 rounded-lg border border-white/30"
+                data-i18n="labelBack"
+              >
+                ← Back
+              </button>
+              <h3 class="text-2xl sm:text-3xl font-bold text-white m-0">
+                Google Cloud Skills Boost - Helper
+              </h3>
+            </div>
+            <div class="flex items-center gap-3">
+              <span
+                id="version-number"
+                class="text-sm sm:text-base font-medium text-white/90 mr-2"
+                >v1.0.0</span
+              >
+              <button
+                id="settings-button"
+                class="bg-white/20 text-white px-3 py-2 rounded-lg border border-white/30"
+                data-i18n="labelSettings"
+              >
+                Settings
+              </button>
+            </div>
+          </div>
+          <p class="text-white mt-4 text-sm sm:text-lg leading-relaxed">
+            Take your Google Cloud Skills Boost experience to the next level
+            with our powerful and intuitive browser extension.
+          </p>
+          <div class="mt-4 flex justify-center">
+            <button
+              id="settings-button-hero"
+              class="bg-white/20 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm flex items-center gap-2 border border-white/30"
+              data-i18n="labelReturnToSettings"
+            >
+              <i class="fa-solid fa-gear text-sm"></i>
+              <span>Quay về cài đặt</span>
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="markdown-container"
+          class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg p-6 shadow-md"
+        >
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <i class="fa-solid fa-info-circle text-blue-500 text-xl mt-1"></i>
+            </div>
+            <div class="ml-4 prose prose-sm max-w-none text-gray-700">
+              <div class="text-blue-800 font-semibold mb-2">📢 What's new</div>
+              <div class="markdown-content">
+                <p class="text-sm text-slate-500">Loading changelog...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <footer
+      class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6 max-w-4xl mx-auto w-full"
+    >
+      <div class="mb-4">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
+          class="inline-block"
+          aria-label="Chrome Web Store"
+        >
+          <img
+            alt="Chrome Web Store Version"
+            class="hidden"
+            id="chrome-web-store-badge"
+            src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
+            class="mx-auto"
+          />
+        </a>
+
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
+          class="inline-block"
+          aria-label="Firefox Addon Store"
+        >
+          <img
+            alt="Mozilla Add-on Version"
+            class="hidden"
+            id="firefox-addon-store"
+            src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white"
+          />
+        </a>
+      </div>
+      <p class="text-sm">
+        This extension is not affiliated with Google Cloud Skills Boost. All
+        rights reserved.
+      </p>
+      <p class="text-sm mt-2">
+        <i class="fa-solid fa-copyright"></i> 2025 -
+        <a
+          href="http://eplus.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-indigo-600 hover:underline"
+        >
+          ePlus.DEV
+        </a>
+      </p>
+    </footer>
+    <script type="module" src="main.ts"></script>
+  </body>
+</html>

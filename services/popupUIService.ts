@@ -1,4 +1,10 @@
 import type { ArcadeData, Milestone, UIUpdateData } from "../types";
+import {
+  FACILITATOR_MILESTONE_REQUIREMENTS as SHARED_FACI_REQUIREMENTS,
+  FACILITATOR_MILESTONE_POINTS as SHARED_FACI_POINTS,
+  calculateFacilitatorBonus,
+  calculateMilestoneBonusBreakdown,
+} from "./facilitatorService";
 
 /**
  * Service to handle UI operations for popup and options
@@ -13,21 +19,12 @@ const PopupUIService = {
     { points: 95, league: "Arcade Legend" },
   ] as Milestone[],
 
-  // Facilitator program: Milestone requirements for bonus points
-  FACILITATOR_MILESTONE_REQUIREMENTS: {
-    1: { games: 6, trivia: 5, skills: 14, labfree: 6 },
-    2: { games: 8, trivia: 6, skills: 28, labfree: 12 },
-    3: { games: 10, trivia: 7, skills: 38, labfree: 18 },
-    ultimate: { games: 12, trivia: 8, skills: 52, labfree: 24 },
-  },
-
-  // Facilitator program: Points awarded for each milestone
-  FACILITATOR_MILESTONE_POINTS: {
-    1: 2,
-    2: 8,
-    3: 15,
-    ultimate: 25,
-  } as Record<string | number, number>,
+  // Use shared facilitator definitions from facilitatorService
+  FACILITATOR_MILESTONE_REQUIREMENTS: SHARED_FACI_REQUIREMENTS,
+  FACILITATOR_MILESTONE_POINTS: SHARED_FACI_POINTS as Record<
+    string | number,
+    number
+  >,
 
   /**
    * Generic DOM element selector with type safety
@@ -211,6 +208,17 @@ const PopupUIService = {
   },
 
   /**
+   * Format a number for small avatar badge. Examples: 0 -> 0, 1200 -> 1.2k, 1000000 -> 1M
+   */
+  formatAvatarBadge(value: number): string {
+    const num = Math.floor(Number(value) || 0);
+    if (num < 1000) return String(num);
+    if (num < 1000000)
+      return `${(num / 1000).toFixed(num % 1000 === 0 ? 0 : 1)}k`;
+    return `${(num / 1000000).toFixed(num % 1000000 === 0 ? 0 : 1)}M`;
+  },
+
+  /**
    * Show/hide elements
    */
   toggleElementVisibility(selector: string, show: boolean): void {
@@ -264,7 +272,7 @@ const PopupUIService = {
   /**
    * Update main UI with arcade data
    */
-  updateMainUI(data: ArcadeData): void {
+  updateMainUI(data: ArcadeData, includeFacilitator = false): void {
     const { userDetails, arcadePoints, lastUpdated, faciCounts } = data;
     const userInfo = this.normalizeUserInfo(userDetails);
     const { userName, league, points, profileImage } = userInfo;
@@ -276,10 +284,11 @@ const PopupUIService = {
       specialPoints = 0,
     } = arcadePoints || {};
 
-    // Calculate facilitator bonus points if available
-    const facilitatorBonus = faciCounts
-      ? this.calculateFacilitatorBonusPoints(faciCounts)
-      : 0;
+    // Calculate facilitator bonus points only if caller indicates facilitator program is enabled
+    const facilitatorBonus =
+      includeFacilitator && faciCounts
+        ? calculateFacilitatorBonus(faciCounts)
+        : 0;
 
     // Add bonus points to total
     const finalTotalPoints = totalPoints + facilitatorBonus;
@@ -326,6 +335,22 @@ const PopupUIService = {
 
     this.updateElements(updates);
     this.updateAvatar(profileImage);
+
+    // Update small avatar overlay badge with abbreviated total points
+    try {
+      const avatarBadge = this.querySelector<HTMLElement>(
+        "#avatar-score-badge",
+      );
+      if (avatarBadge) {
+        avatarBadge.textContent = this.formatAvatarBadge(finalTotalPoints);
+        avatarBadge.title = `${finalTotalPoints} ${browser.i18n.getMessage(
+          "textPoints",
+        )}`;
+      }
+    } catch (e) {
+      // Non-fatal: continue if avatar badge update fails
+      console.debug("Avatar badge update skipped:", e);
+    }
 
     // Update league info with bonus points included
     const leagueInfo = this.calculateLeagueInfo(finalTotalPoints);
@@ -493,8 +518,8 @@ const PopupUIService = {
       faciCompletion = 0,
     } = faciCounts;
 
-    // Calculate bonus breakdown
-    const bonusBreakdown = this.calculateMilestoneBonusBreakdown(faciCounts);
+    // Calculate bonus breakdown using shared facilitator service
+    const bonusBreakdown = calculateMilestoneBonusBreakdown(faciCounts);
 
     // Update each facilitator milestone
     for (const [milestone, requirements] of Object.entries(
@@ -513,7 +538,7 @@ const PopupUIService = {
     }
 
     // Update total bonus summary
-    const totalBonus = this.calculateFacilitatorBonusPoints(faciCounts);
+    const totalBonus = calculateFacilitatorBonus(faciCounts);
     this.updateElementText("#total-facilitator-bonus", `${totalBonus} points`);
     // Update milestone bonus breakdown display and total
     this.updateBreakdownItems(bonusBreakdown);
@@ -593,114 +618,7 @@ const PopupUIService = {
     }
   },
 
-  /**
-   * Calculate bonus points from completed facilitator milestones
-   */
-  calculateFacilitatorBonusPoints(faciCounts: any): number {
-    if (!faciCounts) return 0;
-
-    const {
-      faciGame = 0,
-      faciTrivia = 0,
-      faciSkill = 0,
-      faciCompletion = 0,
-    } = faciCounts;
-
-    const currentStats = {
-      games: faciGame,
-      trivia: faciTrivia,
-      skills: faciSkill,
-      labfree: faciCompletion,
-    };
-
-    let highestCompletedMilestone = 0;
-    let highestBonusPoints = 0;
-
-    // Check each facilitator milestone completion to find the highest one
-    for (const [milestone, requirements] of Object.entries(
-      this.FACILITATOR_MILESTONE_REQUIREMENTS,
-    )) {
-      const isCompleted = this.isMilestoneCompleted(currentStats, requirements);
-
-      if (isCompleted) {
-        const points =
-          this.FACILITATOR_MILESTONE_POINTS[
-            milestone as keyof typeof this.FACILITATOR_MILESTONE_POINTS
-          ] || 0;
-
-        const milestoneNum = this.getMilestoneNumber(milestone);
-        if (milestoneNum > highestCompletedMilestone) {
-          highestCompletedMilestone = milestoneNum;
-          highestBonusPoints = points;
-        }
-      }
-    }
-
-    return highestBonusPoints;
-  },
-
-  /**
-   * Calculate detailed facilitator milestone bonus breakdown for UI display
-   */
-  calculateMilestoneBonusBreakdown(faciCounts: any): any {
-    if (!faciCounts) {
-      return {
-        milestones: { 1: 0, 2: 0, 3: 0, ultimate: 0 },
-        total: 0,
-        highestCompleted: 0,
-      };
-    }
-
-    const {
-      faciGame = 0,
-      faciTrivia = 0,
-      faciSkill = 0,
-      faciCompletion = 0,
-    } = faciCounts;
-
-    const milestoneBonus = { 1: 0, 2: 0, 3: 0, ultimate: 0 };
-    const currentStats = {
-      games: faciGame,
-      trivia: faciTrivia,
-      skills: faciSkill,
-      labfree: faciCompletion,
-    };
-
-    let highestCompletedMilestone = 0;
-    let highestBonusPoints = 0;
-
-    // Check each facilitator milestone completion to find the highest one
-    for (const [milestone, requirements] of Object.entries(
-      this.FACILITATOR_MILESTONE_REQUIREMENTS,
-    )) {
-      const isCompleted = this.isMilestoneCompleted(currentStats, requirements);
-
-      if (isCompleted) {
-        const points =
-          this.FACILITATOR_MILESTONE_POINTS[
-            milestone as keyof typeof this.FACILITATOR_MILESTONE_POINTS
-          ] || 0;
-
-        const milestoneNum = this.getMilestoneNumber(milestone);
-        if (milestoneNum > highestCompletedMilestone) {
-          highestCompletedMilestone = milestoneNum;
-          highestBonusPoints = points;
-
-          // Reset all bonuses and set only the highest one
-          for (const key of Object.keys(milestoneBonus)) {
-            milestoneBonus[key as keyof typeof milestoneBonus] = 0;
-          }
-          milestoneBonus[milestone as keyof typeof milestoneBonus] = points;
-        }
-      }
-    }
-
-    return {
-      milestones: milestoneBonus,
-      total: highestBonusPoints,
-      highestCompleted: highestCompletedMilestone,
-    };
-  },
+  // Facilitator calculations are provided by the shared facilitatorService
 
   /**
    * Setup click handlers for milestone cards to toggle details
