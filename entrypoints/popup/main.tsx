@@ -61,4 +61,19 @@ PopupService.initialize().then(() => {
       });
     }
   }, 500); // Wait 500ms to ensure DOM is ready
+
+  // Add test button handler to open changelog via background
+  setTimeout(() => {
+    const btn = document.getElementById("open-changelog-test");
+    if (btn) {
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          await browser.runtime.sendMessage({ _openChangelogTest: true, from: "1.0.0", version: "1.1.0" });
+        } catch (err) {
+          console.error("Failed to send open changelog test message:", err);
+        }
+      });
+    }
+  }, 700);
 });
