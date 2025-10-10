@@ -69,7 +69,11 @@ PopupService.initialize().then(() => {
       btn.addEventListener("click", async (e) => {
         e.preventDefault();
         try {
-          await browser.runtime.sendMessage({ _openChangelogTest: true, from: "1.0.0", version: "1.1.0" });
+          await browser.runtime.sendMessage({
+            _openChangelogTest: true,
+            from: "1.0.0",
+            version: "1.1.0",
+          });
         } catch (err) {
           console.error("Failed to send open changelog test message:", err);
         }
