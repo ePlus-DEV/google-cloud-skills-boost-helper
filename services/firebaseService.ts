@@ -64,22 +64,41 @@ class FirebaseService {
       // Use provided config or default
       const firebaseConfig = { ...this.defaultConfig, ...config };
 
+      // Quick debug output to help diagnose missing env values
+      console.debug(
+        "FirebaseService: initializing with config:",
+        firebaseConfig
+      );
+
+      // If required keys are missing, skip initialization and keep using defaults
+      if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+        console.warn(
+          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values."
+        );
+        this.initialized = false;
+        return;
+      }
+
       // Initialize Firebase App
       this.app = initializeApp(firebaseConfig);
 
       // Initialize Remote Config
       this.remoteConfig = getRemoteConfig(this.app);
 
-      // Set default values
+      // Set default values. Assign to `defaultConfig` property which works
+      // with the bundled SDK used by the build. Use ts-ignore because the
+      // typed API may not expose this property in all versions.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       this.remoteConfig.defaultConfig = this.defaultValues;
 
       // Configure Remote Config settings
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
         ), // 1 hour
         fetchTimeoutMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
         ), // 1 minute
       };
 
@@ -113,17 +132,68 @@ class FirebaseService {
   }
 
   /**
+   * Refresh (fetch & activate) and return whether activation succeeded
+   */
+  async refreshConfig(): Promise<boolean> {
+    return this.fetchConfig();
+  }
+
+  /**
+   * Debug helper: return all known Remote Config params and their sources
+   */
+  getAllParams(): {
+    [key: string]: { value: string | boolean; source?: string };
+  } {
+    const keys = Object.keys(this.defaultValues);
+    const out: Record<string, { value: string | boolean; source?: string }> =
+      {};
+
+    for (const key of keys) {
+      try {
+        if (!this.remoteConfig) {
+          out[key] = {
+            value: (this.defaultValues as any)[key],
+            source: "fallback",
+          };
+          continue;
+        }
+
+        const val = getValue(this.remoteConfig, key);
+        // Value API exposes asString/asBoolean and getSource()
+        const asStr = val.asString();
+        const src =
+          typeof (val as any).getSource === "function"
+            ? (val as any).getSource()
+            : undefined;
+
+        // Try to parse boolean-like values
+        const parsed =
+          asStr === "true" || asStr === "false" ? asStr === "true" : asStr;
+
+        out[key] = { value: parsed, source: src };
+      } catch (e) {
+        out[key] = { value: (this.defaultValues as any)[key], source: "error" };
+      }
+    }
+
+    return out;
+  }
+
+  /**
    * Get countdown deadline from Remote Config
    */
-  getCountdownDeadline(): string {
+  async getCountdownDeadline(): Promise<string> {
     try {
       if (!this.remoteConfig) {
         return this.defaultValues.countdown_deadline;
       }
 
+      // Ensure we prioritized remote value when possible
+      await this.ensureRemoteValue("countdown_deadline");
+
       const deadline = getValue(
         this.remoteConfig,
-        "countdown_deadline",
+        "countdown_deadline"
       ).asString();
       return deadline || this.defaultValues.countdown_deadline;
     } catch (error) {
@@ -135,15 +205,17 @@ class FirebaseService {
   /**
    * Get countdown timezone from Remote Config
    */
-  getCountdownTimezone(): string {
+  async getCountdownTimezone(): Promise<string> {
     try {
       if (!this.remoteConfig) {
         return this.defaultValues.countdown_timezone;
       }
 
+      await this.ensureRemoteValue("countdown_timezone");
+
       const timezone = getValue(
         this.remoteConfig,
-        "countdown_timezone",
+        "countdown_timezone"
       ).asString();
       return timezone || this.defaultValues.countdown_timezone;
     } catch (error) {
@@ -155,20 +227,50 @@ class FirebaseService {
   /**
    * Check if countdown is enabled from Remote Config
    */
-  isCountdownEnabled(): boolean {
+  async isCountdownEnabled(): Promise<boolean> {
     try {
       if (!this.remoteConfig) {
         return true; // Default to enabled
       }
 
+      await this.ensureRemoteValue("countdown_enabled");
+
       const enabled = getValue(
         this.remoteConfig,
-        "countdown_enabled",
+        "countdown_enabled"
       ).asBoolean();
       return enabled;
     } catch (error) {
       console.error("❌ Failed to get countdown enabled status:", error);
       return true; // Default to enabled
+    }
+  }
+
+  /**
+   * Ensure remote config is fetched & activated if the current param isn't from remote
+   */
+  private async ensureRemoteValue(key: string): Promise<void> {
+    if (!this.remoteConfig) return;
+
+    try {
+      const val = getValue(this.remoteConfig, key);
+      const src =
+        typeof (val as any).getSource === "function"
+          ? (val as any).getSource()
+          : undefined;
+
+      // If the current value is not from the remote server, attempt to fetch & activate
+      if (src !== "remote") {
+        // fetchConfig will return true when activated
+        await this.fetchConfig();
+      }
+    } catch (e) {
+      // Non-fatal: leave defaults in place
+      console.debug(
+        "ensureRemoteValue: unable to confirm remote source for",
+        key,
+        e
+      );
     }
   }
 
@@ -201,10 +303,10 @@ class FirebaseService {
       config: this.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
         ),
         fetchTimeoutMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
         ),
       },
       defaults: this.getDefaultValues(),

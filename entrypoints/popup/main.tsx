@@ -5,9 +5,6 @@ import PopupUIService from "../../services/popupUIService";
 PopupService.initialize().then(() => {
   // Initialize milestones section and countdown with Firebase Remote Config
   PopupUIService.updateMilestoneSection().then(async () => {
-    // Start Firebase-powered countdown
-    await PopupUIService.startFacilitatorCountdown();
-  });
 
   // Add copy button event listener after initialization
   setTimeout(() => {
