@@ -5,8 +5,14 @@ import PopupUIService from "../../services/popupUIService";
 PopupService.initialize().then(() => {
   // Initialize milestones section and countdown with Firebase Remote Config
   PopupUIService.updateMilestoneSection().then(async () => {
+    // Start Firebase-powered countdown
+    try {
+      await PopupUIService.startFacilitatorCountdown();
+    } catch (err) {
+      console.error("popup: failed to start facilitator countdown:", err);
+    }
 
-  // Add copy button event listener after initialization
+    // Add copy button event listener after initialization
   setTimeout(() => {
     const copyBtn = document.getElementById("copy-profile-url");
     if (copyBtn) {
@@ -58,4 +64,5 @@ PopupService.initialize().then(() => {
       });
     }
   }, 500); // Wait 500ms to ensure DOM is ready
+  });
 });

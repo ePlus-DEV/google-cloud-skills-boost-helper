@@ -869,106 +869,280 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
    * Start facilitator program countdown timer with Firebase Remote Config
    */
   async startFacilitatorCountdown(): Promise<void> {
-    // Import Firebase service dynamically to avoid circular dependency
-    let deadline: Date;
+    // Support multiple countdown instances. Each instance should have
+    // elements with class `.countdown-instance` and data attributes:
+    // - data-countdown-key (optional): remote config key for deadline
+    // If not provided, default `countdown_deadline` and `countdown_enabled` are used.
 
+    const firebaseService = (await import("./firebaseService")).default;
+
+    // Initialize Firebase if not already done
     try {
-      const firebaseService = (await import("./firebaseService")).default;
-
-      // Initialize Firebase if not already done
       if (!firebaseService.isInitialized()) {
         await firebaseService.initialize();
       }
-
-      // Get countdown deadline from Remote Config (prioritize remote values)
-      const countdownDeadline = await firebaseService.getCountdownDeadline();
-      const isEnabled = await firebaseService.isCountdownEnabled();
-
-      if (!isEnabled) {
-        this.hideCountdownDisplay();
-        return;
-      }
-
-      // Show countdown display if enabled
-      this.showCountdownDisplay();
-
-      deadline = new Date(countdownDeadline);
-    } catch (error) {
-      // Log the error so failures are visible in console and telemetry
+    } catch (e) {
+      // initialization failure is non-fatal; we'll fall back per-instance
       console.error(
         "Error initializing Firebase for facilitator countdown:",
-        error
+        e
       );
-
-      // Fallback to hardcoded deadline if Firebase fails
-      deadline = new Date("2025-10-14T23:59:59+05:30");
-
-      // Show countdown display on fallback
-      this.showCountdownDisplay();
     }
 
-    let countdownLogged = false;
+    // Clear any existing intervals for countdown instances
+    // We keep a map on this object to preserve intervals across calls
+    if (!(this as any)._countdownIntervals)
+      (this as any)._countdownIntervals = new Map<string, number>();
+    const intervals: Map<string, number> = (this as any)._countdownIntervals;
 
-    const updateCountdown = () => {
-      const now = new Date();
-      const timeDiff = deadline.getTime() - now.getTime();
+    // Find all countdown instances
+    const instances = document.querySelectorAll<HTMLElement>(
+      ".countdown-instance"
+    );
 
-      if (timeDiff <= 0) {
-        // Program has ended
-        this.updateElementText("#countdown-days", "00");
-        this.updateElementText("#countdown-hours", "00");
-        this.updateElementText("#countdown-minutes", "00");
-        this.updateElementText("#countdown-seconds", "00");
-
-        // Show expired message
-        const countdownContainer =
-          this.querySelector("#countdown-days")?.parentElement?.parentElement;
-        if (countdownContainer) {
-          countdownContainer.innerHTML = `
-              <div class="text-center text-red-400">
-                <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
-                <div class="font-bold">${browser.i18n.getMessage(
-                  "programEnded"
-                )}</div>
-                <div class="text-xs text-red-300/70">${browser.i18n.getMessage(
-                  "facilitatorDeadlinePassed"
-                )}</div>
-              </div>
-            `;
-        }
-        return;
-      }
-
-      // Calculate time components
-      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-      // Update countdown display
-      const formattedDays = days.toString().padStart(2, "0");
-      const formattedHours = hours.toString().padStart(2, "0");
-      const formattedMinutes = minutes.toString().padStart(2, "0");
-      const formattedSeconds = seconds.toString().padStart(2, "0");
-
-      this.updateElementText("#countdown-days", formattedDays);
-      this.updateElementText("#countdown-hours", formattedHours);
-      this.updateElementText("#countdown-minutes", formattedMinutes);
-      this.updateElementText("#countdown-seconds", formattedSeconds);
-
-      // Log first update only
-      if (!countdownLogged) {
-        countdownLogged = true;
+    // Helper to clear interval by id
+    const clearIntervalById = (id: string) => {
+      const iv = intervals.get(id);
+      if (iv) {
+        try {
+          clearInterval(iv);
+        } catch {}
+        intervals.delete(id);
       }
     };
 
-    // Update immediately
-    updateCountdown();
+    // Iterate instances sequentially and set up timers. Processing sequentially
+    // lets us await remote config reads and decide whether to schedule an
+    // interval (we avoid scheduling intervals for deadlines already passed).
+    let createdArcadeInstance = false;
+    const nodes = Array.from(instances.values());
+    for (let idx = 0; idx < nodes.length; idx++) {
+      const el = nodes[idx];
+      const id = el.id || `countdown-${idx}`;
 
-    // Update every second
-    setInterval(updateCountdown, 1000);
+      // Clear previous interval if exists
+      clearIntervalById(id);
+
+      // Extract data attribute for remote key
+      const rcKey = el.dataset.countdownKey || "countdown_deadline";
+      const rcToggleKey = el.dataset.countdownToggleKey || "countdown_enabled";
+
+      // Determine deadline and enabled state
+      let deadlineDate: Date;
+      let enabled = true;
+
+      try {
+        const deadlineStr = await firebaseService.getStringParam(
+          rcKey,
+          "2025-10-14T23:59:59+05:30"
+        );
+        enabled = await firebaseService.getBooleanParam(rcToggleKey, true);
+        if (!enabled) {
+          // Hide this specific instance
+          el.classList.add("hidden");
+          continue;
+        } else {
+          el.classList.remove("hidden");
+        }
+
+        deadlineDate = new Date(deadlineStr);
+        if (isNaN(deadlineDate.getTime())) {
+          deadlineDate = new Date("2025-10-14T23:59:59+05:30");
+        }
+      } catch (e) {
+        // Fallback
+        deadlineDate = new Date("2025-10-14T23:59:59+05:30");
+      }
+
+      // If the deadline is already passed, render the ended state once and
+      // (for facilitator) ensure the arcade instance exists. We do NOT
+      // schedule a repeating interval for already-expired instances to avoid
+      // re-creating intervals that immediately expire and re-enter this
+      // function.
+      const now = new Date();
+      const initialDiff = deadlineDate.getTime() - now.getTime();
+      if (initialDiff <= 0) {
+        // Show zeroed counters if present
+        const daysEl = el.querySelector<HTMLElement>(".countdown-days");
+        const hoursEl = el.querySelector<HTMLElement>(".countdown-hours");
+        const minutesEl = el.querySelector<HTMLElement>(".countdown-minutes");
+        const secondsEl = el.querySelector<HTMLElement>(".countdown-seconds");
+        if (daysEl) daysEl.textContent = "00";
+        if (hoursEl) hoursEl.textContent = "00";
+        if (minutesEl) minutesEl.textContent = "00";
+        if (secondsEl) secondsEl.textContent = "00";
+
+        // replace instance content with ended message
+        el.innerHTML = `
+          <div class="text-center text-red-400">
+            <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
+            <div class="font-bold">${browser.i18n.getMessage(
+              "programEnded"
+            )}</div>
+            <div class="text-xs text-red-300/70">${browser.i18n.getMessage(
+              "facilitatorDeadlinePassed"
+            )}</div>
+          </div>
+        `;
+
+        try {
+          const program = el.dataset.program;
+          if (program === "facilitator") {
+            let arcadeEl = document.querySelector<HTMLElement>(
+              '.countdown-instance[data-program="arcade"]'
+            );
+
+            if (!arcadeEl) {
+              // Create a minimal arcade instance under the milestones or countdown container
+              const container =
+                document.querySelector("#milestones-section") ||
+                document.querySelector("#countdown-container") ||
+                document.body;
+
+              const wrapper = document.createElement("div");
+              wrapper.className = "countdown-instance";
+              wrapper.setAttribute("data-program", "arcade");
+              // ensure arcade uses an explicit remote key if you want
+              wrapper.setAttribute(
+                "data-countdown-key",
+                "countdown_deadline_arcade"
+              );
+              wrapper.setAttribute(
+                "data-countdown-toggle-key",
+                "countdown_enabled_arcade"
+              );
+              // Use default child elements expected by the updater
+              wrapper.innerHTML = `
+                <div class="countdown-days">00</div>
+                <div class="countdown-hours">00</div>
+                <div class="countdown-minutes">00</div>
+                <div class="countdown-seconds">00</div>
+              `;
+              container.appendChild(wrapper);
+              arcadeEl = wrapper;
+              createdArcadeInstance = true;
+            }
+
+            // Ensure countdown UI is visible and arcade instance is shown
+            try {
+              this.showCountdownDisplay();
+              arcadeEl.classList.remove("hidden");
+            } catch (_) {}
+          }
+        } catch (_) {}
+
+        // Do not schedule an interval for already-expired instances
+        continue;
+      }
+
+      // Query inner elements for time parts (allow per-instance selectors)
+      const daysEl = el.querySelector<HTMLElement>(".countdown-days");
+      const hoursEl = el.querySelector<HTMLElement>(".countdown-hours");
+      const minutesEl = el.querySelector<HTMLElement>(".countdown-minutes");
+      const secondsEl = el.querySelector<HTMLElement>(".countdown-seconds");
+
+      const updateFn = () => {
+        const now = new Date();
+        const diff = deadlineDate.getTime() - now.getTime();
+
+        if (diff <= 0) {
+          if (daysEl) daysEl.textContent = "00";
+          if (hoursEl) hoursEl.textContent = "00";
+          if (minutesEl) minutesEl.textContent = "00";
+          if (secondsEl) secondsEl.textContent = "00";
+
+          // replace instance content with ended message
+          el.innerHTML = `
+            <div class="text-center text-red-400">
+              <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
+              <div class="font-bold">${browser.i18n.getMessage(
+                "programEnded"
+              )}</div>
+              <div class="text-xs text-red-300/70">${browser.i18n.getMessage(
+                "facilitatorDeadlinePassed"
+              )}</div>
+            </div>
+          `;
+
+          // If this was the facilitator instance, ensure the arcade countdown
+          // is running until end of December. Create one if missing.
+          try {
+            const program = el.dataset.program;
+            if (program === "facilitator") {
+              let arcadeEl = document.querySelector<HTMLElement>(
+                '.countdown-instance[data-program="arcade"]'
+              );
+
+              if (!arcadeEl) {
+                // Create a minimal arcade instance under the milestones or countdown container
+                const container =
+                  document.querySelector("#milestones-section") ||
+                  document.querySelector("#countdown-container") ||
+                  document.body;
+
+                const wrapper = document.createElement("div");
+                wrapper.className = "countdown-instance";
+                wrapper.setAttribute("data-program", "arcade");
+                // ensure arcade uses an explicit remote key if you want
+                wrapper.setAttribute(
+                  "data-countdown-key",
+                  "countdown_deadline_arcade"
+                );
+                wrapper.setAttribute(
+                  "data-countdown-toggle-key",
+                  "countdown_enabled_arcade"
+                );
+                // Use default child elements expected by the updater
+                wrapper.innerHTML = `
+                  <div class="countdown-days">00</div>
+                  <div class="countdown-hours">00</div>
+                  <div class="countdown-minutes">00</div>
+                  <div class="countdown-seconds">00</div>
+                `;
+                container.appendChild(wrapper);
+                arcadeEl = wrapper;
+                createdArcadeInstance = true;
+              }
+
+              // Ensure countdown UI is visible and arcade instance is shown
+              try {
+                this.showCountdownDisplay();
+                arcadeEl.classList.remove("hidden");
+              } catch (_) {}
+            }
+          } catch (_) {}
+
+          clearIntervalById(id);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (daysEl) daysEl.textContent = String(days).padStart(2, "0");
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, "0");
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, "0");
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, "0");
+      };
+
+      // Run immediately and every second
+      updateFn();
+      const intervalId = setInterval(updateFn, 1000) as unknown as number;
+      intervals.set(id, intervalId);
+    }
+
+    // If we created an arcade instance during processing of expired facilitator,
+    // kick off a new pass to start countdowns for any non-expired instances
+    // (run on next tick to avoid immediate recursion).
+    if (createdArcadeInstance) {
+      setTimeout(() => {
+        void this.startFacilitatorCountdown();
+      }, 0);
+    }
   },
 };
 

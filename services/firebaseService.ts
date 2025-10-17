@@ -247,6 +247,36 @@ class FirebaseService {
   }
 
   /**
+   * Generic helper to get a string parameter from Remote Config with fallback
+   */
+  async getStringParam(key: string, fallback: string): Promise<string> {
+    try {
+      if (!this.remoteConfig) return fallback;
+
+      await this.ensureRemoteValue(key);
+      const value = getValue(this.remoteConfig, key).asString();
+      return value || fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  /**
+   * Generic helper to get a boolean parameter from Remote Config with fallback
+   */
+  async getBooleanParam(key: string, fallback: boolean): Promise<boolean> {
+    try {
+      if (!this.remoteConfig) return fallback;
+
+      await this.ensureRemoteValue(key);
+      const value = getValue(this.remoteConfig, key).asBoolean();
+      return typeof value === "boolean" ? value : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  /**
    * Ensure remote config is fetched & activated if the current param isn't from remote
    */
   private async ensureRemoteValue(key: string): Promise<void> {
