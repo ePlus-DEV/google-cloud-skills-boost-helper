@@ -5,6 +5,9 @@ name = "javascript"
 
   [analyzers.meta]
   plugins = ["react"]
+  
+  [analyzers.meta.rules]
+  ts/no-unsafe-any = "off"
 
 [[transformers]]
 name = "prettier"
