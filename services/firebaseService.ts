@@ -332,9 +332,9 @@ class FirebaseService {
     };
     defaults: RemoteConfigDefaults;
   } {
-    const isUsingEnv = !!(
+    const isUsingEnv = Boolean(
       import.meta.env.WXT_FIREBASE_API_KEY &&
-      import.meta.env.WXT_FIREBASE_PROJECT_ID
+        import.meta.env.WXT_FIREBASE_PROJECT_ID,
     );
 
     return {
