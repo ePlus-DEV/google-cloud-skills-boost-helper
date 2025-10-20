@@ -1,16 +1,14 @@
 version = 1
 
 [[analyzers]]
-name = "typescript"
-enabled = true
+name = "javascript"
 
   [analyzers.meta]
-  environment = ["node"]
   plugins = ["react"]
-
-  [analyzers.meta.rules]
-  JS-0323 = "off" 
-  ts/no-unsafe-any = "off"
+  skip_doc_coverage = ["node_modules"]
+  exclude_patterns = []
+  # Tắt rule JS-0323
+  disabled_checks = ["JS-0323"]
 
 [[transformers]]
 name = "prettier"
