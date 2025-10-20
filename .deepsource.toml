@@ -5,10 +5,6 @@ name = "javascript"
 
   [analyzers.meta]
   plugins = ["react"]
-  skip_doc_coverage = ["node_modules"]
-  exclude_patterns = []
-  # Tắt rule JS-0323
-  disabled_checks = ["JS-0323"]
 
 [[transformers]]
 name = "prettier"
