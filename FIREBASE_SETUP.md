@@ -58,11 +58,13 @@ If environment variables are not provided, the service will use fallback values.
 
 Set up these parameters in Firebase Console > Remote Config:
 
-| Parameter            | Type    | Default Value                 | Description                                                                    |
-| -------------------- | ------- | ----------------------------- | ------------------------------------------------------------------------------ |
-| `countdown_deadline` | String  | `"2025-10-14T23:59:59+05:30"` | ISO 8601 datetime string for countdown deadline                                |
-| `countdown_timezone` | String  | `"+05:30"`                    | Timezone offset (IST in this case)                                             |
-| `countdown_enabled`  | Boolean | `true`                        | Whether to show countdown timer (when `false`, hides entire countdown section) |
+| Parameter                   | Type    | Default Value                     | Description |
+| --------------------------- | ------- | --------------------------------- | ----------- |
+| `countdown_deadline`        | String  | `"2025-10-14T23:59:59+05:30"`     | ISO 8601 datetime string for facilitator deadline |
+| `countdown_timezone`        | String  | `"+05:30"`                        | Timezone offset (IST in this case) |
+| `countdown_enabled`         | Boolean | `true`                            | Whether to show facilitator countdown (when `false`, hides entire countdown section) |
+| `countdown_deadline_arcade` | String  | `"<year>-12-31T23:59:59+00:00"`   | ISO 8601 datetime string for arcade deadline (defaults to end of current year) |
+| `countdown_enabled_arcade`  | Boolean | `true`                            | Whether to show arcade countdown timer |
 
 ### 4. Parameter Examples
 
@@ -79,6 +81,18 @@ Set up these parameters in Firebase Console > Remote Config:
 ```
 
 **countdown_enabled:**
+
+```
+true
+```
+
+**countdown_deadline_arcade:**
+
+```
+2024-12-31T23:59:59+00:00
+```
+
+**countdown_enabled_arcade:**
 
 ```
 true

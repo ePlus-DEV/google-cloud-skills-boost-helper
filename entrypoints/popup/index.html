@@ -363,67 +363,128 @@
               </span>
             </h3>
 
-            <!-- Facilitator Program Countdown -->
-            <div
-              class="bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-md rounded-lg p-3 mb-3 border border-red-400/30"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center">
-                  <i class="fa-solid fa-clock text-orange-400 text-lg mr-2"></i>
-                  <span class="text-white font-bold text-sm"
-                    >Program Deadline</span
-                  >
-                </div>
-                <div class="text-xs text-orange-300/70">
-                  Oct 14, 2025 11:59 PM IST
-                </div>
-              </div>
+            <!-- Facilitator & Arcade Countdowns -->
+            <div id="countdown-container" class="space-y-3 mb-3">
+              <!-- Facilitator Program Countdown -->
               <div
-                class="flex items-center justify-center space-x-4 text-center"
+                class="countdown-card countdown-instance bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-md rounded-lg p-3 border border-red-400/30"
+                data-program="facilitator"
+                data-countdown-key="countdown_deadline"
+                data-countdown-toggle-key="countdown_enabled"
               >
-                <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
-                  <div
-                    class="text-orange-400 font-bold text-lg"
-                    id="countdown-days"
-                  >
-                    00
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center">
+                    <i class="fa-solid fa-clock text-orange-400 text-lg mr-2"></i>
+                    <span class="text-white font-bold text-sm"
+                      >Program Deadline</span
+                    >
                   </div>
-                  <div class="text-orange-300/70 text-xs">Days</div>
+                  <div
+                    class="text-xs text-orange-300/70 countdown-deadline-label"
+                  >
+                    Oct 14, 2025 11:59 PM IST
+                  </div>
                 </div>
-                <div class="text-orange-400 text-lg">:</div>
-                <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
-                  <div
-                    class="text-orange-400 font-bold text-lg"
-                    id="countdown-hours"
-                  >
-                    00
+                <div
+                  class="flex items-center justify-center space-x-4 text-center"
+                >
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-orange-400 font-bold text-lg countdown-days">
+                      00
+                    </div>
+                    <div class="text-orange-300/70 text-xs">Days</div>
                   </div>
-                  <div class="text-orange-300/70 text-xs">Hours</div>
+                  <div class="text-orange-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-orange-400 font-bold text-lg countdown-hours">
+                      00
+                    </div>
+                    <div class="text-orange-300/70 text-xs">Hours</div>
+                  </div>
+                  <div class="text-orange-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div
+                      class="text-orange-400 font-bold text-lg countdown-minutes"
+                    >
+                      00
+                    </div>
+                    <div class="text-orange-300/70 text-xs">Minutes</div>
+                  </div>
+                  <div class="text-orange-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div
+                      class="text-orange-400 font-bold text-lg countdown-seconds"
+                    >
+                      00
+                    </div>
+                    <div class="text-orange-300/70 text-xs">Seconds</div>
+                  </div>
                 </div>
-                <div class="text-orange-400 text-lg">:</div>
-                <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
-                  <div
-                    class="text-orange-400 font-bold text-lg"
-                    id="countdown-minutes"
-                  >
-                    00
-                  </div>
-                  <div class="text-orange-300/70 text-xs">Minutes</div>
-                </div>
-                <div class="text-orange-400 text-lg">:</div>
-                <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
-                  <div
-                    class="text-orange-400 font-bold text-lg"
-                    id="countdown-seconds"
-                  >
-                    00
-                  </div>
-                  <div class="text-orange-300/70 text-xs">Seconds</div>
+                <div class="text-xs text-orange-300/70 mt-2 text-center">
+                  <i class="fa-solid fa-exclamation-triangle mr-1"></i>
+                  Complete milestones before the deadline to earn bonus points!
                 </div>
               </div>
-              <div class="text-xs text-orange-300/70 mt-2 text-center">
-                <i class="fa-solid fa-exclamation-triangle mr-1"></i>
-                Complete milestones before the deadline to earn bonus points!
+
+              <!-- Arcade Countdown -->
+              <div
+                class="countdown-card countdown-instance hidden bg-gradient-to-r from-sky-500/20 to-indigo-500/20 backdrop-blur-md rounded-lg p-3 border border-sky-400/30"
+                data-program="arcade"
+                data-countdown-key="countdown_deadline_arcade"
+                data-countdown-toggle-key="countdown_enabled_arcade"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center">
+                    <i class="fa-solid fa-gamepad text-sky-400 text-lg mr-2"></i>
+                    <span class="text-white font-bold text-sm"
+                      >Arcade Season Countdown</span
+                    >
+                  </div>
+                  <div
+                    class="text-xs text-sky-300/70 countdown-deadline-label"
+                  >
+                    Dec 31, 11:59 PM
+                  </div>
+                </div>
+                <div
+                  class="flex items-center justify-center space-x-4 text-center"
+                >
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-sky-400 font-bold text-lg countdown-days">
+                      00
+                    </div>
+                    <div class="text-sky-300/70 text-xs">Days</div>
+                  </div>
+                  <div class="text-sky-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-sky-400 font-bold text-lg countdown-hours">
+                      00
+                    </div>
+                    <div class="text-sky-300/70 text-xs">Hours</div>
+                  </div>
+                  <div class="text-sky-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div
+                      class="text-sky-400 font-bold text-lg countdown-minutes"
+                    >
+                      00
+                    </div>
+                    <div class="text-sky-300/70 text-xs">Minutes</div>
+                  </div>
+                  <div class="text-sky-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div
+                      class="text-sky-400 font-bold text-lg countdown-seconds"
+                    >
+                      00
+                    </div>
+                    <div class="text-sky-300/70 text-xs">Seconds</div>
+                  </div>
+                </div>
+                <div class="text-xs text-sky-300/70 mt-2 text-center">
+                  <i class="fa-solid fa-bolt mr-1"></i>
+                  Keep the momentum going and climb the Arcade leaderboard!
+                </div>
               </div>
             </div>
 

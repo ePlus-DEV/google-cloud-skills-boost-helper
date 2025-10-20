@@ -39,11 +39,20 @@ class FirebaseService {
    * Get default Remote Config values from environment variables with fallbacks
    */
   private getDefaultValues(): RemoteConfigDefaults {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const defaultArcadeDeadline =
+      import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE ||
+      `${currentYear}-12-31T23:59:59+00:00`;
+
     return {
       countdown_deadline:
         import.meta.env.WXT_COUNTDOWN_DEADLINE || "2025-10-14T23:59:59+05:30",
       countdown_timezone: import.meta.env.WXT_COUNTDOWN_TIMEZONE || "+05:30",
       countdown_enabled: import.meta.env.WXT_COUNTDOWN_ENABLED || "true",
+      countdown_deadline_arcade: defaultArcadeDeadline,
+      countdown_enabled_arcade:
+        import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
     };
   }
 

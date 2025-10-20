@@ -253,6 +253,9 @@
   "facilitatorDeadlinePassed": {
     "message": "La date limite du programme Facilitateur est passée"
   },
+  "arcadeDeadlinePassed": {
+    "message": "La saison Arcade est terminée pour cette année. À bientôt !"
+  },
   "programEnded": { "message": "Programme terminé" },
   "statusCompleted": { "message": "Terminé" },
   "statusInProgress": { "message": "En cours" },
