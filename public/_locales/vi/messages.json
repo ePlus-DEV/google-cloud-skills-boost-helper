@@ -238,6 +238,9 @@
   "facilitatorDeadlinePassed": {
     "message": "Hạn chót chương trình Facilitator đã qua"
   },
+  "arcadeDeadlinePassed": {
+    "message": "Mùa Arcade đã khép lại cho năm nay. Hẹn gặp bạn ở mùa sau!"
+  },
   "programEnded": { "message": "Chương trình kết thúc" },
   "statusCompleted": { "message": "Hoàn thành" },
   "statusInProgress": { "message": "Đang tiến hành" },

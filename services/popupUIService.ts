@@ -67,7 +67,7 @@ const PopupUIService = {
    */
   updateElementText(
     selector: string,
-    value: string | number | null | undefined
+    value: string | number | null | undefined,
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
@@ -141,7 +141,7 @@ const PopupUIService = {
 
     // Find the first milestone that requires more points than the user has
     const nextIndex = this.ARCADE_MILESTONES.findIndex(
-      (milestone) => milestone.points > roundedPoints
+      (milestone) => milestone.points > roundedPoints,
     );
 
     const lastIndex = this.ARCADE_MILESTONES.length - 1;
@@ -176,11 +176,11 @@ const PopupUIService = {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number
+    totalPoints: number,
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
     );
 
     this.updateElementText(
@@ -189,7 +189,7 @@ const PopupUIService = {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`
+          } ${browser.i18n.getMessage("textPoints")}`,
     );
   },
 
@@ -203,7 +203,7 @@ const PopupUIService = {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`
+      }`,
     );
   },
 
@@ -305,7 +305,7 @@ const PopupUIService = {
         selector: "#total-points",
         // Show API points if present, otherwise finalTotalPoints. Format as thousands with 3 decimals.
         value: `${this.formatPointsThousands(
-          points ?? finalTotalPoints ?? 0
+          points ?? finalTotalPoints ?? 0,
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
       { selector: "#game-badge-count", value: gamePoints },
@@ -322,11 +322,11 @@ const PopupUIService = {
         this.updateElementText("#base-points", `${totalPoints} points`);
         this.updateElementText(
           "#bonus-points",
-          `+${facilitatorBonus} ${browser.i18n.getMessage("textPoints")}`
+          `+${facilitatorBonus} ${browser.i18n.getMessage("textPoints")}`,
         );
         this.updateElementText(
           "#total-combined-points",
-          `${finalTotalPoints} ${browser.i18n.getMessage("textPoints")}`
+          `${finalTotalPoints} ${browser.i18n.getMessage("textPoints")}`,
         );
       } else {
         breakdownCard.classList.add("hidden");
@@ -339,12 +339,12 @@ const PopupUIService = {
     // Update small avatar overlay badge with abbreviated total points
     try {
       const avatarBadge = this.querySelector<HTMLElement>(
-        "#avatar-score-badge"
+        "#avatar-score-badge",
       );
       if (avatarBadge) {
         avatarBadge.textContent = this.formatAvatarBadge(finalTotalPoints);
         avatarBadge.title = `${finalTotalPoints} ${browser.i18n.getMessage(
-          "textPoints"
+          "textPoints",
         )}`;
       }
     } catch (e) {
@@ -358,11 +358,11 @@ const PopupUIService = {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      finalTotalPoints
+      finalTotalPoints,
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points
+      leagueInfo.nextMilestone.points,
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -418,13 +418,13 @@ const PopupUIService = {
       {
         selector: "#total-points",
         value: `${this.formatPointsThousands(
-          points ?? totalPoints ?? 0
+          points ?? totalPoints ?? 0,
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
       {
         selector: "#arcade-total-points",
         value: `${this.formatPointsThousands(
-          totalPoints
+          totalPoints,
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
     ];
@@ -443,7 +443,7 @@ const PopupUIService = {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000
+    timeout = 6000,
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -459,7 +459,7 @@ const PopupUIService = {
    */
   toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean
+    disabled: boolean,
   ): void {
     for (const button of buttons) {
       button.disabled = disabled;
@@ -472,7 +472,7 @@ const PopupUIService = {
   toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean
+    add: boolean,
   ): void {
     for (const element of elements) {
       element.classList.toggle(className, add);
@@ -523,7 +523,7 @@ const PopupUIService = {
 
     // Update each facilitator milestone
     for (const [milestone, requirements] of Object.entries(
-      this.FACILITATOR_MILESTONE_REQUIREMENTS
+      this.FACILITATOR_MILESTONE_REQUIREMENTS,
     )) {
       this.updateSingleMilestone(
         milestone,
@@ -533,7 +533,7 @@ const PopupUIService = {
           skills: faciSkill,
           labfree: faciCompletion,
         },
-        requirements
+        requirements,
       );
     }
 
@@ -664,7 +664,7 @@ const PopupUIService = {
     const labfreeProgress =
       Math.min(current.labfree / requirements.labfree, 1) * 100;
     const weighted = Math.round(
-      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4
+      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4,
     );
 
     // Method 3: Proportional Total Progress
@@ -679,7 +679,7 @@ const PopupUIService = {
 
     // Method 4: Minimum Requirement Progress
     const minimum = Math.round(
-      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress)
+      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress),
     );
 
     // Completion status (same for all methods)
@@ -705,7 +705,7 @@ const PopupUIService = {
    */
   toggleMilestoneDetails(milestone: string): void {
     const detailsElement = this.querySelector(
-      `.milestone-card[data-milestone="${milestone}"] .milestone-details`
+      `.milestone-card[data-milestone="${milestone}"] .milestone-details`,
     );
     if (detailsElement) {
       detailsElement.classList.toggle("hidden");
@@ -718,41 +718,41 @@ const PopupUIService = {
   updateSingleMilestone(
     milestone: string,
     current: any,
-    requirements: any
+    requirements: any,
   ): void {
     // Update individual counts
     this.updateElementText(
       `.milestone-${milestone}-games`,
       `${Math.min(current.games, requirements.games)}/${requirements.games}${
         current.games >= requirements.games ? " ✓" : ""
-      }`
+      }`,
     );
 
     this.updateElementText(
       `.milestone-${milestone}-trivia`,
       `${Math.min(current.trivia, requirements.trivia)}/${requirements.trivia}${
         current.trivia >= requirements.trivia ? " ✓" : ""
-      }`
+      }`,
     );
 
     this.updateElementText(
       `.milestone-${milestone}-skills`,
       `${Math.min(current.skills, requirements.skills)}/${requirements.skills}${
         current.skills >= requirements.skills ? " ✓" : ""
-      }`
+      }`,
     );
 
     this.updateElementText(
       `.milestone-${milestone}-labfree`,
       `${Math.min(current.labfree, requirements.labfree)}/${
         requirements.labfree
-      }${current.labfree >= requirements.labfree ? " ✓" : ""}`
+      }${current.labfree >= requirements.labfree ? " ✓" : ""}`,
     );
 
     // Calculate overall progress using different methods
     const progressMethods = this.calculateProgressMethods(
       current,
-      requirements
+      requirements,
     );
 
     // Use Binary Completion method as default
@@ -770,10 +770,10 @@ const PopupUIService = {
   updateProgressElement(
     milestone: string,
     progressPercent: number,
-    progressMethods: any
+    progressMethods: any,
   ): void {
     const progressElement = this.querySelector(
-      `.milestone-${milestone}-progress`
+      `.milestone-${milestone}-progress`,
     );
     if (!progressElement) return;
 
@@ -812,7 +812,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   updateStatusIcon(
     milestone: string,
     isCompleted: boolean,
-    progressPercent: number
+    progressPercent: number,
   ): void {
     const statusIcon = this.querySelector(`.milestone-${milestone}-status`);
     if (!statusIcon) return;
@@ -837,14 +837,6 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     if (countdownSection) {
       countdownSection.classList.add("hidden");
     }
-
-    const milestoneSection = this.querySelector("#milestones-section");
-    if (milestoneSection) {
-      const countdownCard = milestoneSection.querySelector(".countdown-card");
-      if (countdownCard) {
-        countdownCard.classList.add("hidden");
-      }
-    }
   },
 
   /**
@@ -854,14 +846,6 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     const countdownSection = this.querySelector("#countdown-container");
     if (countdownSection) {
       countdownSection.classList.remove("hidden");
-    }
-
-    const milestoneSection = this.querySelector("#milestones-section");
-    if (milestoneSection) {
-      const countdownCard = milestoneSection.querySelector(".countdown-card");
-      if (countdownCard) {
-        countdownCard.classList.remove("hidden");
-      }
     }
   },
 
@@ -876,6 +860,64 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
     const firebaseService = (await import("./firebaseService")).default;
 
+    const defaultFacilitatorDeadline =
+      import.meta.env.WXT_COUNTDOWN_DEADLINE || "2025-10-14T23:59:59+05:30";
+
+    const getArcadeDefaultDeadline = () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      return `${year}-12-31T23:59:59+00:00`;
+    };
+
+    const getProgramDefaultDeadline = (
+      program: string | undefined,
+      key: string,
+    ): string => {
+      const normalized = program?.toLowerCase();
+      if (normalized === "arcade" || key.toLowerCase().includes("arcade")) {
+        return getArcadeDefaultDeadline();
+      }
+      return defaultFacilitatorDeadline;
+    };
+
+    const formatCountdownDeadlineLabel = (date: Date): string => {
+      try {
+        return date.toLocaleString(undefined, {
+          month: "short",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      } catch (e) {
+        console.debug("formatCountdownDeadlineLabel fallback triggered", e);
+        return date.toISOString();
+      }
+    };
+
+    const renderEndedState = (program: string | undefined): string => {
+      const normalized = program?.toLowerCase();
+      const isArcade = normalized === "arcade";
+      const accentClass = isArcade ? "text-sky-400" : "text-red-400";
+      const detailClass = isArcade ? "text-sky-300/70" : "text-red-300/70";
+      const iconClass = isArcade ? "fa-gamepad" : "fa-clock-o";
+      const messageKey =
+        normalized === "arcade"
+          ? "arcadeDeadlinePassed"
+          : "facilitatorDeadlinePassed";
+      const getMessage = (key: string): string =>
+        browser.i18n.getMessage(
+          key as Parameters<typeof browser.i18n.getMessage>[0],
+        );
+
+      return `
+        <div class="text-center ${accentClass}">
+          <i class="fa-solid ${iconClass} text-2xl mb-2"></i>
+          <div class="font-bold">${getMessage("programEnded")}</div>
+          <div class="text-xs ${detailClass}">${getMessage(messageKey)}</div>
+        </div>
+      `;
+    };
+
     // Initialize Firebase if not already done
     try {
       if (!firebaseService.isInitialized()) {
@@ -885,7 +927,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       // initialization failure is non-fatal; we'll fall back per-instance
       console.error(
         "Error initializing Firebase for facilitator countdown:",
-        e
+        e,
       );
     }
 
@@ -897,7 +939,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
     // Find all countdown instances
     const instances = document.querySelectorAll<HTMLElement>(
-      ".countdown-instance"
+      ".countdown-instance",
     );
 
     // Helper to clear interval by id
@@ -919,6 +961,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     for (let idx = 0; idx < nodes.length; idx++) {
       const el = nodes[idx];
       const id = el.id || `countdown-${idx}`;
+      const program = el.dataset.program;
 
       // Clear previous interval if exists
       clearIntervalById(id);
@@ -930,11 +973,12 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       // Determine deadline and enabled state
       let deadlineDate: Date;
       let enabled = true;
+      const fallbackDeadline = getProgramDefaultDeadline(program, rcKey);
 
       try {
         const deadlineStr = await firebaseService.getStringParam(
           rcKey,
-          "2025-10-14T23:59:59+05:30"
+          fallbackDeadline,
         );
         enabled = await firebaseService.getBooleanParam(rcToggleKey, true);
         if (!enabled) {
@@ -947,11 +991,19 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
         deadlineDate = new Date(deadlineStr);
         if (isNaN(deadlineDate.getTime())) {
-          deadlineDate = new Date("2025-10-14T23:59:59+05:30");
+          deadlineDate = new Date(fallbackDeadline);
         }
       } catch (e) {
         // Fallback
-        deadlineDate = new Date("2025-10-14T23:59:59+05:30");
+        deadlineDate = new Date(fallbackDeadline);
+      }
+
+      const deadlineLabelEl = el.querySelector<HTMLElement>(
+        ".countdown-deadline-label",
+      );
+      if (deadlineLabelEl && !isNaN(deadlineDate.getTime())) {
+        deadlineLabelEl.textContent =
+          formatCountdownDeadlineLabel(deadlineDate);
       }
 
       // If the deadline is already passed, render the ended state once and
@@ -973,23 +1025,12 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
         if (secondsEl) secondsEl.textContent = "00";
 
         // replace instance content with ended message
-        el.innerHTML = `
-          <div class="text-center text-red-400">
-            <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
-            <div class="font-bold">${browser.i18n.getMessage(
-              "programEnded"
-            )}</div>
-            <div class="text-xs text-red-300/70">${browser.i18n.getMessage(
-              "facilitatorDeadlinePassed"
-            )}</div>
-          </div>
-        `;
+        el.innerHTML = renderEndedState(program);
 
         try {
-          const program = el.dataset.program;
-          if (program === "facilitator") {
+          if ((program ?? "").toLowerCase() === "facilitator") {
             let arcadeEl = document.querySelector<HTMLElement>(
-              '.countdown-instance[data-program="arcade"]'
+              '.countdown-instance[data-program="arcade"]',
             );
 
             if (!arcadeEl) {
@@ -1000,23 +1041,56 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                 document.body;
 
               const wrapper = document.createElement("div");
-              wrapper.className = "countdown-instance";
+              wrapper.className =
+                "countdown-card countdown-instance bg-gradient-to-r from-sky-500/20 to-indigo-500/20 backdrop-blur-md rounded-lg p-3 border border-sky-400/30";
               wrapper.setAttribute("data-program", "arcade");
               // ensure arcade uses an explicit remote key if you want
               wrapper.setAttribute(
                 "data-countdown-key",
-                "countdown_deadline_arcade"
+                "countdown_deadline_arcade",
               );
               wrapper.setAttribute(
                 "data-countdown-toggle-key",
-                "countdown_enabled_arcade"
+                "countdown_enabled_arcade",
               );
               // Use default child elements expected by the updater
               wrapper.innerHTML = `
-                <div class="countdown-days">00</div>
-                <div class="countdown-hours">00</div>
-                <div class="countdown-minutes">00</div>
-                <div class="countdown-seconds">00</div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center">
+                    <i class="fa-solid fa-gamepad text-sky-400 text-lg mr-2"></i>
+                    <span class="text-white font-bold text-sm">
+                      Arcade Season Countdown
+                    </span>
+                  </div>
+                  <div class="text-xs text-sky-300/70 countdown-deadline-label">
+                    Dec 31, 11:59 PM
+                  </div>
+                </div>
+                <div class="flex items-center justify-center space-x-4 text-center">
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-sky-400 font-bold text-lg countdown-days">00</div>
+                    <div class="text-sky-300/70 text-xs">Days</div>
+                  </div>
+                  <div class="text-sky-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-sky-400 font-bold text-lg countdown-hours">00</div>
+                    <div class="text-sky-300/70 text-xs">Hours</div>
+                  </div>
+                  <div class="text-sky-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-sky-400 font-bold text-lg countdown-minutes">00</div>
+                    <div class="text-sky-300/70 text-xs">Minutes</div>
+                  </div>
+                  <div class="text-sky-400 text-lg">:</div>
+                  <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                    <div class="text-sky-400 font-bold text-lg countdown-seconds">00</div>
+                    <div class="text-sky-300/70 text-xs">Seconds</div>
+                  </div>
+                </div>
+                <div class="text-xs text-sky-300/70 mt-2 text-center">
+                  <i class="fa-solid fa-bolt mr-1"></i>
+                  Keep the momentum going and climb the Arcade leaderboard!
+                </div>
               `;
               container.appendChild(wrapper);
               arcadeEl = wrapper;
@@ -1052,25 +1126,14 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
           if (secondsEl) secondsEl.textContent = "00";
 
           // replace instance content with ended message
-          el.innerHTML = `
-            <div class="text-center text-red-400">
-              <i class="fa-solid fa-clock-o text-2xl mb-2"></i>
-              <div class="font-bold">${browser.i18n.getMessage(
-                "programEnded"
-              )}</div>
-              <div class="text-xs text-red-300/70">${browser.i18n.getMessage(
-                "facilitatorDeadlinePassed"
-              )}</div>
-            </div>
-          `;
+          el.innerHTML = renderEndedState(program);
 
           // If this was the facilitator instance, ensure the arcade countdown
           // is running until end of December. Create one if missing.
           try {
-            const program = el.dataset.program;
-            if (program === "facilitator") {
+            if ((program ?? "").toLowerCase() === "facilitator") {
               let arcadeEl = document.querySelector<HTMLElement>(
-                '.countdown-instance[data-program="arcade"]'
+                '.countdown-instance[data-program="arcade"]',
               );
 
               if (!arcadeEl) {
@@ -1081,23 +1144,56 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                   document.body;
 
                 const wrapper = document.createElement("div");
-                wrapper.className = "countdown-instance";
+                wrapper.className =
+                  "countdown-card countdown-instance bg-gradient-to-r from-sky-500/20 to-indigo-500/20 backdrop-blur-md rounded-lg p-3 border border-sky-400/30";
                 wrapper.setAttribute("data-program", "arcade");
                 // ensure arcade uses an explicit remote key if you want
                 wrapper.setAttribute(
                   "data-countdown-key",
-                  "countdown_deadline_arcade"
+                  "countdown_deadline_arcade",
                 );
                 wrapper.setAttribute(
                   "data-countdown-toggle-key",
-                  "countdown_enabled_arcade"
+                  "countdown_enabled_arcade",
                 );
                 // Use default child elements expected by the updater
                 wrapper.innerHTML = `
-                  <div class="countdown-days">00</div>
-                  <div class="countdown-hours">00</div>
-                  <div class="countdown-minutes">00</div>
-                  <div class="countdown-seconds">00</div>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                      <i class="fa-solid fa-gamepad text-sky-400 text-lg mr-2"></i>
+                      <span class="text-white font-bold text-sm">
+                        Arcade Season Countdown
+                      </span>
+                    </div>
+                    <div class="text-xs text-sky-300/70 countdown-deadline-label">
+                      Dec 31, 11:59 PM
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-center space-x-4 text-center">
+                    <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                      <div class="text-sky-400 font-bold text-lg countdown-days">00</div>
+                      <div class="text-sky-300/70 text-xs">Days</div>
+                    </div>
+                    <div class="text-sky-400 text-lg">:</div>
+                    <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                      <div class="text-sky-400 font-bold text-lg countdown-hours">00</div>
+                      <div class="text-sky-300/70 text-xs">Hours</div>
+                    </div>
+                    <div class="text-sky-400 text-lg">:</div>
+                    <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                      <div class="text-sky-400 font-bold text-lg countdown-minutes">00</div>
+                      <div class="text-sky-300/70 text-xs">Minutes</div>
+                    </div>
+                    <div class="text-sky-400 text-lg">:</div>
+                    <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
+                      <div class="text-sky-400 font-bold text-lg countdown-seconds">00</div>
+                      <div class="text-sky-300/70 text-xs">Seconds</div>
+                    </div>
+                  </div>
+                  <div class="text-xs text-sky-300/70 mt-2 text-center">
+                    <i class="fa-solid fa-bolt mr-1"></i>
+                    Keep the momentum going and climb the Arcade leaderboard!
+                  </div>
                 `;
                 container.appendChild(wrapper);
                 arcadeEl = wrapper;
@@ -1118,7 +1214,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);

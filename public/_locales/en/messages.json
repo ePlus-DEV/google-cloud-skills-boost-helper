@@ -241,6 +241,9 @@
   "facilitatorDeadlinePassed": {
     "message": "Facilitator program deadline has passed"
   },
+  "arcadeDeadlinePassed": {
+    "message": "The Arcade season has wrapped up for the year. See you next season!"
+  },
   "programEnded": { "message": "Program Ended" },
   "statusCompleted": { "message": "Completed" },
   "statusInProgress": { "message": "In Progress" },

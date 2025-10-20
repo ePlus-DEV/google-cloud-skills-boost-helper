@@ -39,11 +39,20 @@ class FirebaseService {
    * Get default Remote Config values from environment variables with fallbacks
    */
   private getDefaultValues(): RemoteConfigDefaults {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const defaultArcadeDeadline =
+      import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE ||
+      `${currentYear}-12-31T23:59:59+00:00`;
+
     return {
       countdown_deadline:
         import.meta.env.WXT_COUNTDOWN_DEADLINE || "2025-10-14T23:59:59+05:30",
       countdown_timezone: import.meta.env.WXT_COUNTDOWN_TIMEZONE || "+05:30",
       countdown_enabled: import.meta.env.WXT_COUNTDOWN_ENABLED || "true",
+      countdown_deadline_arcade: defaultArcadeDeadline,
+      countdown_enabled_arcade:
+        import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
     };
   }
 
@@ -67,13 +76,13 @@ class FirebaseService {
       // Quick debug output to help diagnose missing env values
       console.debug(
         "FirebaseService: initializing with config:",
-        firebaseConfig
+        firebaseConfig,
       );
 
       // If required keys are missing, skip initialization and keep using defaults
       if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
         console.warn(
-          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values."
+          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values.",
         );
         this.initialized = false;
         return;
@@ -95,10 +104,10 @@ class FirebaseService {
       // Configure Remote Config settings
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ), // 1 hour
         fetchTimeoutMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ), // 1 minute
       };
 
@@ -193,7 +202,7 @@ class FirebaseService {
 
       const deadline = getValue(
         this.remoteConfig,
-        "countdown_deadline"
+        "countdown_deadline",
       ).asString();
       return deadline || this.defaultValues.countdown_deadline;
     } catch (error) {
@@ -215,7 +224,7 @@ class FirebaseService {
 
       const timezone = getValue(
         this.remoteConfig,
-        "countdown_timezone"
+        "countdown_timezone",
       ).asString();
       return timezone || this.defaultValues.countdown_timezone;
     } catch (error) {
@@ -237,7 +246,7 @@ class FirebaseService {
 
       const enabled = getValue(
         this.remoteConfig,
-        "countdown_enabled"
+        "countdown_enabled",
       ).asBoolean();
       return enabled;
     } catch (error) {
@@ -299,7 +308,7 @@ class FirebaseService {
       console.debug(
         "ensureRemoteValue: unable to confirm remote source for",
         key,
-        e
+        e,
       );
     }
   }
@@ -333,10 +342,10 @@ class FirebaseService {
       config: this.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ),
         fetchTimeoutMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
       },
       defaults: this.getDefaultValues(),
