@@ -200,7 +200,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 
     console.debug(
       "No action API available to set extension badge. Badge text would be:",
-      text,
+      text
     );
   } catch (e) {
     console.debug("Unexpected error while updating extension badge:", e);
@@ -365,7 +365,7 @@ async function saveProfileUrl(url: string): Promise<void> {
  * @returns {Promise<string>} The profile URL from storage or the input element's value, or an empty string if none found.
  */
 async function initializeProfileUrl(
-  inputElement?: HTMLInputElement,
+  inputElement?: HTMLInputElement
 ): Promise<string> {
   const storedUrl = await getProfileUrl();
   return storedUrl || inputElement?.value || "";
@@ -383,7 +383,7 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
   } catch {
     // Fallback: log and default to true
     console.debug(
-      "Failed to read search feature setting; defaulting to enabled",
+      "Failed to read search feature setting; defaulting to enabled"
     );
     return true;
   }
@@ -395,14 +395,25 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
  */
 async function isBadgeDisplayEnabled(): Promise<boolean> {
   try {
+    // Prefer the new multi-account settings structure if available
+    try {
+      const settings = await AccountService.getSettings();
+      if (settings && typeof settings.showBadge === "boolean") {
+        return settings.showBadge;
+      }
+    } catch {
+      // ignore and fallback to legacy storage
+    }
+
+    // Fallback to legacy storage key; default to false (badge off)
     const result = await storage.getItem<boolean>(STORAGE_KEYS.showBadge);
-    return result ?? true;
+    return result ?? false;
   } catch (e) {
     console.debug(
-      "Failed to read badge display setting; defaulting to enabled",
-      e,
+      "Failed to read badge display setting; defaulting to disabled",
+      e
     );
-    return true;
+    return false;
   }
 }
 
@@ -411,6 +422,14 @@ async function isBadgeDisplayEnabled(): Promise<boolean> {
  */
 async function saveBadgeDisplayEnabled(enabled: boolean): Promise<void> {
   try {
+    // Try to save into new accounts settings structure first
+    try {
+      await AccountService.updateSettings({ showBadge: Boolean(enabled) });
+      return;
+    } catch {
+      // Fallback to legacy storage
+    }
+
     await storage.setItem(STORAGE_KEYS.showBadge, enabled);
   } catch (e) {
     console.debug("Failed to save badge display setting:", e);
