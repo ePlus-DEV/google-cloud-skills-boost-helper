@@ -955,7 +955,7 @@ const OptionsService = {
         event: "click",
         handler: () => {
           window.open(
-            "https://www.cloudskillsboost.google/my_account/profile#public-profile",
+            "https://www.skills.google/my_account/profile#public-profile",
             "_blank",
             "noopener,noreferrer",
           );

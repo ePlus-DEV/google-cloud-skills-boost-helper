@@ -148,6 +148,9 @@ export default defineBackground(() => {
 
   // On startup, update the badge as well
   browser.runtime.onStartup.addListener(async () => {
+    // No runtime remote config for profile hosts: accepted hosts are read
+    // from PROFILE_CONFIG via profileConfigService and both cloudskillsboost
+    // and skills.google are accepted by default.
     try {
       const StorageService = (await import("../services/storageService"))
         .default;

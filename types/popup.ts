@@ -70,6 +70,7 @@ export interface AccountsData {
   activeAccountId: string | null;
   settings: {
     enableSearchFeature: boolean;
+    showBadge?: boolean;
   };
 }
 

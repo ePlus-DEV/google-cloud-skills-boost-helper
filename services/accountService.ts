@@ -4,6 +4,7 @@ import type {
   ArcadeData,
   CreateAccountOptions,
 } from "../types";
+import { extractProfileId, canonicalizeProfileUrl } from "../utils/profileUrl";
 
 /**
  * Service to handle multiple accounts management
@@ -27,6 +28,8 @@ const AccountService = {
         activeAccountId: null,
         settings: {
           enableSearchFeature: true,
+          // default to false (badge off) for new installs unless migrated value exists
+          showBadge: false,
         },
       };
     }
@@ -101,12 +104,33 @@ const AccountService = {
     const data = await this.getAccountsData();
     const accounts = Object.values(data.accounts);
 
-    const existingAccount = accounts.find(
+    const normalizedUrl = profileUrl.toLowerCase();
+    const providedProfileId = extractProfileId(profileUrl);
+
+    // First try exact URL match (case-insensitive)
+    let existingAccount = accounts.find(
       (account) =>
-        account.profileUrl.toLowerCase() === profileUrl.toLowerCase(),
+        account.profileUrl &&
+        account.profileUrl.toLowerCase() === normalizedUrl,
     );
 
-    return existingAccount || null;
+    if (existingAccount) return existingAccount || null;
+
+    // If provided URL contains a profileId, try matching by profileId
+    if (providedProfileId) {
+      existingAccount = accounts.find((account) => {
+        if (!account.profileUrl) return false;
+        try {
+          const acctProfileId = extractProfileId(account.profileUrl);
+          return acctProfileId !== null && acctProfileId === providedProfileId;
+        } catch {
+          return false;
+        }
+      });
+      if (existingAccount) return existingAccount || null;
+    }
+
+    return null;
   },
 
   /**
@@ -114,7 +138,13 @@ const AccountService = {
    */
   async createAccount(options: CreateAccountOptions): Promise<Account> {
     // Check if account already exists
-    const existingAccount = await this.isAccountExists(options.profileUrl);
+    const canonicalUrl = options.profileUrl
+      ? canonicalizeProfileUrl(options.profileUrl) || options.profileUrl
+      : options.profileUrl;
+
+    const existingAccount = canonicalUrl
+      ? await this.isAccountExists(canonicalUrl)
+      : await this.isAccountExists(options.profileUrl);
     if (existingAccount) {
       throw new Error(
         `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`,
@@ -148,7 +178,7 @@ const AccountService = {
       id: accountId,
       name: accountName || `Account ${accountId.slice(-6)}`,
       nickname: options.nickname,
-      profileUrl: options.profileUrl,
+      profileUrl: canonicalUrl || options.profileUrl,
       arcadeData: options.arcadeData,
       createdAt: now,
       lastUsed: now,
@@ -179,11 +209,15 @@ const AccountService = {
       return false;
     }
 
-    data.accounts[accountId] = {
-      ...data.accounts[accountId],
-      ...updates,
-      lastUsed: new Date().toISOString(),
-    };
+    // If profileUrl is being updated, canonicalize it before saving
+    const updated = { ...data.accounts[accountId], ...updates };
+    if (updates.profileUrl) {
+      const canonical = canonicalizeProfileUrl(updates.profileUrl);
+      updated.profileUrl = canonical || updates.profileUrl;
+    }
+    updated.lastUsed = new Date().toISOString();
+
+    data.accounts[accountId] = updated;
 
     await this.saveAccountsData(data);
     return true;
@@ -262,6 +296,8 @@ const AccountService = {
     const oldSearchFeature = await storage.getItem<boolean>(
       "local:enableSearchFeature",
     );
+    // legacy badge setting (was stored directly in local storage)
+    const oldShowBadge = await storage.getItem<boolean>("local:showBadge");
 
     // Create new accounts data structure
     const accountsData: AccountsData = {
@@ -270,6 +306,8 @@ const AccountService = {
       settings: {
         enableSearchFeature:
           oldSearchFeature !== null ? oldSearchFeature : true,
+        // preserve legacy showBadge if it exists, otherwise default false
+        showBadge: oldShowBadge !== null ? oldShowBadge : false,
       },
     };
 
@@ -321,14 +359,95 @@ const AccountService = {
       accountName = userDetail.userName;
     }
 
+    const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl;
+
     return {
       id: accountId,
       name: accountName,
-      profileUrl,
+      profileUrl: canonical,
       arcadeData,
       createdAt: now,
       lastUsed: now,
     };
+  },
+
+  /**
+   * Normalize existing accounts: canonicalize profileUrl hosts and deduplicate
+   * accounts that refer to the same profileId.
+   *
+   * Strategy:
+   * - For each account, attempt to canonicalize its profileUrl and update it.
+   * - Group accounts by extracted profileId. For groups with multiple accounts,
+   *   keep the account with the most recent `lastUsed` and merge arcadeData if
+   *   the keeper lacks it; delete the others.
+   */
+  async normalizeAccountsAndDeduplicate(): Promise<void> {
+    const data = await this.getAccountsData();
+    const accounts = data.accounts;
+
+    // First, canonicalize profileUrl for each account if possible
+    for (const id of Object.keys(accounts)) {
+      const acct = accounts[id];
+      if (!acct || !acct.profileUrl) continue;
+      try {
+        const canonical = canonicalizeProfileUrl(acct.profileUrl);
+        if (canonical && canonical !== acct.profileUrl) {
+          acct.profileUrl = canonical;
+        }
+      } catch {
+        // non-fatal: skip
+      }
+    }
+
+    // Group by profileId
+    const groups: Record<string, string[]> = {};
+    for (const id of Object.keys(accounts)) {
+      const acct = accounts[id];
+      if (!acct || !acct.profileUrl) continue;
+      const pid = extractProfileId(acct.profileUrl);
+      if (!pid) continue;
+      if (!groups[pid]) groups[pid] = [];
+      groups[pid].push(id);
+    }
+
+    // Deduplicate groups with more than one account
+    for (const pid of Object.keys(groups)) {
+      const ids = groups[pid];
+      if (ids.length <= 1) continue;
+
+      // Choose keeper: account with latest lastUsed
+      ids.sort((a, b) => {
+        const la = new Date(accounts[a].lastUsed).getTime();
+        const lb = new Date(accounts[b].lastUsed).getTime();
+        return lb - la; // descending -> first is newest
+      });
+
+      const keeperId = ids[0];
+      const keeper = accounts[keeperId];
+
+      // Merge arcadeData if keeper missing and another has
+      for (let i = 1; i < ids.length; i++) {
+        const otherId = ids[i];
+        const other = accounts[otherId];
+        if (!other) continue;
+        if (!keeper.arcadeData && other.arcadeData) {
+          keeper.arcadeData = other.arcadeData;
+        }
+        // If keeper has no nickname but other has, prefer other
+        if (!keeper.nickname && other.nickname) {
+          keeper.nickname = other.nickname;
+        }
+        // Remove the duplicate account
+        delete accounts[otherId];
+        // If deleted account was active, set keeper as active
+        if (data.activeAccountId === otherId) {
+          data.activeAccountId = keeperId;
+        }
+      }
+    }
+
+    // Persist changes
+    await this.saveAccountsData(data);
   },
 
   /**

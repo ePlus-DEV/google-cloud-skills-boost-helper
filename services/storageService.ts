@@ -3,6 +3,7 @@ import AccountService from "./accountService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import sendRuntimeMessage from "./runtimeMessage";
 import { UI_COLORS } from "../utils/config";
+import { canonicalizeProfileUrl } from "../utils/profileUrl";
 
 /**
  * Service to handle storage operations
@@ -354,7 +355,8 @@ async function saveProfileUrl(url: string): Promise<void> {
   }
 
   // Fallback to legacy storage for backward compatibility
-  await storage.setItem(STORAGE_KEYS.urlProfile, url);
+  const canonical = canonicalizeProfileUrl(url) || url;
+  await storage.setItem(STORAGE_KEYS.urlProfile, canonical);
 }
 
 /**
@@ -393,14 +395,25 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
  */
 async function isBadgeDisplayEnabled(): Promise<boolean> {
   try {
+    // Prefer the new multi-account settings structure if available
+    try {
+      const settings = await AccountService.getSettings();
+      if (settings && typeof settings.showBadge === "boolean") {
+        return settings.showBadge;
+      }
+    } catch {
+      // ignore and fallback to legacy storage
+    }
+
+    // Fallback to legacy storage key; default to false (badge off)
     const result = await storage.getItem<boolean>(STORAGE_KEYS.showBadge);
-    return result ?? true;
+    return result ?? false;
   } catch (e) {
     console.debug(
-      "Failed to read badge display setting; defaulting to enabled",
+      "Failed to read badge display setting; defaulting to disabled",
       e,
     );
-    return true;
+    return false;
   }
 }
 
@@ -409,6 +422,14 @@ async function isBadgeDisplayEnabled(): Promise<boolean> {
  */
 async function saveBadgeDisplayEnabled(enabled: boolean): Promise<void> {
   try {
+    // Try to save into new accounts settings structure first
+    try {
+      await AccountService.updateSettings({ showBadge: Boolean(enabled) });
+      return;
+    } catch {
+      // Fallback to legacy storage
+    }
+
     await storage.setItem(STORAGE_KEYS.showBadge, enabled);
   } catch (e) {
     console.debug("Failed to save badge display setting:", e);
@@ -436,6 +457,13 @@ async function saveSearchFeatureEnabled(enabled: boolean): Promise<void> {
  */
 async function initializeMigration(): Promise<void> {
   await AccountService.migrateExistingData();
+  try {
+    // Normalize and deduplicate existing accounts (canonicalize hosts and
+    // collapse duplicates by profileId)
+    await (AccountService as any).normalizeAccountsAndDeduplicate();
+  } catch (e) {
+    console.debug("Account normalization/deduplication failed:", e);
+  }
 }
 
 const StorageService = {
