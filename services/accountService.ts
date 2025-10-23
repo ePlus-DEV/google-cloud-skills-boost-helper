@@ -5,7 +5,7 @@ import type {
   CreateAccountOptions,
 } from "../types";
 import { extractProfileId, canonicalizeProfileUrl } from "../utils/profileUrl";
-
+import * as crypto from "crypto";
 /**
  * Service to handle multiple accounts management
  */
@@ -14,7 +14,10 @@ const AccountService = {
    * Generate a unique account ID
    */
   generateAccountId(): string {
-    return `account_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Use cryptographically secure random bytes for unpredictability
+    // 9 bytes encoded in base64url yields 12 chars, similar to previous output length
+    const randomStr = crypto.randomBytes(9).toString('base64url');
+    return `account_${Date.now()}_${randomStr}`;
   },
 
   /**
