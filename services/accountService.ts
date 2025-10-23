@@ -4,7 +4,7 @@ import type {
   ArcadeData,
   CreateAccountOptions,
 } from "../types";
-import { extractProfileId } from "../utils/profileUrl";
+import { extractProfileId, canonicalizeProfileUrl } from "../utils/profileUrl";
 
 /**
  * Service to handle multiple accounts management
@@ -63,7 +63,7 @@ const AccountService = {
   async getAllAccounts(): Promise<Account[]> {
     const data = await this.getAccountsData();
     return Object.values(data.accounts).sort(
-      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime(),
+      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime()
     );
   },
 
@@ -108,8 +108,7 @@ const AccountService = {
     // First try exact URL match (case-insensitive)
     let existingAccount = accounts.find(
       (account) =>
-        account.profileUrl &&
-        account.profileUrl.toLowerCase() === normalizedUrl,
+        account.profileUrl && account.profileUrl.toLowerCase() === normalizedUrl
     );
 
     if (existingAccount) return existingAccount || null;
@@ -136,10 +135,16 @@ const AccountService = {
    */
   async createAccount(options: CreateAccountOptions): Promise<Account> {
     // Check if account already exists
-    const existingAccount = await this.isAccountExists(options.profileUrl);
+    const canonicalUrl = options.profileUrl
+      ? canonicalizeProfileUrl(options.profileUrl) || options.profileUrl
+      : options.profileUrl;
+
+    const existingAccount = canonicalUrl
+      ? await this.isAccountExists(canonicalUrl)
+      : await this.isAccountExists(options.profileUrl);
     if (existingAccount) {
       throw new Error(
-        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`,
+        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`
       );
     }
 
@@ -170,7 +175,7 @@ const AccountService = {
       id: accountId,
       name: accountName || `Account ${accountId.slice(-6)}`,
       nickname: options.nickname,
-      profileUrl: options.profileUrl,
+      profileUrl: canonicalUrl || options.profileUrl,
       arcadeData: options.arcadeData,
       createdAt: now,
       lastUsed: now,
@@ -194,18 +199,22 @@ const AccountService = {
    */
   async updateAccount(
     accountId: string,
-    updates: Partial<Account>,
+    updates: Partial<Account>
   ): Promise<boolean> {
     const data = await this.getAccountsData();
     if (!data.accounts[accountId]) {
       return false;
     }
 
-    data.accounts[accountId] = {
-      ...data.accounts[accountId],
-      ...updates,
-      lastUsed: new Date().toISOString(),
-    };
+    // If profileUrl is being updated, canonicalize it before saving
+    const updated = { ...data.accounts[accountId], ...updates };
+    if (updates.profileUrl) {
+      const canonical = canonicalizeProfileUrl(updates.profileUrl);
+      updated.profileUrl = canonical || updates.profileUrl;
+    }
+    updated.lastUsed = new Date().toISOString();
+
+    data.accounts[accountId] = updated;
 
     await this.saveAccountsData(data);
     return true;
@@ -216,7 +225,7 @@ const AccountService = {
    */
   async updateAccountArcadeData(
     accountId: string,
-    arcadeData: ArcadeData,
+    arcadeData: ArcadeData
   ): Promise<boolean> {
     return this.updateAccount(accountId, { arcadeData });
   },
@@ -263,7 +272,7 @@ const AccountService = {
         account.name.toLowerCase().includes(searchTerm) ||
         (account.nickname &&
           account.nickname.toLowerCase().includes(searchTerm)) ||
-        account.profileUrl.toLowerCase().includes(searchTerm),
+        account.profileUrl.toLowerCase().includes(searchTerm)
     );
   },
 
@@ -272,8 +281,9 @@ const AccountService = {
    */
   async migrateExistingData(): Promise<void> {
     // Check if we already have accounts data
-    const existingAccountsData =
-      await storage.getItem<AccountsData>("local:accountsData");
+    const existingAccountsData = await storage.getItem<AccountsData>(
+      "local:accountsData"
+    );
     if (existingAccountsData) {
       return; // Already migrated
     }
@@ -282,7 +292,7 @@ const AccountService = {
     const oldProfileUrl = await storage.getItem<string>("local:urlProfile");
     const oldArcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
     const oldSearchFeature = await storage.getItem<boolean>(
-      "local:enableSearchFeature",
+      "local:enableSearchFeature"
     );
 
     // Create new accounts data structure
@@ -299,7 +309,7 @@ const AccountService = {
     if (oldProfileUrl) {
       const account = await this.createAccountFromOldData(
         oldProfileUrl,
-        oldArcadeData || undefined,
+        oldArcadeData || undefined
       );
       accountsData.accounts[account.id] = account;
       accountsData.activeAccountId = account.id;
@@ -332,7 +342,7 @@ const AccountService = {
    */
   async createAccountFromOldData(
     profileUrl: string,
-    arcadeData?: ArcadeData,
+    arcadeData?: ArcadeData
   ): Promise<Account> {
     const accountId = this.generateAccountId();
     const now = new Date().toISOString();
@@ -343,14 +353,95 @@ const AccountService = {
       accountName = userDetail.userName;
     }
 
+    const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl;
+
     return {
       id: accountId,
       name: accountName,
-      profileUrl,
+      profileUrl: canonical,
       arcadeData,
       createdAt: now,
       lastUsed: now,
     };
+  },
+
+  /**
+   * Normalize existing accounts: canonicalize profileUrl hosts and deduplicate
+   * accounts that refer to the same profileId.
+   *
+   * Strategy:
+   * - For each account, attempt to canonicalize its profileUrl and update it.
+   * - Group accounts by extracted profileId. For groups with multiple accounts,
+   *   keep the account with the most recent `lastUsed` and merge arcadeData if
+   *   the keeper lacks it; delete the others.
+   */
+  async normalizeAccountsAndDeduplicate(): Promise<void> {
+    const data = await this.getAccountsData();
+    const accounts = data.accounts;
+
+    // First, canonicalize profileUrl for each account if possible
+    for (const id of Object.keys(accounts)) {
+      const acct = accounts[id];
+      if (!acct || !acct.profileUrl) continue;
+      try {
+        const canonical = canonicalizeProfileUrl(acct.profileUrl);
+        if (canonical && canonical !== acct.profileUrl) {
+          acct.profileUrl = canonical;
+        }
+      } catch {
+        // non-fatal: skip
+      }
+    }
+
+    // Group by profileId
+    const groups: Record<string, string[]> = {};
+    for (const id of Object.keys(accounts)) {
+      const acct = accounts[id];
+      if (!acct || !acct.profileUrl) continue;
+      const pid = extractProfileId(acct.profileUrl);
+      if (!pid) continue;
+      if (!groups[pid]) groups[pid] = [];
+      groups[pid].push(id);
+    }
+
+    // Deduplicate groups with more than one account
+    for (const pid of Object.keys(groups)) {
+      const ids = groups[pid];
+      if (ids.length <= 1) continue;
+
+      // Choose keeper: account with latest lastUsed
+      ids.sort((a, b) => {
+        const la = new Date(accounts[a].lastUsed).getTime();
+        const lb = new Date(accounts[b].lastUsed).getTime();
+        return lb - la; // descending -> first is newest
+      });
+
+      const keeperId = ids[0];
+      const keeper = accounts[keeperId];
+
+      // Merge arcadeData if keeper missing and another has
+      for (let i = 1; i < ids.length; i++) {
+        const otherId = ids[i];
+        const other = accounts[otherId];
+        if (!other) continue;
+        if (!keeper.arcadeData && other.arcadeData) {
+          keeper.arcadeData = other.arcadeData;
+        }
+        // If keeper has no nickname but other has, prefer other
+        if (!keeper.nickname && other.nickname) {
+          keeper.nickname = other.nickname;
+        }
+        // Remove the duplicate account
+        delete accounts[otherId];
+        // If deleted account was active, set keeper as active
+        if (data.activeAccountId === otherId) {
+          data.activeAccountId = keeperId;
+        }
+      }
+    }
+
+    // Persist changes
+    await this.saveAccountsData(data);
   },
 
   /**
@@ -411,7 +502,7 @@ const AccountService = {
    * Update settings
    */
   async updateSettings(
-    settings: Partial<AccountsData["settings"]>,
+    settings: Partial<AccountsData["settings"]>
   ): Promise<void> {
     const data = await this.getAccountsData();
     data.settings = { ...data.settings, ...settings };

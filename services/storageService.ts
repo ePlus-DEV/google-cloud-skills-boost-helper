@@ -3,6 +3,7 @@ import AccountService from "./accountService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import sendRuntimeMessage from "./runtimeMessage";
 import { UI_COLORS } from "../utils/config";
+import { canonicalizeProfileUrl } from "../utils/profileUrl";
 
 /**
  * Service to handle storage operations
@@ -199,7 +200,7 @@ async function updateExtensionBadge(totalPoints: number): Promise<void> {
 
     console.debug(
       "No action API available to set extension badge. Badge text would be:",
-      text,
+      text
     );
   } catch (e) {
     console.debug("Unexpected error while updating extension badge:", e);
@@ -354,7 +355,8 @@ async function saveProfileUrl(url: string): Promise<void> {
   }
 
   // Fallback to legacy storage for backward compatibility
-  await storage.setItem(STORAGE_KEYS.urlProfile, url);
+  const canonical = canonicalizeProfileUrl(url) || url;
+  await storage.setItem(STORAGE_KEYS.urlProfile, canonical);
 }
 
 /**
@@ -363,7 +365,7 @@ async function saveProfileUrl(url: string): Promise<void> {
  * @returns {Promise<string>} The profile URL from storage or the input element's value, or an empty string if none found.
  */
 async function initializeProfileUrl(
-  inputElement?: HTMLInputElement,
+  inputElement?: HTMLInputElement
 ): Promise<string> {
   const storedUrl = await getProfileUrl();
   return storedUrl || inputElement?.value || "";
@@ -381,7 +383,7 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
   } catch {
     // Fallback: log and default to true
     console.debug(
-      "Failed to read search feature setting; defaulting to enabled",
+      "Failed to read search feature setting; defaulting to enabled"
     );
     return true;
   }
@@ -398,7 +400,7 @@ async function isBadgeDisplayEnabled(): Promise<boolean> {
   } catch (e) {
     console.debug(
       "Failed to read badge display setting; defaulting to enabled",
-      e,
+      e
     );
     return true;
   }
@@ -436,6 +438,13 @@ async function saveSearchFeatureEnabled(enabled: boolean): Promise<void> {
  */
 async function initializeMigration(): Promise<void> {
   await AccountService.migrateExistingData();
+  try {
+    // Normalize and deduplicate existing accounts (canonicalize hosts and
+    // collapse duplicates by profileId)
+    await (AccountService as any).normalizeAccountsAndDeduplicate();
+  } catch (e) {
+    console.debug("Account normalization/deduplication failed:", e);
+  }
 }
 
 const StorageService = {

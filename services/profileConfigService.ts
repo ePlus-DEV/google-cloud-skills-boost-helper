@@ -24,7 +24,13 @@ class ProfileConfigService {
     try {
       const u = new URL(url);
       if (!this.acceptedHosts.includes(u.hostname)) return null;
-      return url;
+
+      // If already canonical, return as-is
+      if (u.hostname === PROFILE_CONFIG.CANONICAL_HOST) return u.toString();
+
+      // Otherwise, replace hostname with canonical host and return
+      u.hostname = PROFILE_CONFIG.CANONICAL_HOST;
+      return u.toString();
     } catch {
       return null;
     }
