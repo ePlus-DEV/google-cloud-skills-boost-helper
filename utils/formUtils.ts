@@ -2,6 +2,7 @@
  * Form validation utilities
  */
 import { DOMUtils } from "./domUtils";
+import { isProfileUrl } from "./profileUrl";
 
 export interface ValidationRule {
   id: string;
@@ -24,7 +25,7 @@ export const FormUtils = {
     const errors: Array<{ id: string; message: string }> = [];
 
     for (const rule of rules) {
-      const value = DOMUtils.getInputValue(rule.id);
+      const value = DOMUtils.getInputValue(rule.id) || "";
 
       if (rule.required && !value) {
         errors.push({
@@ -112,13 +113,6 @@ export const FormUtils = {
    * Validate profile URL specifically for Google Cloud Skills Boost
    */
   isValidProfileUrl(url: string): boolean {
-    if (!this.isValidUrl(url)) return false;
-
-    const validPatterns = [
-      /^https:\/\/www\.cloudskillsboost\.google\/public_profiles\/.+/,
-      /^https:\/\/www\.qwiklabs\.com\/public_profiles\/.+/,
-    ];
-
-    return validPatterns.some((pattern) => pattern.test(url));
+    return isProfileUrl(url);
   },
 };

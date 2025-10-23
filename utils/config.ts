@@ -25,3 +25,27 @@ export const MARKDOWN_CONFIG = {
 export const UI_COLORS = {
   BADGE: "#155dfc",
 } as const;
+
+/**
+ * Profile domain configuration.
+ *
+ * Use this to support both the legacy cloudskillsboost domain and the
+ * new skills.google domain. The idea is to have a single place to update
+ * hosts — later we can make these values remotely configurable (e.g. a
+ * remote JSON hosted somewhere) and the extension can fetch that at runtime.
+ */
+export const PROFILE_CONFIG = {
+  // canonical host we prefer to use when sending the full url to backend
+  CANONICAL_HOST: "www.skills.google",
+
+  // list of accepted hostnames (in order of preference)
+  // typed as string[] to avoid overly strict literal union types
+  ACCEPTED_HOSTS: [
+    // new canonical host
+    "www.skills.google",
+    // legacy host
+    "www.cloudskillsboost.google",
+    // qwiklabs sometimes used
+    "www.qwiklabs.com",
+  ] as string[],
+};

@@ -76,7 +76,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text,
+        text
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
@@ -105,7 +105,7 @@ export default defineBackground(() => {
           if (previousVersion && previousVersion !== currentVersion) {
             // build the path as a string and assert `any` to avoid narrow typing on getURL
             const path = `/changelog.html?version=${encodeURIComponent(
-              currentVersion,
+              currentVersion
             )}&from=${encodeURIComponent(previousVersion)}`;
             const url = browser.runtime.getURL(path as any);
             await browser.tabs.create({ url, active: true });
@@ -143,11 +143,14 @@ export default defineBackground(() => {
       } catch (e) {
         console.debug("Failed to set badge on install/start:", e);
       }
-    },
+    }
   );
 
   // On startup, update the badge as well
   browser.runtime.onStartup.addListener(async () => {
+    // No runtime remote config for profile hosts: accepted hosts are read
+    // from PROFILE_CONFIG via profileConfigService and both cloudskillsboost
+    // and skills.google are accepted by default.
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
@@ -289,7 +292,7 @@ export default defineBackground(() => {
         const from = msg.from || "";
         const version = msg.version || "";
         const path = `/changelog.html?version=${encodeURIComponent(
-          version,
+          version
         )}&from=${encodeURIComponent(from)}`;
         const url = browser.runtime.getURL(path as any);
         try {
