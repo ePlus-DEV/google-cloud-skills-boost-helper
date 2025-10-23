@@ -16,7 +16,7 @@ const AccountService = {
   generateAccountId(): string {
     // Use cryptographically secure random bytes for unpredictability
     // 9 bytes encoded in base64url yields 12 chars, similar to previous output length
-    const randomStr = crypto.randomBytes(9).toString('base64url');
+    const randomStr = crypto.randomBytes(9).toString("base64url");
     return `account_${Date.now()}_${randomStr}`;
   },
 
