@@ -56,13 +56,12 @@ const LabService = {
     // Find best matching URL
     const bestMatchUrl = SearchService.findBestMatchUrl(
       postsData,
-      combinedQueryText
+      combinedQueryText,
     );
 
     // Create and append solution element
-    const solutionElement = await UIComponents.createSolutionElement(
-      bestMatchUrl
-    );
+    const solutionElement =
+      await UIComponents.createSolutionElement(bestMatchUrl);
     outlineContainer.appendChild(solutionElement);
   },
 
