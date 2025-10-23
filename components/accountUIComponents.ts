@@ -100,7 +100,7 @@ const AccountUIService = {
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">URL Profile:</label>
-            <input type="url" id="account-url-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="https://www.cloudskillsboost.google/public_profiles/..." required>
+            <input type="url" id="account-url-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="https://www.skills.google/public_profiles/..." required>
           </div>
         </div>
         

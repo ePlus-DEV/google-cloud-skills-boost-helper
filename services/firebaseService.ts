@@ -39,11 +39,20 @@ class FirebaseService {
    * Get default Remote Config values from environment variables with fallbacks
    */
   private getDefaultValues(): RemoteConfigDefaults {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const defaultArcadeDeadline =
+      import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE ||
+      `${currentYear}-12-31T23:59:59+00:00`;
+
     return {
       countdown_deadline:
         import.meta.env.WXT_COUNTDOWN_DEADLINE || "2025-10-14T23:59:59+05:30",
       countdown_timezone: import.meta.env.WXT_COUNTDOWN_TIMEZONE || "+05:30",
       countdown_enabled: import.meta.env.WXT_COUNTDOWN_ENABLED || "true",
+      countdown_deadline_arcade: defaultArcadeDeadline,
+      countdown_enabled_arcade:
+        import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
     };
   }
 
@@ -64,13 +73,32 @@ class FirebaseService {
       // Use provided config or default
       const firebaseConfig = { ...this.defaultConfig, ...config };
 
+      // Quick debug output to help diagnose missing env values
+      console.debug(
+        "FirebaseService: initializing with config:",
+        firebaseConfig,
+      );
+
+      // If required keys are missing, skip initialization and keep using defaults
+      if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+        console.warn(
+          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values.",
+        );
+        this.initialized = false;
+        return;
+      }
+
       // Initialize Firebase App
       this.app = initializeApp(firebaseConfig);
 
       // Initialize Remote Config
       this.remoteConfig = getRemoteConfig(this.app);
 
-      // Set default values
+      // Set default values. Assign to `defaultConfig` property which works
+      // with the bundled SDK used by the build. Use ts-ignore because the
+      // typed API may not expose this property in all versions.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       this.remoteConfig.defaultConfig = this.defaultValues;
 
       // Configure Remote Config settings
@@ -113,13 +141,64 @@ class FirebaseService {
   }
 
   /**
+   * Refresh (fetch & activate) and return whether activation succeeded
+   */
+  async refreshConfig(): Promise<boolean> {
+    return this.fetchConfig();
+  }
+
+  /**
+   * Debug helper: return all known Remote Config params and their sources
+   */
+  getAllParams(): {
+    [key: string]: { value: string | boolean; source?: string };
+  } {
+    const keys = Object.keys(this.defaultValues);
+    const out: Record<string, { value: string | boolean; source?: string }> =
+      {};
+
+    for (const key of keys) {
+      try {
+        if (!this.remoteConfig) {
+          out[key] = {
+            value: (this.defaultValues as any)[key],
+            source: "fallback",
+          };
+          continue;
+        }
+
+        const val = getValue(this.remoteConfig, key);
+        // Value API exposes asString/asBoolean and getSource()
+        const asStr = val.asString();
+        const src =
+          typeof (val as any).getSource === "function"
+            ? (val as any).getSource()
+            : undefined;
+
+        // Try to parse boolean-like values
+        const parsed =
+          asStr === "true" || asStr === "false" ? asStr === "true" : asStr;
+
+        out[key] = { value: parsed, source: src };
+      } catch (e) {
+        out[key] = { value: (this.defaultValues as any)[key], source: "error" };
+      }
+    }
+
+    return out;
+  }
+
+  /**
    * Get countdown deadline from Remote Config
    */
-  getCountdownDeadline(): string {
+  async getCountdownDeadline(): Promise<string> {
     try {
       if (!this.remoteConfig) {
         return this.defaultValues.countdown_deadline;
       }
+
+      // Ensure we prioritized remote value when possible
+      await this.ensureRemoteValue("countdown_deadline");
 
       const deadline = getValue(
         this.remoteConfig,
@@ -135,11 +214,13 @@ class FirebaseService {
   /**
    * Get countdown timezone from Remote Config
    */
-  getCountdownTimezone(): string {
+  async getCountdownTimezone(): Promise<string> {
     try {
       if (!this.remoteConfig) {
         return this.defaultValues.countdown_timezone;
       }
+
+      await this.ensureRemoteValue("countdown_timezone");
 
       const timezone = getValue(
         this.remoteConfig,
@@ -155,11 +236,13 @@ class FirebaseService {
   /**
    * Check if countdown is enabled from Remote Config
    */
-  isCountdownEnabled(): boolean {
+  async isCountdownEnabled(): Promise<boolean> {
     try {
       if (!this.remoteConfig) {
         return true; // Default to enabled
       }
+
+      await this.ensureRemoteValue("countdown_enabled");
 
       const enabled = getValue(
         this.remoteConfig,
@@ -169,6 +252,64 @@ class FirebaseService {
     } catch (error) {
       console.error("❌ Failed to get countdown enabled status:", error);
       return true; // Default to enabled
+    }
+  }
+
+  /**
+   * Generic helper to get a string parameter from Remote Config with fallback
+   */
+  async getStringParam(key: string, fallback: string): Promise<string> {
+    try {
+      if (!this.remoteConfig) return fallback;
+
+      await this.ensureRemoteValue(key);
+      const value = getValue(this.remoteConfig, key).asString();
+      return value || fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  /**
+   * Generic helper to get a boolean parameter from Remote Config with fallback
+   */
+  async getBooleanParam(key: string, fallback: boolean): Promise<boolean> {
+    try {
+      if (!this.remoteConfig) return fallback;
+
+      await this.ensureRemoteValue(key);
+      const value = getValue(this.remoteConfig, key).asBoolean();
+      return typeof value === "boolean" ? value : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  /**
+   * Ensure remote config is fetched & activated if the current param isn't from remote
+   */
+  private async ensureRemoteValue(key: string): Promise<void> {
+    if (!this.remoteConfig) return;
+
+    try {
+      const val = getValue(this.remoteConfig, key);
+      const src =
+        typeof (val as any).getSource === "function"
+          ? (val as any).getSource()
+          : undefined;
+
+      // If the current value is not from the remote server, attempt to fetch & activate
+      if (src !== "remote") {
+        // fetchConfig will return true when activated
+        await this.fetchConfig();
+      }
+    } catch (e) {
+      // Non-fatal: leave defaults in place
+      console.debug(
+        "ensureRemoteValue: unable to confirm remote source for",
+        key,
+        e,
+      );
     }
   }
 
@@ -191,9 +332,9 @@ class FirebaseService {
     };
     defaults: RemoteConfigDefaults;
   } {
-    const isUsingEnv = !!(
+    const isUsingEnv = Boolean(
       import.meta.env.WXT_FIREBASE_API_KEY &&
-      import.meta.env.WXT_FIREBASE_PROJECT_ID
+        import.meta.env.WXT_FIREBASE_PROJECT_ID,
     );
 
     return {

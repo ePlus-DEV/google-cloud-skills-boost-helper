@@ -31,9 +31,7 @@ const ArcadeApiService = {
    * Validate profile URL format
    */
   isValidProfileUrl(url: string): boolean {
-    return url.startsWith(
-      "https://www.cloudskillsboost.google/public_profiles/",
-    );
+    return url.startsWith("https://www.skills.google/public_profiles/");
   },
 };
 
