@@ -75,7 +75,7 @@
     "message": "Please set up the settings"
   },
   "errorInvalidUrl": {
-    "message": "Please enter a valid URL starting with 'https://www.cloudskillsboost.google/public_profiles/xxx"
+    "message": "Please enter a valid URL starting with 'https://www.skills.google/public_profiles/xxx"
   },
   "successSettingsSaved": {
     "message": "Settings saved successfully!"
@@ -135,7 +135,7 @@
     "message": "After logging in, copy the URL from the address bar and paste it here."
   },
   "tourModalStep2Tip": {
-    "message": "The URL will look like: https://www.cloudskillsboost.google/public_profiles/xxxxx"
+    "message": "The URL will look like: https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
     "message": "Step 3: Create Account"

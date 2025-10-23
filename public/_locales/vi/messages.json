@@ -75,7 +75,7 @@
     "message": "Vui lòng thiết lập cài đặt"
   },
   "errorInvalidUrl": {
-    "message": "Vui lòng nhập một URL hợp lệ bắt đầu bằng 'https://www.cloudskillsboost.google/public_profiles/xxx'"
+    "message": "Vui lòng nhập một URL hợp lệ bắt đầu bằng 'https://www.skills.google/public_profiles/xxx'"
   },
   "successSettingsSaved": {
     "message": "Cài đặt đã được lưu thành công!"
@@ -135,7 +135,7 @@
     "message": "Sau khi đăng nhập, copy URL từ thanh địa chỉ và dán vào đây."
   },
   "tourModalStep2Tip": {
-    "message": "URL sẽ có dạng: https://www.cloudskillsboost.google/public_profiles/xxxxx"
+    "message": "URL sẽ có dạng: https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
     "message": "Bước 3: Tạo tài khoản"

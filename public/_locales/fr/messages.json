@@ -78,7 +78,7 @@
     "message": "Veuillez configurer les paramètres"
   },
   "errorInvalidUrl": {
-    "message": "Veuillez entrer une URL valide commençant par 'https://www.cloudskillsboost.google/public_profiles/xxx"
+    "message": "Veuillez entrer une URL valide commençant par 'https://www.skills.google/public_profiles/xxx"
   },
   "successSettingsSaved": {
     "message": "Paramètres enregistrés avec succès !"
@@ -138,7 +138,7 @@
     "message": "Après vous être connecté, copiez l'URL de la barre d'adresse et collez-la ici."
   },
   "tourModalStep2Tip": {
-    "message": "L'URL ressemblera à : https://www.cloudskillsboost.google/public_profiles/xxxxx"
+    "message": "L'URL ressemblera à : https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
     "message": "Étape 3 : Créer le compte"

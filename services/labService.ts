@@ -56,12 +56,13 @@ const LabService = {
     // Find best matching URL
     const bestMatchUrl = SearchService.findBestMatchUrl(
       postsData,
-      combinedQueryText,
+      combinedQueryText
     );
 
     // Create and append solution element
-    const solutionElement =
-      await UIComponents.createSolutionElement(bestMatchUrl);
+    const solutionElement = await UIComponents.createSolutionElement(
+      bestMatchUrl
+    );
     outlineContainer.appendChild(solutionElement);
   },
 
@@ -71,12 +72,10 @@ const LabService = {
   isLabPage(): boolean {
     const { href } = window.location;
     return (
-      href.startsWith("https://www.cloudskillsboost.google/games/") ||
-      href.startsWith(
-        "https://www.cloudskillsboost.google/course_templates/",
-      ) ||
-      href.startsWith("https://www.cloudskillsboost.google/focuses/") ||
-      href.startsWith("https://www.cloudskillsboost.google/paths/")
+      href.startsWith("https://www.skills.google/games/") ||
+      href.startsWith("https://www.skills.google/course_templates/") ||
+      href.startsWith("https://www.skills.google/focuses/") ||
+      href.startsWith("https://www.skills.google/paths/")
     );
   },
 };
