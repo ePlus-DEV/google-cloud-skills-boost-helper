@@ -1,4 +1,6 @@
 name: "Submit to Web Store"
+permissions:
+  contents: write
 
 on:
   push:
