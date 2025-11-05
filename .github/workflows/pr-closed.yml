@@ -1,0 +1,29 @@
+name: 🎉 PR closed
+
+on:
+    pull_request_target:
+        types:
+            - closed
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    thank-you:
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true
+
+        steps:
+            - name: Post Thank You Comment
+              uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+              env:
+                  comment: Thanks for helping make **Google Cloud Skills Boost - Helper** better!
+              with:
+                  script: |
+                      github.rest.issues.createComment({
+                        issue_number: context.issue.number,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        body: process.env.comment
+                      })
