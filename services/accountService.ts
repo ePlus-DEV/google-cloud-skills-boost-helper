@@ -5,7 +5,7 @@ import type {
   CreateAccountOptions,
 } from "../types";
 import { extractProfileId, canonicalizeProfileUrl } from "../utils/profileUrl";
-import * as crypto from "crypto";
+
 /**
  * Service to handle multiple accounts management
  */
@@ -14,10 +14,18 @@ const AccountService = {
    * Generate a unique account ID
    */
   generateAccountId(): string {
-    // Use cryptographically secure random bytes for unpredictability
+    // Use Web Crypto API (available in browsers) for cryptographically secure random bytes
     // 9 bytes encoded in base64url yields 12 chars, similar to previous output length
-    const randomStr = crypto.randomBytes(9).toString("base64url");
-    return `account_${Date.now()}_${randomStr}`;
+    const randomBytes = new Uint8Array(9);
+    crypto.getRandomValues(randomBytes);
+
+    // Convert to base64url format
+    const base64 = btoa(String.fromCharCode(...randomBytes))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=/g, "");
+
+    return `account_${Date.now()}_${base64}`;
   },
 
   /**
@@ -68,7 +76,7 @@ const AccountService = {
   async getAllAccounts(): Promise<Account[]> {
     const data = await this.getAccountsData();
     return Object.values(data.accounts).sort(
-      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime(),
+      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime()
     );
   },
 
@@ -113,8 +121,7 @@ const AccountService = {
     // First try exact URL match (case-insensitive)
     let existingAccount = accounts.find(
       (account) =>
-        account.profileUrl &&
-        account.profileUrl.toLowerCase() === normalizedUrl,
+        account.profileUrl && account.profileUrl.toLowerCase() === normalizedUrl
     );
 
     if (existingAccount) return existingAccount || null;
@@ -150,7 +157,7 @@ const AccountService = {
       : await this.isAccountExists(options.profileUrl);
     if (existingAccount) {
       throw new Error(
-        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`,
+        `Tài khoản với URL này đã tồn tại: "${existingAccount.name}"`
       );
     }
 
@@ -205,7 +212,7 @@ const AccountService = {
    */
   async updateAccount(
     accountId: string,
-    updates: Partial<Account>,
+    updates: Partial<Account>
   ): Promise<boolean> {
     const data = await this.getAccountsData();
     if (!data.accounts[accountId]) {
@@ -231,7 +238,7 @@ const AccountService = {
    */
   async updateAccountArcadeData(
     accountId: string,
-    arcadeData: ArcadeData,
+    arcadeData: ArcadeData
   ): Promise<boolean> {
     return this.updateAccount(accountId, { arcadeData });
   },
@@ -278,7 +285,7 @@ const AccountService = {
         account.name.toLowerCase().includes(searchTerm) ||
         (account.nickname &&
           account.nickname.toLowerCase().includes(searchTerm)) ||
-        account.profileUrl.toLowerCase().includes(searchTerm),
+        account.profileUrl.toLowerCase().includes(searchTerm)
     );
   },
 
@@ -287,8 +294,9 @@ const AccountService = {
    */
   async migrateExistingData(): Promise<void> {
     // Check if we already have accounts data
-    const existingAccountsData =
-      await storage.getItem<AccountsData>("local:accountsData");
+    const existingAccountsData = await storage.getItem<AccountsData>(
+      "local:accountsData"
+    );
     if (existingAccountsData) {
       return; // Already migrated
     }
@@ -297,7 +305,7 @@ const AccountService = {
     const oldProfileUrl = await storage.getItem<string>("local:urlProfile");
     const oldArcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
     const oldSearchFeature = await storage.getItem<boolean>(
-      "local:enableSearchFeature",
+      "local:enableSearchFeature"
     );
     // legacy badge setting (was stored directly in local storage)
     const oldShowBadge = await storage.getItem<boolean>("local:showBadge");
@@ -318,7 +326,7 @@ const AccountService = {
     if (oldProfileUrl) {
       const account = await this.createAccountFromOldData(
         oldProfileUrl,
-        oldArcadeData || undefined,
+        oldArcadeData || undefined
       );
       accountsData.accounts[account.id] = account;
       accountsData.activeAccountId = account.id;
@@ -351,7 +359,7 @@ const AccountService = {
    */
   async createAccountFromOldData(
     profileUrl: string,
-    arcadeData?: ArcadeData,
+    arcadeData?: ArcadeData
   ): Promise<Account> {
     const accountId = this.generateAccountId();
     const now = new Date().toISOString();
@@ -511,7 +519,7 @@ const AccountService = {
    * Update settings
    */
   async updateSettings(
-    settings: Partial<AccountsData["settings"]>,
+    settings: Partial<AccountsData["settings"]>
   ): Promise<void> {
     const data = await this.getAccountsData();
     data.settings = { ...data.settings, ...settings };
