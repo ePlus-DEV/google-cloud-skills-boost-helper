@@ -32,7 +32,6 @@ We welcome contributions to the project! Please follow these steps to contribute
 3. **Install Dependencies**
 
    Ensure you meet the following system requirements:
-
    - Node.js 16.14.x or later
    - macOS, Windows, or Linux
    - (Strongly Recommended) [pnpm](https://pnpm.io/)
