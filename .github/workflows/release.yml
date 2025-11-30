@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Ensure Yarn cache directory exists
         run: mkdir -p ~/Library/Caches/Yarn/v6
