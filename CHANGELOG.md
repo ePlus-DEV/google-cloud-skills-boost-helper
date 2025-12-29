@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.5] - 2025-12-29
+### :wrench: Chores
+- [`f97768c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f97768c2f154ff61cbef98e086987d33a5b093f8) - **deps**: bump vite from 6.3.6 to 6.4.1 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`565ecec`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/565ecec9a7967cadcc630109c90ad347be67bf4f) - **deps**: bump actions/checkout from 5 to 6 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`fb69d3f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/fb69d3f7d18681d61537121e4fe96487e17dbe23) - **deps**: bump node-forge from 1.3.1 to 1.3.2 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`ed2aa3d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ed2aa3d22f8736986d434fec98a43b3ccc9ad0d8) - update version to 1.2.5 and enhance FirebaseService with readonly properties and improved logging *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.2.4] - 2025-10-23
 
 ### :sparkles: New Features
@@ -744,3 +752,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.1...1.2.2
 [1.2.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.2...1.2.3
 [1.2.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.3...1.2.4
+[1.2.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.4...1.2.5
