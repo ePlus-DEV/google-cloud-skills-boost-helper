@@ -21,9 +21,6 @@ export async function setupNewSeasonConfig(
   arcadeDeadline: string,
   timezone: string = '+07:00'
 ): Promise<void> {
-  console.log('🎮 Setting up NEW SEASON (NO Facilitator)...');
-  console.log('📅 Arcade Deadline:', arcadeDeadline);
-  console.log('🌏 Timezone:', timezone);
 
   try {
     // Initialize service
@@ -41,15 +38,6 @@ export async function setupNewSeasonConfig(
       arcadeDeadline // Sử dụng deadline giống Arcade
     );
 
-    console.log('✅ New season config applied!');
-    console.log('\n📊 Current configuration:');
-    console.log(JSON.stringify(firebaseService.getAllParams(), null, 2));
-    
-    console.log('\n⚠️  Remember to:');
-    console.log('1. Set facilitatorProgram = false for all accounts');
-    console.log('2. Update Firebase Remote Config if deploying to production');
-    console.log('3. Document the new season information');
-
   } catch (error) {
     console.error('❌ Failed to setup new season:', error);
     throw error;
@@ -60,17 +48,14 @@ export async function setupNewSeasonConfig(
  * Chỉ tắt Facilitator program (giữ nguyên Arcade config)
  */
 export async function disableFacilitator(): Promise<void> {
-  console.log('❌ Disabling Facilitator program...');
+
   
   try {
     await firebaseService.initialize();
     
     firebaseService.setLocalConfigValue('countdown_enabled_arcade', 'false');
     
-    console.log('✅ Facilitator disabled');
-    console.log('📊 countdown_enabled_arcade:', 
-      await firebaseService.getBooleanParam('countdown_enabled_arcade', true)
-    );
+
   } catch (error) {
     console.error('❌ Failed to disable facilitator:', error);
     throw error;
@@ -85,24 +70,12 @@ export async function disableFacilitator(): Promise<void> {
 export async function enableFacilitator(
   facilitatorDeadline: string
 ): Promise<void> {
-  console.log('✅ Enabling Facilitator program...');
-  console.log('📅 Facilitator Deadline:', facilitatorDeadline);
-  
+
   try {
     await firebaseService.initialize();
     
     firebaseService.setLocalConfigValue('countdown_enabled_arcade', 'true');
     firebaseService.setLocalConfigValue('countdown_deadline_arcade', facilitatorDeadline);
-    
-    console.log('✅ Facilitator enabled');
-    console.log('\n📊 Current Facilitator config:');
-    console.log('- Enabled:', await firebaseService.getBooleanParam('countdown_enabled_arcade', false));
-    console.log('- Deadline:', await firebaseService.getStringParam('countdown_deadline_arcade', 'N/A'));
-    
-    console.log('\n⚠️  Remember to:');
-    console.log('1. Update FACILITATOR_MILESTONE_REQUIREMENTS in facilitatorService.ts');
-    console.log('2. Set facilitatorProgram = true for eligible accounts');
-    console.log('3. Update Firebase Remote Config if deploying to production');
   } catch (error) {
     console.error('❌ Failed to enable facilitator:', error);
     throw error;
@@ -139,13 +112,12 @@ export async function viewCurrentConfig(): Promise<void> {
  * Reset về default values
  */
 export async function resetToDefaults(): Promise<void> {
-  console.log('🔄 Resetting to default values...');
+
   
   try {
     await firebaseService.initialize();
     firebaseService.resetLocalConfig();
     
-    console.log('✅ Reset complete!');
     await viewCurrentConfig();
   } catch (error) {
     console.error('❌ Failed to reset:', error);
@@ -165,7 +137,6 @@ export async function presetGenAI_Q1_2026(): Promise<void> {
     '2026-03-31T23:59:59+07:00',
     '+07:00'
   );
-  console.log('🎨 Applied preset: Gen AI Q1 2026');
 }
 
 /**
@@ -176,7 +147,7 @@ export async function presetCloudSkills_Q2_2026(): Promise<void> {
     '2026-06-30T23:59:59+07:00',
     '+07:00'
   );
-  console.log('🎨 Applied preset: Cloud Skills Q2 2026');
+
 }
 
 // ============================================
@@ -197,14 +168,6 @@ if (typeof window !== 'undefined') {
     }
   };
   
-  console.log('✨ Season config helpers loaded!');
-  console.log('Usage in console:');
-  console.log('- seasonConfig.viewConfig()');
-  console.log('- seasonConfig.setup("2026-03-31T23:59:59+07:00")');
-  console.log('- seasonConfig.disableFacilitator()');
-  console.log('- seasonConfig.enableFacilitator("2026-06-30T23:59:59+07:00")');
-  console.log('- seasonConfig.reset()');
-  console.log('- seasonConfig.presets.genAI_Q1_2026()');
 }
 
 export default {
