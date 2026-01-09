@@ -14,13 +14,14 @@ class FirebaseService {
   private app: FirebaseApp | null = null;
   private remoteConfig: RemoteConfig | null = null;
   private initialized = false;
-  
+
   // Detect if running in local environment
-  private isLocalEnvironment = import.meta.env.MODE === 'development' || 
-                               import.meta.env.DEV === true ||
-                               window.location.hostname === 'localhost' ||
-                               window.location.hostname === '127.0.0.1';
-  
+  private isLocalEnvironment =
+    import.meta.env.MODE === "development" ||
+    import.meta.env.DEV === true ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+
   // Local config store for development
   private localConfigStore: Record<string, string | boolean | number> = {};
 
@@ -57,7 +58,8 @@ class FirebaseService {
 
     return {
       countdown_deadline:
-        import.meta.env.WXT_COUNTDOWN_DEADLINE || `${currentYear}-12-31T23:59:59+05:30`,
+        import.meta.env.WXT_COUNTDOWN_DEADLINE ||
+        `${currentYear}-12-31T23:59:59+05:30`,
       countdown_timezone: import.meta.env.WXT_COUNTDOWN_TIMEZONE || "+05:30",
       countdown_enabled: import.meta.env.WXT_COUNTDOWN_ENABLED || "true",
       countdown_deadline_arcade: defaultArcadeDeadline,
@@ -65,8 +67,6 @@ class FirebaseService {
         import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
     };
   }
-
-
 
   /**
    * Default Remote Config values
@@ -178,14 +178,18 @@ class FirebaseService {
     [key: string]: { value: string | boolean | number; source?: string };
   } {
     const keys = Object.keys(this.defaultValues);
-    const out: Record<string, { value: string | boolean | number; source?: string }> =
-      {};
+    const out: Record<
+      string,
+      { value: string | boolean | number; source?: string }
+    > = {};
 
     // In local environment, return local store
     if (this.isLocalEnvironment) {
       for (const key of keys) {
         out[key] = {
-          value: this.localConfigStore[key] ?? ((this.defaultValues as any)[key] as string | boolean | number),
+          value:
+            this.localConfigStore[key] ??
+            ((this.defaultValues as any)[key] as string | boolean | number),
           source: "local",
         };
       }
@@ -407,7 +411,10 @@ class FirebaseService {
       // In local environment, use local store
       if (this.isLocalEnvironment) {
         const value = this.localConfigStore[key] as string;
-        console.debug(`FirebaseService: Using LOCAL ${key}:`, value || fallback);
+        console.debug(
+          `FirebaseService: Using LOCAL ${key}:`,
+          value || fallback,
+        );
         return value || fallback;
       }
 
@@ -453,7 +460,8 @@ class FirebaseService {
       // In local environment, use local store
       if (this.isLocalEnvironment) {
         const value = this.localConfigStore[key];
-        const result = value !== undefined ? String(value) === "true" : fallback;
+        const result =
+          value !== undefined ? String(value) === "true" : fallback;
         console.debug(`FirebaseService: Using LOCAL ${key}:`, result);
         return result;
       }

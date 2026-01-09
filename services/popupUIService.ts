@@ -271,11 +271,14 @@ const PopupUIService = {
 
   /**
    * Update main UI with arcade data
-   * 
+   *
    * Note: includeFacilitator parameter from caller indicates account setting.
    * We additionally check Firebase Remote Config for global program availability.
    */
-  async updateMainUI(data: ArcadeData, includeFacilitator = false): Promise<void> {
+  async updateMainUI(
+    data: ArcadeData,
+    includeFacilitator = false,
+  ): Promise<void> {
     const { userDetails, arcadePoints, lastUpdated, faciCounts } = data;
     const userInfo = this.normalizeUserInfo(userDetails);
     const { userName, league, points, profileImage } = userInfo;
@@ -292,24 +295,25 @@ const PopupUIService = {
     try {
       const firebaseService = (await import("./firebaseService")).default;
       facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
-        'countdown_enabled_arcade',
-        false
+        "countdown_enabled_arcade",
+        false,
       );
     } catch (error) {
-      console.debug('Could not check facilitator global status:', error);
+      console.debug("Could not check facilitator global status:", error);
     }
 
     // Calculate facilitator bonus points only if:
     // 1. Account has facilitatorProgram enabled (includeFacilitator = true) AND
     // 2. Firebase config allows it globally (facilitatorGloballyEnabled = true)
-    const shouldCalculateBonus = includeFacilitator && facilitatorGloballyEnabled;
+    const shouldCalculateBonus =
+      includeFacilitator && facilitatorGloballyEnabled;
     const facilitatorBonus =
       shouldCalculateBonus && faciCounts
         ? calculateFacilitatorBonus(faciCounts)
         : 0;
 
     console.debug(
-      `📊 Facilitator Bonus Calculation: account=${includeFacilitator}, global=${facilitatorGloballyEnabled}, bonus=${facilitatorBonus}`
+      `📊 Facilitator Bonus Calculation: account=${includeFacilitator}, global=${facilitatorGloballyEnabled}, bonus=${facilitatorBonus}`,
     );
 
     // Add bonus points to total
@@ -505,7 +509,7 @@ const PopupUIService = {
    * Update milestone section visibility based on BOTH:
    * 1. Current account's facilitator program setting
    * 2. Firebase Remote Config (countdown_enabled_arcade)
-   * 
+   *
    * This allows hiding Facilitator for entire season even if users have it enabled
    */
   async updateMilestoneSection(): Promise<void> {
@@ -516,33 +520,31 @@ const PopupUIService = {
       // Import services dynamically to avoid circular dependency
       const AccountService = (await import("./accountService")).default;
       const firebaseService = (await import("./firebaseService")).default;
-      
+
       const currentAccount = await AccountService.getActiveAccount();
-      
+
       // Check Firebase config - is Facilitator program globally enabled?
       const facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
-        'countdown_enabled_arcade',
-        false // Default to false if not set
+        "countdown_enabled_arcade",
+        false, // Default to false if not set
       );
 
       // Show milestone section ONLY if:
       // 1. Account has facilitatorProgram enabled AND
       // 2. Firebase config allows it (for season control)
-      const shouldShowFacilitator = 
-        currentAccount?.facilitatorProgram === true && 
+      const shouldShowFacilitator =
+        currentAccount?.facilitatorProgram === true &&
         facilitatorGloballyEnabled === true;
 
       if (shouldShowFacilitator) {
         // Show milestone section for facilitator accounts when program is active
         milestoneSection.classList.remove("hidden");
-        console.debug(
-          "✅ Facilitator: Showing (account=true, global=true)"
-        );
+        console.debug("✅ Facilitator: Showing (account=true, global=true)");
       } else {
         // Hide milestone section
         milestoneSection.classList.add("hidden");
         console.debug(
-          `❌ Facilitator: Hidden (account=${currentAccount?.facilitatorProgram}, global=${facilitatorGloballyEnabled})`
+          `❌ Facilitator: Hidden (account=${currentAccount?.facilitatorProgram}, global=${facilitatorGloballyEnabled})`,
         );
       }
     } catch (error) {
@@ -945,9 +947,8 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     const currentYear = now.getFullYear();
     // Default to end of current year if env var is missing/empty
     const defaultFacilitatorDeadline =
-      import.meta.env.WXT_COUNTDOWN_DEADLINE || `${currentYear}-12-31T23:59:59+05:30`;
-
-
+      import.meta.env.WXT_COUNTDOWN_DEADLINE ||
+      `${currentYear}-12-31T23:59:59+05:30`;
 
     const getArcadeDefaultDeadline = () => {
       const now = new Date();
