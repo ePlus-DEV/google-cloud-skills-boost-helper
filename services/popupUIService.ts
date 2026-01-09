@@ -947,11 +947,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     const defaultFacilitatorDeadline =
       import.meta.env.WXT_COUNTDOWN_DEADLINE || `${currentYear}-12-31T23:59:59+05:30`;
 
-    console.debug("Countdown Setup:", {
-      envDeadline: import.meta.env.WXT_COUNTDOWN_DEADLINE,
-      defaultDeadline: defaultFacilitatorDeadline,
-      now: now.toISOString()
-    });
+
 
     const getArcadeDefaultDeadline = () => {
       const now = new Date();

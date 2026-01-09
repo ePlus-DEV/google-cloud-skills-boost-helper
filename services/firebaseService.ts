@@ -86,12 +86,8 @@ class FirebaseService {
       // In local environment, use local store instead of Firebase
       if (this.isLocalEnvironment) {
         console.info(
-          "🔧 FirebaseService: Running in LOCAL environment. Env Validating..."
+          "🔧 FirebaseService: Running in LOCAL environment, using local config store",
         );
-        console.debug("FirebaseService Env Vars:", {
-            WXT_COUNTDOWN_DEADLINE: import.meta.env.WXT_COUNTDOWN_DEADLINE,
-            WXT_COUNTDOWN_DEADLINE_ARCADE: import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE
-        });
         // Initialize local store with default values
         this.localConfigStore = { ...this.defaultValues };
         this.initialized = true;
@@ -411,11 +407,7 @@ class FirebaseService {
       // In local environment, use local store
       if (this.isLocalEnvironment) {
         const value = this.localConfigStore[key] as string;
-        console.debug(`FirebaseService: LOCAL ${key} ->`, value, "| Fallback:", fallback);
-        
-        if (key.includes("countdown")) {
-            console.debug(`FirebaseService: Env Check for ${key}:`, import.meta.env[`WXT_${key.toUpperCase()}`]);
-        }
+        console.debug(`FirebaseService: Using LOCAL ${key}:`, value || fallback);
         return value || fallback;
       }
 
