@@ -17,17 +17,17 @@ function localizeElements() {
 // Show appropriate store badge based on browser
 async function showBrowserStoreBadge() {
   const isFirefoxBrowser = await BrowserService.isFirefox();
-  const chromeStoreBadge = document.getElementById('chrome-web-store-badge');
-  const firefoxAddonStore = document.getElementById('firefox-addon-store');
+  const chromeStoreBadge = document.getElementById("chrome-web-store-badge");
+  const firefoxAddonStore = document.getElementById("firefox-addon-store");
 
   if (isFirefoxBrowser) {
     // Firefox browser - show Firefox badge
-    if (firefoxAddonStore) firefoxAddonStore.classList.remove('hidden');
-    if (chromeStoreBadge) chromeStoreBadge.classList.add('hidden');
+    if (firefoxAddonStore) firefoxAddonStore.classList.remove("hidden");
+    if (chromeStoreBadge) chromeStoreBadge.classList.add("hidden");
   } else {
     // Chrome/Edge/Brave browser - show Chrome badge
-    if (chromeStoreBadge) chromeStoreBadge.classList.remove('hidden');
-    if (firefoxAddonStore) firefoxAddonStore.classList.add('hidden');
+    if (chromeStoreBadge) chromeStoreBadge.classList.remove("hidden");
+    if (firefoxAddonStore) firefoxAddonStore.classList.add("hidden");
   }
 }
 
