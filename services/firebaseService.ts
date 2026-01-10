@@ -15,17 +15,28 @@ class FirebaseService {
   private remoteConfig: RemoteConfig | null = null;
   private initialized = false;
 
+  // Detect if running in local environment
+  private isLocalEnvironment =
+    import.meta.env.MODE === "development" ||
+    import.meta.env.DEV === true ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+
+  // Local config store for development
+  private localConfigStore: Record<string, string | boolean | number> = {};
+
   /**
-   * Get Firebase configuration from environment variables with fallbacks
+   * Get Firebase configuration from environment variables
+   * Always read from environment variables regardless of environment
    */
-  private getFirebaseConfig(): FirebaseConfig {
+  private static getFirebaseConfig(): FirebaseConfig {
     return {
-      apiKey: import.meta.env.WXT_FIREBASE_API_KEY,
-      authDomain: import.meta.env.WXT_FIREBASE_AUTH_DOMAIN,
-      projectId: import.meta.env.WXT_FIREBASE_PROJECT_ID,
-      storageBucket: import.meta.env.WXT_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: import.meta.env.WXT_FIREBASE_MESSAGING_SENDER_ID,
-      appId: import.meta.env.WXT_FIREBASE_APP_ID,
+      apiKey: import.meta.env.WXT_FIREBASE_API_KEY || "",
+      authDomain: import.meta.env.WXT_FIREBASE_AUTH_DOMAIN || "",
+      projectId: import.meta.env.WXT_FIREBASE_PROJECT_ID || "",
+      storageBucket: import.meta.env.WXT_FIREBASE_STORAGE_BUCKET || "",
+      messagingSenderId: import.meta.env.WXT_FIREBASE_MESSAGING_SENDER_ID || "",
+      appId: import.meta.env.WXT_FIREBASE_APP_ID || "",
     };
   }
 
@@ -33,23 +44,41 @@ class FirebaseService {
    * Default Firebase configuration
    * These should be replaced with your actual Firebase project configuration
    */
-  private readonly defaultConfig: FirebaseConfig = this.getFirebaseConfig();
+  private readonly defaultConfig: FirebaseConfig =
+    FirebaseService.getFirebaseConfig();
 
   /**
-   * Get default Remote Config values from environment variables with fallbacks
+   * Auto-calculate next season deadline based on current date
+   * Season 1: Jan-Jun (ends June 30)
+   * Season 2: Jul-Dec (ends Dec 31)
    */
-  private getDefaultValues(): RemoteConfigDefaults {
+  private static getNextSeasonDeadline(): string {
     const now = new Date();
     const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // 1-12
+
+    // If we're in first half (Jan-Jun), deadline is June 30
+    if (currentMonth <= 6) {
+      return `${currentYear}-06-30T23:59:59+05:30`;
+    }
+    // If we're in second half (Jul-Dec), deadline is Dec 31
+    return `${currentYear}-12-31T23:59:59+05:30`;
+  }
+
+  /**
+   * Get default Remote Config values from environment variables
+   */
+  private static getDefaultValues(): RemoteConfigDefaults {
+    const nextSeasonDeadline = FirebaseService.getNextSeasonDeadline();
     const defaultArcadeDeadline =
-      import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE ||
-      `${currentYear}-12-31T23:59:59+00:00`;
+      import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE || nextSeasonDeadline;
+    const defaultFacilitatorDeadline =
+      import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR || nextSeasonDeadline;
 
     return {
-      countdown_deadline:
-        import.meta.env.WXT_COUNTDOWN_DEADLINE || "2025-10-14T23:59:59+05:30",
-      countdown_timezone: import.meta.env.WXT_COUNTDOWN_TIMEZONE || "+05:30",
-      countdown_enabled: import.meta.env.WXT_COUNTDOWN_ENABLED || "true",
+      countdown_deadline_facilitator: defaultFacilitatorDeadline,
+      countdown_enabled_facilitator:
+        import.meta.env.WXT_COUNTDOWN_ENABLED_FACILITATOR || "true",
       countdown_deadline_arcade: defaultArcadeDeadline,
       countdown_enabled_arcade:
         import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
@@ -60,7 +89,7 @@ class FirebaseService {
    * Default Remote Config values
    */
   private readonly defaultValues: RemoteConfigDefaults =
-    this.getDefaultValues();
+    FirebaseService.getDefaultValues();
 
   /**
    * Initialize Firebase and Remote Config
@@ -68,6 +97,17 @@ class FirebaseService {
   async initialize(config?: Partial<FirebaseConfig>): Promise<void> {
     try {
       if (this.initialized) {
+        return;
+      }
+
+      // In local environment, use local store instead of Firebase
+      if (this.isLocalEnvironment) {
+        console.info(
+          "🔧 FirebaseService: Running in LOCAL environment, using local config store",
+        );
+        // Initialize local store with default values
+        this.localConfigStore = { ...this.defaultValues };
+        this.initialized = true;
         return;
       }
 
@@ -152,11 +192,26 @@ class FirebaseService {
    * Debug helper: return all known Remote Config params and their sources
    */
   getAllParams(): {
-    [key: string]: { value: string | boolean; source?: string };
+    [key: string]: { value: string | boolean | number; source?: string };
   } {
     const keys = Object.keys(this.defaultValues);
-    const out: Record<string, { value: string | boolean; source?: string }> =
-      {};
+    const out: Record<
+      string,
+      { value: string | boolean | number; source?: string }
+    > = {};
+
+    // In local environment, return local store
+    if (this.isLocalEnvironment) {
+      for (const key of keys) {
+        out[key] = {
+          value:
+            this.localConfigStore[key] ??
+            ((this.defaultValues as any)[key] as string | boolean | number),
+          source: "local",
+        };
+      }
+      return out;
+    }
 
     for (const key of keys) {
       try {
@@ -195,18 +250,29 @@ class FirebaseService {
    */
   async getCountdownDeadline(): Promise<string> {
     try {
+      // In local environment, use local store
+      if (this.isLocalEnvironment) {
+        const deadline = this.localConfigStore
+          .countdown_deadline_facilitator as string;
+        console.debug(
+          "FirebaseService: Using LOCAL countdown_deadline_facilitator:",
+          deadline,
+        );
+        return deadline || this.defaultValues.countdown_deadline_facilitator;
+      }
+
       // If Firebase is not initialized, use default
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          "FirebaseService: Not initialized, using default countdown_deadline",
+          "FirebaseService: Not initialized, using default countdown_deadline_facilitator",
         );
-        return this.defaultValues.countdown_deadline;
+        return this.defaultValues.countdown_deadline_facilitator;
       }
 
       // Fetch remote config to ensure we have the latest values
       await this.fetchConfig();
 
-      const val = getValue(this.remoteConfig, "countdown_deadline");
+      const val = getValue(this.remoteConfig, "countdown_deadline_facilitator");
       const source =
         typeof (val as any).getSource === "function"
           ? (val as any).getSource()
@@ -217,7 +283,7 @@ class FirebaseService {
       // Only use remote value if it exists and is from remote source
       if (deadline && source === "remote") {
         console.debug(
-          "FirebaseService: Using remote countdown_deadline:",
+          "FirebaseService: Using remote countdown_deadline_facilitator:",
           deadline,
         );
         return deadline;
@@ -225,60 +291,14 @@ class FirebaseService {
 
       // Otherwise use default
       console.debug(
-        "FirebaseService: Using default countdown_deadline (source:",
+        "FirebaseService: Using default countdown_deadline_facilitator (source:",
         source,
         ")",
       );
-      return this.defaultValues.countdown_deadline;
+      return this.defaultValues.countdown_deadline_facilitator;
     } catch (error) {
       console.error("❌ Failed to get countdown deadline:", error);
-      return this.defaultValues.countdown_deadline;
-    }
-  }
-
-  /**
-   * Get countdown timezone from Remote Config
-   */
-  async getCountdownTimezone(): Promise<string> {
-    try {
-      // If Firebase is not initialized, use default
-      if (!this.initialized || !this.remoteConfig) {
-        console.debug(
-          "FirebaseService: Not initialized, using default countdown_timezone",
-        );
-        return this.defaultValues.countdown_timezone;
-      }
-
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
-
-      const val = getValue(this.remoteConfig, "countdown_timezone");
-      const source =
-        typeof (val as any).getSource === "function"
-          ? (val as any).getSource()
-          : undefined;
-
-      const timezone = val.asString();
-
-      // Only use remote value if it exists and is from remote source
-      if (timezone && source === "remote") {
-        console.debug(
-          "FirebaseService: Using remote countdown_timezone:",
-          timezone,
-        );
-        return timezone;
-      }
-
-      // Otherwise use default
-      console.debug(
-        "FirebaseService: Using default countdown_timezone (source:",
-        source,
-        ")",
-      );
-      return this.defaultValues.countdown_timezone;
-    } catch (error) {
-      console.error("❌ Failed to get countdown timezone:", error);
-      return this.defaultValues.countdown_timezone;
+      return this.defaultValues.countdown_deadline_facilitator;
     }
   }
 
@@ -287,20 +307,31 @@ class FirebaseService {
    */
   async isCountdownEnabled(): Promise<boolean> {
     try {
+      // In local environment, use local store
+      if (this.isLocalEnvironment) {
+        const enabled = this.localConfigStore.countdown_enabled_facilitator;
+        const result = String(enabled) === "true";
+        console.debug(
+          "FirebaseService: Using LOCAL countdown_enabled_facilitator:",
+          result,
+        );
+        return result;
+      }
+
       // If Firebase is not initialized, use default
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          "FirebaseService: Not initialized, using default countdown_enabled",
+          "FirebaseService: Not initialized, using default countdown_enabled_facilitator",
         );
         const defaultEnabled =
-          String(this.defaultValues.countdown_enabled) === "true";
+          String(this.defaultValues.countdown_enabled_facilitator) === "true";
         return defaultEnabled;
       }
 
       // Fetch remote config to ensure we have the latest values
       await this.fetchConfig();
 
-      const val = getValue(this.remoteConfig, "countdown_enabled");
+      const val = getValue(this.remoteConfig, "countdown_enabled_facilitator");
       const source =
         typeof (val as any).getSource === "function"
           ? (val as any).getSource()
@@ -311,7 +342,7 @@ class FirebaseService {
       // Only use remote value if it is from remote source
       if (source === "remote") {
         console.debug(
-          "FirebaseService: Using remote countdown_enabled:",
+          "FirebaseService: Using remote countdown_enabled_facilitator:",
           enabled,
         );
         return enabled;
@@ -319,17 +350,17 @@ class FirebaseService {
 
       // Otherwise use default
       console.debug(
-        "FirebaseService: Using default countdown_enabled (source:",
+        "FirebaseService: Using default countdown_enabled_facilitator (source:",
         source,
         ")",
       );
       const defaultEnabled =
-        String(this.defaultValues.countdown_enabled) === "true";
+        String(this.defaultValues.countdown_enabled_facilitator) === "true";
       return defaultEnabled;
     } catch (error) {
       console.error("❌ Failed to get countdown enabled status:", error);
       const defaultEnabled =
-        String(this.defaultValues.countdown_enabled) === "true";
+        String(this.defaultValues.countdown_enabled_facilitator) === "true";
       return defaultEnabled;
     }
   }
@@ -339,6 +370,16 @@ class FirebaseService {
    */
   async getStringParam(key: string, fallback: string): Promise<string> {
     try {
+      // In local environment, use local store
+      if (this.isLocalEnvironment) {
+        const value = this.localConfigStore[key] as string;
+        console.debug(
+          `FirebaseService: Using LOCAL ${key}:`,
+          value || fallback,
+        );
+        return value || fallback;
+      }
+
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
           `FirebaseService: Not initialized, using fallback for ${key}`,
@@ -378,6 +419,15 @@ class FirebaseService {
    */
   async getBooleanParam(key: string, fallback: boolean): Promise<boolean> {
     try {
+      // In local environment, use local store
+      if (this.isLocalEnvironment) {
+        const value = this.localConfigStore[key];
+        const result =
+          value !== undefined ? String(value) === "true" : fallback;
+        console.debug(`FirebaseService: Using LOCAL ${key}:`, result);
+        return result;
+      }
+
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
           `FirebaseService: Not initialized, using fallback for ${key}`,
@@ -448,9 +498,51 @@ class FirebaseService {
   }
 
   /**
+   * Update local config value (only works in local environment)
+   * This is useful for testing different config values during development
+   */
+  setLocalConfigValue(key: string, value: string | boolean | number): void {
+    if (!this.isLocalEnvironment) {
+      console.warn(
+        "FirebaseService: setLocalConfigValue only works in local environment",
+      );
+      return;
+    }
+    this.localConfigStore[key] = value;
+    console.info(`FirebaseService: Updated local config ${key} =`, value);
+  }
+
+  /**
+   * Get all local config values (only works in local environment)
+   */
+  getLocalConfigStore(): Record<string, string | boolean | number> {
+    if (!this.isLocalEnvironment) {
+      console.warn(
+        "FirebaseService: getLocalConfigStore only works in local environment",
+      );
+      return {};
+    }
+    return { ...this.localConfigStore };
+  }
+
+  /**
+   * Reset local config to default values (only works in local environment)
+   */
+  resetLocalConfig(): void {
+    if (!this.isLocalEnvironment) {
+      console.warn(
+        "FirebaseService: resetLocalConfig only works in local environment",
+      );
+      return;
+    }
+    this.localConfigStore = { ...this.defaultValues };
+    console.info("FirebaseService: Reset local config to default values");
+  }
+
+  /**
    * Get configuration info for debugging
    */
-  getConfigInfo(): {
+  static getConfigInfo(): {
     source: "environment" | "fallback";
     config: FirebaseConfig;
     settings: {
@@ -466,7 +558,7 @@ class FirebaseService {
 
     return {
       source: isUsingEnv ? "environment" : "fallback",
-      config: this.getFirebaseConfig(),
+      config: FirebaseService.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
@@ -475,7 +567,7 @@ class FirebaseService {
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
       },
-      defaults: this.getDefaultValues(),
+      defaults: FirebaseService.getDefaultValues(),
     };
   }
 }

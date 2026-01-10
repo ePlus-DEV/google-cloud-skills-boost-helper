@@ -356,6 +356,7 @@
               ></i>
               Milestones
               <span
+                id="milestone-program-badge"
                 class="ml-2 text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full"
               >
                 <i class="fa-solid fa-chalkboard-teacher mr-1"></i>
@@ -369,8 +370,8 @@
               <div
                 class="countdown-card countdown-instance bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-md rounded-lg p-3 border border-red-400/30"
                 data-program="facilitator"
-                data-countdown-key="countdown_deadline"
-                data-countdown-toggle-key="countdown_enabled"
+                data-countdown-key="countdown_deadline_facilitator"
+                data-countdown-toggle-key="countdown_enabled_facilitator"
               >
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center">
@@ -383,8 +384,9 @@
                   </div>
                   <div
                     class="text-xs text-orange-300/70 countdown-deadline-label"
+                    title="Configuration source will be displayed here"
                   >
-                    Oct 14, 2025 11:59 PM IST
+                    Loading...
                   </div>
                 </div>
                 <div
@@ -434,7 +436,7 @@
 
               <!-- Arcade Countdown -->
               <div
-                class="countdown-card countdown-instance hidden bg-gradient-to-r from-sky-500/20 to-indigo-500/20 backdrop-blur-md rounded-lg p-3 border border-sky-400/30"
+                class="countdown-card countdown-instance bg-gradient-to-r from-sky-500/20 to-indigo-500/20 backdrop-blur-md rounded-lg p-3 border border-sky-400/30"
                 data-program="arcade"
                 data-countdown-key="countdown_deadline_arcade"
                 data-countdown-toggle-key="countdown_enabled_arcade"
@@ -448,8 +450,11 @@
                       >Arcade Season Countdown</span
                     >
                   </div>
-                  <div class="text-xs text-sky-300/70 countdown-deadline-label">
-                    Dec 31, 11:59 PM
+                  <div
+                    class="text-xs text-sky-300/70 countdown-deadline-label"
+                    title="Configuration source will be displayed here"
+                  >
+                    Loading...
                   </div>
                 </div>
                 <div

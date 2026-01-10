@@ -16,8 +16,9 @@ export interface FirebaseConfig {
  * Remote Config default values interface
  */
 export interface RemoteConfigDefaults {
-  countdown_deadline: string;
-  countdown_timezone: string;
-  countdown_enabled: string; // String because Remote Config stores as string
+  countdown_deadline_facilitator: string;
+  countdown_enabled_facilitator: string;
+  countdown_deadline_arcade: string;
+  countdown_enabled_arcade: string;
   [key: string]: string | number | boolean; // Index signature for Firebase compatibility
 }

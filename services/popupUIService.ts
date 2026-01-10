@@ -271,8 +271,14 @@ const PopupUIService = {
 
   /**
    * Update main UI with arcade data
+   *
+   * Note: includeFacilitator parameter from caller indicates account setting.
+   * We additionally check Firebase Remote Config for global program availability.
    */
-  updateMainUI(data: ArcadeData, includeFacilitator = false): void {
+  async updateMainUI(
+    data: ArcadeData,
+    includeFacilitator = false,
+  ): Promise<void> {
     const { userDetails, arcadePoints, lastUpdated, faciCounts } = data;
     const userInfo = this.normalizeUserInfo(userDetails);
     const { userName, league, points, profileImage } = userInfo;
@@ -284,11 +290,31 @@ const PopupUIService = {
       specialPoints = 0,
     } = arcadePoints || {};
 
-    // Calculate facilitator bonus points only if caller indicates facilitator program is enabled
+    // Check Firebase config - is Facilitator program globally enabled?
+    let facilitatorGloballyEnabled = false;
+    try {
+      const firebaseService = (await import("./firebaseService")).default;
+      facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
+        "countdown_enabled_arcade",
+        false,
+      );
+    } catch (error) {
+      console.debug("Could not check facilitator global status:", error);
+    }
+
+    // Calculate facilitator bonus points only if:
+    // 1. Account has facilitatorProgram enabled (includeFacilitator = true) AND
+    // 2. Firebase config allows it globally (facilitatorGloballyEnabled = true)
+    const shouldCalculateBonus =
+      includeFacilitator && facilitatorGloballyEnabled;
     const facilitatorBonus =
-      includeFacilitator && faciCounts
+      shouldCalculateBonus && faciCounts
         ? calculateFacilitatorBonus(faciCounts)
         : 0;
+
+    console.debug(
+      `📊 Facilitator Bonus Calculation: account=${includeFacilitator}, global=${facilitatorGloballyEnabled}, bonus=${facilitatorBonus}`,
+    );
 
     // Add bonus points to total
     const finalTotalPoints = totalPoints + facilitatorBonus;
@@ -480,23 +506,73 @@ const PopupUIService = {
   },
 
   /**
-   * Update milestone section visibility based on current account's facilitator program
+   * Update milestone section visibility based on BOTH:
+   * 1. Current account's facilitator program setting
+   * 2. Firebase Remote Config (countdown_enabled_arcade)
+   *
+   * This allows hiding Facilitator for entire season even if users have it enabled
    */
   async updateMilestoneSection(): Promise<void> {
     const milestoneSection = this.querySelector("#milestones-section");
+    const milestoneBadge = this.querySelector("#milestone-program-badge");
     if (!milestoneSection) return;
 
     try {
-      // Import AccountService dynamically to avoid circular dependency
+      // Import services dynamically to avoid circular dependency
       const AccountService = (await import("./accountService")).default;
+      const firebaseService = (await import("./firebaseService")).default;
+
       const currentAccount = await AccountService.getActiveAccount();
 
-      if (currentAccount?.facilitatorProgram) {
-        // Show milestone section for facilitator accounts
+      // Check Firebase config - is Facilitator program globally enabled?
+      const facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
+        "countdown_enabled_facilitator",
+        false,
+      );
+
+      // Check if Arcade is enabled
+      const arcadeEnabled = await firebaseService.getBooleanParam(
+        "countdown_enabled_arcade",
+        false,
+      );
+
+      // Show milestone section ONLY if:
+      // 1. Account has facilitatorProgram enabled AND Facilitator is globally enabled
+      // OR 2. Arcade is enabled
+      const shouldShowFacilitator =
+        currentAccount?.facilitatorProgram === true &&
+        facilitatorGloballyEnabled === true;
+
+      if (shouldShowFacilitator) {
+        // Show milestone section for facilitator
         milestoneSection.classList.remove("hidden");
+        if (milestoneBadge) {
+          milestoneBadge.innerHTML = `
+            <i class="fa-solid fa-chalkboard-teacher mr-1"></i>
+            Facilitator
+          `;
+          milestoneBadge.className =
+            "ml-2 text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full";
+        }
+        console.debug("✅ Facilitator: Showing (account=true, global=true)");
+      } else if (arcadeEnabled) {
+        // Show milestone section for arcade
+        milestoneSection.classList.remove("hidden");
+        if (milestoneBadge) {
+          milestoneBadge.innerHTML = `
+            <i class="fa-solid fa-gamepad mr-1"></i>
+            Arcade
+          `;
+          milestoneBadge.className =
+            "ml-2 text-xs bg-gradient-to-r from-sky-500 to-indigo-500 text-white px-2 py-1 rounded-full";
+        }
+        console.debug("✅ Arcade: Showing (arcade enabled)");
       } else {
-        // Hide milestone section for non-facilitator accounts
+        // Hide milestone section
         milestoneSection.classList.add("hidden");
+        console.debug(
+          `❌ Milestones: Hidden (facilitator=${facilitatorGloballyEnabled}, arcade=${arcadeEnabled})`,
+        );
       }
     } catch (error) {
       console.error("Error updating milestone section:", error);
@@ -890,12 +966,16 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     // Support multiple countdown instances. Each instance should have
     // elements with class `.countdown-instance` and data attributes:
     // - data-countdown-key (optional): remote config key for deadline
-    // If not provided, default `countdown_deadline` and `countdown_enabled` are used.
+    // If not provided, default `countdown_deadline_facilitator` and `countdown_enabled_facilitator` are used.
 
     const firebaseService = (await import("./firebaseService")).default;
 
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    // Default to end of current year if env var is missing/empty
     const defaultFacilitatorDeadline =
-      import.meta.env.WXT_COUNTDOWN_DEADLINE || "2025-10-14T23:59:59+05:30";
+      import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR ||
+      `${currentYear}-12-31T23:59:59+05:30`;
 
     const getArcadeDefaultDeadline = () => {
       const now = new Date();
@@ -914,14 +994,19 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       return defaultFacilitatorDeadline;
     };
 
-    const formatCountdownDeadlineLabel = (date: Date): string => {
+    const formatCountdownDeadlineLabel = (
+      date: Date,
+      source?: string,
+    ): string => {
       try {
-        return date.toLocaleString(undefined, {
+        const dateStr = date.toLocaleString(undefined, {
           month: "short",
           day: "2-digit",
           hour: "2-digit",
           minute: "2-digit",
+          timeZoneName: "short",
         });
+        return dateStr;
       } catch (e) {
         console.debug("formatCountdownDeadlineLabel fallback triggered", e);
         return date.toISOString();
@@ -1001,20 +1086,27 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       clearIntervalById(id);
 
       // Extract data attribute for remote key
-      const rcKey = el.dataset.countdownKey || "countdown_deadline";
-      const rcToggleKey = el.dataset.countdownToggleKey || "countdown_enabled";
+      const rcKey = el.dataset.countdownKey || "countdown_deadline_facilitator";
+      const rcToggleKey =
+        el.dataset.countdownToggleKey || "countdown_enabled_facilitator";
 
       // Determine deadline and enabled state
       let deadlineDate: Date;
       let enabled = true;
       const fallbackDeadline = getProgramDefaultDeadline(program, rcKey);
 
+      let configSource: string | undefined;
       try {
         const deadlineStr = await firebaseService.getStringParam(
           rcKey,
           fallbackDeadline,
         );
         enabled = await firebaseService.getBooleanParam(rcToggleKey, true);
+
+        // Get configuration source for display
+        const params = firebaseService.getAllParams();
+        configSource = params[rcKey]?.source;
+
         if (!enabled) {
           // Hide this specific instance
           el.classList.add("hidden");
@@ -1030,14 +1122,17 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       } catch (e) {
         // Fallback
         deadlineDate = new Date(fallbackDeadline);
+        configSource = "fallback";
       }
 
       const deadlineLabelEl = el.querySelector<HTMLElement>(
         ".countdown-deadline-label",
       );
       if (deadlineLabelEl && !isNaN(deadlineDate.getTime())) {
-        deadlineLabelEl.textContent =
-          formatCountdownDeadlineLabel(deadlineDate);
+        deadlineLabelEl.innerHTML = formatCountdownDeadlineLabel(
+          deadlineDate,
+          configSource,
+        );
       }
 
       // If the deadline is already passed, render the ended state once and
@@ -1096,8 +1191,8 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                       Arcade Season Countdown
                     </span>
                   </div>
-                  <div class="text-xs text-sky-300/70 countdown-deadline-label">
-                    Dec 31, 11:59 PM
+                  <div class="text-xs text-sky-300/70 countdown-deadline-label" title="Configuration source will be displayed here">
+                    Loading...
                   </div>
                 </div>
                 <div class="flex items-center justify-center space-x-4 text-center">
@@ -1199,8 +1294,8 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                         Arcade Season Countdown
                       </span>
                     </div>
-                    <div class="text-xs text-sky-300/70 countdown-deadline-label">
-                      Dec 31, 11:59 PM
+                    <div class="text-xs text-sky-300/70 countdown-deadline-label" title="Configuration source will be displayed here">
+                      Loading...
                     </div>
                   </div>
                   <div class="flex items-center justify-center space-x-4 text-center">

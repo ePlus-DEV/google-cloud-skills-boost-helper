@@ -1,6 +1,35 @@
 import { UI_COLORS } from "../utils/config";
 
 export default defineBackground(() => {
+  // Set uninstall URL to open Google Form when extension is uninstalled
+  try {
+    if (browser.runtime.setUninstallURL) {
+      const manifest = browser.runtime.getManifest();
+      const version = manifest?.version || "unknown";
+
+      // Google Forms pre-fill format: entry.ENTRY_ID=value
+      // To get entry ID:
+      // 1. Open your Google Form in preview mode
+      // 2. Open Developer Tools (F12)
+      // 3. Inspect the version field and find name="entry.XXXXXXXX"
+      // 4. Replace ENTRY_ID below with that number
+
+      const FORM_ID =
+        "1FAIpQLSc_IYKM_q4_WW0S-t-sQgsHdeRwLYbDMxD-BrR68tkdjx8aqg"; // Replace with your form ID
+      const VERSION_ENTRY_ID = "1223799012"; // Replace with actual entry ID for version field
+
+      // Full Google Form URL with pre-filled version
+      const UNINSTALL_SURVEY_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?entry.${VERSION_ENTRY_ID}=v${encodeURIComponent(
+        version,
+      )}`;
+
+      browser.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
+      console.debug("Uninstall survey URL set with version:", version);
+    }
+  } catch (e) {
+    console.debug("Failed to set uninstall URL:", e);
+  }
+
   // Lightweight typed accessors for extension action APIs (avoid `as any` cast)
   type BadgeAction = {
     setBadgeText: (details: { text: string }) => void;
@@ -126,9 +155,8 @@ export default defineBackground(() => {
         // dynamic import to avoid bundling issues
         const StorageService = (await import("../services/storageService"))
           .default;
-        const { calculateFacilitatorBonus } = await import(
-          "../services/facilitatorService"
-        );
+        const { calculateFacilitatorBonus } =
+          await import("../services/facilitatorService");
         const arcadeData = await StorageService.getArcadeData();
         if (arcadeData) {
           const base =
@@ -154,9 +182,8 @@ export default defineBackground(() => {
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
-      const { calculateFacilitatorBonus } = await import(
-        "../services/facilitatorService"
-      );
+      const { calculateFacilitatorBonus } =
+        await import("../services/facilitatorService");
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
@@ -227,9 +254,8 @@ export default defineBackground(() => {
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
-      const { calculateFacilitatorBonus } = await import(
-        "../services/facilitatorService"
-      );
+      const { calculateFacilitatorBonus } =
+        await import("../services/facilitatorService");
       const enabled = await StorageService.isBadgeDisplayEnabled();
       if (!enabled) {
         // clear
