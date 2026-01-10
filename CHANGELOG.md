@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.6] - 2026-01-10
+### :sparkles: New Features
+- [`3ff91bb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3ff91bb238732a38ea65631524c34e8b85b8c23d) - add expandable markdown content section with toggle functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`72e67dd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/72e67dd6af68c6b4c8401ce8848560ece5fc9e05) - add footer with store badges and copyright information *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`840773e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/840773e9c55022f03e734c50da4acb65e83eac66) - add uninstall survey URL with version tracking for extension *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c49b945`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c49b9450b58d5dcb837f80d16ecc21f212bd4abf) - implement browser detection and update store badge logic *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`616fece`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/616fece34fa710e756a9b757780d2bfacd4648f0) - simplify season configuration functions and remove unused code *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7778199`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7778199481b618e297de344dd702297e7941d5c5) - remove debug logging from countdown configuration and clean up parameter formatting *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`418914c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/418914cbe8e14ed10945c73d8a873517423834a1) - update countdown deadline logic and improve default values retrieval *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f5f2cb9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f5f2cb96eae4e229995a6d8fd462909bdcedcb7c) - change getNextSeasonDeadline to static and update references *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7068024`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/70680249849fbda88e32e595f884a9fec1e68ae9) - change getFirebaseConfig and getDefaultValues to static methods *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.2.5] - 2025-12-29
 ### :wrench: Chores
 - [`f97768c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f97768c2f154ff61cbef98e086987d33a5b093f8) - **deps**: bump vite from 6.3.6 to 6.4.1 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
@@ -753,3 +768,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.2...1.2.3
 [1.2.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.3...1.2.4
 [1.2.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.4...1.2.5
+[1.2.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.5...1.2.6
