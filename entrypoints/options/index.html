@@ -321,9 +321,37 @@
       <strong class="font-bold">Success:</strong>
       <span class="block sm:inline">Your action was successful!</span>
     </div>
+
+    <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
+      <div class="mb-4">
+        <a target="_blank" rel="noopener noreferrer"
+          href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
+          class="inline-block" aria-label="Chrome Web Store">
+          <img alt="Chrome Web Store Version" class="hidden" id="chrome-web-store-badge"
+            src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
+            class="mx-auto" />
+        </a>
+
+        <a target="_blank" rel="noopener noreferrer"
+          href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
+          class="inline-block" aria-label="Firefox Addon Store">
+          <img alt="Mozilla Add-on Version" class="hidden" id="firefox-addon-store"
+            src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white" />
+        </a>
+      </div>
+      <p class="text-sm">
+        This extension is not affiliated with Google Cloud Skills Boost. All
+        rights reserved.
+      </p>
+      <p class="text-sm mt-2">
+        <i class="fa-solid fa-copyright"></i> 2025 -
+        <a href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
+          ePlus.DEV
+        </a>
+      </p>
+    </footer>
   </div>
-  </div>
-  <!-- END - Settings -->
+  <!-- END - Main Container -->
 
   <!-- Add Account Modal -->
   <div id="add-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
@@ -698,37 +726,7 @@
       </div>
     </div>
   </div>
-  </div>
 
-  <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
-    <div class="mb-4">
-      <a target="_blank" rel="noopener noreferrer"
-        href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
-        class="inline-block" aria-label="Chrome Web Store">
-        <img alt="Chrome Web Store Version" class="hidden" id="chrome-web-store-badge"
-          src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
-          class="mx-auto" />
-      </a>
-
-      <a target="_blank" rel="noopener noreferrer"
-        href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
-        class="inline-block" aria-label="Firefox Addon Store">
-        <img alt="Mozilla Add-on Version" class="hidden" id="firefox-addon-store"
-          src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white" />
-      </a>
-    </div>
-    <p class="text-sm">
-      This extension is not affiliated with Google Cloud Skills Boost. All
-      rights reserved.
-    </p>
-    <p class="text-sm mt-2">
-      <i class="fa-solid fa-copyright"></i> 2025 -
-      <a href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
-        ePlus.DEV
-      </a>
-    </p>
-  </footer>
-  </div>
   <script>
     // Toggle data management section
     document.addEventListener('DOMContentLoaded', function () {
@@ -854,6 +852,21 @@
         if ('addEventListener' in searchToggle) {
           searchToggle.addEventListener('change', updateSearchStatus);
         }
+      }
+
+      // Show appropriate store badge based on browser
+      const isFirefox = typeof browser !== 'undefined' && browser.runtime && browser.runtime.getBrowserInfo;
+      const chromeStoreBadge = document.getElementById('chrome-web-store-badge');
+      const firefoxAddonStore = document.getElementById('firefox-addon-store');
+
+      if (isFirefox) {
+        // Firefox browser - show Firefox badge
+        if (firefoxAddonStore) firefoxAddonStore.classList.remove('hidden');
+        if (chromeStoreBadge) chromeStoreBadge.classList.add('hidden');
+      } else {
+        // Chrome/Edge browser - show Chrome badge
+        if (chromeStoreBadge) chromeStoreBadge.classList.remove('hidden');
+        if (firefoxAddonStore) firefoxAddonStore.classList.add('hidden');
       }
     });
   </script>
