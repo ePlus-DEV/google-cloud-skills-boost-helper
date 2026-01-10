@@ -13,3 +13,5 @@ export { default as MarkdownService } from "./markdownService";
 export { default as AccountService } from "./accountService";
 export { default as TourService } from "./tourService";
 export * as BrowserService from "./browserService";
+export { notificationService } from "./notificationService";
+export { monitorService } from "./monitorService";

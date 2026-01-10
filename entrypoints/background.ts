@@ -1,6 +1,10 @@
 import { UI_COLORS } from "../utils/config";
+import { notificationService } from "../services/notificationService";
 
 export default defineBackground(() => {
+  // Setup notification listeners
+  notificationService.setupListeners();
+
   // Set uninstall URL to open Google Form when extension is uninstalled
   try {
     if (browser.runtime.setUninstallURL) {
@@ -20,7 +24,7 @@ export default defineBackground(() => {
 
       // Full Google Form URL with pre-filled version
       const UNINSTALL_SURVEY_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?entry.${VERSION_ENTRY_ID}=v${encodeURIComponent(
-        version,
+        version
       )}`;
 
       browser.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
@@ -105,7 +109,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text,
+        text
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
@@ -132,9 +136,26 @@ export default defineBackground(() => {
           const manifest = browser.runtime.getManifest();
           const currentVersion = manifest?.version || "";
           if (previousVersion && previousVersion !== currentVersion) {
+            // Hiển thị notification khi extension được update
+            await notificationService.show(
+              {
+                title: "Extension Updated!",
+                message: `Google Cloud Skills Boost Helper has been updated to version ${currentVersion}`,
+                requireInteraction: false,
+              },
+              () => {
+                // Khi click vào notification, mở changelog
+                const path = `/changelog.html?version=${encodeURIComponent(
+                  currentVersion
+                )}&from=${encodeURIComponent(previousVersion)}`;
+                const url = browser.runtime.getURL(path as any);
+                browser.tabs.create({ url, active: true });
+              }
+            );
+
             // build the path as a string and assert `any` to avoid narrow typing on getURL
             const path = `/changelog.html?version=${encodeURIComponent(
-              currentVersion,
+              currentVersion
             )}&from=${encodeURIComponent(previousVersion)}`;
             const url = browser.runtime.getURL(path as any);
             await browser.tabs.create({ url, active: true });
@@ -155,8 +176,9 @@ export default defineBackground(() => {
         // dynamic import to avoid bundling issues
         const StorageService = (await import("../services/storageService"))
           .default;
-        const { calculateFacilitatorBonus } =
-          await import("../services/facilitatorService");
+        const { calculateFacilitatorBonus } = await import(
+          "../services/facilitatorService"
+        );
         const arcadeData = await StorageService.getArcadeData();
         if (arcadeData) {
           const base =
@@ -171,7 +193,7 @@ export default defineBackground(() => {
       } catch (e) {
         console.debug("Failed to set badge on install/start:", e);
       }
-    },
+    }
   );
 
   // On startup, update the badge as well
@@ -182,8 +204,9 @@ export default defineBackground(() => {
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
-      const { calculateFacilitatorBonus } =
-        await import("../services/facilitatorService");
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
@@ -254,8 +277,9 @@ export default defineBackground(() => {
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
-      const { calculateFacilitatorBonus } =
-        await import("../services/facilitatorService");
+      const { calculateFacilitatorBonus } = await import(
+        "../services/facilitatorService"
+      );
       const enabled = await StorageService.isBadgeDisplayEnabled();
       if (!enabled) {
         // clear
@@ -318,7 +342,7 @@ export default defineBackground(() => {
         const from = msg.from || "";
         const version = msg.version || "";
         const path = `/changelog.html?version=${encodeURIComponent(
-          version,
+          version
         )}&from=${encodeURIComponent(from)}`;
         const url = browser.runtime.getURL(path as any);
         try {
@@ -326,6 +350,63 @@ export default defineBackground(() => {
         } catch (e) {
           console.debug("Failed to open changelog test tab:", e);
         }
+      }
+
+      // Test notifications
+      if (msg?._testNotifications) {
+        console.log("Testing notifications...");
+
+        // Test 1: Simple notification
+        await notificationService.showSimple(
+          "🧪 Test Notification",
+          "This is a simple test notification"
+        );
+
+        // Test 2: Notification with click handler
+        setTimeout(async () => {
+          await notificationService.show(
+            {
+              title: "🧪 Test with Click",
+              message: "Click this notification to open options page",
+              requireInteraction: false,
+            },
+            () => {
+              browser.tabs.create({
+                url: browser.runtime.getURL("/options.html"),
+              });
+            }
+          );
+        }, 2000);
+
+        // Test 3: Notification with action buttons
+        setTimeout(async () => {
+          await notificationService.showWithActions(
+            "🧪 Test with Buttons",
+            "Choose an option:",
+            [{ title: "Open Popup" }, { title: "Dismiss" }],
+            (buttonIndex) => {
+              if (buttonIndex === 0) {
+                browser.tabs.create({
+                  url: browser.runtime.getURL("/popup.html"),
+                });
+              }
+              console.log(`Button ${buttonIndex} clicked`);
+            }
+          );
+        }, 4000);
+
+        // Test 4: Important notification
+        setTimeout(async () => {
+          await notificationService.showImportant(
+            "🧪 Important Test",
+            "This is an important notification (won't auto-close)",
+            () => {
+              console.log("Important notification clicked!");
+            }
+          );
+        }, 6000);
+
+        console.log("Notification tests queued!");
       }
     } catch (e) {
       console.debug("Error in test message handler:", e);
