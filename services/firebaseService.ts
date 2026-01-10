@@ -103,7 +103,7 @@ class FirebaseService {
       // In local environment, use local store instead of Firebase
       if (this.isLocalEnvironment) {
         console.info(
-          "🔧 FirebaseService: Running in LOCAL environment, using local config store"
+          "🔧 FirebaseService: Running in LOCAL environment, using local config store",
         );
         // Initialize local store with default values
         this.localConfigStore = { ...this.defaultValues };
@@ -117,13 +117,13 @@ class FirebaseService {
       // Quick debug output to help diagnose missing env values
       console.debug(
         "FirebaseService: initializing with config:",
-        firebaseConfig
+        firebaseConfig,
       );
 
       // If required keys are missing, skip initialization and keep using defaults
       if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
         console.warn(
-          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values."
+          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values.",
         );
         this.initialized = false;
         return;
@@ -145,10 +145,10 @@ class FirebaseService {
       // Configure Remote Config settings
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ), // 1 hour
         fetchTimeoutMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ), // 1 minute
       };
 
@@ -256,7 +256,7 @@ class FirebaseService {
           .countdown_deadline_facilitator as string;
         console.debug(
           "FirebaseService: Using LOCAL countdown_deadline_facilitator:",
-          deadline
+          deadline,
         );
         return deadline || this.defaultValues.countdown_deadline_facilitator;
       }
@@ -264,7 +264,7 @@ class FirebaseService {
       // If Firebase is not initialized, use default
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          "FirebaseService: Not initialized, using default countdown_deadline_facilitator"
+          "FirebaseService: Not initialized, using default countdown_deadline_facilitator",
         );
         return this.defaultValues.countdown_deadline_facilitator;
       }
@@ -284,7 +284,7 @@ class FirebaseService {
       if (deadline && source === "remote") {
         console.debug(
           "FirebaseService: Using remote countdown_deadline_facilitator:",
-          deadline
+          deadline,
         );
         return deadline;
       }
@@ -293,7 +293,7 @@ class FirebaseService {
       console.debug(
         "FirebaseService: Using default countdown_deadline_facilitator (source:",
         source,
-        ")"
+        ")",
       );
       return this.defaultValues.countdown_deadline_facilitator;
     } catch (error) {
@@ -312,7 +312,7 @@ class FirebaseService {
         const timezone = this.localConfigStore.countdown_timezone as string;
         console.debug(
           "FirebaseService: Using LOCAL countdown_timezone:",
-          timezone
+          timezone,
         );
         return timezone || this.defaultValues.countdown_timezone;
       }
@@ -320,7 +320,7 @@ class FirebaseService {
       // If Firebase is not initialized, use default
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          "FirebaseService: Not initialized, using default countdown_timezone"
+          "FirebaseService: Not initialized, using default countdown_timezone",
         );
         return this.defaultValues.countdown_timezone;
       }
@@ -340,7 +340,7 @@ class FirebaseService {
       if (timezone && source === "remote") {
         console.debug(
           "FirebaseService: Using remote countdown_timezone:",
-          timezone
+          timezone,
         );
         return timezone;
       }
@@ -349,7 +349,7 @@ class FirebaseService {
       console.debug(
         "FirebaseService: Using default countdown_timezone (source:",
         source,
-        ")"
+        ")",
       );
       return this.defaultValues.countdown_timezone;
     } catch (error) {
@@ -369,7 +369,7 @@ class FirebaseService {
         const result = String(enabled) === "true";
         console.debug(
           "FirebaseService: Using LOCAL countdown_enabled_facilitator:",
-          result
+          result,
         );
         return result;
       }
@@ -377,7 +377,7 @@ class FirebaseService {
       // If Firebase is not initialized, use default
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          "FirebaseService: Not initialized, using default countdown_enabled_facilitator"
+          "FirebaseService: Not initialized, using default countdown_enabled_facilitator",
         );
         const defaultEnabled =
           String(this.defaultValues.countdown_enabled_facilitator) === "true";
@@ -399,7 +399,7 @@ class FirebaseService {
       if (source === "remote") {
         console.debug(
           "FirebaseService: Using remote countdown_enabled_facilitator:",
-          enabled
+          enabled,
         );
         return enabled;
       }
@@ -408,7 +408,7 @@ class FirebaseService {
       console.debug(
         "FirebaseService: Using default countdown_enabled_facilitator (source:",
         source,
-        ")"
+        ")",
       );
       const defaultEnabled =
         String(this.defaultValues.countdown_enabled_facilitator) === "true";
@@ -431,14 +431,14 @@ class FirebaseService {
         const value = this.localConfigStore[key] as string;
         console.debug(
           `FirebaseService: Using LOCAL ${key}:`,
-          value || fallback
+          value || fallback,
         );
         return value || fallback;
       }
 
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          `FirebaseService: Not initialized, using fallback for ${key}`
+          `FirebaseService: Not initialized, using fallback for ${key}`,
         );
         return fallback;
       }
@@ -461,7 +461,7 @@ class FirebaseService {
       }
 
       console.debug(
-        `FirebaseService: Using fallback for ${key} (source: ${source})`
+        `FirebaseService: Using fallback for ${key} (source: ${source})`,
       );
       return fallback;
     } catch (e) {
@@ -486,7 +486,7 @@ class FirebaseService {
 
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          `FirebaseService: Not initialized, using fallback for ${key}`
+          `FirebaseService: Not initialized, using fallback for ${key}`,
         );
         return fallback;
       }
@@ -509,7 +509,7 @@ class FirebaseService {
       }
 
       console.debug(
-        `FirebaseService: Using fallback for ${key} (source: ${source})`
+        `FirebaseService: Using fallback for ${key} (source: ${source})`,
       );
       return fallback;
     } catch (e) {
@@ -541,7 +541,7 @@ class FirebaseService {
       console.debug(
         "ensureRemoteValue: unable to confirm remote source for",
         key,
-        e
+        e,
       );
     }
   }
@@ -560,7 +560,7 @@ class FirebaseService {
   setLocalConfigValue(key: string, value: string | boolean | number): void {
     if (!this.isLocalEnvironment) {
       console.warn(
-        "FirebaseService: setLocalConfigValue only works in local environment"
+        "FirebaseService: setLocalConfigValue only works in local environment",
       );
       return;
     }
@@ -574,7 +574,7 @@ class FirebaseService {
   getLocalConfigStore(): Record<string, string | boolean | number> {
     if (!this.isLocalEnvironment) {
       console.warn(
-        "FirebaseService: getLocalConfigStore only works in local environment"
+        "FirebaseService: getLocalConfigStore only works in local environment",
       );
       return {};
     }
@@ -587,7 +587,7 @@ class FirebaseService {
   resetLocalConfig(): void {
     if (!this.isLocalEnvironment) {
       console.warn(
-        "FirebaseService: resetLocalConfig only works in local environment"
+        "FirebaseService: resetLocalConfig only works in local environment",
       );
       return;
     }
@@ -609,7 +609,7 @@ class FirebaseService {
   } {
     const isUsingEnv = Boolean(
       import.meta.env.WXT_FIREBASE_API_KEY &&
-        import.meta.env.WXT_FIREBASE_PROJECT_ID
+      import.meta.env.WXT_FIREBASE_PROJECT_ID,
     );
 
     return {
@@ -617,10 +617,10 @@ class FirebaseService {
       config: this.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
         ),
         fetchTimeoutMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
+          import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
       },
       defaults: this.getDefaultValues(),
