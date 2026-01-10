@@ -853,21 +853,6 @@
           searchToggle.addEventListener('change', updateSearchStatus);
         }
       }
-
-      // Show appropriate store badge based on browser
-      const isFirefox = typeof browser !== 'undefined' && browser.runtime && browser.runtime.getBrowserInfo;
-      const chromeStoreBadge = document.getElementById('chrome-web-store-badge');
-      const firefoxAddonStore = document.getElementById('firefox-addon-store');
-
-      if (isFirefox) {
-        // Firefox browser - show Firefox badge
-        if (firefoxAddonStore) firefoxAddonStore.classList.remove('hidden');
-        if (chromeStoreBadge) chromeStoreBadge.classList.add('hidden');
-      } else {
-        // Chrome/Edge browser - show Chrome badge
-        if (chromeStoreBadge) chromeStoreBadge.classList.remove('hidden');
-        if (firefoxAddonStore) firefoxAddonStore.classList.add('hidden');
-      }
     });
   </script>
   <script type="module" src="main.tsx"></script>
