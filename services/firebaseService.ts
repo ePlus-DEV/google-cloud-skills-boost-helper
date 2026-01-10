@@ -29,7 +29,7 @@ class FirebaseService {
    * Get Firebase configuration from environment variables
    * Always read from environment variables regardless of environment
    */
-  private getFirebaseConfig(): FirebaseConfig {
+  private static getFirebaseConfig(): FirebaseConfig {
     return {
       apiKey: import.meta.env.WXT_FIREBASE_API_KEY || "",
       authDomain: import.meta.env.WXT_FIREBASE_AUTH_DOMAIN || "",
@@ -44,7 +44,8 @@ class FirebaseService {
    * Default Firebase configuration
    * These should be replaced with your actual Firebase project configuration
    */
-  private readonly defaultConfig: FirebaseConfig = this.getFirebaseConfig();
+  private readonly defaultConfig: FirebaseConfig =
+    FirebaseService.getFirebaseConfig();
 
   /**
    * Auto-calculate next season deadline based on current date
@@ -67,7 +68,7 @@ class FirebaseService {
   /**
    * Get default Remote Config values from environment variables
    */
-  private getDefaultValues(): RemoteConfigDefaults {
+  private static getDefaultValues(): RemoteConfigDefaults {
     const nextSeasonDeadline = FirebaseService.getNextSeasonDeadline();
     const defaultArcadeDeadline =
       import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE || nextSeasonDeadline;
@@ -88,7 +89,7 @@ class FirebaseService {
    * Default Remote Config values
    */
   private readonly defaultValues: RemoteConfigDefaults =
-    this.getDefaultValues();
+    FirebaseService.getDefaultValues();
 
   /**
    * Initialize Firebase and Remote Config
@@ -557,7 +558,7 @@ class FirebaseService {
 
     return {
       source: isUsingEnv ? "environment" : "fallback",
-      config: this.getFirebaseConfig(),
+      config: FirebaseService.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000"
@@ -566,7 +567,7 @@ class FirebaseService {
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000"
         ),
       },
-      defaults: this.getDefaultValues(),
+      defaults: FirebaseService.getDefaultValues(),
     };
   }
 }
