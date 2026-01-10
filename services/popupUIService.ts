@@ -1015,20 +1015,6 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       if (!firebaseService.isInitialized()) {
         await firebaseService.initialize();
       }
-
-      // Log current config for debugging
-      const allParams = firebaseService.getAllParams();
-      console.log("📊 Countdown Configuration:");
-      console.log("  Facilitator:", {
-        deadline: allParams.countdown_deadline?.value,
-        enabled: allParams.countdown_enabled?.value,
-        source: allParams.countdown_enabled?.source,
-      });
-      console.log("  Arcade:", {
-        deadline: allParams.countdown_deadline_arcade?.value,
-        enabled: allParams.countdown_enabled_arcade?.value,
-        source: allParams.countdown_enabled_arcade?.source,
-      });
     } catch (e) {
       // initialization failure is non-fatal; we'll fall back per-instance
       console.error(
