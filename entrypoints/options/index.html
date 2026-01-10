@@ -54,10 +54,21 @@
         <div class="flex-shrink-0">
           <i class="fa-solid fa-info-circle text-blue-500 text-xl mt-1"></i>
         </div>
-        <div class="ml-4 prose prose-sm max-w-none text-gray-700">
+        <div class="ml-4 prose prose-sm max-w-none text-gray-700 flex-1">
           <div class="text-blue-800 font-semibold mb-2">📢 Important Announcement</div>
-          <div class="markdown-content">
-            <!-- Markdown content will be loaded here -->
+          <div id="markdown-content-wrapper" class="relative">
+            <div class="markdown-content transition-all duration-300 overflow-hidden" id="markdown-content-collapsible"
+              style="max-height: none;">
+              <!-- Markdown content will be loaded here -->
+            </div>
+            <div class="flex justify-center">
+              <button id="markdown-toggle-btn"
+                class="hidden mt-3 text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors duration-200">
+                <span id="markdown-toggle-text">Show more</span>
+                <i id="markdown-toggle-icon"
+                  class="fa-solid fa-chevron-down ml-1 text-xs transition-transform duration-300"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -730,6 +741,71 @@
           content.classList.toggle('hidden');
           chevron.classList.toggle('rotate-180');
         });
+      }
+
+      // Handle markdown content show more/less
+      const markdownContent = document.getElementById('markdown-content-collapsible');
+      const markdownToggleBtn = document.getElementById('markdown-toggle-btn');
+      const markdownToggleText = document.getElementById('markdown-toggle-text');
+      const markdownToggleIcon = document.getElementById('markdown-toggle-icon');
+
+      let isExpanded = false;
+      const maxHeight = 500; // Max height in pixels
+
+      // Function to check if content needs show more button
+      function checkContentHeight() {
+        if (!markdownContent || !markdownToggleBtn) return;
+
+        // Temporarily set max-height to none to get actual height
+        markdownContent.style.maxHeight = 'none';
+        const actualHeight = markdownContent.scrollHeight;
+
+        if (actualHeight > maxHeight) {
+          // Content is taller than max height, show the toggle button
+          markdownToggleBtn.classList.remove('hidden');
+          markdownContent.style.maxHeight = maxHeight + 'px';
+          isExpanded = false;
+        } else {
+          // Content fits, hide the toggle button
+          markdownToggleBtn.classList.add('hidden');
+          markdownContent.style.maxHeight = 'none';
+        }
+      }
+
+      // Toggle expand/collapse
+      if (markdownToggleBtn) {
+        markdownToggleBtn.addEventListener('click', function () {
+          if (!markdownContent) return;
+
+          isExpanded = !isExpanded;
+
+          if (isExpanded) {
+            markdownContent.style.maxHeight = markdownContent.scrollHeight + 'px';
+            markdownToggleText.textContent = 'Show less';
+            markdownToggleIcon.classList.add('rotate-180');
+          } else {
+            markdownContent.style.maxHeight = maxHeight + 'px';
+            markdownToggleText.textContent = 'Show more';
+            markdownToggleIcon.classList.remove('rotate-180');
+          }
+        });
+      }
+
+      // Observe changes to markdown content
+      if (markdownContent) {
+        const observer = new MutationObserver(function () {
+          // Delay check to allow content to render
+          setTimeout(checkContentHeight, 100);
+        });
+
+        observer.observe(markdownContent, {
+          childList: true,
+          subtree: true,
+          characterData: true
+        });
+
+        // Initial check
+        setTimeout(checkContentHeight, 500);
       }
 
       // Handle nickname input for preview
