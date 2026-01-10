@@ -1,6 +1,35 @@
 import { UI_COLORS } from "../utils/config";
 
 export default defineBackground(() => {
+  // Set uninstall URL to open Google Form when extension is uninstalled
+  try {
+    if (browser.runtime.setUninstallURL) {
+      const manifest = browser.runtime.getManifest();
+      const version = manifest?.version || "unknown";
+
+      // Google Forms pre-fill format: entry.ENTRY_ID=value
+      // To get entry ID:
+      // 1. Open your Google Form in preview mode
+      // 2. Open Developer Tools (F12)
+      // 3. Inspect the version field and find name="entry.XXXXXXXX"
+      // 4. Replace ENTRY_ID below with that number
+
+      const FORM_ID =
+        "1FAIpQLSc_IYKM_q4_WW0S-t-sQgsHdeRwLYbDMxD-BrR68tkdjx8aqg"; // Replace with your form ID
+      const VERSION_ENTRY_ID = "1223799012"; // Replace with actual entry ID for version field
+
+      // Full Google Form URL with pre-filled version
+      const UNINSTALL_SURVEY_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?entry.${VERSION_ENTRY_ID}=v${encodeURIComponent(
+        version
+      )}`;
+
+      browser.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
+      console.debug("Uninstall survey URL set with version:", version);
+    }
+  } catch (e) {
+    console.debug("Failed to set uninstall URL:", e);
+  }
+
   // Lightweight typed accessors for extension action APIs (avoid `as any` cast)
   type BadgeAction = {
     setBadgeText: (details: { text: string }) => void;
@@ -76,7 +105,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text,
+        text
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
@@ -105,7 +134,7 @@ export default defineBackground(() => {
           if (previousVersion && previousVersion !== currentVersion) {
             // build the path as a string and assert `any` to avoid narrow typing on getURL
             const path = `/changelog.html?version=${encodeURIComponent(
-              currentVersion,
+              currentVersion
             )}&from=${encodeURIComponent(previousVersion)}`;
             const url = browser.runtime.getURL(path as any);
             await browser.tabs.create({ url, active: true });
@@ -143,7 +172,7 @@ export default defineBackground(() => {
       } catch (e) {
         console.debug("Failed to set badge on install/start:", e);
       }
-    },
+    }
   );
 
   // On startup, update the badge as well
@@ -292,7 +321,7 @@ export default defineBackground(() => {
         const from = msg.from || "";
         const version = msg.version || "";
         const path = `/changelog.html?version=${encodeURIComponent(
-          version,
+          version
         )}&from=${encodeURIComponent(from)}`;
         const url = browser.runtime.getURL(path as any);
         try {
