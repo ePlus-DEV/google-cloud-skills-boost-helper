@@ -7,25 +7,23 @@ import firebaseService from "../services/firebaseService";
 /**
  * Config cho mùa mới KHÔNG có Facilitator
  *
- * @param arcadeDeadline - Deadline cho mùa Arcade mới (ISO 8601 format)
- * @param timezone - Timezone string (default: +07:00 for Vietnam)
+ * @param arcadeDeadline - Deadline cho mùa Arcade mới (ISO 8601 format with timezone)
  */
 export async function setupNewSeasonConfig(
-  arcadeDeadline: string,
-  timezone = "+07:00",
+  arcadeDeadline: string
 ): Promise<void> {
   await firebaseService.initialize();
 
   firebaseService.setLocalConfigValue(
     "countdown_deadline_facilitator",
-    arcadeDeadline,
+    arcadeDeadline
   );
-  firebaseService.setLocalConfigValue("countdown_timezone", timezone);
+
   firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "true");
   firebaseService.setLocalConfigValue("countdown_enabled_arcade", "false");
   firebaseService.setLocalConfigValue(
     "countdown_deadline_arcade",
-    arcadeDeadline,
+    arcadeDeadline
   );
 }
 
@@ -43,13 +41,13 @@ export async function disableFacilitator(): Promise<void> {
  * @param facilitatorDeadline - Deadline cho chương trình Facilitator
  */
 export async function enableFacilitator(
-  facilitatorDeadline: string,
+  facilitatorDeadline: string
 ): Promise<void> {
   await firebaseService.initialize();
   firebaseService.setLocalConfigValue("countdown_enabled_arcade", "true");
   firebaseService.setLocalConfigValue(
     "countdown_deadline_arcade",
-    facilitatorDeadline,
+    facilitatorDeadline
   );
 }
 

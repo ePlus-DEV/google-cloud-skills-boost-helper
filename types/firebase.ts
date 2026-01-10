@@ -17,7 +17,6 @@ export interface FirebaseConfig {
  */
 export interface RemoteConfigDefaults {
   countdown_deadline_facilitator: string;
-  countdown_timezone: string;
   countdown_enabled_facilitator: string;
   countdown_deadline_arcade: string;
   countdown_enabled_arcade: string;

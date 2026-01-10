@@ -76,7 +76,6 @@ class FirebaseService {
 
     return {
       countdown_deadline_facilitator: defaultFacilitatorDeadline,
-      countdown_timezone: import.meta.env.WXT_COUNTDOWN_TIMEZONE || "+05:30",
       countdown_enabled_facilitator:
         import.meta.env.WXT_COUNTDOWN_ENABLED_FACILITATOR || "true",
       countdown_deadline_arcade: defaultArcadeDeadline,
@@ -299,62 +298,6 @@ class FirebaseService {
     } catch (error) {
       console.error("❌ Failed to get countdown deadline:", error);
       return this.defaultValues.countdown_deadline_facilitator;
-    }
-  }
-
-  /**
-   * Get countdown timezone from Remote Config
-   */
-  async getCountdownTimezone(): Promise<string> {
-    try {
-      // In local environment, use local store
-      if (this.isLocalEnvironment) {
-        const timezone = this.localConfigStore.countdown_timezone as string;
-        console.debug(
-          "FirebaseService: Using LOCAL countdown_timezone:",
-          timezone
-        );
-        return timezone || this.defaultValues.countdown_timezone;
-      }
-
-      // If Firebase is not initialized, use default
-      if (!this.initialized || !this.remoteConfig) {
-        console.debug(
-          "FirebaseService: Not initialized, using default countdown_timezone"
-        );
-        return this.defaultValues.countdown_timezone;
-      }
-
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
-
-      const val = getValue(this.remoteConfig, "countdown_timezone");
-      const source =
-        typeof (val as any).getSource === "function"
-          ? (val as any).getSource()
-          : undefined;
-
-      const timezone = val.asString();
-
-      // Only use remote value if it exists and is from remote source
-      if (timezone && source === "remote") {
-        console.debug(
-          "FirebaseService: Using remote countdown_timezone:",
-          timezone
-        );
-        return timezone;
-      }
-
-      // Otherwise use default
-      console.debug(
-        "FirebaseService: Using default countdown_timezone (source:",
-        source,
-        ")"
-      );
-      return this.defaultValues.countdown_timezone;
-    } catch (error) {
-      console.error("❌ Failed to get countdown timezone:", error);
-      return this.defaultValues.countdown_timezone;
     }
   }
 

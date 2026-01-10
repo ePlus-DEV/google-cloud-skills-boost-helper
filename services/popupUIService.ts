@@ -67,7 +67,7 @@ const PopupUIService = {
    */
   updateElementText(
     selector: string,
-    value: string | number | null | undefined,
+    value: string | number | null | undefined
   ): void {
     const element = this.querySelector<HTMLElement>(selector);
     if (element) {
@@ -141,7 +141,7 @@ const PopupUIService = {
 
     // Find the first milestone that requires more points than the user has
     const nextIndex = this.ARCADE_MILESTONES.findIndex(
-      (milestone) => milestone.points > roundedPoints,
+      (milestone) => milestone.points > roundedPoints
     );
 
     const lastIndex = this.ARCADE_MILESTONES.length - 1;
@@ -176,11 +176,11 @@ const PopupUIService = {
     currentLeague: string,
     isMaxLevel: boolean,
     nextMilestonePoints: number,
-    totalPoints: number,
+    totalPoints: number
   ): void {
     this.updateElementText(
       "#current-level",
-      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
+      `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`
     );
 
     this.updateElementText(
@@ -189,7 +189,7 @@ const PopupUIService = {
         ? browser.i18n.getMessage("textMaxLevel")
         : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
             nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`,
+          } ${browser.i18n.getMessage("textPoints")}`
     );
   },
 
@@ -203,7 +203,7 @@ const PopupUIService = {
         lastUpdated
           ? new Date(lastUpdated).toLocaleString(navigator.language)
           : "N/A"
-      }`,
+      }`
     );
   },
 
@@ -277,7 +277,7 @@ const PopupUIService = {
    */
   async updateMainUI(
     data: ArcadeData,
-    includeFacilitator = false,
+    includeFacilitator = false
   ): Promise<void> {
     const { userDetails, arcadePoints, lastUpdated, faciCounts } = data;
     const userInfo = this.normalizeUserInfo(userDetails);
@@ -296,7 +296,7 @@ const PopupUIService = {
       const firebaseService = (await import("./firebaseService")).default;
       facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
         "countdown_enabled_arcade",
-        false,
+        false
       );
     } catch (error) {
       console.debug("Could not check facilitator global status:", error);
@@ -313,7 +313,7 @@ const PopupUIService = {
         : 0;
 
     console.debug(
-      `📊 Facilitator Bonus Calculation: account=${includeFacilitator}, global=${facilitatorGloballyEnabled}, bonus=${facilitatorBonus}`,
+      `📊 Facilitator Bonus Calculation: account=${includeFacilitator}, global=${facilitatorGloballyEnabled}, bonus=${facilitatorBonus}`
     );
 
     // Add bonus points to total
@@ -331,7 +331,7 @@ const PopupUIService = {
         selector: "#total-points",
         // Show API points if present, otherwise finalTotalPoints. Format as thousands with 3 decimals.
         value: `${this.formatPointsThousands(
-          points ?? finalTotalPoints ?? 0,
+          points ?? finalTotalPoints ?? 0
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
       { selector: "#game-badge-count", value: gamePoints },
@@ -348,11 +348,11 @@ const PopupUIService = {
         this.updateElementText("#base-points", `${totalPoints} points`);
         this.updateElementText(
           "#bonus-points",
-          `+${facilitatorBonus} ${browser.i18n.getMessage("textPoints")}`,
+          `+${facilitatorBonus} ${browser.i18n.getMessage("textPoints")}`
         );
         this.updateElementText(
           "#total-combined-points",
-          `${finalTotalPoints} ${browser.i18n.getMessage("textPoints")}`,
+          `${finalTotalPoints} ${browser.i18n.getMessage("textPoints")}`
         );
       } else {
         breakdownCard.classList.add("hidden");
@@ -365,12 +365,12 @@ const PopupUIService = {
     // Update small avatar overlay badge with abbreviated total points
     try {
       const avatarBadge = this.querySelector<HTMLElement>(
-        "#avatar-score-badge",
+        "#avatar-score-badge"
       );
       if (avatarBadge) {
         avatarBadge.textContent = this.formatAvatarBadge(finalTotalPoints);
         avatarBadge.title = `${finalTotalPoints} ${browser.i18n.getMessage(
-          "textPoints",
+          "textPoints"
         )}`;
       }
     } catch (e) {
@@ -384,11 +384,11 @@ const PopupUIService = {
       leagueInfo.currentLeague,
       leagueInfo.isMaxLevel,
       leagueInfo.nextMilestone.points,
-      finalTotalPoints,
+      finalTotalPoints
     );
     this.updateProgressBar(
       leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points,
+      leagueInfo.nextMilestone.points
     );
     this.updateLastUpdated(lastUpdated);
 
@@ -444,13 +444,13 @@ const PopupUIService = {
       {
         selector: "#total-points",
         value: `${this.formatPointsThousands(
-          points ?? totalPoints ?? 0,
+          points ?? totalPoints ?? 0
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
       {
         selector: "#arcade-total-points",
         value: `${this.formatPointsThousands(
-          totalPoints,
+          totalPoints
         )} ${browser.i18n.getMessage("textPoints")}`,
       },
     ];
@@ -469,7 +469,7 @@ const PopupUIService = {
     selector: string,
     message: string,
     classes: string[],
-    timeout = 6000,
+    timeout = 6000
   ): void {
     const element = this.querySelector(selector);
     if (element) {
@@ -485,7 +485,7 @@ const PopupUIService = {
    */
   toggleButtonState(
     buttons: NodeListOf<HTMLButtonElement>,
-    disabled: boolean,
+    disabled: boolean
   ): void {
     for (const button of buttons) {
       button.disabled = disabled;
@@ -498,7 +498,7 @@ const PopupUIService = {
   toggleClass(
     elements: NodeListOf<HTMLElement>,
     className: string,
-    add: boolean,
+    add: boolean
   ): void {
     for (const element of elements) {
       element.classList.toggle(className, add);
@@ -514,6 +514,7 @@ const PopupUIService = {
    */
   async updateMilestoneSection(): Promise<void> {
     const milestoneSection = this.querySelector("#milestones-section");
+    const milestoneBadge = this.querySelector("#milestone-program-badge");
     if (!milestoneSection) return;
 
     try {
@@ -525,26 +526,52 @@ const PopupUIService = {
 
       // Check Firebase config - is Facilitator program globally enabled?
       const facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
+        "countdown_enabled_facilitator",
+        false
+      );
+
+      // Check if Arcade is enabled
+      const arcadeEnabled = await firebaseService.getBooleanParam(
         "countdown_enabled_arcade",
-        false, // Default to false if not set
+        false
       );
 
       // Show milestone section ONLY if:
-      // 1. Account has facilitatorProgram enabled AND
-      // 2. Firebase config allows it (for season control)
+      // 1. Account has facilitatorProgram enabled AND Facilitator is globally enabled
+      // OR 2. Arcade is enabled
       const shouldShowFacilitator =
         currentAccount?.facilitatorProgram === true &&
         facilitatorGloballyEnabled === true;
 
       if (shouldShowFacilitator) {
-        // Show milestone section for facilitator accounts when program is active
+        // Show milestone section for facilitator
         milestoneSection.classList.remove("hidden");
+        if (milestoneBadge) {
+          milestoneBadge.innerHTML = `
+            <i class="fa-solid fa-chalkboard-teacher mr-1"></i>
+            Facilitator
+          `;
+          milestoneBadge.className =
+            "ml-2 text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full";
+        }
         console.debug("✅ Facilitator: Showing (account=true, global=true)");
+      } else if (arcadeEnabled) {
+        // Show milestone section for arcade
+        milestoneSection.classList.remove("hidden");
+        if (milestoneBadge) {
+          milestoneBadge.innerHTML = `
+            <i class="fa-solid fa-gamepad mr-1"></i>
+            Arcade
+          `;
+          milestoneBadge.className =
+            "ml-2 text-xs bg-gradient-to-r from-sky-500 to-indigo-500 text-white px-2 py-1 rounded-full";
+        }
+        console.debug("✅ Arcade: Showing (arcade enabled)");
       } else {
         // Hide milestone section
         milestoneSection.classList.add("hidden");
         console.debug(
-          `❌ Facilitator: Hidden (account=${currentAccount?.facilitatorProgram}, global=${facilitatorGloballyEnabled})`,
+          `❌ Milestones: Hidden (facilitator=${facilitatorGloballyEnabled}, arcade=${arcadeEnabled})`
         );
       }
     } catch (error) {
@@ -572,7 +599,7 @@ const PopupUIService = {
 
     // Update each facilitator milestone
     for (const [milestone, requirements] of Object.entries(
-      this.FACILITATOR_MILESTONE_REQUIREMENTS,
+      this.FACILITATOR_MILESTONE_REQUIREMENTS
     )) {
       this.updateSingleMilestone(
         milestone,
@@ -582,7 +609,7 @@ const PopupUIService = {
           skills: faciSkill,
           labfree: faciCompletion,
         },
-        requirements,
+        requirements
       );
     }
 
@@ -713,7 +740,7 @@ const PopupUIService = {
     const labfreeProgress =
       Math.min(current.labfree / requirements.labfree, 1) * 100;
     const weighted = Math.round(
-      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4,
+      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4
     );
 
     // Method 3: Proportional Total Progress
@@ -728,7 +755,7 @@ const PopupUIService = {
 
     // Method 4: Minimum Requirement Progress
     const minimum = Math.round(
-      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress),
+      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress)
     );
 
     // Completion status (same for all methods)
@@ -754,7 +781,7 @@ const PopupUIService = {
    */
   toggleMilestoneDetails(milestone: string): void {
     const detailsElement = this.querySelector(
-      `.milestone-card[data-milestone="${milestone}"] .milestone-details`,
+      `.milestone-card[data-milestone="${milestone}"] .milestone-details`
     );
     if (detailsElement) {
       detailsElement.classList.toggle("hidden");
@@ -767,41 +794,41 @@ const PopupUIService = {
   updateSingleMilestone(
     milestone: string,
     current: any,
-    requirements: any,
+    requirements: any
   ): void {
     // Update individual counts
     this.updateElementText(
       `.milestone-${milestone}-games`,
       `${Math.min(current.games, requirements.games)}/${requirements.games}${
         current.games >= requirements.games ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-trivia`,
       `${Math.min(current.trivia, requirements.trivia)}/${requirements.trivia}${
         current.trivia >= requirements.trivia ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-skills`,
       `${Math.min(current.skills, requirements.skills)}/${requirements.skills}${
         current.skills >= requirements.skills ? " ✓" : ""
-      }`,
+      }`
     );
 
     this.updateElementText(
       `.milestone-${milestone}-labfree`,
       `${Math.min(current.labfree, requirements.labfree)}/${
         requirements.labfree
-      }${current.labfree >= requirements.labfree ? " ✓" : ""}`,
+      }${current.labfree >= requirements.labfree ? " ✓" : ""}`
     );
 
     // Calculate overall progress using different methods
     const progressMethods = this.calculateProgressMethods(
       current,
-      requirements,
+      requirements
     );
 
     // Use Binary Completion method as default
@@ -819,10 +846,10 @@ const PopupUIService = {
   updateProgressElement(
     milestone: string,
     progressPercent: number,
-    progressMethods: any,
+    progressMethods: any
   ): void {
     const progressElement = this.querySelector(
-      `.milestone-${milestone}-progress`,
+      `.milestone-${milestone}-progress`
     );
     if (!progressElement) return;
 
@@ -871,7 +898,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
   updateStatusIcon(
     milestone: string,
     isCompleted: boolean,
-    progressPercent: number,
+    progressPercent: number
   ): void {
     const statusIcon = this.querySelector(`.milestone-${milestone}-status`);
     if (!statusIcon) return;
@@ -897,7 +924,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
     statusIcon.classList.add(
       "fa-solid",
       `milestone-${milestone}-status`,
-      "text-sm",
+      "text-sm"
     );
 
     if (isCompleted) {
@@ -958,7 +985,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
     const getProgramDefaultDeadline = (
       program: string | undefined,
-      key: string,
+      key: string
     ): string => {
       const normalized = program?.toLowerCase();
       if (normalized === "arcade" || key.toLowerCase().includes("arcade")) {
@@ -969,7 +996,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
     const formatCountdownDeadlineLabel = (
       date: Date,
-      source?: string,
+      source?: string
     ): string => {
       try {
         const dateStr = date.toLocaleString(undefined, {
@@ -998,7 +1025,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
           : "facilitatorDeadlinePassed";
       const getMessage = (key: string): string =>
         browser.i18n.getMessage(
-          key as Parameters<typeof browser.i18n.getMessage>[0],
+          key as Parameters<typeof browser.i18n.getMessage>[0]
         );
 
       return `
@@ -1019,7 +1046,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       // initialization failure is non-fatal; we'll fall back per-instance
       console.error(
         "Error initializing Firebase for facilitator countdown:",
-        e,
+        e
       );
     }
 
@@ -1031,7 +1058,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
     // Find all countdown instances
     const instances = document.querySelectorAll<HTMLElement>(
-      ".countdown-instance",
+      ".countdown-instance"
     );
 
     // Helper to clear interval by id
@@ -1072,7 +1099,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       try {
         const deadlineStr = await firebaseService.getStringParam(
           rcKey,
-          fallbackDeadline,
+          fallbackDeadline
         );
         enabled = await firebaseService.getBooleanParam(rcToggleKey, true);
 
@@ -1099,12 +1126,12 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       }
 
       const deadlineLabelEl = el.querySelector<HTMLElement>(
-        ".countdown-deadline-label",
+        ".countdown-deadline-label"
       );
       if (deadlineLabelEl && !isNaN(deadlineDate.getTime())) {
         deadlineLabelEl.innerHTML = formatCountdownDeadlineLabel(
           deadlineDate,
-          configSource,
+          configSource
         );
       }
 
@@ -1132,7 +1159,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
         try {
           if ((program ?? "").toLowerCase() === "facilitator") {
             let arcadeEl = document.querySelector<HTMLElement>(
-              '.countdown-instance[data-program="arcade"]',
+              '.countdown-instance[data-program="arcade"]'
             );
 
             if (!arcadeEl) {
@@ -1149,11 +1176,11 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
               // ensure arcade uses an explicit remote key if you want
               wrapper.setAttribute(
                 "data-countdown-key",
-                "countdown_deadline_arcade",
+                "countdown_deadline_arcade"
               );
               wrapper.setAttribute(
                 "data-countdown-toggle-key",
-                "countdown_enabled_arcade",
+                "countdown_enabled_arcade"
               );
               // Use default child elements expected by the updater
               wrapper.innerHTML = `
@@ -1235,7 +1262,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
           try {
             if ((program ?? "").toLowerCase() === "facilitator") {
               let arcadeEl = document.querySelector<HTMLElement>(
-                '.countdown-instance[data-program="arcade"]',
+                '.countdown-instance[data-program="arcade"]'
               );
 
               if (!arcadeEl) {
@@ -1252,11 +1279,11 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                 // ensure arcade uses an explicit remote key if you want
                 wrapper.setAttribute(
                   "data-countdown-key",
-                  "countdown_deadline_arcade",
+                  "countdown_deadline_arcade"
                 );
                 wrapper.setAttribute(
                   "data-countdown-toggle-key",
-                  "countdown_enabled_arcade",
+                  "countdown_enabled_arcade"
                 );
                 // Use default child elements expected by the updater
                 wrapper.innerHTML = `
@@ -1316,7 +1343,7 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
 
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
