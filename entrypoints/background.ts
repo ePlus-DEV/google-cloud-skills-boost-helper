@@ -20,7 +20,7 @@ export default defineBackground(() => {
 
       // Full Google Form URL with pre-filled version
       const UNINSTALL_SURVEY_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?entry.${VERSION_ENTRY_ID}=v${encodeURIComponent(
-        version
+        version,
       )}`;
 
       browser.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
@@ -105,7 +105,7 @@ export default defineBackground(() => {
 
       console.debug(
         "No action API available to set badge. Desired text:",
-        text
+        text,
       );
     } catch (e) {
       console.debug("Unexpected error setting badge:", e);
@@ -134,7 +134,7 @@ export default defineBackground(() => {
           if (previousVersion && previousVersion !== currentVersion) {
             // build the path as a string and assert `any` to avoid narrow typing on getURL
             const path = `/changelog.html?version=${encodeURIComponent(
-              currentVersion
+              currentVersion,
             )}&from=${encodeURIComponent(previousVersion)}`;
             const url = browser.runtime.getURL(path as any);
             await browser.tabs.create({ url, active: true });
@@ -155,9 +155,8 @@ export default defineBackground(() => {
         // dynamic import to avoid bundling issues
         const StorageService = (await import("../services/storageService"))
           .default;
-        const { calculateFacilitatorBonus } = await import(
-          "../services/facilitatorService"
-        );
+        const { calculateFacilitatorBonus } =
+          await import("../services/facilitatorService");
         const arcadeData = await StorageService.getArcadeData();
         if (arcadeData) {
           const base =
@@ -172,7 +171,7 @@ export default defineBackground(() => {
       } catch (e) {
         console.debug("Failed to set badge on install/start:", e);
       }
-    }
+    },
   );
 
   // On startup, update the badge as well
@@ -183,9 +182,8 @@ export default defineBackground(() => {
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
-      const { calculateFacilitatorBonus } = await import(
-        "../services/facilitatorService"
-      );
+      const { calculateFacilitatorBonus } =
+        await import("../services/facilitatorService");
       const arcadeData = await StorageService.getArcadeData();
       if (arcadeData) {
         const base =
@@ -256,9 +254,8 @@ export default defineBackground(() => {
     try {
       const StorageService = (await import("../services/storageService"))
         .default;
-      const { calculateFacilitatorBonus } = await import(
-        "../services/facilitatorService"
-      );
+      const { calculateFacilitatorBonus } =
+        await import("../services/facilitatorService");
       const enabled = await StorageService.isBadgeDisplayEnabled();
       if (!enabled) {
         // clear
@@ -321,7 +318,7 @@ export default defineBackground(() => {
         const from = msg.from || "";
         const version = msg.version || "";
         const path = `/changelog.html?version=${encodeURIComponent(
-          version
+          version,
         )}&from=${encodeURIComponent(from)}`;
         const url = browser.runtime.getURL(path as any);
         try {
