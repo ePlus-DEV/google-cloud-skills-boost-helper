@@ -2,6 +2,28 @@ import MarkdownService from "../../services/markdownService";
 import { MARKDOWN_CONFIG } from "../../utils/config";
 import { isFirefox } from "../../services/browserService";
 
+// Set document title
+document.title =
+  chrome.i18n.getMessage("changelogPageTitle") ||
+  "Changelog - Google Cloud Skills Boost Helper";
+
+// Function to localize elements with data-i18n attributes
+function localizeElements() {
+  const elements = document.querySelectorAll("[data-i18n]");
+  for (const element of elements) {
+    const key = element.getAttribute("data-i18n");
+    if (key && chrome.i18n) {
+      const message = chrome.i18n.getMessage(key);
+      if (message) {
+        element.textContent = message;
+      }
+    }
+  }
+}
+
+// Apply translations immediately
+localizeElements();
+
 // Use the single configured CHANGELOG_URL (remote gist). No local fallback.
 const CHANGELOG_URL = MARKDOWN_CONFIG.CHANGELOG_URL;
 
@@ -175,7 +197,7 @@ async function loadChangelog() {
   const success = await MarkdownService.renderUrlToContainer(
     CHANGELOG_URL,
     containerId,
-    ".markdown-content",
+    ".markdown-content"
   );
 
   if (!success) {

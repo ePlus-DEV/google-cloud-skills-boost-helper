@@ -768,8 +768,10 @@
       // i18n helper for inline script
       function i18nMsg(key, fallback) {
         try {
-          if (window.browser && browser.i18n && typeof browser.i18n.getMessage === 'function') {
-            const m = browser.i18n.getMessage(key);
+          // Support both chrome and browser APIs
+          const i18nAPI = (typeof chrome !== 'undefined' && chrome.i18n) || (typeof browser !== 'undefined' && browser.i18n);
+          if (i18nAPI && typeof i18nAPI.getMessage === 'function') {
+            const m = i18nAPI.getMessage(key);
             return m || fallback;
           }
         } catch (_) { }
