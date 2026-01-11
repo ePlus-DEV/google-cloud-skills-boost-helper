@@ -57,8 +57,8 @@
         <div class="ml-4 prose prose-sm max-w-none text-gray-700 flex-1">
           <div class="text-blue-800 font-semibold mb-2">📢 Important Announcement</div>
           <div id="markdown-content-wrapper" class="relative">
-            <div class="markdown-content transition-all duration-300 overflow-hidden" id="markdown-content-collapsible"
-              style="max-height: none;">
+            <div class="markdown-content transition-all duration-300" id="markdown-content-collapsible"
+              style="overflow: hidden;">
               <!-- Markdown content will be loaded here -->
             </div>
             <div class="flex justify-center">
@@ -754,20 +754,27 @@
       function checkContentHeight() {
         if (!markdownContent || !markdownToggleBtn) return;
 
-        // Temporarily set max-height to none to get actual height
-        markdownContent.style.maxHeight = 'none';
-        const actualHeight = markdownContent.scrollHeight;
+        // Force a reflow to get accurate height
+        markdownContent.style.maxHeight = '';
+        markdownContent.style.overflow = 'visible';
 
-        if (actualHeight > maxHeight) {
-          // Content is taller than max height, show the toggle button
-          markdownToggleBtn.classList.remove('hidden');
-          markdownContent.style.maxHeight = maxHeight + 'px';
-          isExpanded = false;
-        } else {
-          // Content fits, hide the toggle button
-          markdownToggleBtn.classList.add('hidden');
-          markdownContent.style.maxHeight = 'none';
-        }
+        // Use a small delay to ensure content is rendered
+        setTimeout(() => {
+          const actualHeight = markdownContent.scrollHeight;
+
+          if (actualHeight > maxHeight) {
+            // Content is taller than max height, show the toggle button
+            markdownToggleBtn.classList.remove('hidden');
+            markdownContent.style.overflow = 'hidden';
+            markdownContent.style.maxHeight = maxHeight + 'px';
+            isExpanded = false;
+          } else {
+            // Content fits, hide the toggle button
+            markdownToggleBtn.classList.add('hidden');
+            markdownContent.style.overflow = 'visible';
+            markdownContent.style.maxHeight = '';
+          }
+        }, 50);
       }
 
       // Toggle expand/collapse
@@ -778,11 +785,15 @@
           isExpanded = !isExpanded;
 
           if (isExpanded) {
-            markdownContent.style.maxHeight = markdownContent.scrollHeight + 'px';
+            // Get the actual scroll height before expanding
+            const scrollHeight = markdownContent.scrollHeight;
+            markdownContent.style.maxHeight = scrollHeight + 'px';
+            markdownContent.style.overflow = 'visible';
             markdownToggleText.textContent = 'Show less';
             markdownToggleIcon.classList.add('rotate-180');
           } else {
             markdownContent.style.maxHeight = maxHeight + 'px';
+            markdownContent.style.overflow = 'hidden';
             markdownToggleText.textContent = 'Show more';
             markdownToggleIcon.classList.remove('rotate-180');
           }
