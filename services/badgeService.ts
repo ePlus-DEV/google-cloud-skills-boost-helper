@@ -18,6 +18,18 @@ const BadgeService = {
 
     if (!badges || badges.length === 0) {
       BadgeService.renderNoBadgesMessage(activityElement);
+      // Hide load more button when no data
+      const loadMoreButton =
+        PopupUIService.querySelector<HTMLButtonElement>("#load-more");
+      if (loadMoreButton) {
+        loadMoreButton.classList.add("hidden");
+      }
+      // Hide pagination info
+      const paginationElement =
+        PopupUIService.querySelector<HTMLDivElement>("#pagination-info");
+      if (paginationElement) {
+        paginationElement.classList.add("hidden");
+      }
       return;
     }
 
