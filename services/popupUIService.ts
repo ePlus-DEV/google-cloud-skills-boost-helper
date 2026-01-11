@@ -999,14 +999,28 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       source?: string
     ): string => {
       try {
-        const dateStr = date.toLocaleString(undefined, {
-          month: "short",
-          day: "2-digit",
+        // Format: "10:20 01/10/2027 (GMT+7)" - respects user's locale
+        const locale = navigator.language || "en-US";
+
+        const timeStr = date.toLocaleTimeString(locale, {
           hour: "2-digit",
           minute: "2-digit",
-          timeZoneName: "short",
+          hour12: false,
         });
-        return dateStr;
+
+        const dateStr = date.toLocaleDateString(locale, {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+
+        // Get timezone offset in GMT format
+        const offset = -date.getTimezoneOffset();
+        const offsetHours = Math.floor(Math.abs(offset) / 60);
+        const offsetSign = offset >= 0 ? "+" : "-";
+        const timezone = `GMT${offsetSign}${offsetHours}`;
+
+        return `${timeStr} ${dateStr} (${timezone})`;
       } catch (e) {
         console.debug("formatCountdownDeadlineLabel fallback triggered", e);
         return date.toISOString();

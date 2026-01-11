@@ -1,6 +1,9 @@
 import { PopupService, AccountService } from "../../services";
 import PopupUIService from "../../services/popupUIService";
 
+// Set document title
+document.title = chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
+
 // Function to localize elements with data-i18n attributes
 function localizeElements() {
   const elements = document.querySelectorAll("[data-i18n]");
@@ -14,6 +17,9 @@ function localizeElements() {
     }
   }
 }
+
+// Set document title
+document.title = chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
 
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
