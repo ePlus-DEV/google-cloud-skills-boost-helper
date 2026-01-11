@@ -253,5 +253,100 @@
   "errorLoadingData": { "message": "Error loading data" },
   "labelBack": { "message": "Back" },
   "labelSettings": { "message": "Settings" },
-  "labelReturnToSettings": { "message": "Return to settings" }
+  "labelReturnToSettings": { "message": "Return to settings" },
+  "changelogPageTitle": { "message": "Changelog" },
+  "changelogWhatsNew": { "message": "What's New" },
+  "changelogLatestUpdates": { "message": "Latest updates and improvements" },
+  "changelogLoading": { "message": "Loading changelog..." },
+  "changelogFooterNotice": {
+    "message": "This extension is not affiliated with Google Cloud Skills Boost. All rights reserved."
+  },
+  "announcementTitle": { "message": "Important Announcement" },
+  "markdownShowMore": { "message": "Show more" },
+  "accountsTitle": { "message": "Your Accounts" },
+  "noAccountsYet": { "message": "No accounts yet" },
+  "addAccountFirst": { "message": "Add your first account!" },
+  "dataManagementTitle": { "message": "Data Management" },
+  "dataManagementSubtitle": { "message": "Backup and restore" },
+  "exportData": { "message": "Export Data" },
+  "importData": { "message": "Import Data" },
+  "modalAddAccountTitle": { "message": "Add New Account" },
+  "howToGetProfileUrl": { "message": "How to get Profile URL" },
+  "howToGetProfileSubtitle": { "message": "Follow the steps below" },
+  "openProfilePage": { "message": "Open Profile Page" },
+  "errorPrefix": { "message": "Error:" },
+  "successPrefix": { "message": "Success:" },
+  "accountErrorFallback": {
+    "message": "Something went wrong. Please try again."
+  },
+  "accountSuccessFallback": { "message": "Your action was successful!" },
+  "viewBadges": { "message": "View Badges" },
+  "openProfile": { "message": "Open Profile" },
+  "arcadePointsTitle": { "message": "Arcade Points" },
+  "milestonesTitle": { "message": "Milestones" },
+  "accountsCardTitle": {
+    "message": "Account Management & Arcade Points Calculator"
+  },
+  "accountsCardSubtitle": {
+    "message": "Manage multiple accounts and calculate arcade points."
+  },
+  "clickOpenProfileButton": { "message": "Click \"Open Profile Page\" button" },
+  "programDeadline": { "message": "Program Deadline" },
+  "labelDays": { "message": "Days" },
+  "labelHours": { "message": "Hours" },
+  "labelMinutes": { "message": "Minutes" },
+  "labelSeconds": { "message": "Seconds" },
+  "milestoneDeadlineNotice": {
+    "message": "Complete milestones before the deadline to earn bonus points!"
+  },
+  "arcadeMotivation": {
+    "message": "Keep the momentum going and climb the Arcade leaderboard!"
+  },
+  "totalBonusEarned": { "message": "Total Bonus Earned:" },
+  "maxPossibleNote": {
+    "message": "Maximum possible: 25 points (highest milestone only)"
+  },
+  "pointsBreakdown": { "message": "Points Breakdown" },
+  "arcadeBase": { "message": "Arcade Base:" },
+  "facilitatorBonus": { "message": "Facilitator Bonus:" },
+  "gameBadgeLabel": { "message": "Game Badge" },
+  "triviaBadgeLabel": { "message": "Trivia Badge" },
+  "skillBadgeLabel": { "message": "Skill Badge" },
+  "specialPointsLabel": { "message": "Special Points" },
+  "arcadeSeasonCountdown": { "message": "Arcade Season Countdown" },
+  "milestone1": { "message": "Milestone 1" },
+  "milestone1Bonus": { "message": "+2 Bonus Points" },
+  "milestone2": { "message": "Milestone 2" },
+  "milestone2Bonus": { "message": "+8 Bonus Points" },
+  "milestone3": { "message": "Milestone 3" },
+  "milestone3Bonus": { "message": "+15 Bonus Points" },
+  "milestoneUltimate": { "message": "Ultimate" },
+  "milestoneUltimateBonus": { "message": "+25 Bonus Points" },
+  "progressLabel": { "message": "Progress:" },
+  "gamesLabel": { "message": "Games:" },
+  "triviaLabel": { "message": "Trivia:" },
+  "skillsLabel": { "message": "Skills:" },
+  "labFreeLabel": { "message": "Lab-free:" },
+  "switchAccount": { "message": "Switch Account" },
+  "copyProfileUrl": { "message": "Copy Profile URL" },
+  "totalPoints": { "message": "Total Points" },
+  "statusActive": { "message": "Active" },
+  "quickSearch": { "message": "Quick Search" },
+  "youtubeResults": { "message": "YouTube Results" },
+  "searchFeatureTip": { "message": "Helps you find answers faster!" },
+  "badgeDisplayNote": {
+    "message": "When enabled, the extension will update the toolbar badge with your total points (includes facilitator bonus when active)."
+  },
+  "successAccountCreated": { "message": "Account created successfully!" },
+  "successAddNickname": {
+    "message": "You can add a nickname to easily identify this account."
+  },
+  "newlyCreated": { "message": "Newly created" },
+  "labelNickname": { "message": "Nickname:" },
+  "noNicknameYet": { "message": "No nickname yet" },
+  "labelUpdated": { "message": "Updated:" },
+  "justCreated": { "message": "Just created" },
+  "markdownShowLess": { "message": "Show less" },
+  "labelEnabled": { "message": "Enabled" },
+  "labelDisabled": { "message": "Disabled" }
 }

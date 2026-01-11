@@ -38,7 +38,7 @@ const PopupService = {
       }
       PopupUIService.updateMainUI(
         arcadeData,
-        Boolean(this.currentAccount?.facilitatorProgram),
+        Boolean(this.currentAccount?.facilitatorProgram)
       );
       BadgeService.renderBadges(arcadeData.badges || []);
     } else {
@@ -86,14 +86,14 @@ const PopupService = {
         : null;
       const profileImage = userDetail?.profileImage;
       const isActive = Boolean(
-        activeAccount && account.id === activeAccount.id,
+        activeAccount && account.id === activeAccount.id
       );
 
       const accountItem = this.createAccountItem(
         account,
         displayText,
         profileImage,
-        isActive,
+        isActive
       );
 
       accountItem.addEventListener("click", () => {
@@ -153,7 +153,7 @@ const PopupService = {
     account: Account,
     displayText: string,
     profileImage: string | undefined | null,
-    isActive: boolean,
+    isActive: boolean
   ): HTMLElement {
     const accountItem = document.createElement("div");
     accountItem.className =
@@ -177,7 +177,7 @@ const PopupService = {
       <div class="flex items-center">
         ${
           isActive
-            ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i>Active</div>'
+            ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></div>'
             : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
         }
       </div>
@@ -258,12 +258,12 @@ const PopupService = {
               newCopyBtn.classList.add(
                 "text-green-400",
                 "bg-green-400/20",
-                "border-green-400/50",
+                "border-green-400/50"
               );
               newCopyBtn.classList.remove(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30",
+                "border-blue-400/30"
               );
               newCopyBtn.title = "Copied!";
 
@@ -272,12 +272,12 @@ const PopupService = {
                 newCopyBtn.classList.remove(
                   "text-green-400",
                   "bg-green-400/20",
-                  "border-green-400/50",
+                  "border-green-400/50"
                 );
                 newCopyBtn.classList.add(
                   "text-blue-400",
                   "bg-blue-400/20",
-                  "border-blue-400/30",
+                  "border-blue-400/30"
                 );
                 newCopyBtn.title = "Copy Profile URL";
               }, 1500);
@@ -291,12 +291,12 @@ const PopupService = {
               newCopyBtn.classList.add(
                 "text-red-400",
                 "bg-red-400/20",
-                "border-red-400/50",
+                "border-red-400/50"
               );
               newCopyBtn.classList.remove(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30",
+                "border-blue-400/30"
               );
               newCopyBtn.title = "Failed to copy";
 
@@ -305,12 +305,12 @@ const PopupService = {
                 newCopyBtn.classList.remove(
                   "text-red-400",
                   "bg-red-400/20",
-                  "border-red-400/50",
+                  "border-red-400/50"
                 );
                 newCopyBtn.classList.add(
                   "text-blue-400",
                   "bg-blue-400/20",
-                  "border-blue-400/30",
+                  "border-blue-400/30"
                 );
                 newCopyBtn.title = "Copy Profile URL";
               }, 1500);
@@ -323,12 +323,12 @@ const PopupService = {
             newCopyBtn.classList.add(
               "text-yellow-400",
               "bg-yellow-400/20",
-              "border-yellow-400/50",
+              "border-yellow-400/50"
             );
             newCopyBtn.classList.remove(
               "text-blue-400",
               "bg-blue-400/20",
-              "border-blue-400/30",
+              "border-blue-400/30"
             );
             newCopyBtn.title = "No URL available";
 
@@ -337,12 +337,12 @@ const PopupService = {
               newCopyBtn.classList.remove(
                 "text-yellow-400",
                 "bg-yellow-400/20",
-                "border-yellow-400/50",
+                "border-yellow-400/50"
               );
               newCopyBtn.classList.add(
                 "text-blue-400",
                 "bg-blue-400/20",
-                "border-blue-400/30",
+                "border-blue-400/30"
               );
               newCopyBtn.title = "Copy Profile URL";
             }, 1500);
@@ -391,7 +391,7 @@ const PopupService = {
 
       if (!displayName && account.arcadeData?.userDetails) {
         const userDetail = AccountService.extractUserDetails(
-          account.arcadeData,
+          account.arcadeData
         );
         displayName = userDetail?.userName;
       }
@@ -439,7 +439,7 @@ const PopupService = {
         if (account.arcadeData) {
           PopupUIService.updateMainUI(
             account.arcadeData,
-            Boolean(account.facilitatorProgram),
+            Boolean(account.facilitatorProgram)
           );
           BadgeService.renderBadges(account.arcadeData.badges || []);
         } else {
@@ -453,7 +453,7 @@ const PopupService = {
         } catch (err) {
           console.debug(
             "Failed to request badge refresh after account switch:",
-            err,
+            err
           );
         }
 
@@ -469,7 +469,7 @@ const PopupService = {
   showAuthScreen(): void {
     PopupUIService.updateElementText(
       "#settings-message",
-      browser.i18n.getMessage("textPleaseSetUpTheSettings"),
+      browser.i18n.getMessage("textPleaseSetUpTheSettings")
     );
     PopupUIService.querySelector("#popup-content")?.classList.add("blur-sm");
     PopupUIService.querySelector("#auth-screen")?.classList.remove("invisible");
@@ -484,10 +484,10 @@ const PopupService = {
     }
 
     const refreshButtons = document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>;
     const refreshIcons = document.querySelectorAll(
-      ".refresh-icon",
+      ".refresh-icon"
     ) as NodeListOf<HTMLElement>;
 
     // Show loading state
@@ -496,7 +496,7 @@ const PopupService = {
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
-        this.profileUrl,
+        this.profileUrl
       );
 
       if (arcadeData) {
@@ -507,13 +507,13 @@ const PopupService = {
         if (this.currentAccount) {
           await AccountService.updateAccountArcadeData(
             this.currentAccount.id,
-            arcadeData,
+            arcadeData
           );
         }
 
         PopupUIService.updateMainUI(
           arcadeData,
-          Boolean(this.currentAccount?.facilitatorProgram),
+          Boolean(this.currentAccount?.facilitatorProgram)
         );
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
@@ -534,14 +534,14 @@ const PopupService = {
   setupEventListeners(): void {
     // Refresh buttons
     for (const button of document.querySelectorAll(
-      ".refresh-button",
+      ".refresh-button"
     ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => this.refreshData());
     }
 
     // Settings buttons
     for (const button of document.querySelectorAll(
-      ".settings-button",
+      ".settings-button"
     ) as NodeListOf<HTMLButtonElement>) {
       button.addEventListener("click", () => {
         window.open(browser.runtime.getURL("/options.html"), "_blank");
@@ -552,7 +552,7 @@ const PopupService = {
     const announcementToggle = document.getElementById("announcement-toggle");
     if (announcementToggle) {
       announcementToggle.addEventListener("click", () =>
-        this.toggleAnnouncement(),
+        this.toggleAnnouncement()
       );
     }
   },
@@ -602,7 +602,7 @@ const PopupService = {
     await MarkdownService.loadAndRender(
       MARKDOWN_CONFIG.ANNOUNCEMENT_URL,
       "popup-markdown-container",
-      ".prose",
+      ".prose"
     );
   },
 };
