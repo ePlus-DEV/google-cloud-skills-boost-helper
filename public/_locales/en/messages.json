@@ -170,6 +170,21 @@
   "tourCloseButton": {
     "message": "Close"
   },
+  "badgeToolbarNote": {
+    "message": "When enabled, the extension will update the toolbar badge with your total points (includes facilitator bonus when active)."
+  },
+  "badgeViewDescription": {
+    "message": "View all your earned badges and achievements."
+  },
+  "badgeTrackProgress": {
+    "message": "Track your learning progress!"
+  },
+  "labelAchievements": {
+    "message": "Achievements"
+  },
+  "labelProgress": {
+    "message": "Progress"
+  },
 
   "errorEnterProfileUrl": { "message": "Please enter a profile URL!" },
   "errorInvalidProfileUrl": { "message": "Invalid profile URL!" },
@@ -252,9 +267,6 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Error loading data" },
   "labelBack": { "message": "Back" },
-  "labelSettings": { "message": "Settings" },
-  "labelReturnToSettings": { "message": "Return to settings" },
-  "changelogPageTitle": { "message": "Changelog" },
   "changelogWhatsNew": { "message": "What's New" },
   "changelogLatestUpdates": { "message": "Latest updates and improvements" },
   "changelogLoading": { "message": "Loading changelog..." },
@@ -328,15 +340,10 @@
   "skillsLabel": { "message": "Skills:" },
   "labFreeLabel": { "message": "Lab-free:" },
   "switchAccount": { "message": "Switch Account" },
-  "copyProfileUrl": { "message": "Copy Profile URL" },
-  "totalPoints": { "message": "Total Points" },
   "statusActive": { "message": "Active" },
   "quickSearch": { "message": "Quick Search" },
   "youtubeResults": { "message": "YouTube Results" },
   "searchFeatureTip": { "message": "Helps you find answers faster!" },
-  "badgeDisplayNote": {
-    "message": "When enabled, the extension will update the toolbar badge with your total points (includes facilitator bonus when active)."
-  },
   "successAccountCreated": { "message": "Account created successfully!" },
   "successAddNickname": {
     "message": "You can add a nickname to easily identify this account."
@@ -347,6 +354,49 @@
   "labelUpdated": { "message": "Updated:" },
   "justCreated": { "message": "Just created" },
   "markdownShowLess": { "message": "Show less" },
-  "labelEnabled": { "message": "Enabled" },
-  "labelDisabled": { "message": "Disabled" }
+  "importantNoticeTitle": { "message": "Important Notice" },
+  "importantNoticeText": {
+    "message": "Each profile URL can only be added once. The system will check and notify if the account already exists."
+  },
+  "enterProfileUrlLabel": { "message": "Enter Profile URL and Create Account" },
+  "createAccountButton": { "message": "Create Account" },
+  "instructionsLabel": { "message": "Instructions:" },
+  "instructionsText": {
+    "message": "Enter URL and click \"Create Account\". The system will automatically load information and create a new account."
+  },
+  "step1Title": { "message": "Click \"Open Profile Page\" button" },
+  "step1Subtitle": {
+    "message": "Will open Google Cloud Skills Boost in new tab"
+  },
+  "step2Title": { "message": "Log in (if not already)" },
+  "step2Subtitle": { "message": "Use your Google account" },
+  "step3Title": { "message": "Find \"Public profile\" section" },
+  "step3Subtitle": { "message": "Scroll down in the profile page" },
+  "step4Title": { "message": "Copy URL from address bar" },
+  "step4Subtitle": { "message": "Paste into the field below" },
+  "newAccountBadge": { "message": "New account" },
+  "totalBadgesLabel": { "message": "Total Badges" },
+  "skillBadgesLabel": { "message": "Skill Badges" },
+  "arcadePointsLabel": { "message": "Arcade Points" },
+  "accountNicknameLabel": { "message": "Account nickname" },
+  "nicknamePlaceholder": {
+    "message": "e.g: Main account, Work account, Study account..."
+  },
+  "nicknameHelpText": {
+    "message": "Nicknames help you easily identify accounts when you have multiple different accounts"
+  },
+  "editAccountTitle": { "message": "Edit account" },
+  "displayNameLabel": { "message": "Display name:" },
+  "displayNameInfo": {
+    "message": "Display name is taken from Google Cloud Skills Boost and cannot be edited"
+  },
+  "nicknameLabel": { "message": "Nickname:" },
+  "enterNicknamePlaceholder": {
+    "message": "Enter nickname for easy identification..."
+  },
+  "nicknameExample": {
+    "message": "Example: \"Main account\", \"Work account\", \"Study account\"..."
+  },
+  "cancelButton": { "message": "Cancel" },
+  "saveChangesButton": { "message": "Save changes" }
 }

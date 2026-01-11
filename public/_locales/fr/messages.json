@@ -71,9 +71,6 @@
   "textPoints": {
     "message": "points"
   },
-  "labelShowOptions": {
-    "message": "Afficher les options"
-  },
   "textPleaseSetUpTheSettings": {
     "message": "Veuillez configurer les paramètres"
   },
@@ -173,6 +170,21 @@
   "tourCloseButton": {
     "message": "Fermer"
   },
+  "badgeToolbarNote": {
+    "message": "Lorsque activé, l'extension mettra à jour le badge de la barre d'outils avec votre total de points (inclut le bonus Facilitateur si actif)."
+  },
+  "badgeViewDescription": {
+    "message": "Voir tous vos badges et réalisations obtenus."
+  },
+  "badgeTrackProgress": {
+    "message": "Suivez votre progression d'apprentissage !"
+  },
+  "labelAchievements": {
+    "message": "Réalisations"
+  },
+  "labelProgress": {
+    "message": "Progression"
+  },
   "errorEnterProfileUrl": { "message": "Veuillez saisir l'URL du profil !" },
   "errorInvalidProfileUrl": { "message": "URL du profil invalide !" },
   "errorAccountExistsTitle": { "message": "Le compte existe déjà" },
@@ -254,7 +266,7 @@
     "message": "La date limite du programme Facilitateur est passée"
   },
   "arcadeDeadlinePassed": {
-    "message": "La saison Arcade est terminée pour cette année. À bientôt !"
+    "message": "La saison Arcade est terminée pour l'année. À la saison prochaine !"
   },
   "programEnded": { "message": "Programme terminé" },
   "statusCompleted": { "message": "Terminé" },
@@ -264,9 +276,6 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Erreur lors du chargement des données" },
   "labelBack": { "message": "Retour" },
-  "labelSettings": { "message": "Paramètres" },
-  "labelReturnToSettings": { "message": "Retour aux paramètres" },
-  "changelogPageTitle": { "message": "Journal des modifications" },
   "changelogWhatsNew": { "message": "Nouveautés" },
   "changelogLatestUpdates": {
     "message": "Dernières mises à jour et améliorations"
@@ -346,22 +355,71 @@
   "skillsLabel": { "message": "Compétences :" },
   "labFreeLabel": { "message": "Sans labo :" },
   "switchAccount": { "message": "Changer de compte" },
-  "copyProfileUrl": { "message": "Copier l'URL du profil" },
-  "totalPoints": { "message": "Total des points" },
-  "statusActive": { "message": "Actif" }
-  ,"quickSearch": { "message": "Recherche rapide" }
-  ,"youtubeResults": { "message": "Résultats YouTube" }
-  ,"searchFeatureTip": { "message": "Vous aide à trouver des réponses plus rapidement !" }
-  ,"badgeDisplayNote": { "message": "Lorsque activé, l'extension mettra à jour le badge de la barre d'outils avec votre total de points (inclut le bonus Facilitateur si actif)." }
-  ,"successAccountCreated": { "message": "Compte créé avec succès !" }
-  ,"successAddNickname": { "message": "Vous pouvez ajouter un surnom pour identifier plus facilement ce compte." }
-  ,"labelLoading": { "message": "Chargement..." }
-  ,"newlyCreated": { "message": "Nouvellement créé" }
-  ,"labelNickname": { "message": "Surnom :" }
-  ,"noNicknameYet": { "message": "Pas encore de surnom" }
-  ,"labelUpdated": { "message": "Mis à jour :" }
-  ,"justCreated": { "message": "Vient d'être créé" }
-  ,"markdownShowLess": { "message": "Afficher moins" }
-  ,"labelEnabled": { "message": "Activé" }
-  ,"labelDisabled": { "message": "Désactivé" }
+  "statusActive": { "message": "Actif" },
+  "quickSearch": { "message": "Recherche rapide" },
+  "youtubeResults": { "message": "Résultats YouTube" },
+  "searchFeatureTip": {
+    "message": "Vous aide à trouver des réponses plus rapidement !"
+  },
+  "successAccountCreated": { "message": "Compte créé avec succès !" },
+  "successAddNickname": {
+    "message": "Vous pouvez ajouter un surnom pour identifier plus facilement ce compte."
+  },
+  "newlyCreated": { "message": "Nouvellement créé" },
+  "labelNickname": { "message": "Surnom :" },
+  "noNicknameYet": { "message": "Pas encore de surnom" },
+  "labelUpdated": { "message": "Mis à jour :" },
+  "justCreated": { "message": "Vient d'être créé" },
+  "markdownShowLess": { "message": "Afficher moins" },
+  "importantNoticeTitle": { "message": "Avis important" },
+  "importantNoticeText": {
+    "message": "Chaque URL de profil ne peut être ajoutée qu'une seule fois. Le système vérifiera et notifiera si le compte existe déjà."
+  },
+  "enterProfileUrlLabel": {
+    "message": "Entrez l'URL du profil et créez un compte"
+  },
+  "createAccountButton": { "message": "Créer un compte" },
+  "instructionsLabel": { "message": "Instructions :" },
+  "instructionsText": {
+    "message": "Entrez l'URL et cliquez sur \"Créer un compte\". Le système chargera automatiquement les informations et créera un nouveau compte."
+  },
+  "step1Title": {
+    "message": "Cliquez sur le bouton \"Ouvrir la page de profil\""
+  },
+  "step1Subtitle": {
+    "message": "Ouvrira Google Cloud Skills Boost dans un nouvel onglet"
+  },
+  "step2Title": { "message": "Connectez-vous (si ce n'est pas déjà fait)" },
+  "step2Subtitle": { "message": "Utilisez votre compte Google" },
+  "step3Title": { "message": "Trouvez la section \"Profil public\"" },
+  "step3Subtitle": {
+    "message": "Faites défiler vers le bas dans la page de profil"
+  },
+  "step4Title": { "message": "Copiez l'URL depuis la barre d'adresse" },
+  "step4Subtitle": { "message": "Collez dans le champ ci-dessous" },
+  "newAccountBadge": { "message": "Nouveau compte" },
+  "totalBadgesLabel": { "message": "Total des badges" },
+  "skillBadgesLabel": { "message": "Badges de compétence" },
+  "arcadePointsLabel": { "message": "Points Arcade" },
+  "accountNicknameLabel": { "message": "Surnom du compte" },
+  "nicknamePlaceholder": {
+    "message": "ex: Compte principal, Compte travail, Compte études..."
+  },
+  "nicknameHelpText": {
+    "message": "Les surnoms vous aident à identifier facilement les comptes lorsque vous avez plusieurs comptes différents"
+  },
+  "editAccountTitle": { "message": "Modifier le compte" },
+  "displayNameLabel": { "message": "Nom d'affichage :" },
+  "displayNameInfo": {
+    "message": "Le nom d'affichage provient de Google Cloud Skills Boost et ne peut pas être modifié"
+  },
+  "nicknameLabel": { "message": "Surnom :" },
+  "enterNicknamePlaceholder": {
+    "message": "Entrez un surnom pour faciliter l'identification..."
+  },
+  "nicknameExample": {
+    "message": "Exemple : \"Compte principal\", \"Compte travail\", \"Compte études\"..."
+  },
+  "cancelButton": { "message": "Annuler" },
+  "saveChangesButton": { "message": "Enregistrer les modifications" }
 }

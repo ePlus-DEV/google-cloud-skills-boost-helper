@@ -244,7 +244,7 @@
               <p class="text-gray-600 text-sm leading-relaxed" data-i18n="descriptionShowBadge">
                 Toggle whether the extension shows the total points on the browser toolbar icon.
               </p>
-              <p class="text-xs text-gray-500 mt-2">
+              <p class="text-xs text-gray-500 mt-2" data-i18n="badgeToolbarNote">
                 When enabled, the extension will update the toolbar badge with your total points (includes facilitator
                 bonus when active).
               </p>
@@ -283,19 +283,20 @@
                 My Badges
               </h4>
               <p class="text-gray-600 text-sm leading-relaxed">
-                View all your earned badges and achievements.
-                <br><span class="text-orange-700 font-medium">Track your learning progress!</span>
+                <span data-i18n="badgeViewDescription">View all your earned badges and achievements.</span>
+                <br><span class="text-orange-700 font-medium" data-i18n="badgeTrackProgress">Track your learning
+                  progress!</span>
               </p>
               <div class="mt-3 flex items-center space-x-4">
                 <span
                   class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                   <i class="fa-solid fa-star mr-1"></i>
-                  Achievements
+                  <span data-i18n="labelAchievements">Achievements</span>
                 </span>
                 <span
                   class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                   <i class="fa-solid fa-chart-line mr-1"></i>
-                  Progress
+                  <span data-i18n="labelProgress">Progress</span>
                 </span>
               </div>
             </div>
@@ -401,15 +402,16 @@
                 <div>
                   <p class="text-sm font-medium text-blue-900" data-i18n="clickOpenProfileButton">Click "Open Profile
                     Page" button</p>
-                  <p class="text-xs text-blue-700">Will open Google Cloud Skills Boost in new tab</p>
+                  <p class="text-xs text-blue-700" data-i18n="step1Subtitle">Will open Google Cloud Skills Boost in new
+                    tab</p>
                 </div>
               </div>
               <div class="flex items-start">
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Log in (if not already)</p>
-                  <p class="text-xs text-blue-700">Use your Google account</p>
+                  <p class="text-sm font-medium text-blue-900" data-i18n="step2Title">Log in (if not already)</p>
+                  <p class="text-xs text-blue-700" data-i18n="step2Subtitle">Use your Google account</p>
                 </div>
               </div>
             </div>
@@ -418,16 +420,16 @@
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Find "Public profile" section</p>
-                  <p class="text-xs text-blue-700">Scroll down in the profile page</p>
+                  <p class="text-sm font-medium text-blue-900" data-i18n="step3Title">Find "Public profile" section</p>
+                  <p class="text-xs text-blue-700" data-i18n="step3Subtitle">Scroll down in the profile page</p>
                 </div>
               </div>
               <div class="flex items-start">
                 <span
                   class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 mt-0.5">4</span>
                 <div>
-                  <p class="text-sm font-medium text-blue-900">Copy URL from address bar</p>
-                  <p class="text-xs text-blue-700">Paste into the field below</p>
+                  <p class="text-sm font-medium text-blue-900" data-i18n="step4Title">Copy URL from address bar</p>
+                  <p class="text-xs text-blue-700" data-i18n="step4Subtitle">Paste into the field below</p>
                 </div>
               </div>
             </div>
@@ -441,8 +443,9 @@
               <i class="fa-solid fa-exclamation-triangle text-amber-600"></i>
             </div>
             <div>
-              <p class="text-sm font-medium text-amber-800">Important Notice</p>
-              <p class="text-sm text-amber-700">Each profile URL can only be added once. The system will check and
+              <p class="text-sm font-medium text-amber-800" data-i18n="importantNoticeTitle">Important Notice</p>
+              <p class="text-sm text-amber-700" data-i18n="importantNoticeText">Each profile URL can only be added once.
+                The system will check and
                 notify if the account already exists.</p>
             </div>
           </div>
@@ -452,7 +455,7 @@
         <div class="bg-white border border-gray-200 rounded-xl p-5">
           <label class="block text-base font-semibold text-gray-800 mb-3">
             <i class="fa-solid fa-link mr-2 text-indigo-600"></i>
-            Enter Profile URL and Create Account
+            <span data-i18n="enterProfileUrlLabel">Enter Profile URL and Create Account</span>
           </label>
           <div class="flex space-x-3">
             <input type="url" id="account-url-input"
@@ -465,14 +468,15 @@
               data-intro="After entering the URL, click this button to create the account. The system will automatically fetch information from the profile and create a new account."
               data-step="6">
               <i class="fa-solid fa-plus mr-1 text-xs"></i>
-              Create Account
+              <span data-i18n="createAccountButton">Create Account</span>
             </button>
           </div>
           <div class="mt-3 p-3 bg-gray-50 rounded-lg">
             <p class="text-xs text-gray-600">
               <i class="fa-solid fa-info-circle mr-1 text-gray-500"></i>
-              <strong>Instructions:</strong> Enter URL and click "Create Account". The system will automatically load
-              information and create a new account.
+              <strong data-i18n="instructionsLabel">Instructions:</strong> <span data-i18n="instructionsText">Enter URL
+                and click "Create Account". The system will automatically load
+                information and create a new account.</span>
             </p>
           </div>
         </div>
@@ -569,7 +573,8 @@
                 </div>
 
                 <div class="flex items-center space-x-2 ml-3">
-                  <div class="text-green-600 p-2 rounded-lg bg-green-50" title="New account">
+                  <div class="text-green-600 p-2 rounded-lg bg-green-50" data-i18n="[title]newAccountBadge"
+                    title="New account">
                     <i class="fa-solid fa-check-circle"></i>
                   </div>
                 </div>
@@ -580,15 +585,15 @@
                 <div class="grid grid-cols-3 gap-4 text-center">
                   <div class="bg-blue-50 rounded-lg p-3">
                     <div id="preview-total-badges" class="text-xl font-bold text-blue-600">-</div>
-                    <div class="text-xs text-blue-700">Total Badges</div>
+                    <div class="text-xs text-blue-700" data-i18n="totalBadgesLabel">Total Badges</div>
                   </div>
                   <div class="bg-yellow-50 rounded-lg p-3">
                     <div id="preview-skill-badges" class="text-xl font-bold text-yellow-600">-</div>
-                    <div class="text-xs text-yellow-700">Skill Badges</div>
+                    <div class="text-xs text-yellow-700" data-i18n="skillBadgesLabel">Skill Badges</div>
                   </div>
                   <div class="bg-purple-50 rounded-lg p-3">
                     <div id="preview-arcade-total" class="text-xl font-bold text-purple-600">-</div>
-                    <div class="text-xs text-purple-700">Arcade Points</div>
+                    <div class="text-xs text-purple-700" data-i18n="arcadePointsLabel">Arcade Points</div>
                   </div>
                 </div>
               </div>
@@ -599,15 +604,17 @@
         <div class="bg-white border border-gray-200 rounded-xl p-5">
           <label class="block text-base font-semibold text-gray-800 mb-3">
             <i class="fa-solid fa-edit mr-2 text-indigo-600"></i>
-            Account nickname
+            <span data-i18n="accountNicknameLabel">Account nickname</span>
           </label>
           <div class="space-y-3">
             <input type="text" id="account-nickname-input"
               class="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition duration-200"
+              data-i18n="[placeholder]nicknamePlaceholder"
               placeholder="e.g: Main account, Work account, Study account...">
             <p class="text-xs text-gray-500">
               <i class="fa-solid fa-lightbulb mr-1 text-yellow-500"></i>
-              Nicknames help you easily identify accounts when you have multiple different accounts
+              <span data-i18n="nicknameHelpText">Nicknames help you easily identify accounts when you have multiple
+                different accounts</span>
             </p>
           </div>
         </div>
@@ -688,7 +695,7 @@
   <div id="edit-account-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold text-gray-900">Edit account</h3>
+        <h3 class="text-lg font-bold text-gray-900" data-i18n="editAccountTitle">Edit account</h3>
         <button id="close-edit-modal-btn" class="text-gray-400 hover:text-gray-600">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -698,28 +705,29 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
             <i class="fa-solid fa-user mr-1 text-indigo-600"></i>
-            Display name:
+            <span data-i18n="displayNameLabel">Display name:</span>
           </label>
           <input type="text" id="edit-account-name-input" readonly
             class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-100 text-gray-600 cursor-not-allowed"
             placeholder="Name from Google Cloud Skills Boost">
           <p class="text-xs text-gray-500 mt-1">
             <i class="fa-solid fa-info-circle mr-1"></i>
-            Display name is taken from Google Cloud Skills Boost and cannot be edited
+            <span data-i18n="displayNameInfo">Display name is taken from Google Cloud Skills Boost and cannot be
+              edited</span>
           </p>
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
             <i class="fa-solid fa-tag mr-1 text-indigo-600"></i>
-            Nickname:
+            <span data-i18n="nicknameLabel">Nickname:</span>
           </label>
           <input type="text" id="edit-account-nickname-input"
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            placeholder="Enter nickname for easy identification...">
+            data-i18n="[placeholder]enterNicknamePlaceholder" placeholder="Enter nickname for easy identification...">
           <p class="text-xs text-gray-500 mt-1">
             <i class="fa-solid fa-lightbulb mr-1"></i>
-            Example: "Main account", "Work account", "Study account"...
+            <span data-i18n="nicknameExample">Example: "Main account", "Work account", "Study account"...</span>
           </p>
         </div>
       </div>
@@ -727,11 +735,11 @@
       <div class="flex space-x-3 mt-6">
         <button id="cancel-edit-account-btn"
           class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-          Cancel
+          <span data-i18n="cancelButton">Cancel</span>
         </button>
         <button id="confirm-edit-account-btn"
           class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm">
-          Save changes
+          <span data-i18n="saveChangesButton">Save changes</span>
         </button>
       </div>
     </div>

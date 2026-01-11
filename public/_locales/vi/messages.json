@@ -170,6 +170,21 @@
   "tourCloseButton": {
     "message": "Đóng"
   },
+  "badgeToolbarNote": {
+    "message": "Khi bật, tiện ích sẽ cập nhật biểu tượng thanh công cụ bằng tổng điểm của bạn (bao gồm điểm thưởng Facilitator nếu đang hoạt động)."
+  },
+  "badgeViewDescription": {
+    "message": "Xem tất cả huy hiệu và thành tích bạn đã đạt được."
+  },
+  "badgeTrackProgress": {
+    "message": "Theo dõi tiến trình học tập của bạn!"
+  },
+  "labelAchievements": {
+    "message": "Thành tích"
+  },
+  "labelProgress": {
+    "message": "Tiến độ"
+  },
   "errorEnterProfileUrl": { "message": "Vui lòng nhập URL hồ sơ!" },
   "errorInvalidProfileUrl": { "message": "URL hồ sơ không hợp lệ!" },
   "errorAccountExistsTitle": { "message": "Tài khoản đã tồn tại" },
@@ -249,9 +264,6 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" },
   "labelBack": { "message": "Quay lại" },
-  "labelSettings": { "message": "Cài đặt" },
-  "labelReturnToSettings": { "message": "Quay về cài đặt" },
-  "changelogPageTitle": { "message": "Nhật ký thay đổi" },
   "changelogWhatsNew": { "message": "Có gì mới" },
   "changelogLatestUpdates": { "message": "Cập nhật và cải tiến mới nhất" },
   "changelogLoading": { "message": "Đang tải nhật ký thay đổi..." },
@@ -321,10 +333,63 @@
   "skillsLabel": { "message": "Kỹ năng:" },
   "labFreeLabel": { "message": "Không cần lab:" },
   "switchAccount": { "message": "Chuyển tài khoản" },
-  "copyProfileUrl": { "message": "Sao chép URL hồ sơ" },
-  "badgeDisplayNote": {
-    "message": "Khi bật, tiện ích sẽ cập nhật biểu tượng thanh công cụ bằng tổng điểm của bạn (bao gồm điểm thưởng Facilitator nếu đang hoạt động)."
+  "statusActive": { "message": "Hoạt động" },
+  "quickSearch": { "message": "Tìm kiếm nhanh" },
+  "youtubeResults": { "message": "Kết quả YouTube" },
+  "searchFeatureTip": { "message": "Giúp bạn tìm câu trả lời nhanh hơn!" },
+  "successAccountCreated": { "message": "Tạo tài khoản thành công!" },
+  "successAddNickname": {
+    "message": "Bạn có thể thêm biệt danh để dễ dàng nhận biết tài khoản này."
   },
-  "totalPoints": { "message": "Tổng điểm" },
-  "statusActive": { "message": "Hoạt động" }
+  "newlyCreated": { "message": "Mới tạo" },
+  "labelNickname": { "message": "Biệt danh:" },
+  "noNicknameYet": { "message": "Chưa có biệt danh" },
+  "labelUpdated": { "message": "Cập nhật:" },
+  "justCreated": { "message": "Vừa tạo" },
+  "markdownShowLess": { "message": "Ẩn bớt" },
+  "importantNoticeTitle": { "message": "Thông báo quan trọng" },
+  "importantNoticeText": {
+    "message": "Mỗi URL hồ sơ chỉ có thể được thêm một lần. Hệ thống sẽ kiểm tra và thông báo nếu tài khoản đã tồn tại."
+  },
+  "enterProfileUrlLabel": { "message": "Nhập URL hồ sơ và tạo tài khoản" },
+  "createAccountButton": { "message": "Tạo tài khoản" },
+  "instructionsLabel": { "message": "Hướng dẫn:" },
+  "instructionsText": {
+    "message": "Nhập URL và nhấp \"Tạo tài khoản\". Hệ thống sẽ tự động tải thông tin và tạo tài khoản mới."
+  },
+  "step1Title": { "message": "Nhấn nút \"Mở trang hồ sơ\"" },
+  "step1Subtitle": {
+    "message": "Sẽ mở Google Cloud Skills Boost trong tab mới"
+  },
+  "step2Title": { "message": "Đăng nhập (nếu chưa đăng nhập)" },
+  "step2Subtitle": { "message": "Sử dụng tài khoản Google của bạn" },
+  "step3Title": { "message": "Tìm mục \"Public profile\"" },
+  "step3Subtitle": { "message": "Cuộn xuống trong trang hồ sơ" },
+  "step4Title": { "message": "Sao chép URL từ thanh địa chỉ" },
+  "step4Subtitle": { "message": "Dán vào ô bên dưới" },
+  "newAccountBadge": { "message": "Tài khoản mới" },
+  "totalBadgesLabel": { "message": "Tổng Huy hiệu" },
+  "skillBadgesLabel": { "message": "Huy hiệu Kỹ năng" },
+  "arcadePointsLabel": { "message": "Điểm Arcade" },
+  "accountNicknameLabel": { "message": "Biệt danh tài khoản" },
+  "nicknamePlaceholder": {
+    "message": "VD: Tài khoản chính, Tài khoản công việc, Tài khoản học tập..."
+  },
+  "nicknameHelpText": {
+    "message": "Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau"
+  },
+  "editAccountTitle": { "message": "Chỉnh sửa tài khoản" },
+  "displayNameLabel": { "message": "Tên hiển thị:" },
+  "displayNameInfo": {
+    "message": "Tên hiển thị được lấy từ Google Cloud Skills Boost và không thể chỉnh sửa"
+  },
+  "nicknameLabel": { "message": "Biệt danh:" },
+  "enterNicknamePlaceholder": {
+    "message": "Nhập biệt danh để dễ nhận biết..."
+  },
+  "nicknameExample": {
+    "message": "Ví dụ: \"Tài khoản chính\", \"Tài khoản công việc\", \"Tài khoản học tập\"..."
+  },
+  "cancelButton": { "message": "Hủy" },
+  "saveChangesButton": { "message": "Lưu thay đổi" }
 }
