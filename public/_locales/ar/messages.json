@@ -1,0 +1,635 @@
+{
+  "extName": {
+    "message": "Google Cloud Skills Boost - المساعد"
+  },
+  "extDescription": {
+    "message": "إضافة متصفح مصممة لتحسين تجربة التعلم الخاصة بك على Google Cloud Skills Boost."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - خيارات المساعد"
+  },
+  "optionsPageDescription": {
+    "message": "قم بتخصيص تجربتك مع Google Cloud Skills Boost - المساعد."
+  },
+  "labelFeature": {
+    "message": "الميزة"
+  },
+  "labelAction": {
+    "message": "الإجراء"
+  },
+  "labelShowLeaderboard": {
+    "message": "إظهار لوحة المتصدرين"
+  },
+  "labelHideLeaderboard": {
+    "message": "إخفاء لوحة المتصدرين"
+  },
+  "labelMyBadges": {
+    "message": "شاراتي"
+  },
+  "labelPublicProfile": {
+    "message": "الملف الشخصي العام"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "حاسبة نقاط Arcade"
+  },
+  "labelSave": {
+    "message": "حفظ"
+  },
+  "labelLoading": {
+    "message": "جاري التحميل..."
+  },
+  "messageNoDataAvailable": {
+    "message": "لا توجد بيانات متاحة"
+  },
+  "labelRecentActivity": {
+    "message": "النشاط الأخير"
+  },
+  "labelBadgesAchievements": {
+    "message": "الشارات والإنجازات"
+  },
+  "labelUpdatePoints": {
+    "message": "تحديث النقاط"
+  },
+  "labelLastUpdated": {
+    "message": "آخر تحديث"
+  },
+  "labelPage": {
+    "message": "صفحة"
+  },
+  "labelLoadMore": {
+    "message": "تحميل المزيد"
+  },
+  "textCurrentLevel": {
+    "message": "المستوى الحالي"
+  },
+  "textMaxLevel": {
+    "message": "المستوى الأقصى"
+  },
+  "textNextLevelInPoints": {
+    "message": "المستوى التالي في"
+  },
+  "textPoints": {
+    "message": "نقاط"
+  },
+  "textPleaseSetUpTheSettings": {
+    "message": "يرجى إعداد الإعدادات"
+  },
+  "errorInvalidUrl": {
+    "message": "يرجى إدخال رابط صحيح يبدأ بـ 'https://www.skills.google/public_profiles/xxx"
+  },
+  "successSettingsSaved": {
+    "message": "تم حفظ الإعدادات بنجاح!"
+  },
+  "notePleaseSetUpTheSettings": {
+    "message": "<strong>ملاحظة:</strong> <br>⚠️ لقد قمت بتفعيل خيار <strong>\"جعل الملف الشخصي عاماً\"</strong>، ولكن لم تقم بحفظ التغييرات بعد.<br>👉 يرجى النقر على زر <strong>\"تحديث الإعدادات\"</strong> لتأكيد وحفظ إعداداتك الجديدة.<br>❌ إذا لم تقم بالحفظ، لن يتم <strong>جعل ملفك الشخصي عاماً</strong> ولن يتم إنشاء الرابط."
+  },
+  "messageLinkCopiedToClipboard": {
+    "message": "✔️ تم نسخ الرابط إلى الحافظة!"
+  },
+  "labelEnableSearchFeature": {
+    "message": "تفعيل ميزة البحث"
+  },
+  "descriptionEnableSearchFeature": {
+    "message": "إظهار أزرار بحث Google و YouTube عندما لا يتم العثور على حل."
+  },
+  "messageSearchFeatureEnabled": {
+    "message": "تم تفعيل ميزة البحث - ستظهر أزرار بحث Google و YouTube عندما لا يتم العثور على حل"
+  },
+  "messageSearchFeatureDisabled": {
+    "message": "تم تعطيل ميزة البحث - سيظهر فقط \"لا يوجد حل\" عندما لا يتم العثور على حل"
+  },
+  "tourStartButton": {
+    "message": "دليل المستخدم"
+  },
+  "tourWelcomeTitle": {
+    "message": "مرحباً بك في دليل إنشاء الحساب!"
+  },
+  "tourWelcomeContent": {
+    "message": "سنقوم بإرشادك خطوة بخطوة لإنشاء أول حساب Google Cloud Skills Boost الخاص بك."
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>نصيحة:</strong> يمكنك تخطي هذا الدليل في أي وقت من خلال النقر على \"تخطي\"."
+  },
+  "tourAddAccountTitle": {
+    "message": "إضافة حساب جديد"
+  },
+  "tourAddAccountContent": {
+    "message": "انقر على هذا الزر لإضافة أول حساب Google Cloud Skills Boost الخاص بك. يمكنك إدارة حسابات متعددة في وقت واحد."
+  },
+  "tourAccountListTitle": {
+    "message": "قائمة الحسابات"
+  },
+  "tourAccountListContent": {
+    "message": "بعد إنشاء الحسابات، ستظهر هنا. يمكنك:<br>• التبديل بين الحسابات<br>• تحديث بيانات نقاط Arcade<br>• تحرير الألقاب<br>• عرض الملفات الشخصية العامة"
+  },
+  "tourModalStep1Title": {
+    "message": "الخطوة 1: فتح صفحة الملف الشخصي"
+  },
+  "tourModalStep1Content": {
+    "message": "انقر على هذا الزر لفتح ملف Google Cloud Skills Boost الشخصي في علامة تبويب جديدة. ستحتاج إلى تسجيل الدخول والحصول على الرابط من صفحة الملف الشخصي."
+  },
+  "tourModalStep2Title": {
+    "message": "الخطوة 2: إدخال رابط الملف الشخصي"
+  },
+  "tourModalStep2Content": {
+    "message": "بعد تسجيل الدخول، انسخ الرابط من شريط العنوان والصقه هنا."
+  },
+  "tourModalStep2Tip": {
+    "message": "سيبدو الرابط مثل: https://www.skills.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "الخطوة 3: إنشاء الحساب"
+  },
+  "tourModalStep3Content": {
+    "message": "انقر على هذا الزر لإنشاء الحساب. سيقوم النظام تلقائياً بجلب المعلومات من الملف الشخصي وإنشاء حساب جديد لك."
+  },
+  "tourCompletedTitle": {
+    "message": "اكتمل الدليل!"
+  },
+  "tourCompletedContent": {
+    "message": "الآن يمكنك البدء في إنشاء حسابك الأول."
+  },
+  "tourModalCompletedTitle": {
+    "message": "جاهز لإنشاء الحساب!"
+  },
+  "tourModalCompletedContent": {
+    "message": "حاول إدخال رابط ملف شخصي وأنشئ حسابك الأول."
+  },
+  "tourButtonNext": {
+    "message": "التالي"
+  },
+  "tourButtonPrevious": {
+    "message": "السابق"
+  },
+  "tourButtonSkip": {
+    "message": "تخطي"
+  },
+  "tourButtonComplete": {
+    "message": "تم"
+  },
+  "tourCloseButton": {
+    "message": "إغلاق"
+  },
+  "badgeToolbarNote": {
+    "message": "عند التفعيل، ستقوم الإضافة بتحديث شارة شريط الأدوات بإجمالي نقاطك (يشمل مكافأة الميسر عند تفعيلها)."
+  },
+  "badgeViewDescription": {
+    "message": "عرض جميع شاراتك وإنجازاتك المكتسبة."
+  },
+  "badgeTrackProgress": {
+    "message": "تتبع تقدمك في التعلم!"
+  },
+  "labelAchievements": {
+    "message": "الإنجازات"
+  },
+  "labelProgress": {
+    "message": "التقدم"
+  },
+  "errorEnterProfileUrl": {
+    "message": "يرجى إدخال رابط الملف الشخصي!"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "رابط ملف شخصي غير صالح!"
+  },
+  "errorAccountExistsTitle": {
+    "message": "الحساب موجود بالفعل"
+  },
+  "errorAccountExistsMsg": {
+    "message": "يوجد حساب بهذا الرابط بالفعل: \"$1\"."
+  },
+  "errorNoNameFromProfile": {
+    "message": "تعذر الحصول على الاسم من الملف الشخصي. يرجى المحاولة مرة أخرى!"
+  },
+  "labelAdding": {
+    "message": "جاري الإضافة..."
+  },
+  "successAccountAdded": {
+    "message": "تمت إضافة الحساب بنجاح!"
+  },
+  "errorAddAccountGeneric": {
+    "message": "حدث خطأ أثناء إضافة الحساب. يرجى المحاولة مرة أخرى!"
+  },
+  "errorAccountExistsMsgSimple": {
+    "message": "الحساب موجود بالفعل."
+  },
+  "labelAddAccount": {
+    "message": "إضافة حساب"
+  },
+  "successSwitchedAccount": {
+    "message": "تم التبديل إلى الحساب بنجاح!"
+  },
+  "errorSwitchAccount": {
+    "message": "خطأ في التبديل إلى الحساب."
+  },
+  "errorAccountNotFound": {
+    "message": "الحساب غير موجود."
+  },
+  "infoUpdatingAccountData": {
+    "message": "جاري تحديث بيانات الحساب..."
+  },
+  "successAccountDataUpdated": {
+    "message": "تم تحديث بيانات الحساب بنجاح!"
+  },
+  "errorFetchDataFromApi": {
+    "message": "تعذر جلب البيانات من API."
+  },
+  "errorUpdatingAccount": {
+    "message": "خطأ في تحديث الحساب."
+  },
+  "errorProfileUrlNotFound": {
+    "message": "رابط الملف الشخصي غير موجود لهذا الحساب."
+  },
+  "errorOpeningProfile": {
+    "message": "خطأ في فتح الملف الشخصي."
+  },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "لا يوجد حساب نشط أو رابط ملف شخصي."
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "تعذر العثور على الحساب للتحديث!"
+  },
+  "successNicknameSaved": {
+    "message": "تم حفظ اللقب بنجاح!"
+  },
+  "errorSavingNickname": {
+    "message": "خطأ في حفظ اللقب!"
+  },
+  "successNicknameUpdated": {
+    "message": "تم تحديث اللقب بنجاح!"
+  },
+  "errorUpdatingAccountGeneric": {
+    "message": "حدث خطأ أثناء تحديث الحساب!"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "لا يمكن حذف الحساب الأخير!"
+  },
+  "successAccountDeleted": {
+    "message": "تم حذف الحساب بنجاح!"
+  },
+  "errorDeletingAccountGeneric": {
+    "message": "حدث خطأ أثناء حذف الحساب!"
+  },
+  "successDataExported": {
+    "message": "تم تصدير البيانات بنجاح!"
+  },
+  "errorExportingData": {
+    "message": "حدث خطأ أثناء تصدير البيانات!"
+  },
+  "errorNoImportData": {
+    "message": "يرجى تحديد ملف أو لصق محتوى JSON!"
+  },
+  "successDataImported": {
+    "message": "تم استيراد البيانات بنجاح!"
+  },
+  "errorInvalidImportData": {
+    "message": "بيانات غير صالحة. يرجى التحقق مرة أخرى!"
+  },
+  "errorImportingData": {
+    "message": "حدث خطأ أثناء استيراد البيانات!"
+  },
+  "labelFacilitatorProgram": {
+    "message": "برنامج الميسر"
+  },
+  "messageBadgeEnabled": {
+    "message": "تم تفعيل عرض الشارة"
+  },
+  "messageBadgeDisabled": {
+    "message": "تم تعطيل عرض الشارة"
+  },
+  "labelShowBadge": {
+    "message": "إظهار الشارة على أيقونة الإضافة"
+  },
+  "descriptionShowBadge": {
+    "message": "تبديل ما إذا كانت الإضافة تظهر إجمالي النقاط على أيقونة شريط أدوات المتصفح."
+  },
+  "facilitatorDeadlinePassed": {
+    "message": "انتهى الموعد النهائي لبرنامج الميسر"
+  },
+  "arcadeDeadlinePassed": {
+    "message": "انتهى موسم Arcade لهذا العام. نراكم في الموسم القادم!"
+  },
+  "programEnded": {
+    "message": "انتهى البرنامج"
+  },
+  "statusCompleted": {
+    "message": "مكتمل"
+  },
+  "statusInProgress": {
+    "message": "قيد التنفيذ"
+  },
+  "statusNotStarted": {
+    "message": "لم يبدأ"
+  },
+  "anonymous": {
+    "message": "مجهول"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "خطأ في تحميل البيانات"
+  },
+  "labelBack": {
+    "message": "رجوع"
+  },
+  "changelogWhatsNew": {
+    "message": "ما الجديد"
+  },
+  "changelogLatestUpdates": {
+    "message": "آخر التحديثات والتحسينات"
+  },
+  "changelogLoading": {
+    "message": "جاري تحميل سجل التغييرات..."
+  },
+  "changelogFooterNotice": {
+    "message": "هذه الإضافة غير تابعة لـ Google Cloud Skills Boost. جميع الحقوق محفوظة."
+  },
+  "announcementTitle": {
+    "message": "إعلان مهم"
+  },
+  "markdownShowMore": {
+    "message": "عرض المزيد"
+  },
+  "accountsTitle": {
+    "message": "حساباتك"
+  },
+  "noAccountsYet": {
+    "message": "لا توجد حسابات بعد"
+  },
+  "addAccountFirst": {
+    "message": "أضف حسابك الأول!"
+  },
+  "dataManagementTitle": {
+    "message": "إدارة البيانات"
+  },
+  "dataManagementSubtitle": {
+    "message": "النسخ الاحتياطي والاستعادة"
+  },
+  "exportData": {
+    "message": "تصدير البيانات"
+  },
+  "importData": {
+    "message": "استيراد البيانات"
+  },
+  "modalAddAccountTitle": {
+    "message": "إضافة حساب جديد"
+  },
+  "howToGetProfileUrl": {
+    "message": "كيفية الحصول على رابط الملف الشخصي"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "اتبع الخطوات أدناه"
+  },
+  "openProfilePage": {
+    "message": "فتح صفحة الملف الشخصي"
+  },
+  "errorPrefix": {
+    "message": "خطأ:"
+  },
+  "successPrefix": {
+    "message": "نجح:"
+  },
+  "accountErrorFallback": {
+    "message": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+  },
+  "accountSuccessFallback": {
+    "message": "تمت عمليتك بنجاح!"
+  },
+  "viewBadges": {
+    "message": "عرض الشارات"
+  },
+  "openProfile": {
+    "message": "فتح الملف الشخصي"
+  },
+  "arcadePointsTitle": {
+    "message": "نقاط Arcade"
+  },
+  "milestonesTitle": {
+    "message": "المعالم"
+  },
+  "accountsCardTitle": {
+    "message": "إدارة الحسابات وحاسبة نقاط Arcade"
+  },
+  "accountsCardSubtitle": {
+    "message": "إدارة حسابات متعددة وحساب نقاط Arcade."
+  },
+  "clickOpenProfileButton": {
+    "message": "انقر على زر \"فتح صفحة الملف الشخصي\""
+  },
+  "programDeadline": {
+    "message": "الموعد النهائي للبرنامج"
+  },
+  "labelDays": {
+    "message": "أيام"
+  },
+  "labelHours": {
+    "message": "ساعات"
+  },
+  "labelMinutes": {
+    "message": "دقائق"
+  },
+  "labelSeconds": {
+    "message": "ثواني"
+  },
+  "milestoneDeadlineNotice": {
+    "message": "أكمل المعالم قبل الموعد النهائي لكسب نقاط إضافية!"
+  },
+  "arcadeMotivation": {
+    "message": "حافظ على الزخم واصعد إلى أعلى لوحة متصدري Arcade!"
+  },
+  "totalBonusEarned": {
+    "message": "إجمالي المكافأة المكتسبة:"
+  },
+  "maxPossibleNote": {
+    "message": "الحد الأقصى الممكن: 25 نقطة (المعلم الأعلى فقط)"
+  },
+  "pointsBreakdown": {
+    "message": "تفصيل النقاط"
+  },
+  "arcadeBase": {
+    "message": "نقاط Arcade الأساسية:"
+  },
+  "facilitatorBonus": {
+    "message": "مكافأة الميسر:"
+  },
+  "gameBadgeLabel": {
+    "message": "شارة اللعبة"
+  },
+  "triviaBadgeLabel": {
+    "message": "شارة المعلومات العامة"
+  },
+  "skillBadgeLabel": {
+    "message": "شارة المهارة"
+  },
+  "specialPointsLabel": {
+    "message": "نقاط خاصة"
+  },
+  "arcadeSeasonCountdown": {
+    "message": "العد التنازلي لموسم Arcade"
+  },
+  "milestone1": {
+    "message": "المعلم 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 نقاط مكافأة"
+  },
+  "milestone2": {
+    "message": "المعلم 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 نقاط مكافأة"
+  },
+  "milestone3": {
+    "message": "المعلم 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 نقطة مكافأة"
+  },
+  "milestoneUltimate": {
+    "message": "النهائي"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 نقطة مكافأة"
+  },
+  "progressLabel": {
+    "message": "التقدم:"
+  },
+  "gamesLabel": {
+    "message": "الألعاب:"
+  },
+  "triviaLabel": {
+    "message": "المعلومات العامة:"
+  },
+  "skillsLabel": {
+    "message": "المهارات:"
+  },
+  "labFreeLabel": {
+    "message": "بدون معمل:"
+  },
+  "switchAccount": {
+    "message": "تبديل الحساب"
+  },
+  "statusActive": {
+    "message": "نشط"
+  },
+  "quickSearch": {
+    "message": "بحث سريع"
+  },
+  "youtubeResults": {
+    "message": "نتائج YouTube"
+  },
+  "searchFeatureTip": {
+    "message": "يساعدك في العثور على الإجابات بشكل أسرع!"
+  },
+  "successAccountCreated": {
+    "message": "تم إنشاء الحساب بنجاح!"
+  },
+  "successAddNickname": {
+    "message": "يمكنك إضافة لقب لتحديد هذا الحساب بسهولة."
+  },
+  "newlyCreated": {
+    "message": "تم إنشاؤه حديثاً"
+  },
+  "labelNickname": {
+    "message": "اللقب:"
+  },
+  "noNicknameYet": {
+    "message": "لا يوجد لقب بعد"
+  },
+  "labelUpdated": {
+    "message": "تم التحديث:"
+  },
+  "justCreated": {
+    "message": "تم إنشاؤه للتو"
+  },
+  "markdownShowLess": {
+    "message": "عرض أقل"
+  },
+  "importantNoticeTitle": {
+    "message": "ملاحظة مهمة"
+  },
+  "importantNoticeText": {
+    "message": "يمكن إضافة كل رابط ملف شخصي مرة واحدة فقط. سيقوم النظام بالتحقق وإخطارك إذا كان الحساب موجوداً بالفعل."
+  },
+  "enterProfileUrlLabel": {
+    "message": "أدخل رابط الملف الشخصي وأنشئ الحساب"
+  },
+  "createAccountButton": {
+    "message": "إنشاء حساب"
+  },
+  "instructionsLabel": {
+    "message": "التعليمات:"
+  },
+  "instructionsText": {
+    "message": "أدخل الرابط وانقر على \"إنشاء حساب\". سيقوم النظام تلقائياً بتحميل المعلومات وإنشاء حساب جديد."
+  },
+  "step1Title": {
+    "message": "انقر على زر \"فتح صفحة الملف الشخصي\""
+  },
+  "step1Subtitle": {
+    "message": "سيتم فتح Google Cloud Skills Boost في علامة تبويب جديدة"
+  },
+  "step2Title": {
+    "message": "تسجيل الدخول (إذا لم تكن قد سجلت الدخول بالفعل)"
+  },
+  "step2Subtitle": {
+    "message": "استخدم حساب Google الخاص بك"
+  },
+  "step3Title": {
+    "message": "ابحث عن قسم \"الملف الشخصي العام\""
+  },
+  "step3Subtitle": {
+    "message": "قم بالتمرير لأسفل في صفحة الملف الشخصي"
+  },
+  "step4Title": {
+    "message": "انسخ الرابط من شريط العنوان"
+  },
+  "step4Subtitle": {
+    "message": "الصقه في الحقل أدناه"
+  },
+  "newAccountBadge": {
+    "message": "حساب جديد"
+  },
+  "totalBadgesLabel": {
+    "message": "إجمالي الشارات"
+  },
+  "skillBadgesLabel": {
+    "message": "شارات المهارات"
+  },
+  "arcadePointsLabel": {
+    "message": "نقاط Arcade"
+  },
+  "accountNicknameLabel": {
+    "message": "لقب الحساب"
+  },
+  "nicknamePlaceholder": {
+    "message": "مثل: الحساب الرئيسي، حساب العمل، حساب الدراسة..."
+  },
+  "nicknameHelpText": {
+    "message": "تساعدك الألقاب في تحديد الحسابات بسهولة عندما يكون لديك حسابات متعددة مختلفة"
+  },
+  "editAccountTitle": {
+    "message": "تحرير الحساب"
+  },
+  "displayNameLabel": {
+    "message": "الاسم المعروض:"
+  },
+  "displayNameInfo": {
+    "message": "الاسم المعروض مأخوذ من Google Cloud Skills Boost ولا يمكن تعديله"
+  },
+  "nicknameLabel": {
+    "message": "اللقب:"
+  },
+  "enterNicknamePlaceholder": {
+    "message": "أدخل لقباً للتحديد السهل..."
+  },
+  "nicknameExample": {
+    "message": "مثال: \"الحساب الرئيسي\"، \"حساب العمل\"، \"حساب الدراسة\"..."
+  },
+  "cancelButton": {
+    "message": "إلغاء"
+  },
+  "saveChangesButton": {
+    "message": "حفظ التغييرات"
+  }
+}

@@ -1,0 +1,635 @@
+{
+  "extName": {
+    "message": "Google Cloud Skills Boost - Helfer"
+  },
+  "extDescription": {
+    "message": "Eine Browser-Erweiterung zur Optimierung Ihrer Lernerfahrung auf Google Cloud Skills Boost."
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - Helfer Optionen"
+  },
+  "optionsPageDescription": {
+    "message": "Passen Sie Ihre Erfahrung mit Google Cloud Skills Boost - Helfer an."
+  },
+  "labelFeature": {
+    "message": "Funktion"
+  },
+  "labelAction": {
+    "message": "Aktion"
+  },
+  "labelShowLeaderboard": {
+    "message": "Rangliste anzeigen"
+  },
+  "labelHideLeaderboard": {
+    "message": "Rangliste ausblenden"
+  },
+  "labelMyBadges": {
+    "message": "Meine Abzeichen"
+  },
+  "labelPublicProfile": {
+    "message": "Öffentliches Profil"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Arcade Punkte-Rechner"
+  },
+  "labelSave": {
+    "message": "Speichern"
+  },
+  "labelLoading": {
+    "message": "Wird geladen..."
+  },
+  "messageNoDataAvailable": {
+    "message": "Keine Daten verfügbar"
+  },
+  "labelRecentActivity": {
+    "message": "Letzte Aktivitäten"
+  },
+  "labelBadgesAchievements": {
+    "message": "Abzeichen & Erfolge"
+  },
+  "labelUpdatePoints": {
+    "message": "Punkte aktualisieren"
+  },
+  "labelLastUpdated": {
+    "message": "Zuletzt aktualisiert"
+  },
+  "labelPage": {
+    "message": "Seite"
+  },
+  "labelLoadMore": {
+    "message": "Mehr laden"
+  },
+  "textCurrentLevel": {
+    "message": "Aktuelles Level"
+  },
+  "textMaxLevel": {
+    "message": "Maximales Level"
+  },
+  "textNextLevelInPoints": {
+    "message": "Nächstes Level in"
+  },
+  "textPoints": {
+    "message": "Punkten"
+  },
+  "textPleaseSetUpTheSettings": {
+    "message": "Bitte richten Sie die Einstellungen ein"
+  },
+  "errorInvalidUrl": {
+    "message": "Bitte geben Sie eine gültige URL ein, die mit 'https://www.skills.google/public_profiles/xxx' beginnt"
+  },
+  "successSettingsSaved": {
+    "message": "Einstellungen erfolgreich gespeichert!"
+  },
+  "notePleaseSetUpTheSettings": {
+    "message": "<strong>Hinweis:</strong> <br>⚠️ Sie haben die Option <strong>\"Profil öffentlich machen\"</strong> aktiviert, aber die Änderungen noch nicht gespeichert.<br>👉 Bitte klicken Sie auf die Schaltfläche <strong>\"Einstellungen aktualisieren\"</strong>, um Ihre neuen Einstellungen zu bestätigen und zu speichern.<br>❌ Wenn Sie nicht speichern, wird Ihr Profil <strong>nicht öffentlich gemacht</strong> und der Link wird nicht generiert."
+  },
+  "messageLinkCopiedToClipboard": {
+    "message": "✔️ Link in die Zwischenablage kopiert!"
+  },
+  "labelEnableSearchFeature": {
+    "message": "Suchfunktion aktivieren"
+  },
+  "descriptionEnableSearchFeature": {
+    "message": "Zeigt Google-Such- und YouTube-Schaltflächen an, wenn keine Lösung gefunden wird."
+  },
+  "messageSearchFeatureEnabled": {
+    "message": "Suchfunktion aktiviert - Google- und YouTube-Suchschaltflächen werden angezeigt, wenn keine Lösung gefunden wird"
+  },
+  "messageSearchFeatureDisabled": {
+    "message": "Suchfunktion deaktiviert - Es wird nur \"Keine Lösung\" angezeigt, wenn keine Lösung gefunden wird"
+  },
+  "tourStartButton": {
+    "message": "Benutzerhandbuch"
+  },
+  "tourWelcomeTitle": {
+    "message": "Willkommen zum Leitfaden für die Kontoerstellung!"
+  },
+  "tourWelcomeContent": {
+    "message": "Wir führen Sie Schritt für Schritt durch die Erstellung Ihres ersten Google Cloud Skills Boost Kontos."
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>Tipp:</strong> Sie können diesen Leitfaden jederzeit überspringen, indem Sie auf \"Überspringen\" klicken."
+  },
+  "tourAddAccountTitle": {
+    "message": "Neues Konto hinzufügen"
+  },
+  "tourAddAccountContent": {
+    "message": "Klicken Sie auf diese Schaltfläche, um Ihr erstes Google Cloud Skills Boost Konto hinzuzufügen. Sie können mehrere Konten gleichzeitig verwalten."
+  },
+  "tourAccountListTitle": {
+    "message": "Kontoliste"
+  },
+  "tourAccountListContent": {
+    "message": "Nach dem Erstellen von Konten werden sie hier angezeigt. Sie können:<br>• Zwischen Konten wechseln<br>• Arcade-Punktedaten aktualisieren<br>• Spitznamen bearbeiten<br>• Öffentliche Profile anzeigen"
+  },
+  "tourModalStep1Title": {
+    "message": "Schritt 1: Profilseite öffnen"
+  },
+  "tourModalStep1Content": {
+    "message": "Klicken Sie auf diese Schaltfläche, um Google Cloud Skills Boost Profil in einem neuen Tab zu öffnen. Sie müssen sich anmelden und die URL von der Profilseite abrufen."
+  },
+  "tourModalStep2Title": {
+    "message": "Schritt 2: Profil-URL eingeben"
+  },
+  "tourModalStep2Content": {
+    "message": "Nach der Anmeldung kopieren Sie die URL aus der Adressleiste und fügen Sie sie hier ein."
+  },
+  "tourModalStep2Tip": {
+    "message": "Die URL sieht so aus: https://www.skills.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "Schritt 3: Konto erstellen"
+  },
+  "tourModalStep3Content": {
+    "message": "Klicken Sie auf diese Schaltfläche, um das Konto zu erstellen. Das System ruft automatisch Informationen aus dem Profil ab und erstellt ein neues Konto für Sie."
+  },
+  "tourCompletedTitle": {
+    "message": "Leitfaden abgeschlossen!"
+  },
+  "tourCompletedContent": {
+    "message": "Jetzt können Sie mit der Erstellung Ihres ersten Kontos beginnen."
+  },
+  "tourModalCompletedTitle": {
+    "message": "Bereit zum Erstellen des Kontos!"
+  },
+  "tourModalCompletedContent": {
+    "message": "Versuchen Sie, eine Profil-URL einzugeben und Ihr erstes Konto zu erstellen."
+  },
+  "tourButtonNext": {
+    "message": "Weiter"
+  },
+  "tourButtonPrevious": {
+    "message": "Zurück"
+  },
+  "tourButtonSkip": {
+    "message": "Überspringen"
+  },
+  "tourButtonComplete": {
+    "message": "Fertig"
+  },
+  "tourCloseButton": {
+    "message": "Schließen"
+  },
+  "badgeToolbarNote": {
+    "message": "Wenn aktiviert, aktualisiert die Erweiterung das Toolbar-Abzeichen mit Ihren Gesamtpunkten (einschließlich Facilitator-Bonus, wenn aktiv)."
+  },
+  "badgeViewDescription": {
+    "message": "Sehen Sie alle Ihre verdienten Abzeichen und Erfolge."
+  },
+  "badgeTrackProgress": {
+    "message": "Verfolgen Sie Ihren Lernfortschritt!"
+  },
+  "labelAchievements": {
+    "message": "Erfolge"
+  },
+  "labelProgress": {
+    "message": "Fortschritt"
+  },
+  "errorEnterProfileUrl": {
+    "message": "Bitte geben Sie eine Profil-URL ein!"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "Ungültige Profil-URL!"
+  },
+  "errorAccountExistsTitle": {
+    "message": "Konto existiert bereits"
+  },
+  "errorAccountExistsMsg": {
+    "message": "Ein Konto mit dieser URL existiert bereits: \"$1\"."
+  },
+  "errorNoNameFromProfile": {
+    "message": "Name konnte nicht aus dem Profil abgerufen werden. Bitte versuchen Sie es erneut!"
+  },
+  "labelAdding": {
+    "message": "Wird hinzugefügt..."
+  },
+  "successAccountAdded": {
+    "message": "Konto erfolgreich hinzugefügt!"
+  },
+  "errorAddAccountGeneric": {
+    "message": "Beim Hinzufügen des Kontos ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!"
+  },
+  "errorAccountExistsMsgSimple": {
+    "message": "Konto existiert bereits."
+  },
+  "labelAddAccount": {
+    "message": "Konto hinzufügen"
+  },
+  "successSwitchedAccount": {
+    "message": "Konto erfolgreich gewechselt!"
+  },
+  "errorSwitchAccount": {
+    "message": "Fehler beim Wechseln des Kontos."
+  },
+  "errorAccountNotFound": {
+    "message": "Konto nicht gefunden."
+  },
+  "infoUpdatingAccountData": {
+    "message": "Kontodaten werden aktualisiert..."
+  },
+  "successAccountDataUpdated": {
+    "message": "Kontodaten erfolgreich aktualisiert!"
+  },
+  "errorFetchDataFromApi": {
+    "message": "Daten konnten nicht von der API abgerufen werden."
+  },
+  "errorUpdatingAccount": {
+    "message": "Fehler beim Aktualisieren des Kontos."
+  },
+  "errorProfileUrlNotFound": {
+    "message": "Profil-URL für dieses Konto nicht gefunden."
+  },
+  "errorOpeningProfile": {
+    "message": "Fehler beim Öffnen des Profils."
+  },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "Kein aktives Konto oder Profil-URL gefunden."
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "Konto zum Aktualisieren nicht gefunden!"
+  },
+  "successNicknameSaved": {
+    "message": "Spitzname erfolgreich gespeichert!"
+  },
+  "errorSavingNickname": {
+    "message": "Fehler beim Speichern des Spitznamens!"
+  },
+  "successNicknameUpdated": {
+    "message": "Spitzname erfolgreich aktualisiert!"
+  },
+  "errorUpdatingAccountGeneric": {
+    "message": "Beim Aktualisieren des Kontos ist ein Fehler aufgetreten!"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "Das letzte Konto kann nicht gelöscht werden!"
+  },
+  "successAccountDeleted": {
+    "message": "Konto erfolgreich gelöscht!"
+  },
+  "errorDeletingAccountGeneric": {
+    "message": "Beim Löschen des Kontos ist ein Fehler aufgetreten!"
+  },
+  "successDataExported": {
+    "message": "Daten erfolgreich exportiert!"
+  },
+  "errorExportingData": {
+    "message": "Beim Exportieren der Daten ist ein Fehler aufgetreten!"
+  },
+  "errorNoImportData": {
+    "message": "Bitte wählen Sie eine Datei aus oder fügen Sie JSON-Inhalt ein!"
+  },
+  "successDataImported": {
+    "message": "Daten erfolgreich importiert!"
+  },
+  "errorInvalidImportData": {
+    "message": "Ungültige Daten. Bitte überprüfen Sie es erneut!"
+  },
+  "errorImportingData": {
+    "message": "Beim Importieren der Daten ist ein Fehler aufgetreten!"
+  },
+  "labelFacilitatorProgram": {
+    "message": "Facilitator-Programm"
+  },
+  "messageBadgeEnabled": {
+    "message": "Abzeichen-Anzeige aktiviert"
+  },
+  "messageBadgeDisabled": {
+    "message": "Abzeichen-Anzeige deaktiviert"
+  },
+  "labelShowBadge": {
+    "message": "Abzeichen auf Erweiterungssymbol anzeigen"
+  },
+  "descriptionShowBadge": {
+    "message": "Umschalten, ob die Erweiterung die Gesamtpunkte auf dem Browser-Toolbar-Symbol anzeigt."
+  },
+  "facilitatorDeadlinePassed": {
+    "message": "Die Frist für das Facilitator-Programm ist abgelaufen"
+  },
+  "arcadeDeadlinePassed": {
+    "message": "Die Arcade-Saison ist für dieses Jahr abgeschlossen. Bis zur nächsten Saison!"
+  },
+  "programEnded": {
+    "message": "Programm beendet"
+  },
+  "statusCompleted": {
+    "message": "Abgeschlossen"
+  },
+  "statusInProgress": {
+    "message": "In Bearbeitung"
+  },
+  "statusNotStarted": {
+    "message": "Nicht begonnen"
+  },
+  "anonymous": {
+    "message": "Anonym"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "Fehler beim Laden der Daten"
+  },
+  "labelBack": {
+    "message": "Zurück"
+  },
+  "changelogWhatsNew": {
+    "message": "Was gibt's Neues"
+  },
+  "changelogLatestUpdates": {
+    "message": "Neueste Updates und Verbesserungen"
+  },
+  "changelogLoading": {
+    "message": "Änderungsprotokoll wird geladen..."
+  },
+  "changelogFooterNotice": {
+    "message": "Diese Erweiterung ist nicht mit Google Cloud Skills Boost verbunden. Alle Rechte vorbehalten."
+  },
+  "announcementTitle": {
+    "message": "Wichtige Ankündigung"
+  },
+  "markdownShowMore": {
+    "message": "Mehr anzeigen"
+  },
+  "accountsTitle": {
+    "message": "Ihre Konten"
+  },
+  "noAccountsYet": {
+    "message": "Noch keine Konten"
+  },
+  "addAccountFirst": {
+    "message": "Fügen Sie Ihr erstes Konto hinzu!"
+  },
+  "dataManagementTitle": {
+    "message": "Datenverwaltung"
+  },
+  "dataManagementSubtitle": {
+    "message": "Sichern und Wiederherstellen"
+  },
+  "exportData": {
+    "message": "Daten exportieren"
+  },
+  "importData": {
+    "message": "Daten importieren"
+  },
+  "modalAddAccountTitle": {
+    "message": "Neues Konto hinzufügen"
+  },
+  "howToGetProfileUrl": {
+    "message": "So erhalten Sie die Profil-URL"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "Folgen Sie den unten stehenden Schritten"
+  },
+  "openProfilePage": {
+    "message": "Profilseite öffnen"
+  },
+  "errorPrefix": {
+    "message": "Fehler:"
+  },
+  "successPrefix": {
+    "message": "Erfolg:"
+  },
+  "accountErrorFallback": {
+    "message": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "accountSuccessFallback": {
+    "message": "Ihre Aktion war erfolgreich!"
+  },
+  "viewBadges": {
+    "message": "Abzeichen anzeigen"
+  },
+  "openProfile": {
+    "message": "Profil öffnen"
+  },
+  "arcadePointsTitle": {
+    "message": "Arcade-Punkte"
+  },
+  "milestonesTitle": {
+    "message": "Meilensteine"
+  },
+  "accountsCardTitle": {
+    "message": "Kontoverwaltung & Arcade-Punkte-Rechner"
+  },
+  "accountsCardSubtitle": {
+    "message": "Verwalten Sie mehrere Konten und berechnen Sie Arcade-Punkte."
+  },
+  "clickOpenProfileButton": {
+    "message": "Klicken Sie auf die Schaltfläche \"Profilseite öffnen\""
+  },
+  "programDeadline": {
+    "message": "Programmfrist"
+  },
+  "labelDays": {
+    "message": "Tage"
+  },
+  "labelHours": {
+    "message": "Stunden"
+  },
+  "labelMinutes": {
+    "message": "Minuten"
+  },
+  "labelSeconds": {
+    "message": "Sekunden"
+  },
+  "milestoneDeadlineNotice": {
+    "message": "Schließen Sie Meilensteine vor der Frist ab, um Bonuspunkte zu verdienen!"
+  },
+  "arcadeMotivation": {
+    "message": "Bleiben Sie am Ball und klettern Sie die Arcade-Rangliste hinauf!"
+  },
+  "totalBonusEarned": {
+    "message": "Gesamtbonus verdient:"
+  },
+  "maxPossibleNote": {
+    "message": "Maximal möglich: 25 Punkte (nur höchster Meilenstein)"
+  },
+  "pointsBreakdown": {
+    "message": "Punkte-Aufschlüsselung"
+  },
+  "arcadeBase": {
+    "message": "Arcade Basis:"
+  },
+  "facilitatorBonus": {
+    "message": "Facilitator-Bonus:"
+  },
+  "gameBadgeLabel": {
+    "message": "Spiel-Abzeichen"
+  },
+  "triviaBadgeLabel": {
+    "message": "Trivia-Abzeichen"
+  },
+  "skillBadgeLabel": {
+    "message": "Skill-Abzeichen"
+  },
+  "specialPointsLabel": {
+    "message": "Spezialpunkte"
+  },
+  "arcadeSeasonCountdown": {
+    "message": "Arcade-Saison-Countdown"
+  },
+  "milestone1": {
+    "message": "Meilenstein 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 Bonuspunkte"
+  },
+  "milestone2": {
+    "message": "Meilenstein 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 Bonuspunkte"
+  },
+  "milestone3": {
+    "message": "Meilenstein 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 Bonuspunkte"
+  },
+  "milestoneUltimate": {
+    "message": "Ultimativ"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 Bonuspunkte"
+  },
+  "progressLabel": {
+    "message": "Fortschritt:"
+  },
+  "gamesLabel": {
+    "message": "Spiele:"
+  },
+  "triviaLabel": {
+    "message": "Trivia:"
+  },
+  "skillsLabel": {
+    "message": "Skills:"
+  },
+  "labFreeLabel": {
+    "message": "Lab-frei:"
+  },
+  "switchAccount": {
+    "message": "Konto wechseln"
+  },
+  "statusActive": {
+    "message": "Aktiv"
+  },
+  "quickSearch": {
+    "message": "Schnellsuche"
+  },
+  "youtubeResults": {
+    "message": "YouTube-Ergebnisse"
+  },
+  "searchFeatureTip": {
+    "message": "Hilft Ihnen, Antworten schneller zu finden!"
+  },
+  "successAccountCreated": {
+    "message": "Konto erfolgreich erstellt!"
+  },
+  "successAddNickname": {
+    "message": "Sie können einen Spitznamen hinzufügen, um dieses Konto leicht zu identifizieren."
+  },
+  "newlyCreated": {
+    "message": "Neu erstellt"
+  },
+  "labelNickname": {
+    "message": "Spitzname:"
+  },
+  "noNicknameYet": {
+    "message": "Noch kein Spitzname"
+  },
+  "labelUpdated": {
+    "message": "Aktualisiert:"
+  },
+  "justCreated": {
+    "message": "Gerade erstellt"
+  },
+  "markdownShowLess": {
+    "message": "Weniger anzeigen"
+  },
+  "importantNoticeTitle": {
+    "message": "Wichtiger Hinweis"
+  },
+  "importantNoticeText": {
+    "message": "Jede Profil-URL kann nur einmal hinzugefügt werden. Das System überprüft und benachrichtigt Sie, wenn das Konto bereits existiert."
+  },
+  "enterProfileUrlLabel": {
+    "message": "Profil-URL eingeben und Konto erstellen"
+  },
+  "createAccountButton": {
+    "message": "Konto erstellen"
+  },
+  "instructionsLabel": {
+    "message": "Anleitung:"
+  },
+  "instructionsText": {
+    "message": "Geben Sie die URL ein und klicken Sie auf \"Konto erstellen\". Das System lädt automatisch Informationen und erstellt ein neues Konto."
+  },
+  "step1Title": {
+    "message": "Klicken Sie auf die Schaltfläche \"Profilseite öffnen\""
+  },
+  "step1Subtitle": {
+    "message": "Öffnet Google Cloud Skills Boost in einem neuen Tab"
+  },
+  "step2Title": {
+    "message": "Anmelden (falls noch nicht geschehen)"
+  },
+  "step2Subtitle": {
+    "message": "Verwenden Sie Ihr Google-Konto"
+  },
+  "step3Title": {
+    "message": "Abschnitt \"Öffentliches Profil\" finden"
+  },
+  "step3Subtitle": {
+    "message": "Scrollen Sie auf der Profilseite nach unten"
+  },
+  "step4Title": {
+    "message": "URL aus der Adressleiste kopieren"
+  },
+  "step4Subtitle": {
+    "message": "In das Feld unten einfügen"
+  },
+  "newAccountBadge": {
+    "message": "Neues Konto"
+  },
+  "totalBadgesLabel": {
+    "message": "Abzeichen insgesamt"
+  },
+  "skillBadgesLabel": {
+    "message": "Skill-Abzeichen"
+  },
+  "arcadePointsLabel": {
+    "message": "Arcade-Punkte"
+  },
+  "accountNicknameLabel": {
+    "message": "Konto-Spitzname"
+  },
+  "nicknamePlaceholder": {
+    "message": "z.B.: Hauptkonto, Arbeitskonto, Studiumskonto..."
+  },
+  "nicknameHelpText": {
+    "message": "Spitznamen helfen Ihnen, Konten leicht zu identifizieren, wenn Sie mehrere verschiedene Konten haben"
+  },
+  "editAccountTitle": {
+    "message": "Konto bearbeiten"
+  },
+  "displayNameLabel": {
+    "message": "Anzeigename:"
+  },
+  "displayNameInfo": {
+    "message": "Der Anzeigename wird von Google Cloud Skills Boost übernommen und kann nicht bearbeitet werden"
+  },
+  "nicknameLabel": {
+    "message": "Spitzname:"
+  },
+  "enterNicknamePlaceholder": {
+    "message": "Geben Sie einen Spitznamen zur einfachen Identifizierung ein..."
+  },
+  "nicknameExample": {
+    "message": "Beispiel: \"Hauptkonto\", \"Arbeitskonto\", \"Studiumskonto\"..."
+  },
+  "cancelButton": {
+    "message": "Abbrechen"
+  },
+  "saveChangesButton": {
+    "message": "Änderungen speichern"
+  }
+}
