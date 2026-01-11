@@ -1,0 +1,406 @@
+{
+  "extName": {
+    "message": "Google Cloud Skills Boost - 助手"
+  },
+  "extDescription": {
+    "message": "一个旨在优化您在 Google Cloud Skills Boost 上学习体验的浏览器扩展。"
+  },
+  "optionsPageTitle": {
+    "message": "Google Cloud Skills Boost - 助手选项"
+  },
+  "optionsPageDescription": {
+    "message": "自定义您的 Google Cloud Skills Boost - 助手体验。"
+  },
+  "labelFeature": {
+    "message": "功能"
+  },
+  "labelAction": {
+    "message": "操作"
+  },
+  "labelShowLeaderboard": {
+    "message": "显示排行榜"
+  },
+  "labelHideLeaderboard": {
+    "message": "隐藏排行榜"
+  },
+  "labelMyBadges": {
+    "message": "我的徽章"
+  },
+  "labelPublicProfile": {
+    "message": "公开个人资料"
+  },
+  "labelArcadePointsCalculator": {
+    "message": "Arcade 积分计算器"
+  },
+  "labelSave": {
+    "message": "保存"
+  },
+  "labelLoading": {
+    "message": "加载中..."
+  },
+  "messageNoDataAvailable": {
+    "message": "暂无数据"
+  },
+  "labelRecentActivity": {
+    "message": "最近活动"
+  },
+  "labelBadgesAchievements": {
+    "message": "徽章与成就"
+  },
+  "labelUpdatePoints": {
+    "message": "更新积分"
+  },
+  "labelLastUpdated": {
+    "message": "最后更新"
+  },
+  "labelPage": {
+    "message": "页"
+  },
+  "labelLoadMore": {
+    "message": "加载更多"
+  },
+  "textCurrentLevel": {
+    "message": "当前等级"
+  },
+  "textMaxLevel": {
+    "message": "最高等级"
+  },
+  "textNextLevelInPoints": {
+    "message": "升级还需"
+  },
+  "textPoints": {
+    "message": "积分"
+  },
+  "textPleaseSetUpTheSettings": {
+    "message": "请设置配置"
+  },
+  "errorInvalidUrl": {
+    "message": "请输入以 'https://www.skills.google/public_profiles/xxx' 开头的有效 URL"
+  },
+  "successSettingsSaved": {
+    "message": "设置保存成功！"
+  },
+  "notePleaseSetUpTheSettings": {
+    "message": "<strong>注意：</strong> <br>⚠️ 您已启用<strong>\"公开个人资料\"</strong>选项，但尚未保存更改。<br>👉 请点击<strong>\"更新设置\"</strong>按钮以确认并保存新设置。<br>❌ 如果不保存，您的个人资料将<strong>不会公开</strong>，链接也不会生成。"
+  },
+  "messageLinkCopiedToClipboard": {
+    "message": "✔️ 链接已复制到剪贴板！"
+  },
+  "labelEnableSearchFeature": {
+    "message": "启用搜索功能"
+  },
+  "descriptionEnableSearchFeature": {
+    "message": "当未找到解决方案时显示 Google 搜索和 YouTube 按钮。"
+  },
+  "messageSearchFeatureEnabled": {
+    "message": "搜索功能已启用 - 当未找到解决方案时将显示 Google 和 YouTube 搜索按钮"
+  },
+  "messageSearchFeatureDisabled": {
+    "message": "搜索功能已禁用 - 当未找到解决方案时仅显示\"无解决方案\""
+  },
+  "tourStartButton": {
+    "message": "用户指南"
+  },
+  "tourWelcomeTitle": {
+    "message": "欢迎来到账户创建指南！"
+  },
+  "tourWelcomeContent": {
+    "message": "我们将逐步指导您创建第一个 Google Cloud Skills Boost 账户。"
+  },
+  "tourWelcomeTip": {
+    "message": "<strong>提示：</strong>您可以随时点击\"跳过\"来跳过本指南。"
+  },
+  "tourAddAccountTitle": {
+    "message": "添加新账户"
+  },
+  "tourAddAccountContent": {
+    "message": "点击此按钮添加您的第一个 Google Cloud Skills Boost 账户。您可以同时管理多个账户。"
+  },
+  "tourAccountListTitle": {
+    "message": "账户列表"
+  },
+  "tourAccountListContent": {
+    "message": "创建账户后，它们将显示在这里。您可以：<br>• 在账户之间切换<br>• 更新 arcade 积分数据<br>• 编辑昵称<br>• 查看公开个人资料"
+  },
+  "tourModalStep1Title": {
+    "message": "步骤 1：打开个人资料页面"
+  },
+  "tourModalStep1Content": {
+    "message": "点击此按钮在新标签页中打开 Google Cloud Skills Boost 个人资料。您需要登录并从个人资料页面获取 URL。"
+  },
+  "tourModalStep2Title": {
+    "message": "步骤 2：输入个人资料 URL"
+  },
+  "tourModalStep2Content": {
+    "message": "登录后，从地址栏复制 URL 并粘贴到这里。"
+  },
+  "tourModalStep2Tip": {
+    "message": "URL 格式如下：https://www.skills.google/public_profiles/xxxxx"
+  },
+  "tourModalStep3Title": {
+    "message": "步骤 3：创建账户"
+  },
+  "tourModalStep3Content": {
+    "message": "点击此按钮创建账户。系统将自动从个人资料获取信息并为您创建新账户。"
+  },
+  "tourCompletedTitle": {
+    "message": "指南完成！"
+  },
+  "tourCompletedContent": {
+    "message": "现在您可以开始创建第一个账户了。"
+  },
+  "tourModalCompletedTitle": {
+    "message": "准备创建账户！"
+  },
+  "tourModalCompletedContent": {
+    "message": "尝试输入个人资料 URL 并创建您的第一个账户。"
+  },
+  "tourButtonNext": {
+    "message": "下一步"
+  },
+  "tourButtonPrevious": {
+    "message": "返回"
+  },
+  "tourButtonSkip": {
+    "message": "跳过"
+  },
+  "tourButtonComplete": {
+    "message": "完成"
+  },
+  "tourCloseButton": {
+    "message": "关闭"
+  },
+  "badgeToolbarNote": {
+    "message": "启用后，扩展将使用您的总积分更新工具栏徽章（活跃时包含 facilitator 奖励）。"
+  },
+  "badgeViewDescription": {
+    "message": "查看您获得的所有徽章和成就。"
+  },
+  "badgeTrackProgress": {
+    "message": "跟踪您的学习进度！"
+  },
+  "labelAchievements": {
+    "message": "成就"
+  },
+  "labelProgress": {
+    "message": "进度"
+  },
+  "errorEnterProfileUrl": { "message": "请输入个人资料 URL！" },
+  "errorInvalidProfileUrl": { "message": "无效的个人资料 URL！" },
+  "errorAccountExistsTitle": { "message": "账户已存在" },
+  "errorAccountExistsMsg": {
+    "message": "此 URL 的账户已存在：\"$1\"。"
+  },
+  "errorNoNameFromProfile": {
+    "message": "无法从个人资料获取名称。请重试！"
+  },
+  "labelAdding": { "message": "添加中..." },
+  "successAccountAdded": { "message": "账户添加成功！" },
+  "errorAddAccountGeneric": {
+    "message": "添加账户时发生错误。请重试！"
+  },
+  "errorAccountExistsMsgSimple": { "message": "账户已存在。" },
+  "labelAddAccount": { "message": "添加账户" },
+  "successSwitchedAccount": { "message": "账户切换成功！" },
+  "errorSwitchAccount": { "message": "账户切换错误。" },
+  "errorAccountNotFound": { "message": "未找到账户。" },
+  "infoUpdatingAccountData": { "message": "正在更新账户数据..." },
+  "successAccountDataUpdated": {
+    "message": "账户数据更新成功！"
+  },
+  "errorFetchDataFromApi": { "message": "无法从 API 获取数据。" },
+  "errorUpdatingAccount": { "message": "更新账户错误。" },
+  "errorProfileUrlNotFound": {
+    "message": "未找到此账户的个人资料 URL。"
+  },
+  "errorOpeningProfile": { "message": "打开个人资料错误。" },
+  "errorNoActiveAccountOrProfileUrl": {
+    "message": "未找到活跃账户或个人资料 URL。"
+  },
+  "errorAccountNotFoundToUpdate": {
+    "message": "找不到要更新的账户！"
+  },
+  "successNicknameSaved": { "message": "昵称保存成功！" },
+  "errorSavingNickname": { "message": "保存昵称错误！" },
+  "successNicknameUpdated": { "message": "昵称更新成功！" },
+  "errorUpdatingAccountGeneric": {
+    "message": "更新账户时发生错误！"
+  },
+  "errorCannotDeleteLastAccount": {
+    "message": "无法删除最后一个账户！"
+  },
+  "successAccountDeleted": { "message": "账户删除成功！" },
+  "errorDeletingAccountGeneric": {
+    "message": "删除账户时发生错误！"
+  },
+  "successDataExported": { "message": "数据导出成功！" },
+  "errorExportingData": {
+    "message": "导出数据时发生错误！"
+  },
+  "errorNoImportData": {
+    "message": "请选择文件或粘贴 JSON 内容！"
+  },
+  "successDataImported": { "message": "数据导入成功！" },
+  "errorInvalidImportData": { "message": "无效数据。请重新检查！" },
+  "errorImportingData": {
+    "message": "导入数据时发生错误！"
+  },
+  "labelFacilitatorProgram": { "message": "Facilitator 计划" },
+  "messageBadgeEnabled": { "message": "徽章显示已启用" },
+  "messageBadgeDisabled": { "message": "徽章显示已禁用" },
+  "labelShowBadge": { "message": "在扩展图标上显示徽章" },
+  "descriptionShowBadge": {
+    "message": "切换扩展是否在浏览器工具栏图标上显示总积分。"
+  },
+  "facilitatorDeadlinePassed": {
+    "message": "Facilitator 计划截止日期已过"
+  },
+  "arcadeDeadlinePassed": {
+    "message": "Arcade 赛季今年已结束。下个赛季见！"
+  },
+  "programEnded": { "message": "计划已结束" },
+  "statusCompleted": { "message": "已完成" },
+  "statusInProgress": { "message": "进行中" },
+  "statusNotStarted": { "message": "未开始" },
+  "anonymous": { "message": "匿名" },
+  "vip": { "message": "VIP" },
+  "errorLoadingData": { "message": "加载数据错误" },
+  "labelBack": { "message": "返回" },
+  "changelogWhatsNew": { "message": "更新内容" },
+  "changelogLatestUpdates": { "message": "最新更新和改进" },
+  "changelogLoading": { "message": "加载更新日志中..." },
+  "changelogFooterNotice": {
+    "message": "此扩展与 Google Cloud Skills Boost 无关。保留所有权利。"
+  },
+  "announcementTitle": { "message": "重要公告" },
+  "markdownShowMore": { "message": "显示更多" },
+  "accountsTitle": { "message": "您的账户" },
+  "noAccountsYet": { "message": "还没有账户" },
+  "addAccountFirst": { "message": "添加您的第一个账户！" },
+  "dataManagementTitle": { "message": "数据管理" },
+  "dataManagementSubtitle": { "message": "备份和恢复" },
+  "exportData": { "message": "导出数据" },
+  "importData": { "message": "导入数据" },
+  "modalAddAccountTitle": { "message": "添加新账户" },
+  "howToGetProfileUrl": { "message": "如何获取个人资料 URL" },
+  "howToGetProfileSubtitle": { "message": "按照以下步骤操作" },
+  "openProfilePage": { "message": "打开个人资料页面" },
+  "errorPrefix": { "message": "错误：" },
+  "successPrefix": { "message": "成功：" },
+  "accountErrorFallback": {
+    "message": "出了点问题。请重试。"
+  },
+  "accountSuccessFallback": { "message": "操作成功！" },
+  "viewBadges": { "message": "查看徽章" },
+  "openProfile": { "message": "打开个人资料" },
+  "arcadePointsTitle": { "message": "Arcade 积分" },
+  "milestonesTitle": { "message": "里程碑" },
+  "accountsCardTitle": {
+    "message": "账户管理 & Arcade 积分计算器"
+  },
+  "accountsCardSubtitle": {
+    "message": "管理多个账户并计算 arcade 积分。"
+  },
+  "clickOpenProfileButton": { "message": "点击\"打开个人资料页面\"按钮" },
+  "programDeadline": { "message": "计划截止日期" },
+  "labelDays": { "message": "天" },
+  "labelHours": { "message": "小时" },
+  "labelMinutes": { "message": "分钟" },
+  "labelSeconds": { "message": "秒" },
+  "milestoneDeadlineNotice": {
+    "message": "在截止日期前完成里程碑以获得奖励积分！"
+  },
+  "arcadeMotivation": {
+    "message": "保持势头，攀登 Arcade 排行榜！"
+  },
+  "totalBonusEarned": { "message": "已获得总奖励：" },
+  "maxPossibleNote": {
+    "message": "最高可能：25 积分（仅限最高里程碑）"
+  },
+  "pointsBreakdown": { "message": "积分明细" },
+  "arcadeBase": { "message": "Arcade 基础：" },
+  "facilitatorBonus": { "message": "Facilitator 奖励：" },
+  "gameBadgeLabel": { "message": "游戏徽章" },
+  "triviaBadgeLabel": { "message": "问答徽章" },
+  "skillBadgeLabel": { "message": "技能徽章" },
+  "specialPointsLabel": { "message": "特殊积分" },
+  "arcadeSeasonCountdown": { "message": "Arcade 赛季倒计时" },
+  "milestone1": { "message": "里程碑 1" },
+  "milestone1Bonus": { "message": "+2 奖励积分" },
+  "milestone2": { "message": "里程碑 2" },
+  "milestone2Bonus": { "message": "+8 奖励积分" },
+  "milestone3": { "message": "里程碑 3" },
+  "milestone3Bonus": { "message": "+15 奖励积分" },
+  "milestoneUltimate": { "message": "终极" },
+  "milestoneUltimateBonus": { "message": "+25 奖励积分" },
+  "progressLabel": { "message": "进度：" },
+  "gamesLabel": { "message": "游戏：" },
+  "triviaLabel": { "message": "问答：" },
+  "skillsLabel": { "message": "技能：" },
+  "labFreeLabel": { "message": "免实验室：" },
+  "switchAccount": { "message": "切换账户" },
+  "statusActive": { "message": "活跃" },
+  "quickSearch": { "message": "快速搜索" },
+  "youtubeResults": { "message": "YouTube 结果" },
+  "searchFeatureTip": { "message": "帮助您更快找到答案！" },
+  "successAccountCreated": { "message": "账户创建成功！" },
+  "successAddNickname": {
+    "message": "您可以添加昵称以便轻松识别此账户。"
+  },
+  "newlyCreated": { "message": "新创建" },
+  "labelNickname": { "message": "昵称：" },
+  "noNicknameYet": { "message": "还没有昵称" },
+  "labelUpdated": { "message": "已更新：" },
+  "justCreated": { "message": "刚刚创建" },
+  "markdownShowLess": { "message": "显示更少" },
+  "importantNoticeTitle": { "message": "重要提示" },
+  "importantNoticeText": {
+    "message": "每个个人资料 URL 只能添加一次。系统会检查并在账户已存在时通知您。"
+  },
+  "enterProfileUrlLabel": { "message": "输入个人资料 URL 并创建账户" },
+  "createAccountButton": { "message": "创建账户" },
+  "instructionsLabel": { "message": "说明：" },
+  "instructionsText": {
+    "message": "输入 URL 并点击\"创建账户\"。系统将自动加载信息并创建新账户。"
+  },
+  "step1Title": { "message": "点击\"打开个人资料页面\"按钮" },
+  "step1Subtitle": {
+    "message": "将在新标签页中打开 Google Cloud Skills Boost"
+  },
+  "step2Title": { "message": "登录（如果尚未登录）" },
+  "step2Subtitle": { "message": "使用您的 Google 账户" },
+  "step3Title": { "message": "找到\"公开个人资料\"部分" },
+  "step3Subtitle": { "message": "在个人资料页面向下滚动" },
+  "step4Title": { "message": "从地址栏复制 URL" },
+  "step4Subtitle": { "message": "粘贴到下面的字段中" },
+  "newAccountBadge": { "message": "新账户" },
+  "totalBadgesLabel": { "message": "总徽章数" },
+  "skillBadgesLabel": { "message": "技能徽章" },
+  "arcadePointsLabel": { "message": "Arcade 积分" },
+  "accountNicknameLabel": { "message": "账户昵称" },
+  "nicknamePlaceholder": {
+    "message": "例如：主账户、工作账户、学习账户..."
+  },
+  "nicknameHelpText": {
+    "message": "昵称帮助您在拥有多个不同账户时轻松识别账户"
+  },
+  "editAccountTitle": { "message": "编辑账户" },
+  "displayNameLabel": { "message": "显示名称：" },
+  "displayNameInfo": {
+    "message": "显示名称来自 Google Cloud Skills Boost，无法编辑"
+  },
+  "nicknameLabel": { "message": "昵称：" },
+  "enterNicknamePlaceholder": {
+    "message": "输入昵称以便识别..."
+  },
+  "nicknameExample": {
+    "message": "例如：\"主账户\"、\"工作账户\"、\"学习账户\"..."
+  },
+  "cancelButton": { "message": "取消" },
+  "saveChangesButton": { "message": "保存更改" },
+  "changelogPageTitle": {
+    "message": "更新日志 - Google Cloud Skills Boost 助手"
+  },
+  "labelEnabled": { "message": "已启用" },
+  "labelDisabled": { "message": "已禁用" }
+}

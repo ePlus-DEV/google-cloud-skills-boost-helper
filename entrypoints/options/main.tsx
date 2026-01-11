@@ -1,5 +1,10 @@
 import { OptionsService, BrowserService } from "../../services";
 
+// Set document title
+document.title =
+  chrome.i18n.getMessage("optionsPageTitle") ||
+  "Options - Google Cloud Skills Boost Helper";
+
 // Function to localize elements with data-i18n attributes
 function localizeElements() {
   const elements = document.querySelectorAll("[data-i18n]");

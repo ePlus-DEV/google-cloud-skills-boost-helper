@@ -71,9 +71,6 @@
   "textPoints": {
     "message": "points"
   },
-  "labelShowOptions": {
-    "message": "Afficher les options"
-  },
   "textPleaseSetUpTheSettings": {
     "message": "Veuillez configurer les paramètres"
   },
@@ -173,6 +170,21 @@
   "tourCloseButton": {
     "message": "Fermer"
   },
+  "badgeToolbarNote": {
+    "message": "Lorsque activé, l'extension mettra à jour le badge de la barre d'outils avec votre total de points (inclut le bonus Facilitateur si actif)."
+  },
+  "badgeViewDescription": {
+    "message": "Voir tous vos badges et réalisations obtenus."
+  },
+  "badgeTrackProgress": {
+    "message": "Suivez votre progression d'apprentissage !"
+  },
+  "labelAchievements": {
+    "message": "Réalisations"
+  },
+  "labelProgress": {
+    "message": "Progression"
+  },
   "errorEnterProfileUrl": { "message": "Veuillez saisir l'URL du profil !" },
   "errorInvalidProfileUrl": { "message": "URL du profil invalide !" },
   "errorAccountExistsTitle": { "message": "Le compte existe déjà" },
@@ -254,7 +266,7 @@
     "message": "La date limite du programme Facilitateur est passée"
   },
   "arcadeDeadlinePassed": {
-    "message": "La saison Arcade est terminée pour cette année. À bientôt !"
+    "message": "La saison Arcade est terminée pour l'année. À la saison prochaine !"
   },
   "programEnded": { "message": "Programme terminé" },
   "statusCompleted": { "message": "Terminé" },
@@ -264,6 +276,150 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Erreur lors du chargement des données" },
   "labelBack": { "message": "Retour" },
-  "labelSettings": { "message": "Paramètres" },
-  "labelReturnToSettings": { "message": "Retour aux paramètres" }
+  "changelogWhatsNew": { "message": "Nouveautés" },
+  "changelogLatestUpdates": {
+    "message": "Dernières mises à jour et améliorations"
+  },
+  "changelogLoading": { "message": "Chargement du journal..." },
+  "changelogFooterNotice": {
+    "message": "Cette extension n'est pas affiliée à Google Cloud Skills Boost. Tous droits réservés."
+  },
+  "announcementTitle": { "message": "Annonce importante" },
+  "markdownShowMore": { "message": "Afficher plus" },
+  "accountsTitle": { "message": "Vos comptes" },
+  "noAccountsYet": { "message": "Aucun compte pour le moment" },
+  "addAccountFirst": { "message": "Ajoutez votre premier compte !" },
+  "dataManagementTitle": { "message": "Gestion des données" },
+  "dataManagementSubtitle": { "message": "Sauvegarde et restauration" },
+  "exportData": { "message": "Exporter les données" },
+  "importData": { "message": "Importer des données" },
+  "modalAddAccountTitle": { "message": "Ajouter un nouveau compte" },
+  "howToGetProfileUrl": { "message": "Comment obtenir l'URL du profil" },
+  "howToGetProfileSubtitle": { "message": "Suivez les étapes ci-dessous" },
+  "openProfilePage": { "message": "Ouvrir la page de profil" },
+  "errorPrefix": { "message": "Erreur :" },
+  "successPrefix": { "message": "Succès :" },
+  "accountErrorFallback": {
+    "message": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "accountSuccessFallback": { "message": "Votre action a réussi !" },
+  "viewBadges": { "message": "Voir les badges" },
+  "openProfile": { "message": "Ouvrir le profil" },
+  "arcadePointsTitle": { "message": "Points Arcade" },
+  "milestonesTitle": { "message": "Étapes importantes" },
+  "accountsCardTitle": {
+    "message": "Gestion des comptes et calculateur de points Arcade"
+  },
+  "accountsCardSubtitle": {
+    "message": "Gérez plusieurs comptes et calculez les points Arcade."
+  },
+  "clickOpenProfileButton": {
+    "message": "Cliquez sur le bouton \"Ouvrir la page de profil\""
+  },
+  "programDeadline": { "message": "Date limite du programme" },
+  "labelDays": { "message": "Jours" },
+  "labelHours": { "message": "Heures" },
+  "labelMinutes": { "message": "Minutes" },
+  "labelSeconds": { "message": "Secondes" },
+  "milestoneDeadlineNotice": {
+    "message": "Complétez les étapes avant la date limite pour gagner des points bonus !"
+  },
+  "arcadeMotivation": {
+    "message": "Gardez l'élan et grimpez dans le classement Arcade !"
+  },
+  "totalBonusEarned": { "message": "Bonus total gagné :" },
+  "maxPossibleNote": {
+    "message": "Maximum possible : 25 points (seulement le plus haut palier)"
+  },
+  "pointsBreakdown": { "message": "Répartition des points" },
+  "arcadeBase": { "message": "Base Arcade :" },
+  "facilitatorBonus": { "message": "Bonus Facilitateur :" },
+  "gameBadgeLabel": { "message": "Badge de jeu" },
+  "triviaBadgeLabel": { "message": "Badge Quiz" },
+  "skillBadgeLabel": { "message": "Badge Compétence" },
+  "specialPointsLabel": { "message": "Points spéciaux" },
+  "arcadeSeasonCountdown": {
+    "message": "Compte à rebours de la saison Arcade"
+  },
+  "milestone1": { "message": "Palier 1" },
+  "milestone1Bonus": { "message": "+2 points bonus" },
+  "milestone2": { "message": "Palier 2" },
+  "milestone2Bonus": { "message": "+8 points bonus" },
+  "milestone3": { "message": "Palier 3" },
+  "milestone3Bonus": { "message": "+15 points bonus" },
+  "milestoneUltimate": { "message": "Ultime" },
+  "milestoneUltimateBonus": { "message": "+25 points bonus" },
+  "progressLabel": { "message": "Progression :" },
+  "gamesLabel": { "message": "Jeux :" },
+  "triviaLabel": { "message": "Quiz :" },
+  "skillsLabel": { "message": "Compétences :" },
+  "labFreeLabel": { "message": "Sans labo :" },
+  "switchAccount": { "message": "Changer de compte" },
+  "statusActive": { "message": "Actif" },
+  "quickSearch": { "message": "Recherche rapide" },
+  "youtubeResults": { "message": "Résultats YouTube" },
+  "searchFeatureTip": {
+    "message": "Vous aide à trouver des réponses plus rapidement !"
+  },
+  "successAccountCreated": { "message": "Compte créé avec succès !" },
+  "successAddNickname": {
+    "message": "Vous pouvez ajouter un surnom pour identifier plus facilement ce compte."
+  },
+  "newlyCreated": { "message": "Nouvellement créé" },
+  "labelNickname": { "message": "Surnom :" },
+  "noNicknameYet": { "message": "Pas encore de surnom" },
+  "labelUpdated": { "message": "Mis à jour :" },
+  "justCreated": { "message": "Vient d'être créé" },
+  "markdownShowLess": { "message": "Afficher moins" },
+  "importantNoticeTitle": { "message": "Avis important" },
+  "importantNoticeText": {
+    "message": "Chaque URL de profil ne peut être ajoutée qu'une seule fois. Le système vérifiera et notifiera si le compte existe déjà."
+  },
+  "enterProfileUrlLabel": {
+    "message": "Entrez l'URL du profil et créez un compte"
+  },
+  "createAccountButton": { "message": "Créer un compte" },
+  "instructionsLabel": { "message": "Instructions :" },
+  "instructionsText": {
+    "message": "Entrez l'URL et cliquez sur \"Créer un compte\". Le système chargera automatiquement les informations et créera un nouveau compte."
+  },
+  "step1Title": {
+    "message": "Cliquez sur le bouton \"Ouvrir la page de profil\""
+  },
+  "step1Subtitle": {
+    "message": "Ouvrira Google Cloud Skills Boost dans un nouvel onglet"
+  },
+  "step2Title": { "message": "Connectez-vous (si ce n'est pas déjà fait)" },
+  "step2Subtitle": { "message": "Utilisez votre compte Google" },
+  "step3Title": { "message": "Trouvez la section \"Profil public\"" },
+  "step3Subtitle": {
+    "message": "Faites défiler vers le bas dans la page de profil"
+  },
+  "step4Title": { "message": "Copiez l'URL depuis la barre d'adresse" },
+  "step4Subtitle": { "message": "Collez dans le champ ci-dessous" },
+  "newAccountBadge": { "message": "Nouveau compte" },
+  "totalBadgesLabel": { "message": "Total des badges" },
+  "skillBadgesLabel": { "message": "Badges de compétence" },
+  "arcadePointsLabel": { "message": "Points Arcade" },
+  "accountNicknameLabel": { "message": "Surnom du compte" },
+  "nicknamePlaceholder": {
+    "message": "ex: Compte principal, Compte travail, Compte études..."
+  },
+  "nicknameHelpText": {
+    "message": "Les surnoms vous aident à identifier facilement les comptes lorsque vous avez plusieurs comptes différents"
+  },
+  "editAccountTitle": { "message": "Modifier le compte" },
+  "displayNameLabel": { "message": "Nom d'affichage :" },
+  "displayNameInfo": {
+    "message": "Le nom d'affichage provient de Google Cloud Skills Boost et ne peut pas être modifié"
+  },
+  "nicknameLabel": { "message": "Surnom :" },
+  "enterNicknamePlaceholder": {
+    "message": "Entrez un surnom pour faciliter l'identification..."
+  },
+  "nicknameExample": {
+    "message": "Exemple : \"Compte principal\", \"Compte travail\", \"Compte études\"..."
+  },
+  "cancelButton": { "message": "Annuler" },
+  "saveChangesButton": { "message": "Enregistrer les modifications" }
 }

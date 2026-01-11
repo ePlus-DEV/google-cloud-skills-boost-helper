@@ -999,14 +999,28 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
       source?: string,
     ): string => {
       try {
-        const dateStr = date.toLocaleString(undefined, {
-          month: "short",
-          day: "2-digit",
+        // Format: "10:20 01/10/2027 (GMT+7)" - respects user's locale
+        const locale = navigator.language || "en-US";
+
+        const timeStr = date.toLocaleTimeString(locale, {
           hour: "2-digit",
           minute: "2-digit",
-          timeZoneName: "short",
+          hour12: false,
         });
-        return dateStr;
+
+        const dateStr = date.toLocaleDateString(locale, {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+
+        // Get timezone offset in GMT format
+        const offset = -date.getTimezoneOffset();
+        const offsetHours = Math.floor(Math.abs(offset) / 60);
+        const offsetSign = offset >= 0 ? "+" : "-";
+        const timezone = `GMT${offsetSign}${offsetHours}`;
+
+        return `${timeStr} ${dateStr} (${timezone})`;
       } catch (e) {
         console.debug("formatCountdownDeadlineLabel fallback triggered", e);
         return date.toISOString();
@@ -1187,38 +1201,38 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center">
                     <i class="fa-solid fa-gamepad text-sky-400 text-lg mr-2"></i>
-                    <span class="text-white font-bold text-sm">
+                    <span class="text-white font-bold text-sm" data-i18n="arcadeSeasonCountdown">
                       Arcade Season Countdown
                     </span>
                   </div>
                   <div class="text-xs text-sky-300/70 countdown-deadline-label" title="Configuration source will be displayed here">
-                    Loading...
+                    <span data-i18n="labelLoading">Loading...</span>
                   </div>
                 </div>
                 <div class="flex items-center justify-center space-x-4 text-center">
                   <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                     <div class="text-sky-400 font-bold text-lg countdown-days">00</div>
-                    <div class="text-sky-300/70 text-xs">Days</div>
+                    <div class="text-sky-300/70 text-xs" data-i18n="labelDays">Days</div>
                   </div>
                   <div class="text-sky-400 text-lg">:</div>
                   <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                     <div class="text-sky-400 font-bold text-lg countdown-hours">00</div>
-                    <div class="text-sky-300/70 text-xs">Hours</div>
+                    <div class="text-sky-300/70 text-xs" data-i18n="labelHours">Hours</div>
                   </div>
                   <div class="text-sky-400 text-lg">:</div>
                   <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                     <div class="text-sky-400 font-bold text-lg countdown-minutes">00</div>
-                    <div class="text-sky-300/70 text-xs">Minutes</div>
+                    <div class="text-sky-300/70 text-xs" data-i18n="labelMinutes">Minutes</div>
                   </div>
                   <div class="text-sky-400 text-lg">:</div>
                   <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                     <div class="text-sky-400 font-bold text-lg countdown-seconds">00</div>
-                    <div class="text-sky-300/70 text-xs">Seconds</div>
+                    <div class="text-sky-300/70 text-xs" data-i18n="labelSeconds">Seconds</div>
                   </div>
                 </div>
                 <div class="text-xs text-sky-300/70 mt-2 text-center">
                   <i class="fa-solid fa-bolt mr-1"></i>
-                  Keep the momentum going and climb the Arcade leaderboard!
+                  <span data-i18n="arcadeMotivation">Keep the momentum going and climb the Arcade leaderboard!</span>
                 </div>
               `;
               container.appendChild(wrapper);
@@ -1301,27 +1315,27 @@ Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
                   <div class="flex items-center justify-center space-x-4 text-center">
                     <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                       <div class="text-sky-400 font-bold text-lg countdown-days">00</div>
-                      <div class="text-sky-300/70 text-xs">Days</div>
+                      <div class="text-sky-300/70 text-xs" data-i18n="labelDays">Days</div>
                     </div>
                     <div class="text-sky-400 text-lg">:</div>
                     <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                       <div class="text-sky-400 font-bold text-lg countdown-hours">00</div>
-                      <div class="text-sky-300/70 text-xs">Hours</div>
+                      <div class="text-sky-300/70 text-xs" data-i18n="labelHours">Hours</div>
                     </div>
                     <div class="text-sky-400 text-lg">:</div>
                     <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                       <div class="text-sky-400 font-bold text-lg countdown-minutes">00</div>
-                      <div class="text-sky-300/70 text-xs">Minutes</div>
+                      <div class="text-sky-300/70 text-xs" data-i18n="labelMinutes">Minutes</div>
                     </div>
                     <div class="text-sky-400 text-lg">:</div>
                     <div class="bg-black/20 rounded-lg p-2 min-w-[50px]">
                       <div class="text-sky-400 font-bold text-lg countdown-seconds">00</div>
-                      <div class="text-sky-300/70 text-xs">Seconds</div>
+                      <div class="text-sky-300/70 text-xs" data-i18n="labelSeconds">Seconds</div>
                     </div>
                   </div>
                   <div class="text-xs text-sky-300/70 mt-2 text-center">
                     <i class="fa-solid fa-bolt mr-1"></i>
-                    Keep the momentum going and climb the Arcade leaderboard!
+                    <span data-i18n="arcadeMotivation">Keep the momentum going and climb the Arcade leaderboard!</span>
                   </div>
                 `;
                 container.appendChild(wrapper);

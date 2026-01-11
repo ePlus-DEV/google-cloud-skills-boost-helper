@@ -5,7 +5,7 @@ permissions:
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - "[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   build-and-release:
@@ -16,6 +16,14 @@ jobs:
       WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
       WXT_API_URL: ${{ secrets.WXT_API_URL }}
       WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
+      WXT_FIREBASE_API_KEY: ${{ secrets.WXT_FIREBASE_API_KEY }}
+      WXT_FIREBASE_AUTH_DOMAIN: ${{ secrets.WXT_FIREBASE_AUTH_DOMAIN }}
+      WXT_FIREBASE_PROJECT_ID: ${{ secrets.WXT_FIREBASE_PROJECT_ID }}
+      WXT_FIREBASE_STORAGE_BUCKET: ${{ secrets.WXT_FIREBASE_STORAGE_BUCKET }}
+      WXT_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WXT_FIREBASE_MESSAGING_SENDER_ID }}
+      WXT_FIREBASE_APP_ID: ${{ secrets.WXT_FIREBASE_APP_ID }}
+      WXT_FIREBASE_FETCH_INTERVAL_MS: ${{ secrets.WXT_FIREBASE_FETCH_INTERVAL_MS }}
+      WXT_FIREBASE_FETCH_TIMEOUT_MS: ${{ secrets.WXT_FIREBASE_FETCH_TIMEOUT_MS }}
       FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
       FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
       FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}

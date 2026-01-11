@@ -170,6 +170,21 @@
   "tourCloseButton": {
     "message": "Đóng"
   },
+  "badgeToolbarNote": {
+    "message": "Khi bật, tiện ích sẽ cập nhật biểu tượng thanh công cụ bằng tổng điểm của bạn (bao gồm điểm thưởng Facilitator nếu đang hoạt động)."
+  },
+  "badgeViewDescription": {
+    "message": "Xem tất cả huy hiệu và thành tích bạn đã đạt được."
+  },
+  "badgeTrackProgress": {
+    "message": "Theo dõi tiến trình học tập của bạn!"
+  },
+  "labelAchievements": {
+    "message": "Thành tích"
+  },
+  "labelProgress": {
+    "message": "Tiến độ"
+  },
   "errorEnterProfileUrl": { "message": "Vui lòng nhập URL hồ sơ!" },
   "errorInvalidProfileUrl": { "message": "URL hồ sơ không hợp lệ!" },
   "errorAccountExistsTitle": { "message": "Tài khoản đã tồn tại" },
@@ -249,6 +264,132 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" },
   "labelBack": { "message": "Quay lại" },
-  "labelSettings": { "message": "Cài đặt" },
-  "labelReturnToSettings": { "message": "Quay về cài đặt" }
+  "changelogWhatsNew": { "message": "Có gì mới" },
+  "changelogLatestUpdates": { "message": "Cập nhật và cải tiến mới nhất" },
+  "changelogLoading": { "message": "Đang tải nhật ký thay đổi..." },
+  "changelogFooterNotice": {
+    "message": "Tiện ích này không liên kết với Google Cloud Skills Boost. Bảo lưu mọi quyền."
+  },
+  "announcementTitle": { "message": "Thông báo quan trọng" },
+  "markdownShowMore": { "message": "Xem thêm" },
+  "accountsTitle": { "message": "Tài khoản của bạn" },
+  "noAccountsYet": { "message": "Chưa có tài khoản" },
+  "addAccountFirst": { "message": "Thêm tài khoản đầu tiên!" },
+  "dataManagementTitle": { "message": "Quản lý dữ liệu" },
+  "dataManagementSubtitle": { "message": "Sao lưu và khôi phục" },
+  "exportData": { "message": "Xuất dữ liệu" },
+  "importData": { "message": "Nhập dữ liệu" },
+  "modalAddAccountTitle": { "message": "Thêm tài khoản mới" },
+  "howToGetProfileUrl": { "message": "Cách lấy URL hồ sơ" },
+  "howToGetProfileSubtitle": { "message": "Làm theo các bước bên dưới" },
+  "openProfilePage": { "message": "Mở trang hồ sơ" },
+  "errorPrefix": { "message": "Lỗi:" },
+  "successPrefix": { "message": "Thành công:" },
+  "accountErrorFallback": { "message": "Đã xảy ra lỗi. Vui lòng thử lại." },
+  "accountSuccessFallback": { "message": "Hành động của bạn đã thành công!" },
+  "viewBadges": { "message": "Xem huy hiệu" },
+  "openProfile": { "message": "Mở hồ sơ" },
+  "arcadePointsTitle": { "message": "Điểm Arcade" },
+  "milestonesTitle": { "message": "Cột mốc" },
+  "accountsCardTitle": { "message": "Quản lý tài khoản & Bộ đếm điểm Arcade" },
+  "accountsCardSubtitle": {
+    "message": "Quản lý nhiều tài khoản và tính điểm Arcade."
+  },
+  "clickOpenProfileButton": { "message": "Nhấn nút \"Mở trang hồ sơ\"" },
+  "programDeadline": { "message": "Hạn chót chương trình" },
+  "labelDays": { "message": "Ngày" },
+  "labelHours": { "message": "Giờ" },
+  "labelMinutes": { "message": "Phút" },
+  "labelSeconds": { "message": "Giây" },
+  "milestoneDeadlineNotice": {
+    "message": "Hoàn thành cột mốc trước hạn để nhận điểm thưởng!"
+  },
+  "arcadeMotivation": {
+    "message": "Giữ phong độ và leo bảng xếp hạng Arcade!"
+  },
+  "totalBonusEarned": { "message": "Tổng điểm thưởng đã đạt:" },
+  "maxPossibleNote": {
+    "message": "Tối đa có thể: 25 điểm (chỉ cột mốc cao nhất)"
+  },
+  "pointsBreakdown": { "message": "Phân tích điểm" },
+  "arcadeBase": { "message": "Cơ bản Arcade:" },
+  "facilitatorBonus": { "message": "Điểm thưởng Facilitator:" },
+  "gameBadgeLabel": { "message": "Huy hiệu Trò chơi" },
+  "triviaBadgeLabel": { "message": "Huy hiệu Câu hỏi" },
+  "skillBadgeLabel": { "message": "Huy hiệu Kỹ năng" },
+  "specialPointsLabel": { "message": "Điểm đặc biệt" },
+  "arcadeSeasonCountdown": { "message": "Đếm ngược mùa Arcade" },
+  "milestone1": { "message": "Cột mốc 1" },
+  "milestone1Bonus": { "message": "+2 Điểm thưởng" },
+  "milestone2": { "message": "Cột mốc 2" },
+  "milestone2Bonus": { "message": "+8 Điểm thưởng" },
+  "milestone3": { "message": "Cột mốc 3" },
+  "milestone3Bonus": { "message": "+15 Điểm thưởng" },
+  "milestoneUltimate": { "message": "Tối thượng" },
+  "milestoneUltimateBonus": { "message": "+25 Điểm thưởng" },
+  "progressLabel": { "message": "Tiến độ:" },
+  "gamesLabel": { "message": "Trò chơi:" },
+  "triviaLabel": { "message": "Câu hỏi:" },
+  "skillsLabel": { "message": "Kỹ năng:" },
+  "labFreeLabel": { "message": "Không cần lab:" },
+  "switchAccount": { "message": "Chuyển tài khoản" },
+  "statusActive": { "message": "Hoạt động" },
+  "quickSearch": { "message": "Tìm kiếm nhanh" },
+  "youtubeResults": { "message": "Kết quả YouTube" },
+  "searchFeatureTip": { "message": "Giúp bạn tìm câu trả lời nhanh hơn!" },
+  "successAccountCreated": { "message": "Tạo tài khoản thành công!" },
+  "successAddNickname": {
+    "message": "Bạn có thể thêm biệt danh để dễ dàng nhận biết tài khoản này."
+  },
+  "newlyCreated": { "message": "Mới tạo" },
+  "labelNickname": { "message": "Biệt danh:" },
+  "noNicknameYet": { "message": "Chưa có biệt danh" },
+  "labelUpdated": { "message": "Cập nhật:" },
+  "justCreated": { "message": "Vừa tạo" },
+  "markdownShowLess": { "message": "Ẩn bớt" },
+  "importantNoticeTitle": { "message": "Thông báo quan trọng" },
+  "importantNoticeText": {
+    "message": "Mỗi URL hồ sơ chỉ có thể được thêm một lần. Hệ thống sẽ kiểm tra và thông báo nếu tài khoản đã tồn tại."
+  },
+  "enterProfileUrlLabel": { "message": "Nhập URL hồ sơ và tạo tài khoản" },
+  "createAccountButton": { "message": "Tạo tài khoản" },
+  "instructionsLabel": { "message": "Hướng dẫn:" },
+  "instructionsText": {
+    "message": "Nhập URL và nhấp \"Tạo tài khoản\". Hệ thống sẽ tự động tải thông tin và tạo tài khoản mới."
+  },
+  "step1Title": { "message": "Nhấn nút \"Mở trang hồ sơ\"" },
+  "step1Subtitle": {
+    "message": "Sẽ mở Google Cloud Skills Boost trong tab mới"
+  },
+  "step2Title": { "message": "Đăng nhập (nếu chưa đăng nhập)" },
+  "step2Subtitle": { "message": "Sử dụng tài khoản Google của bạn" },
+  "step3Title": { "message": "Tìm mục \"Public profile\"" },
+  "step3Subtitle": { "message": "Cuộn xuống trong trang hồ sơ" },
+  "step4Title": { "message": "Sao chép URL từ thanh địa chỉ" },
+  "step4Subtitle": { "message": "Dán vào ô bên dưới" },
+  "newAccountBadge": { "message": "Tài khoản mới" },
+  "totalBadgesLabel": { "message": "Tổng Huy hiệu" },
+  "skillBadgesLabel": { "message": "Huy hiệu Kỹ năng" },
+  "arcadePointsLabel": { "message": "Điểm Arcade" },
+  "accountNicknameLabel": { "message": "Biệt danh tài khoản" },
+  "nicknamePlaceholder": {
+    "message": "VD: Tài khoản chính, Tài khoản công việc, Tài khoản học tập..."
+  },
+  "nicknameHelpText": {
+    "message": "Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau"
+  },
+  "editAccountTitle": { "message": "Chỉnh sửa tài khoản" },
+  "displayNameLabel": { "message": "Tên hiển thị:" },
+  "displayNameInfo": {
+    "message": "Tên hiển thị được lấy từ Google Cloud Skills Boost và không thể chỉnh sửa"
+  },
+  "nicknameLabel": { "message": "Biệt danh:" },
+  "enterNicknamePlaceholder": {
+    "message": "Nhập biệt danh để dễ nhận biết..."
+  },
+  "nicknameExample": {
+    "message": "Ví dụ: \"Tài khoản chính\", \"Tài khoản công việc\", \"Tài khoản học tập\"..."
+  },
+  "cancelButton": { "message": "Hủy" },
+  "saveChangesButton": { "message": "Lưu thay đổi" }
 }

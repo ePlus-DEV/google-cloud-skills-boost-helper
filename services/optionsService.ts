@@ -141,12 +141,12 @@ const OptionsService = {
                 <h4 class="text-lg font-semibold text-gray-900 truncate">${displayName}</h4>
                 ${
                   isActive
-                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i>Active</span>'
+                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></span>'
                     : ""
                 }
                 ${
                   account.facilitatorProgram
-                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"><i class="fa-solid fa-chalkboard-teacher mr-1"></i>Facilitator</span>'
+                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"><i class="fa-solid fa-chalkboard-teacher mr-1"></i><span data-i18n="labelFacilitatorProgram">Facilitator</span></span>'
                     : ""
                 }
               </div>

@@ -170,6 +170,21 @@
   "tourCloseButton": {
     "message": "Close"
   },
+  "badgeToolbarNote": {
+    "message": "When enabled, the extension will update the toolbar badge with your total points (includes facilitator bonus when active)."
+  },
+  "badgeViewDescription": {
+    "message": "View all your earned badges and achievements."
+  },
+  "badgeTrackProgress": {
+    "message": "Track your learning progress!"
+  },
+  "labelAchievements": {
+    "message": "Achievements"
+  },
+  "labelProgress": {
+    "message": "Progress"
+  },
 
   "errorEnterProfileUrl": { "message": "Please enter a profile URL!" },
   "errorInvalidProfileUrl": { "message": "Invalid profile URL!" },
@@ -252,6 +267,136 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Error loading data" },
   "labelBack": { "message": "Back" },
-  "labelSettings": { "message": "Settings" },
-  "labelReturnToSettings": { "message": "Return to settings" }
+  "changelogWhatsNew": { "message": "What's New" },
+  "changelogLatestUpdates": { "message": "Latest updates and improvements" },
+  "changelogLoading": { "message": "Loading changelog..." },
+  "changelogFooterNotice": {
+    "message": "This extension is not affiliated with Google Cloud Skills Boost. All rights reserved."
+  },
+  "announcementTitle": { "message": "Important Announcement" },
+  "markdownShowMore": { "message": "Show more" },
+  "accountsTitle": { "message": "Your Accounts" },
+  "noAccountsYet": { "message": "No accounts yet" },
+  "addAccountFirst": { "message": "Add your first account!" },
+  "dataManagementTitle": { "message": "Data Management" },
+  "dataManagementSubtitle": { "message": "Backup and restore" },
+  "exportData": { "message": "Export Data" },
+  "importData": { "message": "Import Data" },
+  "modalAddAccountTitle": { "message": "Add New Account" },
+  "howToGetProfileUrl": { "message": "How to get Profile URL" },
+  "howToGetProfileSubtitle": { "message": "Follow the steps below" },
+  "openProfilePage": { "message": "Open Profile Page" },
+  "errorPrefix": { "message": "Error:" },
+  "successPrefix": { "message": "Success:" },
+  "accountErrorFallback": {
+    "message": "Something went wrong. Please try again."
+  },
+  "accountSuccessFallback": { "message": "Your action was successful!" },
+  "viewBadges": { "message": "View Badges" },
+  "openProfile": { "message": "Open Profile" },
+  "arcadePointsTitle": { "message": "Arcade Points" },
+  "milestonesTitle": { "message": "Milestones" },
+  "accountsCardTitle": {
+    "message": "Account Management & Arcade Points Calculator"
+  },
+  "accountsCardSubtitle": {
+    "message": "Manage multiple accounts and calculate arcade points."
+  },
+  "clickOpenProfileButton": { "message": "Click \"Open Profile Page\" button" },
+  "programDeadline": { "message": "Program Deadline" },
+  "labelDays": { "message": "Days" },
+  "labelHours": { "message": "Hours" },
+  "labelMinutes": { "message": "Minutes" },
+  "labelSeconds": { "message": "Seconds" },
+  "milestoneDeadlineNotice": {
+    "message": "Complete milestones before the deadline to earn bonus points!"
+  },
+  "arcadeMotivation": {
+    "message": "Keep the momentum going and climb the Arcade leaderboard!"
+  },
+  "totalBonusEarned": { "message": "Total Bonus Earned:" },
+  "maxPossibleNote": {
+    "message": "Maximum possible: 25 points (highest milestone only)"
+  },
+  "pointsBreakdown": { "message": "Points Breakdown" },
+  "arcadeBase": { "message": "Arcade Base:" },
+  "facilitatorBonus": { "message": "Facilitator Bonus:" },
+  "gameBadgeLabel": { "message": "Game Badge" },
+  "triviaBadgeLabel": { "message": "Trivia Badge" },
+  "skillBadgeLabel": { "message": "Skill Badge" },
+  "specialPointsLabel": { "message": "Special Points" },
+  "arcadeSeasonCountdown": { "message": "Arcade Season Countdown" },
+  "milestone1": { "message": "Milestone 1" },
+  "milestone1Bonus": { "message": "+2 Bonus Points" },
+  "milestone2": { "message": "Milestone 2" },
+  "milestone2Bonus": { "message": "+8 Bonus Points" },
+  "milestone3": { "message": "Milestone 3" },
+  "milestone3Bonus": { "message": "+15 Bonus Points" },
+  "milestoneUltimate": { "message": "Ultimate" },
+  "milestoneUltimateBonus": { "message": "+25 Bonus Points" },
+  "progressLabel": { "message": "Progress:" },
+  "gamesLabel": { "message": "Games:" },
+  "triviaLabel": { "message": "Trivia:" },
+  "skillsLabel": { "message": "Skills:" },
+  "labFreeLabel": { "message": "Lab-free:" },
+  "switchAccount": { "message": "Switch Account" },
+  "statusActive": { "message": "Active" },
+  "quickSearch": { "message": "Quick Search" },
+  "youtubeResults": { "message": "YouTube Results" },
+  "searchFeatureTip": { "message": "Helps you find answers faster!" },
+  "successAccountCreated": { "message": "Account created successfully!" },
+  "successAddNickname": {
+    "message": "You can add a nickname to easily identify this account."
+  },
+  "newlyCreated": { "message": "Newly created" },
+  "labelNickname": { "message": "Nickname:" },
+  "noNicknameYet": { "message": "No nickname yet" },
+  "labelUpdated": { "message": "Updated:" },
+  "justCreated": { "message": "Just created" },
+  "markdownShowLess": { "message": "Show less" },
+  "importantNoticeTitle": { "message": "Important Notice" },
+  "importantNoticeText": {
+    "message": "Each profile URL can only be added once. The system will check and notify if the account already exists."
+  },
+  "enterProfileUrlLabel": { "message": "Enter Profile URL and Create Account" },
+  "createAccountButton": { "message": "Create Account" },
+  "instructionsLabel": { "message": "Instructions:" },
+  "instructionsText": {
+    "message": "Enter URL and click \"Create Account\". The system will automatically load information and create a new account."
+  },
+  "step1Title": { "message": "Click \"Open Profile Page\" button" },
+  "step1Subtitle": {
+    "message": "Will open Google Cloud Skills Boost in new tab"
+  },
+  "step2Title": { "message": "Log in (if not already)" },
+  "step2Subtitle": { "message": "Use your Google account" },
+  "step3Title": { "message": "Find \"Public profile\" section" },
+  "step3Subtitle": { "message": "Scroll down in the profile page" },
+  "step4Title": { "message": "Copy URL from address bar" },
+  "step4Subtitle": { "message": "Paste into the field below" },
+  "newAccountBadge": { "message": "New account" },
+  "totalBadgesLabel": { "message": "Total Badges" },
+  "skillBadgesLabel": { "message": "Skill Badges" },
+  "arcadePointsLabel": { "message": "Arcade Points" },
+  "accountNicknameLabel": { "message": "Account nickname" },
+  "nicknamePlaceholder": {
+    "message": "e.g: Main account, Work account, Study account..."
+  },
+  "nicknameHelpText": {
+    "message": "Nicknames help you easily identify accounts when you have multiple different accounts"
+  },
+  "editAccountTitle": { "message": "Edit account" },
+  "displayNameLabel": { "message": "Display name:" },
+  "displayNameInfo": {
+    "message": "Display name is taken from Google Cloud Skills Boost and cannot be edited"
+  },
+  "nicknameLabel": { "message": "Nickname:" },
+  "enterNicknamePlaceholder": {
+    "message": "Enter nickname for easy identification..."
+  },
+  "nicknameExample": {
+    "message": "Example: \"Main account\", \"Work account\", \"Study account\"..."
+  },
+  "cancelButton": { "message": "Cancel" },
+  "saveChangesButton": { "message": "Save changes" }
 }

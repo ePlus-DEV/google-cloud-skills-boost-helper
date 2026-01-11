@@ -1,8 +1,33 @@
 import { PopupService, AccountService } from "../../services";
 import PopupUIService from "../../services/popupUIService";
 
+// Set document title
+document.title =
+  chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
+
+// Function to localize elements with data-i18n attributes
+function localizeElements() {
+  const elements = document.querySelectorAll("[data-i18n]");
+  for (const element of elements) {
+    const key = element.getAttribute("data-i18n");
+    if (key && chrome.i18n) {
+      const message = chrome.i18n.getMessage(key);
+      if (message) {
+        element.textContent = message;
+      }
+    }
+  }
+}
+
+// Set document title
+document.title =
+  chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
+
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
+  // Apply i18n translations
+  localizeElements();
+
   // Initialize milestones section and countdown with Firebase Remote Config
   PopupUIService.updateMilestoneSection().then(async () => {
     // Start Firebase-powered countdown
