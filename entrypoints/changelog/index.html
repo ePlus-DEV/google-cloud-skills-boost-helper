@@ -1,101 +1,153 @@
 <!doctype html>
-<html lang="vi" style="scroll-behavior: smooth;">
+<html lang="vi" style="scroll-behavior: smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>__MSG_changelogPageTitle__</title>
+    <link rel="stylesheet" href="~/assets/tailwind.css" />
+    <link rel="stylesheet" href="~/assets/markdown.css" />
+    <link rel="stylesheet" href="/assets/changelog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>__MSG_changelogPageTitle__</title>
-  <link rel="stylesheet" href="~/assets/tailwind.css" />
-  <link rel="stylesheet" href="~/assets/markdown.css" />
-  <link rel="stylesheet" href="/assets/changelog.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
-</head>
-
-<body>
-  <div
-    class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50">
-    <main class="px-6 py-6 w-full">
-      <!-- Header Section -->
-      <div
-        class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300">
-        <h3 class="text-2xl sm:text-4xl font-bold text-white inline-block relative">
-          <span data-i18n="extName">Google Cloud Skills Boost - Helper</span>
-          <span
-            class="text-xs sm:text-sm font-medium text-white bg-indigo-800 px-2 py-1 sm:px-3 sm:py-1 rounded-full shadow-md animate-pulse ml-2"
-            id="version-number">v1.0.0</span>
-        </h3>
-        <p class="text-white mt-4 text-sm sm:text-lg leading-relaxed" data-i18n="extDescription">
-          Take your Google Cloud Skills Boost experience to the next level
-          with our powerful and intuitive browser extension.
-        </p>
-        <div class="mt-4 flex justify-center">
-          <button id="back-button"
-            class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-arrow-left text-sm"></i>
-            <span data-i18n="labelBack">Back to Settings</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Changelog Content Card with Modern Design -->
-      <div id="markdown-container"
-        class="mb-6 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200/50 hover:shadow-2xl transition-all duration-300">
-        <div class="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4">
-          <div class="flex items-center gap-3">
-            <div class="bg-white/30 backdrop-blur-sm p-2.5 rounded-xl shadow-md">
-              <i class="fa-solid fa-rocket text-white text-xl"></i>
-            </div>
-            <div>
-              <h2 class="text-white text-xl font-bold m-0" data-i18n="changelogWhatsNew">What's New</h2>
-              <p class="text-white/80 text-sm mt-0.5" data-i18n="changelogLatestUpdates">Latest updates and improvements
-              </p>
-            </div>
+  <body>
+    <div
+      class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50"
+    >
+      <main class="px-6 py-6 w-full">
+        <!-- Header Section -->
+        <div
+          class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300"
+        >
+          <h3
+            class="text-2xl sm:text-4xl font-bold text-white inline-block relative"
+          >
+            <span data-i18n="extName">Google Cloud Skills Boost - Helper</span>
+            <span
+              class="text-xs sm:text-sm font-medium text-white bg-indigo-800 px-2 py-1 sm:px-3 sm:py-1 rounded-full shadow-md animate-pulse ml-2"
+              id="version-number"
+              >v1.0.0</span
+            >
+          </h3>
+          <p
+            class="text-white mt-4 text-sm sm:text-lg leading-relaxed"
+            data-i18n="extDescription"
+          >
+            Take your Google Cloud Skills Boost experience to the next level
+            with our powerful and intuitive browser extension.
+          </p>
+          <div class="mt-4 flex justify-center">
+            <button
+              id="back-button"
+              class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm flex items-center gap-2"
+            >
+              <i class="fa-solid fa-arrow-left text-sm"></i>
+              <span data-i18n="labelBack">Back to Settings</span>
+            </button>
           </div>
         </div>
 
-        <div class="p-6 sm:p-8">
-          <div class="prose prose-sm sm:prose lg:prose-lg max-w-none">
-            <div class="markdown-content">
-              <div class="flex items-center justify-center gap-3 text-slate-400 py-8">
-                <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
-                <p class="text-base m-0" data-i18n="changelogLoading">Loading changelog...</p>
+        <!-- Changelog Content Card with Modern Design -->
+        <div
+          id="markdown-container"
+          class="mb-6 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200/50 hover:shadow-2xl transition-all duration-300"
+        >
+          <div class="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="bg-white/30 backdrop-blur-sm p-2.5 rounded-xl shadow-md"
+              >
+                <i class="fa-solid fa-rocket text-white text-xl"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-white text-xl font-bold m-0"
+                  data-i18n="changelogWhatsNew"
+                >
+                  What's New
+                </h2>
+                <p
+                  class="text-white/80 text-sm mt-0.5"
+                  data-i18n="changelogLatestUpdates"
+                >
+                  Latest updates and improvements
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8">
+            <div class="prose prose-sm sm:prose lg:prose-lg max-w-none">
+              <div class="markdown-content">
+                <div
+                  class="flex items-center justify-center gap-3 text-slate-400 py-8"
+                >
+                  <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
+                  <p class="text-base m-0" data-i18n="changelogLoading">
+                    Loading changelog...
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-
-  <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
-    <div class="mb-4">
-      <a target="_blank" rel="noopener noreferrer"
-        href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
-        class="inline-block" aria-label="Chrome Web Store">
-        <img alt="Chrome Web Store Version" class="hidden" id="chrome-web-store-badge"
-          src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
-          class="mx-auto" />
-      </a>
-
-      <a target="_blank" rel="noopener noreferrer"
-        href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
-        class="inline-block" aria-label="Firefox Addon Store">
-        <img alt="Mozilla Add-on Version" class="hidden" id="firefox-addon-store"
-          src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white" />
-      </a>
+      </main>
     </div>
-    <p class="text-sm" data-i18n="changelogFooterNotice">
-      This extension is not affiliated with Google Cloud Skills Boost. All
-      rights reserved.
-    </p>
-    <p class="text-sm mt-2">
-      <i class="fa-solid fa-copyright"></i> 2025 -
-      <a href="http://eplus.dev" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">
-        ePlus.DEV
-      </a>
-    </p>
-  </footer>
-  <script type="module" src="main.ts"></script>
-</body>
 
+    <footer
+      class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6"
+    >
+      <div class="mb-4">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
+          class="inline-block"
+          aria-label="Chrome Web Store"
+        >
+          <img
+            alt="Chrome Web Store Version"
+            class="hidden"
+            id="chrome-web-store-badge"
+            src="https://img.shields.io/chrome-web-store/v/lmbhjioadhcoebhgapaidogodllonbgg?style=for-the-badge&logo=googlechrome&logoColor=white"
+            class="mx-auto"
+          />
+        </a>
+
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://addons.mozilla.org/addon/cloud-skills-boost-helper?utm_source=webext&utm_medium=options_page"
+          class="inline-block"
+          aria-label="Firefox Addon Store"
+        >
+          <img
+            alt="Mozilla Add-on Version"
+            class="hidden"
+            id="firefox-addon-store"
+            src="https://img.shields.io/amo/v/cloud-skills-boost-helper?style=for-the-badge&logo=firefoxbrowser&logoColor=white"
+          />
+        </a>
+      </div>
+      <p class="text-sm" data-i18n="changelogFooterNotice">
+        This extension is not affiliated with Google Cloud Skills Boost. All
+        rights reserved.
+      </p>
+      <p class="text-sm mt-2">
+        <i class="fa-solid fa-copyright"></i> 2025 -
+        <a
+          href="http://eplus.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-indigo-600 hover:underline"
+        >
+          ePlus.DEV
+        </a>
+      </p>
+    </footer>
+    <script type="module" src="main.ts"></script>
+  </body>
 </html>
