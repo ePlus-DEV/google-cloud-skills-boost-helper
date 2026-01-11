@@ -49,16 +49,19 @@
 
     <!-- Important Notice/Announcement -->
     <div id="markdown-container"
-      class="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg p-6 shadow-md">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <i class="fa-solid fa-info-circle text-blue-500 text-xl mt-1"></i>
+      class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
+      <div class="flex items-start space-x-4">
+        <div class="bg-blue-500 p-3 rounded-lg shadow-sm">
+          <i class="fa-solid fa-bullhorn text-white text-lg"></i>
         </div>
-        <div class="ml-4 prose prose-sm max-w-none text-gray-700 flex-1">
-          <div class="text-blue-800 font-semibold mb-2">📢 Important Announcement</div>
+        <div class="flex-1">
+          <h4 class="text-lg font-bold text-gray-800 mb-2">
+            <i class="fa-solid fa-info-circle mr-2 text-blue-600"></i>
+            Important Announcement
+          </h4>
           <div id="markdown-content-wrapper" class="relative">
-            <div class="markdown-content transition-all duration-300" id="markdown-content-collapsible"
-              style="overflow: hidden;">
+            <div class="prose prose-sm max-w-none markdown-content transition-all duration-300"
+              id="markdown-content-collapsible" style="overflow: hidden;">
               <!-- Markdown content will be loaded here -->
             </div>
             <div class="flex justify-center">
