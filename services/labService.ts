@@ -54,10 +54,23 @@ const LabService = {
     const postsData = await ApiClient.fetchPostsOfPublication(searchParams);
 
     // Find best matching URL
-    const bestMatchUrl = SearchService.findBestMatchUrl(
+    let bestMatchUrl = SearchService.findBestMatchUrl(
       postsData,
       combinedQueryText,
     );
+
+    // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev
+    if (bestMatchUrl) {
+      try {
+        const parsed = new URL(bestMatchUrl);
+        if (parsed.hostname === "hoangit.hashnode.dev") {
+          parsed.hostname = "eplus.dev";
+          bestMatchUrl = parsed.toString();
+        }
+      } catch (err) {
+        // ignore malformed URLs
+      }
+    }
 
     // Create and append solution element
     const solutionElement =
