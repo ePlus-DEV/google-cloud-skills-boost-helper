@@ -455,8 +455,14 @@
   "gameBadgeLabel": {
     "message": "Spiel-Abzeichen"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade ist jetzt stufenfrei. Neue Tracks: Adventure (Cloud-Grundlagen), Voyage (Praxis), Trail (KI-Lernen)."
+  },
   "triviaBadgeLabel": {
     "message": "Trivia-Abzeichen"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia heißt jetzt Sprint: kurze Quizze zum Auffrischen und Sammeln von Arcade-Punkten."
   },
   "skillBadgeLabel": {
     "message": "Skill-Abzeichen"

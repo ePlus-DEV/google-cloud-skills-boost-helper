@@ -455,8 +455,14 @@
   "gameBadgeLabel": {
     "message": "गेम बैज"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade अब लेवल-फ्री है। नए ट्रैक: Adventure (क्लाउड बेसिक्स), Voyage (स्किल प्रैक्टिस), Trail (AI लर्निंग)।"
+  },
   "triviaBadgeLabel": {
     "message": "ट्रिविया बैज"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia अब Sprint है: कॉन्सेप्ट दोहराने और Arcade points कमाने के लिए तेज क्विज।"
   },
   "skillBadgeLabel": {
     "message": "स्किल बैज"

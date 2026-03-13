@@ -455,8 +455,14 @@
   "gameBadgeLabel": {
     "message": "게임 배지"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade는 이제 레벨 구분이 없습니다. 새 트랙: Adventure(클라우드 기초), Voyage(스킬 연습), Trail(AI 학습)."
+  },
   "triviaBadgeLabel": {
     "message": "퀴즈 배지"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia는 이제 Sprint입니다. 짧은 퀴즈로 개념을 복습하고 Arcade 포인트를 획득하세요."
   },
   "skillBadgeLabel": {
     "message": "스킬 배지"

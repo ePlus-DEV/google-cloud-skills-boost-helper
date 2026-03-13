@@ -335,7 +335,13 @@
   "arcadeBase": { "message": "Base Arcade :" },
   "facilitatorBonus": { "message": "Bonus Facilitateur :" },
   "gameBadgeLabel": { "message": "Badge de jeu" },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade est désormais sans niveaux. Nouveaux parcours : Adventure (bases du cloud), Voyage (pratique des compétences), Trail (apprentissage IA)."
+  },
   "triviaBadgeLabel": { "message": "Badge Quiz" },
+  "triviaBadgeLabelTooltip": {
+    "message": "La Trivia s'appelle désormais Sprint : des quiz rapides pour réviser et gagner des points Arcade."
+  },
   "skillBadgeLabel": { "message": "Badge Compétence" },
   "specialPointsLabel": { "message": "Points spéciaux" },
   "arcadeSeasonCountdown": {

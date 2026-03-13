@@ -186,9 +186,9 @@
           </h3>
           <div class="grid grid-cols-2 gap-3">
             <div
-              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
+              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-visible z-10 hover:z-50">
               <div
-                class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 transition-opacity duration-300">
               </div>
               <div class="flex items-center">
                 <div
@@ -199,14 +199,21 @@
                   <div class="text-white font-bold" id="game-badge-count">
                     0
                   </div>
-                  <div class="text-xs text-white/70" id="game-badge-label" data-i18n="gameBadgeLabel">Game Badge</div>
+                  <div class="text-xs text-white/70 relative inline-flex items-center" id="game-badge-label">
+                    <span data-i18n="gameBadgeLabel">Game Badge</span>
+                    <i class="fa-solid fa-circle-info peer text-[10px] ml-1 text-white/60 cursor-help"></i>
+                    <span
+                      class="badge-name-tooltip pointer-events-none absolute left-0 bottom-full mb-1 z-60 w-56 whitespace-normal rounded-md px-2 py-1 text-[10px] leading-snug opacity-0 transition-opacity duration-150 peer-hover:opacity-100"
+                      data-i18n="gameBadgeLabelTooltip">Arcade Base Camp / Arcade Trail / Arcade Voyage / Arcade
+                      Adventure</span>
+                  </div>
                 </div>
               </div>
             </div>
             <div
-              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
+              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-visible z-10 hover:z-50">
               <div
-                class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 transition-opacity duration-300">
               </div>
               <div class="flex items-center">
                 <div
@@ -217,7 +224,12 @@
                   <div class="text-white font-bold" id="trivia-badge-count">
                     0
                   </div>
-                  <div class="text-xs text-white/70" id="trivia-badge-label" data-i18n="triviaBadgeLabel">Trivia Badge
+                  <div class="text-xs text-white/70 relative inline-flex items-center" id="trivia-badge-label">
+                    <span data-i18n="triviaBadgeLabel">Trivia Badge</span>
+                    <i class="fa-solid fa-circle-info peer text-[10px] ml-1 text-white/60 cursor-help"></i>
+                    <span
+                      class="badge-name-tooltip pointer-events-none absolute right-0 bottom-full mb-1 z-60 w-56 whitespace-normal rounded-md px-2 py-1 text-[10px] leading-snug opacity-0 transition-opacity duration-150 peer-hover:opacity-100"
+                      data-i18n="triviaBadgeLabelTooltip">Sprint 1 / Sprint 2 / Sprint 3 / Sprint 4</span>
                   </div>
                 </div>
               </div>
@@ -415,7 +427,7 @@
             </div>
             <div class="mt-2 space-y-1 text-xs hidden" id="breakdown-details">
               <div class="flex justify-between items-center">
-                <span class="text-white/70" data-i18n="arcadeBase">Arcade Base:</span>
+                <span class="text-white/70" data-i18n="arcadeBase">Arcade Base Camp:</span>
                 <span class="text-white font-bold" id="base-points">0 points</span>
               </div>
               <div class="flex justify-between items-center">

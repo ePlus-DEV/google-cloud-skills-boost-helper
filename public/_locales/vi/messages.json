@@ -315,7 +315,13 @@
   "arcadeBase": { "message": "Cơ bản Arcade:" },
   "facilitatorBonus": { "message": "Điểm thưởng Facilitator:" },
   "gameBadgeLabel": { "message": "Huy hiệu Trò chơi" },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade hiện không còn cấp độ. Track mới: Adventure (nền tảng cloud), Voyage (luyện kỹ năng), Trail (học AI)."
+  },
   "triviaBadgeLabel": { "message": "Huy hiệu Câu hỏi" },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia nay là Sprint: quiz nhanh để ôn lại kiến thức và nhận điểm Arcade."
+  },
   "skillBadgeLabel": { "message": "Huy hiệu Kỹ năng" },
   "specialPointsLabel": { "message": "Điểm đặc biệt" },
   "arcadeSeasonCountdown": { "message": "Đếm ngược mùa Arcade" },

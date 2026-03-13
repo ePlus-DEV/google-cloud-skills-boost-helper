@@ -3,6 +3,21 @@
   --transition-duration: 300ms;
 }
 
+/* Badge name tooltip (theme-aware) */
+#popup-content .badge-name-tooltip {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));
+  color: #ffffff !important;
+  border: 1px solid rgba(96, 165, 250, 0.65);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.5), 0 0 0 1px rgba(59, 130, 246, 0.25) inset;
+}
+
+body.theme-light #popup-content .badge-name-tooltip {
+  background: linear-gradient(135deg, #ffffff, #eef2ff);
+  color: #1e1b4b !important;
+  border: 1px solid rgba(99, 102, 241, 0.55);
+  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.2), 0 0 0 1px rgba(99, 102, 241, 0.2) inset;
+}
+
 /* Default Theme (Dark) */
 body {
   transition: background-color var(--transition-duration) ease;

@@ -455,8 +455,14 @@
   "gameBadgeLabel": {
     "message": "ゲームバッジ"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade はレベル制ではなくなりました。新しいトラック: Adventure（クラウド基礎）、Voyage（スキル実践）、Trail（AI学習）。"
+  },
   "triviaBadgeLabel": {
     "message": "トリビアバッジ"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia は Sprint に変わりました。短いクイズで復習し、Arcade ポイントを獲得できます。"
   },
   "skillBadgeLabel": {
     "message": "スキルバッジ"

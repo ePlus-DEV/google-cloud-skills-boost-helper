@@ -66,11 +66,22 @@ document.title =
 function localizeElements() {
   const elements = document.querySelectorAll("[data-i18n]");
   for (const element of elements) {
-    const key = element.getAttribute("data-i18n");
+    const key = (element as HTMLElement).dataset.i18n;
     if (key && chrome.i18n) {
       const message = chrome.i18n.getMessage(key);
       if (message) {
         element.textContent = message;
+      }
+    }
+  }
+
+  const titleElements = document.querySelectorAll("[data-i18n-title]");
+  for (const element of titleElements) {
+    const key = (element as HTMLElement).dataset.i18nTitle;
+    if (key && chrome.i18n) {
+      const message = chrome.i18n.getMessage(key);
+      if (message) {
+        element.setAttribute("title", message);
       }
     }
   }
