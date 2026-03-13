@@ -7,16 +7,66 @@ class SearchService {
     keys: ["title"],
   };
 
+  // Compile regex patterns once for better performance
+  private static readonly SOLUTION_PATTERN = /\s*\(Solution\)\s*$/i;
+  private static readonly WEEK_PATTERN = /Week\s+(\d+)/i;
+  private static readonly MONTH_YEAR_PATTERN = /([A-Za-z]+)\s+(\d{4})/;
+  private static readonly MONTH_YEAR_ID_PATTERN = /^[a-z]+\d{4}$/;
+  private static readonly ALPHANUMERIC_PATTERN = /^[a-zA-Z0-9]+$/;
+
+  // Common words to filter out (cached as Set)
+  private static readonly COMMON_WORDS = new Set([
+    "a",
+    "an",
+    "the",
+    "and",
+    "or",
+    "but",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "with",
+    "create",
+    "build",
+    "setup",
+    "configure",
+    "deploy",
+    "upload",
+    "download",
+    "install",
+    "code",
+    "project",
+    "application",
+    "service",
+    "system",
+    "using",
+    "how",
+    "what",
+    "where",
+  ]);
+
+  /**
+   * Normalize title by removing "(Solution)" suffix
+   */
+  private static normalizeTitle(title: string): string {
+    return title.replace(this.SOLUTION_PATTERN, "").trim();
+  }
+
   /**
    * Calculate exact word matching score between two strings
    */
   private static calculateExactWordMatch(query: string, title: string): number {
-    const queryWords = query.toLowerCase().split(/\s+/);
-    const titleWords = title.toLowerCase().split(/\s+/);
+    const normalizedQuery = this.normalizeTitle(query);
+    const normalizedTitle = this.normalizeTitle(title);
+    const queryWords = normalizedQuery.toLowerCase().split(/\s+/);
+    const titleWordsSet = new Set(normalizedTitle.toLowerCase().split(/\s+/));
 
     let exactMatches = 0;
     for (const queryWord of queryWords) {
-      if (titleWords.includes(queryWord)) {
+      if (titleWordsSet.has(queryWord)) {
         exactMatches++;
       }
     }
@@ -27,49 +77,21 @@ class SearchService {
   /**
    * Extract distinctive words that are likely important for matching
    */
-  private static extractDistinctiveWords(text: string): string[] {
+  private static extractDistinctiveWords(text: string): Set<string> {
     const words = text.toLowerCase().split(/\s+/);
 
-    // Filter out common words that don't affect meaning
-    const commonWords = new Set([
-      "a",
-      "an",
-      "the",
-      "and",
-      "or",
-      "but",
-      "in",
-      "on",
-      "at",
-      "to",
-      "for",
-      "of",
-      "with",
-      "create",
-      "build",
-      "setup",
-      "configure",
-      "deploy",
-      "upload",
-      "download",
-      "install",
-      "code",
-      "project",
-      "application",
-      "service",
-      "system",
-      "using",
-      "how",
-      "what",
-      "where",
-    ]);
-
-    return words.filter(
-      (word) =>
+    const distinctive = new Set<string>();
+    for (const word of words) {
+      if (
         word.length > 2 &&
-        !commonWords.has(word) &&
-        /^[a-zA-Z0-9]+$/.test(word), // Only alphanumeric words
-    );
+        !this.COMMON_WORDS.has(word) &&
+        this.ALPHANUMERIC_PATTERN.test(word)
+      ) {
+        distinctive.add(word);
+      }
+    }
+
+    return distinctive;
   }
 
   /**
@@ -79,21 +101,23 @@ class SearchService {
     query: string,
     title: string,
   ): boolean {
-    const queryDistinctive = this.extractDistinctiveWords(query);
-    const titleDistinctive = this.extractDistinctiveWords(title);
+    const normalizedQuery = this.normalizeTitle(query);
+    const normalizedTitle = this.normalizeTitle(title);
+    const queryDistinctive = this.extractDistinctiveWords(normalizedQuery);
+    const titleDistinctive = this.extractDistinctiveWords(normalizedTitle);
 
-    if (queryDistinctive.length === 0) return true;
+    if (queryDistinctive.size === 0) return true;
 
     // Calculate how many distinctive words from query appear in title
     let matches = 0;
     for (const queryWord of queryDistinctive) {
-      if (titleDistinctive.includes(queryWord)) {
+      if (titleDistinctive.has(queryWord)) {
         matches++;
       }
     }
 
     // Require at least 80% of distinctive words to match
-    const matchRatio = matches / queryDistinctive.length;
+    const matchRatio = matches / queryDistinctive.size;
     return matchRatio >= 0.8;
   }
 
@@ -104,17 +128,18 @@ class SearchService {
     query: string,
     title: string,
   ): number {
-    const queryWords = query.toLowerCase().split(/\s+/);
-    const titleWords = title.toLowerCase().split(/\s+/);
+    const normalizedQuery = this.normalizeTitle(query);
+    const normalizedTitle = this.normalizeTitle(title);
+    const queryWords = normalizedQuery.toLowerCase().split(/\s+/);
+    const titleWords = normalizedTitle.toLowerCase().split(/\s+/);
+    const titleWordsSet = new Set(titleWords);
 
     let totalScore = 0;
-    let maxPossibleScore = 0;
+    const maxPossibleScore = queryWords.length;
 
     for (const queryWord of queryWords) {
-      maxPossibleScore += 1;
-
       // Exact match gets full score
-      if (titleWords.includes(queryWord)) {
+      if (titleWordsSet.has(queryWord)) {
         totalScore += 1;
         continue;
       }
@@ -142,13 +167,13 @@ class SearchService {
     const identifiers: string[] = [];
 
     // Extract week numbers (Week 1, Week 2, etc.)
-    const weekMatch = title.match(/Week\s+(\d+)/i);
+    const weekMatch = this.WEEK_PATTERN.exec(title);
     if (weekMatch) {
       identifiers.push(`week${weekMatch[1]}`);
     }
 
     // Extract month and year (July 2025, etc.)
-    const monthYearMatch = title.match(/([A-Za-z]+)\s+(\d{4})/);
+    const monthYearMatch = this.MONTH_YEAR_PATTERN.exec(title);
     if (monthYearMatch) {
       identifiers.push(
         `${monthYearMatch[1].toLowerCase()}${monthYearMatch[2]}`,
@@ -165,8 +190,10 @@ class SearchService {
     title1: string,
     title2: string,
   ): boolean {
-    const identifiers1 = this.extractKeyIdentifiers(title1);
-    const identifiers2 = this.extractKeyIdentifiers(title2);
+    const normalizedTitle1 = this.normalizeTitle(title1);
+    const normalizedTitle2 = this.normalizeTitle(title2);
+    const identifiers1 = this.extractKeyIdentifiers(normalizedTitle1);
+    const identifiers2 = this.extractKeyIdentifiers(normalizedTitle2);
 
     // If both have week identifiers, they must match
     const week1 = identifiers1.find((id) => id.startsWith("week"));
@@ -177,8 +204,12 @@ class SearchService {
     }
 
     // If both have month/year identifiers, they must match
-    const monthYear1 = identifiers1.find((id) => id.match(/[a-z]+\d{4}/));
-    const monthYear2 = identifiers2.find((id) => id.match(/[a-z]+\d{4}/));
+    const monthYear1 = identifiers1.find((id) =>
+      this.MONTH_YEAR_ID_PATTERN.test(id),
+    );
+    const monthYear2 = identifiers2.find((id) =>
+      this.MONTH_YEAR_ID_PATTERN.test(id),
+    );
 
     if (monthYear1 && monthYear2 && monthYear1 !== monthYear2) {
       return false; // Different month/year are not compatible
@@ -200,26 +231,29 @@ class SearchService {
     const nodes = postsData.edges.map((edge) => edge.node);
     if (!nodes.length) return null;
 
+    // Normalize search query once to avoid repeated normalization
+    const normalizedQuery = this.normalizeTitle(searchQuery);
+
     const fuse = new Fuse(nodes, fuseOptions);
-    const results = fuse.search(searchQuery);
+    const results = fuse.search(normalizedQuery);
 
     // Enhanced filtering with flexible matching criteria
     const validResults = results.filter((result) => {
       const title = result.item.title;
 
-      // 1. Must have compatible identifiers (existing logic)
-      if (!this.hasCompatibleIdentifiers(searchQuery, title)) {
+      // 1. Must have compatible identifiers
+      if (!this.hasCompatibleIdentifiers(normalizedQuery, title)) {
         return false;
       }
 
-      // 2. Must have matching distinctive words (new flexible approach)
-      if (!this.hasMatchingDistinctiveWords(searchQuery, title)) {
+      // 2. Must have matching distinctive words
+      if (!this.hasMatchingDistinctiveWords(normalizedQuery, title)) {
         return false;
       }
 
       // 3. Must meet advanced similarity threshold
       const similarityScore = this.calculateAdvancedSimilarity(
-        searchQuery,
+        normalizedQuery,
         title,
       );
       if (similarityScore < 0.75) {

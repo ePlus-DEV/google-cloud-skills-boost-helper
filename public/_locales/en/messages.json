@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Link copied to clipboard!"
   },
+  "copyProfileUrl": {
+    "message": "Click to copy public profile URL"
+  },
   "labelEnableSearchFeature": {
     "message": "Enable Search Feature"
   },
@@ -319,10 +322,16 @@
     "message": "Maximum possible: 25 points (highest milestone only)"
   },
   "pointsBreakdown": { "message": "Points Breakdown" },
-  "arcadeBase": { "message": "Arcade Base:" },
+  "arcadeBase": { "message": "Arcade Base Camp:" },
   "facilitatorBonus": { "message": "Facilitator Bonus:" },
   "gameBadgeLabel": { "message": "Game Badge" },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade is level-free now. New tracks: Adventure (cloud basics), Voyage (skill practice), Trail (AI learning)."
+  },
   "triviaBadgeLabel": { "message": "Trivia Badge" },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia is now Sprint: quick quizzes to refresh concepts and earn Arcade points."
+  },
   "skillBadgeLabel": { "message": "Skill Badge" },
   "specialPointsLabel": { "message": "Special Points" },
   "arcadeSeasonCountdown": { "message": "Arcade Season Countdown" },

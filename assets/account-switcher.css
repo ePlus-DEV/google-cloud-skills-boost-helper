@@ -128,6 +128,17 @@
   padding-right: 2rem;
 }
 
+/* Account dropdown positioning fix */
+#account-dropdown {
+  z-index: 9999 !important;
+}
+
+#account-dropdown .p-2 {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
 #popup-account-selector option {
   background-color: #1f2937;
   color: #f9fafb;

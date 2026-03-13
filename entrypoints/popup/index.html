@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="~/assets/tailwind.css" />
   <link rel="stylesheet" href="~/assets/markdown.css" />
   <link rel="stylesheet" href="~/assets/account-switcher.css" />
+  <link rel="stylesheet" href="~/assets/popup.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
 </head>
 
@@ -78,18 +79,15 @@
               </div>
             </div>
           </div>
-          <!-- Button Setting -->
           <button
-            class="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center hover:rotate-90 settings-button">
-            <i class="fa-solid fa-cog transition-transform duration-300 fa-2x"></i>
+            class="absolute top-2 left-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 flex items-center justify-center settings-button group">
+            <i class="fa-solid fa-cog transition-transform duration-300 ease-out fa-2x group-hover:rotate-90"></i>
           </button>
-          <!-- Button Setting -->
-          <!-- Button Refresh -->
           <button
-            class="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center hover:rotate-90 refresh-button">
-            <i class="fa-solid fa-arrows-rotate transition-transform duration-300 fa-2x refresh-icon"></i>
+            class="absolute top-2 right-2 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-pink-500/50 flex items-center justify-center refresh-button group">
+            <i
+              class="fa-solid fa-arrows-rotate transition-transform duration-300 ease-out fa-2x refresh-icon group-hover:rotate-90"></i>
           </button>
-          <!-- Button Refresh -->
         </div>
         <div class="relative bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-4 group">
           <div
@@ -132,10 +130,10 @@
 
                 <!-- Account dropdown -->
                 <div id="account-dropdown"
-                  class="absolute right-0 top-full mt-1 w-72 bg-slate-900/95 backdrop-blur-md border border-white/40 rounded-lg shadow-2xl hidden max-h-48 overflow-y-auto z-[200]">
-                  <div class="p-2 border-b border-white/30 bg-slate-800/80">
-                    <div class="text-xs text-white/90 font-medium flex items-center">
-                      <i class="fa-solid fa-user-group text-purple-400 mr-1"></i>
+                  class="absolute right-0 top-full mt-1 w-72 bg-slate-900/97 backdrop-blur-md border border-purple-400/40 rounded-lg shadow-2xl hidden max-h-48 overflow-y-auto z-[200]">
+                  <div class="p-2 border-b border-purple-400/20 bg-gradient-to-r from-purple-900/70 to-indigo-900/70">
+                    <div class="text-xs text-white font-semibold flex items-center">
+                      <i class="fa-solid fa-user-group text-purple-300 mr-1"></i>
                       <span data-i18n="switchAccount">Switch Account</span>
                     </div>
                   </div>
@@ -158,8 +156,7 @@
                 </div>
 
                 <!-- Copy Profile URL Button -->
-                <button id="copy-profile-url" title="__MSG_copyProfileUrl__"
-                  onclick="window.testCopy && window.testCopy()"
+                <button id="copy-profile-url"
                   class="text-xs text-blue-400 hover:text-blue-300 bg-blue-400/20 hover:bg-blue-400/30 p-2 rounded-full flex items-center justify-center transition-all duration-200 border border-blue-400/30 hover:border-blue-400/50 w-8 h-8 cursor-pointer"
                   style="pointer-events: auto; z-index: 100">
                   <i class="fa-solid fa-copy text-xs"></i>
@@ -188,9 +185,9 @@
           </h3>
           <div class="grid grid-cols-2 gap-3">
             <div
-              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
+              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-visible z-10 hover:z-50">
               <div
-                class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 opacity-0 transition-opacity duration-300">
               </div>
               <div class="flex items-center">
                 <div
@@ -201,14 +198,21 @@
                   <div class="text-white font-bold" id="game-badge-count">
                     0
                   </div>
-                  <div class="text-xs text-white/70" id="game-badge-label" data-i18n="gameBadgeLabel">Game Badge</div>
+                  <div class="text-xs text-white/70 relative inline-flex items-center" id="game-badge-label">
+                    <span data-i18n="gameBadgeLabel">Game Badge</span>
+                    <i class="fa-solid fa-circle-info peer text-[10px] ml-1 text-white/60 cursor-help"></i>
+                    <span
+                      class="badge-name-tooltip pointer-events-none absolute left-0 bottom-full mb-1 z-60 w-56 whitespace-normal rounded-md px-2 py-1 text-[10px] leading-snug opacity-0 transition-opacity duration-150 peer-hover:opacity-100"
+                      data-i18n="gameBadgeLabelTooltip">Arcade Base Camp / Arcade Trail / Arcade Voyage / Arcade
+                      Adventure</span>
+                  </div>
                 </div>
               </div>
             </div>
             <div
-              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 group relative overflow-hidden">
+              class="bg-white/10 backdrop-blur-md rounded-xl p-3 hover:bg-white/20 transition-colors duration-300 relative overflow-visible z-10 hover:z-50">
               <div
-                class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                class="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-500 opacity-0 transition-opacity duration-300">
               </div>
               <div class="flex items-center">
                 <div
@@ -219,7 +223,12 @@
                   <div class="text-white font-bold" id="trivia-badge-count">
                     0
                   </div>
-                  <div class="text-xs text-white/70" id="trivia-badge-label" data-i18n="triviaBadgeLabel">Trivia Badge
+                  <div class="text-xs text-white/70 relative inline-flex items-center" id="trivia-badge-label">
+                    <span data-i18n="triviaBadgeLabel">Trivia Badge</span>
+                    <i class="fa-solid fa-circle-info peer text-[10px] ml-1 text-white/60 cursor-help"></i>
+                    <span
+                      class="badge-name-tooltip pointer-events-none absolute right-0 bottom-full mb-1 z-60 w-56 whitespace-normal rounded-md px-2 py-1 text-[10px] leading-snug opacity-0 transition-opacity duration-150 peer-hover:opacity-100"
+                      data-i18n="triviaBadgeLabelTooltip">Sprint 1 / Sprint 2 / Sprint 3 / Sprint 4</span>
                   </div>
                 </div>
               </div>
@@ -417,7 +426,7 @@
             </div>
             <div class="mt-2 space-y-1 text-xs hidden" id="breakdown-details">
               <div class="flex justify-between items-center">
-                <span class="text-white/70" data-i18n="arcadeBase">Arcade Base:</span>
+                <span class="text-white/70" data-i18n="arcadeBase">Arcade Base Camp:</span>
                 <span class="text-white font-bold" id="base-points">0 points</span>
               </div>
               <div class="flex justify-between items-center">
@@ -654,10 +663,142 @@
         <div id="last-updated" class="mt-6 text-center text-xs text-white/50">
           Last Updated
         </div>
-        <div class="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-50 invisible" id="auth-screen">
-          <span id="settings-message" class="text-white text-lg font-semibold mr-3"
-            data-i18n="textPleaseSetUpTheSettings">Please configure your settings</span>
+        <div class="mt-3 flex justify-center">
+          <button
+            class="theme-toggle-button bg-white/10 hover:bg-white/20 border border-white/30 text-white/90 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
+            title="Change Theme">
+            <i class="fa-solid fa-palette mr-1.5 theme-icon"></i>
+            Change Theme
+          </button>
         </div>
+
+        <!-- Theme Selector Modal -->
+        <div id="theme-modal"
+          class="fixed inset-0 bg-black/70 backdrop-blur-sm items-center justify-center z-[9999] hidden theme-modal">
+          <div class="bg-slate-800 rounded-2xl p-6 w-[360px] mx-4 shadow-2xl border border-white/20">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-xl font-bold text-white flex items-center">
+                <i class="fa-solid fa-palette mr-2 text-purple-400"></i>
+                Choose Theme
+              </h3>
+              <button id="close-theme-modal" class="text-white/70 hover:text-white text-2xl transition-colors">
+                <i class="fa-solid fa-times"></i>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <!-- Dark Theme -->
+              <div class="theme-option" data-theme="dark">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/30 h-24">
+                  <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-moon text-2xl text-purple-400 mb-1"></i>
+                      <p class="text-xs font-bold text-white">Dark</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Light Theme -->
+              <div class="theme-option" data-theme="light">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/30 h-24">
+                  <div class="absolute inset-0 bg-gradient-to-br from-slate-100 via-indigo-100 to-slate-100"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-sun text-2xl text-yellow-500 mb-1"></i>
+                      <p class="text-xs font-bold text-slate-800">Light</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ocean Theme -->
+              <div class="theme-option" data-theme="ocean">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
+                  <div class="absolute inset-0 theme-preview-ocean"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-water text-2xl mb-1 theme-icon-ocean"></i>
+                      <p class="text-xs font-bold text-white/80">Ocean</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sunset Theme -->
+              <div class="theme-option" data-theme="sunset">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
+                  <div class="absolute inset-0 theme-preview-sunset"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-cloud-sun text-2xl mb-1 theme-icon-sunset"></i>
+                      <p class="text-xs font-bold text-white/80">Sunset</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Forest Theme -->
+              <div class="theme-option" data-theme="forest">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
+                  <div class="absolute inset-0 theme-preview-forest"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-tree text-2xl mb-1 theme-icon-forest"></i>
+                      <p class="text-xs font-bold text-white/80">Forest</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Purple Theme -->
+              <div class="theme-option" data-theme="purple">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
+                  <div class="absolute inset-0 theme-preview-purple"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-star text-2xl mb-1 theme-icon-purple"></i>
+                      <p class="text-xs font-bold text-white/80">Violet</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Midnight Theme -->
+              <div class="theme-option" data-theme="midnight">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/30 h-24">
+                  <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-moon text-2xl text-slate-400 mb-1"></i>
+                      <p class="text-xs font-bold text-white">Midnight</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rose Gold Theme -->
+              <div class="theme-option" data-theme="rose">
+                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
+                  <div class="absolute inset-0 theme-preview-rose"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-heart text-2xl mb-1 theme-icon-rose"></i>
+                      <p class="text-xs font-bold text-white/80">Rose</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-xs text-white/60 text-center mt-4">
+              <i class="fa-solid fa-info-circle mr-1"></i>
+              Theme will be saved automatically
+            </p>
+          </div>
+        </div>
+
         <script type="module" src="main.tsx"></script>
 </body>
 

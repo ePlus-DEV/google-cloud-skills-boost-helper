@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Link in die Zwischenablage kopiert!"
   },
+  "copyProfileUrl": {
+    "message": "Klicken, um die Profil-URL zu kopieren"
+  },
   "labelEnableSearchFeature": {
     "message": "Suchfunktion aktivieren"
   },
@@ -455,8 +458,14 @@
   "gameBadgeLabel": {
     "message": "Spiel-Abzeichen"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade ist jetzt stufenfrei. Neue Tracks: Adventure (Cloud-Grundlagen), Voyage (Praxis), Trail (KI-Lernen)."
+  },
   "triviaBadgeLabel": {
     "message": "Trivia-Abzeichen"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia heißt jetzt Sprint: kurze Quizze zum Auffrischen und Sammeln von Arcade-Punkten."
   },
   "skillBadgeLabel": {
     "message": "Skill-Abzeichen"

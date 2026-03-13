@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ تم نسخ الرابط إلى الحافظة!"
   },
+  "copyProfileUrl": {
+    "message": "انقر لنسخ رابط الملف الشخصي"
+  },
   "labelEnableSearchFeature": {
     "message": "تفعيل ميزة البحث"
   },
@@ -455,8 +458,14 @@
   "gameBadgeLabel": {
     "message": "شارة اللعبة"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "أصبحت Arcade الآن بدون مستويات. المسارات الجديدة: Adventure (أساسيات السحابة)، Voyage (تدريب المهارات)، Trail (تعلم الذكاء الاصطناعي)."
+  },
   "triviaBadgeLabel": {
     "message": "شارة المعلومات العامة"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "أصبحت Trivia الآن Sprint: اختبارات قصيرة لمراجعة المفاهيم وكسب نقاط Arcade."
   },
   "skillBadgeLabel": {
     "message": "شارة المهارة"

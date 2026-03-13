@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Link copiato negli appunti!"
   },
+  "copyProfileUrl": {
+    "message": "Clicca per copiare l'URL del profilo"
+  },
   "labelEnableSearchFeature": {
     "message": "Abilita Funzione di Ricerca"
   },
@@ -455,8 +458,14 @@
   "gameBadgeLabel": {
     "message": "Badge Gioco"
   },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade ora è senza livelli. Nuovi percorsi: Adventure (basi cloud), Voyage (pratica delle competenze), Trail (apprendimento AI)."
+  },
   "triviaBadgeLabel": {
     "message": "Badge Trivia"
+  },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia ora si chiama Sprint: quiz rapidi per ripassare i concetti e guadagnare punti Arcade."
   },
   "skillBadgeLabel": {
     "message": "Badge Abilità"

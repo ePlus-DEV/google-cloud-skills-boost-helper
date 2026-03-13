@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Ссылка скопирована в буфер обмена!"
   },
+  "copyProfileUrl": {
+    "message": "Нажмите, чтобы скопировать URL профиля"
+  },
   "labelEnableSearchFeature": {
     "message": "Включить функцию поиска"
   },
@@ -328,7 +331,13 @@
   "arcadeBase": { "message": "Базовые Arcade:" },
   "facilitatorBonus": { "message": "Бонус фасилитатора:" },
   "gameBadgeLabel": { "message": "Игровой значок" },
+  "gameBadgeLabelTooltip": {
+    "message": "В Arcade теперь нет уровней. Новые треки: Adventure (основы облака), Voyage (практика навыков), Trail (обучение ИИ)."
+  },
   "triviaBadgeLabel": { "message": "Значок викторины" },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia теперь называется Sprint: короткие викторины для повторения и получения очков Arcade."
+  },
   "skillBadgeLabel": { "message": "Значок навыка" },
   "specialPointsLabel": { "message": "Специальные очки" },
   "arcadeSeasonCountdown": { "message": "Обратный отсчёт сезона Arcade" },

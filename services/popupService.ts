@@ -157,7 +157,7 @@ const PopupService = {
   ): HTMLElement {
     const accountItem = document.createElement("div");
     accountItem.className =
-      "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
+      "px-3 py-2 hover:bg-purple-600/25 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
     accountItem.dataset.accountId = account.id;
 
     const avatarHTML = this.createAvatarHTML(displayText, profileImage);
@@ -177,14 +177,18 @@ const PopupService = {
       <div class="flex items-center">
         ${
           isActive
-            ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></div>'
+            ? '<div class="active-badge bg-green-500/80 text-white text-xs font-semibold px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></div>'
             : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
         }
       </div>
     `;
 
     if (isActive) {
-      accountItem.classList.add("bg-slate-700/60");
+      accountItem.classList.add(
+        "bg-purple-700/30",
+        "border-l-2",
+        "border-purple-400",
+      );
     }
 
     return accountItem;
@@ -229,129 +233,8 @@ const PopupService = {
       });
     }
 
-    // Copy profile URL functionality with timeout to ensure DOM is ready
-    setTimeout(() => {
-      const copyUrlBtn = document.getElementById("copy-profile-url");
-      if (copyUrlBtn) {
-        // Remove any existing listeners
-        const newCopyBtn = copyUrlBtn.cloneNode(true) as HTMLElement;
-        copyUrlBtn.parentNode?.replaceChild(newCopyBtn, copyUrlBtn);
-
-        newCopyBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          // Get profile URL from current account or fallback to stored profileUrl
-          let profileUrl = this.profileUrl;
-          if (!profileUrl && this.currentAccount) {
-            profileUrl = this.currentAccount.profileUrl;
-          }
-
-          if (profileUrl) {
-            try {
-              await navigator.clipboard.writeText(profileUrl);
-
-              // Show visual feedback - just change icon for compact button
-              const originalIcon = newCopyBtn.innerHTML;
-              newCopyBtn.innerHTML =
-                '<i class="fa-solid fa-check text-xs"></i>';
-              newCopyBtn.classList.add(
-                "text-green-400",
-                "bg-green-400/20",
-                "border-green-400/50",
-              );
-              newCopyBtn.classList.remove(
-                "text-blue-400",
-                "bg-blue-400/20",
-                "border-blue-400/30",
-              );
-              newCopyBtn.title = "Copied!";
-
-              setTimeout(() => {
-                newCopyBtn.innerHTML = originalIcon;
-                newCopyBtn.classList.remove(
-                  "text-green-400",
-                  "bg-green-400/20",
-                  "border-green-400/50",
-                );
-                newCopyBtn.classList.add(
-                  "text-blue-400",
-                  "bg-blue-400/20",
-                  "border-blue-400/30",
-                );
-                newCopyBtn.title = "Copy Profile URL";
-              }, 1500);
-            } catch (error) {
-              console.error("DEBUG: Failed to copy URL:", error);
-
-              // Show error feedback
-              const originalIcon = newCopyBtn.innerHTML;
-              newCopyBtn.innerHTML =
-                '<i class="fa-solid fa-times text-xs"></i>';
-              newCopyBtn.classList.add(
-                "text-red-400",
-                "bg-red-400/20",
-                "border-red-400/50",
-              );
-              newCopyBtn.classList.remove(
-                "text-blue-400",
-                "bg-blue-400/20",
-                "border-blue-400/30",
-              );
-              newCopyBtn.title = "Failed to copy";
-
-              setTimeout(() => {
-                newCopyBtn.innerHTML = originalIcon;
-                newCopyBtn.classList.remove(
-                  "text-red-400",
-                  "bg-red-400/20",
-                  "border-red-400/50",
-                );
-                newCopyBtn.classList.add(
-                  "text-blue-400",
-                  "bg-blue-400/20",
-                  "border-blue-400/30",
-                );
-                newCopyBtn.title = "Copy Profile URL";
-              }, 1500);
-            }
-          } else {
-            // No URL available
-            const originalIcon = newCopyBtn.innerHTML;
-            newCopyBtn.innerHTML =
-              '<i class="fa-solid fa-exclamation text-xs"></i>';
-            newCopyBtn.classList.add(
-              "text-yellow-400",
-              "bg-yellow-400/20",
-              "border-yellow-400/50",
-            );
-            newCopyBtn.classList.remove(
-              "text-blue-400",
-              "bg-blue-400/20",
-              "border-blue-400/30",
-            );
-            newCopyBtn.title = "No URL available";
-
-            setTimeout(() => {
-              newCopyBtn.innerHTML = originalIcon;
-              newCopyBtn.classList.remove(
-                "text-yellow-400",
-                "bg-yellow-400/20",
-                "border-yellow-400/50",
-              );
-              newCopyBtn.classList.add(
-                "text-blue-400",
-                "bg-blue-400/20",
-                "border-blue-400/30",
-              );
-              newCopyBtn.title = "Copy Profile URL";
-            }, 1500);
-          }
-        });
-      } else {
-        // Optionally handle missing copy button here (e.g., show UI feedback)
-      }
-    }, 1000); // Wait 1 second to ensure DOM is ready
+    // Copy profile URL handling is centralized in popup entrypoint main.tsx
+    // to avoid duplicated listeners and inconsistent UI feedback.
   },
 
   /**

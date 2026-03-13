@@ -15,6 +15,7 @@ const STORAGE_KEYS = {
   enableSearchFeature: "local:enableSearchFeature" as const,
   showBadge: "local:showBadge" as const,
   accountsData: "local:accountsData" as const,
+  popupTheme: "local:popupTheme" as const,
 };
 
 /**

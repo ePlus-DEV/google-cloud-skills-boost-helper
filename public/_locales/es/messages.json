@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ ¡Enlace copiado al portapapeles!"
   },
+  "copyProfileUrl": {
+    "message": "Haz clic para copiar la URL del perfil"
+  },
   "labelEnableSearchFeature": {
     "message": "Habilitar Función de Búsqueda"
   },
@@ -335,7 +338,13 @@
   "arcadeBase": { "message": "Base Arcade:" },
   "facilitatorBonus": { "message": "Bonificación Facilitator:" },
   "gameBadgeLabel": { "message": "Insignia de Juego" },
+  "gameBadgeLabelTooltip": {
+    "message": "Arcade ahora es sin niveles. Nuevas rutas: Adventure (bases de cloud), Voyage (práctica de habilidades), Trail (aprendizaje de IA)."
+  },
   "triviaBadgeLabel": { "message": "Insignia de Trivia" },
+  "triviaBadgeLabelTooltip": {
+    "message": "Trivia ahora se llama Sprint: cuestionarios rápidos para repasar conceptos y ganar puntos Arcade."
+  },
   "skillBadgeLabel": { "message": "Insignia de Habilidad" },
   "specialPointsLabel": { "message": "Puntos Especiales" },
   "arcadeSeasonCountdown": {
