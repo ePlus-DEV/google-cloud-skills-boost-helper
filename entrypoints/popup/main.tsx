@@ -144,10 +144,7 @@ function isValidHexColor(color: string): boolean {
   return /^#[0-9a-fA-F]{6}$/.test(color.trim());
 }
 
-function normalizePaletteValue(
-  value: string,
-  fallback: string,
-): string {
+function normalizePaletteValue(value: string, fallback: string): string {
   return isValidHexColor(value) ? value.trim() : fallback;
 }
 
@@ -194,10 +191,7 @@ function sanitizePalette(
       palette.arcadePoints || "",
       DEFAULT_CUSTOM_THEME.arcadePoints,
     ),
-    textPrimary: normalizePaletteValue(
-      palette.textPrimary || "",
-      legacyText,
-    ),
+    textPrimary: normalizePaletteValue(palette.textPrimary || "", legacyText),
     textSecondary: normalizePaletteValue(
       palette.textSecondary || "",
       DEFAULT_CUSTOM_THEME.textSecondary,
@@ -617,7 +611,8 @@ PopupService.initialize().then(() => {
               startInput?.value || DEFAULT_CUSTOM_THEME.backgroundStart,
             backgroundMiddle:
               middleInput?.value || DEFAULT_CUSTOM_THEME.backgroundMiddle,
-            backgroundEnd: endInput?.value || DEFAULT_CUSTOM_THEME.backgroundEnd,
+            backgroundEnd:
+              endInput?.value || DEFAULT_CUSTOM_THEME.backgroundEnd,
             accent: accentInput?.value || DEFAULT_CUSTOM_THEME.accent,
             arcadePoints:
               arcadePointsInput?.value || DEFAULT_CUSTOM_THEME.arcadePoints,
