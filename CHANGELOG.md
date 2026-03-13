@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.8] - 2026-03-13
+### :sparkles: New Features
+- [`1e200d9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1e200d9292e8aea963f91220ff4f8201fddb134d) - **searchService**: enhance search functionality with improved normalization and filtering *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`54e9c0a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/54e9c0aefc75c85fcb55da2998efc4acaec29000) - **theme**: implement theme management with multiple options and modal for selection *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`41733dd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/41733dd9ecca93243c3f8b7fc4b5549ea1c9e22d) - **labService**: enhance URL handling for best match by rewriting specific hostnames *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`be1e78f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/be1e78f56fff9ff46a88e466f8d4e3b7eea9b71d) - **popup**: enhance badge tooltips and localization for game and trivia badges *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ac3ff95`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ac3ff95a8e26c387de36c4a00b9aad5ec814cda5) - **copyProfileUrl**: implement copy profile URL functionality with tooltip support and localization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`1c45c06`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1c45c06cda79e2e4eab790dae50ff9383025c6e8) - **copyProfileUrl**: update tooltip text for copy profile URL button and improve localization across multiple languages *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b365026`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b3650260a9c495cea0d36dc98a3c5265dab6034f) - **popup**: enhance account dropdown styling and improve active badge visibility in light theme *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e04bcad`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e04bcad18c8ffd6d7ecb3238e7c688ebf3667c35) - **copyProfileUrl**: add tooltip message functionality and enhance copy button state management *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d530853`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d530853467e6941f74a21da2a3c8bcef2072a5af) - **copyProfileUrl**: update setupCopyProfileButton function to enhance visual state transitions and tooltip behavior *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`4890288`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4890288103ff209d7488559ac7c4851d0d873f38) - **deps**: bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`6df1e86`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6df1e86877875edc7f4477e57f8dc760d9944025) - **deps**: bump axios from 1.13.2 to 1.13.5 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c5bac9e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c5bac9ec837719b805d9f8c5f23bb66351917860) - **deps**: bump rollup from 4.54.0 to 4.59.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [1.2.7] - 2026-01-11
 ### :sparkles: New Features
 - [`f229e60`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f229e60edb54006004cd53e58b53cd786893040e) - add localization support for update points button and enhance badge service to hide load more button when no badges are available *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -781,3 +799,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.4...1.2.5
 [1.2.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.5...1.2.6
 [1.2.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.6...1.2.7
+[1.2.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.7...1.2.8
