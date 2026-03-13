@@ -640,5 +640,28 @@
   },
   "saveChangesButton": {
     "message": "परिवर्तन सहेजें"
-  }
+  },
+  "themeStudioTitle": { "message": "थीम स्टूडियो" },
+  "themeStudioDescription": {
+    "message": "रीयल-टाइम पूर्वावलोकन के साथ अपने पॉपअप थीम को कस्टमाइज़ करें।"
+  },
+  "labelBackground1": { "message": "पृष्ठभूमि 1" },
+  "labelBackground2": { "message": "पृष्ठभूमि 2" },
+  "labelBackground3": { "message": "पृष्ठभूमि 3" },
+  "labelAccent": { "message": "एक्सेंट" },
+  "labelArcadePoints": { "message": "आर्केड अंक" },
+  "labelTextPrimary": { "message": "प्राथमिक पाठ रंग" },
+  "labelTextSecondary": { "message": "द्वितीयक पाठ रंग" },
+  "labelTextMuted": { "message": "म्यूटेड पाठ रंग" },
+  "btnApplySave": { "message": "लागू करें और सहेजें" },
+  "btnResetToDark": { "message": "डार्क पर रीसेट करें" },
+  "btnSyncFromPopup": { "message": "वर्तमान पॉपअप से सिंक करें" },
+  "previewNote": {
+    "message": "पूर्वावलोकन वास्तविक पॉपअप UI और वर्तमान खाते के डेटा का उपयोग करता है।"
+  },
+  "popupLivePreviewTitle": { "message": "पॉपअप लाइव पूर्वावलोकन" },
+  "btnApplyCustomTheme": { "message": "कस्टम थीम लागू करें" },
+  "btnResetCustomTheme": { "message": "रीसेट" },
+  "btnOpenThemeStudio": { "message": "थीम स्टूडियो खोलें (लाइव पूर्वावलोकन)" },
+  "btnChangeTheme": { "message": "थीम बदलें" }
 }

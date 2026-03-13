@@ -640,5 +640,28 @@
   },
   "saveChangesButton": {
     "message": "Salva modifiche"
-  }
+  },
+  "themeStudioTitle": { "message": "Studio Temi" },
+  "themeStudioDescription": {
+    "message": "Personalizza il tema del popup con anteprima in tempo reale."
+  },
+  "labelBackground1": { "message": "Sfondo 1" },
+  "labelBackground2": { "message": "Sfondo 2" },
+  "labelBackground3": { "message": "Sfondo 3" },
+  "labelAccent": { "message": "Accento" },
+  "labelArcadePoints": { "message": "Punti Arcade" },
+  "labelTextPrimary": { "message": "Testo primario" },
+  "labelTextSecondary": { "message": "Testo secondario" },
+  "labelTextMuted": { "message": "Testo attenuato" },
+  "btnApplySave": { "message": "Applica e salva" },
+  "btnResetToDark": { "message": "Reimposta su scuro" },
+  "btnSyncFromPopup": { "message": "Sincronizza dal popup corrente" },
+  "previewNote": {
+    "message": "L'anteprima usa l'interfaccia reale del popup e i dati dell'account corrente."
+  },
+  "popupLivePreviewTitle": { "message": "Anteprima live del popup" },
+  "btnApplyCustomTheme": { "message": "Applica tema personalizzato" },
+  "btnResetCustomTheme": { "message": "Reimposta" },
+  "btnOpenThemeStudio": { "message": "Apri Theme Studio (Anteprima live)" },
+  "btnChangeTheme": { "message": "Cambia tema" }
 }

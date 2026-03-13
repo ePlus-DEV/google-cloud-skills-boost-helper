@@ -10,12 +10,234 @@ type Theme =
   | "forest"
   | "purple"
   | "midnight"
-  | "rose";
+  | "rose"
+  | "custom";
+
+type BaseTheme = Exclude<Theme, "custom">;
+
+type CustomThemePalette = {
+  backgroundStart: string;
+  backgroundMiddle: string;
+  backgroundEnd: string;
+  accent: string;
+  arcadePoints: string;
+  textPrimary: string;
+  textSecondary: string;
+  textMuted: string;
+  text?: string;
+};
+
+const DEFAULT_CUSTOM_THEME: CustomThemePalette = {
+  backgroundStart: "#0f172a",
+  backgroundMiddle: "#581c87",
+  backgroundEnd: "#0f172a",
+  accent: "#a855f7",
+  arcadePoints: "#ffffff",
+  textPrimary: "#ffffff",
+  textSecondary: "#b3b3b3",
+  textMuted: "#999999",
+};
+
+const CUSTOM_THEME_BASELINES: Record<BaseTheme, CustomThemePalette> = {
+  dark: { ...DEFAULT_CUSTOM_THEME },
+  light: {
+    backgroundStart: "#f8fafc",
+    backgroundMiddle: "#e0e7ff",
+    backgroundEnd: "#f8fafc",
+    accent: "#6366f1",
+    arcadePoints: "#7c3aed",
+    textPrimary: "#1e293b",
+    textSecondary: "#475569",
+    textMuted: "#64748b",
+  },
+  ocean: {
+    backgroundStart: "#0c1a2e",
+    backgroundMiddle: "#0d2d4a",
+    backgroundEnd: "#0a2236",
+    accent: "#38bdf8",
+    arcadePoints: "#38bdf8",
+    textPrimary: "#e2f3ff",
+    textSecondary: "#b2d8ef",
+    textMuted: "#7db6d9",
+  },
+  sunset: {
+    backgroundStart: "#18100a",
+    backgroundMiddle: "#2c1810",
+    backgroundEnd: "#1e1008",
+    accent: "#fb923c",
+    arcadePoints: "#fb923c",
+    textPrimary: "#fff2e5",
+    textSecondary: "#ffd6b3",
+    textMuted: "#e5b88f",
+  },
+  forest: {
+    backgroundStart: "#0a1a12",
+    backgroundMiddle: "#0f2b1c",
+    backgroundEnd: "#0a1e13",
+    accent: "#34d399",
+    arcadePoints: "#34d399",
+    textPrimary: "#e9fff4",
+    textSecondary: "#b8e8d1",
+    textMuted: "#8bc9ad",
+  },
+  purple: {
+    backgroundStart: "#130d26",
+    backgroundMiddle: "#1e1040",
+    backgroundEnd: "#130d26",
+    accent: "#a78bfa",
+    arcadePoints: "#a78bfa",
+    textPrimary: "#f3efff",
+    textSecondary: "#d2c7ff",
+    textMuted: "#afa2dc",
+  },
+  midnight: {
+    backgroundStart: "#0f172a",
+    backgroundMiddle: "#1e293b",
+    backgroundEnd: "#334155",
+    accent: "#94a3b8",
+    arcadePoints: "#cbd5e1",
+    textPrimary: "#f8fafc",
+    textSecondary: "#cbd5e1",
+    textMuted: "#94a3b8",
+  },
+  rose: {
+    backgroundStart: "#1a0c12",
+    backgroundMiddle: "#2a1020",
+    backgroundEnd: "#1a0c12",
+    accent: "#f472b6",
+    arcadePoints: "#f472b6",
+    textPrimary: "#ffeef7",
+    textSecondary: "#f7c9df",
+    textMuted: "#d9a7bf",
+  },
+};
 
 // Define WXT storage item for theme
 const themeStorage = storage.defineItem<Theme>("local:popupTheme", {
   defaultValue: "dark",
 });
+
+const customThemeStorage = storage.defineItem<CustomThemePalette>(
+  "local:popupCustomTheme",
+  {
+    defaultValue: DEFAULT_CUSTOM_THEME,
+  },
+);
+
+function getBaselinePalette(theme: BaseTheme): CustomThemePalette {
+  return { ...CUSTOM_THEME_BASELINES[theme] };
+}
+
+function toRgbChannels(hexColor: string): string {
+  const normalized = hexColor.replace("#", "").trim();
+  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
+    return "34, 211, 238";
+  }
+
+  const r = parseInt(normalized.substring(0, 2), 16);
+  const g = parseInt(normalized.substring(2, 4), 16);
+  const b = parseInt(normalized.substring(4, 6), 16);
+  return `${r}, ${g}, ${b}`;
+}
+
+function isValidHexColor(color: string): boolean {
+  return /^#[0-9a-fA-F]{6}$/.test(color.trim());
+}
+
+function normalizePaletteValue(value: string, fallback: string): string {
+  return isValidHexColor(value) ? value.trim() : fallback;
+}
+
+function applyCustomThemeVariables(palette: CustomThemePalette): void {
+  const root = document.documentElement;
+
+  root.style.setProperty("--custom-bg-start", palette.backgroundStart);
+  root.style.setProperty("--custom-bg-middle", palette.backgroundMiddle);
+  root.style.setProperty("--custom-bg-end", palette.backgroundEnd);
+  root.style.setProperty("--custom-accent", palette.accent);
+  root.style.setProperty("--custom-accent-rgb", toRgbChannels(palette.accent));
+  root.style.setProperty("--custom-arcade-points", palette.arcadePoints);
+  root.style.setProperty("--custom-text-primary", palette.textPrimary);
+  root.style.setProperty("--custom-text-secondary", palette.textSecondary);
+  root.style.setProperty("--custom-text-muted", palette.textMuted);
+}
+
+function sanitizePalette(
+  palette: Partial<CustomThemePalette>,
+): CustomThemePalette {
+  const legacyText = normalizePaletteValue(
+    palette.text || "",
+    DEFAULT_CUSTOM_THEME.textPrimary,
+  );
+
+  return {
+    backgroundStart: normalizePaletteValue(
+      palette.backgroundStart || "",
+      DEFAULT_CUSTOM_THEME.backgroundStart,
+    ),
+    backgroundMiddle: normalizePaletteValue(
+      palette.backgroundMiddle || "",
+      DEFAULT_CUSTOM_THEME.backgroundMiddle,
+    ),
+    backgroundEnd: normalizePaletteValue(
+      palette.backgroundEnd || "",
+      DEFAULT_CUSTOM_THEME.backgroundEnd,
+    ),
+    accent: normalizePaletteValue(
+      palette.accent || "",
+      DEFAULT_CUSTOM_THEME.accent,
+    ),
+    arcadePoints: normalizePaletteValue(
+      palette.arcadePoints || "",
+      DEFAULT_CUSTOM_THEME.arcadePoints,
+    ),
+    textPrimary: normalizePaletteValue(palette.textPrimary || "", legacyText),
+    textSecondary: normalizePaletteValue(
+      palette.textSecondary || "",
+      DEFAULT_CUSTOM_THEME.textSecondary,
+    ),
+    textMuted: normalizePaletteValue(
+      palette.textMuted || "",
+      DEFAULT_CUSTOM_THEME.textMuted,
+    ),
+  };
+}
+
+function syncCustomThemeInputs(palette: CustomThemePalette): void {
+  const startInput = document.getElementById(
+    "custom-theme-bg-start",
+  ) as HTMLInputElement | null;
+  const middleInput = document.getElementById(
+    "custom-theme-bg-middle",
+  ) as HTMLInputElement | null;
+  const endInput = document.getElementById(
+    "custom-theme-bg-end",
+  ) as HTMLInputElement | null;
+  const accentInput = document.getElementById(
+    "custom-theme-accent",
+  ) as HTMLInputElement | null;
+  const arcadePointsInput = document.getElementById(
+    "custom-theme-arcade-points",
+  ) as HTMLInputElement | null;
+  const textPrimaryInput = document.getElementById(
+    "custom-theme-text-primary",
+  ) as HTMLInputElement | null;
+  const textSecondaryInput = document.getElementById(
+    "custom-theme-text-secondary",
+  ) as HTMLInputElement | null;
+  const textMutedInput = document.getElementById(
+    "custom-theme-text-muted",
+  ) as HTMLInputElement | null;
+
+  if (startInput) startInput.value = palette.backgroundStart;
+  if (middleInput) middleInput.value = palette.backgroundMiddle;
+  if (endInput) endInput.value = palette.backgroundEnd;
+  if (accentInput) accentInput.value = palette.accent;
+  if (arcadePointsInput) arcadePointsInput.value = palette.arcadePoints;
+  if (textPrimaryInput) textPrimaryInput.value = palette.textPrimary;
+  if (textSecondaryInput) textSecondaryInput.value = palette.textSecondary;
+  if (textMutedInput) textMutedInput.value = palette.textMuted;
+}
 
 // Function to apply theme
 async function applyTheme(theme: Theme) {
@@ -31,6 +253,7 @@ async function applyTheme(theme: Theme) {
     "theme-purple",
     "theme-midnight",
     "theme-rose",
+    "theme-custom",
   ];
   themeClasses.forEach((cls) => body.classList.remove(cls));
 
@@ -55,6 +278,15 @@ async function applyTheme(theme: Theme) {
 // Function to get saved theme
 async function getSavedTheme(): Promise<Theme> {
   return await themeStorage.getValue();
+}
+
+async function getSavedCustomTheme(): Promise<CustomThemePalette> {
+  const storedPalette = await customThemeStorage.getValue();
+  return sanitizePalette(storedPalette || DEFAULT_CUSTOM_THEME);
+}
+
+async function getResetPaletteFromBaseTheme(): Promise<CustomThemePalette> {
+  return getBaselinePalette("dark");
 }
 
 // Function to open theme modal
@@ -260,6 +492,10 @@ document.title =
 
 // Initialize theme
 (async () => {
+  const savedPalette = await getSavedCustomTheme();
+  applyCustomThemeVariables(savedPalette);
+  syncCustomThemeInputs(savedPalette);
+
   const savedTheme = await getSavedTheme();
   await applyTheme(savedTheme);
 })();
@@ -291,6 +527,15 @@ PopupService.initialize().then(() => {
       ) as HTMLButtonElement;
       const closeModalBtn = document.getElementById("close-theme-modal");
       const themeOptions = document.querySelectorAll(".theme-option");
+      const applyCustomThemeButton = document.getElementById(
+        "apply-custom-theme",
+      ) as HTMLButtonElement | null;
+      const resetCustomThemeButton = document.getElementById(
+        "reset-custom-theme",
+      ) as HTMLButtonElement | null;
+      const openThemeStudioButton = document.getElementById(
+        "open-theme-studio",
+      ) as HTMLButtonElement | null;
 
       // Open theme modal
       if (themeToggleBtn) {
@@ -323,13 +568,84 @@ PopupService.initialize().then(() => {
           const selectedTheme = optionElement.dataset.theme as Theme;
           if (selectedTheme) {
             await applyTheme(selectedTheme);
-            // Optional: close modal after selection
-            setTimeout(() => {
-              closeThemeModal();
-            }, 300);
+
+            if (selectedTheme !== "custom") {
+              // Optional: close modal after selection
+              setTimeout(() => {
+                closeThemeModal();
+              }, 300);
+            }
           }
         });
       });
+
+      if (applyCustomThemeButton) {
+        applyCustomThemeButton.addEventListener("click", async () => {
+          const startInput = document.getElementById(
+            "custom-theme-bg-start",
+          ) as HTMLInputElement | null;
+          const middleInput = document.getElementById(
+            "custom-theme-bg-middle",
+          ) as HTMLInputElement | null;
+          const endInput = document.getElementById(
+            "custom-theme-bg-end",
+          ) as HTMLInputElement | null;
+          const accentInput = document.getElementById(
+            "custom-theme-accent",
+          ) as HTMLInputElement | null;
+          const arcadePointsInput = document.getElementById(
+            "custom-theme-arcade-points",
+          ) as HTMLInputElement | null;
+          const textPrimaryInput = document.getElementById(
+            "custom-theme-text-primary",
+          ) as HTMLInputElement | null;
+          const textSecondaryInput = document.getElementById(
+            "custom-theme-text-secondary",
+          ) as HTMLInputElement | null;
+          const textMutedInput = document.getElementById(
+            "custom-theme-text-muted",
+          ) as HTMLInputElement | null;
+
+          const nextPalette = sanitizePalette({
+            backgroundStart:
+              startInput?.value || DEFAULT_CUSTOM_THEME.backgroundStart,
+            backgroundMiddle:
+              middleInput?.value || DEFAULT_CUSTOM_THEME.backgroundMiddle,
+            backgroundEnd:
+              endInput?.value || DEFAULT_CUSTOM_THEME.backgroundEnd,
+            accent: accentInput?.value || DEFAULT_CUSTOM_THEME.accent,
+            arcadePoints:
+              arcadePointsInput?.value || DEFAULT_CUSTOM_THEME.arcadePoints,
+            textPrimary:
+              textPrimaryInput?.value || DEFAULT_CUSTOM_THEME.textPrimary,
+            textSecondary:
+              textSecondaryInput?.value || DEFAULT_CUSTOM_THEME.textSecondary,
+            textMuted: textMutedInput?.value || DEFAULT_CUSTOM_THEME.textMuted,
+          });
+
+          await customThemeStorage.setValue(nextPalette);
+          applyCustomThemeVariables(nextPalette);
+          syncCustomThemeInputs(nextPalette);
+          await applyTheme("custom");
+        });
+      }
+
+      if (resetCustomThemeButton) {
+        resetCustomThemeButton.addEventListener("click", async () => {
+          const basePalette = await getResetPaletteFromBaseTheme();
+          await customThemeStorage.setValue(basePalette);
+          applyCustomThemeVariables(basePalette);
+          syncCustomThemeInputs(basePalette);
+          await applyTheme("custom");
+        });
+      }
+
+      if (openThemeStudioButton) {
+        openThemeStudioButton.addEventListener("click", () => {
+          const studioUrl = chrome.runtime.getURL("theme-studio.html");
+          window.open(studioUrl, "_blank");
+        });
+      }
     }, 0);
   });
 });
