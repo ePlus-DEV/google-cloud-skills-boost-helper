@@ -176,7 +176,53 @@ body.theme-light #popup-content .absolute.opacity-20 > div {
 
 body.theme-light #account-dropdown {
   background-color: rgba(248, 250, 252, 0.98) !important;
-  border-color: rgba(203, 213, 225, 0.8) !important;
+  border-color: rgba(139, 92, 246, 0.35) !important;
+}
+
+/* Header row inside dropdown */
+body.theme-light #account-dropdown .border-b {
+  background: linear-gradient(to right, rgba(237, 233, 254, 0.9), rgba(224, 231, 255, 0.9)) !important;
+  border-color: rgba(167, 139, 250, 0.3) !important;
+}
+
+body.theme-light #account-dropdown .border-b .text-white {
+  color: #4c1d95 !important;
+}
+
+body.theme-light #account-dropdown .border-b .text-purple-300 {
+  color: #7c3aed !important;
+}
+
+/* Account items */
+body.theme-light #account-dropdown #account-list .text-white\/95 {
+  color: #1e293b !important;
+}
+
+body.theme-light #account-dropdown #account-list .text-white\/70 {
+  color: #475569 !important;
+}
+
+body.theme-light #account-dropdown #account-list .text-white\/60 {
+  color: #64748b !important;
+}
+
+body.theme-light #account-dropdown #account-list > div:hover {
+  background-color: rgba(139, 92, 246, 0.12) !important;
+}
+
+body.theme-light #account-dropdown #account-list > div.bg-purple-700\/30 {
+  background-color: rgba(139, 92, 246, 0.1) !important;
+  border-left-color: #7c3aed !important;
+}
+
+body.theme-light #account-dropdown #account-list .border-white\/10 {
+  border-color: rgba(203, 213, 225, 0.5) !important;
+}
+
+/* Active badge in light theme */
+body.theme-light #account-dropdown #account-list .active-badge {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
 }
 
 body.theme-light .countdown-card {
@@ -248,6 +294,82 @@ body.theme-light #popup-content #announcement-chevron {
   color: #475569 !important;
 }
 
+/* Announcement markdown container in light theme */
+body.theme-light #popup-content #popup-markdown-container {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
+  scrollbar-color: rgba(100, 116, 139, 0.4) transparent !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose {
+  color: #1e293b !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose h1,
+body.theme-light #popup-content #popup-markdown-container .prose h2,
+body.theme-light #popup-content #popup-markdown-container .prose h3,
+body.theme-light #popup-content #popup-markdown-container .prose h4,
+body.theme-light #popup-content #popup-markdown-container .prose h5,
+body.theme-light #popup-content #popup-markdown-container .prose h6 {
+  color: #b45309 !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose p,
+body.theme-light #popup-content #popup-markdown-container .prose li {
+  color: #334155 !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose strong {
+  color: #78350f !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose em {
+  color: #6d28d9 !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose a {
+  color: #1d4ed8 !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose a:hover {
+  color: #1e40af !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose code {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: #78350f !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose pre {
+  background-color: #f1f5f9 !important;
+  color: #1e293b !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose blockquote {
+  background-color: rgba(251, 191, 36, 0.08) !important;
+  color: #374151 !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose th {
+  background-color: rgba(251, 191, 36, 0.15) !important;
+  color: #78350f !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose td {
+  color: #334155 !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose th,
+body.theme-light #popup-content #popup-markdown-container .prose td {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.theme-light #popup-content #popup-markdown-container .prose hr {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
 /* Interactive hover states in light theme */
 body.theme-light #popup-content #copy-profile-url {
   color: #1e3a8a !important;
@@ -266,9 +388,12 @@ body.theme-light #popup-content #copy-profile-url i {
 }
 
 body.theme-light #popup-content .settings-button:hover i,
-body.theme-light #popup-content .refresh-button:hover i,
-body.theme-light #popup-content .theme-toggle-button:hover .theme-icon {
+body.theme-light #popup-content .refresh-button:hover i {
   color: #ffffff !important;
+}
+
+body.theme-light #popup-content .theme-toggle-button:hover .theme-icon {
+  color: #4f46e5 !important;
 }
 
 body.theme-light #popup-content #account-switcher-btn:hover {
@@ -589,6 +714,23 @@ body.theme-rose #account-dropdown {
 /* Theme Modal Styles */
 .theme-modal {
   z-index: 9999;
+}
+
+/* Theme modal always uses dark styling regardless of current theme */
+body.theme-light #theme-modal .text-white {
+  color: #ffffff !important;
+}
+
+body.theme-light #theme-modal .text-white\/70 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.theme-light #theme-modal .text-white\/60 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+body.theme-light #theme-modal .text-white\/80 {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .theme-option {

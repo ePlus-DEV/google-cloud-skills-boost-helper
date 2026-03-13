@@ -157,7 +157,7 @@ const PopupService = {
   ): HTMLElement {
     const accountItem = document.createElement("div");
     accountItem.className =
-      "px-3 py-2 hover:bg-slate-700/80 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
+      "px-3 py-2 hover:bg-purple-600/25 cursor-pointer transition-all duration-200 flex items-center justify-between group border-b border-white/10 last:border-b-0";
     accountItem.dataset.accountId = account.id;
 
     const avatarHTML = this.createAvatarHTML(displayText, profileImage);
@@ -177,14 +177,18 @@ const PopupService = {
       <div class="flex items-center">
         ${
           isActive
-            ? '<div class="bg-green-500/30 text-green-300 text-xs px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></div>'
+            ? '<div class="active-badge bg-green-500/80 text-white text-xs font-semibold px-2 py-0.5 rounded flex items-center"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></div>'
             : '<i class="fa-solid fa-arrow-right text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>'
         }
       </div>
     `;
 
     if (isActive) {
-      accountItem.classList.add("bg-slate-700/60");
+      accountItem.classList.add(
+        "bg-purple-700/30",
+        "border-l-2",
+        "border-purple-400",
+      );
     }
 
     return accountItem;
