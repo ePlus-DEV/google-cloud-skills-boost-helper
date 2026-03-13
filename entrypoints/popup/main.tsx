@@ -58,6 +58,131 @@ function closeThemeModal() {
   }
 }
 
+function showCopyTooltip(
+  button: HTMLButtonElement,
+  message: string,
+  duration = 1500,
+): void {
+  const previousTooltipTimer = Number(button.dataset.tooltipTimerId || "0");
+  if (previousTooltipTimer) {
+    clearTimeout(previousTooltipTimer);
+    delete button.dataset.tooltipTimerId;
+  }
+
+  button.dataset.copyTooltip = message;
+  button.title = message;
+
+  const tooltipTimerId = globalThis.setTimeout(() => {
+    const defaultMessage =
+      chrome.i18n.getMessage("copyProfileUrl") || "Copy Profile URL";
+    button.dataset.copyTooltip = defaultMessage;
+    button.title = defaultMessage;
+    delete button.dataset.tooltipTimerId;
+  }, duration);
+  button.dataset.tooltipTimerId = String(tooltipTimerId);
+}
+
+function setupCopyProfileButton(): void {
+  const copyBtn = document.getElementById(
+    "copy-profile-url",
+  ) as HTMLButtonElement | null;
+  if (!copyBtn) return;
+  if (copyBtn.dataset.bound === "1") return;
+
+  const defaultMessage =
+    chrome.i18n.getMessage("copyProfileUrl") || "Copy Profile URL";
+
+  const renderCopyButtonContent = (
+    iconClass: string,
+    label: string = defaultMessage,
+  ) => {
+    copyBtn.innerHTML = `<i class="fa-solid ${iconClass} text-xs"></i><span class="ml-1 copy-btn-label">${label}</span>`;
+  };
+
+  const resetCopyButton = () => {
+    copyBtn.disabled = false;
+    renderCopyButtonContent("fa-copy");
+    copyBtn.classList.remove(
+      "text-green-400",
+      "bg-green-400/20",
+      "border-green-400/50",
+      "text-amber-300",
+      "bg-amber-400/20",
+      "border-amber-400/50",
+    );
+    copyBtn.classList.add("text-blue-400", "bg-blue-400/20", "border-blue-400/30");
+    copyBtn.title = defaultMessage;
+    copyBtn.dataset.copyTooltip = defaultMessage;
+  };
+
+  resetCopyButton();
+  copyBtn.dataset.bound = "1";
+
+  copyBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const previousTimerId = Number(copyBtn.dataset.resetTimerId || "0");
+    if (previousTimerId) {
+      clearTimeout(previousTimerId);
+      delete copyBtn.dataset.resetTimerId;
+    }
+
+    copyBtn.disabled = true;
+    renderCopyButtonContent("fa-spinner fa-spin");
+    copyBtn.classList.add("text-amber-300", "bg-amber-400/20", "border-amber-400/50");
+    copyBtn.classList.remove(
+      "text-blue-400",
+      "bg-blue-400/20",
+      "border-blue-400/30",
+      "text-green-400",
+      "bg-green-400/20",
+      "border-green-400/50",
+    );
+
+    const activeAccount = await AccountService.getActiveAccount();
+    const profileUrl = activeAccount?.profileUrl || PopupService.profileUrl;
+
+    if (!profileUrl) {
+      showCopyTooltip(
+        copyBtn,
+        chrome.i18n.getMessage("errorNoActiveAccountOrProfileUrl") ||
+          "No active account or profile URL found.",
+      );
+      resetCopyButton();
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(profileUrl);
+
+      renderCopyButtonContent("fa-check");
+      copyBtn.classList.add("text-green-400", "bg-green-400/20", "border-green-400/50");
+      copyBtn.classList.remove("text-blue-400", "bg-blue-400/20", "border-blue-400/30");
+
+      const copiedMessage =
+        chrome.i18n.getMessage("messageLinkCopiedToClipboard") ||
+        "Link copied to clipboard!";
+      copyBtn.title = copiedMessage;
+      showCopyTooltip(copyBtn, copiedMessage);
+
+      const resetTimerId = globalThis.setTimeout(() => {
+        resetCopyButton();
+        delete copyBtn.dataset.resetTimerId;
+      }, 1500);
+      copyBtn.dataset.resetTimerId = String(resetTimerId);
+    } catch (error) {
+      showCopyTooltip(
+        copyBtn,
+        chrome.i18n.getMessage("accountErrorFallback") ||
+          "Something went wrong. Please try again.",
+      );
+      resetCopyButton();
+      console.error("Main.tsx: Copy failed:", error);
+    }
+  });
+}
+
 // Set document title
 document.title =
   chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
@@ -97,6 +222,9 @@ document.title =
   await applyTheme(savedTheme);
 })();
 
+// Bind copy handler immediately so first click always works.
+setupCopyProfileButton();
+
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
   // Apply i18n translations
@@ -113,56 +241,7 @@ PopupService.initialize().then(() => {
 
     // Add copy button event listener after initialization
     setTimeout(() => {
-      const copyBtn = document.getElementById("copy-profile-url");
-      if (copyBtn) {
-        copyBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          // Get URL from active account
-          const activeAccount = await AccountService.getActiveAccount();
-          const profileUrl =
-            activeAccount?.profileUrl || PopupService.profileUrl;
-
-          if (profileUrl) {
-            try {
-              await navigator.clipboard.writeText(profileUrl);
-
-              // Visual feedback
-              const originalIcon = copyBtn.innerHTML;
-              copyBtn.innerHTML = '<i class="fa-solid fa-check text-xs"></i>';
-              copyBtn.classList.add(
-                "text-green-400",
-                "bg-green-400/20",
-                "border-green-400/50",
-              );
-              copyBtn.classList.remove(
-                "text-blue-400",
-                "bg-blue-400/20",
-                "border-blue-400/30",
-              );
-              copyBtn.title = "Copied!";
-
-              setTimeout(() => {
-                copyBtn.innerHTML = originalIcon;
-                copyBtn.classList.remove(
-                  "text-green-400",
-                  "bg-green-400/20",
-                  "border-green-400/50",
-                );
-                copyBtn.classList.add(
-                  "text-blue-400",
-                  "bg-blue-400/20",
-                  "border-blue-400/30",
-                );
-                copyBtn.title = "Copy Profile URL";
-              }, 1500);
-            } catch (error) {
-              console.error("Main.tsx: Copy failed:", error);
-            }
-          }
-        });
-      }
+      setupCopyProfileButton();
 
       // Theme modal event listeners
       const themeToggleBtn = document.querySelector(
@@ -209,6 +288,6 @@ PopupService.initialize().then(() => {
           }
         });
       });
-    }, 500); // Wait 500ms to ensure DOM is ready
+    }, 0);
   });
 });

@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Link copiato negli appunti!"
   },
+  "copyProfileUrl": {
+    "message": "Copia URL del profilo"
+  },
   "labelEnableSearchFeature": {
     "message": "Abilita Funzione di Ricerca"
   },

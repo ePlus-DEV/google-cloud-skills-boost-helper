@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ लिंक क्लिपबोर्ड पर कॉपी किया गया!"
   },
+  "copyProfileUrl": {
+    "message": "प्रोफ़ाइल URL कॉपी करें"
+  },
   "labelEnableSearchFeature": {
     "message": "खोज सुविधा सक्षम करें"
   },

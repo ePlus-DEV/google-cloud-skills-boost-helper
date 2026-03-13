@@ -3,6 +3,65 @@
   --transition-duration: 300ms;
 }
 
+/* Copy button tooltip (no dynamic HTML node) */
+#popup-content #copy-profile-url {
+  position: relative;
+}
+
+#popup-content #copy-profile-url .copy-btn-label {
+  white-space: nowrap;
+}
+
+#popup-content #copy-profile-url:hover::after {
+  content: attr(data-copy-tooltip);
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: normal;
+  text-align: left;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));
+  color: #f8fafc;
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.45);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+#popup-content #copy-profile-url:hover::before {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: calc(100% + 2px);
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  background: rgba(15, 23, 42, 0.98);
+  border-right: 1px solid rgba(56, 189, 248, 0.45);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.45);
+  z-index: 9998;
+  pointer-events: none;
+}
+
+body.theme-light #popup-content #copy-profile-url:hover::after {
+  border-color: rgba(99, 102, 241, 0.45);
+  background: linear-gradient(135deg, #ffffff, #eef2ff);
+  color: #1e1b4b;
+  box-shadow: 0 10px 22px rgba(79, 70, 229, 0.18);
+}
+
+body.theme-light #popup-content #copy-profile-url:hover::before {
+  background: #eef2ff;
+  border-right-color: rgba(99, 102, 241, 0.45);
+  border-bottom-color: rgba(99, 102, 241, 0.45);
+}
+
 /* Badge name tooltip (theme-aware) */
 #popup-content .badge-name-tooltip {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));

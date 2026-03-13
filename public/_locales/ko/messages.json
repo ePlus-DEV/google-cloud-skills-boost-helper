@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ 링크가 클립보드에 복사되었습니다!"
   },
+  "copyProfileUrl": {
+    "message": "프로필 URL 복사"
+  },
   "labelEnableSearchFeature": {
     "message": "검색 기능 활성화"
   },

@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ Đường dẫn đã được sao chép vào clipboard!"
   },
+  "copyProfileUrl": {
+    "message": "Sao chép URL hồ sơ"
+  },
   "labelEnableSearchFeature": {
     "message": "Bật tính năng tìm kiếm"
   },

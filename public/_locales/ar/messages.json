@@ -86,6 +86,9 @@
   "messageLinkCopiedToClipboard": {
     "message": "✔️ تم نسخ الرابط إلى الحافظة!"
   },
+  "copyProfileUrl": {
+    "message": "نسخ رابط الملف الشخصي"
+  },
   "labelEnableSearchFeature": {
     "message": "تفعيل ميزة البحث"
   },
