@@ -2,7 +2,15 @@ import { PopupService, AccountService } from "../../services";
 import PopupUIService from "../../services/popupUIService";
 
 // Theme management
-type Theme = "dark" | "light" | "ocean" | "sunset" | "forest" | "purple" | "midnight" | "rose";
+type Theme =
+  | "dark"
+  | "light"
+  | "ocean"
+  | "sunset"
+  | "forest"
+  | "purple"
+  | "midnight"
+  | "rose";
 
 // Define WXT storage item for theme
 const themeStorage = storage.defineItem<Theme>("local:popupTheme", {
@@ -12,18 +20,27 @@ const themeStorage = storage.defineItem<Theme>("local:popupTheme", {
 // Function to apply theme
 async function applyTheme(theme: Theme) {
   const body = document.body;
-  
+
   // Remove all theme classes
-  const themeClasses = ["theme-dark", "theme-light", "theme-ocean", "theme-sunset", "theme-forest", "theme-purple", "theme-midnight", "theme-rose"];
-  themeClasses.forEach(cls => body.classList.remove(cls));
-  
+  const themeClasses = [
+    "theme-dark",
+    "theme-light",
+    "theme-ocean",
+    "theme-sunset",
+    "theme-forest",
+    "theme-purple",
+    "theme-midnight",
+    "theme-rose",
+  ];
+  themeClasses.forEach((cls) => body.classList.remove(cls));
+
   // Add new theme class (except for default dark)
   if (theme !== "dark") {
     body.classList.add(`theme-${theme}`);
   }
-  
+
   // Update active state in modal
-  document.querySelectorAll(".theme-option").forEach(option => {
+  document.querySelectorAll(".theme-option").forEach((option) => {
     option.classList.remove("active");
     const optionElement = option as HTMLElement;
     if (optionElement.dataset.theme === theme) {
@@ -114,7 +131,11 @@ function setupCopyProfileButton(): void {
       "bg-amber-400/20",
       "border-amber-400/50",
     );
-    copyBtn.classList.add("text-blue-400", "bg-blue-400/20", "border-blue-400/30");
+    copyBtn.classList.add(
+      "text-blue-400",
+      "bg-blue-400/20",
+      "border-blue-400/30",
+    );
     if (!preserveTooltip) {
       copyBtn.dataset.copyTooltip = defaultMessage;
     }
@@ -135,7 +156,11 @@ function setupCopyProfileButton(): void {
 
     copyBtn.disabled = true;
     renderCopyButtonContent("fa-spinner fa-spin");
-    copyBtn.classList.add("text-amber-300", "bg-amber-400/20", "border-amber-400/50");
+    copyBtn.classList.add(
+      "text-amber-300",
+      "bg-amber-400/20",
+      "border-amber-400/50",
+    );
     copyBtn.classList.remove(
       "text-blue-400",
       "bg-blue-400/20",
@@ -162,8 +187,16 @@ function setupCopyProfileButton(): void {
       await navigator.clipboard.writeText(profileUrl);
 
       renderCopyButtonContent("fa-check");
-      copyBtn.classList.add("text-green-400", "bg-green-400/20", "border-green-400/50");
-      copyBtn.classList.remove("text-blue-400", "bg-blue-400/20", "border-blue-400/30");
+      copyBtn.classList.add(
+        "text-green-400",
+        "bg-green-400/20",
+        "border-green-400/50",
+      );
+      copyBtn.classList.remove(
+        "text-blue-400",
+        "bg-blue-400/20",
+        "border-blue-400/30",
+      );
 
       const copiedMessage =
         chrome.i18n.getMessage("messageLinkCopiedToClipboard") ||
@@ -178,8 +211,7 @@ function setupCopyProfileButton(): void {
     } catch (error) {
       showCopyTooltip(
         copyBtn,
-        chrome.i18n.getMessage("accountErrorFallback") ||
-          defaultMessage,
+        chrome.i18n.getMessage("accountErrorFallback") || defaultMessage,
       );
       resetCopyButton(true);
       console.error("Main.tsx: Copy failed:", error);
