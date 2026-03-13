@@ -58,6 +58,9 @@ function closeThemeModal() {
   }
 }
 
+/**
+ * Shows a temporary tooltip message on the copy button.
+ */
 function showCopyTooltip(
   button: HTMLButtonElement,
   message: string,
@@ -90,10 +93,16 @@ function setupCopyProfileButton(): void {
   const defaultMessage =
     chrome.i18n.getMessage("copyProfileUrl") || "Copy Profile URL";
 
+  /**
+   * Renders the icon content for the copy profile URL button.
+   */
   const renderCopyButtonContent = (iconClass: string) => {
     copyBtn.innerHTML = `<i class="fa-solid ${iconClass} text-xs"></i>`;
   };
 
+  /**
+   * Restores copy button state and optionally keeps the current tooltip message.
+   */
   const resetCopyButton = (preserveTooltip = false) => {
     copyBtn.disabled = false;
     renderCopyButtonContent("fa-copy");
