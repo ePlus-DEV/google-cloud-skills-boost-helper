@@ -100,6 +100,9 @@ function showCopyTooltip(
   button.dataset.tooltipTimerId = String(tooltipTimerId);
 }
 
+/**
+ * Initializes copy-profile-url button behavior and visual state transitions.
+ */
 function setupCopyProfileButton(): void {
   const copyBtn = document.getElementById(
     "copy-profile-url",
@@ -193,6 +196,9 @@ function setupCopyProfileButton(): void {
         "border-green-400/50",
       );
       copyBtn.classList.remove(
+        "text-amber-300",
+        "bg-amber-400/20",
+        "border-amber-400/50",
         "text-blue-400",
         "bg-blue-400/20",
         "border-blue-400/30",
