@@ -1,0 +1,537 @@
+/* Theme Styles */
+:root {
+  --transition-duration: 300ms;
+}
+
+/* Default Theme (Dark) */
+body {
+  transition: background-color var(--transition-duration) ease;
+}
+
+/* Smooth transitions for theme-sensitive containers only (avoid jank) */
+#popup-content,
+#popup-content .bg-white\/10,
+#popup-content .bg-white\/20,
+#popup-content .border-white\/20,
+#popup-content .border-white\/30,
+#popup-content .border-white\/40,
+#popup-content .countdown-card,
+#popup-content #account-dropdown,
+#popup-content #announcement-toggle,
+#popup-content #copy-profile-url,
+#popup-content .theme-toggle-button,
+#popup-content #activity-list > div {
+  transition: background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease,
+    border-color var(--transition-duration) ease;
+}
+
+/* Theme mixin - Light Theme */
+body.theme-light #popup-content {
+  background: linear-gradient(to bottom right, #f8fafc, #e0e7ff, #f8fafc) !important;
+}
+
+body.theme-light #popup-content .text-white {
+  color: #1e293b !important;
+}
+
+body.theme-light #popup-content #arcade-points {
+  color: #7c3aed !important;
+}
+
+body.theme-light #popup-content #user-name,
+body.theme-light #popup-content #user-name span {
+  color: #312e81 !important;
+}
+
+body.theme-light #popup-content .text-white\/70 {
+  color: #475569 !important;
+}
+
+body.theme-light #popup-content .text-white\/90 {
+  color: #334155 !important;
+}
+
+/* Improve readability for secondary text in light theme */
+body.theme-light #popup-content .text-white\/60 {
+  color: #64748b !important;
+}
+
+body.theme-light #popup-content .text-gray-300 {
+  color: #475569 !important;
+}
+
+body.theme-light #popup-content .text-gray-400 {
+  color: #64748b !important;
+}
+
+body.theme-light #popup-content .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+/* Keep high contrast text on gradient controls in light theme */
+body.theme-light #popup-content .settings-button,
+body.theme-light #popup-content .settings-button *,
+body.theme-light #popup-content .refresh-button,
+body.theme-light #popup-content .refresh-button *,
+body.theme-light #popup-content #load-more,
+body.theme-light #popup-content #load-more *,
+body.theme-light #popup-content #arcade-facilitator-points,
+body.theme-light #popup-content #arcade-facilitator-points *,
+body.theme-light #popup-content #avatar-score-badge,
+body.theme-light #popup-content #avatar-score-badge *,
+body.theme-light #popup-content #league,
+body.theme-light #popup-content #league * {
+  color: #ffffff !important;
+}
+
+body.theme-light #popup-content .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+body.theme-light #popup-content .bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+body.theme-light #popup-content .border-white\/20,
+body.theme-light #popup-content .border-white\/30,
+body.theme-light #popup-content .border-white\/40 {
+  border-color: rgba(203, 213, 225, 0.6) !important;
+}
+
+body.theme-light #popup-content .absolute.opacity-20 > div {
+  opacity: 0.15 !important;
+}
+
+body.theme-light #account-dropdown {
+  background-color: rgba(248, 250, 252, 0.98) !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+body.theme-light .countdown-card {
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.theme-light #popup-content .countdown-card .bg-black\/20 {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+
+/* Stronger countdown accent colors for light theme */
+body.theme-light #popup-content .countdown-card .text-orange-400 {
+  color: #c2410c !important;
+}
+
+body.theme-light #popup-content .countdown-card .text-orange-300\/70 {
+  color: #9a3412 !important;
+}
+
+body.theme-light #popup-content .countdown-card .text-sky-400 {
+  color: #0369a1 !important;
+}
+
+body.theme-light #popup-content .countdown-card .text-sky-300\/70 {
+  color: #0c4a6e !important;
+}
+
+/* Footer readability in light theme */
+body.theme-light #popup-content #last-updated {
+  color: #64748b !important;
+}
+
+body.theme-light #popup-content .theme-toggle-button {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(148, 163, 184, 0.45) !important;
+  color: #1e293b !important;
+}
+
+body.theme-light #popup-content .theme-toggle-button:hover {
+  background-color: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(99, 102, 241, 0.5) !important;
+}
+
+body.theme-light #popup-content .theme-toggle-button .theme-icon {
+  color: #4f46e5 !important;
+}
+
+/* Announcement emphasis in light theme */
+body.theme-light #popup-content #announcement-toggle {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(251, 191, 36, 0.35) !important;
+}
+
+body.theme-light #popup-content #announcement-toggle:hover {
+  background: rgba(255, 251, 235, 0.98) !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+}
+
+body.theme-light #popup-content #announcement-toggle .text-yellow-400 {
+  color: #d97706 !important;
+}
+
+body.theme-light #popup-content #announcement-toggle .text-yellow-300 {
+  color: #b45309 !important;
+}
+
+body.theme-light #popup-content #announcement-chevron {
+  color: #475569 !important;
+}
+
+/* Interactive hover states in light theme */
+body.theme-light #popup-content #copy-profile-url {
+  color: #1e3a8a !important;
+  background-color: rgba(191, 219, 254, 0.55) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+}
+
+body.theme-light #popup-content #copy-profile-url:hover {
+  color: #1e40af !important;
+  background-color: rgba(147, 197, 253, 0.7) !important;
+  border-color: rgba(59, 130, 246, 0.55) !important;
+}
+
+body.theme-light #popup-content #copy-profile-url i {
+  color: inherit !important;
+}
+
+body.theme-light #popup-content .settings-button:hover i,
+body.theme-light #popup-content .refresh-button:hover i,
+body.theme-light #popup-content .theme-toggle-button:hover .theme-icon {
+  color: #ffffff !important;
+}
+
+body.theme-light #popup-content #account-switcher-btn:hover {
+  color: #0f172a !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+/* Softer, cleaner milestone palette for light theme */
+body.theme-light #popup-content #milestones-section .text-green-400,
+body.theme-light #popup-content #total-facilitator-bonus {
+  color: #047857 !important;
+}
+
+body.theme-light #popup-content #milestones-section .text-green-300\/70 {
+  color: #0f766e !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestone1Bonus"],
+body.theme-light #popup-content #milestones-section .text-yellow-300 {
+  color: #b45309 !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestone2Bonus"],
+body.theme-light #popup-content #milestones-section .text-purple-300 {
+  color: #6d28d9 !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestone3Bonus"],
+body.theme-light #popup-content #milestones-section .text-blue-300 {
+  color: #1d4ed8 !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestoneUltimateBonus"],
+body.theme-light #popup-content #milestones-section .text-pink-300 {
+  color: #be185d !important;
+}
+
+/* Milestone title/subtitle hierarchy in light theme */
+body.theme-light #popup-content #milestones-section [data-i18n="totalBonusEarned"] {
+  color: #065f46 !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="maxPossibleNote"] {
+  color: #0f766e !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestone1"] {
+  color: #92400e !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestone2"] {
+  color: #6d28d9 !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestone3"] {
+  color: #1e40af !important;
+}
+
+body.theme-light #popup-content #milestones-section [data-i18n="milestoneUltimate"] {
+  color: #9d174d !important;
+}
+
+/* Recent activity hierarchy in light theme */
+body.theme-light #popup-content #activity-list > div {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+
+body.theme-light #popup-content #activity-list .activity-title {
+  color: #0f172a !important;
+}
+
+body.theme-light #popup-content #activity-list .activity-date {
+  color: #64748b !important;
+}
+
+body.theme-light #popup-content #activity-list .activity-points {
+  color: #334155 !important;
+  font-weight: 600;
+}
+
+/* Ocean Theme - deep navy with teal tint */
+body.theme-ocean #popup-content {
+  background: linear-gradient(to bottom right, #0c1a2e, #0d2d4a, #0a2236) !important;
+}
+
+body.theme-ocean #popup-content .bg-white\/10 {
+  background-color: rgba(56, 189, 248, 0.08) !important;
+  border: 1px solid rgba(56, 189, 248, 0.15);
+}
+
+body.theme-ocean #popup-content .bg-white\/20 {
+  background-color: rgba(56, 189, 248, 0.14) !important;
+}
+
+body.theme-ocean #popup-content .border-white\/20,
+body.theme-ocean #popup-content .border-white\/30,
+body.theme-ocean #popup-content .border-white\/40 {
+  border-color: rgba(56, 189, 248, 0.2) !important;
+}
+
+body.theme-ocean #popup-content .absolute.opacity-20 .bg-purple-500 {
+  background-color: #0284c7 !important;
+}
+
+body.theme-ocean #popup-content .absolute.opacity-20 .bg-blue-500 {
+  background-color: #0369a1 !important;
+}
+
+body.theme-ocean #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: #0891b2 !important;
+}
+
+body.theme-ocean #account-dropdown {
+  background-color: rgba(8, 20, 38, 0.97) !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+}
+
+/* Sunset Theme - deep charcoal with warm amber tint */
+body.theme-sunset #popup-content {
+  background: linear-gradient(to bottom right, #18100a, #2c1810, #1e1008) !important;
+}
+
+body.theme-sunset #popup-content .bg-white\/10 {
+  background-color: rgba(251, 146, 60, 0.09) !important;
+  border: 1px solid rgba(251, 146, 60, 0.18);
+}
+
+body.theme-sunset #popup-content .bg-white\/20 {
+  background-color: rgba(251, 146, 60, 0.15) !important;
+}
+
+body.theme-sunset #popup-content .border-white\/20,
+body.theme-sunset #popup-content .border-white\/30,
+body.theme-sunset #popup-content .border-white\/40 {
+  border-color: rgba(251, 146, 60, 0.22) !important;
+}
+
+body.theme-sunset #popup-content .absolute.opacity-20 .bg-purple-500 {
+  background-color: #b45309 !important;
+}
+
+body.theme-sunset #popup-content .absolute.opacity-20 .bg-blue-500 {
+  background-color: #92400e !important;
+}
+
+body.theme-sunset #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: #c2410c !important;
+}
+
+body.theme-sunset #account-dropdown {
+  background-color: rgba(15, 8, 3, 0.97) !important;
+  border-color: rgba(251, 146, 60, 0.25) !important;
+}
+
+/* Forest Theme - deep slate with emerald tint */
+body.theme-forest #popup-content {
+  background: linear-gradient(to bottom right, #0a1a12, #0f2b1c, #0a1e13) !important;
+}
+
+body.theme-forest #popup-content .bg-white\/10 {
+  background-color: rgba(52, 211, 153, 0.08) !important;
+  border: 1px solid rgba(52, 211, 153, 0.16);
+}
+
+body.theme-forest #popup-content .bg-white\/20 {
+  background-color: rgba(52, 211, 153, 0.14) !important;
+}
+
+body.theme-forest #popup-content .border-white\/20,
+body.theme-forest #popup-content .border-white\/30,
+body.theme-forest #popup-content .border-white\/40 {
+  border-color: rgba(52, 211, 153, 0.2) !important;
+}
+
+body.theme-forest #popup-content .absolute.opacity-20 .bg-purple-500 {
+  background-color: #059669 !important;
+}
+
+body.theme-forest #popup-content .absolute.opacity-20 .bg-blue-500 {
+  background-color: #047857 !important;
+}
+
+body.theme-forest #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: #065f46 !important;
+}
+
+body.theme-forest #account-dropdown {
+  background-color: rgba(5, 14, 9, 0.97) !important;
+  border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+/* Purple Dream - deep slate with violet tint (richer than default) */
+body.theme-purple #popup-content {
+  background: linear-gradient(to bottom right, #130d26, #1e1040, #130d26) !important;
+}
+
+body.theme-purple #popup-content .bg-white\/10 {
+  background-color: rgba(167, 139, 250, 0.09) !important;
+  border: 1px solid rgba(167, 139, 250, 0.18);
+}
+
+body.theme-purple #popup-content .bg-white\/20 {
+  background-color: rgba(167, 139, 250, 0.16) !important;
+}
+
+body.theme-purple #popup-content .border-white\/20,
+body.theme-purple #popup-content .border-white\/30,
+body.theme-purple #popup-content .border-white\/40 {
+  border-color: rgba(167, 139, 250, 0.22) !important;
+}
+
+body.theme-purple #popup-content .absolute.opacity-20 .bg-purple-500 {
+  background-color: #6d28d9 !important;
+}
+
+body.theme-purple #popup-content .absolute.opacity-20 .bg-blue-500 {
+  background-color: #5b21b6 !important;
+}
+
+body.theme-purple #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: #7c3aed !important;
+}
+
+body.theme-purple #account-dropdown {
+  background-color: rgba(10, 6, 22, 0.97) !important;
+  border-color: rgba(167, 139, 250, 0.25) !important;
+}
+
+/* Midnight Theme */
+body.theme-midnight #popup-content {
+  background: linear-gradient(to bottom right, #0f172a, #1e293b, #334155) !important;
+}
+
+body.theme-midnight #popup-content .bg-white\/10 {
+  background-color: rgba(148, 163, 184, 0.15) !important;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+body.theme-midnight #popup-content .bg-white\/20 {
+  background-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+body.theme-midnight #popup-content .border-white\/20,
+body.theme-midnight #popup-content .border-white\/30,
+body.theme-midnight #popup-content .border-white\/40 {
+  border-color: rgba(203, 213, 225, 0.3) !important;
+}
+
+body.theme-midnight #popup-content .absolute.opacity-20 .bg-purple-500 {
+  background-color: #64748b !important;
+}
+
+body.theme-midnight #popup-content .absolute.opacity-20 .bg-blue-500 {
+  background-color: #475569 !important;
+}
+
+body.theme-midnight #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: #94a3b8 !important;
+}
+
+body.theme-midnight #account-dropdown {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.5) !important;
+}
+
+/* Rose Gold Theme - deep dark with blush rose tint */
+body.theme-rose #popup-content {
+  background: linear-gradient(to bottom right, #1a0c12, #2a1020, #1a0c12) !important;
+}
+
+body.theme-rose #popup-content .bg-white\/10 {
+  background-color: rgba(244, 114, 182, 0.08) !important;
+  border: 1px solid rgba(244, 114, 182, 0.16);
+}
+
+body.theme-rose #popup-content .bg-white\/20 {
+  background-color: rgba(244, 114, 182, 0.14) !important;
+}
+
+body.theme-rose #popup-content .border-white\/20,
+body.theme-rose #popup-content .border-white\/30,
+body.theme-rose #popup-content .border-white\/40 {
+  border-color: rgba(244, 114, 182, 0.2) !important;
+}
+
+body.theme-rose #popup-content .absolute.opacity-20 .bg-purple-500 {
+  background-color: #be185d !important;
+}
+
+body.theme-rose #popup-content .absolute.opacity-20 .bg-blue-500 {
+  background-color: #9d174d !important;
+}
+
+body.theme-rose #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: #db2777 !important;
+}
+
+body.theme-rose #account-dropdown {
+  background-color: rgba(15, 5, 10, 0.97) !important;
+  border-color: rgba(244, 114, 182, 0.22) !important;
+}
+
+/* Theme modal preview backgrounds */
+.theme-preview-ocean { background: linear-gradient(to bottom right, #0c1a2e, #0d2d4a, #0a2236); }
+.theme-preview-sunset { background: linear-gradient(to bottom right, #18100a, #2c1810, #1e1008); }
+.theme-preview-forest { background: linear-gradient(to bottom right, #0a1a12, #0f2b1c, #0a1e13); }
+.theme-preview-purple { background: linear-gradient(to bottom right, #130d26, #1e1040, #130d26); }
+.theme-preview-rose { background: linear-gradient(to bottom right, #1a0c12, #2a1020, #1a0c12); }
+
+/* Theme modal icon colors */
+.theme-icon-ocean { color: #38bdf8; }
+.theme-icon-sunset { color: #fb923c; }
+.theme-icon-forest { color: #34d399; }
+.theme-icon-purple { color: #a78bfa; }
+.theme-icon-rose { color: #f472b6; }
+
+/* Theme Modal Styles */
+.theme-modal {
+  z-index: 9999;
+}
+
+.theme-option {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.theme-option.active {
+  border: 3px solid #fbbf24 !important;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+}

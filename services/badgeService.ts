@@ -72,11 +72,11 @@ const BadgeService = {
             badge.title
           }" class="h-8 w-8 rounded-full border-2 border-white/50" />
           <div class="ml-3">
-            <div class="text-white font-bold">${badge.title}</div>
-            <div class="text-sm text-gray-300">${badge.dateEarned}</div>
+            <div class="activity-title text-white font-bold">${badge.title}</div>
+            <div class="activity-date text-sm text-gray-300">${badge.dateEarned}</div>
           </div>
         </div>
-        <div class="text-sm text-white">${
+        <div class="activity-points text-sm text-white">${
           badge.points
         } ${browser.i18n.getMessage("textPoints")}</div>
       </div>

@@ -1,6 +1,63 @@
 import { PopupService, AccountService } from "../../services";
 import PopupUIService from "../../services/popupUIService";
 
+// Theme management
+type Theme = "dark" | "light" | "ocean" | "sunset" | "forest" | "purple" | "midnight" | "rose";
+
+// Define WXT storage item for theme
+const themeStorage = storage.defineItem<Theme>("local:popupTheme", {
+  defaultValue: "dark",
+});
+
+// Function to apply theme
+async function applyTheme(theme: Theme) {
+  const body = document.body;
+  
+  // Remove all theme classes
+  const themeClasses = ["theme-dark", "theme-light", "theme-ocean", "theme-sunset", "theme-forest", "theme-purple", "theme-midnight", "theme-rose"];
+  themeClasses.forEach(cls => body.classList.remove(cls));
+  
+  // Add new theme class (except for default dark)
+  if (theme !== "dark") {
+    body.classList.add(`theme-${theme}`);
+  }
+  
+  // Update active state in modal
+  document.querySelectorAll(".theme-option").forEach(option => {
+    option.classList.remove("active");
+    const optionElement = option as HTMLElement;
+    if (optionElement.dataset.theme === theme) {
+      option.classList.add("active");
+    }
+  });
+
+  // Save theme preference using WXT storage
+  await themeStorage.setValue(theme);
+}
+
+// Function to get saved theme
+async function getSavedTheme(): Promise<Theme> {
+  return await themeStorage.getValue();
+}
+
+// Function to open theme modal
+function openThemeModal() {
+  const modal = document.getElementById("theme-modal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+}
+
+// Function to close theme modal
+function closeThemeModal() {
+  const modal = document.getElementById("theme-modal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+}
+
 // Set document title
 document.title =
   chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
@@ -22,6 +79,12 @@ function localizeElements() {
 // Set document title
 document.title =
   chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
+
+// Initialize theme
+(async () => {
+  const savedTheme = await getSavedTheme();
+  await applyTheme(savedTheme);
+})();
 
 // Initialize the popup when the script loads
 PopupService.initialize().then(() => {
@@ -89,6 +152,52 @@ PopupService.initialize().then(() => {
           }
         });
       }
+
+      // Theme modal event listeners
+      const themeToggleBtn = document.querySelector(
+        ".theme-toggle-button",
+      ) as HTMLButtonElement;
+      const closeModalBtn = document.getElementById("close-theme-modal");
+      const themeOptions = document.querySelectorAll(".theme-option");
+
+      // Open theme modal
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener("click", () => {
+          openThemeModal();
+        });
+      }
+
+      // Close theme modal
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", () => {
+          closeThemeModal();
+        });
+      }
+
+      // Close modal when clicking outside
+      const themeModal = document.getElementById("theme-modal");
+      if (themeModal) {
+        themeModal.addEventListener("click", (e) => {
+          if (e.target === themeModal) {
+            closeThemeModal();
+          }
+        });
+      }
+
+      // Apply theme when option is clicked
+      themeOptions.forEach((option) => {
+        option.addEventListener("click", async () => {
+          const optionElement = option as HTMLElement;
+          const selectedTheme = optionElement.dataset.theme as Theme;
+          if (selectedTheme) {
+            await applyTheme(selectedTheme);
+            // Optional: close modal after selection
+            setTimeout(() => {
+              closeThemeModal();
+            }, 300);
+          }
+        });
+      });
     }, 500); // Wait 500ms to ensure DOM is ready
   });
 });
