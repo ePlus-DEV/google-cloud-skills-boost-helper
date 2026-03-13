@@ -415,5 +415,34 @@
     "message": "Пример: \"Основной аккаунт\", \"Рабочий аккаунт\", \"Учебный аккаунт\"..."
   },
   "cancelButton": { "message": "Отмена" },
-  "saveChangesButton": { "message": "Сохранить изменения" }
+  "saveChangesButton": { "message": "Сохранить изменения" },
+  "themeStudioTitle": { "message": "Студия тем" },
+  "themeStudioDescription": {
+    "message": "Настройте тему всплывающего окна с предварительным просмотром в реальном времени."
+  },
+  "labelBackground1": { "message": "Фон 1" },
+  "labelBackground2": { "message": "Фон 2" },
+  "labelBackground3": { "message": "Фон 3" },
+  "labelAccent": { "message": "Акцент" },
+  "labelArcadePoints": { "message": "Аркадные очки" },
+  "labelTextPrimary": { "message": "Основной текст" },
+  "labelTextSecondary": { "message": "Вторичный текст" },
+  "labelTextMuted": { "message": "Приглушённый текст" },
+  "btnApplySave": { "message": "Применить и сохранить" },
+  "btnResetToDark": { "message": "Сбросить на тёмную" },
+  "btnSyncFromPopup": {
+    "message": "Синхронизировать с текущим всплывающим окном"
+  },
+  "previewNote": {
+    "message": "Предварительный просмотр использует реальный интерфейс всплывающего окна и данные текущей учётной записи."
+  },
+  "popupLivePreviewTitle": {
+    "message": "Предварительный просмотр всплывающего окна"
+  },
+  "btnApplyCustomTheme": { "message": "Применить пользовательскую тему" },
+  "btnResetCustomTheme": { "message": "Сбросить" },
+  "btnOpenThemeStudio": {
+    "message": "Открыть студию тем (живой предварительный просмотр)"
+  },
+  "btnChangeTheme": { "message": "Изменить тему" }
 }

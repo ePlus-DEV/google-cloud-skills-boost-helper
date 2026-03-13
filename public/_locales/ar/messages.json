@@ -640,5 +640,28 @@
   },
   "saveChangesButton": {
     "message": "حفظ التغييرات"
-  }
+  },
+  "themeStudioTitle": { "message": "ستوديو الثيم" },
+  "themeStudioDescription": {
+    "message": "خصص سمة النافذة المنبثقة مع معاينة فورية."
+  },
+  "labelBackground1": { "message": "الخلفية 1" },
+  "labelBackground2": { "message": "الخلفية 2" },
+  "labelBackground3": { "message": "الخلفية 3" },
+  "labelAccent": { "message": "اللون المميز" },
+  "labelArcadePoints": { "message": "نقاط الآركيد" },
+  "labelTextPrimary": { "message": "لون النص الأساسي" },
+  "labelTextSecondary": { "message": "لون النص الثانوي" },
+  "labelTextMuted": { "message": "لون النص المخفف" },
+  "btnApplySave": { "message": "تطبيق وحفظ" },
+  "btnResetToDark": { "message": "إعادة التعيين إلى الوضع الداكن" },
+  "btnSyncFromPopup": { "message": "مزامنة من النافذة الحالية" },
+  "previewNote": {
+    "message": "المعاينة تستخدم واجهة النافذة الفعلية وبيانات الحساب الحالية."
+  },
+  "popupLivePreviewTitle": { "message": "معاينة النافذة الحية" },
+  "btnApplyCustomTheme": { "message": "تطبيق السمة المخصصة" },
+  "btnResetCustomTheme": { "message": "إعادة ضبط" },
+  "btnOpenThemeStudio": { "message": "فتح ستوديو الثيم (معاينة مباشرة)" },
+  "btnChangeTheme": { "message": "تغيير السمة" }
 }

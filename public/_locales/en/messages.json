@@ -407,5 +407,28 @@
     "message": "Example: \"Main account\", \"Work account\", \"Study account\"..."
   },
   "cancelButton": { "message": "Cancel" },
-  "saveChangesButton": { "message": "Save changes" }
+  "saveChangesButton": { "message": "Save changes" },
+  "themeStudioTitle": { "message": "Theme Studio" },
+  "themeStudioDescription": {
+    "message": "Customize your popup theme with real-time preview."
+  },
+  "labelBackground1": { "message": "Background 1" },
+  "labelBackground2": { "message": "Background 2" },
+  "labelBackground3": { "message": "Background 3" },
+  "labelAccent": { "message": "Accent" },
+  "labelArcadePoints": { "message": "Arcade Points" },
+  "labelTextPrimary": { "message": "Text Primary" },
+  "labelTextSecondary": { "message": "Text Secondary" },
+  "labelTextMuted": { "message": "Text Muted" },
+  "btnApplySave": { "message": "Apply & Save" },
+  "btnResetToDark": { "message": "Reset to Dark" },
+  "btnSyncFromPopup": { "message": "Sync From Current Popup" },
+  "previewNote": {
+    "message": "Preview uses real popup UI and current account data."
+  },
+  "popupLivePreviewTitle": { "message": "Popup Live Preview" },
+  "btnApplyCustomTheme": { "message": "Apply Custom Theme" },
+  "btnResetCustomTheme": { "message": "Reset" },
+  "btnOpenThemeStudio": { "message": "Open Theme Studio (Live Preview)" },
+  "btnChangeTheme": { "message": "Change Theme" }
 }

@@ -96,6 +96,10 @@
   color: #06202a;
 }
 
+.studio-btn-full {
+  grid-column: 1 / -1;
+}
+
 .studio-preview-area {
   display: flex;
   align-items: center;

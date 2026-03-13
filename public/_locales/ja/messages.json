@@ -640,5 +640,30 @@
   },
   "saveChangesButton": {
     "message": "変更を保存"
-  }
+  },
+  "themeStudioTitle": { "message": "テーマスタジオ" },
+  "themeStudioDescription": {
+    "message": "リアルタイムプレビューでポップアップのテーマをカスタマイズします。"
+  },
+  "labelBackground1": { "message": "背景 1" },
+  "labelBackground2": { "message": "背景 2" },
+  "labelBackground3": { "message": "背景 3" },
+  "labelAccent": { "message": "アクセント" },
+  "labelArcadePoints": { "message": "アーケードポイント" },
+  "labelTextPrimary": { "message": "主要テキスト" },
+  "labelTextSecondary": { "message": "二次テキスト" },
+  "labelTextMuted": { "message": "薄いテキスト" },
+  "btnApplySave": { "message": "適用して保存" },
+  "btnResetToDark": { "message": "ダークにリセット" },
+  "btnSyncFromPopup": { "message": "現在のポップアップから同期" },
+  "previewNote": {
+    "message": "プレビューは実際のポップアップUIと現在のアカウントデータを使用します。"
+  },
+  "popupLivePreviewTitle": { "message": "ポップアップのライブプレビュー" },
+  "btnApplyCustomTheme": { "message": "カスタムテーマを適用" },
+  "btnResetCustomTheme": { "message": "リセット" },
+  "btnOpenThemeStudio": {
+    "message": "テーマスタジオを開く（ライブプレビュー）"
+  },
+  "btnChangeTheme": { "message": "テーマを変更" }
 }

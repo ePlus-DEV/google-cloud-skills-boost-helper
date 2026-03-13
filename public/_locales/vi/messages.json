@@ -400,5 +400,28 @@
     "message": "Ví dụ: \"Tài khoản chính\", \"Tài khoản công việc\", \"Tài khoản học tập\"..."
   },
   "cancelButton": { "message": "Hủy" },
-  "saveChangesButton": { "message": "Lưu thay đổi" }
+  "saveChangesButton": { "message": "Lưu thay đổi" },
+  "themeStudioTitle": { "message": "Studio Chủ đề" },
+  "themeStudioDescription": {
+    "message": "Tùy chỉnh giao diện popup với xem trước thời gian thực."
+  },
+  "labelBackground1": { "message": "Nền 1" },
+  "labelBackground2": { "message": "Nền 2" },
+  "labelBackground3": { "message": "Nền 3" },
+  "labelAccent": { "message": "Màu nhấn" },
+  "labelArcadePoints": { "message": "Điểm Arcade" },
+  "labelTextPrimary": { "message": "Màu chữ chính" },
+  "labelTextSecondary": { "message": "Màu chữ phụ" },
+  "labelTextMuted": { "message": "Màu chữ mờ" },
+  "btnApplySave": { "message": "Áp dụng & Lưu" },
+  "btnResetToDark": { "message": "Đặt lại về Dark" },
+  "btnSyncFromPopup": { "message": "Đồng bộ từ Popup hiện tại" },
+  "previewNote": {
+    "message": "Xem trước sử dụng giao diện popup thực và dữ liệu tài khoản hiện tại."
+  },
+  "popupLivePreviewTitle": { "message": "Xem trước Popup trực tiếp" },
+  "btnApplyCustomTheme": { "message": "Áp dụng chủ đề tùy chỉnh" },
+  "btnResetCustomTheme": { "message": "Đặt lại" },
+  "btnOpenThemeStudio": { "message": "Mở Theme Studio (Xem trước trực tiếp)" },
+  "btnChangeTheme": { "message": "Thay đổi chủ đề" }
 }

@@ -640,5 +640,28 @@
   },
   "saveChangesButton": {
     "message": "Änderungen speichern"
-  }
+  },
+  "themeStudioTitle": { "message": "Theme-Studio" },
+  "themeStudioDescription": {
+    "message": "Passen Sie das Popup-Theme mit Echtzeit-Vorschau an."
+  },
+  "labelBackground1": { "message": "Hintergrund 1" },
+  "labelBackground2": { "message": "Hintergrund 2" },
+  "labelBackground3": { "message": "Hintergrund 3" },
+  "labelAccent": { "message": "Akzent" },
+  "labelArcadePoints": { "message": "Arcade-Punkte" },
+  "labelTextPrimary": { "message": "Primäre Textfarbe" },
+  "labelTextSecondary": { "message": "Sekundäre Textfarbe" },
+  "labelTextMuted": { "message": "Gedämpfte Textfarbe" },
+  "btnApplySave": { "message": "Anwenden & Speichern" },
+  "btnResetToDark": { "message": "Auf Dunkel zurücksetzen" },
+  "btnSyncFromPopup": { "message": "Vom aktuellen Popup synchronisieren" },
+  "previewNote": {
+    "message": "Die Vorschau verwendet das echte Popup UI und die aktuellen Kontodaten."
+  },
+  "popupLivePreviewTitle": { "message": "Live-Vorschau des Popups" },
+  "btnApplyCustomTheme": { "message": "Benutzerdefiniertes Theme anwenden" },
+  "btnResetCustomTheme": { "message": "Zurücksetzen" },
+  "btnOpenThemeStudio": { "message": "Theme Studio öffnen (Live-Vorschau)" },
+  "btnChangeTheme": { "message": "Theme ändern" }
 }

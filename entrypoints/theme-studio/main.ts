@@ -55,6 +55,8 @@ const themeClassList = [
   "theme-custom",
 ];
 
+const previewFrameId = "popup-preview-frame";
+
 function isValidHexColor(color: string): boolean {
   return /^#[0-9a-fA-F]{6}$/.test(color.trim());
 }
@@ -69,6 +71,46 @@ function toRgbChannels(hexColor: string): string {
   const g = parseInt(normalized.substring(2, 4), 16);
   const b = parseInt(normalized.substring(4, 6), 16);
   return `${r}, ${g}, ${b}`;
+}
+
+function colorToHex(color: string): string {
+  const trimmed = color.trim();
+  if (isValidHexColor(trimmed)) {
+    return trimmed.toLowerCase();
+  }
+
+  const match = trimmed.match(/^rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (!match) return "";
+
+  const toHex = (value: string) => Number(value).toString(16).padStart(2, "0");
+  return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
+}
+
+function extractGradientColors(backgroundImage: string): string[] {
+  const colorMatches =
+    backgroundImage.match(/#[0-9a-fA-F]{6}|rgba?\([^\)]+\)/g) || [];
+  return colorMatches
+    .map((value) => colorToHex(value))
+    .filter((value) => isValidHexColor(value));
+}
+
+function getPreviewDocument(): Document | null {
+  const previewFrame = document.getElementById(
+    previewFrameId,
+  ) as HTMLIFrameElement | null;
+  return previewFrame?.contentDocument || null;
+}
+
+function getComputedColor(
+  previewDoc: Document,
+  selector: string,
+  cssProp: "color" | "backgroundColor",
+): string {
+  const target = previewDoc.querySelector(selector) as HTMLElement | null;
+  if (!target) return "";
+
+  const styles = getComputedStyle(target);
+  return colorToHex(styles[cssProp]);
 }
 
 function sanitizePalette(raw: Partial<CustomThemePalette>): CustomThemePalette {
@@ -129,12 +171,59 @@ function applyPaletteToDocument(
 }
 
 function applyPaletteToPreview(palette: CustomThemePalette): void {
-  const previewFrame = document.getElementById(
-    "popup-preview-frame",
-  ) as HTMLIFrameElement | null;
-  if (!previewFrame?.contentDocument) return;
+  const previewDoc = getPreviewDocument();
+  if (!previewDoc) return;
+  applyPaletteToDocument(previewDoc, palette);
+}
 
-  applyPaletteToDocument(previewFrame.contentDocument, palette);
+function samplePaletteFromPreview(): CustomThemePalette {
+  const previewDoc = getPreviewDocument();
+  if (!previewDoc) return { ...DARK_BASELINE };
+
+  const popupContent = previewDoc.getElementById(
+    "popup-content",
+  ) as HTMLElement | null;
+
+  const gradientColors = popupContent
+    ? extractGradientColors(getComputedStyle(popupContent).backgroundImage)
+    : [];
+
+  const sampled: Partial<CustomThemePalette> = {
+    backgroundStart: gradientColors[0],
+    backgroundMiddle: gradientColors[1],
+    backgroundEnd: gradientColors[2] || gradientColors[0],
+    accent: getComputedColor(
+      previewDoc,
+      ".absolute.opacity-20 .bg-purple-500",
+      "backgroundColor",
+    ),
+    arcadePoints: getComputedColor(previewDoc, "#arcade-points", "color"),
+    textPrimary: getComputedColor(previewDoc, ".text-white", "color"),
+    textSecondary:
+      getComputedColor(previewDoc, ".text-white\\/70", "color") ||
+      getComputedColor(previewDoc, ".text-gray-300", "color"),
+    textMuted:
+      getComputedColor(previewDoc, "#last-updated", "color") ||
+      getComputedColor(previewDoc, ".text-gray-500", "color"),
+  };
+
+  return sanitizePalette(sampled);
+}
+
+async function loadPopupPreview(): Promise<void> {
+  const previewFrame = document.getElementById(
+    previewFrameId,
+  ) as HTMLIFrameElement | null;
+  if (!previewFrame) return;
+
+  await new Promise<void>((resolve) => {
+    const onLoad = () => {
+      previewFrame.removeEventListener("load", onLoad);
+      resolve();
+    };
+    previewFrame.addEventListener("load", onLoad);
+    previewFrame.src = chrome.runtime.getURL("popup.html");
+  });
 }
 
 function readPaletteFromInputs(): CustomThemePalette {
@@ -187,18 +276,38 @@ function syncInputs(palette: CustomThemePalette): void {
 }
 
 async function initialize(): Promise<void> {
+  // Localize static strings in the studio HTML using chrome.i18n
+  function localizeElements() {
+    const elements = document.querySelectorAll("[data-i18n]");
+    for (const element of elements) {
+      const key = (element as HTMLElement).dataset.i18n;
+      if (key && chrome?.i18n) {
+        const message = chrome.i18n.getMessage(key);
+        if (message) element.textContent = message;
+      }
+    }
+
+    const titleElements = document.querySelectorAll("[data-i18n-title]");
+    for (const element of titleElements) {
+      const key = (element as HTMLElement).dataset.i18nTitle;
+      if (key && chrome?.i18n) {
+        const message = chrome.i18n.getMessage(key);
+        if (message) element.setAttribute("title", message);
+      }
+    }
+  }
+
+  // perform localization before wiring up elements
+  try {
+    localizeElements();
+  } catch (err) {
+    // non-fatal
+  }
   const savedPalette = sanitizePalette(await customThemeStorage.getValue());
   syncInputs(savedPalette);
 
-  const previewFrame = document.getElementById(
-    "popup-preview-frame",
-  ) as HTMLIFrameElement | null;
-  if (previewFrame) {
-    previewFrame.src = chrome.runtime.getURL("popup.html");
-    previewFrame.addEventListener("load", () => {
-      applyPaletteToPreview(readPaletteFromInputs());
-    });
-  }
+  await loadPopupPreview();
+  applyPaletteToPreview(readPaletteFromInputs());
 
   const liveInputs = document.querySelectorAll(
     '.studio-fields input[type="color"]',
@@ -224,6 +333,14 @@ async function initialize(): Promise<void> {
     await themeStorage.setValue("custom");
     syncInputs(DARK_BASELINE);
     applyPaletteToPreview(DARK_BASELINE);
+  });
+
+  const syncButton = document.getElementById("sync-from-popup");
+  syncButton?.addEventListener("click", async () => {
+    await loadPopupPreview();
+    const sampledPalette = samplePaletteFromPreview();
+    syncInputs(sampledPalette);
+    applyPaletteToPreview(sampledPalette);
   });
 }
 

@@ -407,9 +407,28 @@
   },
   "cancelButton": { "message": "取消" },
   "saveChangesButton": { "message": "保存更改" },
+  "themeStudioTitle": { "message": "主题工作室" },
+  "themeStudioDescription": { "message": "使用实时预览自定义弹出窗口的主题。" },
+  "labelBackground1": { "message": "背景 1" },
+  "labelBackground2": { "message": "背景 2" },
+  "labelBackground3": { "message": "背景 3" },
+  "labelAccent": { "message": "强调色" },
+  "labelArcadePoints": { "message": "Arcade 积分" },
+  "labelTextPrimary": { "message": "主文本" },
+  "labelTextSecondary": { "message": "次要文本" },
+  "labelTextMuted": { "message": "弱化文本" },
+  "btnApplySave": { "message": "应用并保存" },
+  "btnResetToDark": { "message": "重置为暗色" },
+  "btnSyncFromPopup": { "message": "从当前弹出窗口同步" },
+  "previewNote": { "message": "预览使用真实的弹出窗口界面和当前账户数据。" },
+  "popupLivePreviewTitle": { "message": "弹出窗口实时预览" },
+  "btnApplyCustomTheme": { "message": "应用自定义主题" },
+  "btnResetCustomTheme": { "message": "重置" },
+  "btnOpenThemeStudio": { "message": "打开主题工作室（实时预览）" },
   "changelogPageTitle": {
     "message": "更新日志 - Google Cloud Skills Boost 助手"
   },
   "labelEnabled": { "message": "已启用" },
-  "labelDisabled": { "message": "已禁用" }
+  "labelDisabled": { "message": "已禁用" },
+  "btnChangeTheme": { "message": "更改主题" }
 }
