@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.7] - 2026-01-11
+### :sparkles: New Features
+- [`f229e60`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f229e60edb54006004cd53e58b53cd786893040e) - add localization support for update points button and enhance badge service to hide load more button when no badges are available *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`62574ef`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/62574efbd03a7878999ab618d9bf94f5bce1a59b) - enhance document title localization and add last updated timestamp in popup *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ddb22f3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ddb22f37e264320b821212ee102aa7e008228907) - enhance localization support for changelog and options page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`20ecbdd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/20ecbdd8c45002ec54f2d91d7f5cce60f832e73a) - update version to 1.2.7 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`1e7751b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1e7751b3820bd670008fb7c89470c106a4209552) - correct badge title and localization message retrieval in BadgeService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.2.6] - 2026-01-10
 ### :sparkles: New Features
 - [`3ff91bb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3ff91bb238732a38ea65631524c34e8b85b8c23d) - add expandable markdown content section with toggle functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -769,3 +780,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.3...1.2.4
 [1.2.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.4...1.2.5
 [1.2.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.5...1.2.6
+[1.2.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.6...1.2.7
