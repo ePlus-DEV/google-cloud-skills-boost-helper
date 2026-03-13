@@ -3,8 +3,16 @@
   display: grid;
   grid-template-columns: minmax(320px, 430px) 1fr;
   background:
-    radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.12), transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.12), transparent 40%),
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(56, 189, 248, 0.12),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(168, 85, 247, 0.12),
+      transparent 40%
+    ),
     linear-gradient(135deg, #050816, #0f172a);
   color: #f8fafc;
 }

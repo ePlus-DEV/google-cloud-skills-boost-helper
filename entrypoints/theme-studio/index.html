@@ -2,79 +2,79 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Theme Studio - Google Cloud Skills Boost Helper</title>
-    <link rel="stylesheet" href="~/assets/tailwind.css" />
-    <link rel="stylesheet" href="~/assets/theme-studio.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theme Studio - Google Cloud Skills Boost Helper</title>
+  <link rel="stylesheet" href="~/assets/tailwind.css" />
+  <link rel="stylesheet" href="~/assets/theme-studio.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
 </head>
 
 <body>
-    <div class="studio-page">
-        <aside class="studio-panel">
-            <div class="studio-header">
-                <h1><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="themeStudioTitle">Theme
-                        Studio</span></h1>
-                <p data-i18n="themeStudioDescription">Customize your popup theme with real-time preview.</p>
-            </div>
+  <div class="studio-page">
+    <aside class="studio-panel">
+      <div class="studio-header">
+        <h1><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="themeStudioTitle">Theme
+            Studio</span></h1>
+        <p data-i18n="themeStudioDescription">Customize your popup theme with real-time preview.</p>
+      </div>
 
-            <div class="studio-fields">
-                <label class="studio-field">
-                    <span data-i18n="labelBackground1">Background 1</span>
-                    <input id="custom-theme-bg-start" type="color" value="#0f172a" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelBackground2">Background 2</span>
-                    <input id="custom-theme-bg-middle" type="color" value="#581c87" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelBackground3">Background 3</span>
-                    <input id="custom-theme-bg-end" type="color" value="#0f172a" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelAccent">Accent</span>
-                    <input id="custom-theme-accent" type="color" value="#a855f7" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelArcadePoints">Arcade Points</span>
-                    <input id="custom-theme-arcade-points" type="color" value="#ffffff" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelTextPrimary">Text Primary</span>
-                    <input id="custom-theme-text-primary" type="color" value="#ffffff" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelTextSecondary">Text Secondary</span>
-                    <input id="custom-theme-text-secondary" type="color" value="#b3b3b3" />
-                </label>
-                <label class="studio-field">
-                    <span data-i18n="labelTextMuted">Text Muted</span>
-                    <input id="custom-theme-text-muted" type="color" value="#999999" />
-                </label>
-            </div>
+      <div class="studio-fields">
+        <label class="studio-field">
+          <span data-i18n="labelBackground1">Background 1</span>
+          <input id="custom-theme-bg-start" type="color" value="#0f172a" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelBackground2">Background 2</span>
+          <input id="custom-theme-bg-middle" type="color" value="#581c87" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelBackground3">Background 3</span>
+          <input id="custom-theme-bg-end" type="color" value="#0f172a" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelAccent">Accent</span>
+          <input id="custom-theme-accent" type="color" value="#a855f7" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelArcadePoints">Arcade Points</span>
+          <input id="custom-theme-arcade-points" type="color" value="#ffffff" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelTextPrimary">Text Primary</span>
+          <input id="custom-theme-text-primary" type="color" value="#ffffff" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelTextSecondary">Text Secondary</span>
+          <input id="custom-theme-text-secondary" type="color" value="#b3b3b3" />
+        </label>
+        <label class="studio-field">
+          <span data-i18n="labelTextMuted">Text Muted</span>
+          <input id="custom-theme-text-muted" type="color" value="#999999" />
+        </label>
+      </div>
 
-            <div class="studio-actions">
-                <button id="apply-custom-theme" class="studio-btn studio-btn-primary" data-i18n="btnApplySave">Apply &
-                    Save</button>
-                <button id="reset-custom-theme" class="studio-btn" data-i18n="btnResetToDark">Reset to Dark</button>
-                <button id="sync-from-popup" class="studio-btn studio-btn-full" data-i18n="btnSyncFromPopup">Sync From
-                    Current Popup</button>
-            </div>
-        </aside>
+      <div class="studio-actions">
+        <button id="apply-custom-theme" class="studio-btn studio-btn-primary" data-i18n="btnApplySave">Apply &
+          Save</button>
+        <button id="reset-custom-theme" class="studio-btn" data-i18n="btnResetToDark">Reset to Dark</button>
+        <button id="sync-from-popup" class="studio-btn studio-btn-full" data-i18n="btnSyncFromPopup">Sync From
+          Current Popup</button>
+      </div>
+    </aside>
 
-        <main class="studio-preview-area">
-            <div class="studio-preview-wrap">
-                <div class="studio-preview-note" data-i18n="previewNote">
-                    Preview uses real popup UI and current account data.
-                </div>
-                <iframe id="popup-preview-frame" class="studio-preview-frame" data-i18n-title="popupLivePreviewTitle"
-                    title="Popup Live Preview"></iframe>
-            </div>
-        </main>
-    </div>
+    <main class="studio-preview-area">
+      <div class="studio-preview-wrap">
+        <div class="studio-preview-note" data-i18n="previewNote">
+          Preview uses real popup UI and current account data.
+        </div>
+        <iframe id="popup-preview-frame" class="studio-preview-frame" data-i18n-title="popupLivePreviewTitle"
+          title="Popup Live Preview"></iframe>
+      </div>
+    </main>
+  </div>
 
-    <script type="module" src="main.ts"></script>
+  <script type="module" src="main.ts"></script>
 </body>
 
 </html>
