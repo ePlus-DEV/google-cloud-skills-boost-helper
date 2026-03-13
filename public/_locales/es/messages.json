@@ -87,7 +87,7 @@
     "message": "✔️ ¡Enlace copiado al portapapeles!"
   },
   "copyProfileUrl": {
-    "message": "Copiar URL del perfil"
+    "message": "Haz clic para copiar la URL del perfil"
   },
   "labelEnableSearchFeature": {
     "message": "Habilitar Función de Búsqueda"

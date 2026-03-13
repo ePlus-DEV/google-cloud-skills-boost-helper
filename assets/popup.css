@@ -8,10 +8,6 @@
   position: relative;
 }
 
-#popup-content #copy-profile-url .copy-btn-label {
-  white-space: nowrap;
-}
-
 #popup-content #copy-profile-url:hover::after {
   content: attr(data-copy-tooltip);
   position: absolute;

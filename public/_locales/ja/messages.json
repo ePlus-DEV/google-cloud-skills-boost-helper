@@ -87,7 +87,7 @@
     "message": "✔️ リンクをクリップボードにコピーしました！"
   },
   "copyProfileUrl": {
-    "message": "プロフィールURLをコピー"
+    "message": "クリックしてプロフィールURLをコピー"
   },
   "labelEnableSearchFeature": {
     "message": "検索機能を有効化"

@@ -87,7 +87,7 @@
     "message": "✔️ Link in die Zwischenablage kopiert!"
   },
   "copyProfileUrl": {
-    "message": "Profil-URL kopieren"
+    "message": "Klicken, um die Profil-URL zu kopieren"
   },
   "labelEnableSearchFeature": {
     "message": "Suchfunktion aktivieren"

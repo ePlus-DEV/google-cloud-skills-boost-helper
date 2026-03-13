@@ -87,7 +87,7 @@
     "message": "✔️ Ссылка скопирована в буфер обмена!"
   },
   "copyProfileUrl": {
-    "message": "Скопировать URL профиля"
+    "message": "Нажмите, чтобы скопировать URL профиля"
   },
   "labelEnableSearchFeature": {
     "message": "Включить функцию поиска"

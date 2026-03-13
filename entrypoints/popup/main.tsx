@@ -70,13 +70,11 @@ function showCopyTooltip(
   }
 
   button.dataset.copyTooltip = message;
-  button.title = message;
 
   const tooltipTimerId = globalThis.setTimeout(() => {
     const defaultMessage =
       chrome.i18n.getMessage("copyProfileUrl") || "Copy Profile URL";
     button.dataset.copyTooltip = defaultMessage;
-    button.title = defaultMessage;
     delete button.dataset.tooltipTimerId;
   }, duration);
   button.dataset.tooltipTimerId = String(tooltipTimerId);
@@ -92,14 +90,11 @@ function setupCopyProfileButton(): void {
   const defaultMessage =
     chrome.i18n.getMessage("copyProfileUrl") || "Copy Profile URL";
 
-  const renderCopyButtonContent = (
-    iconClass: string,
-    label: string = defaultMessage,
-  ) => {
-    copyBtn.innerHTML = `<i class="fa-solid ${iconClass} text-xs"></i><span class="ml-1 copy-btn-label">${label}</span>`;
+  const renderCopyButtonContent = (iconClass: string) => {
+    copyBtn.innerHTML = `<i class="fa-solid ${iconClass} text-xs"></i>`;
   };
 
-  const resetCopyButton = () => {
+  const resetCopyButton = (preserveTooltip = false) => {
     copyBtn.disabled = false;
     renderCopyButtonContent("fa-copy");
     copyBtn.classList.remove(
@@ -111,8 +106,9 @@ function setupCopyProfileButton(): void {
       "border-amber-400/50",
     );
     copyBtn.classList.add("text-blue-400", "bg-blue-400/20", "border-blue-400/30");
-    copyBtn.title = defaultMessage;
-    copyBtn.dataset.copyTooltip = defaultMessage;
+    if (!preserveTooltip) {
+      copyBtn.dataset.copyTooltip = defaultMessage;
+    }
   };
 
   resetCopyButton();
@@ -147,9 +143,9 @@ function setupCopyProfileButton(): void {
       showCopyTooltip(
         copyBtn,
         chrome.i18n.getMessage("errorNoActiveAccountOrProfileUrl") ||
-          "No active account or profile URL found.",
+          defaultMessage,
       );
-      resetCopyButton();
+      resetCopyButton(true);
       return;
     }
 
@@ -162,8 +158,7 @@ function setupCopyProfileButton(): void {
 
       const copiedMessage =
         chrome.i18n.getMessage("messageLinkCopiedToClipboard") ||
-        "Link copied to clipboard!";
-      copyBtn.title = copiedMessage;
+        defaultMessage;
       showCopyTooltip(copyBtn, copiedMessage);
 
       const resetTimerId = globalThis.setTimeout(() => {
@@ -175,9 +170,9 @@ function setupCopyProfileButton(): void {
       showCopyTooltip(
         copyBtn,
         chrome.i18n.getMessage("accountErrorFallback") ||
-          "Something went wrong. Please try again.",
+          defaultMessage,
       );
-      resetCopyButton();
+      resetCopyButton(true);
       console.error("Main.tsx: Copy failed:", error);
     }
   });

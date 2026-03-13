@@ -87,7 +87,7 @@
     "message": "✔️ Link copied to clipboard!"
   },
   "copyProfileUrl": {
-    "message": "Copy Profile URL"
+    "message": "Click to copy public profile URL"
   },
   "labelEnableSearchFeature": {
     "message": "Enable Search Feature"
