@@ -330,7 +330,7 @@ async function initialize(): Promise<void> {
   const resetButton = document.getElementById("reset-custom-theme");
   resetButton?.addEventListener("click", async () => {
     await customThemeStorage.setValue(DARK_BASELINE);
-    await themeStorage.setValue("custom");
+    await themeStorage.setValue("dark");
     syncInputs(DARK_BASELINE);
     applyPaletteToPreview(DARK_BASELINE);
   });
