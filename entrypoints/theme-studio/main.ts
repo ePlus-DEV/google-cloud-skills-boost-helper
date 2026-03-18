@@ -57,10 +57,12 @@ const themeClassList = [
 
 const previewFrameId = "popup-preview-frame";
 
+/** Returns true if the given string is a valid 6-digit hex color (e.g. `#a855f7`). */
 function isValidHexColor(color: string): boolean {
   return /^#[0-9a-fA-F]{6}$/.test(color.trim());
 }
 
+/** Converts a hex color string to a comma-separated RGB channel string (e.g. `"168, 85, 247"`). */
 function toRgbChannels(hexColor: string): string {
   const normalized = hexColor.replace("#", "").trim();
   if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
@@ -73,6 +75,7 @@ function toRgbChannels(hexColor: string): string {
   return `${r}, ${g}, ${b}`;
 }
 
+/** Normalizes a CSS color value (hex or rgb/rgba) to a lowercase 6-digit hex string. Returns `""` on failure. */
 function colorToHex(color: string): string {
   const trimmed = color.trim();
   if (isValidHexColor(trimmed)) {
@@ -86,6 +89,7 @@ function colorToHex(color: string): string {
   return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
 }
 
+/** Extracts all hex/rgb color values from a CSS `background-image` gradient string and returns them as hex strings. */
 function extractGradientColors(backgroundImage: string): string[] {
   const colorMatches =
     backgroundImage.match(/#[0-9a-fA-F]{6}|rgba?\([^\)]+\)/g) || [];
@@ -94,6 +98,7 @@ function extractGradientColors(backgroundImage: string): string[] {
     .filter((value) => isValidHexColor(value));
 }
 
+/** Returns the `contentDocument` of the popup preview iframe, or `null` if unavailable. */
 function getPreviewDocument(): Document | null {
   const previewFrame = document.getElementById(
     previewFrameId,
@@ -101,6 +106,13 @@ function getPreviewDocument(): Document | null {
   return previewFrame?.contentDocument || null;
 }
 
+/**
+ * Reads a computed CSS color property from a DOM element inside the preview document.
+ * @param previewDoc - The preview iframe's document.
+ * @param selector - CSS selector for the target element.
+ * @param cssProp - The computed style property to read (`"color"` or `"backgroundColor"`).
+ * @returns The color as a hex string, or `""` if the element is not found.
+ */
 function getComputedColor(
   previewDoc: Document,
   selector: string,
@@ -113,6 +125,10 @@ function getComputedColor(
   return colorToHex(styles[cssProp]);
 }
 
+/**
+ * Validates and fills in missing or invalid fields in a partial palette using `DARK_BASELINE` as fallback.
+ * Also handles the legacy `text` field by mapping it to `textPrimary`.
+ */
 function sanitizePalette(raw: Partial<CustomThemePalette>): CustomThemePalette {
   const legacyText = isValidHexColor(raw.text || "")
     ? (raw.text as string)
@@ -146,6 +162,10 @@ function sanitizePalette(raw: Partial<CustomThemePalette>): CustomThemePalette {
   };
 }
 
+/**
+ * Applies a custom theme palette to a target document by setting CSS custom properties
+ * and switching the body class to `theme-custom`.
+ */
 function applyPaletteToDocument(
   targetDocument: Document,
   palette: CustomThemePalette,
@@ -170,12 +190,14 @@ function applyPaletteToDocument(
   }
 }
 
+/** Applies a custom theme palette to the popup preview iframe. No-op if the preview document is unavailable. */
 function applyPaletteToPreview(palette: CustomThemePalette): void {
   const previewDoc = getPreviewDocument();
   if (!previewDoc) return;
   applyPaletteToDocument(previewDoc, palette);
 }
 
+/** Samples the current computed colors from the popup preview iframe and returns them as a `CustomThemePalette`. */
 function samplePaletteFromPreview(): CustomThemePalette {
   const previewDoc = getPreviewDocument();
   if (!previewDoc) return { ...DARK_BASELINE };
@@ -210,6 +232,7 @@ function samplePaletteFromPreview(): CustomThemePalette {
   return sanitizePalette(sampled);
 }
 
+/** Loads the popup HTML into the preview iframe and waits for it to finish loading. */
 async function loadPopupPreview(): Promise<void> {
   const previewFrame = document.getElementById(
     previewFrameId,
@@ -226,6 +249,7 @@ async function loadPopupPreview(): Promise<void> {
   });
 }
 
+/** Reads the current values from all color inputs in the studio form and returns them as a sanitized `CustomThemePalette`. */
 function readPaletteFromInputs(): CustomThemePalette {
   const getValue = (id: string, fallback: string) => {
     const input = document.getElementById(id) as HTMLInputElement | null;
@@ -259,6 +283,7 @@ function readPaletteFromInputs(): CustomThemePalette {
   });
 }
 
+/** Writes a palette's color values into the corresponding color input elements in the studio form. */
 function syncInputs(palette: CustomThemePalette): void {
   const setValue = (id: string, value: string) => {
     const input = document.getElementById(id) as HTMLInputElement | null;
@@ -275,6 +300,7 @@ function syncInputs(palette: CustomThemePalette): void {
   setValue("custom-theme-text-muted", palette.textMuted);
 }
 
+/** Initializes the Theme Studio page: localizes strings, loads saved palette, wires up all button handlers. */
 async function initialize(): Promise<void> {
   // Localize static strings in the studio HTML using chrome.i18n
   function localizeElements() {
