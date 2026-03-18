@@ -430,5 +430,30 @@
     "message": "Exemple : \"Compte principal\", \"Compte travail\", \"Compte études\"..."
   },
   "cancelButton": { "message": "Annuler" },
-  "saveChangesButton": { "message": "Enregistrer les modifications" }
+  "saveChangesButton": { "message": "Enregistrer les modifications" },
+  "themeStudioTitle": { "message": "Studio de thème" },
+  "themeStudioDescription": {
+    "message": "Personnalisez le thème de la popup avec aperçu en temps réel."
+  },
+  "labelBackground1": { "message": "Arrière-plan 1" },
+  "labelBackground2": { "message": "Arrière-plan 2" },
+  "labelBackground3": { "message": "Arrière-plan 3" },
+  "labelAccent": { "message": "Accent" },
+  "labelArcadePoints": { "message": "Points Arcade" },
+  "labelTextPrimary": { "message": "Texte principal" },
+  "labelTextSecondary": { "message": "Texte secondaire" },
+  "labelTextMuted": { "message": "Texte atténué" },
+  "btnApplySave": { "message": "Appliquer et enregistrer" },
+  "btnResetToDark": { "message": "Réinitialiser en sombre" },
+  "btnSyncFromPopup": { "message": "Synchroniser depuis le popup actuel" },
+  "previewNote": {
+    "message": "L'aperçu utilise l'UI réelle du popup et les données de compte actuelles."
+  },
+  "popupLivePreviewTitle": { "message": "Aperçu en direct du popup" },
+  "btnApplyCustomTheme": { "message": "Appliquer le thème personnalisé" },
+  "btnResetCustomTheme": { "message": "Réinitialiser" },
+  "btnOpenThemeStudio": {
+    "message": "Ouvrir le Studio de thème (Aperçu en direct)"
+  },
+  "btnChangeTheme": { "message": "Changer le thème" }
 }

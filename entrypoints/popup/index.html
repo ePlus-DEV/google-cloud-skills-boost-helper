@@ -666,16 +666,17 @@
         <div class="mt-3 flex justify-center">
           <button
             class="theme-toggle-button bg-white/10 hover:bg-white/20 border border-white/30 text-white/90 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
-            title="Change Theme">
+            data-i18n-title="btnChangeTheme" title="Change Theme">
             <i class="fa-solid fa-palette mr-1.5 theme-icon"></i>
-            Change Theme
+            <span data-i18n="btnChangeTheme">Change Theme</span>
           </button>
         </div>
 
         <!-- Theme Selector Modal -->
         <div id="theme-modal"
           class="fixed inset-0 bg-black/70 backdrop-blur-sm items-center justify-center z-[9999] hidden theme-modal">
-          <div class="bg-slate-800 rounded-2xl p-6 w-[360px] mx-4 shadow-2xl border border-white/20">
+          <div
+            class="bg-slate-800 rounded-2xl p-5 w-[388px] max-w-[calc(100vw-1rem)] max-h-[86vh] overflow-y-auto mx-2 shadow-2xl border border-white/20">
             <div class="flex items-center justify-between mb-6">
               <h3 class="text-xl font-bold text-white flex items-center">
                 <i class="fa-solid fa-palette mr-2 text-purple-400"></i>
@@ -790,6 +791,96 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Custom Theme -->
+              <div class="theme-option" data-theme="custom">
+                <div class="relative rounded-lg overflow-hidden border-2 border-cyan-300/40 h-24">
+                  <div class="absolute inset-0 theme-preview-custom"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <i class="fa-solid fa-sliders text-2xl mb-1 theme-icon-custom"></i>
+                      <p class="text-xs font-bold text-white/90">Custom</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-white/15 bg-slate-900/40 p-3.5">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-white/70">Custom Palette</p>
+                <div class="h-2 w-16 rounded-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-pink-400"></div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-2 text-xs text-white/80">
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium">Background 1</span>
+                  <input id="custom-theme-bg-start" type="color" value="#0f172a"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium">Background 2</span>
+                  <input id="custom-theme-bg-middle" type="color" value="#581c87"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium">Background 3</span>
+                  <input id="custom-theme-bg-end" type="color" value="#0f172a"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium">Accent</span>
+                  <input id="custom-theme-accent" type="color" value="#a855f7"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium">Arcade Points</span>
+                  <input id="custom-theme-arcade-points" type="color" value="#ffffff"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium" data-i18n="labelTextPrimary">Text Primary</span>
+                  <input id="custom-theme-text-primary" type="color" value="#ffffff"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium" data-i18n="labelTextSecondary">Text Secondary</span>
+                  <input id="custom-theme-text-secondary" type="color" value="#b3b3b3"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+                <label
+                  class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-800/40 px-2.5 py-2">
+                  <span class="font-medium" data-i18n="labelTextMuted">Text Muted</span>
+                  <input id="custom-theme-text-muted" type="color" value="#999999"
+                    class="custom-theme-color-input h-10 w-24 cursor-pointer rounded border border-white/20 bg-slate-800 p-1" />
+                </label>
+              </div>
+
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <button id="apply-custom-theme"
+                  class="flex-1 rounded-md bg-cyan-500 px-3 py-2 text-xs font-bold text-slate-950 transition-colors hover:bg-cyan-400"
+                  data-i18n="btnApplyCustomTheme">
+                  Apply Custom Theme
+                </button>
+                <button id="reset-custom-theme"
+                  class="rounded-md border border-white/25 px-3 py-2 text-xs font-semibold text-white/80 transition-colors hover:border-white/40 hover:text-white"
+                  data-i18n="btnResetCustomTheme">
+                  Reset
+                </button>
+              </div>
+
+              <button id="open-theme-studio"
+                class="mt-2 w-full rounded-md border border-cyan-300/40 bg-cyan-500/10 px-3 py-2 text-xs font-semibold text-cyan-200 transition-colors hover:bg-cyan-500/20 hover:text-cyan-100"
+                data-i18n="btnOpenThemeStudio">
+                Open Theme Studio (Live Preview)
+              </button>
             </div>
 
             <p class="text-xs text-white/60 text-center mt-4">
