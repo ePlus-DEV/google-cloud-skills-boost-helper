@@ -124,10 +124,12 @@ const customThemeStorage = storage.defineItem<CustomThemePalette>(
   },
 );
 
+/** Returns a copy of the baseline `CustomThemePalette` for the given non-custom theme. */
 function getBaselinePalette(theme: BaseTheme): CustomThemePalette {
   return { ...CUSTOM_THEME_BASELINES[theme] };
 }
 
+/** Converts a hex color string to a comma-separated RGB channel string (e.g. `"34, 211, 238"`). */
 function toRgbChannels(hexColor: string): string {
   const normalized = hexColor.replace("#", "").trim();
   if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
@@ -140,14 +142,17 @@ function toRgbChannels(hexColor: string): string {
   return `${r}, ${g}, ${b}`;
 }
 
+/** Returns true if the given string is a valid 6-digit hex color (e.g. `#a855f7`). */
 function isValidHexColor(color: string): boolean {
   return /^#[0-9a-fA-F]{6}$/.test(color.trim());
 }
 
+/** Returns `value` if it is a valid hex color, otherwise returns `fallback`. */
 function normalizePaletteValue(value: string, fallback: string): string {
   return isValidHexColor(value) ? value.trim() : fallback;
 }
 
+/** Writes all custom theme palette values as CSS custom properties on the document root. */
 function applyCustomThemeVariables(palette: CustomThemePalette): void {
   const root = document.documentElement;
 
@@ -162,6 +167,10 @@ function applyCustomThemeVariables(palette: CustomThemePalette): void {
   root.style.setProperty("--custom-text-muted", palette.textMuted);
 }
 
+/**
+ * Validates and fills in missing or invalid fields in a partial palette using `DEFAULT_CUSTOM_THEME` as fallback.
+ * Also handles the legacy `text` field by mapping it to `textPrimary`.
+ */
 function sanitizePalette(
   palette: Partial<CustomThemePalette>,
 ): CustomThemePalette {
@@ -203,6 +212,7 @@ function sanitizePalette(
   };
 }
 
+/** Writes a palette's color values into the corresponding color input elements in the popup theme modal. */
 function syncCustomThemeInputs(palette: CustomThemePalette): void {
   const startInput = document.getElementById(
     "custom-theme-bg-start",
@@ -239,6 +249,10 @@ function syncCustomThemeInputs(palette: CustomThemePalette): void {
   if (textMutedInput) textMutedInput.value = palette.textMuted;
 }
 
+/**
+ * Applies a theme to the popup by updating body classes, the active state in the theme modal,
+ * and persisting the selection to storage.
+ */
 // Function to apply theme
 async function applyTheme(theme: Theme) {
   const body = document.body;
@@ -275,20 +289,24 @@ async function applyTheme(theme: Theme) {
   await themeStorage.setValue(theme);
 }
 
+/** Retrieves the saved theme from storage. */
 // Function to get saved theme
 async function getSavedTheme(): Promise<Theme> {
   return await themeStorage.getValue();
 }
 
+/** Retrieves and sanitizes the saved custom theme palette from storage. */
 async function getSavedCustomTheme(): Promise<CustomThemePalette> {
   const storedPalette = await customThemeStorage.getValue();
   return sanitizePalette(storedPalette || DEFAULT_CUSTOM_THEME);
 }
 
+/** Returns the baseline palette for the dark theme, used as the reset target for custom theme. */
 async function getResetPaletteFromBaseTheme(): Promise<CustomThemePalette> {
   return getBaselinePalette("dark");
 }
 
+/** Opens the theme selection modal. */
 // Function to open theme modal
 function openThemeModal() {
   const modal = document.getElementById("theme-modal");
@@ -298,6 +316,7 @@ function openThemeModal() {
   }
 }
 
+/** Closes the theme selection modal. */
 // Function to close theme modal
 function closeThemeModal() {
   const modal = document.getElementById("theme-modal");
@@ -461,6 +480,7 @@ function setupCopyProfileButton(): void {
 document.title =
   chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
 
+/** Localizes all elements with `data-i18n` and `data-i18n-title` attributes using `chrome.i18n`. */
 // Function to localize elements with data-i18n attributes
 function localizeElements() {
   const elements = document.querySelectorAll("[data-i18n]");
