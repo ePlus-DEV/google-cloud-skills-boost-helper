@@ -49,18 +49,18 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
       return {
         sendRuntimeMessage: async (message: Record<string, unknown>) => {
           // Simulate: browser undefined, chrome available
-          const g = globalThis as any;
+          const globalScope = globalThis as any;
           if (
-            typeof g.chrome !== "undefined" &&
-            g.chrome.runtime?.sendMessage
+            typeof globalScope.chrome !== "undefined" &&
+            globalScope.chrome.runtime?.sendMessage
           ) {
             return await new Promise((resolve, reject) => {
               try {
-                g.chrome.runtime.sendMessage(
+                globalScope.chrome.runtime.sendMessage(
                   message,
                   (chromeResponse: unknown) => {
-                    if (g.chrome.runtime.lastError) {
-                      reject(g.chrome.runtime.lastError);
+                    if (globalScope.chrome.runtime.lastError) {
+                      reject(globalScope.chrome.runtime.lastError);
                     } else {
                       resolve(chromeResponse);
                     }
@@ -74,18 +74,18 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
           return null;
         },
         default: async (message: Record<string, unknown>) => {
-          const g = globalThis as any;
+          const globalScope = globalThis as any;
           if (
-            typeof g.chrome !== "undefined" &&
-            g.chrome.runtime?.sendMessage
+            typeof globalScope.chrome !== "undefined" &&
+            globalScope.chrome.runtime?.sendMessage
           ) {
             return await new Promise((resolve, reject) => {
               try {
-                g.chrome.runtime.sendMessage(
+                globalScope.chrome.runtime.sendMessage(
                   message,
                   (chromeResponse: unknown) => {
-                    if (g.chrome.runtime.lastError) {
-                      reject(g.chrome.runtime.lastError);
+                    if (globalScope.chrome.runtime.lastError) {
+                      reject(globalScope.chrome.runtime.lastError);
                     } else {
                       resolve(chromeResponse);
                     }
@@ -136,15 +136,18 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
 
     // Directly test the chrome callback logic
     const result = await new Promise<unknown>((resolve) => {
-      const g = globalThis as any;
+      const globalScope = globalThis as any;
       try {
-        g.chrome.runtime.sendMessage({ type: "test" }, (response: unknown) => {
-          if (g.chrome.runtime.lastError) {
-            resolve(null); // simulates reject -> catch -> return null
-          } else {
-            resolve(response);
-          }
-        });
+        globalScope.chrome.runtime.sendMessage(
+          { type: "test" },
+          (response: unknown) => {
+            if (globalScope.chrome.runtime.lastError) {
+              resolve(null); // simulates reject -> catch -> return null
+            } else {
+              resolve(response);
+            }
+          },
+        );
       } catch {
         resolve(null);
       }
@@ -165,11 +168,14 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
     };
 
     const result = await new Promise<unknown>((resolve) => {
-      const g = globalThis as any;
+      const globalScope = globalThis as any;
       try {
-        g.chrome.runtime.sendMessage({ type: "test" }, (response: unknown) => {
-          resolve(response);
-        });
+        globalScope.chrome.runtime.sendMessage(
+          { type: "test" },
+          (response: unknown) => {
+            resolve(response);
+          },
+        );
       } catch {
         resolve(null);
       }

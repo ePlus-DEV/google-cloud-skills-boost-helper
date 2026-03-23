@@ -135,7 +135,7 @@ describe("AccountService.updateAccountArcadeData", () => {
 
 describe("AccountService.extractUserDetails", () => {
   it("returns null when arcadeData is undefined", () => {
-    expect(AccountService.extractUserDetails(undefined)).toBeNull();
+    expect(AccountService.extractUserDetails()).toBeNull();
   });
 
   it("returns null when userDetails is missing", () => {
