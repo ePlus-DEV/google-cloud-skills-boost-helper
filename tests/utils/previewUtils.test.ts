@@ -165,3 +165,75 @@ describe("PreviewUtils.updateMainPoints", () => {
     );
   });
 });
+
+describe("PreviewUtils.updateAvatar", () => {
+  it("sets image src when profileImage exists", () => {
+    const img = createElement("preview-avatar", "img") as HTMLImageElement;
+    PreviewUtils.updateAvatar(
+      makeUserDetail({ profileImage: "https://example.com/avatar.png" }),
+    );
+    expect(img.src).toContain("avatar.png");
+  });
+
+  it("shows placeholder with first letter when no profileImage", () => {
+    const placeholder = createElement("preview-avatar-placeholder");
+    PreviewUtils.updateAvatar(
+      makeUserDetail({ profileImage: undefined }),
+      makeAccount({ name: "Alice" }),
+    );
+    expect(placeholder.innerHTML).toBe("A");
+  });
+});
+
+describe("PreviewUtils.updateArcadeTotal", () => {
+  it("shows total from arcadePoints", () => {
+    createElement("preview-arcade-total");
+    PreviewUtils.updateArcadeTotal(
+      makeArcadeData({ arcadePoints: { totalPoints: 999 } }),
+    );
+    expect(
+      document.getElementById("preview-arcade-total")?.textContent,
+    ).toContain("999");
+  });
+
+  it("shows 0 when no data", () => {
+    createElement("preview-arcade-total");
+    PreviewUtils.updateArcadeTotal({});
+    expect(document.getElementById("preview-arcade-total")?.textContent).toBe(
+      "0",
+    );
+  });
+});
+
+describe("PreviewUtils.updateLastUpdated", () => {
+  it("sets current date text", () => {
+    createElement("preview-last-updated");
+    PreviewUtils.updateLastUpdated();
+    const text = document.getElementById("preview-last-updated")?.textContent;
+    expect(text).toBeTruthy();
+    expect(text?.length).toBeGreaterThan(0);
+  });
+});
+
+describe("PreviewUtils.updateAccountPreview", () => {
+  it("calls all update methods without throwing", () => {
+    [
+      "preview-name",
+      "preview-email",
+      "preview-arcade-points",
+      "preview-arcade-total",
+      "preview-total-badges",
+      "preview-skill-badges",
+      "preview-last-updated",
+      "preview-points",
+    ].forEach((id) => createElement(id));
+
+    expect(() =>
+      PreviewUtils.updateAccountPreview(
+        makeAccount(),
+        makeUserDetail(),
+        makeArcadeData(),
+      ),
+    ).not.toThrow();
+  });
+});

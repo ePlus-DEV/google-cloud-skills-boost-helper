@@ -171,3 +171,53 @@ describe("StorageService.saveArcadeData", () => {
     expect((stored.arcadeData as any).lastUpdated).toBeTruthy();
   });
 });
+
+describe("StorageService.saveProfileUrl", () => {
+  it("updates active account profileUrl", async () => {
+    vi.mocked(AccountService.getActiveAccount).mockResolvedValueOnce({
+      id: "acc1",
+      name: "Test",
+      profileUrl: "https://www.skills.google/public_profiles/old",
+      createdAt: new Date().toISOString(),
+      lastUsed: new Date().toISOString(),
+    });
+
+    await StorageService.saveProfileUrl(
+      "https://www.skills.google/public_profiles/new123",
+    );
+    expect(AccountService.updateAccount).toHaveBeenCalledWith(
+      "acc1",
+      expect.objectContaining({
+        profileUrl: expect.stringContaining("new123"),
+      }),
+    );
+  });
+
+  it("saves to legacy storage when no active account", async () => {
+    vi.mocked(AccountService.getActiveAccount).mockResolvedValueOnce(null);
+
+    await StorageService.saveProfileUrl(
+      "https://www.skills.google/public_profiles/xyz",
+    );
+    const stored = await fakeBrowser.storage.local.get("urlProfile");
+    expect(stored.urlProfile).toContain("xyz");
+  });
+});
+
+describe("StorageService.saveSearchFeatureEnabled", () => {
+  it("calls updateSettings with new value", async () => {
+    await StorageService.saveSearchFeatureEnabled(false);
+    expect(AccountService.updateSettings).toHaveBeenCalledWith({
+      enableSearchFeature: false,
+    });
+  });
+});
+
+describe("StorageService.saveBadgeDisplayEnabled", () => {
+  it("calls updateSettings with showBadge value", async () => {
+    await StorageService.saveBadgeDisplayEnabled(true);
+    expect(AccountService.updateSettings).toHaveBeenCalledWith({
+      showBadge: true,
+    });
+  });
+});
