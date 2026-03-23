@@ -1,9 +1,9 @@
 import { defineConfig } from "vitest/config";
-import path from "path";
+import { WxtVitest } from "wxt/testing/vitest-plugin";
 
 export default defineConfig({
+  plugins: [WxtVitest()],
   test: {
-    environment: "jsdom",
     globals: true,
     setupFiles: ["./tests/setup.ts"],
     include: ["tests/**/*.test.ts"],
@@ -18,12 +18,6 @@ export default defineConfig({
         branches: 60,
         statements: 60,
       },
-    },
-  },
-  resolve: {
-    alias: {
-      "~": path.resolve(__dirname, "."),
-      "@": path.resolve(__dirname, "."),
     },
   },
 });

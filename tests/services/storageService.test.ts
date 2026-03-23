@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 import StorageService from "../../services/storageService";
 
 // Mock AccountService
@@ -14,20 +15,15 @@ vi.mock("../../services/accountService", () => ({
   },
 }));
 
-// Mock runtimeMessage
+// Mock runtimeMessage so badge calls don't throw
 vi.mock("../../services/runtimeMessage", () => ({
   default: vi.fn().mockRejectedValue(new Error("no runtime")),
 }));
 
 import AccountService from "../../services/accountService";
 
-const storageMock = (globalThis as unknown as Record<string, unknown>)
-  .storage as {
-  getItem: ReturnType<typeof vi.fn>;
-  setItem: ReturnType<typeof vi.fn>;
-};
-
 beforeEach(() => {
+  fakeBrowser.reset();
   vi.clearAllMocks();
 });
 
@@ -49,7 +45,9 @@ describe("StorageService.getArcadeData", () => {
 
   it("falls back to legacy storage when no active account", async () => {
     vi.mocked(AccountService.getActiveAccount).mockResolvedValueOnce(null);
-    storageMock.getItem.mockResolvedValueOnce({ totalArcadePoints: 50 });
+    await fakeBrowser.storage.local.set({
+      arcadeData: { totalArcadePoints: 50 },
+    });
 
     const result = await StorageService.getArcadeData();
     expect(result?.totalArcadePoints).toBe(50);
@@ -57,7 +55,6 @@ describe("StorageService.getArcadeData", () => {
 
   it("returns null when no data anywhere", async () => {
     vi.mocked(AccountService.getActiveAccount).mockResolvedValueOnce(null);
-    storageMock.getItem.mockResolvedValueOnce(null);
 
     const result = await StorageService.getArcadeData();
     expect(result).toBeNull();
@@ -80,9 +77,9 @@ describe("StorageService.getProfileUrl", () => {
 
   it("falls back to legacy storage", async () => {
     vi.mocked(AccountService.getActiveAccount).mockResolvedValueOnce(null);
-    storageMock.getItem.mockResolvedValueOnce(
-      "https://www.skills.google/public_profiles/xyz",
-    );
+    await fakeBrowser.storage.local.set({
+      urlProfile: "https://www.skills.google/public_profiles/xyz",
+    });
 
     const result = await StorageService.getProfileUrl();
     expect(result).toBe("https://www.skills.google/public_profiles/xyz");
@@ -90,7 +87,6 @@ describe("StorageService.getProfileUrl", () => {
 
   it("returns empty string when nothing stored", async () => {
     vi.mocked(AccountService.getActiveAccount).mockResolvedValueOnce(null);
-    storageMock.getItem.mockResolvedValueOnce(null);
 
     const result = await StorageService.getProfileUrl();
     expect(result).toBe("");
@@ -132,7 +128,7 @@ describe("StorageService.isBadgeDisplayEnabled", () => {
     vi.mocked(AccountService.getSettings).mockResolvedValueOnce({
       enableSearchFeature: true,
     });
-    storageMock.getItem.mockResolvedValueOnce(true);
+    await fakeBrowser.storage.local.set({ showBadge: true });
 
     const result = await StorageService.isBadgeDisplayEnabled();
     expect(result).toBe(true);
@@ -142,17 +138,13 @@ describe("StorageService.isBadgeDisplayEnabled", () => {
     vi.mocked(AccountService.getSettings).mockResolvedValueOnce({
       enableSearchFeature: true,
     });
-    storageMock.getItem.mockResolvedValueOnce(null);
 
     const result = await StorageService.isBadgeDisplayEnabled();
     expect(result).toBe(false);
   });
 });
 
-describe("formatBadgeText (via saveArcadeData side effects)", () => {
-  // Test the formatBadgeText logic indirectly by checking badge calls
-  // We test it directly by importing the internal logic through saveArcadeData behavior
-
+describe("StorageService.saveArcadeData", () => {
   it("saves arcade data to legacy storage when no active account", async () => {
     vi.mocked(AccountService.getActiveAccount).mockResolvedValue(null);
     vi.mocked(AccountService.getSettings).mockResolvedValue({
@@ -161,10 +153,9 @@ describe("formatBadgeText (via saveArcadeData side effects)", () => {
     });
 
     await StorageService.saveArcadeData({ totalArcadePoints: 100 });
-    expect(storageMock.setItem).toHaveBeenCalledWith(
-      "local:arcadeData",
-      expect.objectContaining({ totalArcadePoints: 100 }),
-    );
+
+    const stored = await fakeBrowser.storage.local.get("arcadeData");
+    expect(stored.arcadeData).toMatchObject({ totalArcadePoints: 100 });
   });
 
   it("adds lastUpdated when saving", async () => {
@@ -175,7 +166,8 @@ describe("formatBadgeText (via saveArcadeData side effects)", () => {
     });
 
     await StorageService.saveArcadeData({ totalArcadePoints: 50 });
-    const savedData = storageMock.setItem.mock.calls[0][1];
-    expect(savedData.lastUpdated).toBeTruthy();
+
+    const stored = await fakeBrowser.storage.local.get("arcadeData");
+    expect((stored.arcadeData as any).lastUpdated).toBeTruthy();
   });
 });
