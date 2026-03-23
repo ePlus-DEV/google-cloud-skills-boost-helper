@@ -44,6 +44,10 @@ const ApiClient = (() => {
             url
           }
         }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
       }
     }
   `;
@@ -54,13 +58,7 @@ const ApiClient = (() => {
   async function fetchPostsOfPublication(
     params: SearchPostsParams,
   ): Promise<SearchPostsOfPublicationData | null> {
-    const {
-      publicationId,
-      query,
-      first,
-      after = null,
-      sortBy = "DATE_PUBLISHED_DESC",
-    } = params;
+    const { publicationId, query, first, after = null, sortBy } = params;
 
     try {
       const result = await getClient().query({

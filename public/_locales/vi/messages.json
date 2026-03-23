@@ -423,5 +423,12 @@
   "btnApplyCustomTheme": { "message": "Áp dụng chủ đề tùy chỉnh" },
   "btnResetCustomTheme": { "message": "Đặt lại" },
   "btnOpenThemeStudio": { "message": "Mở Theme Studio (Xem trước trực tiếp)" },
-  "btnChangeTheme": { "message": "Thay đổi chủ đề" }
+  "btnChangeTheme": { "message": "Thay đổi chủ đề" },
+  "labThinking": { "message": "Đang suy nghĩ..." },
+  "labSolutionTitle": { "message": "Nhấn để mở bài giải" },
+  "labSolutionButton": { "message": "Xem bài giải" },
+  "labNoSolution": { "message": "Không có bài giải" },
+  "labEplusSearch": { "message": "Tìm trên ePlus" },
+  "labGoogleSearch": { "message": "Tìm trên Google" },
+  "labYouTube": { "message": "YouTube" }
 }

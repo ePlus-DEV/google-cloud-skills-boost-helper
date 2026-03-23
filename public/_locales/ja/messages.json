@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": {
     "message": "Google Cloud Skills Boost - ヘルパー"
   },
@@ -665,5 +665,12 @@
   "btnOpenThemeStudio": {
     "message": "テーマスタジオを開く（ライブプレビュー）"
   },
-  "btnChangeTheme": { "message": "テーマを変更" }
+  "btnChangeTheme": { "message": "テーマを変更" },
+  "labThinking": { "message": "考え中..." },
+  "labSolutionTitle": { "message": "クリックして解答を開く" },
+  "labSolutionButton": { "message": "このラボの解答" },
+  "labNoSolution": { "message": "解答なし" },
+  "labEplusSearch": { "message": "ePlus検索" },
+  "labGoogleSearch": { "message": "Google検索" },
+  "labYouTube": { "message": "YouTube" }
 }

@@ -13,6 +13,10 @@ export interface PostEdge {
 
 export interface SearchPostsOfPublicationData {
   edges: PostEdge[];
+  pageInfo?: {
+    hasNextPage: boolean;
+    endCursor?: string | null;
+  };
 }
 
 export interface SearchPostsParams {
@@ -20,7 +24,7 @@ export interface SearchPostsParams {
   query: string;
   first: number;
   after?: string | null;
-  sortBy?: "DATE_PUBLISHED_DESC";
+  sortBy?: "DATE_PUBLISHED_ASC" | "DATE_PUBLISHED_DESC";
 }
 
 export interface FuseOptions {

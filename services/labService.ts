@@ -42,22 +42,40 @@ const LabService = {
       return;
     }
 
-    // Fetch posts data
+    // Show loading button immediately
+    const loadingElement = UIComponents.createLoadingElement();
+    outlineContainer.appendChild(loadingElement);
+
+    // Fetch posts data with pagination fallback
     const searchParams: SearchPostsParams = {
       publicationId: import.meta.env.WXT_API_KEY,
       query: queryText,
       first: 20,
       after: null,
-      sortBy: "DATE_PUBLISHED_DESC",
     };
 
-    const postsData = await ApiClient.fetchPostsOfPublication(searchParams);
+    let bestMatchUrl: string | null = null;
+    let after: string | null = null;
+    const MAX_PAGES = 5;
 
-    // Find best matching URL
-    let bestMatchUrl = SearchService.findBestMatchUrl(
-      postsData,
-      combinedQueryText,
-    );
+    for (let page = 0; page < MAX_PAGES; page++) {
+      const postsData = await ApiClient.fetchPostsOfPublication({
+        ...searchParams,
+        after,
+      });
+
+      if (!postsData) break;
+
+      bestMatchUrl = SearchService.findBestMatchUrl(
+        postsData,
+        combinedQueryText,
+      );
+      if (bestMatchUrl) break;
+
+      if (!postsData.pageInfo?.hasNextPage || !postsData.pageInfo.endCursor)
+        break;
+      after = postsData.pageInfo.endCursor;
+    }
 
     // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev
     if (bestMatchUrl) {
@@ -72,10 +90,10 @@ const LabService = {
       }
     }
 
-    // Create and append solution element
+    // Replace loading with actual result
     const solutionElement =
       await UIComponents.createSolutionElement(bestMatchUrl);
-    outlineContainer.appendChild(solutionElement);
+    loadingElement.replaceWith(solutionElement);
   },
 
   /**
