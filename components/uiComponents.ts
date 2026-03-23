@@ -6,6 +6,24 @@ import StorageService from "../services/storageService";
 
 const UIComponents = {
   /**
+   * Create a loading button element shown while searching
+   */
+  createLoadingElement(): HTMLLIElement {
+    const el = document.createElement("li");
+    Object.assign(el.style, {
+      marginTop: "15px",
+      padding: "10px",
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    });
+    el.innerHTML = `
+      <ql-button icon="psychology" disabled>
+        ${browser.i18n.getMessage("labThinking")}
+      </ql-button>
+    `;
+    return el;
+  },
+
+  /**
    * Create a solution button element
    */
   async createSolutionElement(url: string | null): Promise<HTMLLIElement> {
@@ -22,11 +40,11 @@ const UIComponents = {
         <ql-button
           icon="check"
           type="button"
-          title="Click to open the solution"
-          data-aria-label="Click to open the solution"
+          title="${browser.i18n.getMessage("labSolutionTitle")}"
+          data-aria-label="${browser.i18n.getMessage("labSolutionTitle")}"
           onclick="window.open('${url}', '_blank')"
         >
-          Solution this lab
+          ${browser.i18n.getMessage("labSolutionButton")}
         </ql-button>
       `;
     } else {
@@ -38,34 +56,34 @@ const UIComponents = {
         solutionElement.innerHTML = `
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <ql-button icon="close" disabled>
-              No solution
+              ${browser.i18n.getMessage("labNoSolution")}
             </ql-button>
             <ql-button
               icon="search"
               type="button"
-              title="Search on ePlus.dev"
-              data-aria-label="Search on ePlus.dev"
+              title="${browser.i18n.getMessage("labEplusSearch")}"
+              data-aria-label="${browser.i18n.getMessage("labEplusSearch")}"
               id="eplus-search-btn"
             >
-              ePlus Search
+              ${browser.i18n.getMessage("labEplusSearch")}
             </ql-button>
             <ql-button
               icon="search"
               type="button"
-              title="Search for this lab on Google"
-              data-aria-label="Search for this lab on Google"
+              title="${browser.i18n.getMessage("labGoogleSearch")}"
+              data-aria-label="${browser.i18n.getMessage("labGoogleSearch")}"
               id="google-search-btn"
             >
-              Google Search
+              ${browser.i18n.getMessage("labGoogleSearch")}
             </ql-button>
             <ql-button
               icon="video_library"
               type="button"
-              title="Search for video tutorials on YouTube"
-              data-aria-label="Search for video tutorials on YouTube"
+              title="${browser.i18n.getMessage("labYouTube")}"
+              data-aria-label="${browser.i18n.getMessage("labYouTube")}"
               id="youtube-search-btn"
             >
-              YouTube
+              ${browser.i18n.getMessage("labYouTube")}
             </ql-button>
           </div>
         `;
@@ -106,7 +124,7 @@ const UIComponents = {
         // Search feature disabled - show only "No solution"
         solutionElement.innerHTML = `
           <ql-button icon="close" disabled>
-            No solution
+            ${browser.i18n.getMessage("labNoSolution")}
           </ql-button>
         `;
       }

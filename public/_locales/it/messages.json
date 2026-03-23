@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
@@ -663,5 +663,12 @@
   "btnApplyCustomTheme": { "message": "Applica tema personalizzato" },
   "btnResetCustomTheme": { "message": "Reimposta" },
   "btnOpenThemeStudio": { "message": "Apri Theme Studio (Anteprima live)" },
-  "btnChangeTheme": { "message": "Cambia tema" }
+  "btnChangeTheme": { "message": "Cambia tema" },
+  "labThinking": { "message": "Sto pensando..." },
+  "labSolutionTitle": { "message": "Clicca per aprire la soluzione" },
+  "labSolutionButton": { "message": "Soluzione del lab" },
+  "labNoSolution": { "message": "Nessuna soluzione" },
+  "labEplusSearch": { "message": "Cerca su ePlus" },
+  "labGoogleSearch": { "message": "Cerca su Google" },
+  "labYouTube": { "message": "YouTube" }
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": {
     "message": "Google Cloud Skills Boost - المساعد"
   },
@@ -663,5 +663,12 @@
   "btnApplyCustomTheme": { "message": "تطبيق السمة المخصصة" },
   "btnResetCustomTheme": { "message": "إعادة ضبط" },
   "btnOpenThemeStudio": { "message": "فتح ستوديو الثيم (معاينة مباشرة)" },
-  "btnChangeTheme": { "message": "تغيير السمة" }
+  "btnChangeTheme": { "message": "تغيير السمة" },
+  "labThinking": { "message": "جارٍ التفكير..." },
+  "labSolutionTitle": { "message": "انقر لفتح الحل" },
+  "labSolutionButton": { "message": "حل هذا المختبر" },
+  "labNoSolution": { "message": "لا يوجد حل" },
+  "labEplusSearch": { "message": "بحث ePlus" },
+  "labGoogleSearch": { "message": "بحث Google" },
+  "labYouTube": { "message": "YouTube" }
 }

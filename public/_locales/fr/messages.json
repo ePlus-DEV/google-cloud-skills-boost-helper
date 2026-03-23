@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": {
     "message": "Google Cloud Skills Boost - Assistant"
   },
@@ -455,5 +455,12 @@
   "btnOpenThemeStudio": {
     "message": "Ouvrir le Studio de thème (Aperçu en direct)"
   },
-  "btnChangeTheme": { "message": "Changer le thème" }
+  "btnChangeTheme": { "message": "Changer le thème" },
+  "labThinking": { "message": "En train de réfléchir..." },
+  "labSolutionTitle": { "message": "Cliquez pour ouvrir la solution" },
+  "labSolutionButton": { "message": "Solution du lab" },
+  "labNoSolution": { "message": "Pas de solution" },
+  "labEplusSearch": { "message": "Recherche ePlus" },
+  "labGoogleSearch": { "message": "Recherche Google" },
+  "labYouTube": { "message": "YouTube" }
 }

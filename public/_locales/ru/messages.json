@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": {
     "message": "Google Cloud Skills Boost - Помощник"
   },
@@ -444,5 +444,12 @@
   "btnOpenThemeStudio": {
     "message": "Открыть студию тем (живой предварительный просмотр)"
   },
-  "btnChangeTheme": { "message": "Изменить тему" }
+  "btnChangeTheme": { "message": "Изменить тему" },
+  "labThinking": { "message": "Думаю..." },
+  "labSolutionTitle": { "message": "Нажмите, чтобы открыть решение" },
+  "labSolutionButton": { "message": "Решение лабораторной" },
+  "labNoSolution": { "message": "Нет решения" },
+  "labEplusSearch": { "message": "Поиск ePlus" },
+  "labGoogleSearch": { "message": "Поиск Google" },
+  "labYouTube": { "message": "YouTube" }
 }

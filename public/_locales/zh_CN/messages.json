@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": {
     "message": "Google Cloud Skills Boost - 助手"
   },
@@ -430,5 +430,12 @@
   },
   "labelEnabled": { "message": "已启用" },
   "labelDisabled": { "message": "已禁用" },
-  "btnChangeTheme": { "message": "更改主题" }
+  "btnChangeTheme": { "message": "更改主题" },
+  "labThinking": { "message": "思考中..." },
+  "labSolutionTitle": { "message": "点击打开解答" },
+  "labSolutionButton": { "message": "查看解答" },
+  "labNoSolution": { "message": "暂无解答" },
+  "labEplusSearch": { "message": "ePlus搜索" },
+  "labGoogleSearch": { "message": "Google搜索" },
+  "labYouTube": { "message": "YouTube" }
 }

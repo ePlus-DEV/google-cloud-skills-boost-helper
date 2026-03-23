@@ -430,5 +430,12 @@
   "btnApplyCustomTheme": { "message": "Apply Custom Theme" },
   "btnResetCustomTheme": { "message": "Reset" },
   "btnOpenThemeStudio": { "message": "Open Theme Studio (Live Preview)" },
-  "btnChangeTheme": { "message": "Change Theme" }
+  "btnChangeTheme": { "message": "Change Theme" },
+  "labThinking": { "message": "Thinking..." },
+  "labSolutionTitle": { "message": "Click to open the solution" },
+  "labSolutionButton": { "message": "Solution this lab" },
+  "labNoSolution": { "message": "No solution" },
+  "labEplusSearch": { "message": "ePlus Search" },
+  "labGoogleSearch": { "message": "Google Search" },
+  "labYouTube": { "message": "YouTube" }
 }

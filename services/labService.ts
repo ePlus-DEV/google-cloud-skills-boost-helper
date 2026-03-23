@@ -42,6 +42,10 @@ const LabService = {
       return;
     }
 
+    // Show loading button immediately
+    const loadingElement = UIComponents.createLoadingElement();
+    outlineContainer.appendChild(loadingElement);
+
     // Fetch posts data with pagination fallback
     const searchParams: SearchPostsParams = {
       publicationId: import.meta.env.WXT_API_KEY,
@@ -86,10 +90,10 @@ const LabService = {
       }
     }
 
-    // Create and append solution element
+    // Replace loading with actual result
     const solutionElement =
       await UIComponents.createSolutionElement(bestMatchUrl);
-    outlineContainer.appendChild(solutionElement);
+    loadingElement.replaceWith(solutionElement);
   },
 
   /**
