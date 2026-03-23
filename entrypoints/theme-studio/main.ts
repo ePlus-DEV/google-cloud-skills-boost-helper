@@ -64,15 +64,15 @@ function isValidHexColor(color: string): boolean {
 
 /** Converts a hex color string to a comma-separated RGB channel string (e.g. `"168, 85, 247"`). */
 function toRgbChannels(hexColor: string): string {
-  const normalized = hexColor.replace("#", "").trim();
-  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
+  const normalizedHex = hexColor.replace("#", "").trim();
+  if (!/^[0-9a-fA-F]{6}$/.test(normalizedHex)) {
     return "168, 85, 247";
   }
 
-  const r = parseInt(normalized.substring(0, 2), 16);
-  const g = parseInt(normalized.substring(2, 4), 16);
-  const b = parseInt(normalized.substring(4, 6), 16);
-  return `${r}, ${g}, ${b}`;
+  const redChannel = parseInt(normalizedHex.substring(0, 2), 16);
+  const greenChannel = parseInt(normalizedHex.substring(2, 4), 16);
+  const blueChannel = parseInt(normalizedHex.substring(4, 6), 16);
+  return `${redChannel}, ${greenChannel}, ${blueChannel}`;
 }
 
 /** Normalizes a CSS color value (hex or rgb/rgba) to a lowercase 6-digit hex string. Returns `""` on failure. */

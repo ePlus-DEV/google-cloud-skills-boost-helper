@@ -302,7 +302,7 @@ async function getSavedCustomTheme(): Promise<CustomThemePalette> {
 }
 
 /** Returns the baseline palette for the dark theme, used as the reset target for custom theme. */
-async function getResetPaletteFromBaseTheme(): Promise<CustomThemePalette> {
+function getResetPaletteFromBaseTheme(): CustomThemePalette {
   return getBaselinePalette("dark");
 }
 
