@@ -313,6 +313,22 @@ function openThemeModal() {
   if (modal) {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
+    // Sync custom palette visibility with current active theme
+    const activeOption = modal.querySelector(
+      ".theme-option.active",
+    ) as HTMLElement | null;
+    const currentTheme = (activeOption?.dataset.theme as Theme) || "dark";
+    const customPaletteSection = document.getElementById(
+      "custom-palette-section",
+    );
+    const themeModalFooter = document.getElementById("theme-modal-footer");
+    if (currentTheme === "custom") {
+      customPaletteSection?.classList.remove("hidden");
+      themeModalFooter?.classList.add("hidden");
+    } else {
+      customPaletteSection?.classList.add("hidden");
+      themeModalFooter?.classList.remove("hidden");
+    }
   }
 }
 
@@ -556,6 +572,26 @@ PopupService.initialize().then(() => {
       const openThemeStudioButton = document.getElementById(
         "open-theme-studio",
       ) as HTMLButtonElement | null;
+      const openThemeStudioFooterButton = document.getElementById(
+        "open-theme-studio-footer",
+      ) as HTMLButtonElement | null;
+      const customPaletteSection = document.getElementById(
+        "custom-palette-section",
+      ) as HTMLElement | null;
+      const themeModalFooter = document.getElementById(
+        "theme-modal-footer",
+      ) as HTMLElement | null;
+
+      /** Show/hide custom palette section based on selected theme */
+      function updateCustomPaletteVisibility(theme: Theme) {
+        if (theme === "custom") {
+          customPaletteSection?.classList.remove("hidden");
+          themeModalFooter?.classList.add("hidden");
+        } else {
+          customPaletteSection?.classList.add("hidden");
+          themeModalFooter?.classList.remove("hidden");
+        }
+      }
 
       // Open theme modal
       if (themeToggleBtn) {
@@ -588,6 +624,7 @@ PopupService.initialize().then(() => {
           const selectedTheme = optionElement.dataset.theme as Theme;
           if (selectedTheme) {
             await applyTheme(selectedTheme);
+            updateCustomPaletteVisibility(selectedTheme);
 
             if (selectedTheme !== "custom") {
               // Optional: close modal after selection
@@ -662,6 +699,13 @@ PopupService.initialize().then(() => {
 
       if (openThemeStudioButton) {
         openThemeStudioButton.addEventListener("click", () => {
+          const studioUrl = chrome.runtime.getURL("theme-studio.html");
+          window.open(studioUrl, "_blank");
+        });
+      }
+
+      if (openThemeStudioFooterButton) {
+        openThemeStudioFooterButton.addEventListener("click", () => {
           const studioUrl = chrome.runtime.getURL("theme-studio.html");
           window.open(studioUrl, "_blank");
         });
