@@ -13,6 +13,9 @@ class SearchService {
     Fuse<{ title: string; url?: string }>
   > = new WeakMap();
 
+  /**
+   * Get or create a cached Fuse instance for the given posts data
+   */
   private static getFuseInstance(
     nodes: { title: string; url?: string }[],
     postsData: object,
@@ -21,7 +24,13 @@ class SearchService {
     if (!this._fuseCache.has(postsData)) {
       this._fuseCache.set(postsData, new Fuse(nodes, fuseOptions));
     }
-    return this._fuseCache.get(postsData)!;
+    const cached = this._fuseCache.get(postsData);
+    if (!cached) {
+      const instance = new Fuse(nodes, fuseOptions);
+      this._fuseCache.set(postsData, instance);
+      return instance;
+    }
+    return cached;
   }
 
   // Compile regex patterns once for better performance
