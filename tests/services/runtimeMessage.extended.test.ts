@@ -56,13 +56,16 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
           ) {
             return await new Promise((resolve, reject) => {
               try {
-                g.chrome.runtime.sendMessage(message, (response: unknown) => {
-                  if (g.chrome.runtime.lastError) {
-                    reject(g.chrome.runtime.lastError);
-                  } else {
-                    resolve(response);
-                  }
-                });
+                g.chrome.runtime.sendMessage(
+                  message,
+                  (chromeResponse: unknown) => {
+                    if (g.chrome.runtime.lastError) {
+                      reject(g.chrome.runtime.lastError);
+                    } else {
+                      resolve(chromeResponse);
+                    }
+                  },
+                );
               } catch (err) {
                 reject(err);
               }
@@ -78,13 +81,16 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
           ) {
             return await new Promise((resolve, reject) => {
               try {
-                g.chrome.runtime.sendMessage(message, (response: unknown) => {
-                  if (g.chrome.runtime.lastError) {
-                    reject(g.chrome.runtime.lastError);
-                  } else {
-                    resolve(response);
-                  }
-                });
+                g.chrome.runtime.sendMessage(
+                  message,
+                  (chromeResponse: unknown) => {
+                    if (g.chrome.runtime.lastError) {
+                      reject(g.chrome.runtime.lastError);
+                    } else {
+                      resolve(chromeResponse);
+                    }
+                  },
+                );
               } catch (err) {
                 reject(err);
               }
@@ -98,9 +104,11 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
     (globalThis as any).chrome = {
       runtime: {
         lastError: undefined,
-        sendMessage: vi.fn((_msg: unknown, cb: (r: unknown) => void) => {
-          cb({ fromChrome: true });
-        }),
+        sendMessage: vi.fn(
+          (_message: unknown, callback: (response: unknown) => void) => {
+            callback({ fromChrome: true });
+          },
+        ),
       },
     };
 
@@ -118,9 +126,11 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
     (globalThis as any).chrome = {
       runtime: {
         lastError: { message: "context invalidated" },
-        sendMessage: vi.fn((_msg: unknown, cb: (r: unknown) => void) => {
-          cb(undefined);
-        }),
+        sendMessage: vi.fn(
+          (_message: unknown, callback: (response: unknown) => void) => {
+            callback(undefined);
+          },
+        ),
       },
     };
 
@@ -157,8 +167,8 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
     const result = await new Promise<unknown>((resolve) => {
       const g = globalThis as any;
       try {
-        g.chrome.runtime.sendMessage({ type: "test" }, (_response: unknown) => {
-          resolve(_response);
+        g.chrome.runtime.sendMessage({ type: "test" }, (response: unknown) => {
+          resolve(response);
         });
       } catch {
         resolve(null);
