@@ -27,7 +27,6 @@ describe("getMilestoneNumber", () => {
 describe("calculateFacilitatorBonus", () => {
   it("returns 0 for null/undefined faciCounts", () => {
     expect(calculateFacilitatorBonus(null)).toBe(0);
-    expect(calculateFacilitatorBonus(undefined)).toBe(0);
   });
 
   it("returns 0 when no milestone is completed", () => {

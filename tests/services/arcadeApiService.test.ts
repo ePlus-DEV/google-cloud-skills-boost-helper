@@ -78,7 +78,10 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(result?.lastUpdated).toBeTruthy();
-    expect(new Date(result!.lastUpdated!).getTime()).not.toBeNaN();
+    expect(result).not.toBeNull();
+    if (result?.lastUpdated) {
+      expect(new Date(result.lastUpdated).getTime()).not.toBeNaN();
+    }
   });
 
   it("returns null when status is not 200", async () => {

@@ -4,17 +4,22 @@ import { vi } from "vitest";
 const storageStore: Record<string, unknown> = {};
 
 const storageMock = {
-  getItem: vi.fn(async (key: string) => storageStore[key] ?? null),
-  setItem: vi.fn(async (key: string, value: unknown) => {
+  getItem: vi.fn((key: string) => Promise.resolve(storageStore[key] ?? null)),
+  setItem: vi.fn((key: string, value: unknown) => {
     storageStore[key] = value;
+    return Promise.resolve();
   }),
-  removeItem: vi.fn(async (key: string) => {
+  removeItem: vi.fn((key: string) => {
     delete storageStore[key];
+    return Promise.resolve();
   }),
   defineItem: vi.fn((key: string, opts?: { fallback?: unknown }) => ({
-    getValue: vi.fn(async () => storageStore[key] ?? opts?.fallback ?? null),
-    setValue: vi.fn(async (v: unknown) => {
+    getValue: vi.fn(() =>
+      Promise.resolve(storageStore[key] ?? opts?.fallback ?? null),
+    ),
+    setValue: vi.fn((v: unknown) => {
       storageStore[key] = v;
+      return Promise.resolve();
     }),
   })),
 };
