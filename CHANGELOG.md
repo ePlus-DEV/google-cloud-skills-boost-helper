@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.9] - 2026-03-23
+### :sparkles: New Features
+- [`359679b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/359679b644c84b9171f8364958f4e14b17aa1249) - **theme**: implement custom theme functionality with live preview and color picker options *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`13ed442`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/13ed4428aead98fb0cb4bacd3bc0463cf3a5b0e5) - **theme-studio**: enhance theme customization with localization and new sync functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d6b366c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d6b366cac05a6256450bd2da7c8a02a04a050735) - **popup**: redesign theme selector with improved card layout and visual hierarchy *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`2a25674`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2a256745925ac2f76ca7e39768f2692e901cfb89) - **search,ui,services**: add ePlus search integration and optimize caching *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`54ea9fc`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/54ea9fce7a90b04ce6b562fc44b6a16d7a5fac8c) - **searchService**: add cache-busting timestamp to solution URLs *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6a22e75`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6a22e75ee9eef85f9902bd5629ea63008b9b8960) - **searchService**: improve word tokenization and matching for hyphenated terms *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d6ebd67`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d6ebd6743d98090bdfc44767d02c6ab33e05eb9b) - **apiClient**: add pagination support for post search results *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`521207d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/521207deb959d42ee9a4f4eec0f5b8f469499549) - **uiComponents**: add loading state indicator for search operations *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`44588f6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/44588f6c41382469050239b18ac234c5b881baae) - **theme-studio**: correct theme reset to use dark baseline instead of custom *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`cce2c5e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cce2c5e8057432efffbcd7245373250c0d988489) - **types**: improve TypeScript type safety for browser and global mocks *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`19c17aa`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/19c17aa15d94635390a9a718370d2c19e9d08050) - **searchService**: prevent division by zero in relevance scoring *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`7d72a42`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7d72a42f8d0a7a4b4fa20448c5fed5128fa4b6e7) - improve code clarity with descriptive variable names and JSDoc comments *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`90f8248`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/90f8248db06c00defa8ab25f2cd4c47e17497407) - improve code clarity with descriptive variable names *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d97b9a8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d97b9a89c643e6f077f05cb3728a216c3533633a) - **domUtils**: make content parameter optional in updateTextWithFallback *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7acb8d1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7acb8d188d05deff49902dd89abe6d82697df0f5) - **types**: simplify apollo client typing and enhance data type safety *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :white_check_mark: Tests
+- [`ce4fe9c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ce4fe9c4bff86a6d511da4b92599cade563ef40b) - add comprehensive test suite with Vitest configuration *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e17982a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e17982ae73d21981e58311f92fa90d735a254bee) - **services,setup**: improve test reliability with better async handling *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`134934a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/134934a8723fdaaef765b502d66af9790f7fb9d5) - **setup**: fix storage mock cleanup to prevent property deletion issues *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`8d018af`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8d018af013bddcc8e8f5e05d68371b420f51563b) - **storage**: migrate to wxt fakeBrowser for storage mocking *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a18cd42`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a18cd425e50fff22c14513d4b5dfaf0bd8bcaa4c) - **accountService**: migrate to wxt fakeBrowser for storage mocking *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f19e941`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f19e9415e297114de61acd917303fbeb1cc46bdc) - **coverage**: exclude UI and browser-coupled services from coverage *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`9e12553`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9e12553e21f9f05a4f2f605411af32efd5239349) - **services**: add comprehensive test coverage for account and storage services *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`34ad19d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/34ad19d0658081c0457d898a25e48014d3a13c9f) - **previewUtils**: fix avatar placeholder test data setup *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d855bd6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d855bd60727dadbe24f1405f4a2031acb4af4a38) - **services**: add extended test coverage for account, runtime, search, and storage services *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`75dfd0b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/75dfd0bcb7a1c09027830f0f5d0264dca368eef4) - **runtimeMessage**: expand test coverage for browser and chrome fallback paths *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d854a51`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d854a5115cec6ce8ce84f972ae737af7be1130f4) - **runtimeMessage**: improve variable naming clarity in chrome fallback tests *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`9383c41`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9383c41470fc371aafca87905b07bfa46ca9e130) - **services**: improve test clarity with better variable naming *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`207a94b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/207a94b55692a41577a330cfdbf49b79736575c5) - **runtimeMessage**: refine chrome fallback callback typing *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`f637ae4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f637ae48996c38207861874e91294809f0ac74e3) - upgrade Node.js to 24.x and update build dependencies *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`37571d8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/37571d8682aaf2eaeae8ed0b27c09395dffc0aa8) - **deps**: bump actions/upload-artifact from 4 to 7 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c8b6aac`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c8b6aac69a772437e81b7441c4dc86f882693bbc) - **deps**: bump actions/checkout from 4 to 6 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`9a77264`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9a77264921b7ffca69218942d07985f8c4b8d491) - **deps**: bump actions/setup-node from 4 to 6 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`08780d7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/08780d715082c68d03f2528e04a38e6731cd04dc) - **deps-dev**: bump the dev-dependencies group with 3 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`8e1d3f9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8e1d3f9351438b3fb24544f650ecc0c159fa3b37) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`d6aca10`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d6aca1008abaf29c253169f2328a8db9fe3f1ba8) - **deps**: add rxjs dependency *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.2.8] - 2026-03-13
 ### :sparkles: New Features
 - [`1e200d9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1e200d9292e8aea963f91220ff4f8201fddb134d) - **searchService**: enhance search functionality with improved normalization and filtering *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -800,3 +847,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.6]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.5...1.2.6
 [1.2.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.6...1.2.7
 [1.2.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.7...1.2.8
+[1.2.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.8...1.2.9
