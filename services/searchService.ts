@@ -297,7 +297,9 @@ class SearchService {
     const url = bestMatch.item.url;
     if (!url) return null;
 
-    return url;
+    // Append timestamp to bypass page-level cache on the solution site
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}t=${Date.now()}`;
   }
 
   /**
