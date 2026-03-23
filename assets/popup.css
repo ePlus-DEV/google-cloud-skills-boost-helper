@@ -955,7 +955,7 @@ body.theme-light #theme-modal .text-white\/80 {
 
 .theme-card-icon {
   font-size: 18px;
-  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
 }
 
 .theme-card-active-badge {
@@ -1003,7 +1003,9 @@ body.theme-light #theme-modal .text-white\/80 {
 /* Active state */
 .theme-card.active {
   border-color: #fbbf24;
-  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.3), 0 4px 16px rgba(251, 191, 36, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.3),
+    0 4px 16px rgba(251, 191, 36, 0.2);
 }
 
 .theme-card.active .theme-card-active-badge {
