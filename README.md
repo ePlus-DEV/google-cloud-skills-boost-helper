@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/ci.yml"><img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/codeql.yml"><img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/codeql.yml/badge.svg" alt="CodeQL"></a>
+  <a href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/security/code-scanning"><img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL"></a>
   <a href="LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
 </p>
 
