@@ -136,10 +136,10 @@ function toRgbChannels(hexColor: string): string {
     return "34, 211, 238";
   }
 
-  const r = parseInt(normalized.substring(0, 2), 16);
-  const g = parseInt(normalized.substring(2, 4), 16);
-  const b = parseInt(normalized.substring(4, 6), 16);
-  return `${r}, ${g}, ${b}`;
+  const red = parseInt(normalized.substring(0, 2), 16);
+  const green = parseInt(normalized.substring(2, 4), 16);
+  const blue = parseInt(normalized.substring(4, 6), 16);
+  return `${red}, ${green}, ${blue}`;
 }
 
 /** Returns true if the given string is a valid 6-digit hex color (e.g. `#a855f7`). */

@@ -85,6 +85,7 @@ function colorToHex(color: string): string {
   const match = trimmed.match(/^rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
   if (!match) return "";
 
+  /** Converts a numeric string to a two-digit lowercase hex string (e.g. `"255"` → `"ff"`). */
   const toHex = (value: string) => Number(value).toString(16).padStart(2, "0");
   return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
 }
@@ -92,7 +93,7 @@ function colorToHex(color: string): string {
 /** Extracts all hex/rgb color values from a CSS `background-image` gradient string and returns them as hex strings. */
 function extractGradientColors(backgroundImage: string): string[] {
   const colorMatches =
-    backgroundImage.match(/#[0-9a-fA-F]{6}|rgba?\([^\)]+\)/g) || [];
+    backgroundImage.match(/#[0-9a-fA-F]{6}|rgba?\([^)]+\)/g) || [];
   return colorMatches
     .map((value) => colorToHex(value))
     .filter((value) => isValidHexColor(value));
@@ -240,6 +241,7 @@ async function loadPopupPreview(): Promise<void> {
   if (!previewFrame) return;
 
   await new Promise<void>((resolve) => {
+    /** Resolves the promise once the preview iframe has finished loading. */
     const onLoad = () => {
       previewFrame.removeEventListener("load", onLoad);
       resolve();
@@ -251,6 +253,7 @@ async function loadPopupPreview(): Promise<void> {
 
 /** Reads the current values from all color inputs in the studio form and returns them as a sanitized `CustomThemePalette`. */
 function readPaletteFromInputs(): CustomThemePalette {
+  /** Returns the current value of a color input by element ID, or `fallback` if the element is not found. */
   const getValue = (id: string, fallback: string) => {
     const input = document.getElementById(id) as HTMLInputElement | null;
     return input?.value || fallback;
@@ -285,6 +288,7 @@ function readPaletteFromInputs(): CustomThemePalette {
 
 /** Writes a palette's color values into the corresponding color input elements in the studio form. */
 function syncInputs(palette: CustomThemePalette): void {
+  /** Sets the value of a color input element by ID. No-op if the element is not found. */
   const setValue = (id: string, value: string) => {
     const input = document.getElementById(id) as HTMLInputElement | null;
     if (input) input.value = value;
