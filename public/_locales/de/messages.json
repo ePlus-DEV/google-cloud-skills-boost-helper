@@ -664,7 +664,7 @@
   "btnResetCustomTheme": { "message": "Zurücksetzen" },
   "btnOpenThemeStudio": { "message": "Theme Studio öffnen (Live-Vorschau)" },
   "btnChangeTheme": { "message": "Theme ändern" },
-  "labThinking": { "message": "Denkt nach..." },
+  "labThinking": { "message": "Überlege..." },
   "labSolutionTitle": { "message": "Klicken, um die Lösung zu öffnen" },
   "labSolutionButton": { "message": "Lab lösen" },
   "labNoSolution": { "message": "Keine Lösung" },

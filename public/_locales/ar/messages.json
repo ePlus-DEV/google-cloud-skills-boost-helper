@@ -664,7 +664,7 @@
   "btnResetCustomTheme": { "message": "إعادة ضبط" },
   "btnOpenThemeStudio": { "message": "فتح ستوديو الثيم (معاينة مباشرة)" },
   "btnChangeTheme": { "message": "تغيير السمة" },
-  "labThinking": { "message": "جارٍ التفكير..." },
+  "labThinking": { "message": "أفكّر..." },
   "labSolutionTitle": { "message": "انقر لفتح الحل" },
   "labSolutionButton": { "message": "حل هذا المختبر" },
   "labNoSolution": { "message": "لا يوجد حل" },
