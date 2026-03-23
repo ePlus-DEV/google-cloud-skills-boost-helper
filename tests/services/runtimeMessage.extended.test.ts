@@ -127,8 +127,8 @@ describe("sendRuntimeMessage - chrome fallback path", () => {
       runtime: {
         lastError: { message: "context invalidated" },
         sendMessage: vi.fn(
-          (_message: unknown, callback: (response: unknown) => void) => {
-            callback(undefined);
+          (_message: unknown, callback: (response?: unknown) => void) => {
+            callback();
           },
         ),
       },
