@@ -43,6 +43,15 @@ const UIComponents = {
             <ql-button
               icon="search"
               type="button"
+              title="Search on ePlus.dev"
+              data-aria-label="Search on ePlus.dev"
+              id="eplus-search-btn"
+            >
+              ePlus Search
+            </ql-button>
+            <ql-button
+              icon="search"
+              type="button"
               title="Search for this lab on Google"
               data-aria-label="Search for this lab on Google"
               id="google-search-btn"
@@ -63,10 +72,19 @@ const UIComponents = {
 
         // Add event listeners after creating the HTML
         setTimeout(() => {
+          const eplusBtn = solutionElement.querySelector("#eplus-search-btn");
           const googleBtn = solutionElement.querySelector("#google-search-btn");
           const youtubeBtn = solutionElement.querySelector(
             "#youtube-search-btn",
           );
+
+          if (eplusBtn) {
+            eplusBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              UIComponents.searchOnEplus();
+            });
+          }
 
           if (googleBtn) {
             googleBtn.addEventListener("click", (e) => {
@@ -95,6 +113,18 @@ const UIComponents = {
     }
 
     return solutionElement;
+  },
+
+  /**
+   * Search the current lab on ePlus.dev
+   */
+  searchOnEplus(): void {
+    const labTitle =
+      document
+        .querySelector(".ql-display-large.lab-preamble__title")
+        ?.textContent?.trim() || "";
+    const encodedQuery = encodeURIComponent(labTitle);
+    window.open(`https://eplus.dev/search?q=${encodedQuery}`, "_blank");
   },
 
   /**

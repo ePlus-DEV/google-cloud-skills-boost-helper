@@ -3,13 +3,18 @@
  * @returns The browser name: "firefox", "edge", "opera", "chrome", "brave", or "unknown"
  */
 export async function getBrowser(): Promise<string> {
-  // Firefox-specific detection
-  if (typeof browser !== "undefined" && browser.runtime?.getBrowserInfo) {
-    try {
-      const info = await browser.runtime.getBrowserInfo();
-      return "firefox";
-    } catch (e) {
-      // If getBrowserInfo fails, continue to user agent detection
+  // Firefox-specific detection (getBrowserInfo is Firefox-only, not in standard WXT types)
+  if (typeof browser !== "undefined") {
+    const runtime = browser.runtime as typeof browser.runtime & {
+      getBrowserInfo?: () => Promise<{ name: string }>;
+    };
+    if (runtime?.getBrowserInfo) {
+      try {
+        await runtime.getBrowserInfo();
+        return "firefox";
+      } catch (e) {
+        // If getBrowserInfo fails, continue to user agent detection
+      }
     }
   }
 

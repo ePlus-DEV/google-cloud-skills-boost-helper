@@ -718,10 +718,17 @@ const PopupUIService = {
   },
 
   /**
-   * Calculate progress using different methods
+   * Calculate progress using binary completion method
    */
   calculateProgressMethods(current: any, requirements: any): any {
-    // Method 1: Binary Completion (current default)
+    const gameProgress = Math.min(current.games / requirements.games, 1) * 100;
+    const triviaProgress =
+      Math.min(current.trivia / requirements.trivia, 1) * 100;
+    const skillProgress =
+      Math.min(current.skills / requirements.skills, 1) * 100;
+    const labfreeProgress =
+      Math.min(current.labfree / requirements.labfree, 1) * 100;
+
     const completed = [
       current.games >= requirements.games,
       current.trivia >= requirements.trivia,
@@ -730,42 +737,10 @@ const PopupUIService = {
     ];
     const completedCount = completed.filter(Boolean).length;
     const binary = Math.round((completedCount / 4) * 100);
-
-    // Method 2: Weighted Average Progress
-    const gameProgress = Math.min(current.games / requirements.games, 1) * 100;
-    const triviaProgress =
-      Math.min(current.trivia / requirements.trivia, 1) * 100;
-    const skillProgress =
-      Math.min(current.skills / requirements.skills, 1) * 100;
-    const labfreeProgress =
-      Math.min(current.labfree / requirements.labfree, 1) * 100;
-    const weighted = Math.round(
-      (gameProgress + triviaProgress + skillProgress + labfreeProgress) / 4,
-    );
-
-    // Method 3: Proportional Total Progress
-    const currentTotal =
-      current.games + current.trivia + current.skills + current.labfree;
-    const requiredTotal =
-      requirements.games +
-      requirements.trivia +
-      requirements.skills +
-      requirements.labfree;
-    const proportional = Math.round((currentTotal / requiredTotal) * 100);
-
-    // Method 4: Minimum Requirement Progress
-    const minimum = Math.round(
-      Math.min(gameProgress, triviaProgress, skillProgress, labfreeProgress),
-    );
-
-    // Completion status (same for all methods)
     const isCompleted = completedCount === 4;
 
     return {
       binary,
-      weighted,
-      proportional,
-      minimum,
       isCompleted,
       details: {
         gameProgress: Math.round(gameProgress * 100) / 100,
@@ -855,19 +830,13 @@ const PopupUIService = {
 
     progressElement.textContent = `${progressPercent}%`;
 
-    const tooltip = `Progress Methods:
-• Binary: ${progressMethods.binary}% (completion-based) ★ ACTIVE
-• Weighted: ${progressMethods.weighted}% (average progress)
-• Proportional: ${progressMethods.proportional}% (total ratio)
-• Minimum: ${progressMethods.minimum}% (bottleneck)
+    const tooltip = `Progress: ${progressMethods.binary}% (${progressMethods.binary / 25}/4 requirements met)
 
 Details:
 • Games: ${progressMethods.details.gameProgress}%
 • Trivia: ${progressMethods.details.triviaProgress}%
 • Skills: ${progressMethods.details.skillProgress}%
-• Lab-free: ${progressMethods.details.labfreeProgress}%
-
-Formula: 3/4 requirements completed = ${progressMethods.binary}%`;
+• Lab-free: ${progressMethods.details.labfreeProgress}%`;
 
     progressElement.setAttribute("title", tooltip);
     progressElement.style.cursor = "help";

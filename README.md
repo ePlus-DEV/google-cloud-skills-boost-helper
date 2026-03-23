@@ -5,9 +5,13 @@
   Google Cloud Skills Boost - Helper
 </h1>
 <p align="center">
-    <sub>
-        A browser extension designed to optimize your learning experience on Google Cloud Skills Boost.
-    </sub>
+  A browser extension designed to optimize your learning experience on Google Cloud Skills Boost.
+</p>
+
+<p align="center">
+  <a href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/ci.yml"><img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/security/code-scanning"><img src="https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL"></a>
+  <a href="LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
 </p>
 
 ---
@@ -22,9 +26,9 @@
 ---
 
 - [Introduction](#introduction)
+- [Key Features](#key-features)
 - [Installation](#installation)
-  - [Firefox](#firefox)
-  - [Chromium](#chromium)
+- [Development](#development)
 - [About](#about)
 - [Contributing](#contributing)
 - [Support](#support)
@@ -32,9 +36,9 @@
 
 ## Introduction
 
-We are excited to introduce Google Cloud Skills Boost - Helper, a browser extension designed to optimize your learning experience on Google Cloud Skills Boost. With a range of useful features, this tool makes it easier to track progress, calculate Arcade points, and manage leaderboards efficiently!
+Google Cloud Skills Boost - Helper is a browser extension that makes it easier to track progress, calculate Arcade points, and manage leaderboards on [Google Cloud Skills Boost](https://www.cloudskillsboost.google).
 
-### Key Features
+## Key Features
 
 🎯 **Arcade Points Calculator** – Automatically calculates and displays your Arcade points.
 
@@ -42,41 +46,57 @@ We are excited to introduce Google Cloud Skills Boost - Helper, a browser extens
 
 👁 **Toggle Leaderboard Visibility** – Customize the display of the leaderboard as needed.
 
+🔍 **Search** – Quickly find labs, courses, and quests.
+
 ## Installation
 
-### Firefox
+Install from your browser's official store:
 
-[Firefox Add-ons][Mozilla]
+- [Chrome Web Store][Chrome]
+- [Firefox Add-ons][Mozilla]
+- [Microsoft Edge Add-ons][Edge]
+- [Opera Add-ons][Opera]
+- [Manual Installation][Manual Installation] (any Chromium-based browser)
 
-### Chromium
+## Development
 
-[Chrome Web Store][Chrome]
+**Requirements:** Node.js >= 24, Yarn
 
-[Microsoft Edge Add-ons][Edge]
+```bash
+# Install dependencies
+yarn install
 
-[Opera Add-ons][Opera]
+# Start dev server (Chrome)
+yarn dev
 
-[Manual Installation][Manual Installation]
+# Run tests
+yarn test
 
-**Google Cloud Skills Boost - Helper** should be compatible with any Chromium-based browser.
+# Type check
+yarn compile
+
+# Production build
+yarn build
+
+# Package for distribution
+yarn zip
+```
+
+Built with [WXT Framework](https://wxt.dev). See [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guidelines.
 
 ## About
 
-[Privacy Policy][Privacy Policy]
-
-[MIT License][License]
+[Privacy Policy][Privacy Policy] · [MIT License][License]
 
 Free. Open-source. For users by users. No donations are sought.
 
 ## Contributing
 
-For detailed guidelines on contributing to this project, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-Please ensure your code adheres to the project's coding standards and includes appropriate tests.
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Make sure your code includes appropriate tests and passes `yarn compile` and `yarn test` before submitting a PR.
 
 ## Support
 
-If you encounter any issues or have questions, open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues). We will do our best to assist you.
+Open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues) if you encounter any problems.
 
 ## Disclaimer
 

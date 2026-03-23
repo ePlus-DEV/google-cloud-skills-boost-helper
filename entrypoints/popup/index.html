@@ -666,136 +666,230 @@
         <div class="mt-3 flex justify-center">
           <button
             class="theme-toggle-button bg-white/10 hover:bg-white/20 border border-white/30 text-white/90 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer"
-            title="Change Theme">
+            data-i18n-title="btnChangeTheme" title="Change Theme">
             <i class="fa-solid fa-palette mr-1.5 theme-icon"></i>
-            Change Theme
+            <span data-i18n="btnChangeTheme">Change Theme</span>
           </button>
         </div>
 
         <!-- Theme Selector Modal -->
         <div id="theme-modal"
-          class="fixed inset-0 bg-black/70 backdrop-blur-sm items-center justify-center z-[9999] hidden theme-modal">
-          <div class="bg-slate-800 rounded-2xl p-6 w-[360px] mx-4 shadow-2xl border border-white/20">
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-xl font-bold text-white flex items-center">
-                <i class="fa-solid fa-palette mr-2 text-purple-400"></i>
-                Choose Theme
-              </h3>
-              <button id="close-theme-modal" class="text-white/70 hover:text-white text-2xl transition-colors">
-                <i class="fa-solid fa-times"></i>
+          class="fixed inset-0 bg-black/75 backdrop-blur-sm items-center justify-center z-[9999] hidden theme-modal">
+          <div
+            class="theme-modal-panel bg-slate-900 rounded-2xl w-[380px] max-w-[calc(100vw-1rem)] max-h-[88vh] overflow-y-auto mx-2 shadow-2xl border border-white/10">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/10">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <i class="fa-solid fa-palette text-sm text-purple-400"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-white leading-tight">Choose Theme</h3>
+                  <p class="text-[10px] text-white/40 leading-tight mt-0.5">Saved automatically</p>
+                </div>
+              </div>
+              <button id="close-theme-modal"
+                class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 text-white/50 hover:text-white flex items-center justify-center transition-all">
+                <i class="fa-solid fa-times text-xs"></i>
               </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-              <!-- Dark Theme -->
-              <div class="theme-option" data-theme="dark">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/30 h-24">
-                  <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-moon text-2xl text-purple-400 mb-1"></i>
-                      <p class="text-xs font-bold text-white">Dark</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <!-- Theme Grid -->
+            <div class="px-4 pt-4 pb-3">
+              <div class="grid grid-cols-3 gap-2">
 
-              <!-- Light Theme -->
-              <div class="theme-option" data-theme="light">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/30 h-24">
-                  <div class="absolute inset-0 bg-gradient-to-br from-slate-100 via-indigo-100 to-slate-100"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-sun text-2xl text-yellow-500 mb-1"></i>
-                      <p class="text-xs font-bold text-slate-800">Light</p>
-                    </div>
+                <!-- Dark Theme -->
+                <div class="theme-option theme-card" data-theme="dark">
+                  <div class="theme-card-preview bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+                    <i class="fa-solid fa-moon text-purple-400 theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Dark</span>
+                    <div class="theme-card-dot" style="background:#a855f7"></div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Ocean Theme -->
-              <div class="theme-option" data-theme="ocean">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
-                  <div class="absolute inset-0 theme-preview-ocean"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-water text-2xl mb-1 theme-icon-ocean"></i>
-                      <p class="text-xs font-bold text-white/80">Ocean</p>
-                    </div>
+                <!-- Light Theme -->
+                <div class="theme-option theme-card" data-theme="light">
+                  <div class="theme-card-preview bg-gradient-to-br from-slate-100 via-indigo-100 to-slate-100">
+                    <i class="fa-solid fa-sun text-yellow-500 theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer theme-card-footer--light">
+                    <span class="theme-card-name" style="color:#334155">Light</span>
+                    <div class="theme-card-dot" style="background:#6366f1"></div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Sunset Theme -->
-              <div class="theme-option" data-theme="sunset">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
-                  <div class="absolute inset-0 theme-preview-sunset"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-cloud-sun text-2xl mb-1 theme-icon-sunset"></i>
-                      <p class="text-xs font-bold text-white/80">Sunset</p>
-                    </div>
+                <!-- Ocean Theme -->
+                <div class="theme-option theme-card" data-theme="ocean">
+                  <div class="theme-card-preview theme-preview-ocean">
+                    <i class="fa-solid fa-water theme-icon-ocean theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Ocean</span>
+                    <div class="theme-card-dot" style="background:#38bdf8"></div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Forest Theme -->
-              <div class="theme-option" data-theme="forest">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
-                  <div class="absolute inset-0 theme-preview-forest"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-tree text-2xl mb-1 theme-icon-forest"></i>
-                      <p class="text-xs font-bold text-white/80">Forest</p>
-                    </div>
+                <!-- Sunset Theme -->
+                <div class="theme-option theme-card" data-theme="sunset">
+                  <div class="theme-card-preview theme-preview-sunset">
+                    <i class="fa-solid fa-cloud-sun theme-icon-sunset theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Sunset</span>
+                    <div class="theme-card-dot" style="background:#fb923c"></div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Purple Theme -->
-              <div class="theme-option" data-theme="purple">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
-                  <div class="absolute inset-0 theme-preview-purple"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-star text-2xl mb-1 theme-icon-purple"></i>
-                      <p class="text-xs font-bold text-white/80">Violet</p>
-                    </div>
+                <!-- Forest Theme -->
+                <div class="theme-option theme-card" data-theme="forest">
+                  <div class="theme-card-preview theme-preview-forest">
+                    <i class="fa-solid fa-tree theme-icon-forest theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Forest</span>
+                    <div class="theme-card-dot" style="background:#34d399"></div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Midnight Theme -->
-              <div class="theme-option" data-theme="midnight">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/30 h-24">
-                  <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-moon text-2xl text-slate-400 mb-1"></i>
-                      <p class="text-xs font-bold text-white">Midnight</p>
-                    </div>
+                <!-- Purple Theme -->
+                <div class="theme-option theme-card" data-theme="purple">
+                  <div class="theme-card-preview theme-preview-purple">
+                    <i class="fa-solid fa-star theme-icon-purple theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Violet</span>
+                    <div class="theme-card-dot" style="background:#a78bfa"></div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Rose Gold Theme -->
-              <div class="theme-option" data-theme="rose">
-                <div class="relative rounded-lg overflow-hidden border-2 border-white/20 h-24">
-                  <div class="absolute inset-0 theme-preview-rose"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <i class="fa-solid fa-heart text-2xl mb-1 theme-icon-rose"></i>
-                      <p class="text-xs font-bold text-white/80">Rose</p>
-                    </div>
+                <!-- Midnight Theme -->
+                <div class="theme-option theme-card" data-theme="midnight">
+                  <div class="theme-card-preview bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700">
+                    <i class="fa-solid fa-moon text-slate-400 theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Midnight</span>
+                    <div class="theme-card-dot" style="background:#94a3b8"></div>
                   </div>
                 </div>
+
+                <!-- Rose Theme -->
+                <div class="theme-option theme-card" data-theme="rose">
+                  <div class="theme-card-preview theme-preview-rose">
+                    <i class="fa-solid fa-heart theme-icon-rose theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Rose</span>
+                    <div class="theme-card-dot" style="background:#f472b6"></div>
+                  </div>
+                </div>
+
+                <!-- Custom Theme -->
+                <div class="theme-option theme-card theme-card--custom" data-theme="custom">
+                  <div class="theme-card-preview theme-preview-custom">
+                    <i class="fa-solid fa-sliders theme-icon-custom theme-card-icon"></i>
+                    <div class="theme-card-active-badge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+                  <div class="theme-card-footer">
+                    <span class="theme-card-name">Custom</span>
+                    <div class="theme-card-dot bg-gradient-to-r from-cyan-400 to-pink-400"
+                      style="width:18px;border-radius:3px"></div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            <p class="text-xs text-white/60 text-center mt-4">
-              <i class="fa-solid fa-info-circle mr-1"></i>
-              Theme will be saved automatically
-            </p>
+            <!-- Custom Palette (collapsed by default, shown when custom is active) -->
+            <div id="custom-palette-section" class="hidden px-4 pb-4">
+              <div class="rounded-xl border border-cyan-400/20 bg-slate-800/60 p-3">
+                <div class="flex items-center justify-between mb-3">
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-cyan-300/80">
+                    <i class="fa-solid fa-sliders mr-1.5"></i>Custom Palette
+                  </p>
+                  <div class="h-1.5 w-14 rounded-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-pink-400"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-1.5 text-xs text-white/80">
+                  <label class="theme-color-row">
+                    <span>BG Start</span>
+                    <input id="custom-theme-bg-start" type="color" value="#0f172a" class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span>BG Mid</span>
+                    <input id="custom-theme-bg-middle" type="color" value="#581c87" class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span>BG End</span>
+                    <input id="custom-theme-bg-end" type="color" value="#0f172a" class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span>Accent</span>
+                    <input id="custom-theme-accent" type="color" value="#a855f7" class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span>Points</span>
+                    <input id="custom-theme-arcade-points" type="color" value="#ffffff"
+                      class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span data-i18n="labelTextPrimary">Text 1</span>
+                    <input id="custom-theme-text-primary" type="color" value="#ffffff"
+                      class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span data-i18n="labelTextSecondary">Text 2</span>
+                    <input id="custom-theme-text-secondary" type="color" value="#b3b3b3"
+                      class="custom-theme-color-input" />
+                  </label>
+                  <label class="theme-color-row">
+                    <span data-i18n="labelTextMuted">Text 3</span>
+                    <input id="custom-theme-text-muted" type="color" value="#999999" class="custom-theme-color-input" />
+                  </label>
+                </div>
+
+                <div class="mt-3 flex gap-2">
+                  <button id="apply-custom-theme"
+                    class="flex-1 rounded-lg bg-cyan-500 px-3 py-2 text-xs font-bold text-slate-950 transition-colors hover:bg-cyan-400"
+                    data-i18n="btnApplyCustomTheme">
+                    Apply
+                  </button>
+                  <button id="reset-custom-theme"
+                    class="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-white/40 hover:text-white"
+                    data-i18n="btnResetCustomTheme">
+                    Reset
+                  </button>
+                </div>
+              </div>
+
+              <button id="open-theme-studio"
+                class="mt-2 w-full rounded-xl border border-cyan-400/30 bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 px-3 py-2.5 text-xs font-semibold text-cyan-300 transition-all hover:from-cyan-500/20 hover:to-indigo-500/20 hover:text-cyan-200 flex items-center justify-center gap-2"
+                data-i18n="btnOpenThemeStudio">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Open Theme Studio
+              </button>
+            </div>
+
+            <!-- Footer hint (shown when custom palette is hidden) -->
+            <div id="theme-modal-footer" class="px-4 pb-4">
+              <button id="open-theme-studio-footer"
+                class="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] font-medium text-white/40 transition-all hover:bg-white/10 hover:text-white/70 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-wand-magic-sparkles text-cyan-400/70"></i>
+                <span data-i18n="btnOpenThemeStudio">Open Theme Studio for custom colors</span>
+              </button>
+            </div>
+
           </div>
         </div>
 

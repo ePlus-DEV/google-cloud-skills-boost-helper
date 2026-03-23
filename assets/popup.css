@@ -1,6 +1,15 @@
 /* Theme Styles */
 :root {
   --transition-duration: 300ms;
+  --custom-bg-start: #0f172a;
+  --custom-bg-middle: #581c87;
+  --custom-bg-end: #0f172a;
+  --custom-accent: #a855f7;
+  --custom-accent-rgb: 168, 85, 247;
+  --custom-arcade-points: #ffffff;
+  --custom-text-primary: #ffffff;
+  --custom-text-secondary: #b3b3b3;
+  --custom-text-muted: #999999;
 }
 
 /* Copy button tooltip (no dynamic HTML node) */
@@ -770,6 +779,75 @@ body.theme-rose #account-dropdown {
   border-color: rgba(244, 114, 182, 0.22) !important;
 }
 
+/* Custom Theme - user-defined palette from color pickers */
+body.theme-custom #popup-content {
+  background: linear-gradient(
+    to bottom right,
+    var(--custom-bg-start),
+    var(--custom-bg-middle),
+    var(--custom-bg-end)
+  ) !important;
+}
+
+body.theme-custom #popup-content .bg-white\/10 {
+  background-color: rgba(var(--custom-accent-rgb), 0.08) !important;
+  border: 1px solid rgba(var(--custom-accent-rgb), 0.18);
+}
+
+body.theme-custom #popup-content .bg-white\/20 {
+  background-color: rgba(var(--custom-accent-rgb), 0.14) !important;
+}
+
+body.theme-custom #popup-content .border-white\/20,
+body.theme-custom #popup-content .border-white\/30,
+body.theme-custom #popup-content .border-white\/40 {
+  border-color: rgba(var(--custom-accent-rgb), 0.2) !important;
+}
+
+body.theme-custom #popup-content .absolute.opacity-20 .bg-purple-500,
+body.theme-custom #popup-content .absolute.opacity-20 .bg-blue-500,
+body.theme-custom #popup-content .absolute.opacity-20 .bg-pink-500 {
+  background-color: var(--custom-accent) !important;
+}
+
+body.theme-custom #popup-content #arcade-points {
+  color: var(--custom-arcade-points) !important;
+}
+
+body.theme-custom #popup-content .text-white,
+body.theme-custom #popup-content #user-name,
+body.theme-custom #popup-content #user-name span {
+  color: var(--custom-text-primary) !important;
+}
+
+body.theme-custom #popup-content .text-white\/90 {
+  color: var(--custom-text-primary) !important;
+}
+
+body.theme-custom #popup-content .text-white\/80,
+body.theme-custom #popup-content .text-white\/70,
+body.theme-custom #popup-content .text-gray-300 {
+  color: var(--custom-text-secondary) !important;
+}
+
+body.theme-custom #popup-content .text-white\/60 {
+  color: var(--custom-text-muted) !important;
+}
+
+body.theme-custom #popup-content .text-gray-400 {
+  color: var(--custom-text-muted) !important;
+}
+
+body.theme-custom #popup-content .text-gray-500,
+body.theme-custom #popup-content #last-updated {
+  color: var(--custom-text-muted) !important;
+}
+
+body.theme-custom #account-dropdown {
+  background-color: rgba(8, 10, 25, 0.97) !important;
+  border-color: rgba(var(--custom-accent-rgb), 0.24) !important;
+}
+
 /* Theme modal preview backgrounds */
 .theme-preview-ocean {
   background: linear-gradient(to bottom right, #0c1a2e, #0d2d4a, #0a2236);
@@ -785,6 +863,14 @@ body.theme-rose #account-dropdown {
 }
 .theme-preview-rose {
   background: linear-gradient(to bottom right, #1a0c12, #2a1020, #1a0c12);
+}
+.theme-preview-custom {
+  background: linear-gradient(
+    to bottom right,
+    var(--custom-bg-start),
+    var(--custom-bg-middle),
+    var(--custom-bg-end)
+  );
 }
 
 /* Theme modal icon colors */
@@ -802,6 +888,23 @@ body.theme-rose #account-dropdown {
 }
 .theme-icon-rose {
   color: #f472b6;
+}
+.theme-icon-custom {
+  color: #22d3ee;
+}
+
+/* Make color pickers in custom palette easier to click inside popup constraints */
+.custom-theme-color-input {
+  min-width: 96px;
+}
+
+.custom-theme-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.custom-theme-color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
 }
 
 /* Theme Modal Styles */
@@ -826,17 +929,126 @@ body.theme-light #theme-modal .text-white\/80 {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-.theme-option {
+/* Theme Card Grid */
+.theme-card {
   cursor: pointer;
-  transition: all 0.2s ease;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.6);
+  transition: all 0.18s ease;
 }
 
-.theme-option:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.theme-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-.theme-option.active {
-  border: 3px solid #fbbf24 !important;
-  box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+.theme-card-preview {
+  position: relative;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-card-icon {
+  font-size: 18px;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
+}
+
+.theme-card-active-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fbbf24;
+  color: #1a1a1a;
+  font-size: 9px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+}
+
+.theme-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 7px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.theme-card-footer--light {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.theme-card-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+}
+
+.theme-card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Active state */
+.theme-card.active {
+  border-color: #fbbf24;
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.3),
+    0 4px 16px rgba(251, 191, 36, 0.2);
+}
+
+.theme-card.active .theme-card-active-badge {
+  display: flex;
+}
+
+/* Custom card special border */
+.theme-card--custom {
+  border-color: rgba(34, 211, 238, 0.2);
+}
+
+.theme-card--custom:hover {
+  border-color: rgba(34, 211, 238, 0.45);
+}
+
+/* Color row in custom palette */
+.theme-color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.5);
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.theme-color-row:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.theme-color-row .custom-theme-color-input {
+  min-width: unset;
+  width: 44px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.8);
+  cursor: pointer;
+  padding: 2px;
 }

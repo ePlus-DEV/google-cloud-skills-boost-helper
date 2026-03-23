@@ -7,6 +7,32 @@ class SearchService {
     keys: ["title"],
   };
 
+  // Cache Fuse instance to avoid re-creating on every search
+  private static readonly _fuseCache: WeakMap<
+    object,
+    Fuse<{ title: string; url?: string }>
+  > = new WeakMap();
+
+  /**
+   * Get or create a cached Fuse instance for the given posts data
+   */
+  private static getFuseInstance(
+    nodes: { title: string; url?: string }[],
+    postsData: object,
+    fuseOptions: FuseOptions,
+  ): Fuse<{ title: string; url?: string }> {
+    if (!this._fuseCache.has(postsData)) {
+      this._fuseCache.set(postsData, new Fuse(nodes, fuseOptions));
+    }
+    const cached = this._fuseCache.get(postsData);
+    if (!cached) {
+      const instance = new Fuse(nodes, fuseOptions);
+      this._fuseCache.set(postsData, instance);
+      return instance;
+    }
+    return cached;
+  }
+
   // Compile regex patterns once for better performance
   private static readonly SOLUTION_PATTERN = /\s*\(Solution\)\s*$/i;
   private static readonly WEEK_PATTERN = /Week\s+(\d+)/i;
@@ -234,7 +260,7 @@ class SearchService {
     // Normalize search query once to avoid repeated normalization
     const normalizedQuery = this.normalizeTitle(searchQuery);
 
-    const fuse = new Fuse(nodes, fuseOptions);
+    const fuse = this.getFuseInstance(nodes, postsData, fuseOptions);
     const results = fuse.search(normalizedQuery);
 
     // Enhanced filtering with flexible matching criteria
@@ -271,7 +297,7 @@ class SearchService {
     const url = bestMatch.item.url;
     if (!url) return null;
 
-    // Add timestamp parameter to prevent caching
+    // Append timestamp to bypass page-level cache on the solution site
     const separator = url.includes("?") ? "&" : "?";
     return `${url}${separator}t=${Date.now()}`;
   }
