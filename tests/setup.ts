@@ -10,7 +10,7 @@ const storageMock = {
     return Promise.resolve();
   }),
   removeItem: vi.fn((key: string) => {
-    delete storageStore[key];
+    storageStore[key] = undefined;
     return Promise.resolve();
   }),
   defineItem: vi.fn((key: string, opts?: { fallback?: unknown }) => ({
@@ -43,7 +43,7 @@ global.chrome = {
 // Reset storage between tests
 beforeEach(() => {
   for (const key of Object.keys(storageStore)) {
-    delete storageStore[key];
+    storageStore[key] = undefined;
   }
   vi.clearAllMocks();
 });
