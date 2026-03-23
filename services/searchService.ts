@@ -100,6 +100,8 @@ class SearchService {
         .filter(Boolean),
     );
 
+    if (queryWords.length === 0) return 0;
+
     let exactMatches = 0;
     for (const queryWord of queryWords) {
       if (titleWordsSet.has(queryWord)) {
