@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink, gql } from "@apollo/client";
 import type {
   SearchPostsOfPublicationData,
   SearchPostsParams,
@@ -6,16 +6,16 @@ import type {
 
 // Apollo Client singleton
 const ApiClient = (() => {
-  let instance: ApolloClient<unknown>;
+  let instance: ApolloClient<object>;
 
   /**
    * Returns the singleton ApolloClient instance.
    * Initializes the client if it does not exist.
    */
-  function getClient(): ApolloClient<unknown> {
+  function getClient(): ApolloClient<object> {
     if (!instance) {
       instance = new ApolloClient({
-        uri: import.meta.env.WXT_API_URL,
+        link: new HttpLink({ uri: import.meta.env.WXT_API_URL }),
         cache: new InMemoryCache(),
       });
     }
