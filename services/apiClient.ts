@@ -6,13 +6,13 @@ import type {
 
 // Apollo Client singleton
 const ApiClient = (() => {
-  let instance: ApolloClient<object>;
+  let instance: ApolloClient;
 
   /**
    * Returns the singleton ApolloClient instance.
    * Initializes the client if it does not exist.
    */
-  function getClient(): ApolloClient<object> {
+  function getClient(): ApolloClient {
     if (!instance) {
       instance = new ApolloClient({
         link: new HttpLink({ uri: import.meta.env.WXT_API_URL }),
@@ -63,7 +63,7 @@ const ApiClient = (() => {
     } = params;
 
     try {
-      const { data } = await getClient().query({
+      const result = await getClient().query({
         query: SEARCH_POSTS_QUERY,
         variables: {
           first,
@@ -73,6 +73,9 @@ const ApiClient = (() => {
         },
       });
 
+      const data = result.data as {
+        searchPostsOfPublication: SearchPostsOfPublicationData;
+      };
       return data.searchPostsOfPublication;
     } catch (error) {
       return null;

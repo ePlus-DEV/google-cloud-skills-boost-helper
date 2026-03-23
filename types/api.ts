@@ -3,7 +3,7 @@
 export interface PostNode {
   id: string;
   title: string;
-  url: string;
+  url?: string;
 }
 
 export interface PostEdge {
