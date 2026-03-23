@@ -114,6 +114,21 @@ describe("SearchService.findBestMatchUrl", () => {
     );
     expect(result).toBeNull();
   });
+
+  it("matches lab title with colon and hyphenated words", () => {
+    const posts = makePostsData([
+      {
+        title: "Build a Multi-Modal GenAI Application: Challenge Lab",
+        url: "https://eplus.dev/build-a-multi-modal-genai-application-challenge-lab-bb-ide-genai-004",
+      },
+    ]);
+
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Build a Multi-Modal GenAI Application: Challenge Lab",
+    );
+    expect(result).toContain("multi-modal-genai");
+  });
 });
 
 describe("SearchService.extractQueryText", () => {

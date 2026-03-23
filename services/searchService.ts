@@ -87,8 +87,18 @@ class SearchService {
   private static calculateExactWordMatch(query: string, title: string): number {
     const normalizedQuery = this.normalizeTitle(query);
     const normalizedTitle = this.normalizeTitle(title);
-    const queryWords = normalizedQuery.toLowerCase().split(/\s+/);
-    const titleWordsSet = new Set(normalizedTitle.toLowerCase().split(/\s+/));
+    const queryWords = normalizedQuery
+      .toLowerCase()
+      .split(/[\s-]+/)
+      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+      .filter(Boolean);
+    const titleWordsSet = new Set(
+      normalizedTitle
+        .toLowerCase()
+        .split(/[\s-]+/)
+        .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+        .filter(Boolean),
+    );
 
     let exactMatches = 0;
     for (const queryWord of queryWords) {
@@ -104,16 +114,19 @@ class SearchService {
    * Extract distinctive words that are likely important for matching
    */
   private static extractDistinctiveWords(text: string): Set<string> {
-    const words = text.toLowerCase().split(/\s+/);
+    // Split on whitespace and hyphens to handle "multi-modal" → ["multi", "modal"]
+    const words = text.toLowerCase().split(/[\s-]+/);
 
     const distinctive = new Set<string>();
     for (const word of words) {
+      // Strip leading/trailing non-alphanumeric chars (e.g. "Application:" → "application")
+      const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
       if (
-        word.length > 2 &&
-        !this.COMMON_WORDS.has(word) &&
-        this.ALPHANUMERIC_PATTERN.test(word)
+        cleaned.length > 2 &&
+        !this.COMMON_WORDS.has(cleaned) &&
+        this.ALPHANUMERIC_PATTERN.test(cleaned)
       ) {
-        distinctive.add(word);
+        distinctive.add(cleaned);
       }
     }
 
@@ -156,8 +169,16 @@ class SearchService {
   ): number {
     const normalizedQuery = this.normalizeTitle(query);
     const normalizedTitle = this.normalizeTitle(title);
-    const queryWords = normalizedQuery.toLowerCase().split(/\s+/);
-    const titleWords = normalizedTitle.toLowerCase().split(/\s+/);
+    const queryWords = normalizedQuery
+      .toLowerCase()
+      .split(/[\s-]+/)
+      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+      .filter(Boolean);
+    const titleWords = normalizedTitle
+      .toLowerCase()
+      .split(/[\s-]+/)
+      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+      .filter(Boolean);
     const titleWordsSet = new Set(titleWords);
 
     let totalScore = 0;
