@@ -103,7 +103,7 @@ describe("DOMUtils.updateTextWithFallback", () => {
     const el = document.createElement("div");
     el.id = "el";
     document.body.appendChild(el);
-    DOMUtils.updateTextWithFallback("el", undefined);
+    DOMUtils.updateTextWithFallback("el");
     expect(el.textContent).toBe("0");
   });
 });
