@@ -2,7 +2,9 @@ import { describe, it, expect, beforeEach } from "vitest";
 import SearchService from "../../services/searchService";
 import type { SearchPostsOfPublicationData } from "../../types/api";
 
-function makePostsData(posts: { title: string; url: string }[]): SearchPostsOfPublicationData {
+function makePostsData(
+  posts: { title: string; url: string }[],
+): SearchPostsOfPublicationData {
   return {
     edges: posts.map((p, i) => ({
       cursor: String(i),
@@ -16,7 +18,10 @@ describe("SearchService.findBestMatchUrl - extended", () => {
     const posts = makePostsData([
       { title: "Arcade Quiz July 2025", url: "https://example.com/july" },
     ]);
-    const result = SearchService.findBestMatchUrl(posts, "Arcade Quiz August 2025");
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Arcade Quiz August 2025",
+    );
     expect(result).toBeNull();
   });
 
@@ -24,23 +29,40 @@ describe("SearchService.findBestMatchUrl - extended", () => {
     const posts = makePostsData([
       { title: "Arcade Quiz July 2025", url: "https://example.com/july" },
     ]);
-    const result = SearchService.findBestMatchUrl(posts, "Arcade Quiz July 2025");
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Arcade Quiz July 2025",
+    );
     expect(result).toContain("july");
   });
 
   it("handles (Solution) suffix in post title", () => {
     const posts = makePostsData([
-      { title: "Deploy a Kubernetes Cluster (Solution)", url: "https://example.com/k8s" },
+      {
+        title: "Deploy a Kubernetes Cluster (Solution)",
+        url: "https://example.com/k8s",
+      },
     ]);
-    const result = SearchService.findBestMatchUrl(posts, "Deploy a Kubernetes Cluster");
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Deploy a Kubernetes Cluster",
+    );
     expect(result).toContain("k8s");
   });
 
   it("returns null when URL is missing from best match", () => {
     const posts: SearchPostsOfPublicationData = {
-      edges: [{ cursor: "0", node: { id: "0", title: "Deploy a Kubernetes Cluster" } }],
+      edges: [
+        {
+          cursor: "0",
+          node: { id: "0", title: "Deploy a Kubernetes Cluster" },
+        },
+      ],
     };
-    const result = SearchService.findBestMatchUrl(posts, "Deploy a Kubernetes Cluster");
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Deploy a Kubernetes Cluster",
+    );
     expect(result).toBeNull();
   });
 
@@ -58,10 +80,16 @@ describe("SearchService.findBestMatchUrl - extended", () => {
 
   it("rejects low similarity match", () => {
     const posts = makePostsData([
-      { title: "Introduction to Machine Learning", url: "https://example.com/ml" },
+      {
+        title: "Introduction to Machine Learning",
+        url: "https://example.com/ml",
+      },
     ]);
     // Completely different topic
-    const result = SearchService.findBestMatchUrl(posts, "Deploy Kubernetes on GKE Advanced");
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Deploy Kubernetes on GKE Advanced",
+    );
     expect(result).toBeNull();
   });
 });
