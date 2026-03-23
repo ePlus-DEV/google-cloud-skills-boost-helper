@@ -42,11 +42,14 @@ jobs:
       - name: Setup Node.js with Yarn cache
         uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 24.x
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
+
+      - name: Prepare WXT types
+        run: yarn wxt prepare
 
       - name: Build the extension
         run: |
