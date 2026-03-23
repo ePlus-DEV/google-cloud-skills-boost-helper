@@ -178,7 +178,7 @@ describe("PreviewUtils.updateAvatar", () => {
   it("shows placeholder with first letter when no profileImage", () => {
     const placeholder = createElement("preview-avatar-placeholder");
     PreviewUtils.updateAvatar(
-      makeUserDetail({ profileImage: undefined }),
+      makeUserDetail({ profileImage: undefined, userName: undefined }),
       makeAccount({ name: "Alice" }),
     );
     expect(placeholder.innerHTML).toBe("A");
