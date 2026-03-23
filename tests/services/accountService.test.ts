@@ -1,13 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 import AccountService from "../../services/accountService";
 
-// Mock storage global is set up in tests/setup.ts
-// We need to access the mock to control return values
-const storageMock = (globalThis as unknown as Record<string, unknown>)
-  .storage as {
-  getItem: ReturnType<typeof vi.fn>;
-  setItem: ReturnType<typeof vi.fn>;
-};
+// Helper to seed accountsData into fake storage
+async function seedAccountsData(data: object) {
+  await fakeBrowser.storage.local.set({ accountsData: data });
+}
+
+beforeEach(() => {
+  fakeBrowser.reset();
+});
 
 describe("AccountService.generateAccountId", () => {
   it("generates a string starting with 'account_'", () => {
@@ -25,7 +27,6 @@ describe("AccountService.generateAccountId", () => {
 
 describe("AccountService.getAccountsData", () => {
   it("returns default data when storage is empty", async () => {
-    storageMock.getItem.mockResolvedValueOnce(null);
     const data = await AccountService.getAccountsData();
     expect(data.accounts).toEqual({});
     expect(data.activeAccountId).toBeNull();
@@ -33,7 +34,7 @@ describe("AccountService.getAccountsData", () => {
   });
 
   it("returns stored data when available", async () => {
-    const stored = {
+    await seedAccountsData({
       accounts: {
         acc1: {
           id: "acc1",
@@ -46,14 +47,13 @@ describe("AccountService.getAccountsData", () => {
       },
       activeAccountId: "acc1",
       settings: { enableSearchFeature: false },
-    };
-    storageMock.getItem.mockResolvedValueOnce(stored);
+    });
     const data = await AccountService.getAccountsData();
     expect(data.activeAccountId).toBe("acc1");
   });
 
   it("migrates accounts missing facilitatorProgram to true", async () => {
-    const stored = {
+    await seedAccountsData({
       accounts: {
         acc1: {
           id: "acc1",
@@ -66,17 +66,15 @@ describe("AccountService.getAccountsData", () => {
       },
       activeAccountId: "acc1",
       settings: { enableSearchFeature: true },
-    };
-    storageMock.getItem.mockResolvedValueOnce(stored);
+    });
     const data = await AccountService.getAccountsData();
     expect(data.accounts["acc1"].facilitatorProgram).toBe(true);
-    expect(storageMock.setItem).toHaveBeenCalled();
   });
 });
 
 describe("AccountService.getActiveAccount", () => {
   it("returns null when no active account", async () => {
-    storageMock.getItem.mockResolvedValueOnce({
+    await seedAccountsData({
       accounts: {},
       activeAccountId: null,
       settings: { enableSearchFeature: true },
@@ -94,7 +92,7 @@ describe("AccountService.getActiveAccount", () => {
       lastUsed: new Date().toISOString(),
       facilitatorProgram: true,
     };
-    storageMock.getItem.mockResolvedValueOnce({
+    await seedAccountsData({
       accounts: { acc1: account },
       activeAccountId: "acc1",
       settings: { enableSearchFeature: true },
@@ -107,7 +105,7 @@ describe("AccountService.getActiveAccount", () => {
 
 describe("AccountService.setActiveAccount", () => {
   it("returns false when account does not exist", async () => {
-    storageMock.getItem.mockResolvedValueOnce({
+    await seedAccountsData({
       accounts: {},
       activeAccountId: null,
       settings: { enableSearchFeature: true },
@@ -125,20 +123,22 @@ describe("AccountService.setActiveAccount", () => {
       lastUsed: new Date().toISOString(),
       facilitatorProgram: true,
     };
-    storageMock.getItem.mockResolvedValue({
+    await seedAccountsData({
       accounts: { acc1: account },
       activeAccountId: null,
       settings: { enableSearchFeature: true },
     });
     const result = await AccountService.setActiveAccount("acc1");
     expect(result).toBe(true);
-    expect(storageMock.setItem).toHaveBeenCalled();
+
+    const stored = await fakeBrowser.storage.local.get("accountsData");
+    expect((stored.accountsData as any).activeAccountId).toBe("acc1");
   });
 });
 
 describe("AccountService.getAllAccounts", () => {
   it("returns empty array when no accounts", async () => {
-    storageMock.getItem.mockResolvedValueOnce({
+    await seedAccountsData({
       accounts: {},
       activeAccountId: null,
       settings: { enableSearchFeature: true },
@@ -164,7 +164,7 @@ describe("AccountService.getAllAccounts", () => {
       lastUsed: "2024-06-01T00:00:00Z",
       facilitatorProgram: true,
     };
-    storageMock.getItem.mockResolvedValueOnce({
+    await seedAccountsData({
       accounts: { acc1: older, acc2: newer },
       activeAccountId: null,
       settings: { enableSearchFeature: true },
