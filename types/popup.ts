@@ -29,6 +29,8 @@ export interface ArcadeData {
     faciTrivia?: number;
     faciSkill?: number;
     faciCompletion?: number;
+    completedFaciCount?: number;
+    completedFaciSkillCount?: number;
   };
   totalArcadePoints?: number;
   badges?: BadgeData[];

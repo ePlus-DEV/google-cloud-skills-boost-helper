@@ -26,6 +26,7 @@ export default defineConfig({
         "services/profileService.ts",
         "services/tourService.ts",
         "services/apiClient.ts",
+        "services/runtimeMessage.ts",
         "utils/seasonConfigHelper.ts",
         "utils/storage.ts",
       ],
