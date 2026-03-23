@@ -21,7 +21,8 @@ vi.mock("../../services/runtimeMessage", () => ({
 
 import AccountService from "../../services/accountService";
 
-const storageMock = global.storage as {
+const storageMock = (globalThis as unknown as Record<string, unknown>)
+  .storage as {
   getItem: ReturnType<typeof vi.fn>;
   setItem: ReturnType<typeof vi.fn>;
 };

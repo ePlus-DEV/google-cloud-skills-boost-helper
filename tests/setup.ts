@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, beforeEach } from "vitest";
 
 // Mock WXT storage global
 const storageStore: Record<string, unknown> = {};
@@ -24,19 +24,41 @@ const storageMock = {
   })),
 };
 
-// @ts-expect-error - global mock
-global.storage = storageMock;
+(globalThis as unknown as Record<string, unknown>).storage = storageMock;
 
-// Mock chrome runtime
-// @ts-expect-error - global mock
-global.chrome = {
+// Mock chrome runtime with enough shape to satisfy TS
+const makeEvent = () => ({
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
+  hasListener: vi.fn(),
+  hasListeners: vi.fn(),
+  addRules: vi.fn(),
+  removeRules: vi.fn(),
+  getRules: vi.fn(),
+});
+
+(globalThis as unknown as Record<string, unknown>).chrome = {
   runtime: {
     sendMessage: vi.fn(),
-    onMessage: { addListener: vi.fn() },
+    onMessage: makeEvent(),
   },
   action: {
     setBadgeText: vi.fn(),
     setBadgeBackgroundColor: vi.fn(),
+    getBadgeText: vi.fn(),
+    getBadgeBackgroundColor: vi.fn(),
+    setBadgeTextColor: vi.fn(),
+    getBadgeTextColor: vi.fn(),
+    setTitle: vi.fn(),
+    getTitle: vi.fn(),
+    setIcon: vi.fn(),
+    setPopup: vi.fn(),
+    getPopup: vi.fn(),
+    enable: vi.fn(),
+    disable: vi.fn(),
+    getUserSettings: vi.fn(),
+    openPopup: vi.fn(),
+    onClicked: makeEvent(),
   },
 };
 

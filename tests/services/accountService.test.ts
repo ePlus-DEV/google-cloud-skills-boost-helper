@@ -3,7 +3,8 @@ import AccountService from "../../services/accountService";
 
 // Mock storage global is set up in tests/setup.ts
 // We need to access the mock to control return values
-const storageMock = global.storage as {
+const storageMock = (globalThis as unknown as Record<string, unknown>)
+  .storage as {
   getItem: ReturnType<typeof vi.fn>;
   setItem: ReturnType<typeof vi.fn>;
 };
