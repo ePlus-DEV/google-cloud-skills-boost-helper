@@ -7,6 +7,23 @@ class SearchService {
     keys: ["title"],
   };
 
+  // Cache Fuse instance to avoid re-creating on every search
+  private static readonly _fuseCache: WeakMap<
+    object,
+    Fuse<{ title: string; url?: string }>
+  > = new WeakMap();
+
+  private static getFuseInstance(
+    nodes: { title: string; url?: string }[],
+    postsData: object,
+    fuseOptions: FuseOptions,
+  ): Fuse<{ title: string; url?: string }> {
+    if (!this._fuseCache.has(postsData)) {
+      this._fuseCache.set(postsData, new Fuse(nodes, fuseOptions));
+    }
+    return this._fuseCache.get(postsData)!;
+  }
+
   // Compile regex patterns once for better performance
   private static readonly SOLUTION_PATTERN = /\s*\(Solution\)\s*$/i;
   private static readonly WEEK_PATTERN = /Week\s+(\d+)/i;
@@ -234,7 +251,7 @@ class SearchService {
     // Normalize search query once to avoid repeated normalization
     const normalizedQuery = this.normalizeTitle(searchQuery);
 
-    const fuse = new Fuse(nodes, fuseOptions);
+    const fuse = this.getFuseInstance(nodes, postsData, fuseOptions);
     const results = fuse.search(normalizedQuery);
 
     // Enhanced filtering with flexible matching criteria
@@ -271,9 +288,7 @@ class SearchService {
     const url = bestMatch.item.url;
     if (!url) return null;
 
-    // Add timestamp parameter to prevent caching
-    const separator = url.includes("?") ? "&" : "?";
-    return `${url}${separator}t=${Date.now()}`;
+    return url;
   }
 
   /**

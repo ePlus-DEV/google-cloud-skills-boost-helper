@@ -78,9 +78,8 @@ const MarkdownService = {
     }
 
     try {
-      // Add cache busting parameter to prevent cached content
-      const fetchUrl = `${options.url}?t=${Date.now()}`;
-      const response = await fetch(fetchUrl);
+      // Use cache: "no-store" to prevent stale content without polluting URLs
+      const response = await fetch(options.url, { cache: "no-store" });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -179,8 +178,7 @@ const MarkdownService = {
    * @returns Promise<string> - The raw markdown text
    */
   async fetchMarkdown(url: string): Promise<string> {
-    const fetchUrl = `${url}?t=${Date.now()}`;
-    const response = await fetch(fetchUrl);
+    const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -202,8 +200,7 @@ const MarkdownService = {
     if (!container) return false;
 
     try {
-      const fetchUrl = `${url}?t=${Date.now()}`;
-      const response = await fetch(fetchUrl, { cache: "no-store" });
+      const response = await fetch(url, { cache: "no-store" });
       if (!response.ok) return false;
 
       const markdownText = await response.text();
