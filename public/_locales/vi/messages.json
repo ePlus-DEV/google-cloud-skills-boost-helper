@@ -430,5 +430,10 @@
   "labNoSolution": { "message": "Không có bài giải" },
   "labEplusSearch": { "message": "Tìm trên ePlus" },
   "labGoogleSearch": { "message": "Tìm trên Google" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "Xuất dữ liệu của tôi" },
+  "exportJSON": { "message": "Xuất JSON" },
+  "exportCSV": { "message": "Xuất Badges CSV" },
+  "exportSuccess": { "message": "Xuất thành công!" },
+  "exportNoData": { "message": "Không có dữ liệu để xuất." }
 }

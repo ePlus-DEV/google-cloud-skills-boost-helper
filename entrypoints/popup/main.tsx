@@ -1,4 +1,4 @@
-import { PopupService, AccountService } from "../../services";
+import { PopupService, AccountService, ExportService } from "../../services";
 import PopupUIService from "../../services/popupUIService";
 
 // Theme management
@@ -708,6 +708,62 @@ PopupService.initialize().then(() => {
         openThemeStudioFooterButton.addEventListener("click", () => {
           const studioUrl = chrome.runtime.getURL("theme-studio.html");
           window.open(studioUrl, "_blank");
+        });
+      }
+
+      // Export buttons
+      const exportJsonBtn = document.getElementById(
+        "export-json-btn",
+      ) as HTMLButtonElement | null;
+      const exportCsvBtn = document.getElementById(
+        "export-csv-btn",
+      ) as HTMLButtonElement | null;
+      const exportStatus = document.getElementById("export-status");
+
+      function showExportStatus(message: string) {
+        if (!exportStatus) return;
+        exportStatus.textContent = message;
+        exportStatus.classList.remove("hidden");
+        setTimeout(() => exportStatus.classList.add("hidden"), 2500);
+      }
+
+      if (exportJsonBtn) {
+        exportJsonBtn.addEventListener("click", async () => {
+          const account = await AccountService.getActiveAccount();
+          const arcadeData = account?.arcadeData;
+          if (!arcadeData) {
+            showExportStatus(
+              chrome.i18n.getMessage("exportNoData") || "No data to export.",
+            );
+            return;
+          }
+          const name = (account.nickname || account.name || "arcade")
+            .replace(/\s+/g, "-")
+            .toLowerCase();
+          ExportService.exportAsJSON(arcadeData, `${name}-arcade-data`);
+          showExportStatus(
+            chrome.i18n.getMessage("exportSuccess") || "Exported!",
+          );
+        });
+      }
+
+      if (exportCsvBtn) {
+        exportCsvBtn.addEventListener("click", async () => {
+          const account = await AccountService.getActiveAccount();
+          const badges = account?.arcadeData?.badges;
+          if (!badges || badges.length === 0) {
+            showExportStatus(
+              chrome.i18n.getMessage("exportNoData") || "No data to export.",
+            );
+            return;
+          }
+          const name = (account.nickname || account.name || "arcade")
+            .replace(/\s+/g, "-")
+            .toLowerCase();
+          ExportService.exportBadgesAsCSV(badges, `${name}-badges`);
+          showExportStatus(
+            chrome.i18n.getMessage("exportSuccess") || "Exported!",
+          );
         });
       }
     }, 0);

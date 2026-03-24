@@ -13,3 +13,4 @@ export { default as MarkdownService } from "./markdownService";
 export { default as AccountService } from "./accountService";
 export { default as TourService } from "./tourService";
 export * as BrowserService from "./browserService";
+export { default as ExportService } from "./exportService";
