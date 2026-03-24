@@ -1,6 +1,6 @@
 import { defineConfig } from "wxt";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
