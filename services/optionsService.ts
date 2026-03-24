@@ -5,6 +5,7 @@ import AccountService from "./accountService";
 import PopupUIService from "./popupUIService";
 import MarkdownService from "./markdownService";
 import TourService from "./tourService";
+import ExportService from "./exportService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
@@ -431,6 +432,50 @@ const OptionsService = {
     if (importBtn) {
       importBtn.addEventListener("click", () => {
         this.showImportModal();
+      });
+    }
+
+    // Export active account as JSON
+    const exportJsonBtn = document.getElementById("export-arcade-json-btn");
+    if (exportJsonBtn) {
+      exportJsonBtn.addEventListener("click", async () => {
+        const activeAccount = await AccountService.getActiveAccount();
+        if (!activeAccount?.arcadeData) {
+          this.showMessage(
+            browser.i18n.getMessage("exportNoData") || "No data to export",
+            "error",
+          );
+          return;
+        }
+        ExportService.exportAsJSON(
+          activeAccount.arcadeData,
+          `arcade-data-${activeAccount.name}`,
+        );
+        this.showMessage(
+          browser.i18n.getMessage("exportSuccess") || "Exported successfully",
+          "success",
+        );
+      });
+    }
+
+    // Export active account badges as CSV
+    const exportCsvBtn = document.getElementById("export-badges-csv-btn");
+    if (exportCsvBtn) {
+      exportCsvBtn.addEventListener("click", async () => {
+        const activeAccount = await AccountService.getActiveAccount();
+        const badges = activeAccount?.arcadeData?.badges;
+        if (!badges || badges.length === 0) {
+          this.showMessage(
+            browser.i18n.getMessage("exportNoData") || "No badges to export",
+            "error",
+          );
+          return;
+        }
+        ExportService.exportBadgesAsCSV(badges, `badges-${activeAccount.name}`);
+        this.showMessage(
+          browser.i18n.getMessage("exportSuccess") || "Exported successfully",
+          "success",
+        );
       });
     }
 

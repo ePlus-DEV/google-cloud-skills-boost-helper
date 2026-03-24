@@ -462,5 +462,13 @@
   "labNoSolution": { "message": "Sin solución" },
   "labEplusSearch": { "message": "Buscar en ePlus" },
   "labGoogleSearch": { "message": "Buscar en Google" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "Exportar mis datos" },
+  "exportJSON": { "message": "Exportar JSON" },
+  "exportCSV": { "message": "Exportar insignias CSV" },
+  "exportSuccess": { "message": "¡Exportado con éxito!" },
+  "exportNoData": { "message": "No hay datos para exportar." },
+  "compactMode": { "message": "Compacto" },
+  "fullMode": { "message": "Vista completa" },
+  "shortcutHint": { "message": "R actualizar · S ajustes · C compacto" }
 }

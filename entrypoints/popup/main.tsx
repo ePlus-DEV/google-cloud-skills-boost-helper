@@ -1,4 +1,4 @@
-import { PopupService, AccountService, ExportService } from "../../services";
+import { PopupService, AccountService } from "../../services";
 import PopupUIService from "../../services/popupUIService";
 
 // Theme management
@@ -526,6 +526,120 @@ function localizeElements() {
 document.title =
   chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
 
+// ─── Compact Mode ────────────────────────────────────────────────────────────
+const compactModeStorage = storage.defineItem<boolean>("local:compactMode", {
+  defaultValue: false,
+});
+
+const COMPACT_HIDDEN_IDS = [
+  "section-announcement",
+  "section-badges",
+  "milestones-section",
+  "countdown-container",
+  "section-activity",
+];
+
+// In-memory flag — set once from storage before init, kept in sync by applyCompactMode
+let compactModeActive = false;
+
+async function applyCompactMode(compact: boolean) {
+  compactModeActive = compact;
+
+  const icon = document.getElementById("compact-icon");
+  const label = document.getElementById("compact-label");
+  const popupContent = document.getElementById("popup-content");
+
+  for (const id of COMPACT_HIDDEN_IDS) {
+    document.getElementById(id)?.classList.toggle("hidden", compact);
+  }
+  document.getElementById("keyboard-hint")?.classList.toggle("hidden", compact);
+
+  popupContent?.classList.toggle("min-h-[700px]", !compact);
+  popupContent?.classList.toggle("min-h-0", compact);
+
+  if (icon) {
+    icon.className = compact
+      ? "fa-solid fa-expand mr-1.5"
+      : "fa-solid fa-compress mr-1.5";
+  }
+  if (label) {
+    label.textContent = compact
+      ? chrome.i18n.getMessage("fullMode") || "Full View"
+      : chrome.i18n.getMessage("compactMode") || "Compact";
+  }
+  await compactModeStorage.setValue(compact);
+}
+
+// Patch PopupUIService methods that un-hide sections — make them respect compact mode
+function patchPopupUIServiceForCompact() {
+  const origShowCountdown =
+    PopupUIService.showCountdownDisplay.bind(PopupUIService);
+  PopupUIService.showCountdownDisplay = function () {
+    if (compactModeActive) return;
+    origShowCountdown();
+  };
+
+  const origUpdateMilestone =
+    PopupUIService.updateMilestoneSection.bind(PopupUIService);
+  PopupUIService.updateMilestoneSection = async function () {
+    await origUpdateMilestone();
+    if (compactModeActive) {
+      for (const id of COMPACT_HIDDEN_IDS) {
+        document.getElementById(id)?.classList.add("hidden");
+      }
+    }
+  };
+
+  const origUpdateMainUI = PopupUIService.updateMainUI.bind(PopupUIService);
+  PopupUIService.updateMainUI = async function (...args) {
+    await origUpdateMainUI(...args);
+    if (compactModeActive) {
+      for (const id of COMPACT_HIDDEN_IDS) {
+        document.getElementById(id)?.classList.add("hidden");
+      }
+    }
+  };
+
+  const origStartCountdown =
+    PopupUIService.startFacilitatorCountdown.bind(PopupUIService);
+  PopupUIService.startFacilitatorCountdown = async function () {
+    await origStartCountdown();
+    if (compactModeActive) {
+      for (const id of COMPACT_HIDDEN_IDS) {
+        document.getElementById(id)?.classList.add("hidden");
+      }
+    }
+  };
+}
+
+async function toggleCompactMode() {
+  await applyCompactMode(!compactModeActive);
+}
+
+// ─── Keyboard Shortcuts ───────────────────────────────────────────────────────
+document.addEventListener("keydown", async (e: KeyboardEvent) => {
+  const tag = (e.target as HTMLElement).tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+  switch (e.key.toLowerCase()) {
+    case "r": {
+      document
+        .querySelector<HTMLButtonElement>(".refresh-button:not(:disabled)")
+        ?.click();
+      break;
+    }
+    case "s": {
+      document.querySelector<HTMLButtonElement>(".settings-button")?.click();
+      break;
+    }
+    case "c": {
+      await toggleCompactMode();
+      break;
+    }
+  }
+});
+
 // Initialize theme
 (async () => {
   const savedPalette = await getSavedCustomTheme();
@@ -540,19 +654,32 @@ document.title =
 setupCopyProfileButton();
 
 // Initialize the popup when the script loads
-PopupService.initialize().then(() => {
+// Patch and load compact state BEFORE initialize() so all UI calls respect compact mode
+patchPopupUIServiceForCompact();
+compactModeStorage.getValue().then((isCompact) => {
+  compactModeActive = isCompact;
+});
+
+PopupService.initialize().then(async () => {
   // Apply i18n translations
   localizeElements();
 
+  // Ensure compact flag is loaded (may already be set above, but await to be safe)
+  compactModeActive = await compactModeStorage.getValue();
+
+  // Restore compact UI after all initialization
+  if (compactModeActive) {
+    await applyCompactMode(true);
+  }
+
   // Initialize milestones section and countdown with Firebase Remote Config
   PopupUIService.updateMilestoneSection().then(async () => {
-    // Start Firebase-powered countdown
+    // Start Firebase-powered countdown (patched to respect compact mode)
     try {
       await PopupUIService.startFacilitatorCountdown();
     } catch (err) {
       console.error("popup: failed to start facilitator countdown:", err);
     }
-
     // Add copy button event listener after initialization
     setTimeout(() => {
       setupCopyProfileButton();
@@ -711,61 +838,10 @@ PopupService.initialize().then(() => {
         });
       }
 
-      // Export buttons
-      const exportJsonBtn = document.getElementById(
-        "export-json-btn",
-      ) as HTMLButtonElement | null;
-      const exportCsvBtn = document.getElementById(
-        "export-csv-btn",
-      ) as HTMLButtonElement | null;
-      const exportStatus = document.getElementById("export-status");
-
-      function showExportStatus(message: string) {
-        if (!exportStatus) return;
-        exportStatus.textContent = message;
-        exportStatus.classList.remove("hidden");
-        setTimeout(() => exportStatus.classList.add("hidden"), 2500);
-      }
-
-      if (exportJsonBtn) {
-        exportJsonBtn.addEventListener("click", async () => {
-          const account = await AccountService.getActiveAccount();
-          const arcadeData = account?.arcadeData;
-          if (!arcadeData) {
-            showExportStatus(
-              chrome.i18n.getMessage("exportNoData") || "No data to export.",
-            );
-            return;
-          }
-          const name = (account.nickname || account.name || "arcade")
-            .replace(/\s+/g, "-")
-            .toLowerCase();
-          ExportService.exportAsJSON(arcadeData, `${name}-arcade-data`);
-          showExportStatus(
-            chrome.i18n.getMessage("exportSuccess") || "Exported!",
-          );
-        });
-      }
-
-      if (exportCsvBtn) {
-        exportCsvBtn.addEventListener("click", async () => {
-          const account = await AccountService.getActiveAccount();
-          const badges = account?.arcadeData?.badges;
-          if (!badges || badges.length === 0) {
-            showExportStatus(
-              chrome.i18n.getMessage("exportNoData") || "No data to export.",
-            );
-            return;
-          }
-          const name = (account.nickname || account.name || "arcade")
-            .replace(/\s+/g, "-")
-            .toLowerCase();
-          ExportService.exportBadgesAsCSV(badges, `${name}-badges`);
-          showExportStatus(
-            chrome.i18n.getMessage("exportSuccess") || "Exported!",
-          );
-        });
-      }
+      // Compact mode toggle button
+      document
+        .getElementById("compact-toggle-btn")
+        ?.addEventListener("click", () => toggleCompactMode());
     }, 0);
   });
 });

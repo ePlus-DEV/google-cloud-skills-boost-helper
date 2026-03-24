@@ -672,5 +672,13 @@
   "labNoSolution": { "message": "解答なし" },
   "labEplusSearch": { "message": "ePlus検索" },
   "labGoogleSearch": { "message": "Google検索" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "データをエクスポート" },
+  "exportJSON": { "message": "JSONエクスポート" },
+  "exportCSV": { "message": "バッジCSVエクスポート" },
+  "exportSuccess": { "message": "エクスポートしました！" },
+  "exportNoData": { "message": "エクスポートするデータがありません。" },
+  "compactMode": { "message": "コンパクト" },
+  "fullMode": { "message": "フル表示" },
+  "shortcutHint": { "message": "R 更新 · S 設定 · C コンパクト" }
 }

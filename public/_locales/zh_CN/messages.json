@@ -437,5 +437,13 @@
   "labNoSolution": { "message": "暂无解答" },
   "labEplusSearch": { "message": "ePlus搜索" },
   "labGoogleSearch": { "message": "Google搜索" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "导出我的数据" },
+  "exportJSON": { "message": "导出 JSON" },
+  "exportCSV": { "message": "导出徽章 CSV" },
+  "exportSuccess": { "message": "导出成功！" },
+  "exportNoData": { "message": "没有可导出的数据。" },
+  "compactMode": { "message": "紧凑模式" },
+  "fullMode": { "message": "完整视图" },
+  "shortcutHint": { "message": "R 刷新 · S 设置 · C 紧凑" }
 }

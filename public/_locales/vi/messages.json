@@ -435,5 +435,8 @@
   "exportJSON": { "message": "Xuất JSON" },
   "exportCSV": { "message": "Xuất Badges CSV" },
   "exportSuccess": { "message": "Xuất thành công!" },
-  "exportNoData": { "message": "Không có dữ liệu để xuất." }
+  "exportNoData": { "message": "Không có dữ liệu để xuất." },
+  "compactMode": { "message": "Thu gọn" },
+  "fullMode": { "message": "Đầy đủ" },
+  "shortcutHint": { "message": "R làm mới · S cài đặt · C thu gọn" }
 }

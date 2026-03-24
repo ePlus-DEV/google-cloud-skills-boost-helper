@@ -451,5 +451,13 @@
   "labNoSolution": { "message": "Нет решения" },
   "labEplusSearch": { "message": "Поиск ePlus" },
   "labGoogleSearch": { "message": "Поиск Google" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "Экспорт моих данных" },
+  "exportJSON": { "message": "Экспорт JSON" },
+  "exportCSV": { "message": "Экспорт значков CSV" },
+  "exportSuccess": { "message": "Экспорт выполнен успешно!" },
+  "exportNoData": { "message": "Нет данных для экспорта." },
+  "compactMode": { "message": "Компактный" },
+  "fullMode": { "message": "Полный вид" },
+  "shortcutHint": { "message": "R обновить · S настройки · C компактный" }
 }

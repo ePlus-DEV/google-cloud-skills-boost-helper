@@ -670,5 +670,13 @@
   "labNoSolution": { "message": "Keine Lösung" },
   "labEplusSearch": { "message": "ePlus-Suche" },
   "labGoogleSearch": { "message": "Google-Suche" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "Meine Daten exportieren" },
+  "exportJSON": { "message": "JSON exportieren" },
+  "exportCSV": { "message": "Abzeichen als CSV exportieren" },
+  "exportSuccess": { "message": "Erfolgreich exportiert!" },
+  "exportNoData": { "message": "Keine Daten zum Exportieren." },
+  "compactMode": { "message": "Kompakt" },
+  "fullMode": { "message": "Vollansicht" },
+  "shortcutHint": { "message": "R aktualisieren · S Einstellungen · C kompakt" }
 }

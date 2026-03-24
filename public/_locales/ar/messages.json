@@ -670,5 +670,13 @@
   "labNoSolution": { "message": "لا يوجد حل" },
   "labEplusSearch": { "message": "بحث ePlus" },
   "labGoogleSearch": { "message": "بحث Google" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "تصدير بياناتي" },
+  "exportJSON": { "message": "تصدير JSON" },
+  "exportCSV": { "message": "تصدير الشارات CSV" },
+  "exportSuccess": { "message": "تم التصدير بنجاح!" },
+  "exportNoData": { "message": "لا توجد بيانات للتصدير." },
+  "compactMode": { "message": "مضغوط" },
+  "fullMode": { "message": "عرض كامل" },
+  "shortcutHint": { "message": "R تحديث · S الإعدادات · C مضغوط" }
 }

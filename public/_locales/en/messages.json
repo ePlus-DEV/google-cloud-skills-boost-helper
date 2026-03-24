@@ -442,5 +442,8 @@
   "exportJSON": { "message": "Export JSON" },
   "exportCSV": { "message": "Export Badges CSV" },
   "exportSuccess": { "message": "Exported successfully!" },
-  "exportNoData": { "message": "No data to export." }
+  "exportNoData": { "message": "No data to export." },
+  "compactMode": { "message": "Compact" },
+  "fullMode": { "message": "Full View" },
+  "shortcutHint": { "message": "R refresh · S settings · C compact" }
 }
