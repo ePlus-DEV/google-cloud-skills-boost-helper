@@ -18,6 +18,7 @@ body {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   color: #1a202c;
   min-height: 100vh;
+  color-scheme: light dark;
 }
 
 /* Custom Animations */
@@ -351,20 +352,76 @@ a:focus-visible {
     color: #e2e8f0;
   }
 
+  #changelog-page-shell {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  }
+
+  #changelog-hero {
+    background: linear-gradient(135deg, #5b21b6 0%, #1d4ed8 100%) !important;
+    border-color: #4338ca !important;
+  }
+
+  #markdown-container {
+    background: #0f172a !important;
+    border-color: rgba(71, 85, 105, 0.6) !important;
+    box-shadow: 0 20px 45px rgba(2, 6, 23, 0.5) !important;
+  }
+
+  #changelog-card-header {
+    background: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 100%) !important;
+  }
+
   .markdown-content {
-    color: #cbd5e1;
+    color: #cbd5e1 !important;
   }
 
   .markdown-content h1,
   .markdown-content h2,
   .markdown-content h3 {
-    color: #f1f5f9;
+    color: #f1f5f9 !important;
+  }
+
+  .markdown-content h2::before {
+    background: linear-gradient(180deg, #a78bfa, #60a5fa);
+  }
+
+  .markdown-content a {
+    color: #a5b4fc;
+  }
+
+  .markdown-content a:hover {
+    color: #c7d2fe;
+    border-bottom-color: #c7d2fe;
+  }
+
+  .markdown-content blockquote {
+    background: linear-gradient(
+      to right,
+      rgba(76, 29, 149, 0.3),
+      rgba(15, 23, 42, 0.2)
+    );
+    color: #ddd6fe;
+    border-left-color: #a78bfa;
+  }
+
+  .markdown-content pre {
+    background: #020617;
+    border-color: #1e293b;
   }
 
   .markdown-content code {
     background: #2d3748;
     color: #f472b6;
     border-color: #4a5568;
+  }
+
+  #changelog-footer {
+    color: #cbd5e1 !important;
+    border-top-color: #334155 !important;
+  }
+
+  #changelog-footer a {
+    color: #a5b4fc !important;
   }
 
   ::-webkit-scrollbar-track {

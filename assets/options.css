@@ -1,0 +1,87 @@
+body {
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+    color: #e2e8f0;
+  }
+
+  #options-page-shell {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%) !important;
+  }
+
+  #options-hero {
+    background: linear-gradient(135deg, #5b21b6 0%, #1d4ed8 100%) !important;
+    border-color: #4338ca !important;
+  }
+
+  #markdown-container,
+  #options-sections > div {
+    background: rgba(15, 23, 42, 0.92) !important;
+    border-color: rgba(71, 85, 105, 0.55) !important;
+    box-shadow: 0 14px 35px rgba(2, 6, 23, 0.45) !important;
+  }
+
+  #options-sections [class*="bg-white"],
+  #options-sections [class*="bg-gray-"],
+  #options-sections [class*="bg-blue-"],
+  #options-sections [class*="bg-indigo-"],
+  #options-sections [class*="bg-yellow-"],
+  #options-sections [class*="bg-orange-"],
+  #options-sections [class*="bg-green-"],
+  #options-sections [class*="bg-purple-"],
+  #add-account-modal [class*="bg-white"],
+  #add-account-modal [class*="bg-gray-"],
+  #add-account-modal [class*="bg-blue-"],
+  #add-account-modal [class*="bg-indigo-"],
+  #add-account-modal [class*="bg-green-"],
+  #add-account-modal [class*="bg-yellow-"],
+  #add-account-modal [class*="bg-purple-"],
+  #add-account-modal [class*="bg-amber-"] {
+    background: rgba(15, 23, 42, 0.9) !important;
+  }
+
+  #options-sections [class*="text-gray-"],
+  #options-sections [class*="text-slate-"],
+  #add-account-modal [class*="text-gray-"],
+  #add-account-modal [class*="text-blue-"],
+  #add-account-modal [class*="text-green-"],
+  #add-account-modal [class*="text-indigo-"],
+  #add-account-modal [class*="text-yellow-"],
+  #add-account-modal [class*="text-purple-"],
+  #add-account-modal [class*="text-amber-"] {
+    color: #cbd5e1 !important;
+  }
+
+  #options-sections [class*="border-gray-"],
+  #options-sections [class*="border-blue-"],
+  #options-sections [class*="border-indigo-"],
+  #options-sections [class*="border-purple-"],
+  #options-sections [class*="border-yellow-"],
+  #options-sections [class*="border-green-"],
+  #options-sections [class*="border-orange-"],
+  #add-account-modal [class*="border-gray-"],
+  #add-account-modal [class*="border-blue-"],
+  #add-account-modal [class*="border-indigo-"],
+  #add-account-modal [class*="border-purple-"],
+  #add-account-modal [class*="border-yellow-"],
+  #add-account-modal [class*="border-green-"],
+  #add-account-modal [class*="border-amber-"] {
+    border-color: rgba(100, 116, 139, 0.5) !important;
+  }
+
+  #options-footer {
+    color: #cbd5e1 !important;
+    border-top-color: #334155 !important;
+  }
+
+  #options-footer a {
+    color: #a5b4fc !important;
+  }
+
+  #add-account-modal {
+    background: rgba(2, 6, 23, 0.78) !important;
+  }
+}
