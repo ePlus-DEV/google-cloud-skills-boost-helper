@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <title>__MSG_changelogPageTitle__</title>
     <link rel="stylesheet" href="~/assets/tailwind.css" />
     <link rel="stylesheet" href="~/assets/markdown.css" />
@@ -15,11 +16,13 @@
 
   <body>
     <div
+      id="changelog-page-shell"
       class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50"
     >
       <main class="px-6 py-6 w-full">
         <!-- Header Section -->
         <div
+          id="changelog-hero"
           class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300"
         >
           <h3
@@ -55,7 +58,10 @@
           id="markdown-container"
           class="mb-6 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200/50 hover:shadow-2xl transition-all duration-300"
         >
-          <div class="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4">
+          <div
+            id="changelog-card-header"
+            class="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4"
+          >
             <div class="flex items-center gap-3">
               <div
                 class="bg-white/30 backdrop-blur-sm p-2.5 rounded-xl shadow-md"
@@ -98,6 +104,7 @@
     </div>
 
     <footer
+      id="changelog-footer"
       class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6"
     >
       <div class="mb-4">
