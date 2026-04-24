@@ -815,7 +815,12 @@ body.theme-custom #popup-content .bg-white\/20 {
   left: -150%;
   height: 100%;
   width: 200%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
   animation: shimmer 1.2s linear infinite;
 }
 
@@ -829,7 +834,6 @@ body.theme-custom #popup-content .bg-white\/20 {
 body.theme-light .skeleton {
   background-color: rgba(15, 23, 42, 0.06) !important;
 }
-
 
 body.theme-custom #popup-content .border-white\/20,
 body.theme-custom #popup-content .border-white\/30,
