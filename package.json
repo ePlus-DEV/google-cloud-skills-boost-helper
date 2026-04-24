@@ -50,6 +50,9 @@
     "vitest": "^4.1.0",
     "wxt": "^0.20.20"
   },
+  "resolutions": {
+    "uuid": "file:vendor/uuid"
+  },
   "engines": {
     "node": ">=24.0.0"
   },
