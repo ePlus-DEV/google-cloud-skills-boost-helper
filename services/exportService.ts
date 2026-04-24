@@ -61,10 +61,17 @@ const ExportService = {
    * Escape a CSV field value (wrap in quotes if it contains comma, quote, or newline)
    */
   escapeCsvField(value: string): string {
-    if (/[",\n\r]/.test(value)) {
-      return `"${value.replaceAll('"', '""')}"`;
+    // Mitigate CSV/Formula injection by prefixing values that start with
+    // =, +, -, or @ with a single quote so spreadsheet apps treat them as text.
+    let safe = value;
+    if (/^[=+\-@]/.test(safe)) {
+      safe = `'${safe}`;
     }
-    return value;
+
+    if (/[",\n\r]/.test(safe)) {
+      return `"${safe.replaceAll('"', '""')}"`;
+    }
+    return safe;
   },
 
   /**
