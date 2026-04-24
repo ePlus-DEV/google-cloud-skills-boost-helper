@@ -376,6 +376,8 @@ const PopupService = {
     // Show loading state
     PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, true);
     PopupUIService.toggleButtonState(refreshButtons, true);
+    // Show subtle skeleton placeholders next to numeric fields
+    PopupUIService.showNumbersSkeleton();
 
     try {
       const arcadeData = await ArcadeApiService.fetchArcadeData(
@@ -408,6 +410,8 @@ const PopupService = {
       // Hide loading state
       PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);
       PopupUIService.toggleButtonState(refreshButtons, false);
+      // Remove skeleton placeholders from numeric fields
+      PopupUIService.hideNumbersSkeleton();
     }
   },
 

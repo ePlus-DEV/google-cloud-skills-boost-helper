@@ -798,6 +798,39 @@ body.theme-custom #popup-content .bg-white\/20 {
   background-color: rgba(var(--custom-accent-rgb), 0.14) !important;
 }
 
+/* Skeleton / shimmer placeholder for numeric fields */
+.skeleton {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  color: transparent !important;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+/* Lighter skeleton appearance for light theme */
+body.theme-light .skeleton {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+
 body.theme-custom #popup-content .border-white\/20,
 body.theme-custom #popup-content .border-white\/30,
 body.theme-custom #popup-content .border-white\/40 {
