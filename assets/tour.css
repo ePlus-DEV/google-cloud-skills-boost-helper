@@ -141,4 +141,42 @@
     background: #111827 !important;
     border-color: #374151 !important;
   }
+  /* Additional dark-mode adjustments for tour */
+  .introjs-tooltip-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+  }
+
+  .introjs-button {
+    background: linear-gradient(135deg, #4f46e5 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  .introjs-button:hover {
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.18) !important;
+  }
+
+  .introjs-skipbutton {
+    background: transparent !important;
+    color: #9ca3af !important;
+    border-color: #374151 !important;
+  }
+
+  .introjs-helperLayer {
+    border-color: rgba(99,102,241,0.6) !important;
+    box-shadow: 0 0 0 4px rgba(79,70,229,0.12) !important;
+  }
+
+  .introjs-progressbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  }
+
+  .introjs-progress {
+    background: #374151 !important;
+  }
+
+  .introjs-overlay {
+    background: rgba(0, 0, 0, 0.7) !important;
+  }
 }

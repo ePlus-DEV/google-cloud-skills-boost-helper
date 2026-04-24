@@ -309,8 +309,11 @@
 /* Text styling */
 .prose strong,
 .prose b {
-  font-weight: 600;
-  color: #1f2937;
+  font-weight: 700;
+  color: #0f172a;
+  background: linear-gradient(transparent 62%, rgba(59, 130, 246, 0.22) 62%);
+  padding: 0 0.1em;
+  border-radius: 0.15rem;
 }
 
 .prose em,
@@ -355,5 +358,109 @@
 
   .prose {
     font-size: 0.875rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  /* Popup markdown (usually shown over dark backgrounds) */
+  #popup-markdown-container {
+    scrollbar-color: rgba(255,255,255,0.18) transparent;
+  }
+
+  #popup-markdown-container .prose {
+    color: #e5e7eb;
+  }
+
+  #popup-markdown-container .prose p,
+  #popup-markdown-container .prose li {
+    color: #cbd5e1;
+  }
+
+  #popup-markdown-container .prose a {
+    color: #93c5fd;
+  }
+
+  #popup-markdown-container .prose a:hover {
+    color: #bfdbfe;
+  }
+
+  #popup-markdown-container .prose code {
+    background-color: rgba(255,255,255,0.03);
+    color: #fbbf24;
+    border-color: rgba(255,255,255,0.03);
+  }
+
+  #popup-markdown-container .prose pre {
+    background-color: rgba(0,0,0,0.6);
+    color: #e5e7eb;
+    border-color: rgba(255,255,255,0.04);
+  }
+
+  #popup-markdown-container .prose blockquote {
+    background-color: rgba(251,191,36,0.06);
+    color: #f8fafc;
+    border-left-color: #f59e0b;
+  }
+
+  /* Options page markdown (.prose used in options) */
+  .prose {
+    color: #e2e8f0;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: #f8fafc;
+  }
+
+  .prose p,
+  .prose li {
+    color: #cbd5e1;
+  }
+
+  .prose strong,
+  .prose b {
+    color: #fef3c7;
+    font-weight: 700;
+    background: linear-gradient(transparent 62%, rgba(251, 191, 36, 0.28) 62%);
+  }
+
+  .prose a {
+    color: #60a5fa;
+  }
+
+  .prose a:hover {
+    color: #93c5fd;
+  }
+
+  .prose code {
+    background-color: rgba(255,255,255,0.03);
+    color: #f472b6;
+    border-color: rgba(255,255,255,0.03);
+  }
+
+  .prose pre {
+    background-color: #020617;
+    color: #e5e7eb;
+    border-color: #1e293b;
+  }
+
+  .prose blockquote {
+    background-color: rgba(30,41,59,0.4);
+    color: #ddd6fe;
+    border-left-color: #a78bfa;
+  }
+
+  .prose th,
+  .prose td {
+    border-color: rgba(148,163,184,0.14);
+  }
+
+  .prose hr {
+    border-top-color: rgba(148,163,184,0.12);
   }
 }

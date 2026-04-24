@@ -24,6 +24,16 @@ body {
     box-shadow: 0 14px 35px rgba(2, 6, 23, 0.45) !important;
   }
 
+  /* Important Announcement header/content colors (outside .prose) */
+  #markdown-container [class*="text-gray-"],
+  #markdown-container [class*="text-slate-"] {
+    color: #e2e8f0 !important;
+  }
+
+  #markdown-container [class*="text-blue-"] {
+    color: #93c5fd !important;
+  }
+
   #options-sections [class*="bg-white"],
   #options-sections [class*="bg-gray-"],
   #options-sections [class*="bg-blue-"],
@@ -83,5 +93,52 @@ body {
 
   #add-account-modal {
     background: rgba(2, 6, 23, 0.78) !important;
+  }
+  /* Markdown / prose adjustments for dark mode */
+  #markdown-content-collapsible .prose a,
+  #markdown-container .prose a,
+  .markdown-content a {
+    color: #93c5fd !important;
+  }
+
+  #markdown-content-collapsible .prose a:hover,
+  .markdown-content a:hover {
+    color: #bfdbfe !important;
+  }
+
+  #markdown-content-collapsible .prose p,
+  .markdown-content p,
+  #markdown-content-collapsible .prose li,
+  .markdown-content li {
+    color: #cbd5e1 !important;
+  }
+
+  #markdown-content-collapsible .prose strong,
+  .markdown-content strong {
+    color: #f8fafc !important;
+  }
+
+  #markdown-content-collapsible .prose em,
+  .markdown-content em {
+    color: #c084fc !important;
+  }
+
+  #markdown-content-collapsible .prose code,
+  .markdown-content code {
+    background: rgba(255,255,255,0.03) !important;
+    color: #f472b6 !important;
+    border-color: rgba(255,255,255,0.03) !important;
+  }
+
+  #markdown-content-collapsible .prose pre,
+  .markdown-content pre {
+    background: #020617 !important;
+    border-color: #1e293b !important;
+    color: #e5e7eb !important;
+  }
+
+  #markdown-content-collapsible .prose hr,
+  .markdown-content hr {
+    border-top-color: rgba(148,163,184,0.2) !important;
   }
 }
