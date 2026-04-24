@@ -94,6 +94,159 @@ body {
   #add-account-modal {
     background: rgba(2, 6, 23, 0.78) !important;
   }
+
+  /* Add Account modal: explicit dark-mode palette to avoid light cards */
+  #add-account-modal > div {
+    background: linear-gradient(180deg, #0f172a 0%, #111827 100%) !important;
+    border: 1px solid rgba(71, 85, 105, 0.65) !important;
+    box-shadow: 0 18px 45px rgba(2, 6, 23, 0.58) !important;
+  }
+
+  #add-account-modal h3,
+  #add-account-modal h4,
+  #add-account-modal h5,
+  #add-account-modal h6,
+  #add-account-modal label,
+  #add-account-modal strong {
+    color: #f1f5f9 !important;
+  }
+
+  #add-account-modal p,
+  #add-account-modal li,
+  #add-account-modal .text-sm,
+  #add-account-modal .text-xs {
+    color: #cbd5e1 !important;
+  }
+
+  #add-account-modal [class*="text-white"] {
+    color: #f8fafc !important;
+  }
+
+  #add-account-modal #step-url-input > div,
+  #add-account-modal #step-add-nickname > div,
+  #add-account-modal #error-profile > div {
+    background: rgba(15, 23, 42, 0.86) !important;
+    border-color: rgba(71, 85, 105, 0.55) !important;
+  }
+
+  #add-account-modal #account-preview {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border-color: rgba(56, 189, 248, 0.45) !important;
+  }
+
+  #add-account-modal input,
+  #add-account-modal textarea {
+    background: rgba(2, 6, 23, 0.72) !important;
+    border-color: rgba(100, 116, 139, 0.65) !important;
+    color: #e2e8f0 !important;
+  }
+
+  #add-account-modal input::placeholder,
+  #add-account-modal textarea::placeholder {
+    color: #94a3b8 !important;
+  }
+
+  #add-account-modal #cancel-add-account-btn {
+    background: rgba(51, 65, 85, 0.85) !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(100, 116, 139, 0.55) !important;
+  }
+
+  #add-account-modal #cancel-add-account-btn:hover {
+    background: rgba(71, 85, 105, 0.95) !important;
+  }
+
+  #add-account-modal #skip-nickname-btn {
+    background: rgba(100, 116, 139, 0.9) !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(148, 163, 184, 0.5) !important;
+  }
+
+  #add-account-modal #skip-nickname-btn:hover {
+    background: rgba(100, 116, 139, 1) !important;
+  }
+
+  #add-account-modal #go-to-profile-page-btn,
+  #add-account-modal #create-account-btn,
+  #add-account-modal #save-nickname-btn {
+    color: #f8fafc !important;
+    box-shadow: 0 8px 18px rgba(2, 6, 23, 0.35) !important;
+  }
+
+  #add-account-modal #go-to-profile-page-btn:hover,
+  #add-account-modal #create-account-btn:hover,
+  #add-account-modal #save-nickname-btn:hover {
+    filter: brightness(1.06);
+  }
+
+  #add-account-modal #go-to-profile-page-btn span,
+  #add-account-modal #create-account-btn span,
+  #add-account-modal #save-nickname-btn span,
+  #add-account-modal #cancel-add-account-btn span,
+  #add-account-modal #skip-nickname-btn span {
+    color: inherit !important;
+  }
+
+  #add-account-modal button:focus-visible,
+  #add-account-modal input:focus-visible,
+  #add-account-modal textarea:focus-visible {
+    outline: 2px solid #818cf8 !important;
+    outline-offset: 2px;
+  }
+
+  #add-account-modal #close-modal-btn {
+    color: #cbd5e1 !important;
+  }
+
+  #add-account-modal #close-modal-btn:hover {
+    color: #f8fafc !important;
+  }
+
+  #add-account-modal [class*="bg-blue-50"],
+  #add-account-modal [class*="bg-green-50"],
+  #add-account-modal [class*="bg-yellow-50"],
+  #add-account-modal [class*="bg-purple-50"],
+  #add-account-modal [class*="bg-red-50"],
+  #add-account-modal [class*="bg-amber-50"],
+  #add-account-modal [class*="bg-gray-50"] {
+    background: rgba(30, 41, 59, 0.65) !important;
+  }
+
+  #add-account-modal [class*="text-blue-"],
+  #add-account-modal [class*="text-indigo-"] {
+    color: #93c5fd !important;
+  }
+
+  #add-account-modal [class*="text-green-"] {
+    color: #86efac !important;
+  }
+
+  #add-account-modal [class*="text-yellow-"] {
+    color: #fde68a !important;
+  }
+
+  #add-account-modal [class*="text-red-"] {
+    color: #fca5a5 !important;
+  }
+
+  #add-account-modal [class*="text-purple-"] {
+    color: #c4b5fd !important;
+  }
+
+  #add-account-modal [class*="text-amber-"] {
+    color: #fcd34d !important;
+  }
+
+  #add-account-modal [class*="border-blue-"],
+  #add-account-modal [class*="border-green-"],
+  #add-account-modal [class*="border-yellow-"],
+  #add-account-modal [class*="border-red-"],
+  #add-account-modal [class*="border-purple-"],
+  #add-account-modal [class*="border-amber-"],
+  #add-account-modal [class*="border-gray-"] {
+    border-color: rgba(100, 116, 139, 0.6) !important;
+  }
+
   /* Markdown / prose adjustments for dark mode */
   #markdown-content-collapsible .prose a,
   #markdown-container .prose a,

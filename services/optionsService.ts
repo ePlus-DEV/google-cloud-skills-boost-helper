@@ -16,6 +16,8 @@ import type { ArcadeData, Account, UserDetail } from "../types";
  */
 const OptionsService = {
   createdAccountId: undefined as string | undefined,
+  isCreateAccountInFlight: false,
+  autoCreatePasteTimer: undefined as ReturnType<typeof setTimeout> | undefined,
   /**
    * Initialize options page
    */
@@ -996,6 +998,19 @@ const OptionsService = {
         },
       },
       {
+        id: "account-url-input",
+        event: "paste",
+        handler: () => {
+          if (this.autoCreatePasteTimer) {
+            clearTimeout(this.autoCreatePasteTimer);
+          }
+
+          this.autoCreatePasteTimer = setTimeout(() => {
+            this.tryAutoCreateAccountFromUrlInput();
+          }, 80);
+        },
+      },
+      {
         id: "go-to-profile-page-btn",
         event: "click",
         handler: () => {
@@ -1007,6 +1022,34 @@ const OptionsService = {
         },
       },
     ]);
+  },
+
+  tryAutoCreateAccountFromUrlInput(): void {
+    const urlInput = document.getElementById(
+      "account-url-input",
+    ) as HTMLInputElement | null;
+    const stepUrlInput = document.getElementById("step-url-input");
+    const loadingDiv = document.getElementById("loading-profile");
+
+    if (!urlInput || !stepUrlInput) return;
+
+    if (stepUrlInput.classList.contains("hidden")) return;
+
+    const sanitizedUrl = urlInput.value
+      .trim()
+      .replaceAll('"', "")
+      .replaceAll("'", "");
+    if (sanitizedUrl !== urlInput.value) {
+      urlInput.value = sanitizedUrl;
+    }
+
+    if (!sanitizedUrl) return;
+    if (!ArcadeApiService.isValidProfileUrl(sanitizedUrl)) return;
+
+    if (this.isCreateAccountInFlight) return;
+    if (loadingDiv && !loadingDiv.classList.contains("hidden")) return;
+
+    void this.handleCreateAccount();
   },
 
   /**
@@ -1110,6 +1153,10 @@ const OptionsService = {
    * Handle creating account directly from URL
    */
   async handleCreateAccount(): Promise<void> {
+    if (this.isCreateAccountInFlight) {
+      return;
+    }
+
     const urlInput = document.getElementById(
       "account-url-input",
     ) as HTMLInputElement;
@@ -1118,22 +1165,27 @@ const OptionsService = {
     const stepUrlInput = document.getElementById("step-url-input");
     const stepNickname = document.getElementById("step-add-nickname");
     const successDiv = document.getElementById("success-created");
+    const trimmedUrl = urlInput.value.trim();
 
-    if (!urlInput.value.trim()) {
+    if (trimmedUrl !== urlInput.value) {
+      urlInput.value = trimmedUrl;
+    }
+
+    if (!trimmedUrl) {
       this.showProfileError("Please enter a profile URL!");
       return;
     }
 
-    if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
+    if (!ArcadeApiService.isValidProfileUrl(trimmedUrl)) {
       this.showProfileError("Invalid profile URL!");
       return;
     }
 
+    this.isCreateAccountInFlight = true;
+
     // Check if account already exists
     try {
-      const existingAccount = await AccountService.isAccountExists(
-        urlInput.value.trim(),
-      );
+      const existingAccount = await AccountService.isAccountExists(trimmedUrl);
       if (existingAccount) {
         this.showProfileError(
           `An account with this URL already exists: "${existingAccount.name}".`,
@@ -1153,7 +1205,7 @@ const OptionsService = {
 
     try {
       // Fetch arcade data
-      const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
+      const arcadeData = await ArcadeApiService.fetchArcadeData(trimmedUrl);
 
       if (!arcadeData) {
         throw new Error("Unable to fetch information from this profile");
@@ -1172,7 +1224,7 @@ const OptionsService = {
 
       const newAccount = await AccountService.createAccount({
         name: userDetail.userName,
-        profileUrl: urlInput.value.trim(),
+        profileUrl: trimmedUrl,
         arcadeData,
         facilitatorProgram: facilitatorToggle?.checked || true,
       });
@@ -1212,6 +1264,8 @@ const OptionsService = {
           ? error.message
           : "Unable to create account. Please check the URL and try again!",
       );
+    } finally {
+      this.isCreateAccountInFlight = false;
     }
   },
 

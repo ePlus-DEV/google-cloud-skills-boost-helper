@@ -99,6 +99,19 @@ body {
   transition: background-color var(--transition-duration) ease;
 }
 
+/* Base dark border tone: avoid bright white borders in dark themes */
+body:not(.theme-light) #popup-content .border-white\/20,
+body:not(.theme-light) #popup-content .border-white\/30,
+body:not(.theme-light) #popup-content .border-white\/40 {
+  border-color: rgba(99, 102, 241, 0.28);
+}
+
+body:not(.theme-light) #popup-content #account-switcher-btn,
+body:not(.theme-light) #popup-content #announcement-toggle,
+body:not(.theme-light) #popup-content #popup-markdown-container {
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
 /* Smooth transitions for theme-sensitive containers only (avoid jank) */
 #popup-content,
 #popup-content .bg-white\/10,
