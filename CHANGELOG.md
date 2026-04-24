@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.10] - 2026-04-24
+### :sparkles: New Features
+- [`c2a68fe`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c2a68fe1d2a45a8ff290a2174f53d9975ce0e3ff) - **export**: add data export functionality for arcade data and badges *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`5668f47`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/5668f47e6c0699e1cacf5f7f9e60635ea81b0956) - **popup**: add compact mode and reorganize export functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3511420`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/35114206e83a428c9fc5b0cb17f89bca599a0de8) - add restoreCachedDataOrShowError method and improve arcade data refresh handling *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b08b9f6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b08b9f644205dd2bdfd4409ed1cc2c4960b3bf25) - enhance dark mode support for add account modal and popup styles *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4730fb6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4730fb681d4676faefd35e7d8d7e36a75e87f1d1) - improve error handling in refreshData method by adding error state display *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`893f950`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/893f9506710da6ed167eb79b8e35df5329d8b46c) - add error handling for account creation in OptionsService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0177284`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0177284c8db81b48a74c438b764181c628ebc2f7) - add custom UUID implementation and update package resolutions *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`ea4ba8f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ea4ba8f364fb0ece6aa68b764ccc29a29b6f0fc3) - **popup**: add z-index to account switcher dropdown *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`6c4bec5`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6c4bec50c0ec0052054d13493eded8217024bb71) - **release**: bump version to 1.2.10 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`03fb4fa`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/03fb4fa13e39d91021486ce270896c0ada794e99) - **deps**: bump node-forge from 1.3.3 to 1.4.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`b08b826`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b08b82691f853500ed1401ca1efbf106de985c2b) - **deps**: bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`61ab7af`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/61ab7af0e9794b7297531efb1bb5b21a20a699f5) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`9966113`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9966113fa42aba3ec46535c464be58e9a1db1d5d) - **deps**: bump defu from 6.1.4 to 6.1.6 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`e973062`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e973062f34b38b318addbb7a369bb68f0911e8eb) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`40370f8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/40370f87c723a110921fe22234fd02ac1b7171e4) - **deps-dev**: bump vite from 8.0.1 to 8.0.5 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`2dee612`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2dee612da17920595a01d2a82597abb084a3e74d) - **deps**: bump axios from 1.14.0 to 1.15.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`28b4e75`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/28b4e75cd35b4b88ccd882126f15c3f9abbdfe1d) - **deps**: bump softprops/action-gh-release from 2 to 3 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`bd46478`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/bd46478e15481243015cf6ccd1668c2a9ec6c5d7) - **deps**: bump actions/github-script from 8.0.0 to 9.0.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`428eca5`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/428eca57ddf16801b42c79faca95842c278cdcef) - **deps**: bump the production-dependencies group with 5 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`4bf4367`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4bf43673dff2def7a04f0e4c2076d565d4d2267e) - **deps**: bump follow-redirects from 1.15.11 to 1.16.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`40105ed`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/40105ed01b56929d4b575926182da6f4e8e126fc) - **deps**: bump protobufjs from 7.5.4 to 7.5.5 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`b692be1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b692be15303254a7c63b772e5444aac7f80e65a4) - **deps**: bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c45583f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c45583fd71170f1440bdc10df1c4a323b2fec580) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [1.2.9] - 2026-03-23
 ### :sparkles: New Features
 - [`359679b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/359679b644c84b9171f8364958f4e14b17aa1249) - **theme**: implement custom theme functionality with live preview and color picker options *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -848,3 +879,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.7]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.6...1.2.7
 [1.2.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.7...1.2.8
 [1.2.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.8...1.2.9
+[1.2.10]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.9...1.2.10
