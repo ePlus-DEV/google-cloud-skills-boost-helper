@@ -125,9 +125,9 @@ body {
 
   #markdown-content-collapsible .prose code,
   .markdown-content code {
-    background: rgba(255,255,255,0.03) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
     color: #f472b6 !important;
-    border-color: rgba(255,255,255,0.03) !important;
+    border-color: rgba(255, 255, 255, 0.03) !important;
   }
 
   #markdown-content-collapsible .prose pre,
@@ -139,6 +139,6 @@ body {
 
   #markdown-content-collapsible .prose hr,
   .markdown-content hr {
-    border-top-color: rgba(148,163,184,0.2) !important;
+    border-top-color: rgba(148, 163, 184, 0.2) !important;
   }
 }

@@ -164,8 +164,8 @@
   }
 
   .introjs-helperLayer {
-    border-color: rgba(99,102,241,0.6) !important;
-    box-shadow: 0 0 0 4px rgba(79,70,229,0.12) !important;
+    border-color: rgba(99, 102, 241, 0.6) !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12) !important;
   }
 
   .introjs-progressbar {
