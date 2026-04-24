@@ -1049,7 +1049,9 @@ const OptionsService = {
     if (this.isCreateAccountInFlight) return;
     if (loadingDiv && !loadingDiv.classList.contains("hidden")) return;
 
-    void this.handleCreateAccount();
+    this.handleCreateAccount().catch((error) => {
+      console.debug("Auto-create account failed:", error);
+    });
   },
 
   /**
