@@ -23,11 +23,11 @@ const ExportService = {
    */
   exportBadgesAsCSV(badges: BadgeData[], filename = "badges"): void {
     const headers = ["Title", "Date Earned", "Points", "Image URL"];
-    const rows = badges.map((b) => [
-      this.escapeCsvField(b.title),
-      this.escapeCsvField(b.dateEarned),
-      String(b.points),
-      this.escapeCsvField(b.imageURL),
+    const rows = badges.map((badge) => [
+      this.escapeCsvField(badge.title),
+      this.escapeCsvField(badge.dateEarned),
+      String(badge.points),
+      this.escapeCsvField(badge.imageURL),
     ]);
 
     const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
@@ -41,14 +41,14 @@ const ExportService = {
   exportAccountsAsJSON(accounts: Account[], filename = "all-accounts"): void {
     const exportPayload = {
       exportedAt: new Date().toISOString(),
-      accounts: accounts.map((acc) => ({
-        name: acc.name,
-        nickname: acc.nickname,
-        profileUrl: acc.profileUrl,
-        createdAt: acc.createdAt,
-        lastUsed: acc.lastUsed,
-        facilitatorProgram: acc.facilitatorProgram,
-        arcadeData: acc.arcadeData,
+      accounts: accounts.map((account) => ({
+        name: account.name,
+        nickname: account.nickname,
+        profileUrl: account.profileUrl,
+        createdAt: account.createdAt,
+        lastUsed: account.lastUsed,
+        facilitatorProgram: account.facilitatorProgram,
+        arcadeData: account.arcadeData,
       })),
     };
     const blob = new Blob([JSON.stringify(exportPayload, null, 2)], {

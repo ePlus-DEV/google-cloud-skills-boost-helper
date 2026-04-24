@@ -542,6 +542,15 @@ const COMPACT_HIDDEN_IDS = [
 // In-memory flag — set once from storage before init, kept in sync by applyCompactMode
 let compactModeActive = false;
 
+/**
+ * Apply or remove compact mode UI state.
+ *
+ * When `compact` is true this hides non-essential sections, adjusts layout
+ * sizing, updates the compact toggle icon/label, and persists the choice to
+ * storage. Also keeps the in-memory `compactModeActive` flag in sync.
+ *
+ * @param compact - Whether compact mode should be enabled.
+ */
 async function applyCompactMode(compact: boolean) {
   compactModeActive = compact;
 
@@ -612,6 +621,13 @@ function patchPopupUIServiceForCompact() {
   };
 }
 
+/**
+ * Toggle compact mode on or off.
+ *
+ * This flips the current in-memory `compactModeActive` flag by applying the
+ * opposite value via `applyCompactMode`, which updates the UI and persists
+ * the preference to storage.
+ */
 async function toggleCompactMode() {
   await applyCompactMode(!compactModeActive);
 }
@@ -635,6 +651,9 @@ document.addEventListener("keydown", async (e: KeyboardEvent) => {
     }
     case "c": {
       await toggleCompactMode();
+      break;
+    }
+    default: {
       break;
     }
   }
