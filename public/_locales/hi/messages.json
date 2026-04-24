@@ -670,5 +670,13 @@
   "labNoSolution": { "message": "कोई समाधान नहीं" },
   "labEplusSearch": { "message": "ePlus खोज" },
   "labGoogleSearch": { "message": "Google खोज" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "मेरा डेटा निर्यात करें" },
+  "exportJSON": { "message": "JSON निर्यात करें" },
+  "exportCSV": { "message": "बैज CSV निर्यात करें" },
+  "exportSuccess": { "message": "सफलतापूर्वक निर्यात किया गया!" },
+  "exportNoData": { "message": "निर्यात के लिए कोई डेटा नहीं।" },
+  "compactMode": { "message": "संक्षिप्त" },
+  "fullMode": { "message": "पूर्ण दृश्य" },
+  "shortcutHint": { "message": "R रीफ्रेश · S सेटिंग्स · C संक्षिप्त" }
 }

@@ -670,5 +670,13 @@
   "labNoSolution": { "message": "솔루션 없음" },
   "labEplusSearch": { "message": "ePlus 검색" },
   "labGoogleSearch": { "message": "Google 검색" },
-  "labYouTube": { "message": "YouTube" }
+  "labYouTube": { "message": "YouTube" },
+  "exportDataTitle": { "message": "내 데이터 내보내기" },
+  "exportJSON": { "message": "JSON 내보내기" },
+  "exportCSV": { "message": "배지 CSV 내보내기" },
+  "exportSuccess": { "message": "내보내기 성공!" },
+  "exportNoData": { "message": "내보낼 데이터가 없습니다." },
+  "compactMode": { "message": "간결 모드" },
+  "fullMode": { "message": "전체 보기" },
+  "shortcutHint": { "message": "R 새로고침 · S 설정 · C 간결" }
 }

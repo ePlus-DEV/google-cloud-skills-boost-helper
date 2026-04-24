@@ -526,6 +526,139 @@ function localizeElements() {
 document.title =
   chrome.i18n.getMessage("extName") || "Google Cloud Skills Boost - Helper";
 
+// ─── Compact Mode ────────────────────────────────────────────────────────────
+const compactModeStorage = storage.defineItem<boolean>("local:compactMode", {
+  defaultValue: false,
+});
+
+const COMPACT_HIDDEN_IDS = [
+  "section-announcement",
+  "section-badges",
+  "milestones-section",
+  "countdown-container",
+  "section-activity",
+];
+
+// In-memory flag — set once from storage before init, kept in sync by applyCompactMode
+let compactModeActive = false;
+
+/**
+ * Apply or remove compact mode UI state.
+ *
+ * When `compact` is true this hides non-essential sections, adjusts layout
+ * sizing, updates the compact toggle icon/label, and persists the choice to
+ * storage. Also keeps the in-memory `compactModeActive` flag in sync.
+ *
+ * @param compact - Whether compact mode should be enabled.
+ */
+async function applyCompactMode(compact: boolean) {
+  compactModeActive = compact;
+
+  const icon = document.getElementById("compact-icon");
+  const label = document.getElementById("compact-label");
+  const popupContent = document.getElementById("popup-content");
+
+  for (const id of COMPACT_HIDDEN_IDS) {
+    document.getElementById(id)?.classList.toggle("hidden", compact);
+  }
+  document.getElementById("keyboard-hint")?.classList.toggle("hidden", compact);
+
+  popupContent?.classList.toggle("min-h-[700px]", !compact);
+  popupContent?.classList.toggle("min-h-0", compact);
+
+  if (icon) {
+    icon.className = compact
+      ? "fa-solid fa-expand mr-1.5"
+      : "fa-solid fa-compress mr-1.5";
+  }
+  if (label) {
+    label.textContent = compact
+      ? chrome.i18n.getMessage("fullMode") || "Full View"
+      : chrome.i18n.getMessage("compactMode") || "Compact";
+  }
+  await compactModeStorage.setValue(compact);
+}
+
+// Patch PopupUIService methods that un-hide sections — make them respect compact mode
+function patchPopupUIServiceForCompact() {
+  const origShowCountdown =
+    PopupUIService.showCountdownDisplay.bind(PopupUIService);
+  PopupUIService.showCountdownDisplay = function () {
+    if (compactModeActive) return;
+    origShowCountdown();
+  };
+
+  const origUpdateMilestone =
+    PopupUIService.updateMilestoneSection.bind(PopupUIService);
+  PopupUIService.updateMilestoneSection = async function () {
+    await origUpdateMilestone();
+    if (compactModeActive) {
+      for (const id of COMPACT_HIDDEN_IDS) {
+        document.getElementById(id)?.classList.add("hidden");
+      }
+    }
+  };
+
+  const origUpdateMainUI = PopupUIService.updateMainUI.bind(PopupUIService);
+  PopupUIService.updateMainUI = async function (...args) {
+    await origUpdateMainUI(...args);
+    if (compactModeActive) {
+      for (const id of COMPACT_HIDDEN_IDS) {
+        document.getElementById(id)?.classList.add("hidden");
+      }
+    }
+  };
+
+  const origStartCountdown =
+    PopupUIService.startFacilitatorCountdown.bind(PopupUIService);
+  PopupUIService.startFacilitatorCountdown = async function () {
+    await origStartCountdown();
+    if (compactModeActive) {
+      for (const id of COMPACT_HIDDEN_IDS) {
+        document.getElementById(id)?.classList.add("hidden");
+      }
+    }
+  };
+}
+
+/**
+ * Toggle compact mode on or off.
+ *
+ * This flips the current in-memory `compactModeActive` flag by applying the
+ * opposite value via `applyCompactMode`, which updates the UI and persists
+ * the preference to storage.
+ */
+async function toggleCompactMode() {
+  await applyCompactMode(!compactModeActive);
+}
+
+// ─── Keyboard Shortcuts ───────────────────────────────────────────────────────
+document.addEventListener("keydown", async (e: KeyboardEvent) => {
+  const tag = (e.target as HTMLElement).tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+  switch (e.key.toLowerCase()) {
+    case "r": {
+      document
+        .querySelector<HTMLButtonElement>(".refresh-button:not(:disabled)")
+        ?.click();
+      break;
+    }
+    case "s": {
+      document.querySelector<HTMLButtonElement>(".settings-button")?.click();
+      break;
+    }
+    case "c": {
+      await toggleCompactMode();
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+});
+
 // Initialize theme
 (async () => {
   const savedPalette = await getSavedCustomTheme();
@@ -540,19 +673,32 @@ document.title =
 setupCopyProfileButton();
 
 // Initialize the popup when the script loads
-PopupService.initialize().then(() => {
+// Patch and load compact state BEFORE initialize() so all UI calls respect compact mode
+patchPopupUIServiceForCompact();
+compactModeStorage.getValue().then((isCompact) => {
+  compactModeActive = isCompact;
+});
+
+PopupService.initialize().then(async () => {
   // Apply i18n translations
   localizeElements();
 
+  // Ensure compact flag is loaded (may already be set above, but await to be safe)
+  compactModeActive = await compactModeStorage.getValue();
+
+  // Restore compact UI after all initialization
+  if (compactModeActive) {
+    await applyCompactMode(true);
+  }
+
   // Initialize milestones section and countdown with Firebase Remote Config
   PopupUIService.updateMilestoneSection().then(async () => {
-    // Start Firebase-powered countdown
+    // Start Firebase-powered countdown (patched to respect compact mode)
     try {
       await PopupUIService.startFacilitatorCountdown();
     } catch (err) {
       console.error("popup: failed to start facilitator countdown:", err);
     }
-
     // Add copy button event listener after initialization
     setTimeout(() => {
       setupCopyProfileButton();
@@ -710,6 +856,11 @@ PopupService.initialize().then(() => {
           window.open(studioUrl, "_blank");
         });
       }
+
+      // Compact mode toggle button
+      document
+        .getElementById("compact-toggle-btn")
+        ?.addEventListener("click", () => toggleCompactMode());
     }, 0);
   });
 });

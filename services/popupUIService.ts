@@ -10,6 +10,7 @@ import {
  * Service to handle UI operations for popup and options
  */
 const PopupUIService = {
+  // No persistent timers now; we use small spinner icon indicators next to numeric fields
   // Arcade program: League-based progression system
   ARCADE_MILESTONES: [
     { points: 25, league: "Arcade Novice" },
@@ -267,6 +268,110 @@ const PopupUIService = {
       },
     ];
     this.updateElements(updates);
+  },
+
+  /**
+   * Show a focused loading state for numeric point elements only.
+   * Used when the user clicks "Update Points" so values visibly indicate
+   * they're being refreshed while the network request is in-flight.
+   */
+  /**
+   * Show small spinner icons next to numeric fields while refresh is in-flight.
+   * This keeps the current numbers visible and provides a subtle loading affordance.
+   */
+  showNumbersLoadingIndicator(): void {
+    const selectors = [
+      "#arcade-points",
+      "#total-points",
+      "#game-badge-count",
+      "#trivia-badge-count",
+      "#skill-badge-count",
+      "#special-points-count",
+      "#base-points",
+      "#bonus-points",
+      "#total-combined-points",
+      "#avatar-score-badge",
+    ];
+
+    for (const sel of selectors) {
+      const el = this.querySelector<HTMLElement>(sel);
+      if (!el) continue;
+
+      // Avoid adding duplicate indicators
+      if (el.parentElement?.querySelector(".number-loading-indicator"))
+        continue;
+
+      const spinner = document.createElement("i");
+      spinner.className =
+        "fa-solid fa-spinner animate-spin text-xs number-loading-indicator ml-2";
+      spinner.setAttribute("aria-hidden", "true");
+
+      // Insert after element
+      el.insertAdjacentElement("afterend", spinner);
+    }
+  },
+
+  /**
+   * Remove spinner icons previously inserted by `showNumbersLoadingIndicator`.
+   */
+  hideNumbersLoadingIndicator(): void {
+    const indicators = document.querySelectorAll(".number-loading-indicator");
+    for (const ind of indicators) {
+      ind.parentElement?.removeChild(ind);
+    }
+  },
+
+  /**
+   * Apply skeleton shimmer placeholders to numeric elements.
+   * This preserves layout while indicating values are refreshing.
+   */
+  showNumbersSkeleton(): void {
+    const selectors = [
+      "#arcade-points",
+      "#total-points",
+      "#game-badge-count",
+      "#trivia-badge-count",
+      "#skill-badge-count",
+      "#special-points-count",
+      "#base-points",
+      "#bonus-points",
+      "#total-combined-points",
+      "#avatar-score-badge",
+    ];
+
+    for (const sel of selectors) {
+      const el = this.querySelector<HTMLElement>(sel);
+      if (!el) continue;
+      // Mark busy for assistive tech
+      el.setAttribute("aria-busy", "true");
+      // Add skeleton class if not present
+      el.classList.add("skeleton");
+    }
+  },
+
+  /**
+   * Remove skeleton shimmer placeholders and restore accessible state.
+   */
+  hideNumbersSkeleton(): void {
+    const selectors = [
+      "#arcade-points",
+      "#total-points",
+      "#game-badge-count",
+      "#trivia-badge-count",
+      "#skill-badge-count",
+      "#special-points-count",
+      "#base-points",
+      "#bonus-points",
+      "#total-combined-points",
+      "#avatar-score-badge",
+    ];
+
+    for (const sel of selectors) {
+      const el = this.querySelector<HTMLElement>(sel);
+      if (!el) continue;
+      el.removeAttribute("aria-busy");
+      el.classList.remove("skeleton");
+    }
   },
 
   /**

@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <title>__MSG_optionsPageTitle__</title>
   <link rel="stylesheet" href="~/assets/tailwind.css" />
   <link rel="stylesheet" href="~/assets/markdown.css" />
+  <link rel="stylesheet" href="~/assets/options.css" />
   <link rel="stylesheet" href="~/assets/account-switcher.css" />
   <link rel="stylesheet" href="~/assets/intro-custom.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
@@ -25,8 +27,10 @@
 
 <body>
   <div
+    id="options-page-shell"
     class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50">
     <div
+      id="options-hero"
       class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300">
       <h3 class="text-2xl sm:text-4xl font-bold text-white inline-block relative">
         Google Cloud Skills Boost - Helper
@@ -77,7 +81,7 @@
       </div>
     </div>
 
-    <div class="mt-4 space-y-4">
+    <div id="options-sections" class="mt-4 space-y-4">
       <!-- BEGIN - Settings -->
 
       <!-- Account Management Card (moved to top) -->
@@ -159,6 +163,31 @@
                       <span class="text-xs" data-i18n="importData">Import Data</span>
                     </div>
                   </button>
+                </div>
+
+                <!-- Export Personal Data -->
+                <div class="mt-2 border-t border-gray-100 pt-2">
+                  <p class="text-xs text-gray-500 mb-2 font-medium">
+                    <i class="fa-solid fa-file-export mr-1"></i>
+                    <span data-i18n="exportDataTitle">Export Personal Data</span>
+                  </p>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button id="export-arcade-json-btn"
+                      class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+                      <div class="flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-file-code text-xs"></i>
+                        <span class="text-xs" data-i18n="exportJSON">Export JSON</span>
+                      </div>
+                    </button>
+
+                    <button id="export-badges-csv-btn"
+                      class="bg-teal-500 hover:bg-teal-600 text-white font-medium px-3 py-2 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
+                      <div class="flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-file-csv text-xs"></i>
+                        <span class="text-xs" data-i18n="exportCSV">Export CSV</span>
+                      </div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -326,7 +355,7 @@
       <span class="block sm:inline">Your action was successful!</span>
     </div>
 
-    <footer class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
+    <footer id="options-footer" class="mt-12 text-center text-gray-600 border-t border-gray-200 pt-6">
       <div class="mb-4">
         <a target="_blank" rel="noopener noreferrer"
           href="https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg/?utm_source=webext&utm_medium=options_page"
