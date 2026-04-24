@@ -409,7 +409,12 @@ const PopupService = {
       }
     } catch (error) {
       console.debug("Failed to refresh arcade data:", error);
-      void this.restoreCachedDataOrShowError(cachedArcadeData);
+      this.restoreCachedDataOrShowError(cachedArcadeData).catch(
+        (restoreError) => {
+          console.debug("Failed to restore cached arcade data:", restoreError);
+          PopupUIService.showErrorState();
+        },
+      );
     } finally {
       // Hide loading state
       PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);
