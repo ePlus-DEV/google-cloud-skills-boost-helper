@@ -72,10 +72,10 @@ const ExportService = {
    */
   triggerDownload(blob: Blob, filename: string): void {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
     URL.revokeObjectURL(url);
   },
 };
