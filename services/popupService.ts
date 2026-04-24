@@ -5,7 +5,7 @@ import PopupUIService from "./popupUIService";
 import BadgeService from "./badgeService";
 import MarkdownService from "./markdownService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import type { Account } from "../types";
+import type { Account, ArcadeData } from "../types";
 import sendRuntimeMessage from "./runtimeMessage";
 const PopupService = {
   profileUrl: "",
@@ -366,6 +366,9 @@ const PopupService = {
       return;
     }
 
+    const cachedArcadeData =
+      this.currentAccount?.arcadeData || (await StorageService.getArcadeData());
+
     const refreshButtons = document.querySelectorAll(
       ".refresh-button",
     ) as NodeListOf<HTMLButtonElement>;
@@ -402,16 +405,36 @@ const PopupService = {
         );
         BadgeService.renderBadges(arcadeData.badges || []);
       } else {
-        PopupUIService.showErrorState();
+        await this.restoreCachedDataOrShowError(cachedArcadeData);
       }
     } catch (error) {
-      PopupUIService.showErrorState();
+      console.debug("Failed to refresh arcade data:", error);
+      void this.restoreCachedDataOrShowError(cachedArcadeData);
     } finally {
       // Hide loading state
       PopupUIService.toggleClass(refreshIcons, this.SPINNER_CLASS, false);
       PopupUIService.toggleButtonState(refreshButtons, false);
       // Remove skeleton placeholders from numeric fields
       PopupUIService.hideNumbersSkeleton();
+    }
+  },
+
+  async restoreCachedDataOrShowError(
+    cachedArcadeData: ArcadeData | null,
+  ): Promise<void> {
+    if (!cachedArcadeData) {
+      PopupUIService.showErrorState();
+      return;
+    }
+
+    try {
+      await PopupUIService.updateMainUI(
+        cachedArcadeData,
+        Boolean(this.currentAccount?.facilitatorProgram),
+      );
+      BadgeService.renderBadges(cachedArcadeData.badges || []);
+    } catch {
+      PopupUIService.showErrorState();
     }
   },
 
