@@ -15,7 +15,13 @@ const ApiClient = (() => {
   function getClient(): ApolloClient {
     if (!instance) {
       instance = new ApolloClient({
-        link: new HttpLink({ uri: import.meta.env.WXT_API_URL }),
+        link: new HttpLink({
+          uri: import.meta.env.WXT_API_URL,
+          headers: {
+            Accept:
+              "application/graphql-response+json, application/graphql+json, application/json, text/event-stream, multipart/mixed",
+          },
+        }),
         cache: new InMemoryCache(),
       });
     }
@@ -24,31 +30,40 @@ const ApiClient = (() => {
 
   // GraphQL query definition
   const SEARCH_POSTS_QUERY = gql`
-    query SearchPostsOfPublication(
+    query SearchPosts(
+      $publicationId: ObjectId!
+      $query: String!
       $first: Int!
-      $filter: SearchPostsOfPublicationFilter!
       $after: String
-      $sortBy: PostSortBy
     ) {
       searchPostsOfPublication(
         first: $first
         after: $after
-        filter: $filter
-        sortBy: $sortBy
+        filter: { publicationId: $publicationId, query: $query }
       ) {
         edges {
-          cursor
           node {
-            id
-            title
-            url
+            ...PostSolutionSearchFields
+            __typename
           }
+          cursor
+          __typename
         }
         pageInfo {
           hasNextPage
           endCursor
+          __typename
         }
+        __typename
       }
+    }
+
+    fragment PostSolutionSearchFields on Post {
+      __typename
+      id
+      title
+      url
+      slug
     }
   `;
 
@@ -58,16 +73,16 @@ const ApiClient = (() => {
   async function fetchPostsOfPublication(
     params: SearchPostsParams,
   ): Promise<SearchPostsOfPublicationData | null> {
-    const { publicationId, query, first, after = null, sortBy } = params;
+    const { publicationId, query, first, after = null } = params;
 
     try {
       const result = await getClient().query({
         query: SEARCH_POSTS_QUERY,
         variables: {
+          publicationId,
+          query,
           first,
-          filter: { publicationId, query },
           after,
-          sortBy,
         },
       });
 
