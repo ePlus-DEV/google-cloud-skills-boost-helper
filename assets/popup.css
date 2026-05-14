@@ -902,18 +902,23 @@ body.theme-custom #account-dropdown {
 .theme-preview-ocean {
   background: linear-gradient(to bottom right, #0c1a2e, #0d2d4a, #0a2236);
 }
+
 .theme-preview-sunset {
   background: linear-gradient(to bottom right, #18100a, #2c1810, #1e1008);
 }
+
 .theme-preview-forest {
   background: linear-gradient(to bottom right, #0a1a12, #0f2b1c, #0a1e13);
 }
+
 .theme-preview-purple {
   background: linear-gradient(to bottom right, #130d26, #1e1040, #130d26);
 }
+
 .theme-preview-rose {
   background: linear-gradient(to bottom right, #1a0c12, #2a1020, #1a0c12);
 }
+
 .theme-preview-custom {
   background: linear-gradient(
     to bottom right,
@@ -927,18 +932,23 @@ body.theme-custom #account-dropdown {
 .theme-icon-ocean {
   color: #38bdf8;
 }
+
 .theme-icon-sunset {
   color: #fb923c;
 }
+
 .theme-icon-forest {
   color: #34d399;
 }
+
 .theme-icon-purple {
   color: #a78bfa;
 }
+
 .theme-icon-rose {
   color: #f472b6;
 }
+
 .theme-icon-custom {
   color: #22d3ee;
 }
