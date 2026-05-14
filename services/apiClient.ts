@@ -4,6 +4,8 @@ import type {
   SearchPostsParams,
 } from "../types/api";
 
+const HASHNODE_GRAPHQL_ENDPOINT = "https://gql-beta.hashnode.com/";
+
 // Apollo Client singleton
 const ApiClient = (() => {
   let instance: ApolloClient;
@@ -15,39 +17,80 @@ const ApiClient = (() => {
   function getClient(): ApolloClient {
     if (!instance) {
       instance = new ApolloClient({
-        link: new HttpLink({ uri: import.meta.env.WXT_API_URL }),
+        link: new HttpLink({
+          uri: HASHNODE_GRAPHQL_ENDPOINT,
+          headers: {
+            Accept:
+              "application/graphql-response+json, application/graphql+json, application/json, text/event-stream, multipart/mixed",
+          },
+        }),
         cache: new InMemoryCache(),
       });
     }
     return instance;
   }
 
-  // GraphQL query definition
+  // GraphQL query definition kept in sync with Hashnode's latest public search API.
   const SEARCH_POSTS_QUERY = gql`
-    query SearchPostsOfPublication(
+    query SearchPosts(
+      $publicationId: ObjectId!
+      $query: String!
       $first: Int!
-      $filter: SearchPostsOfPublicationFilter!
       $after: String
-      $sortBy: PostSortBy
     ) {
       searchPostsOfPublication(
         first: $first
         after: $after
-        filter: $filter
-        sortBy: $sortBy
+        filter: { publicationId: $publicationId, query: $query }
       ) {
         edges {
-          cursor
           node {
-            id
-            title
-            url
+            ...PostThumbnail
+            __typename
           }
+          cursor
+          __typename
         }
         pageInfo {
           hasNextPage
           endCursor
+          __typename
         }
+        __typename
+      }
+    }
+
+    fragment PostThumbnail on Post {
+      __typename
+      id
+      title
+      slug
+      publishedAt
+      cuid
+      url
+      subtitle
+      brief
+      readTimeInMinutes
+      views
+      tags {
+        id
+        slug
+        name
+        __typename
+      }
+      author {
+        __typename
+        id
+        username
+        name
+        profilePicture
+        followersCount
+      }
+      coverImage {
+        __typename
+        url
+        isPortrait
+        isAttributionHidden
       }
     }
   `;
@@ -58,16 +101,16 @@ const ApiClient = (() => {
   async function fetchPostsOfPublication(
     params: SearchPostsParams,
   ): Promise<SearchPostsOfPublicationData | null> {
-    const { publicationId, query, first, after = null, sortBy } = params;
+    const { publicationId, query, first, after = null } = params;
 
     try {
       const result = await getClient().query({
         query: SEARCH_POSTS_QUERY,
         variables: {
+          publicationId,
+          query,
           first,
-          filter: { publicationId, query },
           after,
-          sortBy,
         },
       });
 

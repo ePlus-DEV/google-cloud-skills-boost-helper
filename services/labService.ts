@@ -3,6 +3,8 @@ import SearchService from "./searchService";
 import UIComponents from "../components/uiComponents";
 import type { SearchPostsParams } from "../types/api";
 
+const HASHNODE_PUBLICATION_ID = "5f9b8b3a63809957bd8ec5a8";
+
 /**
  * Service to handle lab page functionality
  */
@@ -48,7 +50,7 @@ const LabService = {
 
     // Fetch posts data with pagination fallback
     const searchParams: SearchPostsParams = {
-      publicationId: import.meta.env.WXT_API_KEY,
+      publicationId: HASHNODE_PUBLICATION_ID,
       query: queryText,
       first: 20,
       after: null,
