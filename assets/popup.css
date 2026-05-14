@@ -32,11 +32,9 @@
   white-space: normal;
   text-align: left;
   border: 1px solid rgba(56, 189, 248, 0.45);
-  background: linear-gradient(
-    135deg,
-    rgba(30, 41, 59, 0.98),
-    rgba(15, 23, 42, 0.98)
-  );
+  background: linear-gradient(135deg,
+      rgba(30, 41, 59, 0.98),
+      rgba(15, 23, 42, 0.98));
   color: #f8fafc;
   box-shadow: 0 10px 24px rgba(2, 6, 23, 0.45);
   z-index: 9999;
@@ -58,8 +56,6 @@
   pointer-events: none;
 }
 
-
-
 body.theme-light #popup-content #copy-profile-url:hover::after {
   border-color: rgba(99, 102, 241, 0.45);
   background: linear-gradient(135deg, #ffffff, #eef2ff);
@@ -75,11 +71,9 @@ body.theme-light #popup-content #copy-profile-url:hover::before {
 
 /* Badge name tooltip (theme-aware) */
 #popup-content .badge-name-tooltip {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 41, 59, 0.98),
-    rgba(15, 23, 42, 0.98)
-  );
+  background: linear-gradient(135deg,
+      rgba(30, 41, 59, 0.98),
+      rgba(15, 23, 42, 0.98));
   color: #ffffff !important;
   border: 1px solid rgba(96, 165, 250, 0.65);
   box-shadow:
@@ -126,7 +120,7 @@ body:not(.theme-light) #popup-content #popup-markdown-container {
 #popup-content #announcement-toggle,
 #popup-content #copy-profile-url,
 #popup-content .theme-toggle-button,
-#popup-content #activity-list > div {
+#popup-content #activity-list>div {
   transition:
     background-color var(--transition-duration) ease,
     color var(--transition-duration) ease,
@@ -135,12 +129,10 @@ body:not(.theme-light) #popup-content #popup-markdown-container {
 
 /* Theme mixin - Light Theme */
 body.theme-light #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #f8fafc,
-    #e0e7ff,
-    #f8fafc
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #f8fafc,
+      #e0e7ff,
+      #f8fafc) !important;
 }
 
 body.theme-light #popup-content .text-white {
@@ -212,7 +204,7 @@ body.theme-light #popup-content .border-white\/40 {
   border-color: rgba(203, 213, 225, 0.6) !important;
 }
 
-body.theme-light #popup-content .absolute.opacity-20 > div {
+body.theme-light #popup-content .absolute.opacity-20>div {
   opacity: 0.15 !important;
 }
 
@@ -223,11 +215,9 @@ body.theme-light #account-dropdown {
 
 /* Header row inside dropdown */
 body.theme-light #account-dropdown .border-b {
-  background: linear-gradient(
-    to right,
-    rgba(237, 233, 254, 0.9),
-    rgba(224, 231, 255, 0.9)
-  ) !important;
+  background: linear-gradient(to right,
+      rgba(237, 233, 254, 0.9),
+      rgba(224, 231, 255, 0.9)) !important;
   border-color: rgba(167, 139, 250, 0.3) !important;
 }
 
@@ -252,11 +242,11 @@ body.theme-light #account-dropdown #account-list .text-white\/60 {
   color: #64748b !important;
 }
 
-body.theme-light #account-dropdown #account-list > div:hover {
+body.theme-light #account-dropdown #account-list>div:hover {
   background-color: rgba(139, 92, 246, 0.12) !important;
 }
 
-body.theme-light #account-dropdown #account-list > div.bg-purple-700\/30 {
+body.theme-light #account-dropdown #account-list>div.bg-purple-700\/30 {
   background-color: rgba(139, 92, 246, 0.1) !important;
   border-left-color: #7c3aed !important;
 }
@@ -457,50 +447,32 @@ body.theme-light #popup-content #milestones-section .text-green-300\/70 {
   color: #0f766e !important;
 }
 
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="milestone1Bonus"],
+body.theme-light #popup-content #milestones-section [data-i18n="milestone1Bonus"],
 body.theme-light #popup-content #milestones-section .text-yellow-300 {
   color: #b45309 !important;
 }
 
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="milestone2Bonus"],
+body.theme-light #popup-content #milestones-section [data-i18n="milestone2Bonus"],
 body.theme-light #popup-content #milestones-section .text-purple-300 {
   color: #6d28d9 !important;
 }
 
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="milestone3Bonus"],
+body.theme-light #popup-content #milestones-section [data-i18n="milestone3Bonus"],
 body.theme-light #popup-content #milestones-section .text-blue-300 {
   color: #1d4ed8 !important;
 }
 
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="milestoneUltimateBonus"],
+body.theme-light #popup-content #milestones-section [data-i18n="milestoneUltimateBonus"],
 body.theme-light #popup-content #milestones-section .text-pink-300 {
   color: #be185d !important;
 }
 
 /* Milestone title/subtitle hierarchy in light theme */
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="totalBonusEarned"] {
+body.theme-light #popup-content #milestones-section [data-i18n="totalBonusEarned"] {
   color: #065f46 !important;
 }
 
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="maxPossibleNote"] {
+body.theme-light #popup-content #milestones-section [data-i18n="maxPossibleNote"] {
   color: #0f766e !important;
 }
 
@@ -516,15 +488,12 @@ body.theme-light #popup-content #milestones-section [data-i18n="milestone3"] {
   color: #1e40af !important;
 }
 
-body.theme-light
-  #popup-content
-  #milestones-section
-  [data-i18n="milestoneUltimate"] {
+body.theme-light #popup-content #milestones-section [data-i18n="milestoneUltimate"] {
   color: #9d174d !important;
 }
 
 /* Recent activity hierarchy in light theme */
-body.theme-light #popup-content #activity-list > div {
+body.theme-light #popup-content #activity-list>div {
   background: rgba(255, 255, 255, 0.92) !important;
   border: 1px solid rgba(148, 163, 184, 0.28);
 }
@@ -544,12 +513,10 @@ body.theme-light #popup-content #activity-list .activity-points {
 
 /* Ocean Theme - deep navy with teal tint */
 body.theme-ocean #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #0c1a2e,
-    #0d2d4a,
-    #0a2236
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #0c1a2e,
+      #0d2d4a,
+      #0a2236) !important;
 }
 
 body.theme-ocean #popup-content .bg-white\/10 {
@@ -586,12 +553,10 @@ body.theme-ocean #account-dropdown {
 
 /* Sunset Theme - deep charcoal with warm amber tint */
 body.theme-sunset #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #18100a,
-    #2c1810,
-    #1e1008
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #18100a,
+      #2c1810,
+      #1e1008) !important;
 }
 
 body.theme-sunset #popup-content .bg-white\/10 {
@@ -628,12 +593,10 @@ body.theme-sunset #account-dropdown {
 
 /* Forest Theme - deep slate with emerald tint */
 body.theme-forest #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #0a1a12,
-    #0f2b1c,
-    #0a1e13
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #0a1a12,
+      #0f2b1c,
+      #0a1e13) !important;
 }
 
 body.theme-forest #popup-content .bg-white\/10 {
@@ -670,12 +633,10 @@ body.theme-forest #account-dropdown {
 
 /* Purple Dream - deep slate with violet tint (richer than default) */
 body.theme-purple #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #130d26,
-    #1e1040,
-    #130d26
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #130d26,
+      #1e1040,
+      #130d26) !important;
 }
 
 body.theme-purple #popup-content .bg-white\/10 {
@@ -712,12 +673,10 @@ body.theme-purple #account-dropdown {
 
 /* Midnight Theme */
 body.theme-midnight #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #0f172a,
-    #1e293b,
-    #334155
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #0f172a,
+      #1e293b,
+      #334155) !important;
 }
 
 body.theme-midnight #popup-content .bg-white\/10 {
@@ -754,12 +713,10 @@ body.theme-midnight #account-dropdown {
 
 /* Rose Gold Theme - deep dark with blush rose tint */
 body.theme-rose #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    #1a0c12,
-    #2a1020,
-    #1a0c12
-  ) !important;
+  background: linear-gradient(to bottom right,
+      #1a0c12,
+      #2a1020,
+      #1a0c12) !important;
 }
 
 body.theme-rose #popup-content .bg-white\/10 {
@@ -796,12 +753,10 @@ body.theme-rose #account-dropdown {
 
 /* Custom Theme - user-defined palette from color pickers */
 body.theme-custom #popup-content {
-  background: linear-gradient(
-    to bottom right,
-    var(--custom-bg-start),
-    var(--custom-bg-middle),
-    var(--custom-bg-end)
-  ) !important;
+  background: linear-gradient(to bottom right,
+      var(--custom-bg-start),
+      var(--custom-bg-middle),
+      var(--custom-bg-end)) !important;
 }
 
 body.theme-custom #popup-content .bg-white\/10 {
@@ -830,12 +785,10 @@ body.theme-custom #popup-content .bg-white\/20 {
   left: -150%;
   height: 100%;
   width: 200%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.08),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent);
   animation: shimmer 1.2s linear infinite;
 }
 
@@ -904,43 +857,51 @@ body.theme-custom #account-dropdown {
 .theme-preview-ocean {
   background: linear-gradient(to bottom right, #0c1a2e, #0d2d4a, #0a2236);
 }
+
 .theme-preview-sunset {
   background: linear-gradient(to bottom right, #18100a, #2c1810, #1e1008);
 }
+
 .theme-preview-forest {
   background: linear-gradient(to bottom right, #0a1a12, #0f2b1c, #0a1e13);
 }
+
 .theme-preview-purple {
   background: linear-gradient(to bottom right, #130d26, #1e1040, #130d26);
 }
+
 .theme-preview-rose {
   background: linear-gradient(to bottom right, #1a0c12, #2a1020, #1a0c12);
 }
+
 .theme-preview-custom {
-  background: linear-gradient(
-    to bottom right,
-    var(--custom-bg-start),
-    var(--custom-bg-middle),
-    var(--custom-bg-end)
-  );
+  background: linear-gradient(to bottom right,
+      var(--custom-bg-start),
+      var(--custom-bg-middle),
+      var(--custom-bg-end));
 }
 
 /* Theme modal icon colors */
 .theme-icon-ocean {
   color: #38bdf8;
 }
+
 .theme-icon-sunset {
   color: #fb923c;
 }
+
 .theme-icon-forest {
   color: #34d399;
 }
+
 .theme-icon-purple {
   color: #a78bfa;
 }
+
 .theme-icon-rose {
   color: #f472b6;
 }
+
 .theme-icon-custom {
   color: #22d3ee;
 }
