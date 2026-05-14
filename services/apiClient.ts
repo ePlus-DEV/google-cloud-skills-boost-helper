@@ -4,8 +4,6 @@ import type {
   SearchPostsParams,
 } from "../types/api";
 
-const HASHNODE_GRAPHQL_ENDPOINT = "https://gql-beta.hashnode.com/";
-
 // Apollo Client singleton
 const ApiClient = (() => {
   let instance: ApolloClient;
@@ -18,7 +16,7 @@ const ApiClient = (() => {
     if (!instance) {
       instance = new ApolloClient({
         link: new HttpLink({
-          uri: HASHNODE_GRAPHQL_ENDPOINT,
+          uri: import.meta.env.WXT_API_URL,
           headers: {
             Accept:
               "application/graphql-response+json, application/graphql+json, application/json, text/event-stream, multipart/mixed",
@@ -30,7 +28,7 @@ const ApiClient = (() => {
     return instance;
   }
 
-  // GraphQL query definition kept in sync with Hashnode's latest public search API.
+  // GraphQL query definition
   const SEARCH_POSTS_QUERY = gql`
     query SearchPosts(
       $publicationId: ObjectId!
@@ -45,7 +43,7 @@ const ApiClient = (() => {
       ) {
         edges {
           node {
-            ...PostThumbnail
+            ...PostSolutionSearchFields
             __typename
           }
           cursor
@@ -60,38 +58,12 @@ const ApiClient = (() => {
       }
     }
 
-    fragment PostThumbnail on Post {
+    fragment PostSolutionSearchFields on Post {
       __typename
       id
       title
-      slug
-      publishedAt
-      cuid
       url
-      subtitle
-      brief
-      readTimeInMinutes
-      views
-      tags {
-        id
-        slug
-        name
-        __typename
-      }
-      author {
-        __typename
-        id
-        username
-        name
-        profilePicture
-        followersCount
-      }
-      coverImage {
-        __typename
-        url
-        isPortrait
-        isAttributionHidden
-      }
+      slug
     }
   `;
 
