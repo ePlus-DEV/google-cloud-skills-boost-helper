@@ -44,7 +44,6 @@ const ApiClient = (() => {
         edges {
           node {
             ...PostSolutionSearchFields
-            __typename
           }
           cursor
           __typename
