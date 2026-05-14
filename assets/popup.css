@@ -58,8 +58,6 @@
   pointer-events: none;
 }
 
-
-
 body.theme-light #popup-content #copy-profile-url:hover::after {
   border-color: rgba(99, 102, 241, 0.45);
   background: linear-gradient(135deg, #ffffff, #eef2ff);
