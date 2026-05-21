@@ -1,5 +1,5 @@
 import Fuse from "fuse.js";
-import type { SearchPostsOfPublicationData, FuseOptions } from "../types/api";
+import type { FuseOptions } from "../types/api";
 
 class SearchService {
   private static readonly DEFAULT_FUSE_OPTIONS: FuseOptions = {
@@ -271,19 +271,23 @@ class SearchService {
    * Find the best matching post URL using fuzzy search with enhanced filtering
    */
   static findBestMatchUrl(
-    postsData: SearchPostsOfPublicationData | null,
+    posts: Array<{
+      id: string;
+      title: string;
+      slug: string;
+      url: string;
+      datePublished: string;
+    }> | null,
     searchQuery: string,
     fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
   ): string | null {
-    if (!postsData) return null;
-
-    const nodes = postsData.edges.map((edge) => edge.node);
-    if (!nodes.length) return null;
+    if (!posts || posts.length === 0) return null;
 
     // Normalize search query once to avoid repeated normalization
     const normalizedQuery = this.normalizeTitle(searchQuery);
 
-    const fuse = this.getFuseInstance(nodes, postsData, fuseOptions);
+    // Use Fuse.js directly on the posts array
+    const fuse = new Fuse(posts, fuseOptions);
     const results = fuse.search(normalizedQuery);
 
     // Enhanced filtering with flexible matching criteria
@@ -355,11 +359,70 @@ class SearchService {
    * Get lab title from page
    */
   static getLabTitle(): string {
-    return (
+    if (import.meta.env.MODE === "development") {
+      console.info("[LabService] Looking for lab title...");
+    }
+
+    // Try selector h1.ql-title-large (direct, no shadow DOM)
+    const titleElement = document.querySelector("h1.ql-title-large");
+    if (titleElement) {
+      const title = titleElement.textContent?.trim() || "";
+      if (import.meta.env.MODE === "development") {
+        console.info(
+          "[LabService] ✓ Extracted title from h1.ql-title-large:",
+          title,
+        );
+      }
+      return title;
+    }
+    if (import.meta.env.MODE === "development") {
+      console.info("[LabService] ✗ h1.ql-title-large not found");
+    }
+
+    // Try just h1 element as fallback
+    const h1Element = document.querySelector("h1");
+    if (h1Element) {
+      const title = h1Element.textContent?.trim() || "";
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] ✓ Extracted title from first h1:", title);
+      }
+      return title;
+    }
+
+    // Fallback to old selector
+    const fallbackTitle =
       document
         .querySelector(".ql-display-large.lab-preamble__title")
-        ?.textContent?.trim() || ""
-    );
+        ?.textContent?.trim() || "";
+    if (import.meta.env.MODE === "development") {
+      console.info(
+        "[LabService] Extracted title from fallback selector:",
+        fallbackTitle,
+      );
+    }
+    return fallbackTitle;
+  }
+
+  /**
+   * Get GSP ID from page (e.g., GSP344)
+   */
+  static getGspId(): string {
+    const h2Element = document.querySelector("h2");
+    if (h2Element) {
+      const text = h2Element.textContent?.trim() || "";
+      // Extract GSP ID pattern (GSP followed by numbers)
+      const match = text.match(/GSP\d+/);
+      if (match) {
+        if (import.meta.env.MODE === "development") {
+          console.info("[LabService] Extracted GSP ID:", match[0]);
+        }
+        return match[0];
+      }
+    }
+    if (import.meta.env.MODE === "development") {
+      console.info("[LabService] No GSP ID found");
+    }
+    return "";
   }
 
   /**
@@ -367,8 +430,16 @@ class SearchService {
    */
   static createCombinedQuery(): string {
     const labTitle = this.getLabTitle();
+    const gspId = this.getGspId();
     const queryText = this.extractQueryText();
-    return `${labTitle} - ${queryText}`.trim();
+
+    // Build query with GSP ID first (more specific) then title
+    const parts = [gspId, labTitle, queryText].filter(Boolean);
+    const combinedQuery = parts.join(" - ").trim();
+    if (import.meta.env.MODE === "development") {
+      console.info("[LabService] Combined query for search:", combinedQuery);
+    }
+    return combinedQuery;
   }
 }
 

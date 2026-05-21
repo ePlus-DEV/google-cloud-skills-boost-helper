@@ -8,73 +8,72 @@ import type { SearchPostsParams } from "../types/api";
  */
 const LabService = {
   /**
-   * Check if the outline container exists and is valid
+   * Use only h2#step1 as the anchor for UI injection
    */
-  validateOutlineContainer(): HTMLUListElement | null {
-    const outlineContainer = document
-      .querySelector(".lab-content__outline.js-lab-content-outline")
-      ?.closest("ul") as HTMLUListElement | null;
-
-    if (!outlineContainer) {
-      return null;
-    }
-
-    const firstOutlineItem = outlineContainer.querySelector("li");
-    if (!firstOutlineItem) {
-      return null;
-    }
-
-    return outlineContainer;
+  validateOutlineContainer(): HTMLElement | null {
+    return document.querySelector("h2#step1");
   },
 
   /**
    * Process lab page and add solution button
    */
   async processLabPage(): Promise<void> {
-    const outlineContainer = this.validateOutlineContainer();
-    if (!outlineContainer) return;
+    if (import.meta.env.DEV) {
+      console.info("[LabService] Starting processLabPage");
+    }
+    const anchor = this.validateOutlineContainer();
+    if (!anchor) {
+      if (import.meta.env.DEV) {
+        console.info("[LabService] No valid anchor found");
+      }
+      return;
+    }
 
     // Extract search parameters
     const queryText = SearchService.extractQueryText();
     const combinedQueryText = SearchService.createCombinedQuery();
+    if (import.meta.env.DEV) {
+      console.info("[LabService] Query text:", queryText);
+      console.info("[LabService] Combined query text:", combinedQueryText);
+    }
 
-    if (!queryText) {
+    const searchQuery = queryText || combinedQueryText;
+    if (!searchQuery) {
+      if (import.meta.env.DEV) {
+        console.info("[LabService] No query text found, exiting");
+      }
       return;
     }
 
-    // Show loading button immediately
+    // Show loading button immediately, insert after anchor
     const loadingElement = UIComponents.createLoadingElement();
-    outlineContainer.appendChild(loadingElement);
+    anchor.insertAdjacentElement("afterend", loadingElement);
 
-    // Fetch posts data with pagination fallback
-    const searchParams: SearchPostsParams = {
+    // Fetch posts data ONCE (no paging)
+    if (import.meta.env.DEV) {
+      console.info("[LabService] Fetching posts (single fetch)");
+    }
+    const postsData = await ApiClient.fetchPostsOfPublication({
       publicationId: import.meta.env.WXT_API_KEY,
-      query: queryText,
-      first: 20,
-      after: null,
-    };
+      query: searchQuery,
+    });
 
     let bestMatchUrl: string | null = null;
-    let after: string | null = null;
-    const MAX_PAGES = 5;
-
-    for (let page = 0; page < MAX_PAGES; page++) {
-      const postsData = await ApiClient.fetchPostsOfPublication({
-        ...searchParams,
-        after,
-      });
-
-      if (!postsData) break;
-
+    if (postsData && postsData.length > 0) {
+      if (import.meta.env.DEV) {
+        console.info(`[LabService] Received ${postsData.length} posts`);
+      }
       bestMatchUrl = SearchService.findBestMatchUrl(
         postsData,
         combinedQueryText,
       );
-      if (bestMatchUrl) break;
-
-      if (!postsData.pageInfo?.hasNextPage || !postsData.pageInfo.endCursor)
-        break;
-      after = postsData.pageInfo.endCursor;
+      if (bestMatchUrl && import.meta.env.DEV) {
+        console.info("[LabService] Found best match URL:", bestMatchUrl);
+      }
+    } else {
+      if (import.meta.env.DEV) {
+        console.info("[LabService] No posts data received");
+      }
     }
 
     // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev

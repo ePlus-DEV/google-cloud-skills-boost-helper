@@ -39,12 +39,16 @@ export default defineContentScript({
       anchor: "body",
       onMount() {
         document.querySelector(".js-lab-leaderboard")?.remove();
+        // Button check scores element
+        // const gamesLabsElement = document.querySelector(".games-labs");
 
-        const gamesLabsElement = document.querySelector(".games-labs");
-        if (gamesLabsElement) {
-          gamesLabsElement.className =
-            "lab-show l-full no-nav application-new lab-show l-full no-nav";
-        }
+        // const totalScoreElement = document.querySelector(
+        //   "#main-wrapper > div.lab-assessment__tab.js-open-lab-assessment-panel",
+        // );
+        // if (totalScoreElement) {
+        //   // logic xóa style display none của totalScoreElement
+        //   totalScoreElement.style.display = "block";
+        // }
 
         // Handle profile page functionality
         if (pathname === "/my_account/profile") {

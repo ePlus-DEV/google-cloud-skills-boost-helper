@@ -1,41 +1,32 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import SearchService from "../../services/searchService";
-import type { SearchPostsOfPublicationData } from "../../types/api";
-
-function makePostsData(
-  posts: { title: string; url: string }[],
-): SearchPostsOfPublicationData {
-  return {
-    edges: posts.map((p, i) => ({
-      cursor: String(i),
-      node: { id: String(i), title: p.title, url: p.url },
-    })),
-  };
-}
 
 describe("SearchService.findBestMatchUrl", () => {
   it("returns null for null postsData", () => {
     expect(SearchService.findBestMatchUrl(null, "some query")).toBeNull();
   });
 
-  it("returns null for empty edges", () => {
-    expect(
-      SearchService.findBestMatchUrl({ edges: [] }, "some query"),
-    ).toBeNull();
+  it("returns null for empty array", () => {
+    expect(SearchService.findBestMatchUrl([], "some query")).toBeNull();
   });
 
   it("finds exact title match", () => {
-    const posts = makePostsData([
+    const posts = [
       {
+        id: "0",
         title: "Deploy a Kubernetes Cluster",
         url: "https://example.com/deploy-k8s",
+        slug: "deploy-k8s",
+        datePublished: "",
       },
       {
+        id: "1",
         title: "Setup Cloud Storage",
         url: "https://example.com/cloud-storage",
+        slug: "cloud-storage",
+        datePublished: "",
       },
-    ]);
-
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Deploy a Kubernetes Cluster",
@@ -44,13 +35,15 @@ describe("SearchService.findBestMatchUrl", () => {
   });
 
   it("returns null when no good match found", () => {
-    const posts = makePostsData([
+    const posts = [
       {
+        id: "0",
         title: "Completely Different Topic",
         url: "https://example.com/different",
+        slug: "different",
+        datePublished: "",
       },
-    ]);
-
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Deploy Kubernetes Cluster on GKE",
@@ -59,13 +52,15 @@ describe("SearchService.findBestMatchUrl", () => {
   });
 
   it("appends timestamp to result URL", () => {
-    const posts = makePostsData([
+    const posts = [
       {
+        id: "0",
         title: "Deploy a Kubernetes Cluster",
         url: "https://example.com/deploy-k8s",
+        slug: "deploy-k8s",
+        datePublished: "",
       },
-    ]);
-
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Deploy a Kubernetes Cluster",
@@ -74,13 +69,15 @@ describe("SearchService.findBestMatchUrl", () => {
   });
 
   it("uses & separator when URL already has query params", () => {
-    const posts = makePostsData([
+    const posts = [
       {
+        id: "0",
         title: "Deploy a Kubernetes Cluster",
         url: "https://example.com/deploy-k8s?v=1",
+        slug: "deploy-k8s",
+        datePublished: "",
       },
-    ]);
-
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Deploy a Kubernetes Cluster",
@@ -89,13 +86,15 @@ describe("SearchService.findBestMatchUrl", () => {
   });
 
   it("ignores (Solution) suffix in query", () => {
-    const posts = makePostsData([
+    const posts = [
       {
+        id: "0",
         title: "Deploy a Kubernetes Cluster",
         url: "https://example.com/deploy-k8s",
+        slug: "deploy-k8s",
+        datePublished: "",
       },
-    ]);
-
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Deploy a Kubernetes Cluster (Solution)",
@@ -104,10 +103,15 @@ describe("SearchService.findBestMatchUrl", () => {
   });
 
   it("rejects match with different week number", () => {
-    const posts = makePostsData([
-      { title: "Arcade Quiz Week 2 2025", url: "https://example.com/week2" },
-    ]);
-
+    const posts = [
+      {
+        id: "0",
+        title: "Arcade Quiz Week 2 2025",
+        url: "https://example.com/week2",
+        slug: "week2",
+        datePublished: "",
+      },
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Arcade Quiz Week 1 2025",
@@ -116,13 +120,15 @@ describe("SearchService.findBestMatchUrl", () => {
   });
 
   it("matches lab title with colon and hyphenated words", () => {
-    const posts = makePostsData([
+    const posts = [
       {
+        id: "0",
         title: "Build a Multi-Modal GenAI Application: Challenge Lab",
         url: "https://eplus.dev/build-a-multi-modal-genai-application-challenge-lab-bb-ide-genai-004",
+        slug: "multi-modal-genai",
+        datePublished: "",
       },
-    ]);
-
+    ];
     const result = SearchService.findBestMatchUrl(
       posts,
       "Build a Multi-Modal GenAI Application: Challenge Lab",

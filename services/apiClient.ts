@@ -1,96 +1,70 @@
-import { ApolloClient, InMemoryCache, HttpLink, gql } from "@apollo/client";
-import type {
-  SearchPostsOfPublicationData,
-  SearchPostsParams,
-} from "../types/api";
+import type { SearchPostsParams } from "../types/api";
 
-// Apollo Client singleton
+// REST API Client
 const ApiClient = (() => {
-  let instance: ApolloClient;
-
   /**
-   * Returns the singleton ApolloClient instance.
-   * Initializes the client if it does not exist.
+   * Fetch posts from REST API and transform to SearchPostsOfPublicationData format
    */
-  function getClient(): ApolloClient {
-    if (!instance) {
-      instance = new ApolloClient({
-        link: new HttpLink({
-          uri: import.meta.env.WXT_API_URL,
-          headers: {
-            Accept:
-              "application/graphql-response+json, application/graphql+json, application/json, text/event-stream, multipart/mixed",
-          },
-        }),
-        cache: new InMemoryCache(),
-      });
-    }
-    return instance;
-  }
-
-  // GraphQL query definition
-  const SEARCH_POSTS_QUERY = gql`
-    query SearchPosts(
-      $publicationId: ObjectId!
-      $query: String!
-      $first: Int!
-      $after: String
-    ) {
-      searchPostsOfPublication(
-        first: $first
-        after: $after
-        filter: { publicationId: $publicationId, query: $query }
-      ) {
-        edges {
-          node {
-            ...PostSolutionSearchFields
-          }
-          cursor
-          __typename
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
-          __typename
-        }
-        __typename
-      }
-    }
-
-    fragment PostSolutionSearchFields on Post {
-      __typename
-      id
-      title
-      url
-      slug
-    }
-  `;
-
-  /**
-   * Fetch posts of a publication using GraphQL
-   */
-  async function fetchPostsOfPublication(
-    params: SearchPostsParams,
-  ): Promise<SearchPostsOfPublicationData | null> {
-    const { publicationId, query, first, after = null } = params;
+  async function fetchPostsOfPublication(params: SearchPostsParams): Promise<
+    Array<{
+      id: string;
+      title: string;
+      slug: string;
+      url: string;
+      datePublished: string;
+    }>
+  > {
+    const { query } = params;
 
     try {
-      const result = await getClient().query({
-        query: SEARCH_POSTS_QUERY,
-        variables: {
-          publicationId,
-          query,
-          first,
-          after,
-        },
-      });
+      const response = await fetch(import.meta.env.WXT_API_URL);
+      if (!response.ok) {
+        if (import.meta.env.MODE === "development") {
+          console.error("[ApiClient] API response not OK:", response.status);
+        }
+        return [];
+      }
 
-      const data = result.data as {
-        searchPostsOfPublication: SearchPostsOfPublicationData;
-      };
-      return data.searchPostsOfPublication;
+      const posts = (await response.json()) as Array<{
+        _id: string;
+        title: string;
+        slug: string;
+        datePublished: string;
+      }>;
+      console.info("[ApiClient] Total posts loaded:", posts.length);
+
+      // Filter posts by query
+      const queryLower = query.toLowerCase();
+      const queryWords = queryLower.split(/[\s-]+/).filter(Boolean);
+
+      const filteredPosts = posts.filter((post) => {
+        const titleLower = post.title.toLowerCase();
+        const slugLower = post.slug.toLowerCase();
+        return queryWords.every(
+          (word) => titleLower.includes(word) || slugLower.includes(word),
+        );
+      });
+      if (import.meta.env.MODE === "development") {
+        console.info(
+          "[ApiClient] Filtered posts:",
+          filteredPosts.length,
+          filteredPosts.map((p) => p.title),
+        );
+      }
+
+      // Return simple array of posts
+      return filteredPosts.map((post) => ({
+        id: post._id,
+        title: post.title,
+        slug: post.slug,
+        url: post.slug,
+        datePublished: post.datePublished,
+      }));
     } catch (error) {
-      return null;
+      if (import.meta.env.MODE === "development") {
+        console.error("[ApiClient] Error fetching posts:", error);
+      }
+      return [];
     }
   }
 
