@@ -17,9 +17,11 @@ const UIComponents = {
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
     el.innerHTML = `
-      <ql-button icon="psychology" disabled>
-        ${browser.i18n.getMessage("labThinking")}
-      </ql-button>
+      <ql-infobox>
+        <ql-button icon="psychology" disabled>
+          ${browser.i18n.getMessage("labThinking")}
+        </ql-button>
+      </ql-infobox>
     `;
     return el;
   },
@@ -47,7 +49,8 @@ const UIComponents = {
       }
 
       if (safeUrl) {
-        // Create button element without inline JS
+        // Wrap the solution button in a <ql-infobox>
+        const infobox = document.createElement("ql-infobox");
         const btn = document.createElement("ql-button");
         btn.setAttribute("icon", "check");
         btn.setAttribute("type", "button");
@@ -63,7 +66,8 @@ const UIComponents = {
             window.open(safeUrl, "_blank");
           }
         });
-        solutionElement.appendChild(btn);
+        infobox.appendChild(btn);
+        solutionElement.appendChild(infobox);
       } else {
         // If URL is invalid, show nothing or fallback UI
         solutionElement.textContent = browser.i18n.getMessage("labNoSolution");
@@ -76,16 +80,16 @@ const UIComponents = {
         // No solution found - show "No solution" and search options
         solutionElement.innerHTML = `
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-            <ql-button icon="close" disabled>
-              ${browser.i18n.getMessage("labNoSolution")}
-            </ql-button>
-            <ql-button
+            <ql-infobox>
+              <ql-button icon="close" disabled>
+                ${browser.i18n.getMessage("labNoSolution")}
+              </ql-button>
+              <ql-button
               icon="search"
               type="button"
               title="${browser.i18n.getMessage("labEplusSearch")}"
               data-aria-label="${browser.i18n.getMessage("labEplusSearch")}"
               id="eplus-search-btn"
-              style="display: none;"
             >
               ${browser.i18n.getMessage("labEplusSearch")}
             </ql-button>
@@ -107,7 +111,8 @@ const UIComponents = {
             >
               ${browser.i18n.getMessage("labYouTube")}
             </ql-button>
-          </div>
+          </ql-infobox>
+        </div>
         `;
 
         // Add event listeners after creating the HTML
@@ -145,9 +150,11 @@ const UIComponents = {
       } else {
         // Search feature disabled - show only "No solution"
         solutionElement.innerHTML = `
-          <ql-button icon="close" disabled>
-            ${browser.i18n.getMessage("labNoSolution")}
-          </ql-button>
+          <ql-infobox>
+            <ql-button icon="close" disabled>
+              ${browser.i18n.getMessage("labNoSolution")}
+            </ql-button>
+          </ql-infobox>
         `;
       }
     }
@@ -161,7 +168,7 @@ const UIComponents = {
   searchOnEplus(): void {
     const labTitle = SearchService.getLabTitle();
     const encodedQuery = encodeURIComponent(labTitle);
-    window.open(`https://eplus.dev/search?q=${encodedQuery}`, "_blank");
+    window.open(`https://eplus.dev/?q=${encodedQuery}`, "_blank");
   },
 
   /**
@@ -185,12 +192,6 @@ const UIComponents = {
    */
   searchOnYouTube(): void {
     try {
-      // Get lab title
-      const labTitle =
-        document
-          .querySelector(".ql-display-large.lab-preamble__title")
-          ?.textContent?.trim() || "";
-    try {
       const labTitle = SearchService.getLabTitle();
       const encodedQuery = encodeURIComponent(labTitle);
       const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
@@ -198,8 +199,10 @@ const UIComponents = {
     } catch (error) {
       // Fallback to simple search
       const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
-      window.open(`https://www.youtube.com/results?search_query=${fallbackQuery}`, "_blank");
-    }
+      window.open(
+        `https://www.youtube.com/results?search_query=${fallbackQuery}`,
+        "_blank",
+      );
     }
   },
 
