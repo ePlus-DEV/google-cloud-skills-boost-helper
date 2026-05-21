@@ -59,7 +59,9 @@ const UIComponents = {
         btn.textContent = browser.i18n.getMessage("labSolutionButton");
         btn.addEventListener("click", (e) => {
           e.preventDefault();
-          window.open(safeUrl!, "_blank");
+          if (safeUrl) {
+            window.open(safeUrl, "_blank");
+          }
         });
         solutionElement.appendChild(btn);
       } else {
