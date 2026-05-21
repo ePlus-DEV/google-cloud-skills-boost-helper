@@ -45,54 +45,34 @@ const LabService = {
       return;
     }
 
+
     // Show loading button immediately
     const loadingElement = UIComponents.createLoadingElement();
     outlineContainer.appendChild(loadingElement);
 
-    // Fetch posts data with pagination fallback
-    const searchParams: SearchPostsParams = {
+    // Fetch posts data ONCE (no paging)
+    if (import.meta.env.MODE === "development") {
+      console.info(`[LabService] Fetching posts (single fetch)`);
+    }
+    const postsData = await ApiClient.fetchPostsOfPublication({
       publicationId: import.meta.env.WXT_API_KEY,
       query: searchQuery,
       first: 20,
-      after: null,
-    };
+    });
 
     let bestMatchUrl: string | null = null;
-    let after: string | null = null;
-    const MAX_PAGES = 5;
-
-    for (let page = 0; page < MAX_PAGES; page++) {
-      if (import.meta.env.MODE === "development") {
-        console.info(`[LabService] Fetching posts (no paging)`);
-      }
-      const postsData = await ApiClient.fetchPostsOfPublication({
-        ...searchParams,
-        after,
-      });
-
-      if (!postsData || postsData.length === 0) {
-        if (import.meta.env.MODE === "development") {
-          console.info("[LabService] No posts data received");
-        }
-        break;
-      }
-
+    if (postsData && postsData.length > 0) {
       if (import.meta.env.MODE === "development") {
         console.info(`[LabService] Received ${postsData.length} posts`);
       }
-      bestMatchUrl = SearchService.findBestMatchUrl(
-        postsData,
-        combinedQueryText,
-      );
-      if (bestMatchUrl) {
-        if (import.meta.env.MODE === "development") {
-          console.info("[LabService] Found best match URL:", bestMatchUrl);
-        }
-        break;
+      bestMatchUrl = SearchService.findBestMatchUrl(postsData, combinedQueryText);
+      if (bestMatchUrl && import.meta.env.MODE === "development") {
+        console.info("[LabService] Found best match URL:", bestMatchUrl);
       }
-
-      // No paging, break after first fetch
-      break;
+    } else {
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] No posts data received");
+      }
     }
 
     // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev
