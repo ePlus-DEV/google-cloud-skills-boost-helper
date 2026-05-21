@@ -12,7 +12,6 @@ const UIComponents = {
   createLoadingElement(): HTMLDivElement {
     const el = document.createElement("div");
     Object.assign(el.style, {
-      margin: "15px 0",
       padding: "10px",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
@@ -32,7 +31,6 @@ const UIComponents = {
   async createSolutionElement(url: string | null): Promise<HTMLDivElement> {
     const solutionElement = document.createElement("div");
     Object.assign(solutionElement.style, {
-      margin: "15px 0",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
 
