@@ -360,7 +360,7 @@ class SearchService {
    */
   static getLabTitle(): string {
     if (import.meta.env.MODE === "development") {
-      console.log("[LabService] Looking for lab title...");
+      console.info("[LabService] Looking for lab title...");
     }
 
     // Try selector h1.ql-title-large (direct, no shadow DOM)
@@ -368,7 +368,7 @@ class SearchService {
     if (titleElement) {
       const title = titleElement.textContent?.trim() || "";
       if (import.meta.env.MODE === "development") {
-        console.log(
+        console.info(
           "[LabService] ✓ Extracted title from h1.ql-title-large:",
           title,
         );
@@ -376,7 +376,7 @@ class SearchService {
       return title;
     }
     if (import.meta.env.MODE === "development") {
-      console.log("[LabService] ✗ h1.ql-title-large not found");
+      console.info("[LabService] ✗ h1.ql-title-large not found");
     }
 
     // Try just h1 element as fallback
@@ -384,7 +384,7 @@ class SearchService {
     if (h1Element) {
       const title = h1Element.textContent?.trim() || "";
       if (import.meta.env.MODE === "development") {
-        console.log("[LabService] ✓ Extracted title from first h1:", title);
+        console.info("[LabService] ✓ Extracted title from first h1:", title);
       }
       return title;
     }
@@ -395,7 +395,7 @@ class SearchService {
         .querySelector(".ql-display-large.lab-preamble__title")
         ?.textContent?.trim() || "";
     if (import.meta.env.MODE === "development") {
-      console.log(
+      console.info(
         "[LabService] Extracted title from fallback selector:",
         fallbackTitle,
       );
@@ -414,13 +414,13 @@ class SearchService {
       const match = text.match(/GSP\d+/);
       if (match) {
         if (import.meta.env.MODE === "development") {
-          console.log("[LabService] Extracted GSP ID:", match[0]);
+          console.info("[LabService] Extracted GSP ID:", match[0]);
         }
         return match[0];
       }
     }
     if (import.meta.env.MODE === "development") {
-      console.log("[LabService] No GSP ID found");
+      console.info("[LabService] No GSP ID found");
     }
     return "";
   }
@@ -437,7 +437,7 @@ class SearchService {
     const parts = [gspId, labTitle, queryText].filter(Boolean);
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
-      console.log("[LabService] Combined query for search:", combinedQuery);
+      console.info("[LabService] Combined query for search:", combinedQuery);
     }
     return combinedQuery;
   }

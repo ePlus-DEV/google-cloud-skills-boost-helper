@@ -18,9 +18,6 @@ const ApiClient = (() => {
     }>
   > {
     const { query } = params;
-    if (import.meta.env.MODE === "development") {
-      console.log("[ApiClient] Fetching posts with query:", query);
-    }
 
     try {
       const response = await fetch(REST_API_URL);
@@ -37,7 +34,7 @@ const ApiClient = (() => {
         slug: string;
         datePublished: string;
       }>;
-      console.log("[ApiClient] Total posts loaded:", posts.length);
+      console.info("[ApiClient] Total posts loaded:", posts.length);
 
       // Filter posts by query
       const queryLower = query.toLowerCase();
@@ -51,7 +48,7 @@ const ApiClient = (() => {
         );
       });
       if (import.meta.env.MODE === "development") {
-        console.log(
+        console.info(
           "[ApiClient] Filtered posts:",
           filteredPosts.length,
           filteredPosts.map((p) => p.title),

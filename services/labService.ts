@@ -19,12 +19,12 @@ const LabService = {
    */
   async processLabPage(): Promise<void> {
     if (import.meta.env.MODE === "development") {
-      console.log("[LabService] Starting processLabPage");
+      console.info("[LabService] Starting processLabPage");
     }
     const outlineContainer = this.validateOutlineContainer();
     if (!outlineContainer) {
       if (import.meta.env.MODE === "development") {
-        console.log("[LabService] No outline container found");
+        console.info("[LabService] No outline container found");
       }
       return;
     }
@@ -33,14 +33,14 @@ const LabService = {
     const queryText = SearchService.extractQueryText();
     const combinedQueryText = SearchService.createCombinedQuery();
     if (import.meta.env.MODE === "development") {
-      console.log("[LabService] Query text:", queryText);
-      console.log("[LabService] Combined query text:", combinedQueryText);
+      console.info("[LabService] Query text:", queryText);
+      console.info("[LabService] Combined query text:", combinedQueryText);
     }
 
     const searchQuery = queryText || combinedQueryText;
     if (!searchQuery) {
       if (import.meta.env.MODE === "development") {
-        console.log("[LabService] No query text found, exiting");
+        console.info("[LabService] No query text found, exiting");
       }
       return;
     }
@@ -63,7 +63,7 @@ const LabService = {
 
     for (let page = 0; page < MAX_PAGES; page++) {
       if (import.meta.env.MODE === "development") {
-        console.log(`[LabService] Fetching posts (no paging)`);
+        console.info(`[LabService] Fetching posts (no paging)`);
       }
       const postsData = await ApiClient.fetchPostsOfPublication({
         ...searchParams,
@@ -72,13 +72,13 @@ const LabService = {
 
       if (!postsData || postsData.length === 0) {
         if (import.meta.env.MODE === "development") {
-          console.log("[LabService] No posts data received");
+          console.info("[LabService] No posts data received");
         }
         break;
       }
 
       if (import.meta.env.MODE === "development") {
-        console.log(`[LabService] Received ${postsData.length} posts`);
+        console.info(`[LabService] Received ${postsData.length} posts`);
       }
       bestMatchUrl = SearchService.findBestMatchUrl(
         postsData,
@@ -86,7 +86,7 @@ const LabService = {
       );
       if (bestMatchUrl) {
         if (import.meta.env.MODE === "development") {
-          console.log("[LabService] Found best match URL:", bestMatchUrl);
+          console.info("[LabService] Found best match URL:", bestMatchUrl);
         }
         break;
       }
