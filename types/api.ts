@@ -53,7 +53,6 @@ export interface SearchPostsOfPublicationData {
 export interface SearchPostsParams {
   publicationId: string;
   query: string;
-  first: number;
 }
 
 export interface FuseOptions {

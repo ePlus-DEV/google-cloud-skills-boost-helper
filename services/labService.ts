@@ -18,12 +18,12 @@ const LabService = {
    * Process lab page and add solution button
    */
   async processLabPage(): Promise<void> {
-    if (import.meta.env.MODE === "development") {
+    if (import.meta.env.DEV) {
       console.info("[LabService] Starting processLabPage");
     }
     const outlineContainer = this.validateOutlineContainer();
     if (!outlineContainer) {
-      if (import.meta.env.MODE === "development") {
+      if (import.meta.env.DEV) {
         console.info("[LabService] No outline container found");
       }
       return;
@@ -32,45 +32,46 @@ const LabService = {
     // Extract search parameters
     const queryText = SearchService.extractQueryText();
     const combinedQueryText = SearchService.createCombinedQuery();
-    if (import.meta.env.MODE === "development") {
+    if (import.meta.env.DEV) {
       console.info("[LabService] Query text:", queryText);
       console.info("[LabService] Combined query text:", combinedQueryText);
     }
 
     const searchQuery = queryText || combinedQueryText;
     if (!searchQuery) {
-      if (import.meta.env.MODE === "development") {
+      if (import.meta.env.DEV) {
         console.info("[LabService] No query text found, exiting");
       }
       return;
     }
-
 
     // Show loading button immediately
     const loadingElement = UIComponents.createLoadingElement();
     outlineContainer.appendChild(loadingElement);
 
     // Fetch posts data ONCE (no paging)
-    if (import.meta.env.MODE === "development") {
+    if (import.meta.env.DEV) {
       console.info(`[LabService] Fetching posts (single fetch)`);
     }
     const postsData = await ApiClient.fetchPostsOfPublication({
       publicationId: import.meta.env.WXT_API_KEY,
       query: searchQuery,
-      first: 20,
     });
 
     let bestMatchUrl: string | null = null;
     if (postsData && postsData.length > 0) {
-      if (import.meta.env.MODE === "development") {
+      if (import.meta.env.DEV) {
         console.info(`[LabService] Received ${postsData.length} posts`);
       }
-      bestMatchUrl = SearchService.findBestMatchUrl(postsData, combinedQueryText);
-      if (bestMatchUrl && import.meta.env.MODE === "development") {
+      bestMatchUrl = SearchService.findBestMatchUrl(
+        postsData,
+        combinedQueryText,
+      );
+      if (bestMatchUrl && import.meta.env.DEV) {
         console.info("[LabService] Found best match URL:", bestMatchUrl);
       }
     } else {
-      if (import.meta.env.MODE === "development") {
+      if (import.meta.env.DEV) {
         console.info("[LabService] No posts data received");
       }
     }
