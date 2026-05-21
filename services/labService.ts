@@ -10,35 +10,30 @@ const LabService = {
   /**
    * Check if the outline container exists and is valid
    */
-  validateOutlineContainer(): HTMLUListElement | null {
-    const outlineContainer = document
-      .querySelector(".lab-content__outline.js-lab-content-outline")
-      ?.closest("ul") as HTMLUListElement | null;
-
-    if (!outlineContainer) {
-      return null;
-    }
-
-    const firstOutlineItem = outlineContainer.querySelector("li");
-    if (!firstOutlineItem) {
-      return null;
-    }
-
-    return outlineContainer;
+  validateOutlineContainer(): HTMLElement | null {
+    return document.querySelector("h2#step1");
   },
 
   /**
    * Process lab page and add solution button
    */
   async processLabPage(): Promise<void> {
+    console.log("[LabService] Starting processLabPage");
     const outlineContainer = this.validateOutlineContainer();
-    if (!outlineContainer) return;
+    if (!outlineContainer) {
+      console.log("[LabService] No outline container found");
+      return;
+    }
 
     // Extract search parameters
     const queryText = SearchService.extractQueryText();
     const combinedQueryText = SearchService.createCombinedQuery();
+    console.log("[LabService] Query text:", queryText);
+    console.log("[LabService] Combined query text:", combinedQueryText);
 
-    if (!queryText) {
+    const searchQuery = queryText || combinedQueryText;
+    if (!searchQuery) {
+      console.log("[LabService] No query text found, exiting");
       return;
     }
 
@@ -49,7 +44,7 @@ const LabService = {
     // Fetch posts data with pagination fallback
     const searchParams: SearchPostsParams = {
       publicationId: import.meta.env.WXT_API_KEY,
-      query: queryText,
+      query: searchQuery,
       first: 20,
       after: null,
     };
@@ -59,21 +54,31 @@ const LabService = {
     const MAX_PAGES = 5;
 
     for (let page = 0; page < MAX_PAGES; page++) {
+      console.log(`[LabService] Fetching page ${page + 1}/${MAX_PAGES}`);
       const postsData = await ApiClient.fetchPostsOfPublication({
         ...searchParams,
         after,
       });
 
-      if (!postsData) break;
+      if (!postsData) {
+        console.log("[LabService] No posts data received");
+        break;
+      }
 
+      console.log(`[LabService] Received ${postsData.edges.length} posts`);
       bestMatchUrl = SearchService.findBestMatchUrl(
         postsData,
         combinedQueryText,
       );
-      if (bestMatchUrl) break;
-
-      if (!postsData.pageInfo?.hasNextPage || !postsData.pageInfo.endCursor)
+      if (bestMatchUrl) {
+        console.log("[LabService] Found best match URL:", bestMatchUrl);
         break;
+      }
+
+      if (!postsData.pageInfo?.hasNextPage || !postsData.pageInfo.endCursor) {
+        console.log("[LabService] No more pages");
+        break;
+      }
       after = postsData.pageInfo.endCursor;
     }
 

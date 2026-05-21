@@ -8,8 +8,8 @@ const UIComponents = {
   /**
    * Create a loading button element shown while searching
    */
-  createLoadingElement(): HTMLLIElement {
-    const el = document.createElement("li");
+  createLoadingElement(): HTMLDivElement {
+    const el = document.createElement("div");
     Object.assign(el.style, {
       marginTop: "15px",
       padding: "10px",
@@ -26,12 +26,12 @@ const UIComponents = {
   /**
    * Create a solution button element
    */
-  async createSolutionElement(url: string | null): Promise<HTMLLIElement> {
-    const solutionElement = document.createElement("li");
+  async createSolutionElement(url: string | null): Promise<HTMLDivElement> {
+    const solutionElement = document.createElement("div");
 
     Object.assign(solutionElement.style, {
       marginTop: "15px",
-      padding: "10px",
+      // padding: "10px",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
 
@@ -64,6 +64,7 @@ const UIComponents = {
               title="${browser.i18n.getMessage("labEplusSearch")}"
               data-aria-label="${browser.i18n.getMessage("labEplusSearch")}"
               id="eplus-search-btn"
+              style="display: none;"
             >
               ${browser.i18n.getMessage("labEplusSearch")}
             </ql-button>

@@ -355,11 +355,56 @@ class SearchService {
    * Get lab title from page
    */
   static getLabTitle(): string {
-    return (
+    console.log("[LabService] Looking for lab title...");
+
+    // Try selector h1.ql-title-large (direct, no shadow DOM)
+    const titleElement = document.querySelector("h1.ql-title-large");
+    if (titleElement) {
+      const title = titleElement.textContent?.trim() || "";
+      console.log(
+        "[LabService] ✓ Extracted title from h1.ql-title-large:",
+        title,
+      );
+      return title;
+    }
+    console.log("[LabService] ✗ h1.ql-title-large not found");
+
+    // Try just h1 element as fallback
+    const h1Element = document.querySelector("h1");
+    if (h1Element) {
+      const title = h1Element.textContent?.trim() || "";
+      console.log("[LabService] ✓ Extracted title from first h1:", title);
+      return title;
+    }
+
+    // Fallback to old selector
+    const fallbackTitle =
       document
         .querySelector(".ql-display-large.lab-preamble__title")
-        ?.textContent?.trim() || ""
+        ?.textContent?.trim() || "";
+    console.log(
+      "[LabService] Extracted title from fallback selector:",
+      fallbackTitle,
     );
+    return fallbackTitle;
+  }
+
+  /**
+   * Get GSP ID from page (e.g., GSP344)
+   */
+  static getGspId(): string {
+    const h2Element = document.querySelector("h2");
+    if (h2Element) {
+      const text = h2Element.textContent?.trim() || "";
+      // Extract GSP ID pattern (GSP followed by numbers)
+      const match = text.match(/GSP\d+/);
+      if (match) {
+        console.log("[LabService] Extracted GSP ID:", match[0]);
+        return match[0];
+      }
+    }
+    console.log("[LabService] No GSP ID found");
+    return "";
   }
 
   /**
@@ -367,8 +412,14 @@ class SearchService {
    */
   static createCombinedQuery(): string {
     const labTitle = this.getLabTitle();
+    const gspId = this.getGspId();
     const queryText = this.extractQueryText();
-    return `${labTitle} - ${queryText}`.trim();
+
+    // Build query with GSP ID first (more specific) then title
+    const parts = [gspId, labTitle, queryText].filter(Boolean);
+    const combinedQuery = parts.join(" - ").trim();
+    console.log("[LabService] Combined query for search:", combinedQuery);
+    return combinedQuery;
   }
 }
 

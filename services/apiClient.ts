@@ -1,95 +1,82 @@
-import { ApolloClient, InMemoryCache, HttpLink, gql } from "@apollo/client";
 import type {
   SearchPostsOfPublicationData,
   SearchPostsParams,
 } from "../types/api";
 
-// Apollo Client singleton
+// REST API Client
 const ApiClient = (() => {
-  let instance: ApolloClient;
+  const REST_API_URL =
+    "https://raw.githubusercontent.com/hoangsvit/eplus.dev/refs/heads/main/data/posts.json";
 
   /**
-   * Returns the singleton ApolloClient instance.
-   * Initializes the client if it does not exist.
-   */
-  function getClient(): ApolloClient {
-    if (!instance) {
-      instance = new ApolloClient({
-        link: new HttpLink({
-          uri: import.meta.env.WXT_API_URL,
-          headers: {
-            Accept:
-              "application/graphql-response+json, application/graphql+json, application/json, text/event-stream, multipart/mixed",
-          },
-        }),
-        cache: new InMemoryCache(),
-      });
-    }
-    return instance;
-  }
-
-  // GraphQL query definition
-  const SEARCH_POSTS_QUERY = gql`
-    query SearchPosts(
-      $publicationId: ObjectId!
-      $query: String!
-      $first: Int!
-      $after: String
-    ) {
-      searchPostsOfPublication(
-        first: $first
-        after: $after
-        filter: { publicationId: $publicationId, query: $query }
-      ) {
-        edges {
-          node {
-            ...PostSolutionSearchFields
-          }
-          cursor
-          __typename
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
-          __typename
-        }
-        __typename
-      }
-    }
-
-    fragment PostSolutionSearchFields on Post {
-      __typename
-      id
-      title
-      url
-      slug
-    }
-  `;
-
-  /**
-   * Fetch posts of a publication using GraphQL
+   * Fetch posts from REST API and transform to SearchPostsOfPublicationData format
    */
   async function fetchPostsOfPublication(
     params: SearchPostsParams,
   ): Promise<SearchPostsOfPublicationData | null> {
-    const { publicationId, query, first, after = null } = params;
+    const { query, first } = params;
+    console.log("[ApiClient] Fetching posts with query:", query);
 
     try {
-      const result = await getClient().query({
-        query: SEARCH_POSTS_QUERY,
-        variables: {
-          publicationId,
-          query,
-          first,
-          after,
-        },
-      });
+      console.log("[ApiClient] Fetching from:", REST_API_URL);
+      const response = await fetch(REST_API_URL);
+      if (!response.ok) {
+        console.error("[ApiClient] API response not OK:", response.status);
+        return null;
+      }
 
-      const data = result.data as {
-        searchPostsOfPublication: SearchPostsOfPublicationData;
+      const posts = (await response.json()) as Array<{
+        _id: string;
+        title: string;
+        slug: string;
+        datePublished: string;
+      }>;
+      console.log("[ApiClient] Total posts loaded:", posts.length);
+
+      // Filter posts by query
+      const queryLower = query.toLowerCase();
+      const queryWords = queryLower.split(/[\s-]+/).filter(Boolean);
+
+      const filteredPosts = posts.filter((post) => {
+        const titleLower = post.title.toLowerCase();
+        const slugLower = post.slug.toLowerCase();
+
+        // Check if all query words are in title or slug
+        return queryWords.every(
+          (word) => titleLower.includes(word) || slugLower.includes(word),
+        );
+      });
+      console.log(
+        "[ApiClient] Filtered posts:",
+        filteredPosts.length,
+        filteredPosts.map((p) => p.title),
+      );
+
+      // Transform to SearchPostsOfPublicationData format for compatibility
+      const edges = filteredPosts.slice(0, first).map((post, index) => ({
+        cursor: `cursor_${index}`,
+        node: {
+          id: post._id,
+          title: post.title,
+          url: post.slug,
+          slug: post.slug,
+          __typename: "Post",
+        },
+        __typename: "PostEdge",
+      }));
+
+      return {
+        edges,
+        pageInfo: {
+          hasNextPage: filteredPosts.length > first,
+          endCursor:
+            filteredPosts.length > first ? `cursor_${first}` : undefined,
+          __typename: "PageInfo",
+        },
+        __typename: "PostConnection",
       };
-      return data.searchPostsOfPublication;
     } catch (error) {
+      console.error("[ApiClient] Error fetching posts:", error);
       return null;
     }
   }
