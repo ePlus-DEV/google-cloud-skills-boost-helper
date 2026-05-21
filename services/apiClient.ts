@@ -2,9 +2,6 @@ import type { SearchPostsParams } from "../types/api";
 
 // REST API Client
 const ApiClient = (() => {
-  const REST_API_URL =
-    "https://raw.githubusercontent.com/hoangsvit/eplus.dev/refs/heads/main/data/posts.json";
-
   /**
    * Fetch posts from REST API and transform to SearchPostsOfPublicationData format
    */
@@ -20,7 +17,7 @@ const ApiClient = (() => {
     const { query } = params;
 
     try {
-      const response = await fetch(REST_API_URL);
+      const response = await fetch(import.meta.env.WXT_API_URL);
       if (!response.ok) {
         if (import.meta.env.MODE === "development") {
           console.error("[ApiClient] API response not OK:", response.status);
