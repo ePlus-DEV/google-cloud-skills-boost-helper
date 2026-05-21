@@ -140,6 +140,6 @@ describe("SearchService.createCombinedQuery - extended", () => {
 
   it("returns trimmed result when no elements found", () => {
     const result = SearchService.createCombinedQuery();
-    expect(result).toBe(" -".trim());
+    expect(result).toBe("");
   });
 });
