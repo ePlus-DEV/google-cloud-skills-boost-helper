@@ -1,5 +1,5 @@
 import Fuse from "fuse.js";
-import type { SearchPostsOfPublicationData, FuseOptions } from "../types/api";
+import type { FuseOptions } from "../types/api";
 
 class SearchService {
   private static readonly DEFAULT_FUSE_OPTIONS: FuseOptions = {
@@ -271,19 +271,23 @@ class SearchService {
    * Find the best matching post URL using fuzzy search with enhanced filtering
    */
   static findBestMatchUrl(
-    postsData: SearchPostsOfPublicationData | null,
+    posts: Array<{
+      id: string;
+      title: string;
+      slug: string;
+      url: string;
+      datePublished: string;
+    }> | null,
     searchQuery: string,
     fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
   ): string | null {
-    if (!postsData) return null;
-
-    const nodes = postsData.edges.map((edge) => edge.node);
-    if (!nodes.length) return null;
+    if (!posts || posts.length === 0) return null;
 
     // Normalize search query once to avoid repeated normalization
     const normalizedQuery = this.normalizeTitle(searchQuery);
 
-    const fuse = this.getFuseInstance(nodes, postsData, fuseOptions);
+    // Use Fuse.js directly on the posts array
+    const fuse = new Fuse(posts, fuseOptions);
     const results = fuse.search(normalizedQuery);
 
     // Enhanced filtering with flexible matching criteria
