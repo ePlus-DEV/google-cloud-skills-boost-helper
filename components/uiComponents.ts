@@ -3,6 +3,7 @@
  */
 
 import StorageService from "../services/storageService";
+import SearchService from "../services/searchService";
 
 const UIComponents = {
   /**
@@ -37,9 +38,9 @@ const UIComponents = {
       // Validate and normalize the URL
       let safeUrl: string | null = null;
       try {
-        const u = new URL(url, "https://eplus.dev");
-        if (u.protocol === "http:" || u.protocol === "https:") {
-          safeUrl = u.toString();
+        const parsedUrl = new URL(url, "https://eplus.dev");
+        if (parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:") {
+          safeUrl = parsedUrl.toString();
         }
       } catch (e) {
         // Invalid URL, do not render button
@@ -156,10 +157,7 @@ const UIComponents = {
    * Search the current lab on ePlus.dev
    */
   searchOnEplus(): void {
-    const labTitle =
-      document
-        .querySelector(".ql-display-large.lab-preamble__title")
-        ?.textContent?.trim() || "";
+    const labTitle = SearchService.getLabTitle();
     const encodedQuery = encodeURIComponent(labTitle);
     window.open(`https://eplus.dev/search?q=${encodedQuery}`, "_blank");
   },
@@ -169,16 +167,8 @@ const UIComponents = {
    */
   searchOnGoogle(): void {
     try {
-      // Get lab title
-      const labTitle =
-        document
-          .querySelector(".ql-display-large.lab-preamble__title")
-          ?.textContent?.trim() || "";
-
-      // Use simple search with just the title
-      const searchQuery = labTitle;
-
-      const encodedQuery = encodeURIComponent(searchQuery);
+      const labTitle = SearchService.getLabTitle();
+      const encodedQuery = encodeURIComponent(labTitle);
       const googleSearchUrl = `https://www.google.com/search?q=${encodedQuery}`;
       window.open(googleSearchUrl, "_blank");
     } catch (error) {
@@ -198,21 +188,16 @@ const UIComponents = {
         document
           .querySelector(".ql-display-large.lab-preamble__title")
           ?.textContent?.trim() || "";
-
-      // Use simple search with just the title
-      const searchQuery = labTitle;
-
-      const encodedQuery = encodeURIComponent(searchQuery);
+    try {
+      const labTitle = SearchService.getLabTitle();
+      const encodedQuery = encodeURIComponent(labTitle);
       const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
-
       window.open(youtubeSearchUrl, "_blank");
     } catch (error) {
       // Fallback to simple search
       const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
-      window.open(
-        `https://www.youtube.com/results?search_query=${fallbackQuery}`,
-        "_blank",
-      );
+      window.open(`https://www.youtube.com/results?search_query=${fallbackQuery}`, "_blank");
+    }
     }
   },
 
