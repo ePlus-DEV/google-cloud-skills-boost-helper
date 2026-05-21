@@ -8,7 +8,7 @@ import type { SearchPostsParams } from "../types/api";
  */
 const LabService = {
   /**
-   * Check if the outline container exists and is valid
+   * Use only h2#step1 as the anchor for UI injection
    */
   validateOutlineContainer(): HTMLElement | null {
     return document.querySelector("h2#step1");
@@ -21,10 +21,10 @@ const LabService = {
     if (import.meta.env.DEV) {
       console.info("[LabService] Starting processLabPage");
     }
-    const outlineContainer = this.validateOutlineContainer();
-    if (!outlineContainer) {
+    const anchor = this.validateOutlineContainer();
+    if (!anchor) {
       if (import.meta.env.DEV) {
-        console.info("[LabService] No outline container found");
+        console.info("[LabService] No valid anchor found");
       }
       return;
     }
@@ -45,13 +45,13 @@ const LabService = {
       return;
     }
 
-    // Show loading button immediately
+    // Show loading button immediately, insert after anchor
     const loadingElement = UIComponents.createLoadingElement();
-    outlineContainer.appendChild(loadingElement);
+    anchor.insertAdjacentElement("afterend", loadingElement);
 
     // Fetch posts data ONCE (no paging)
     if (import.meta.env.DEV) {
-      console.info(`[LabService] Fetching posts (single fetch)`);
+      console.info("[LabService] Fetching posts (single fetch)");
     }
     const postsData = await ApiClient.fetchPostsOfPublication({
       publicationId: import.meta.env.WXT_API_KEY,
