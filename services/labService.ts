@@ -54,18 +54,18 @@ const LabService = {
     const MAX_PAGES = 5;
 
     for (let page = 0; page < MAX_PAGES; page++) {
-      console.log(`[LabService] Fetching page ${page + 1}/${MAX_PAGES}`);
+      console.log(`[LabService] Fetching posts (no paging)`);
       const postsData = await ApiClient.fetchPostsOfPublication({
         ...searchParams,
         after,
       });
 
-      if (!postsData) {
+      if (!postsData || postsData.length === 0) {
         console.log("[LabService] No posts data received");
         break;
       }
 
-      console.log(`[LabService] Received ${postsData.edges.length} posts`);
+      console.log(`[LabService] Received ${postsData.length} posts`);
       bestMatchUrl = SearchService.findBestMatchUrl(
         postsData,
         combinedQueryText,
@@ -75,11 +75,8 @@ const LabService = {
         break;
       }
 
-      if (!postsData.pageInfo?.hasNextPage || !postsData.pageInfo.endCursor) {
-        console.log("[LabService] No more pages");
-        break;
-      }
-      after = postsData.pageInfo.endCursor;
+      // No paging, break after first fetch
+      break;
     }
 
     // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev

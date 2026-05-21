@@ -1,7 +1,4 @@
-import type {
-  SearchPostsOfPublicationData,
-  SearchPostsParams,
-} from "../types/api";
+import type { SearchPostsParams } from "../types/api";
 
 // REST API Client
 const ApiClient = (() => {
@@ -11,18 +8,23 @@ const ApiClient = (() => {
   /**
    * Fetch posts from REST API and transform to SearchPostsOfPublicationData format
    */
-  async function fetchPostsOfPublication(
-    params: SearchPostsParams,
-  ): Promise<SearchPostsOfPublicationData | null> {
-    const { query, first } = params;
+  async function fetchPostsOfPublication(params: SearchPostsParams): Promise<
+    Array<{
+      id: string;
+      title: string;
+      slug: string;
+      url: string;
+      datePublished: string;
+    }>
+  > {
+    const { query } = params;
     console.log("[ApiClient] Fetching posts with query:", query);
 
     try {
-      console.log("[ApiClient] Fetching from:", REST_API_URL);
       const response = await fetch(REST_API_URL);
       if (!response.ok) {
         console.error("[ApiClient] API response not OK:", response.status);
-        return null;
+        return [];
       }
 
       const posts = (await response.json()) as Array<{
@@ -40,8 +42,6 @@ const ApiClient = (() => {
       const filteredPosts = posts.filter((post) => {
         const titleLower = post.title.toLowerCase();
         const slugLower = post.slug.toLowerCase();
-
-        // Check if all query words are in title or slug
         return queryWords.every(
           (word) => titleLower.includes(word) || slugLower.includes(word),
         );
@@ -52,32 +52,17 @@ const ApiClient = (() => {
         filteredPosts.map((p) => p.title),
       );
 
-      // Transform to SearchPostsOfPublicationData format for compatibility
-      const edges = filteredPosts.slice(0, first).map((post, index) => ({
-        cursor: `cursor_${index}`,
-        node: {
-          id: post._id,
-          title: post.title,
-          url: post.slug,
-          slug: post.slug,
-          __typename: "Post",
-        },
-        __typename: "PostEdge",
+      // Return simple array of posts
+      return filteredPosts.map((post) => ({
+        id: post._id,
+        title: post.title,
+        slug: post.slug,
+        url: post.slug,
+        datePublished: post.datePublished,
       }));
-
-      return {
-        edges,
-        pageInfo: {
-          hasNextPage: filteredPosts.length > first,
-          endCursor:
-            filteredPosts.length > first ? `cursor_${first}` : undefined,
-          __typename: "PageInfo",
-        },
-        __typename: "PostConnection",
-      };
     } catch (error) {
       console.error("[ApiClient] Error fetching posts:", error);
-      return null;
+      return [];
     }
   }
 
