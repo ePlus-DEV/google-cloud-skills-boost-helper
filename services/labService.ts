@@ -18,22 +18,30 @@ const LabService = {
    * Process lab page and add solution button
    */
   async processLabPage(): Promise<void> {
-    console.log("[LabService] Starting processLabPage");
+    if (import.meta.env.MODE === "development") {
+      console.log("[LabService] Starting processLabPage");
+    }
     const outlineContainer = this.validateOutlineContainer();
     if (!outlineContainer) {
-      console.log("[LabService] No outline container found");
+      if (import.meta.env.MODE === "development") {
+        console.log("[LabService] No outline container found");
+      }
       return;
     }
 
     // Extract search parameters
     const queryText = SearchService.extractQueryText();
     const combinedQueryText = SearchService.createCombinedQuery();
-    console.log("[LabService] Query text:", queryText);
-    console.log("[LabService] Combined query text:", combinedQueryText);
+    if (import.meta.env.MODE === "development") {
+      console.log("[LabService] Query text:", queryText);
+      console.log("[LabService] Combined query text:", combinedQueryText);
+    }
 
     const searchQuery = queryText || combinedQueryText;
     if (!searchQuery) {
-      console.log("[LabService] No query text found, exiting");
+      if (import.meta.env.MODE === "development") {
+        console.log("[LabService] No query text found, exiting");
+      }
       return;
     }
 
@@ -54,24 +62,32 @@ const LabService = {
     const MAX_PAGES = 5;
 
     for (let page = 0; page < MAX_PAGES; page++) {
-      console.log(`[LabService] Fetching posts (no paging)`);
+      if (import.meta.env.MODE === "development") {
+        console.log(`[LabService] Fetching posts (no paging)`);
+      }
       const postsData = await ApiClient.fetchPostsOfPublication({
         ...searchParams,
         after,
       });
 
       if (!postsData || postsData.length === 0) {
-        console.log("[LabService] No posts data received");
+        if (import.meta.env.MODE === "development") {
+          console.log("[LabService] No posts data received");
+        }
         break;
       }
 
-      console.log(`[LabService] Received ${postsData.length} posts`);
+      if (import.meta.env.MODE === "development") {
+        console.log(`[LabService] Received ${postsData.length} posts`);
+      }
       bestMatchUrl = SearchService.findBestMatchUrl(
         postsData,
         combinedQueryText,
       );
       if (bestMatchUrl) {
-        console.log("[LabService] Found best match URL:", bestMatchUrl);
+        if (import.meta.env.MODE === "development") {
+          console.log("[LabService] Found best match URL:", bestMatchUrl);
+        }
         break;
       }
 

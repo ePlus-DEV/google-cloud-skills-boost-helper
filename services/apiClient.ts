@@ -18,12 +18,16 @@ const ApiClient = (() => {
     }>
   > {
     const { query } = params;
-    console.log("[ApiClient] Fetching posts with query:", query);
+    if (import.meta.env.MODE === "development") {
+      console.log("[ApiClient] Fetching posts with query:", query);
+    }
 
     try {
       const response = await fetch(REST_API_URL);
       if (!response.ok) {
-        console.error("[ApiClient] API response not OK:", response.status);
+        if (import.meta.env.MODE === "development") {
+          console.error("[ApiClient] API response not OK:", response.status);
+        }
         return [];
       }
 
@@ -46,11 +50,13 @@ const ApiClient = (() => {
           (word) => titleLower.includes(word) || slugLower.includes(word),
         );
       });
-      console.log(
-        "[ApiClient] Filtered posts:",
-        filteredPosts.length,
-        filteredPosts.map((p) => p.title),
-      );
+      if (import.meta.env.MODE === "development") {
+        console.log(
+          "[ApiClient] Filtered posts:",
+          filteredPosts.length,
+          filteredPosts.map((p) => p.title),
+        );
+      }
 
       // Return simple array of posts
       return filteredPosts.map((post) => ({
@@ -61,7 +67,9 @@ const ApiClient = (() => {
         datePublished: post.datePublished,
       }));
     } catch (error) {
-      console.error("[ApiClient] Error fetching posts:", error);
+      if (import.meta.env.MODE === "development") {
+        console.error("[ApiClient] Error fetching posts:", error);
+      }
       return [];
     }
   }
