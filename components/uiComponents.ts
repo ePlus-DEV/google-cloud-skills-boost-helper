@@ -11,7 +11,7 @@ const UIComponents = {
   createLoadingElement(): HTMLDivElement {
     const el = document.createElement("div");
     Object.assign(el.style, {
-      marginTop: "15px",
+      margin: "15px 0",
       padding: "10px",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
@@ -28,25 +28,43 @@ const UIComponents = {
    */
   async createSolutionElement(url: string | null): Promise<HTMLDivElement> {
     const solutionElement = document.createElement("div");
-
     Object.assign(solutionElement.style, {
-      marginTop: "15px",
-      // padding: "10px",
+      margin: "15px 0",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     });
 
     if (url) {
-      solutionElement.innerHTML = `
-        <ql-button
-          icon="check"
-          type="button"
-          title="${browser.i18n.getMessage("labSolutionTitle")}"
-          data-aria-label="${browser.i18n.getMessage("labSolutionTitle")}"
-          onclick="window.open('${url}', '_blank')"
-        >
-          ${browser.i18n.getMessage("labSolutionButton")}
-        </ql-button>
-      `;
+      // Validate and normalize the URL
+      let safeUrl: string | null = null;
+      try {
+        const u = new URL(url, "https://eplus.dev");
+        if (u.protocol === "http:" || u.protocol === "https:") {
+          safeUrl = u.toString();
+        }
+      } catch (e) {
+        // Invalid URL, do not render button
+      }
+
+      if (safeUrl) {
+        // Create button element without inline JS
+        const btn = document.createElement("ql-button");
+        btn.setAttribute("icon", "check");
+        btn.setAttribute("type", "button");
+        btn.setAttribute("title", browser.i18n.getMessage("labSolutionTitle"));
+        btn.setAttribute(
+          "data-aria-label",
+          browser.i18n.getMessage("labSolutionTitle"),
+        );
+        btn.textContent = browser.i18n.getMessage("labSolutionButton");
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          window.open(safeUrl!, "_blank");
+        });
+        solutionElement.appendChild(btn);
+      } else {
+        // If URL is invalid, show nothing or fallback UI
+        solutionElement.textContent = browser.i18n.getMessage("labNoSolution");
+      }
     } else {
       // Check if search feature is enabled
       const isSearchEnabled = await StorageService.isSearchFeatureEnabled();
