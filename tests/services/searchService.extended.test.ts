@@ -60,6 +60,7 @@ describe("SearchService.findBestMatchUrl - extended", () => {
         title: "Deploy a Kubernetes Cluster",
         slug: "k8s",
         datePublished: "",
+        url: undefined as unknown as string,
       },
     ];
     const result = SearchService.findBestMatchUrl(
