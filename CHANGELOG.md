@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.11] - 2026-05-14
+### :sparkles: New Features
+- [`d8a6461`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d8a64611409372f0fb4c9b7608935f3b3e2366c7) - implement theme-aware popup styling and backend service structure *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`68613fa`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/68613fa1ed2147d338303cd1cfc811b102c74f67) - implement theme support and custom styles for popup interface *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`1d02a9b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/1d02a9b82932bb2dfca4a8268a3bc5f968c3f9de) - add Apollo Client service with GraphQL query support for fetching publication posts *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`6046d20`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6046d205279b056128b92455fe2e3d181becd47f) - update Hashnode solution search API *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`0b4a9f4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0b4a9f408b11abf1bf62f9cb1b2c628e91cb2386) - **deps**: bump axios in the production-dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`19a7884`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/19a7884db09b13694df5be138e3b1e886cedfcd9) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c0a6067`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c0a6067e0d71293c1e5831ea7aa3926a11da7ae9) - **deps**: bump the production-dependencies group with 6 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`2668c1d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2668c1d1b49cfc203ae41d0bb89d8329cfa697b0) - **deps**: bump @protobufjs/utf8 from 1.1.0 to 1.1.1 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`867784d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/867784d229508df6ca2783055f5355445a47bf8c) - **deps**: bump protobufjs from 7.5.5 to 7.5.8 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [1.2.10] - 2026-04-24
 ### :sparkles: New Features
 - [`c2a68fe`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c2a68fe1d2a45a8ff290a2174f53d9975ce0e3ff) - **export**: add data export functionality for arcade data and badges *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -880,3 +897,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.8]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.7...1.2.8
 [1.2.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.8...1.2.9
 [1.2.10]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.9...1.2.10
+[1.2.11]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.10...1.2.11
