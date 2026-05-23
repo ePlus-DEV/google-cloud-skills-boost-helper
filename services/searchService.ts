@@ -3,7 +3,7 @@ import type { FuseOptions } from "../types/api";
 
 class SearchService {
   private static readonly DEFAULT_FUSE_OPTIONS: FuseOptions = {
-    threshold: 0.15, // Even more strict threshold to avoid false positives
+    threshold: 0.2, // Very lenient threshold to find matches
     keys: ["title"],
   };
 
@@ -39,6 +39,7 @@ class SearchService {
   private static readonly MONTH_YEAR_PATTERN = /([A-Za-z]+)\s+(\d{4})/;
   private static readonly MONTH_YEAR_ID_PATTERN = /^[a-z]+\d{4}$/;
   private static readonly ALPHANUMERIC_PATTERN = /^[a-zA-Z0-9]+$/;
+  private static readonly COURSE_ID_PATTERN = /GSP\d+/;
 
   // Common words to filter out (cached as Set)
   private static readonly COMMON_WORDS = new Set([
@@ -75,10 +76,21 @@ class SearchService {
   ]);
 
   /**
-   * Normalize title by removing "(Solution)" suffix
+   * Extract course ID from title (e.g., GSP016)
+   */
+  private static extractCourseId(text: string): string | null {
+    const match = text.match(this.COURSE_ID_PATTERN);
+    return match ? match[0] : null;
+  }
+
+  /**
+   * Normalize title by removing "(Solution)" suffix and year prefixes like [2025]
    */
   private static normalizeTitle(title: string): string {
-    return title.replace(this.SOLUTION_PATTERN, "").trim();
+    return title
+      .replace(this.SOLUTION_PATTERN, "") // Remove (Solution)
+      .replace(/\[\d{4}\]\s*/g, "") // Remove [2025] style year prefixes
+      .trim();
   }
 
   /**
@@ -116,8 +128,11 @@ class SearchService {
    * Extract distinctive words that are likely important for matching
    */
   private static extractDistinctiveWords(text: string): Set<string> {
+    // Remove year prefixes like [2025], [2024], etc. before processing
+    let processed = text.replace(/\[\d{4}\]\s*/g, "");
+
     // Split on whitespace and hyphens to handle "multi-modal" → ["multi", "modal"]
-    const words = text.toLowerCase().split(/[\s-]+/);
+    const words = processed.toLowerCase().split(/[\s-]+/);
 
     const distinctive = new Set<string>();
     for (const word of words) {
@@ -281,48 +296,205 @@ class SearchService {
     searchQuery: string,
     fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
   ): string | null {
-    if (!posts || posts.length === 0) return null;
+    if (!posts || posts.length === 0) {
+      if (import.meta.env.DEV) {
+        console.info("[SearchService] No posts provided, returning null");
+      }
+      return null;
+    }
+
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Posts received:", posts.length);
+      console.info(
+        "[SearchService] Post titles:",
+        posts.map((p) => p.title),
+      );
+      console.info("[SearchService] Search query:", searchQuery);
+    }
 
     // Normalize search query once to avoid repeated normalization
     const normalizedQuery = this.normalizeTitle(searchQuery);
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Normalized query:", normalizedQuery);
+    }
+
+    // Extract course ID early for direct matching
+    const queryCourseId = this.extractCourseId(normalizedQuery);
+    if (import.meta.env.DEV && queryCourseId) {
+      console.info(
+        "[SearchService] Extracted course ID from query:",
+        queryCourseId,
+      );
+    }
+
+    // First priority: Try direct course ID match (most reliable)
+    if (queryCourseId) {
+      const courseIdMatch = posts.find((post) => {
+        const postCourseId = this.extractCourseId(post.title);
+        return postCourseId === queryCourseId;
+      });
+      if (courseIdMatch && courseIdMatch.url) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✓ Direct course ID match:",
+            courseIdMatch.title,
+          );
+        }
+        const separator = courseIdMatch.url.includes("?") ? "&" : "?";
+        return `${courseIdMatch.url}${separator}t=${Date.now()}`;
+      }
+    }
 
     // Use Fuse.js directly on the posts array
     const fuse = new Fuse(posts, fuseOptions);
     const results = fuse.search(normalizedQuery);
+    if (import.meta.env.DEV) {
+      console.info(
+        "[SearchService] Fuse.js returned",
+        results.length,
+        "results",
+      );
+      if (results.length > 0) {
+        console.info(
+          "[SearchService] Fuse results:",
+          results.map((r) => ({ score: r.score, title: r.item.title })),
+        );
+      }
+    }
+
+    // Sort results: prioritize course ID matches
+    results.sort((a, b) => {
+      const aCourseId = this.extractCourseId(a.item.title);
+      const bCourseId = this.extractCourseId(b.item.title);
+
+      // If query has a course ID, prioritize matching items
+      if (queryCourseId) {
+        const aMatches = aCourseId === queryCourseId ? 1 : 0;
+        const bMatches = bCourseId === queryCourseId ? 1 : 0;
+        if (aMatches !== bMatches) {
+          return bMatches - aMatches; // Higher priority first
+        }
+      }
+
+      return 0; // Keep original order from Fuse
+    });
 
     // Enhanced filtering with flexible matching criteria
     const validResults = results.filter((result) => {
       const title = result.item.title;
+      const postCourseId = this.extractCourseId(title);
+
+      // If both query and post have the same course ID, this is a strong signal
+      if (queryCourseId && postCourseId && queryCourseId === postCourseId) {
+        if (import.meta.env.DEV) {
+          console.info("[SearchService] ✓ Accepted (course ID match):", title);
+        }
+        return true;
+      }
 
       // 1. Must have compatible identifiers
       if (!this.hasCompatibleIdentifiers(normalizedQuery, title)) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✗ Rejected (incompatible identifiers):",
+            title,
+          );
+        }
         return false;
       }
 
       // 2. Must have matching distinctive words
       if (!this.hasMatchingDistinctiveWords(normalizedQuery, title)) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✗ Rejected (no matching distinctive words):",
+            title,
+          );
+        }
         return false;
       }
 
-      // 3. Must meet advanced similarity threshold
+      // 3. Must meet advanced similarity threshold (relaxed to 0.6)
       const similarityScore = this.calculateAdvancedSimilarity(
         normalizedQuery,
         title,
       );
-      if (similarityScore < 0.75) {
-        // 75% similarity threshold
+      if (similarityScore < 0.6) {
+        // 60% similarity threshold (relaxed from 75%)
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✗ Rejected (low similarity:",
+            similarityScore.toFixed(2),
+            "):",
+            title,
+          );
+        }
         return false;
       }
 
+      if (import.meta.env.DEV) {
+        console.info(
+          "[SearchService] ✓ Accepted (similarity:",
+          similarityScore.toFixed(2),
+          "):",
+          title,
+        );
+      }
       return true;
     });
 
     // If no valid results after filtering, return null
-    if (!validResults.length) return null;
+    if (!validResults.length) {
+      if (import.meta.env.DEV) {
+        console.info(
+          "[SearchService] No valid results after filtering. All posts rejected.",
+        );
+      }
+
+      // Fallback: if we have course ID, try direct match
+      if (queryCourseId && posts && posts.length > 0) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] Attempting fallback: direct course ID match",
+          );
+        }
+        const courseIdMatch = posts.find((p) =>
+          p.title.includes(queryCourseId),
+        );
+        if (courseIdMatch && courseIdMatch.url) {
+          if (import.meta.env.DEV) {
+            console.info(
+              "[SearchService] ✓ Fallback matched by course ID:",
+              courseIdMatch.title,
+            );
+          }
+          const separator = courseIdMatch.url.includes("?") ? "&" : "?";
+          return `${courseIdMatch.url}${separator}t=${Date.now()}`;
+        }
+      }
+
+      // Final fallback: return first post if it has course ID
+      if (posts && posts.length > 0 && this.extractCourseId(posts[0].title)) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✓ Final fallback: returning first post:",
+            posts[0].title,
+          );
+        }
+        const separator = posts[0].url.includes("?") ? "&" : "?";
+        return `${posts[0].url}${separator}t=${Date.now()}`;
+      }
+
+      return null;
+    }
 
     const bestMatch = validResults[0];
     const url = bestMatch.item.url;
     if (!url) return null;
+
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Best match URL:", url);
+    }
 
     // Append timestamp to bypass page-level cache on the solution site
     const separator = url.includes("?") ? "&" : "?";

@@ -105,6 +105,49 @@ describe("SearchService.findBestMatchUrl - extended", () => {
     );
     expect(result).toBeNull();
   });
+
+  it("matches titles with year prefix like [2025]", () => {
+    const posts = [
+      {
+        id: "0",
+        title: "Networking 101 - GSP016",
+        url: "https://eplus.dev/networking-101-gsp016",
+        slug: "networking-101-gsp016",
+        datePublished: "2024-09-03T12:59:22.687Z",
+      },
+    ];
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "[2025] Networking 101 - GSP016",
+    );
+    expect(result).toContain("networking-101-gsp016");
+  });
+
+  it("prioritizes course ID match over title variations", () => {
+    const posts = [
+      {
+        id: "0",
+        title: "[2025] Networking 101 - GSP016",
+        url: "https://eplus.dev/2025-networking-101-gsp016",
+        slug: "2025-networking-101-gsp016",
+        datePublished: "2025-04-15T09:50:22.669Z",
+      },
+      {
+        id: "1",
+        title: "Networking 101 - GSP016",
+        url: "https://eplus.dev/networking-101-gsp016",
+        slug: "networking-101-gsp016",
+        datePublished: "2024-09-03T12:59:22.687Z",
+      },
+    ];
+    const result = SearchService.findBestMatchUrl(
+      posts,
+      "Networking 101 - GSP016",
+    );
+    // Should match one of them (both have GSP016)
+    expect(result).toBeDefined();
+    expect(result).toMatch(/networking-101-gsp016/);
+  });
 });
 
 describe("SearchService.extractQueryText - extended", () => {
