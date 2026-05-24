@@ -106,17 +106,17 @@ const LabService = {
     const getContainer = (): HTMLElement | null => {
       try {
         const labHeader = document.querySelector(
-          "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header"
+          "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
         );
         if (!labHeader || !labHeader.shadowRoot) return null;
 
         const sideSheet = labHeader.shadowRoot.querySelector(
-          "#lab-sticky-controls > ql-lab-control-side-sheet"
+          "#lab-sticky-controls > ql-lab-control-side-sheet",
         );
         if (!sideSheet || !sideSheet.shadowRoot) return null;
 
         return sideSheet.shadowRoot.querySelector(
-          "ql-drawer-container > ql-drawer > div.content > div.credential-container"
+          "ql-drawer-container > ql-drawer > div.content > div.credential-container",
         );
       } catch (e) {
         return null;
@@ -131,9 +131,10 @@ const LabService = {
       if (container.querySelector(".eplus-drawer-solution")) return true;
 
       // Create a fresh solution element for the drawer
-      const drawerSolutionEl = await UIComponents.createSolutionElement(bestMatchUrl);
+      const drawerSolutionEl =
+        await UIComponents.createSolutionElement(bestMatchUrl);
       drawerSolutionEl.classList.add("eplus-drawer-solution");
-      
+
       // Additional styling for the drawer container
       drawerSolutionEl.style.marginTop = "16px";
       drawerSolutionEl.style.marginBottom = "8px";

@@ -82,7 +82,10 @@ const UIComponents = {
         supportBtn.setAttribute("outlined", "");
         supportBtn.setAttribute("type", "button");
         supportBtn.setAttribute("href", "https://t.me/eplus_google");
-        supportBtn.setAttribute("title", browser.i18n.getMessage("labSupportTitle"));
+        supportBtn.setAttribute(
+          "title",
+          browser.i18n.getMessage("labSupportTitle"),
+        );
         supportBtn.setAttribute(
           "data-aria-label",
           browser.i18n.getMessage("labSupportTitle"),
