@@ -93,6 +93,69 @@ const LabService = {
     const solutionElement =
       await UIComponents.createSolutionElement(bestMatchUrl);
     loadingElement.replaceWith(solutionElement);
+
+    if (bestMatchUrl) {
+      this.injectSolutionIntoDrawer(bestMatchUrl);
+    }
+  },
+
+  /**
+   * Dynamically injects and maintains the solution button inside the nested shadow DOM drawer
+   */
+  injectSolutionIntoDrawer(bestMatchUrl: string): void {
+    const getContainer = (): HTMLElement | null => {
+      try {
+        const labHeader = document.querySelector(
+          "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header"
+        );
+        if (!labHeader || !labHeader.shadowRoot) return null;
+
+        const sideSheet = labHeader.shadowRoot.querySelector(
+          "#lab-sticky-controls > ql-lab-control-side-sheet"
+        );
+        if (!sideSheet || !sideSheet.shadowRoot) return null;
+
+        return sideSheet.shadowRoot.querySelector(
+          "ql-drawer-container > ql-drawer > div.content > div.credential-container"
+        );
+      } catch (e) {
+        return null;
+      }
+    };
+
+    const inject = async () => {
+      const container = getContainer();
+      if (!container) return false;
+
+      // Avoid duplicates
+      if (container.querySelector(".eplus-drawer-solution")) return true;
+
+      // Create a fresh solution element for the drawer
+      const drawerSolutionEl = await UIComponents.createSolutionElement(bestMatchUrl);
+      drawerSolutionEl.classList.add("eplus-drawer-solution");
+      
+      // Additional styling for the drawer container
+      drawerSolutionEl.style.marginTop = "16px";
+      drawerSolutionEl.style.marginBottom = "8px";
+      drawerSolutionEl.style.width = "100%";
+
+      container.appendChild(drawerSolutionEl);
+      return true;
+    };
+
+    // Initial injection attempt
+    inject();
+
+    // Check periodically to handle dynamic setup changes or starting the lab
+    const interval = setInterval(async () => {
+      const container = getContainer();
+      if (container && !container.querySelector(".eplus-drawer-solution")) {
+        await inject();
+      }
+    }, 1500);
+
+    // Clear interval after 30 minutes just to be safe with memory
+    setTimeout(() => clearInterval(interval), 30 * 60 * 1000);
   },
 
   /**
