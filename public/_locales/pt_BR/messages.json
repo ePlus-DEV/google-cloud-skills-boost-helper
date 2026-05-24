@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
@@ -188,75 +188,120 @@
   "labelProgress": {
     "message": "Progresso"
   },
-
-  "errorEnterProfileUrl": { "message": "Por favor, insira uma URL de perfil!" },
-  "errorInvalidProfileUrl": { "message": "URL de perfil inválida!" },
-  "errorAccountExistsTitle": { "message": "Conta já existe" },
+  "errorEnterProfileUrl": {
+    "message": "Por favor, insira uma URL de perfil!"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "URL de perfil inválida!"
+  },
+  "errorAccountExistsTitle": {
+    "message": "Conta já existe"
+  },
   "errorAccountExistsMsg": {
     "message": "Uma conta com esta URL já existe: \"$1\"."
   },
   "errorNoNameFromProfile": {
     "message": "Não foi possível obter o nome do perfil. Por favor, tente novamente!"
   },
-  "labelAdding": { "message": "Adicionando..." },
-  "successAccountAdded": { "message": "Conta adicionada com sucesso!" },
+  "labelAdding": {
+    "message": "Adicionando..."
+  },
+  "successAccountAdded": {
+    "message": "Conta adicionada com sucesso!"
+  },
   "errorAddAccountGeneric": {
     "message": "Ocorreu um erro ao adicionar a conta. Por favor, tente novamente!"
   },
-  "errorAccountExistsMsgSimple": { "message": "Conta já existe." },
-  "labelAddAccount": { "message": "Adicionar conta" },
-  "successSwitchedAccount": { "message": "Conta alternada com sucesso!" },
-  "errorSwitchAccount": { "message": "Erro ao alternar conta." },
-  "errorAccountNotFound": { "message": "Conta não encontrada." },
-  "infoUpdatingAccountData": { "message": "Atualizando dados da conta..." },
+  "errorAccountExistsMsgSimple": {
+    "message": "Conta já existe."
+  },
+  "labelAddAccount": {
+    "message": "Adicionar conta"
+  },
+  "successSwitchedAccount": {
+    "message": "Conta alternada com sucesso!"
+  },
+  "errorSwitchAccount": {
+    "message": "Erro ao alternar conta."
+  },
+  "errorAccountNotFound": {
+    "message": "Conta não encontrada."
+  },
+  "infoUpdatingAccountData": {
+    "message": "Atualizando dados da conta..."
+  },
   "successAccountDataUpdated": {
     "message": "Dados da conta atualizados com sucesso!"
   },
   "errorFetchDataFromApi": {
     "message": "Não foi possível buscar dados da API."
   },
-  "errorUpdatingAccount": { "message": "Erro ao atualizar conta." },
+  "errorUpdatingAccount": {
+    "message": "Erro ao atualizar conta."
+  },
   "errorProfileUrlNotFound": {
     "message": "URL de perfil não encontrada para esta conta."
   },
-  "errorOpeningProfile": { "message": "Erro ao abrir perfil." },
+  "errorOpeningProfile": {
+    "message": "Erro ao abrir perfil."
+  },
   "errorNoActiveAccountOrProfileUrl": {
     "message": "Nenhuma conta ativa ou URL de perfil encontrada."
   },
   "errorAccountNotFoundToUpdate": {
     "message": "Não foi possível encontrar conta para atualizar!"
   },
-  "successNicknameSaved": { "message": "Apelido salvo com sucesso!" },
-  "errorSavingNickname": { "message": "Erro ao salvar apelido!" },
-  "successNicknameUpdated": { "message": "Apelido atualizado com sucesso!" },
+  "successNicknameSaved": {
+    "message": "Apelido salvo com sucesso!"
+  },
+  "errorSavingNickname": {
+    "message": "Erro ao salvar apelido!"
+  },
+  "successNicknameUpdated": {
+    "message": "Apelido atualizado com sucesso!"
+  },
   "errorUpdatingAccountGeneric": {
     "message": "Ocorreu um erro ao atualizar a conta!"
   },
   "errorCannotDeleteLastAccount": {
     "message": "Não é possível excluir a última conta!"
   },
-  "successAccountDeleted": { "message": "Conta excluída com sucesso!" },
+  "successAccountDeleted": {
+    "message": "Conta excluída com sucesso!"
+  },
   "errorDeletingAccountGeneric": {
     "message": "Ocorreu um erro ao excluir a conta!"
   },
-  "successDataExported": { "message": "Dados exportados com sucesso!" },
+  "successDataExported": {
+    "message": "Dados exportados com sucesso!"
+  },
   "errorExportingData": {
     "message": "Ocorreu um erro ao exportar dados!"
   },
   "errorNoImportData": {
     "message": "Por favor, selecione um arquivo ou cole o conteúdo JSON!"
   },
-  "successDataImported": { "message": "Dados importados com sucesso!" },
+  "successDataImported": {
+    "message": "Dados importados com sucesso!"
+  },
   "errorInvalidImportData": {
     "message": "Dados inválidos. Por favor, verifique novamente!"
   },
   "errorImportingData": {
     "message": "Ocorreu um erro ao importar dados!"
   },
-  "labelFacilitatorProgram": { "message": "Programa Facilitador" },
-  "messageBadgeEnabled": { "message": "Exibição de emblema ativada" },
-  "messageBadgeDisabled": { "message": "Exibição de emblema desativada" },
-  "labelShowBadge": { "message": "Mostrar emblema no ícone da extensão" },
+  "labelFacilitatorProgram": {
+    "message": "Programa Facilitador"
+  },
+  "messageBadgeEnabled": {
+    "message": "Exibição de emblema ativada"
+  },
+  "messageBadgeDisabled": {
+    "message": "Exibição de emblema desativada"
+  },
+  "labelShowBadge": {
+    "message": "Mostrar emblema no ícone da extensão"
+  },
   "descriptionShowBadge": {
     "message": "Alternar se a extensão mostra os pontos totais no ícone da barra de ferramentas do navegador."
   },
@@ -266,43 +311,105 @@
   "arcadeDeadlinePassed": {
     "message": "A temporada do Arcade terminou para o ano. Até a próxima temporada!"
   },
-  "programEnded": { "message": "Programa Encerrado" },
-  "statusCompleted": { "message": "Concluído" },
-  "statusInProgress": { "message": "Em Andamento" },
-  "statusNotStarted": { "message": "Não Iniciado" },
-  "anonymous": { "message": "Anônimo" },
-  "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Erro ao carregar dados" },
-  "labelBack": { "message": "Voltar" },
-  "changelogWhatsNew": { "message": "O Que Há de Novo" },
-  "changelogLatestUpdates": { "message": "Últimas atualizações e melhorias" },
-  "changelogLoading": { "message": "Carregando registro de alterações..." },
+  "programEnded": {
+    "message": "Programa Encerrado"
+  },
+  "statusCompleted": {
+    "message": "Concluído"
+  },
+  "statusInProgress": {
+    "message": "Em Andamento"
+  },
+  "statusNotStarted": {
+    "message": "Não Iniciado"
+  },
+  "anonymous": {
+    "message": "Anônimo"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "Erro ao carregar dados"
+  },
+  "labelBack": {
+    "message": "Voltar"
+  },
+  "changelogWhatsNew": {
+    "message": "O Que Há de Novo"
+  },
+  "changelogLatestUpdates": {
+    "message": "Últimas atualizações e melhorias"
+  },
+  "changelogLoading": {
+    "message": "Carregando registro de alterações..."
+  },
   "changelogFooterNotice": {
     "message": "Esta extensão não é afiliada ao Google Cloud Skills Boost. Todos os direitos reservados."
   },
-  "announcementTitle": { "message": "Anúncio Importante" },
-  "markdownShowMore": { "message": "Mostrar mais" },
-  "accountsTitle": { "message": "Suas Contas" },
-  "noAccountsYet": { "message": "Ainda não há contas" },
-  "addAccountFirst": { "message": "Adicione sua primeira conta!" },
-  "dataManagementTitle": { "message": "Gerenciamento de Dados" },
-  "dataManagementSubtitle": { "message": "Backup e restauração" },
-  "exportData": { "message": "Exportar Dados" },
-  "importData": { "message": "Importar Dados" },
-  "modalAddAccountTitle": { "message": "Adicionar Nova Conta" },
-  "howToGetProfileUrl": { "message": "Como obter URL do Perfil" },
-  "howToGetProfileSubtitle": { "message": "Siga os passos abaixo" },
-  "openProfilePage": { "message": "Abrir Página de Perfil" },
-  "errorPrefix": { "message": "Erro:" },
-  "successPrefix": { "message": "Sucesso:" },
+  "announcementTitle": {
+    "message": "Anúncio Importante"
+  },
+  "markdownShowMore": {
+    "message": "Mostrar mais"
+  },
+  "accountsTitle": {
+    "message": "Suas Contas"
+  },
+  "noAccountsYet": {
+    "message": "Ainda não há contas"
+  },
+  "addAccountFirst": {
+    "message": "Adicione sua primeira conta!"
+  },
+  "dataManagementTitle": {
+    "message": "Gerenciamento de Dados"
+  },
+  "dataManagementSubtitle": {
+    "message": "Backup e restauração"
+  },
+  "exportData": {
+    "message": "Exportar Dados"
+  },
+  "importData": {
+    "message": "Importar Dados"
+  },
+  "modalAddAccountTitle": {
+    "message": "Adicionar Nova Conta"
+  },
+  "howToGetProfileUrl": {
+    "message": "Como obter URL do Perfil"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "Siga os passos abaixo"
+  },
+  "openProfilePage": {
+    "message": "Abrir Página de Perfil"
+  },
+  "errorPrefix": {
+    "message": "Erro:"
+  },
+  "successPrefix": {
+    "message": "Sucesso:"
+  },
   "accountErrorFallback": {
     "message": "Algo deu errado. Por favor, tente novamente."
   },
-  "accountSuccessFallback": { "message": "Sua ação foi bem-sucedida!" },
-  "viewBadges": { "message": "Ver Medalhas" },
-  "openProfile": { "message": "Abrir Perfil" },
-  "arcadePointsTitle": { "message": "Pontos Arcade" },
-  "milestonesTitle": { "message": "Marcos" },
+  "accountSuccessFallback": {
+    "message": "Sua ação foi bem-sucedida!"
+  },
+  "viewBadges": {
+    "message": "Ver Medalhas"
+  },
+  "openProfile": {
+    "message": "Abrir Perfil"
+  },
+  "arcadePointsTitle": {
+    "message": "Pontos Arcade"
+  },
+  "milestonesTitle": {
+    "message": "Marcos"
+  },
   "accountsCardTitle": {
     "message": "Gerenciamento de Conta e Calculadora de Pontos Arcade"
   },
@@ -312,152 +419,334 @@
   "clickOpenProfileButton": {
     "message": "Clique no botão \"Abrir Página de Perfil\""
   },
-  "programDeadline": { "message": "Prazo do Programa" },
-  "labelDays": { "message": "Dias" },
-  "labelHours": { "message": "Horas" },
-  "labelMinutes": { "message": "Minutos" },
-  "labelSeconds": { "message": "Segundos" },
+  "programDeadline": {
+    "message": "Prazo do Programa"
+  },
+  "labelDays": {
+    "message": "Dias"
+  },
+  "labelHours": {
+    "message": "Horas"
+  },
+  "labelMinutes": {
+    "message": "Minutos"
+  },
+  "labelSeconds": {
+    "message": "Segundos"
+  },
   "milestoneDeadlineNotice": {
     "message": "Complete os marcos antes do prazo para ganhar pontos de bônus!"
   },
   "arcadeMotivation": {
     "message": "Continue com o ritmo e suba na classificação do Arcade!"
   },
-  "totalBonusEarned": { "message": "Bônus Total Obtido:" },
+  "totalBonusEarned": {
+    "message": "Bônus Total Obtido:"
+  },
   "maxPossibleNote": {
     "message": "Máximo possível: 25 pontos (apenas o marco mais alto)"
   },
-  "pointsBreakdown": { "message": "Detalhamento de Pontos" },
-  "arcadeBase": { "message": "Base Arcade:" },
-  "facilitatorBonus": { "message": "Bônus Facilitador:" },
-  "gameBadgeLabel": { "message": "Medalha de Jogo" },
+  "pointsBreakdown": {
+    "message": "Detalhamento de Pontos"
+  },
+  "arcadeBase": {
+    "message": "Base Arcade:"
+  },
+  "facilitatorBonus": {
+    "message": "Bônus Facilitador:"
+  },
+  "gameBadgeLabel": {
+    "message": "Medalha de Jogo"
+  },
   "gameBadgeLabelTooltip": {
     "message": "Arcade agora é sem níveis. Novas trilhas: Adventure (fundamentos de nuvem), Voyage (prática de habilidades), Trail (aprendizado de IA)."
   },
-  "triviaBadgeLabel": { "message": "Medalha de Trivia" },
+  "triviaBadgeLabel": {
+    "message": "Medalha de Trivia"
+  },
   "triviaBadgeLabelTooltip": {
     "message": "Trivia agora se chama Sprint: quizzes rápidos para revisar conceitos e ganhar pontos Arcade."
   },
-  "skillBadgeLabel": { "message": "Medalha de Habilidade" },
-  "specialPointsLabel": { "message": "Pontos Especiais" },
+  "skillBadgeLabel": {
+    "message": "Medalha de Habilidade"
+  },
+  "specialPointsLabel": {
+    "message": "Pontos Especiais"
+  },
   "arcadeSeasonCountdown": {
     "message": "Contagem Regressiva da Temporada Arcade"
   },
-  "milestone1": { "message": "Marco 1" },
-  "milestone1Bonus": { "message": "+2 Pontos de Bônus" },
-  "milestone2": { "message": "Marco 2" },
-  "milestone2Bonus": { "message": "+8 Pontos de Bônus" },
-  "milestone3": { "message": "Marco 3" },
-  "milestone3Bonus": { "message": "+15 Pontos de Bônus" },
-  "milestoneUltimate": { "message": "Definitivo" },
-  "milestoneUltimateBonus": { "message": "+25 Pontos de Bônus" },
-  "progressLabel": { "message": "Progresso:" },
-  "gamesLabel": { "message": "Jogos:" },
-  "triviaLabel": { "message": "Trivia:" },
-  "skillsLabel": { "message": "Habilidades:" },
-  "labFreeLabel": { "message": "Sem laboratório:" },
-  "switchAccount": { "message": "Alternar Conta" },
-  "statusActive": { "message": "Ativo" },
-  "quickSearch": { "message": "Busca Rápida" },
-  "youtubeResults": { "message": "Resultados do YouTube" },
+  "milestone1": {
+    "message": "Marco 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 Pontos de Bônus"
+  },
+  "milestone2": {
+    "message": "Marco 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 Pontos de Bônus"
+  },
+  "milestone3": {
+    "message": "Marco 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 Pontos de Bônus"
+  },
+  "milestoneUltimate": {
+    "message": "Definitivo"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 Pontos de Bônus"
+  },
+  "progressLabel": {
+    "message": "Progresso:"
+  },
+  "gamesLabel": {
+    "message": "Jogos:"
+  },
+  "triviaLabel": {
+    "message": "Trivia:"
+  },
+  "skillsLabel": {
+    "message": "Habilidades:"
+  },
+  "labFreeLabel": {
+    "message": "Sem laboratório:"
+  },
+  "switchAccount": {
+    "message": "Alternar Conta"
+  },
+  "statusActive": {
+    "message": "Ativo"
+  },
+  "quickSearch": {
+    "message": "Busca Rápida"
+  },
+  "youtubeResults": {
+    "message": "Resultados do YouTube"
+  },
   "searchFeatureTip": {
     "message": "Ajuda você a encontrar respostas mais rápido!"
   },
-  "successAccountCreated": { "message": "Conta criada com sucesso!" },
+  "successAccountCreated": {
+    "message": "Conta criada com sucesso!"
+  },
   "successAddNickname": {
     "message": "Você pode adicionar um apelido para identificar facilmente esta conta."
   },
-  "newlyCreated": { "message": "Recém-criado" },
-  "labelNickname": { "message": "Apelido:" },
-  "noNicknameYet": { "message": "Ainda não há apelido" },
-  "labelUpdated": { "message": "Atualizado:" },
-  "justCreated": { "message": "Recém-criado" },
-  "markdownShowLess": { "message": "Mostrar menos" },
-  "importantNoticeTitle": { "message": "Aviso Importante" },
+  "newlyCreated": {
+    "message": "Recém-criado"
+  },
+  "labelNickname": {
+    "message": "Apelido:"
+  },
+  "noNicknameYet": {
+    "message": "Ainda não há apelido"
+  },
+  "labelUpdated": {
+    "message": "Atualizado:"
+  },
+  "justCreated": {
+    "message": "Recém-criado"
+  },
+  "markdownShowLess": {
+    "message": "Mostrar menos"
+  },
+  "importantNoticeTitle": {
+    "message": "Aviso Importante"
+  },
   "importantNoticeText": {
     "message": "Cada URL de perfil pode ser adicionada apenas uma vez. O sistema verificará e notificará se a conta já existe."
   },
   "enterProfileUrlLabel": {
     "message": "Digite a URL do Perfil e Crie a Conta"
   },
-  "createAccountButton": { "message": "Criar Conta" },
-  "instructionsLabel": { "message": "Instruções:" },
+  "createAccountButton": {
+    "message": "Criar Conta"
+  },
+  "instructionsLabel": {
+    "message": "Instruções:"
+  },
   "instructionsText": {
     "message": "Digite a URL e clique em \"Criar Conta\". O sistema carregará automaticamente as informações e criará uma nova conta."
   },
-  "step1Title": { "message": "Clique no botão \"Abrir Página de Perfil\"" },
+  "step1Title": {
+    "message": "Clique no botão \"Abrir Página de Perfil\""
+  },
   "step1Subtitle": {
     "message": "Abrirá o Google Cloud Skills Boost em nova aba"
   },
-  "step2Title": { "message": "Faça login (se ainda não estiver)" },
-  "step2Subtitle": { "message": "Use sua conta Google" },
-  "step3Title": { "message": "Encontre a seção \"Perfil público\"" },
-  "step3Subtitle": { "message": "Role para baixo na página de perfil" },
-  "step4Title": { "message": "Copie a URL da barra de endereços" },
-  "step4Subtitle": { "message": "Cole no campo abaixo" },
-  "newAccountBadge": { "message": "Nova conta" },
-  "totalBadgesLabel": { "message": "Total de Medalhas" },
-  "skillBadgesLabel": { "message": "Medalhas de Habilidade" },
-  "arcadePointsLabel": { "message": "Pontos Arcade" },
-  "accountNicknameLabel": { "message": "Apelido da conta" },
+  "step2Title": {
+    "message": "Faça login (se ainda não estiver)"
+  },
+  "step2Subtitle": {
+    "message": "Use sua conta Google"
+  },
+  "step3Title": {
+    "message": "Encontre a seção \"Perfil público\""
+  },
+  "step3Subtitle": {
+    "message": "Role para baixo na página de perfil"
+  },
+  "step4Title": {
+    "message": "Copie a URL da barra de endereços"
+  },
+  "step4Subtitle": {
+    "message": "Cole no campo abaixo"
+  },
+  "newAccountBadge": {
+    "message": "Nova conta"
+  },
+  "totalBadgesLabel": {
+    "message": "Total de Medalhas"
+  },
+  "skillBadgesLabel": {
+    "message": "Medalhas de Habilidade"
+  },
+  "arcadePointsLabel": {
+    "message": "Pontos Arcade"
+  },
+  "accountNicknameLabel": {
+    "message": "Apelido da conta"
+  },
   "nicknamePlaceholder": {
     "message": "ex: Conta principal, Conta de trabalho, Conta de estudos..."
   },
   "nicknameHelpText": {
     "message": "Apelidos ajudam você a identificar facilmente as contas quando você tem várias contas diferentes"
   },
-  "editAccountTitle": { "message": "Editar conta" },
-  "displayNameLabel": { "message": "Nome de exibição:" },
+  "editAccountTitle": {
+    "message": "Editar conta"
+  },
+  "displayNameLabel": {
+    "message": "Nome de exibição:"
+  },
   "displayNameInfo": {
     "message": "O nome de exibição é obtido do Google Cloud Skills Boost e não pode ser editado"
   },
-  "nicknameLabel": { "message": "Apelido:" },
+  "nicknameLabel": {
+    "message": "Apelido:"
+  },
   "enterNicknamePlaceholder": {
     "message": "Digite um apelido para fácil identificação..."
   },
   "nicknameExample": {
     "message": "Exemplo: \"Conta principal\", \"Conta de trabalho\", \"Conta de estudos\"..."
   },
-  "cancelButton": { "message": "Cancelar" },
-  "saveChangesButton": { "message": "Salvar alterações" },
-  "themeStudioTitle": { "message": "Estúdio de Tema" },
+  "cancelButton": {
+    "message": "Cancelar"
+  },
+  "saveChangesButton": {
+    "message": "Salvar alterações"
+  },
+  "themeStudioTitle": {
+    "message": "Estúdio de Tema"
+  },
   "themeStudioDescription": {
     "message": "Personalize o tema do seu popup com visualização em tempo real."
   },
-  "labelBackground1": { "message": "Fundo 1" },
-  "labelBackground2": { "message": "Fundo 2" },
-  "labelBackground3": { "message": "Fundo 3" },
-  "labelAccent": { "message": "Acento" },
-  "labelArcadePoints": { "message": "Pontos do Arcade" },
-  "labelTextPrimary": { "message": "Texto Principal" },
-  "labelTextSecondary": { "message": "Texto Secundário" },
-  "labelTextMuted": { "message": "Texto Suave" },
-  "btnApplySave": { "message": "Aplicar e Salvar" },
-  "btnResetToDark": { "message": "Redefinir para Escuro" },
-  "btnSyncFromPopup": { "message": "Sincronizar do Popup Atual" },
+  "labelBackground1": {
+    "message": "Fundo 1"
+  },
+  "labelBackground2": {
+    "message": "Fundo 2"
+  },
+  "labelBackground3": {
+    "message": "Fundo 3"
+  },
+  "labelAccent": {
+    "message": "Acento"
+  },
+  "labelArcadePoints": {
+    "message": "Pontos do Arcade"
+  },
+  "labelTextPrimary": {
+    "message": "Texto Principal"
+  },
+  "labelTextSecondary": {
+    "message": "Texto Secundário"
+  },
+  "labelTextMuted": {
+    "message": "Texto Suave"
+  },
+  "btnApplySave": {
+    "message": "Aplicar e Salvar"
+  },
+  "btnResetToDark": {
+    "message": "Redefinir para Escuro"
+  },
+  "btnSyncFromPopup": {
+    "message": "Sincronizar do Popup Atual"
+  },
   "previewNote": {
     "message": "A pré-visualização usa a interface real do popup e os dados da conta atual."
   },
-  "popupLivePreviewTitle": { "message": "Pré-visualização ao Vivo do Popup" },
-  "btnApplyCustomTheme": { "message": "Aplicar Tema Personalizado" },
-  "btnResetCustomTheme": { "message": "Redefinir" },
+  "popupLivePreviewTitle": {
+    "message": "Pré-visualização ao Vivo do Popup"
+  },
+  "btnApplyCustomTheme": {
+    "message": "Aplicar Tema Personalizado"
+  },
+  "btnResetCustomTheme": {
+    "message": "Redefinir"
+  },
   "btnOpenThemeStudio": {
     "message": "Abrir Estúdio de Tema (Visualização ao Vivo)"
   },
-  "btnChangeTheme": { "message": "Alterar tema" },
-  "labThinking": { "message": "Pensando..." },
-  "labSolutionTitle": { "message": "Clique para abrir a solução" },
-  "labSolutionButton": { "message": "Solução deste lab" },
-  "labNoSolution": { "message": "Sem solução" },
-  "labEplusSearch": { "message": "Buscar no ePlus" },
-  "labGoogleSearch": { "message": "Buscar no Google" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "Exportar meus dados" },
-  "exportJSON": { "message": "Exportar JSON" },
-  "exportCSV": { "message": "Exportar emblemas CSV" },
-  "exportSuccess": { "message": "Exportado com sucesso!" },
-  "exportNoData": { "message": "Nenhum dado para exportar." },
-  "compactMode": { "message": "Compacto" },
-  "fullMode": { "message": "Visão completa" },
-  "shortcutHint": { "message": "R atualizar · S configurações · C compacto" }
+  "btnChangeTheme": {
+    "message": "Alterar tema"
+  },
+  "labThinking": {
+    "message": "Pensando..."
+  },
+  "labSolutionTitle": {
+    "message": "Clique para abrir a solução"
+  },
+  "labSolutionButton": {
+    "message": "Solução deste lab"
+  },
+  "labSupportTitle": {
+    "message": "Click to get support or report issue on Telegram"
+  },
+  "labSupportButton": {
+    "message": "Report / Support"
+  },
+  "labNoSolution": {
+    "message": "Sem solução"
+  },
+  "labEplusSearch": {
+    "message": "Buscar no ePlus"
+  },
+  "labGoogleSearch": {
+    "message": "Buscar no Google"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "exportDataTitle": {
+    "message": "Exportar meus dados"
+  },
+  "exportJSON": {
+    "message": "Exportar JSON"
+  },
+  "exportCSV": {
+    "message": "Exportar emblemas CSV"
+  },
+  "exportSuccess": {
+    "message": "Exportado com sucesso!"
+  },
+  "exportNoData": {
+    "message": "Nenhum dado para exportar."
+  },
+  "compactMode": {
+    "message": "Compacto"
+  },
+  "fullMode": {
+    "message": "Visão completa"
+  },
+  "shortcutHint": {
+    "message": "R atualizar · S configurações · C compacto"
+  }
 }

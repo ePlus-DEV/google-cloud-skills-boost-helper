@@ -427,6 +427,8 @@
   "labThinking": { "message": "Đang suy nghĩ..." },
   "labSolutionTitle": { "message": "Nhấn để mở bài giải" },
   "labSolutionButton": { "message": "Xem bài giải" },
+  "labSupportTitle": { "message": "Nhấn để báo lỗi hoặc nhận hỗ trợ qua Telegram" },
+  "labSupportButton": { "message": "Báo lỗi / Hỗ trợ" },
   "labNoSolution": { "message": "Không có bài giải" },
   "labEplusSearch": { "message": "Tìm trên ePlus" },
   "labGoogleSearch": { "message": "Tìm trên Google" },

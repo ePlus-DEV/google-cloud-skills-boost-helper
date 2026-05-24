@@ -47,6 +47,15 @@ const UIComponents = {
       }
 
       if (safeUrl) {
+        // Create wrapper div for layout spacing consistency
+        const wrapper = document.createElement("div");
+        Object.assign(wrapper.style, {
+          display: "flex",
+          gap: "8px",
+          alignItems: "center",
+          flexWrap: "wrap",
+        });
+
         // Wrap the solution button in a <ql-infobox>
         const infobox = document.createElement("ql-infobox");
         const btn = document.createElement("ql-button");
@@ -65,7 +74,28 @@ const UIComponents = {
           }
         });
         infobox.appendChild(btn);
-        solutionElement.appendChild(infobox);
+
+        // Add Telegram Support/Report Button
+        const supportBtn = document.createElement("ql-button");
+        supportBtn.style.marginLeft = "8px";
+        supportBtn.setAttribute("icon", "help");
+        supportBtn.setAttribute("outlined", "");
+        supportBtn.setAttribute("type", "button");
+        supportBtn.setAttribute("href", "https://t.me/eplus_google");
+        supportBtn.setAttribute("title", browser.i18n.getMessage("labSupportTitle"));
+        supportBtn.setAttribute(
+          "data-aria-label",
+          browser.i18n.getMessage("labSupportTitle"),
+        );
+        supportBtn.textContent = browser.i18n.getMessage("labSupportButton");
+        supportBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          window.open("https://t.me/eplus_google", "_blank");
+        });
+        infobox.appendChild(supportBtn);
+
+        wrapper.appendChild(infobox);
+        solutionElement.appendChild(wrapper);
       } else {
         // If URL is invalid, show nothing or fallback UI
         solutionElement.textContent = browser.i18n.getMessage("labNoSolution");
@@ -109,6 +139,17 @@ const UIComponents = {
             >
               ${browser.i18n.getMessage("labYouTube")}
             </ql-button>
+            <ql-button
+              icon="help"
+              type="button"
+              outlined=""
+              href="https://t.me/eplus_google"
+              title="${browser.i18n.getMessage("labSupportTitle")}"
+              data-aria-label="${browser.i18n.getMessage("labSupportTitle")}"
+              id="telegram-support-btn"
+            >
+              ${browser.i18n.getMessage("labSupportButton")}
+            </ql-button>
           </ql-infobox>
         </div>
         `;
@@ -119,6 +160,9 @@ const UIComponents = {
           const googleBtn = solutionElement.querySelector("#google-search-btn");
           const youtubeBtn = solutionElement.querySelector(
             "#youtube-search-btn",
+          );
+          const telegramBtn = solutionElement.querySelector(
+            "#telegram-support-btn",
           );
 
           if (eplusBtn) {
@@ -144,6 +188,14 @@ const UIComponents = {
               UIComponents.searchOnYouTube();
             });
           }
+
+          if (telegramBtn) {
+            telegramBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open("https://t.me/eplus_google", "_blank");
+            });
+          }
         }, 100);
       } else {
         // Search feature disabled - show only "No solution"
@@ -152,8 +204,33 @@ const UIComponents = {
             <ql-button icon="close" disabled>
               ${browser.i18n.getMessage("labNoSolution")}
             </ql-button>
+            <ql-button
+              icon="help"
+              type="button"
+              outlined=""
+              href="https://t.me/eplus_google"
+              title="${browser.i18n.getMessage("labSupportTitle")}"
+              data-aria-label="${browser.i18n.getMessage("labSupportTitle")}"
+              id="telegram-support-btn"
+            >
+              ${browser.i18n.getMessage("labSupportButton")}
+            </ql-button>
           </ql-infobox>
         `;
+
+        // Add event listener for telegram button in search-disabled case
+        setTimeout(() => {
+          const telegramBtn = solutionElement.querySelector(
+            "#telegram-support-btn",
+          );
+          if (telegramBtn) {
+            telegramBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open("https://t.me/eplus_google", "_blank");
+            });
+          }
+        }, 100);
       }
     }
 

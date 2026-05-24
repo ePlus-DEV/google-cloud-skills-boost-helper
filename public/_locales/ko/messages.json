@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
@@ -641,42 +641,112 @@
   "saveChangesButton": {
     "message": "변경 사항 저장"
   },
-  "themeStudioTitle": { "message": "테마 스튜디오" },
+  "themeStudioTitle": {
+    "message": "테마 스튜디오"
+  },
   "themeStudioDescription": {
     "message": "실시간 미리보기를 통해 팝업 테마를 사용자화하세요."
   },
-  "labelBackground1": { "message": "배경 1" },
-  "labelBackground2": { "message": "배경 2" },
-  "labelBackground3": { "message": "배경 3" },
-  "labelAccent": { "message": "강조 색" },
-  "labelArcadePoints": { "message": "아케이드 포인트" },
-  "labelTextPrimary": { "message": "기본 텍스트" },
-  "labelTextSecondary": { "message": "보조 텍스트" },
-  "labelTextMuted": { "message": "희미한 텍스트" },
-  "btnApplySave": { "message": "적용 및 저장" },
-  "btnResetToDark": { "message": "다크로 재설정" },
-  "btnSyncFromPopup": { "message": "현재 팝업에서 동기화" },
+  "labelBackground1": {
+    "message": "배경 1"
+  },
+  "labelBackground2": {
+    "message": "배경 2"
+  },
+  "labelBackground3": {
+    "message": "배경 3"
+  },
+  "labelAccent": {
+    "message": "강조 색"
+  },
+  "labelArcadePoints": {
+    "message": "아케이드 포인트"
+  },
+  "labelTextPrimary": {
+    "message": "기본 텍스트"
+  },
+  "labelTextSecondary": {
+    "message": "보조 텍스트"
+  },
+  "labelTextMuted": {
+    "message": "희미한 텍스트"
+  },
+  "btnApplySave": {
+    "message": "적용 및 저장"
+  },
+  "btnResetToDark": {
+    "message": "다크로 재설정"
+  },
+  "btnSyncFromPopup": {
+    "message": "현재 팝업에서 동기화"
+  },
   "previewNote": {
     "message": "미리보기는 실제 팝업 UI와 현재 계정 데이터를 사용합니다."
   },
-  "popupLivePreviewTitle": { "message": "팝업 라이브 미리보기" },
-  "btnApplyCustomTheme": { "message": "맞춤 테마 적용" },
-  "btnResetCustomTheme": { "message": "재설정" },
-  "btnOpenThemeStudio": { "message": "테마 스튜디오 열기(라이브 미리보기)" },
-  "btnChangeTheme": { "message": "테마 변경" },
-  "labThinking": { "message": "생각 중..." },
-  "labSolutionTitle": { "message": "솔루션을 열려면 클릭하세요" },
-  "labSolutionButton": { "message": "이 랩 솔루션" },
-  "labNoSolution": { "message": "솔루션 없음" },
-  "labEplusSearch": { "message": "ePlus 검색" },
-  "labGoogleSearch": { "message": "Google 검색" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "내 데이터 내보내기" },
-  "exportJSON": { "message": "JSON 내보내기" },
-  "exportCSV": { "message": "배지 CSV 내보내기" },
-  "exportSuccess": { "message": "내보내기 성공!" },
-  "exportNoData": { "message": "내보낼 데이터가 없습니다." },
-  "compactMode": { "message": "간결 모드" },
-  "fullMode": { "message": "전체 보기" },
-  "shortcutHint": { "message": "R 새로고침 · S 설정 · C 간결" }
+  "popupLivePreviewTitle": {
+    "message": "팝업 라이브 미리보기"
+  },
+  "btnApplyCustomTheme": {
+    "message": "맞춤 테마 적용"
+  },
+  "btnResetCustomTheme": {
+    "message": "재설정"
+  },
+  "btnOpenThemeStudio": {
+    "message": "테마 스튜디오 열기(라이브 미리보기)"
+  },
+  "btnChangeTheme": {
+    "message": "테마 변경"
+  },
+  "labThinking": {
+    "message": "생각 중..."
+  },
+  "labSolutionTitle": {
+    "message": "솔루션을 열려면 클릭하세요"
+  },
+  "labSolutionButton": {
+    "message": "이 랩 솔루션"
+  },
+  "labSupportTitle": {
+    "message": "Telegram에서 지원을 받거나 문제를 보고하려면 클릭하세요"
+  },
+  "labSupportButton": {
+    "message": "지원 / 보고"
+  },
+  "labNoSolution": {
+    "message": "솔루션 없음"
+  },
+  "labEplusSearch": {
+    "message": "ePlus 검색"
+  },
+  "labGoogleSearch": {
+    "message": "Google 검색"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "exportDataTitle": {
+    "message": "내 데이터 내보내기"
+  },
+  "exportJSON": {
+    "message": "JSON 내보내기"
+  },
+  "exportCSV": {
+    "message": "배지 CSV 내보내기"
+  },
+  "exportSuccess": {
+    "message": "내보내기 성공!"
+  },
+  "exportNoData": {
+    "message": "내보낼 데이터가 없습니다."
+  },
+  "compactMode": {
+    "message": "간결 모드"
+  },
+  "fullMode": {
+    "message": "전체 보기"
+  },
+  "shortcutHint": {
+    "message": "R 새로고침 · S 설정 · C 간결"
+  }
 }

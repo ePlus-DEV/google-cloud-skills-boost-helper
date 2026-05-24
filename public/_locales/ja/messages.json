@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - ヘルパー"
   },
@@ -641,44 +641,112 @@
   "saveChangesButton": {
     "message": "変更を保存"
   },
-  "themeStudioTitle": { "message": "テーマスタジオ" },
+  "themeStudioTitle": {
+    "message": "テーマスタジオ"
+  },
   "themeStudioDescription": {
     "message": "リアルタイムプレビューでポップアップのテーマをカスタマイズします。"
   },
-  "labelBackground1": { "message": "背景 1" },
-  "labelBackground2": { "message": "背景 2" },
-  "labelBackground3": { "message": "背景 3" },
-  "labelAccent": { "message": "アクセント" },
-  "labelArcadePoints": { "message": "アーケードポイント" },
-  "labelTextPrimary": { "message": "主要テキスト" },
-  "labelTextSecondary": { "message": "二次テキスト" },
-  "labelTextMuted": { "message": "薄いテキスト" },
-  "btnApplySave": { "message": "適用して保存" },
-  "btnResetToDark": { "message": "ダークにリセット" },
-  "btnSyncFromPopup": { "message": "現在のポップアップから同期" },
+  "labelBackground1": {
+    "message": "背景 1"
+  },
+  "labelBackground2": {
+    "message": "背景 2"
+  },
+  "labelBackground3": {
+    "message": "背景 3"
+  },
+  "labelAccent": {
+    "message": "アクセント"
+  },
+  "labelArcadePoints": {
+    "message": "アーケードポイント"
+  },
+  "labelTextPrimary": {
+    "message": "主要テキスト"
+  },
+  "labelTextSecondary": {
+    "message": "二次テキスト"
+  },
+  "labelTextMuted": {
+    "message": "薄いテキスト"
+  },
+  "btnApplySave": {
+    "message": "適用して保存"
+  },
+  "btnResetToDark": {
+    "message": "ダークにリセット"
+  },
+  "btnSyncFromPopup": {
+    "message": "現在のポップアップから同期"
+  },
   "previewNote": {
     "message": "プレビューは実際のポップアップUIと現在のアカウントデータを使用します。"
   },
-  "popupLivePreviewTitle": { "message": "ポップアップのライブプレビュー" },
-  "btnApplyCustomTheme": { "message": "カスタムテーマを適用" },
-  "btnResetCustomTheme": { "message": "リセット" },
+  "popupLivePreviewTitle": {
+    "message": "ポップアップのライブプレビュー"
+  },
+  "btnApplyCustomTheme": {
+    "message": "カスタムテーマを適用"
+  },
+  "btnResetCustomTheme": {
+    "message": "リセット"
+  },
   "btnOpenThemeStudio": {
     "message": "テーマスタジオを開く（ライブプレビュー）"
   },
-  "btnChangeTheme": { "message": "テーマを変更" },
-  "labThinking": { "message": "考え中..." },
-  "labSolutionTitle": { "message": "クリックして解答を開く" },
-  "labSolutionButton": { "message": "このラボの解答" },
-  "labNoSolution": { "message": "解答なし" },
-  "labEplusSearch": { "message": "ePlus検索" },
-  "labGoogleSearch": { "message": "Google検索" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "データをエクスポート" },
-  "exportJSON": { "message": "JSONエクスポート" },
-  "exportCSV": { "message": "バッジCSVエクスポート" },
-  "exportSuccess": { "message": "エクスポートしました！" },
-  "exportNoData": { "message": "エクスポートするデータがありません。" },
-  "compactMode": { "message": "コンパクト" },
-  "fullMode": { "message": "フル表示" },
-  "shortcutHint": { "message": "R 更新 · S 設定 · C コンパクト" }
+  "btnChangeTheme": {
+    "message": "テーマを変更"
+  },
+  "labThinking": {
+    "message": "考え中..."
+  },
+  "labSolutionTitle": {
+    "message": "クリックして解答を開く"
+  },
+  "labSolutionButton": {
+    "message": "このラボの解答"
+  },
+  "labSupportTitle": {
+    "message": "Telegramでサポートを受けるか、問題を報告するにはクリックしてください"
+  },
+  "labSupportButton": {
+    "message": "サポート / 報告"
+  },
+  "labNoSolution": {
+    "message": "解答なし"
+  },
+  "labEplusSearch": {
+    "message": "ePlus検索"
+  },
+  "labGoogleSearch": {
+    "message": "Google検索"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "exportDataTitle": {
+    "message": "データをエクスポート"
+  },
+  "exportJSON": {
+    "message": "JSONエクスポート"
+  },
+  "exportCSV": {
+    "message": "バッジCSVエクスポート"
+  },
+  "exportSuccess": {
+    "message": "エクスポートしました！"
+  },
+  "exportNoData": {
+    "message": "エクスポートするデータがありません。"
+  },
+  "compactMode": {
+    "message": "コンパクト"
+  },
+  "fullMode": {
+    "message": "フル表示"
+  },
+  "shortcutHint": {
+    "message": "R 更新 · S 設定 · C コンパクト"
+  }
 }
