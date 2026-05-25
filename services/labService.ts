@@ -85,7 +85,14 @@ const LabService = {
           bestMatchUrl = parsed.toString();
         }
       } catch (err) {
-        // ignore malformed URLs
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            "[LabService] Malformed bestMatchUrl:",
+            bestMatchUrl,
+            err,
+          );
+        }
       }
     }
 
@@ -105,25 +112,29 @@ const LabService = {
   injectSolutionIntoDrawer(bestMatchUrl: string): void {
     const getContainer = (): HTMLElement | null => {
       try {
-        const labHeader = document.querySelector(
+        const labHeader = document.querySelector<HTMLElement>(
           "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
         );
-        if (!labHeader || !labHeader.shadowRoot) return null;
 
-        const sideSheet = labHeader.shadowRoot.querySelector(
+        const sideSheet = labHeader?.shadowRoot?.querySelector<HTMLElement>(
           "#lab-sticky-controls > ql-lab-control-side-sheet",
         );
-        if (!sideSheet || !sideSheet.shadowRoot) return null;
 
-        return sideSheet.shadowRoot.querySelector(
+        const container = sideSheet?.shadowRoot?.querySelector<HTMLElement>(
           "ql-drawer-container > ql-drawer > div.content > div.credential-container",
         );
+
+        return container ?? null;
       } catch (e) {
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console
+          console.warn("[LabService] getContainer threw:", e);
+        }
         return null;
       }
     };
 
-    const inject = async () => {
+    const inject = async (): Promise<boolean> => {
       const container = getContainer();
       if (!container) return false;
 
@@ -139,9 +150,6 @@ const LabService = {
       drawerSolutionEl.style.marginTop = "16px";
       drawerSolutionEl.style.marginBottom = "8px";
       drawerSolutionEl.style.width = "100%";
-      // Add padding so buttons inside aren't flush with drawer edges
-      // drawerSolutionEl.style.padding = "12px 16px";
-      // drawerSolutionEl.style.boxSizing = "border-box";
 
       container.appendChild(drawerSolutionEl);
       return true;
