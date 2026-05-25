@@ -452,7 +452,7 @@ class SearchService {
       }
 
       // Fallback: if we have course ID, try direct match
-      if (queryCourseId && posts && posts.length > 0) {
+      if (queryCourseId && posts.length > 0) {
         if (import.meta.env.DEV) {
           console.info(
             "[SearchService] Attempting fallback: direct course ID match",
