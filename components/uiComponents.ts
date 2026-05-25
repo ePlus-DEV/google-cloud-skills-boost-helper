@@ -61,7 +61,7 @@ const UIComponents = {
         '"></ql-button>';
 
       const qbtn = container.querySelector("ql-button") as HTMLElement | null;
-      if (qbtn && qbtn.style) {
+      if (qbtn?.style) {
         Object.assign(qbtn.style, {
           width: "44px",
           height: "44px",
@@ -222,7 +222,7 @@ const UIComponents = {
           );
 
           [solBtn, telegramBtn].forEach((el) => {
-            if (el && (el as HTMLElement).style) {
+            if ((el as HTMLElement)?.style) {
               const b = el as HTMLElement;
               b.style.display = "inline-flex";
               b.style.alignItems = "center";
@@ -323,7 +323,7 @@ const UIComponents = {
 
           // Normalize ql-button visuals created via innerHTML
           [eplusBtn, googleBtn, youtubeBtn, telegramBtn].forEach((el) => {
-            if (el && (el as HTMLElement).style) {
+            if ((el as HTMLElement)?.style) {
               const b = el as HTMLElement;
               b.style.display = "inline-flex";
               b.style.alignItems = "center";
