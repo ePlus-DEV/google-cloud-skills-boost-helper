@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "戻る"
   },
+  "backToTop": { "message": "トップへ戻る" },
   "changelogWhatsNew": {
     "message": "新機能"
   },

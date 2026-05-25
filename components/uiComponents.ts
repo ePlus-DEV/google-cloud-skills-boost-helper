@@ -51,7 +51,14 @@ const UIComponents = {
         visibility: "hidden",
       } as Partial<CSSStyleDeclaration>);
 
-      container.innerHTML = `<ql-button icon="arrow_upward" type="button" title="Back to top" data-aria-label="Back to top"></ql-button>`;
+      const backToTopLabel =
+        browser.i18n.getMessage("backToTop") || "Back to top";
+      container.innerHTML =
+        '<ql-button icon="arrow_upward" type="button" title="' +
+        backToTopLabel +
+        '" data-aria-label="' +
+        backToTopLabel +
+        '"></ql-button>';
 
       const qbtn = container.querySelector("ql-button") as HTMLElement | null;
       if (qbtn && qbtn.style) {

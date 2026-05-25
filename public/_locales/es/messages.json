@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "Atrás"
   },
+  "backToTop": { "message": "Volver arriba" },
   "changelogWhatsNew": {
     "message": "Novedades"
   },

@@ -267,6 +267,7 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" },
   "labelBack": { "message": "Quay lại" },
+  "backToTop": { "message": "Lên đầu trang" },
   "changelogWhatsNew": { "message": "Có gì mới" },
   "changelogLatestUpdates": { "message": "Cập nhật và cải tiến mới nhất" },
   "changelogLoading": { "message": "Đang tải nhật ký thay đổi..." },
@@ -427,7 +428,9 @@
   "labThinking": { "message": "Đang suy nghĩ..." },
   "labSolutionTitle": { "message": "Nhấn để mở bài giải" },
   "labSolutionButton": { "message": "Xem bài giải" },
-  "labSupportTitle": { "message": "Nhấn để báo lỗi hoặc nhận hỗ trợ qua Telegram" },
+  "labSupportTitle": {
+    "message": "Nhấn để báo lỗi hoặc nhận hỗ trợ qua Telegram"
+  },
   "labSupportButton": { "message": "Báo lỗi / Hỗ trợ" },
   "labNoSolution": { "message": "Không có bài giải" },
   "labEplusSearch": { "message": "Tìm trên ePlus" },

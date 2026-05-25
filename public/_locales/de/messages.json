@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "Zurück"
   },
+  "backToTop": { "message": "Nach oben" },
   "changelogWhatsNew": {
     "message": "Was gibt's Neues"
   },

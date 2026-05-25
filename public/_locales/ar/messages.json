@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "رجوع"
   },
+  "backToTop": { "message": "الرجوع إلى الأعلى" },
   "changelogWhatsNew": {
     "message": "ما الجديد"
   },

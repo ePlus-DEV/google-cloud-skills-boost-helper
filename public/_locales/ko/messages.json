@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "뒤로"
   },
+  "backToTop": { "message": "맨 위로" },
   "changelogWhatsNew": {
     "message": "새로운 기능"
   },

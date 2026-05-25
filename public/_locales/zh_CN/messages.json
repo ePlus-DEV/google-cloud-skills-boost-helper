@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "返回"
   },
+  "backToTop": { "message": "回到顶部" },
   "changelogWhatsNew": {
     "message": "更新内容"
   },

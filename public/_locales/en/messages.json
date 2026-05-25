@@ -270,6 +270,7 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Error loading data" },
   "labelBack": { "message": "Back" },
+  "backToTop": { "message": "Back to top" },
   "changelogWhatsNew": { "message": "What's New" },
   "changelogLatestUpdates": { "message": "Latest updates and improvements" },
   "changelogLoading": { "message": "Loading changelog..." },
@@ -434,7 +435,9 @@
   "labThinking": { "message": "Thinking..." },
   "labSolutionTitle": { "message": "Click to open the solution" },
   "labSolutionButton": { "message": "Solution this lab" },
-  "labSupportTitle": { "message": "Click to get support or report issue on Telegram" },
+  "labSupportTitle": {
+    "message": "Click to get support or report issue on Telegram"
+  },
   "labSupportButton": { "message": "Report / Support" },
   "labNoSolution": { "message": "No solution" },
   "labEplusSearch": { "message": "ePlus Search" },
