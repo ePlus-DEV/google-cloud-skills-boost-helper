@@ -139,6 +139,9 @@ const LabService = {
       drawerSolutionEl.style.marginTop = "16px";
       drawerSolutionEl.style.marginBottom = "8px";
       drawerSolutionEl.style.width = "100%";
+      // Add padding so buttons inside aren't flush with drawer edges
+      // drawerSolutionEl.style.padding = "12px 16px";
+      // drawerSolutionEl.style.boxSizing = "border-box";
 
       container.appendChild(drawerSolutionEl);
       return true;

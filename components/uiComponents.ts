@@ -47,58 +47,59 @@ const UIComponents = {
       }
 
       if (safeUrl) {
-        // Create wrapper div for layout spacing consistency
-        const wrapper = document.createElement("div");
-        Object.assign(wrapper.style, {
-          display: "flex",
-          gap: "8px",
-          alignItems: "center",
-          flexWrap: "wrap",
-        });
+        // Use the same innerHTML-based insertion as the "No solution" branch
+        solutionElement.innerHTML = `
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; row-gap:6px;">
+            <ql-infobox style="display:flex; gap:6px; flex-wrap:wrap; row-gap:6px;">
+              <ql-button id="lab-solution-btn" icon="check" type="button" title="${browser.i18n.getMessage(
+                "labSolutionTitle",
+              )}" data-aria-label="${browser.i18n.getMessage("labSolutionTitle")}">
+                ${browser.i18n.getMessage("labSolutionButton")}
+              </ql-button>
+              <ql-button id="telegram-support-btn" icon="help" type="button" outlined href="https://t.me/eplus_google" title="${browser.i18n.getMessage(
+                "labSupportTitle",
+              )}" data-aria-label="${browser.i18n.getMessage("labSupportTitle")}">
+                ${browser.i18n.getMessage("labSupportButton")}
+              </ql-button>
+            </ql-infobox>
+          </div>
+        `;
 
-        // Wrap the solution button in a <ql-infobox>
-        const infobox = document.createElement("ql-infobox");
-        const btn = document.createElement("ql-button");
-        btn.setAttribute("icon", "check");
-        btn.setAttribute("type", "button");
-        btn.setAttribute("title", browser.i18n.getMessage("labSolutionTitle"));
-        btn.setAttribute(
-          "data-aria-label",
-          browser.i18n.getMessage("labSolutionTitle"),
-        );
-        btn.textContent = browser.i18n.getMessage("labSolutionButton");
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          if (safeUrl) {
-            window.open(safeUrl, "_blank");
+        // Attach listeners and normalize styles similar to the No-solution branch
+        setTimeout(() => {
+          const solBtn = solutionElement.querySelector("#lab-solution-btn");
+          const telegramBtn = solutionElement.querySelector(
+            "#telegram-support-btn",
+          );
+
+          [solBtn, telegramBtn].forEach((el) => {
+            if (el && (el as HTMLElement).style) {
+              const b = el as HTMLElement;
+              b.style.display = "inline-flex";
+              b.style.alignItems = "center";
+              b.style.gap = "6px";
+              b.style.padding = "3px 3px";
+              b.style.borderRadius = "999px";
+              b.style.boxSizing = "border-box";
+            }
+          });
+
+          if (solBtn) {
+            solBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open(safeUrl as string, "_blank");
+            });
           }
-        });
-        infobox.appendChild(btn);
 
-        // Add Telegram Support/Report Button
-        const supportBtn = document.createElement("ql-button");
-        supportBtn.style.marginLeft = "8px";
-        supportBtn.setAttribute("icon", "help");
-        supportBtn.setAttribute("outlined", "");
-        supportBtn.setAttribute("type", "button");
-        supportBtn.setAttribute("href", "https://t.me/eplus_google");
-        supportBtn.setAttribute(
-          "title",
-          browser.i18n.getMessage("labSupportTitle"),
-        );
-        supportBtn.setAttribute(
-          "data-aria-label",
-          browser.i18n.getMessage("labSupportTitle"),
-        );
-        supportBtn.textContent = browser.i18n.getMessage("labSupportButton");
-        supportBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          window.open("https://t.me/eplus_google", "_blank");
-        });
-        infobox.appendChild(supportBtn);
-
-        wrapper.appendChild(infobox);
-        solutionElement.appendChild(wrapper);
+          if (telegramBtn) {
+            telegramBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open("https://t.me/eplus_google", "_blank");
+            });
+          }
+        }, 50);
       } else {
         // If URL is invalid, show nothing or fallback UI
         solutionElement.textContent = browser.i18n.getMessage("labNoSolution");
@@ -110,8 +111,8 @@ const UIComponents = {
       if (isSearchEnabled) {
         // No solution found - show "No solution" and search options
         solutionElement.innerHTML = `
-          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-            <ql-infobox>
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; row-gap:6px;">
+            <ql-infobox style="display:flex; gap:6px; flex-wrap:wrap; row-gap:6px;">
               <ql-button icon="close" disabled>
                 ${browser.i18n.getMessage("labNoSolution")}
               </ql-button>
@@ -168,6 +169,19 @@ const UIComponents = {
             "#telegram-support-btn",
           );
 
+          // Normalize ql-button visuals created via innerHTML
+          [eplusBtn, googleBtn, youtubeBtn, telegramBtn].forEach((el) => {
+            if (el && (el as HTMLElement).style) {
+              const b = el as HTMLElement;
+              b.style.display = "inline-flex";
+              b.style.alignItems = "center";
+              b.style.gap = "6px";
+              b.style.padding = "3px 3px";
+              b.style.borderRadius = "999px";
+              b.style.boxSizing = "border-box";
+            }
+          });
+
           if (eplusBtn) {
             eplusBtn.addEventListener("click", (e) => {
               e.preventDefault();
@@ -203,7 +217,7 @@ const UIComponents = {
       } else {
         // Search feature disabled - show only "No solution"
         solutionElement.innerHTML = `
-          <ql-infobox>
+          <ql-infobox style="display:flex; gap:6px; flex-wrap:wrap; row-gap:6px;">
             <ql-button icon="close" disabled>
               ${browser.i18n.getMessage("labNoSolution")}
             </ql-button>
