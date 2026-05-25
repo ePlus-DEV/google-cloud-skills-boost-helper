@@ -474,7 +474,7 @@ class SearchService {
       }
 
       // Final fallback: return first post if it has course ID
-      if (posts && posts.length > 0 && this.extractCourseId(posts[0].title)) {
+      if (posts.length > 0 && this.extractCourseId(posts[0].title)) {
         if (import.meta.env.DEV) {
           console.info(
             "[SearchService] ✓ Final fallback: returning first post:",
