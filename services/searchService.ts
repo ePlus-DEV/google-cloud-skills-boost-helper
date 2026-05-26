@@ -390,6 +390,14 @@ class SearchService {
     const separator = url.includes("?") ? "&" : "?";
     return `${url}${separator}t=${Date.now()}`;
   }
+  /**
+   * Run Fuse.js search on the provided posts using the given options
+   * and return Fuse search results for the normalized query.
+   * @param posts Array of post objects with `title` and `url` fields
+   * @param normalizedQuery Pre-normalized query string to search for
+   * @param fuseOptions Fuse.js configuration options
+   * @returns Fuse search results array
+   */
   private static getFuseResults(
     posts: Array<{ title: string; url: string }>,
     normalizedQuery: string,
