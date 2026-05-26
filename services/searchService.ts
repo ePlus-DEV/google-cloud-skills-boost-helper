@@ -356,6 +356,12 @@ class SearchService {
     return `${url}${separator}t=${Date.now()}`;
   }
 
+  /**
+   * Run Fuse.js search on the posts with provided options and return results.
+   * @param posts Array of post objects to index
+   * @param normalizedQuery Normalized query string to search for
+   * @param fuseOptions Options passed to Fuse.js
+   */
   private static getFuseResults(
     posts: Array<{ title: string; url: string }>,
     normalizedQuery: string,
@@ -379,6 +385,12 @@ class SearchService {
     return results;
   }
 
+  /**
+   * Sort search results to prioritize items matching the query course ID.
+   * This reorders the results array in-place.
+   * @param results Fuse search results to sort
+   * @param queryCourseId Course ID extracted from the query, or null
+   */
   private static sortResultsByCourseId(
     results: Array<{ item: { title: string } }>,
     queryCourseId: string | null,
@@ -398,6 +410,13 @@ class SearchService {
     });
   }
 
+  /**
+   * Filter Fuse results with additional compatibility and similarity checks.
+   * Returns only results that meet identifier, distinctive-word and similarity thresholds.
+   * @param results Fuse.js results to filter
+   * @param normalizedQuery Normalized query string used for similarity checks
+   * @param queryCourseId Optional course ID extracted from the query
+   */
   private static filterValidResults(
     results: Array<{ item: { title: string; url?: string } }>,
     normalizedQuery: string,
@@ -462,6 +481,13 @@ class SearchService {
     });
   }
 
+  /**
+   * Attempt fallback strategies when no valid Fuse results are found.
+   * Tries direct course ID match first, then returns the first post if it contains a course ID.
+   * @param posts Original posts array
+   * @param queryCourseId Optional course ID extracted from the query
+   * @returns A URL string with timestamp or null if none found
+   */
   private static getFallbackUrl(
     posts: Array<{ title: string; url: string }>,
     queryCourseId: string | null,
