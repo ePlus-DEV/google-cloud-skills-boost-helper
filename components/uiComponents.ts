@@ -5,6 +5,8 @@
 import StorageService from "../services/storageService";
 import SearchService from "../services/searchService";
 
+const TELEGRAM_SUPPORT_URL = "https://t.me/eplus_google";
+
 const UIComponents = {
   /**
    * Create a loading button element shown while searching
@@ -214,7 +216,7 @@ const UIComponents = {
               )}" data-aria-label="${browser.i18n.getMessage("labSolutionTitle")}">
                 ${browser.i18n.getMessage("labSolutionButton")}
               </ql-button>
-              <ql-button id="telegram-support-btn" icon="help" type="button" outlined href="https://t.me/eplus_google" title="${browser.i18n.getMessage(
+              <ql-button id="telegram-support-btn" icon="help" type="button" outlined href="${TELEGRAM_SUPPORT_URL}" title="${browser.i18n.getMessage(
                 "labSupportTitle",
               )}" data-aria-label="${browser.i18n.getMessage("labSupportTitle")}">
                 ${browser.i18n.getMessage("labSupportButton")}
@@ -254,7 +256,7 @@ const UIComponents = {
             telegramBtn.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              window.open("https://t.me/eplus_google", "_blank");
+              window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
 
@@ -278,43 +280,43 @@ const UIComponents = {
                 ${browser.i18n.getMessage("labNoSolution")}
               </ql-button>
               <ql-button
-              icon="search"
-              type="button"
-              title="${browser.i18n.getMessage("labEplusSearch")}"
-              data-aria-label="${browser.i18n.getMessage("labEplusSearch")}"
-              id="eplus-search-btn"
-            >
-              ${browser.i18n.getMessage("labEplusSearch")}
-            </ql-button>
-            <ql-button
-              icon="search"
-              type="button"
-              title="${browser.i18n.getMessage("labGoogleSearch")}"
-              data-aria-label="${browser.i18n.getMessage("labGoogleSearch")}"
-              id="google-search-btn"
-            >
-              ${browser.i18n.getMessage("labGoogleSearch")}
-            </ql-button>
-            <ql-button
-              icon="video_library"
-              type="button"
-              title="${browser.i18n.getMessage("labYouTube")}"
-              data-aria-label="${browser.i18n.getMessage("labYouTube")}"
-              id="youtube-search-btn"
-            >
-              ${browser.i18n.getMessage("labYouTube")}
-            </ql-button>
-            <ql-button
-              icon="help"
-              type="button"
-              outlined=""
-              href="https://t.me/eplus_google"
-              title="${browser.i18n.getMessage("labSupportTitle")}"
-              data-aria-label="${browser.i18n.getMessage("labSupportTitle")}"
-              id="telegram-support-btn"
-            >
-              ${browser.i18n.getMessage("labSupportButton")}
-            </ql-button>
+                icon="search"
+                type="button"
+                title="${browser.i18n.getMessage("labGoogleSearch")}"
+                data-aria-label="${browser.i18n.getMessage("labGoogleSearch")}"
+                id="google-search-btn"
+              >
+                ${browser.i18n.getMessage("labGoogleSearch")}
+              </ql-button>
+              <ql-button
+                icon="video_library"
+                type="button"
+                title="${browser.i18n.getMessage("labYouTube")}"
+                data-aria-label="${browser.i18n.getMessage("labYouTube")}"
+                id="youtube-search-btn"
+              >
+                ${browser.i18n.getMessage("labYouTube")}
+              </ql-button>
+              <ql-button
+                icon="search"
+                type="button"
+                title="${browser.i18n.getMessage("labEplusSearch")}"
+                data-aria-label="${browser.i18n.getMessage("labEplusSearch")}"
+                id="eplus-search-btn"
+              >
+                ${browser.i18n.getMessage("labEplusSearch")}
+              </ql-button>
+              <ql-button
+                icon="help"
+                type="button"
+                outlined=""
+                href="${TELEGRAM_SUPPORT_URL}"
+                title="${browser.i18n.getMessage("labSupportTitle")}"
+                data-aria-label="${browser.i18n.getMessage("labSupportTitle")}"
+                id="telegram-support-btn"
+              >
+                ${browser.i18n.getMessage("labSupportButton")}
+              </ql-button>
           </ql-infobox>
         </div>
         `;
@@ -374,7 +376,7 @@ const UIComponents = {
             telegramBtn.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              window.open("https://t.me/eplus_google", "_blank");
+              window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
 
@@ -391,7 +393,7 @@ const UIComponents = {
               icon="help"
               type="button"
               outlined=""
-              href="https://t.me/eplus_google"
+              href="${TELEGRAM_SUPPORT_URL}"
               title="${browser.i18n.getMessage("labSupportTitle")}"
               data-aria-label="${browser.i18n.getMessage("labSupportTitle")}"
               id="telegram-support-btn"
@@ -410,7 +412,7 @@ const UIComponents = {
             telegramBtn.addEventListener("click", (e) => {
               e.preventDefault();
               e.stopPropagation();
-              window.open("https://t.me/eplus_google", "_blank");
+              window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
           // ensure floating back-to-top exists
