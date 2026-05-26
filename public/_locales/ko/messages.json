@@ -726,6 +726,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "Bing 검색" },
+  "labYandexSearch": { "message": "Yandex 검색" },
+  "labBraveSearch": { "message": "Brave 검색" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGo 검색" },
+  "labBaiduSearch": { "message": "Baidu 검색" },
+  "labYahooSearch": { "message": "Yahoo! 검색" },
+  "labCoccocSearch": { "message": "Cốc Cốc 검색" },
+  "labelSearch": { "message": "검색" },
+  "labelCopyLink": { "message": "링크 복사" },
+  "labFallbackQuery": { "message": "Google Cloud 실습 튜토리얼" },
   "exportDataTitle": {
     "message": "내 데이터 내보내기"
   },

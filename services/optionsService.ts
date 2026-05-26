@@ -31,6 +31,7 @@ const OptionsService = {
     await OptionsService.initializeAccountManagement();
     await OptionsService.loadExistingData();
     await OptionsService.loadSearchFeatureSetting();
+    await OptionsService.loadPreferredSearchEngineSetting();
     await OptionsService.loadBadgeDisplaySetting();
     await OptionsService.initializeMarkdown();
 
@@ -794,6 +795,49 @@ const OptionsService = {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
     }
+  },
+
+  /**
+   * Load preferred search engine from storage and update UI
+   */
+  async loadPreferredSearchEngineSetting(): Promise<void> {
+    const select = document.getElementById(
+      "preferred-search-engine",
+    ) as HTMLSelectElement | null;
+    if (!select) return;
+
+    try {
+      const preferred = await StorageService.getPreferredSearchEngine();
+      select.value = preferred || "google";
+    } catch (e) {
+      console.error("Failed to load preferred search engine:", e);
+    }
+
+    select.addEventListener("change", async (ev) => {
+      try {
+        const v = (ev.target as HTMLSelectElement).value;
+        await StorageService.savePreferredSearchEngine(v);
+        const message =
+          browser.i18n.getMessage("messagePreferredSearchEngineSaved") ||
+          "Preferred search engine saved";
+        const messageElement = document.createElement("div");
+        messageElement.className =
+          "fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50";
+        messageElement.textContent = message;
+        document.body.appendChild(messageElement);
+        setTimeout(() => messageElement.remove(), 2500);
+        try {
+          await sendRuntimeMessage({
+            type: "preferredSearchEngineChanged",
+            engine: v,
+          });
+        } catch (err) {
+          // non-fatal
+        }
+      } catch (err) {
+        console.error("Failed to save preferred search engine:", err);
+      }
+    });
   },
 
   /**

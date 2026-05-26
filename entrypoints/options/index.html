@@ -26,11 +26,9 @@
 </head>
 
 <body>
-  <div
-    id="options-page-shell"
+  <div id="options-page-shell"
     class="flex flex-col p-4 w-full max-w-4xl mx-auto min-h-screen justify-center bg-gradient-to-br from-purple-100 to-indigo-50">
-    <div
-      id="options-hero"
+    <div id="options-hero"
       class="text-center mb-8 bg-gradient-to-r from-purple-400 to-indigo-600 p-4 sm:p-8 rounded-lg shadow-lg relative border border-indigo-300">
       <h3 class="text-2xl sm:text-4xl font-bold text-white inline-block relative">
         Google Cloud Skills Boost - Helper
@@ -237,6 +235,24 @@
                   <i class="fa-brands fa-youtube mr-1"></i>
                   <span data-i18n="youtubeResults">YouTube Results</span>
                 </span>
+              </div>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="flex-1">
+                  <label for="preferred-search-engine" class="block text-sm font-medium text-gray-700 mb-2">Preferred
+                    search engine</label>
+                  <select id="preferred-search-engine"
+                    class="mt-1 block w-full max-w-xs pl-3 pr-10 py-2 text-base border border-transparent bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 sm:text-sm rounded-full">
+                    <option value="google">Google</option>
+                    <option value="bing">Bing</option>
+                    <option value="yandex">Yandex</option>
+                    <option value="brave">Brave</option>
+                    <option value="duckduckgo">DuckDuckGo</option>
+                    <option value="baidu">Baidu</option>
+                    <option value="yahoo">Yahoo! Search</option>
+                    <option value="coccoc">Cốc Cốc</option>
+                  </select>
+                </div>
+                <!-- badge removed: preference is set by the select -->
               </div>
             </div>
           </div>

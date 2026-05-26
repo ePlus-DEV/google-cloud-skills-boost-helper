@@ -300,6 +300,30 @@ export default defineBackground(() => {
         case "clearBadge":
           await handleClearBadge();
           break;
+        case "preferredSearchEngineChanged":
+          try {
+            const engine = message.engine || "google";
+            // Broadcast to all tabs so content scripts can update UI in-place
+            const tabs = await browser.tabs.query({});
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "preferredSearchEngineChanged",
+                    engine,
+                  });
+                }
+              } catch (err) {
+                // ignore send errors for tabs that don't have the content script
+              }
+            }
+          } catch (err) {
+            console.debug(
+              "Failed to broadcast preferredSearchEngineChanged:",
+              err,
+            );
+          }
+          break;
         case "refreshBadge":
           await handleRefreshBadge();
           break;

@@ -41,6 +41,8 @@ const AccountService = {
           enableSearchFeature: true,
           // default to false (badge off) for new installs unless migrated value exists
           showBadge: false,
+          // preferredSearchEngine can be: 'google', 'bing', 'yandex', 'brave', 'duckduckgo'
+          preferredSearchEngine: "google",
         },
       };
     }
@@ -63,6 +65,9 @@ const AccountService = {
     return data;
   },
 
+  /**
+   * No-op touch to create apply_patch context (will follow with real updates).
+   */
   /**
    * Save accounts data to storage
    */

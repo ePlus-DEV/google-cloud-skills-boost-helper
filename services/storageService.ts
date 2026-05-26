@@ -14,6 +14,7 @@ const STORAGE_KEYS = {
   urlProfile: "local:urlProfile" as const,
   enableSearchFeature: "local:enableSearchFeature" as const,
   showBadge: "local:showBadge" as const,
+  preferredSearchEngine: "local:preferredSearchEngine" as const,
   accountsData: "local:accountsData" as const,
   popupTheme: "local:popupTheme" as const,
 };
@@ -391,6 +392,44 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
 }
 
 /**
+ * Get preferred search engine from settings or legacy storage.
+ * Returns a string key like 'google', 'bing', 'yandex', 'brave', 'duckduckgo'.
+ */
+async function getPreferredSearchEngine(): Promise<string> {
+  try {
+    const settings = await AccountService.getSettings();
+    if (settings && settings.preferredSearchEngine) {
+      return settings.preferredSearchEngine as string;
+    }
+  } catch {
+    // ignore and fallback
+  }
+
+  const legacy = await storage.getItem<string>(
+    STORAGE_KEYS.preferredSearchEngine,
+  );
+  return legacy || "google";
+}
+
+/**
+ * Save preferred search engine to account settings or fallback to legacy storage.
+ */
+async function savePreferredSearchEngine(engine: string): Promise<void> {
+  try {
+    await AccountService.updateSettings({ preferredSearchEngine: engine });
+    return;
+  } catch {
+    // fallback
+  }
+
+  try {
+    await storage.setItem(STORAGE_KEYS.preferredSearchEngine, engine);
+  } catch (e) {
+    console.debug("Failed to save preferred search engine:", e);
+  }
+}
+
+/**
  * Get whether the extension should display the badge on the toolbar icon.
  * Defaults to true if not set.
  */
@@ -474,6 +513,8 @@ const StorageService = {
   saveProfileUrl,
   initializeProfileUrl,
   isSearchFeatureEnabled,
+  getPreferredSearchEngine,
+  savePreferredSearchEngine,
   isBadgeDisplayEnabled,
   saveBadgeDisplayEnabled,
   saveSearchFeatureEnabled,

@@ -726,6 +726,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "بحث Bing" },
+  "labYandexSearch": { "message": "بحث Yandex" },
+  "labBraveSearch": { "message": "بحث Brave" },
+  "labDuckDuckGoSearch": { "message": "بحث DuckDuckGo" },
+  "labBaiduSearch": { "message": "بحث Baidu" },
+  "labYahooSearch": { "message": "بحث Yahoo!" },
+  "labCoccocSearch": { "message": "بحث Cốc Cốc" },
+  "labelSearch": { "message": "بحث" },
+  "labelCopyLink": { "message": "نسخ الرابط" },
+  "labFallbackQuery": { "message": "دليل مختبر Google Cloud" },
   "exportDataTitle": {
     "message": "تصدير بياناتي"
   },

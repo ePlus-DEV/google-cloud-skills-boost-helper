@@ -726,6 +726,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "Bingで検索" },
+  "labYandexSearch": { "message": "Yandexで検索" },
+  "labBraveSearch": { "message": "Braveで検索" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGoで検索" },
+  "labBaiduSearch": { "message": "Baiduで検索" },
+  "labYahooSearch": { "message": "Yahoo!で検索" },
+  "labCoccocSearch": { "message": "Cốc Cốcで検索" },
+  "labelSearch": { "message": "検索" },
+  "labelCopyLink": { "message": "リンクをコピー" },
+  "labFallbackQuery": { "message": "Google Cloud ラボ チュートリアル" },
   "exportDataTitle": {
     "message": "データをエクスポート"
   },

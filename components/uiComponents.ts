@@ -7,6 +7,33 @@ import SearchService from "../services/searchService";
 
 const TELEGRAM_SUPPORT_URL = "https://t.me/eplus_google";
 
+/**
+ * Return a localized label for a search engine, falling back to '<Engine> Search'.
+ */
+function getEngineLabel(engine: string): string {
+  const keyMap: Record<string, string> = {
+    google: "labGoogleSearch",
+    bing: "labBingSearch",
+    yandex: "labYandexSearch",
+    brave: "labBraveSearch",
+    duckduckgo: "labDuckDuckGoSearch",
+    baidu: "labBaiduSearch",
+    yahoo: "labYahooSearch",
+    coccoc: "labCoccocSearch",
+  };
+
+  const key = keyMap[engine];
+  if (key) {
+    const msg = browser.i18n.getMessage(key);
+    if (msg) return msg;
+  }
+
+  const searchWord = browser.i18n.getMessage("labelSearch") || "Search";
+  // Capitalize engine name for fallback
+  const name = engine.charAt(0).toUpperCase() + engine.slice(1);
+  return `${name} ${searchWord}`;
+}
+
 const UIComponents = {
   /**
    * Create a loading button element shown while searching
@@ -52,33 +79,6 @@ const UIComponents = {
         transition: "opacity 200ms ease, transform 200ms ease",
         visibility: "hidden",
       } as Partial<CSSStyleDeclaration>);
-
-      const backToTopLabel =
-        browser.i18n.getMessage("backToTop") || "Back to top";
-      container.innerHTML = `
-        <ql-button icon="arrow_upward" type="button" title="${backToTopLabel}" data-aria-label="${backToTopLabel}"></ql-button>
-      `;
-
-      const qbtn = container.querySelector("ql-button") as HTMLElement | null;
-      if (qbtn?.style) {
-        Object.assign(qbtn.style, {
-          width: "44px",
-          height: "44px",
-          minWidth: "44px",
-          minHeight: "44px",
-          borderRadius: "50%",
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxSizing: "border-box",
-          padding: "0",
-          cursor: "pointer",
-          backgroundColor: "#ffffff",
-          border: "1px solid rgba(0,0,0,0.12)",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
-          color: "#111",
-        } as Partial<CSSStyleDeclaration>);
-      }
 
       const THRESHOLD = 300; // px scrolled before showing button
 
@@ -282,9 +282,7 @@ const UIComponents = {
               <ql-button
                 icon="search"
                 type="button"
-                title="${browser.i18n.getMessage("labGoogleSearch")}"
-                data-aria-label="${browser.i18n.getMessage("labGoogleSearch")}"
-                id="google-search-btn"
+                id="configured-search-btn"
               >
                 ${browser.i18n.getMessage("labGoogleSearch")}
               </ql-button>
@@ -324,7 +322,9 @@ const UIComponents = {
         // Add event listeners after creating the HTML
         setTimeout(() => {
           const eplusBtn = solutionElement.querySelector("#eplus-search-btn");
-          const googleBtn = solutionElement.querySelector("#google-search-btn");
+          const configuredBtn = solutionElement.querySelector(
+            "#configured-search-btn",
+          );
           const youtubeBtn = solutionElement.querySelector(
             "#youtube-search-btn",
           );
@@ -333,7 +333,7 @@ const UIComponents = {
           );
 
           // Normalize ql-button visuals created via innerHTML
-          [eplusBtn, googleBtn, youtubeBtn, telegramBtn].forEach((el) => {
+          [eplusBtn, configuredBtn, youtubeBtn, telegramBtn].forEach((el) => {
             if ((el as HTMLElement)?.style) {
               const btnEl = el as HTMLElement;
               btnEl.style.display = "inline-flex";
@@ -356,13 +356,28 @@ const UIComponents = {
             });
           }
 
-          if (googleBtn) {
-            googleBtn.addEventListener("click", (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              UIComponents.searchOnGoogle();
-            });
-          }
+          // configurable search engine (button only; preference stored in options)
+
+          (async () => {
+            try {
+              const preferred = await StorageService.getPreferredSearchEngine();
+              if (configuredBtn) {
+                configuredBtn.textContent = getEngineLabel(preferred);
+              }
+            } catch (err) {
+              // ignore
+            }
+
+            if (configuredBtn) {
+              configuredBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const engine =
+                  (await StorageService.getPreferredSearchEngine()) || "google";
+                UIComponents.searchOnEngine(engine);
+              });
+            }
+          })();
 
           if (youtubeBtn) {
             youtubeBtn.addEventListener("click", (e) => {
@@ -428,8 +443,10 @@ const UIComponents = {
    * Search the current lab on ePlus.dev
    */
   searchOnEplus(): void {
-    const labTitle = SearchService.getLabTitle();
-    const encodedQuery = encodeURIComponent(labTitle);
+    const combined = SearchService.createCombinedQuery();
+    const encodedQuery = encodeURIComponent(
+      combined || "Google Cloud lab tutorial",
+    );
     window.open(`https://eplus.dev/?q=${encodedQuery}`, "_blank");
   },
 
@@ -438,13 +455,20 @@ const UIComponents = {
    */
   searchOnGoogle(): void {
     try {
-      const labTitle = SearchService.getLabTitle();
-      const encodedQuery = encodeURIComponent(labTitle);
+      const combined = SearchService.createCombinedQuery();
+      const encodedQuery = encodeURIComponent(
+        combined ||
+          browser.i18n.getMessage("labFallbackQuery") ||
+          "Google Cloud lab tutorial",
+      );
       const googleSearchUrl = `https://www.google.com/search?q=${encodedQuery}`;
       window.open(googleSearchUrl, "_blank");
     } catch (error) {
       // Fallback to simple search
-      const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
+      const fallbackQuery = encodeURIComponent(
+        browser.i18n.getMessage("labFallbackQuery") ||
+          "Google Cloud lab tutorial",
+      );
       window.open(`https://www.google.com/search?q=${fallbackQuery}`, "_blank");
     }
   },
@@ -454,13 +478,20 @@ const UIComponents = {
    */
   searchOnYouTube(): void {
     try {
-      const labTitle = SearchService.getLabTitle();
-      const encodedQuery = encodeURIComponent(labTitle);
+      const combined = SearchService.createCombinedQuery();
+      const encodedQuery = encodeURIComponent(
+        combined ||
+          browser.i18n.getMessage("labFallbackQuery") ||
+          "Google Cloud lab tutorial",
+      );
       const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
       window.open(youtubeSearchUrl, "_blank");
     } catch (error) {
       // Fallback to simple search
-      const fallbackQuery = encodeURIComponent("Google Cloud lab tutorial");
+      const fallbackQuery = encodeURIComponent(
+        browser.i18n.getMessage("labFallbackQuery") ||
+          "Google Cloud lab tutorial",
+      );
       window.open(
         `https://www.youtube.com/results?search_query=${fallbackQuery}`,
         "_blank",
@@ -469,11 +500,61 @@ const UIComponents = {
   },
 
   /**
+   * Search the current lab on a selected engine
+   */
+  searchOnEngine(engine: string): void {
+    try {
+      const combined = SearchService.createCombinedQuery();
+      const encodedQuery = encodeURIComponent(
+        combined ||
+          browser.i18n.getMessage("labFallbackQuery") ||
+          "Google Cloud lab tutorial",
+      );
+      let url = `https://www.google.com/search?q=${encodedQuery}`;
+      switch ((engine || "").toLowerCase()) {
+        case "bing":
+          url = `https://www.bing.com/search?q=${encodedQuery}`;
+          break;
+        case "baidu":
+          url = `https://www.baidu.com/s?wd=${encodedQuery}`;
+          break;
+        case "yahoo":
+          url = `https://search.yahoo.com/search?p=${encodedQuery}`;
+          break;
+        case "coccoc":
+          url = `https://coccoc.com/search?query=${encodedQuery}`;
+          break;
+        case "yandex":
+          url = `https://yandex.com/search/?text=${encodedQuery}`;
+          break;
+        case "brave":
+          // Brave uses the standard search endpoint
+          url = `https://search.brave.com/search?q=${encodedQuery}`;
+          break;
+        case "duckduckgo":
+          url = `https://duckduckgo.com/?q=${encodedQuery}`;
+          break;
+        case "google":
+        default:
+          url = `https://www.google.com/search?q=${encodedQuery}`;
+      }
+      window.open(url, "_blank");
+    } catch (error) {
+      const fallbackQuery = encodeURIComponent(
+        browser.i18n.getMessage("labFallbackQuery") ||
+          "Google Cloud lab tutorial",
+      );
+      window.open(`https://www.google.com/search?q=${fallbackQuery}`, "_blank");
+    }
+  },
+
+  /**
    * Create a copy button for profile links
    */
   createCopyButton(linkElement: HTMLAnchorElement): HTMLButtonElement {
     const copyButton = document.createElement("button");
-    copyButton.textContent = "Copy Link";
+    copyButton.textContent =
+      browser.i18n.getMessage("labelCopyLink") || "Copy Link";
 
     Object.assign(copyButton.style, {
       marginLeft: "10px",
@@ -525,3 +606,40 @@ const UIComponents = {
 };
 
 export default UIComponents;
+
+// Listen for runtime messages to update configured search UI in-place
+try {
+  if (
+    typeof browser !== "undefined" &&
+    browser.runtime &&
+    browser.runtime.onMessage
+  ) {
+    browser.runtime.onMessage.addListener((msg: any) => {
+      try {
+        if (!msg || msg.type !== "preferredSearchEngineChanged") return;
+        const engine = String(msg.engine || "google");
+        // update configured button label using localized messages
+
+        document
+          .querySelectorAll<HTMLSelectElement>("#search-engine-select")
+          .forEach((sel) => {
+            try {
+              sel.value = engine;
+            } catch {}
+          });
+
+        document
+          .querySelectorAll<HTMLElement>("#configured-search-btn")
+          .forEach((btn) => {
+            try {
+              btn.textContent = getEngineLabel(engine);
+            } catch {}
+          });
+      } catch (e) {
+        // ignore
+      }
+    });
+  }
+} catch (e) {
+  // ignore environments without runtime
+}

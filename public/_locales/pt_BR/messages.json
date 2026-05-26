@@ -729,6 +729,16 @@
   "exportDataTitle": {
     "message": "Exportar meus dados"
   },
+  "labBingSearch": { "message": "Pesquisar no Bing" },
+  "labYandexSearch": { "message": "Pesquisar no Yandex" },
+  "labBraveSearch": { "message": "Pesquisar no Brave" },
+  "labDuckDuckGoSearch": { "message": "Pesquisar no DuckDuckGo" },
+  "labBaiduSearch": { "message": "Pesquisar no Baidu" },
+  "labYahooSearch": { "message": "Pesquisar no Yahoo!" },
+  "labCoccocSearch": { "message": "Pesquisar no Cốc Cốc" },
+  "labelSearch": { "message": "Pesquisar" },
+  "labelCopyLink": { "message": "Copiar link" },
+  "labFallbackQuery": { "message": "Tutorial do laboratório do Google Cloud" },
   "exportJSON": {
     "message": "Exportar JSON"
   },

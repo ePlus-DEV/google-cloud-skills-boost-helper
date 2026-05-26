@@ -726,6 +726,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "Bing पर खोजें" },
+  "labYandexSearch": { "message": "Yandex पर खोजें" },
+  "labBraveSearch": { "message": "Brave पर खोजें" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGo पर खोजें" },
+  "labBaiduSearch": { "message": "Baidu पर खोजें" },
+  "labYahooSearch": { "message": "Yahoo! पर खोजें" },
+  "labCoccocSearch": { "message": "Cốc Cốc पर खोजें" },
+  "labelSearch": { "message": "खोज" },
+  "labelCopyLink": { "message": "लिंक कॉपी करें" },
+  "labFallbackQuery": { "message": "Google Cloud लैब ट्यूटोरियल" },
   "exportDataTitle": {
     "message": "मेरा डेटा निर्यात करें"
   },

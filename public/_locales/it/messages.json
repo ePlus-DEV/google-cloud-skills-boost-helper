@@ -726,6 +726,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "Cerca su Bing" },
+  "labYandexSearch": { "message": "Cerca su Yandex" },
+  "labBraveSearch": { "message": "Cerca su Brave" },
+  "labDuckDuckGoSearch": { "message": "Cerca su DuckDuckGo" },
+  "labBaiduSearch": { "message": "Cerca su Baidu" },
+  "labYahooSearch": { "message": "Cerca su Yahoo!" },
+  "labCoccocSearch": { "message": "Cerca su Cốc Cốc" },
+  "labelSearch": { "message": "Cerca" },
+  "labelCopyLink": { "message": "Copia link" },
+  "labFallbackQuery": { "message": "Tutorial del laboratorio Google Cloud" },
   "exportDataTitle": {
     "message": "Esporta i miei dati"
   },

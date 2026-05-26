@@ -735,6 +735,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "Bing 搜索" },
+  "labYandexSearch": { "message": "Yandex 搜索" },
+  "labBraveSearch": { "message": "Brave 搜索" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGo 搜索" },
+  "labBaiduSearch": { "message": "Baidu 搜索" },
+  "labYahooSearch": { "message": "Yahoo! 搜索" },
+  "labCoccocSearch": { "message": "Cốc Cốc 搜索" },
+  "labelSearch": { "message": "搜索" },
+  "labelCopyLink": { "message": "复制链接" },
+  "labFallbackQuery": { "message": "Google Cloud 实验教程" },
   "exportDataTitle": {
     "message": "导出我的数据"
   },

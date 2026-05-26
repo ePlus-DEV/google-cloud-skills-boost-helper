@@ -726,6 +726,16 @@
   "labYouTube": {
     "message": "YouTube"
   },
+  "labBingSearch": { "message": "Поиск в Bing" },
+  "labYandexSearch": { "message": "Поиск в Yandex" },
+  "labBraveSearch": { "message": "Поиск в Brave" },
+  "labDuckDuckGoSearch": { "message": "Поиск в DuckDuckGo" },
+  "labBaiduSearch": { "message": "Поиск в Baidu" },
+  "labYahooSearch": { "message": "Поиск в Yahoo!" },
+  "labCoccocSearch": { "message": "Поиск в Cốc Cốc" },
+  "labelSearch": { "message": "Поиск" },
+  "labelCopyLink": { "message": "Копировать ссылку" },
+  "labFallbackQuery": { "message": "Учебник по лаборатории Google Cloud" },
   "exportDataTitle": {
     "message": "Экспорт моих данных"
   },
