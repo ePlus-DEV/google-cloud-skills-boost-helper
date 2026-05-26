@@ -663,8 +663,8 @@ class SearchService {
     const gspId = this.getGspId();
     const queryText = this.extractQueryText();
 
-    // Build query with GSP ID first (more specific) then title
-    const parts = [gspId, labTitle, queryText].filter(Boolean);
+    // Build query with title first, then GSP ID (preferred format: "title - id")
+    const parts = [labTitle, gspId, queryText].filter(Boolean);
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
       console.info("[LabService] Combined query for search:", combinedQuery);
