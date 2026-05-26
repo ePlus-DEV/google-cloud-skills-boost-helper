@@ -53,12 +53,9 @@ const UIComponents = {
 
       const backToTopLabel =
         browser.i18n.getMessage("backToTop") || "Back to top";
-      container.innerHTML =
-        '<ql-button icon="arrow_upward" type="button" title="' +
-        backToTopLabel +
-        '" data-aria-label="' +
-        backToTopLabel +
-        '"></ql-button>';
+      container.innerHTML = `
+        <ql-button icon="arrow_upward" type="button" title="${backToTopLabel}" data-aria-label="${backToTopLabel}"></ql-button>
+      `;
 
       const qbtn = container.querySelector("ql-button") as HTMLElement | null;
       if (qbtn?.style) {
@@ -83,6 +80,9 @@ const UIComponents = {
 
       const THRESHOLD = 300; // px scrolled before showing button
 
+      /**
+       * Show the back-to-top floating button.
+       */
       const show = () => {
         container.style.visibility = "visible";
         container.style.pointerEvents = "auto";
@@ -90,6 +90,9 @@ const UIComponents = {
         container.style.transform = "scale(1)";
       };
 
+      /**
+       * Hide the back-to-top floating button.
+       */
       const hide = () => {
         container.style.pointerEvents = "none";
         container.style.opacity = "0";
@@ -111,7 +114,11 @@ const UIComponents = {
 
       let lastActiveTarget: Element | Window = window;
 
-      const onScrollFor = (target: Element | Window) => {
+      /**
+       * Handle scroll events for a given target and toggle visibility.
+       * @param {Element|Window} target Element or Window to inspect scroll position on
+       */
+      function onScrollFor(target: Element | Window) {
         try {
           const pos =
             target === window
@@ -127,7 +134,7 @@ const UIComponents = {
         } catch (err) {
           // ignore
         }
-      };
+      }
 
       // attach listeners to each target, avoid duplicate handlers
       scrollTargets.forEach((t) => {
@@ -159,7 +166,9 @@ const UIComponents = {
         } catch (err) {
           try {
             window.scrollTo(0, 0);
-          } catch {}
+          } catch {
+            void 0;
+          }
         }
       });
 
@@ -223,13 +232,13 @@ const UIComponents = {
 
           [solBtn, telegramBtn].forEach((el) => {
             if ((el as HTMLElement)?.style) {
-              const b = el as HTMLElement;
-              b.style.display = "inline-flex";
-              b.style.alignItems = "center";
-              b.style.gap = "6px";
-              b.style.padding = "3px 3px";
-              b.style.borderRadius = "999px";
-              b.style.boxSizing = "border-box";
+              const btnEl = el as HTMLElement;
+              btnEl.style.display = "inline-flex";
+              btnEl.style.alignItems = "center";
+              btnEl.style.gap = "6px";
+              btnEl.style.padding = "3px 3px";
+              btnEl.style.borderRadius = "999px";
+              btnEl.style.boxSizing = "border-box";
             }
           });
 
@@ -324,13 +333,13 @@ const UIComponents = {
           // Normalize ql-button visuals created via innerHTML
           [eplusBtn, googleBtn, youtubeBtn, telegramBtn].forEach((el) => {
             if ((el as HTMLElement)?.style) {
-              const b = el as HTMLElement;
-              b.style.display = "inline-flex";
-              b.style.alignItems = "center";
-              b.style.gap = "6px";
-              b.style.padding = "3px 3px";
-              b.style.borderRadius = "999px";
-              b.style.boxSizing = "border-box";
+              const btnEl = el as HTMLElement;
+              btnEl.style.display = "inline-flex";
+              btnEl.style.alignItems = "center";
+              btnEl.style.gap = "6px";
+              btnEl.style.padding = "3px 3px";
+              btnEl.style.borderRadius = "999px";
+              btnEl.style.boxSizing = "border-box";
             }
           });
 

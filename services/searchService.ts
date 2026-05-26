@@ -129,7 +129,7 @@ class SearchService {
    */
   private static extractDistinctiveWords(text: string): Set<string> {
     // Remove year prefixes like [2025], [2024], etc. before processing
-    let processed = text.replace(/\[\d{4}\]\s*/g, "");
+    const processed = text.replace(/\[\d{4}\]\s*/g, "");
 
     // Split on whitespace and hyphens to handle "multi-modal" → ["multi", "modal"]
     const words = processed.toLowerCase().split(/[\s-]+/);

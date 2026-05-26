@@ -110,7 +110,11 @@ const LabService = {
    * Dynamically injects and maintains the solution button inside the nested shadow DOM drawer
    */
   injectSolutionIntoDrawer(bestMatchUrl: string): void {
-    const getContainer = (): HTMLElement | null => {
+    /**
+     * Locate the drawer credential container inside nested shadow DOMs.
+     * Returns the element or null if not found.
+     */
+    function getContainer(): HTMLElement | null {
       try {
         const labHeader = document.querySelector<HTMLElement>(
           "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
@@ -132,9 +136,13 @@ const LabService = {
         }
         return null;
       }
-    };
+    }
 
-    const inject = async (): Promise<boolean> => {
+    /**
+     * Attempt to inject the solution element into the drawer.
+     * Returns true if injection was performed or already present.
+     */
+    async function inject(): Promise<boolean> {
       const container = getContainer();
       if (!container) return false;
 
@@ -153,7 +161,7 @@ const LabService = {
 
       container.appendChild(drawerSolutionEl);
       return true;
-    };
+    }
 
     // Initial injection attempt
     inject();
