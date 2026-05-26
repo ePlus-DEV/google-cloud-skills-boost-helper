@@ -327,25 +327,40 @@ class SearchService {
       );
     }
 
-    // First priority: Try direct course ID match (most reliable)
-    if (queryCourseId) {
-      const courseIdMatch = posts.find((post) => {
-        const postCourseId = this.extractCourseId(post.title);
-        return postCourseId === queryCourseId;
-      });
-      if (courseIdMatch?.url) {
-        if (import.meta.env.DEV) {
-          console.info(
-            "[SearchService] ✓ Direct course ID match:",
-            courseIdMatch.title,
-          );
-        }
-        const separator = courseIdMatch.url.includes("?") ? "&" : "?";
-        return `${courseIdMatch.url}${separator}t=${Date.now()}`;
-      }
+    // Use refactored helper flow to get and filter results
+    const results = this.getFuseResults(posts, normalizedQuery, fuseOptions);
+    this.sortResultsByCourseId(results, queryCourseId);
+
+    const validResults = this.filterValidResults(
+      results,
+      normalizedQuery,
+      queryCourseId,
+    );
+
+    // If no valid results after filtering, try fallbacks
+    if (!validResults.length) {
+      const fallback = this.getFallbackUrl(posts, queryCourseId);
+      if (fallback) return fallback;
+      return null;
     }
 
-    // Use Fuse.js directly on the posts array
+    const bestMatch = validResults[0];
+    const url = bestMatch.item.url;
+    if (!url) return null;
+
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Best match URL:", url);
+    }
+
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}t=${Date.now()}`;
+  }
+
+  private static getFuseResults(
+    posts: Array<{ title: string; url: string }>,
+    normalizedQuery: string,
+    fuseOptions: FuseOptions,
+  ) {
     const fuse = new Fuse(posts, fuseOptions);
     const results = fuse.search(normalizedQuery);
     if (import.meta.env.DEV) {
@@ -361,30 +376,37 @@ class SearchService {
         );
       }
     }
+    return results;
+  }
 
-    // Sort results: prioritize course ID matches
+  private static sortResultsByCourseId(
+    results: Array<{ item: { title: string } }>,
+    queryCourseId: string | null,
+  ) {
     results.sort((a, b) => {
       const aCourseId = this.extractCourseId(a.item.title);
       const bCourseId = this.extractCourseId(b.item.title);
 
-      // If query has a course ID, prioritize matching items
       if (queryCourseId) {
         const aMatches = aCourseId === queryCourseId ? 1 : 0;
         const bMatches = bCourseId === queryCourseId ? 1 : 0;
         if (aMatches !== bMatches) {
-          return bMatches - aMatches; // Higher priority first
+          return bMatches - aMatches;
         }
       }
-
-      return 0; // Keep original order from Fuse
+      return 0;
     });
+  }
 
-    // Enhanced filtering with flexible matching criteria
-    const validResults = results.filter((result) => {
+  private static filterValidResults(
+    results: Array<{ item: { title: string; url?: string } }>,
+    normalizedQuery: string,
+    queryCourseId: string | null,
+  ) {
+    return results.filter((result) => {
       const title = result.item.title;
       const postCourseId = this.extractCourseId(title);
 
-      // If both query and post have the same course ID, this is a strong signal
       if (queryCourseId && postCourseId && queryCourseId === postCourseId) {
         if (import.meta.env.DEV) {
           console.info("[SearchService] ✓ Accepted (course ID match):", title);
@@ -392,7 +414,6 @@ class SearchService {
         return true;
       }
 
-      // 1. Must have compatible identifiers
       if (!this.hasCompatibleIdentifiers(normalizedQuery, title)) {
         if (import.meta.env.DEV) {
           console.info(
@@ -403,7 +424,6 @@ class SearchService {
         return false;
       }
 
-      // 2. Must have matching distinctive words
       if (!this.hasMatchingDistinctiveWords(normalizedQuery, title)) {
         if (import.meta.env.DEV) {
           console.info(
@@ -414,13 +434,11 @@ class SearchService {
         return false;
       }
 
-      // 3. Must meet advanced similarity threshold (relaxed to 0.6)
       const similarityScore = this.calculateAdvancedSimilarity(
         normalizedQuery,
         title,
       );
       if (similarityScore < 0.6) {
-        // 60% similarity threshold (relaxed from 75%)
         if (import.meta.env.DEV) {
           console.info(
             "[SearchService] ✗ Rejected (low similarity:",
@@ -442,63 +460,49 @@ class SearchService {
       }
       return true;
     });
+  }
 
-    // If no valid results after filtering, return null
-    if (!validResults.length) {
+  private static getFallbackUrl(
+    posts: Array<{ title: string; url: string }>,
+    queryCourseId: string | null,
+  ): string | null {
+    if (import.meta.env.DEV) {
+      console.info(
+        "[SearchService] No valid results after filtering. All posts rejected.",
+      );
+    }
+
+    if (queryCourseId && posts.length > 0) {
       if (import.meta.env.DEV) {
         console.info(
-          "[SearchService] No valid results after filtering. All posts rejected.",
+          "[SearchService] Attempting fallback: direct course ID match",
         );
       }
-
-      // Fallback: if we have course ID, try direct match
-      if (queryCourseId && posts.length > 0) {
+      const courseIdMatch = posts.find((p) => p.title.includes(queryCourseId));
+      if (courseIdMatch?.url) {
         if (import.meta.env.DEV) {
           console.info(
-            "[SearchService] Attempting fallback: direct course ID match",
+            "[SearchService] ✓ Fallback matched by course ID:",
+            courseIdMatch.title,
           );
         }
-        const courseIdMatch = posts.find((p) =>
-          p.title.includes(queryCourseId),
+        const separator = courseIdMatch.url.includes("?") ? "&" : "?";
+        return `${courseIdMatch.url}${separator}t=${Date.now()}`;
+      }
+    }
+
+    if (posts.length > 0 && this.extractCourseId(posts[0].title)) {
+      if (import.meta.env.DEV) {
+        console.info(
+          "[SearchService] ✓ Final fallback: returning first post:",
+          posts[0].title,
         );
-        if (courseIdMatch?.url) {
-          if (import.meta.env.DEV) {
-            console.info(
-              "[SearchService] ✓ Fallback matched by course ID:",
-              courseIdMatch.title,
-            );
-          }
-          const separator = courseIdMatch.url.includes("?") ? "&" : "?";
-          return `${courseIdMatch.url}${separator}t=${Date.now()}`;
-        }
       }
-
-      // Final fallback: return first post if it has course ID
-      if (posts.length > 0 && this.extractCourseId(posts[0].title)) {
-        if (import.meta.env.DEV) {
-          console.info(
-            "[SearchService] ✓ Final fallback: returning first post:",
-            posts[0].title,
-          );
-        }
-        const separator = posts[0].url.includes("?") ? "&" : "?";
-        return `${posts[0].url}${separator}t=${Date.now()}`;
-      }
-
-      return null;
+      const separator = posts[0].url.includes("?") ? "&" : "?";
+      return `${posts[0].url}${separator}t=${Date.now()}`;
     }
 
-    const bestMatch = validResults[0];
-    const url = bestMatch.item.url;
-    if (!url) return null;
-
-    if (import.meta.env.DEV) {
-      console.info("[SearchService] Best match URL:", url);
-    }
-
-    // Append timestamp to bypass page-level cache on the solution site
-    const separator = url.includes("?") ? "&" : "?";
-    return `${url}${separator}t=${Date.now()}`;
+    return null;
   }
 
   /**
