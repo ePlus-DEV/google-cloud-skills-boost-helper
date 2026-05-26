@@ -59,40 +59,23 @@ const LabService = {
     });
 
     let bestMatchUrl: string | null = null;
+    let bestMatchTitle: string | null = null;
     if (postsData && postsData.length > 0) {
       if (import.meta.env.DEV) {
         console.info(`[LabService] Received ${postsData.length} posts`);
       }
-      bestMatchUrl = SearchService.findBestMatchUrl(
-        postsData,
-        combinedQueryText,
-      );
-      if (bestMatchUrl && import.meta.env.DEV) {
-        console.info("[LabService] Found best match URL:", bestMatchUrl);
+      const best = SearchService.findBestMatch(postsData, combinedQueryText);
+      if (best) {
+        bestMatchUrl = best.url;
+        bestMatchTitle = best.title || null;
+        if (import.meta.env.DEV) {
+          console.info("[LabService] Found best match URL:", bestMatchUrl);
+          console.info("[LabService] Found best match title:", bestMatchTitle);
+        }
       }
     } else {
       if (import.meta.env.DEV) {
         console.info("[LabService] No posts data received");
-      }
-    }
-
-    // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev
-    if (bestMatchUrl) {
-      try {
-        const parsed = new URL(bestMatchUrl);
-        if (parsed.hostname === "hoangit.hashnode.dev") {
-          parsed.hostname = "eplus.dev";
-          bestMatchUrl = parsed.toString();
-        }
-      } catch (err) {
-        if (import.meta.env.DEV) {
-          // eslint-disable-next-line no-console
-          console.warn(
-            "[LabService] Malformed bestMatchUrl:",
-            bestMatchUrl,
-            err,
-          );
-        }
       }
     }
 

@@ -422,6 +422,57 @@ class SearchService {
   }
 
   /**
+   * Find the best match and return both URL and title when available.
+   * This wraps the existing `findBestMatchUrl` logic and resolves the
+   * corresponding post title from the posts array.
+   * @param posts Posts array to search
+   * @param searchQuery Query string to use for matching
+   */
+  static findBestMatch(
+    posts: Array<{
+      id: string;
+      title: string;
+      slug: string;
+      url: string;
+      datePublished: string;
+    }> | null,
+    searchQuery: string,
+    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
+  ): { url: string; title: string } | null {
+    const url = this.findBestMatchUrl(posts, searchQuery, fuseOptions);
+    if (!url) return null;
+
+    try {
+      const parsed = new URL(url);
+      // remove timestamp param for matching against original post URLs
+      const searchParams = parsed.searchParams;
+      searchParams.delete("t");
+      const stripped = `${parsed.origin}${parsed.pathname}${
+        searchParams.toString() ? `?${searchParams.toString()}` : ""
+      }`;
+
+      const match = (posts || []).find((p) => {
+        if (!p.url) return false;
+        try {
+          const pUrl = new URL(p.url);
+          const pStripped = `${pUrl.origin}${pUrl.pathname}${
+            pUrl.search ? pUrl.search : ""
+          }`;
+          return (
+            pStripped === stripped || url.startsWith(pStripped) || p.url === url
+          );
+        } catch (e) {
+          return p.url === url || url.startsWith(p.url);
+        }
+      });
+
+      return { url, title: match ? match.title : "" };
+    } catch (e) {
+      return { url, title: "" };
+    }
+  }
+
+  /**
    * Sort search results to prioritize items matching the query course ID.
    * This reorders the results array in-place.
    * @param results Fuse search results to sort
