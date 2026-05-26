@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.12] - 2026-05-21
+### :bug: Bug Fixes
+- [`2fe9688`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2fe96886c05defd59afcde0253e9ec42e8b649d9) - revert version number to 1.2.13 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0aa01f8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0aa01f8d260a347d026d585962da2212fbb1b5dc) - update expected result to be empty string when no elements found in createCombinedQuery *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a684e7d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a684e7df0504a90c1c2bb44b2ed9b3c1f3460dc2) - handle undefined URL in findBestMatchUrl test case *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`de6c41e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/de6c41e99f550e986b47ca7aeef6769f643a7776) - revert version number to 1.2.12 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`352660c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/352660ce9614e0364f0947911dbc9c5c469cd372) - replace console.log with console.info for development logging *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`cafaea7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cafaea72f7108457a01232710901f6ddd0ea6d68) - simplify posts fetching logic and remove pagination *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`da1cf4a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/da1cf4a8679201bd0010962fee4691a820d9f32c) - update development environment checks and remove unused parameter from SearchPostsParams *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ee8bad3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ee8bad365d9e89a67c4fb3bb3bc3e708ce3a793b) - improve comments and variable naming in LabService for clarity *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0ce1370`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0ce1370cdb69c0c309d2e72594d8f50007588ccf) - standardize margin styles and enhance URL validation in createSolutionElement *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`cee45a8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cee45a83e7ad2104986ed1b3cab869bbff9dc00f) - replace direct DOM access with SearchService for lab title retrieval in search functions *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e6dca7a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e6dca7afa41809be6111cf484ea19600308eb463) - add null check for safeUrl before opening in createSolutionElement *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ad4d248`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ad4d24820543a2e8a49b258a4bb081f292156942) - wrap solution buttons in <ql-infobox> for consistent UI structure *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`086ccf4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/086ccf4675b2b4baef0acb60ae02159e056688bc) - replace hardcoded REST API URL with environment variable for improved flexibility *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`50cb892`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/50cb89239781e606dacbcf6e1b17d56f05cad4db) - remove redundant margin styles from loading and solution button elements *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`649519f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/649519f871094f20db807b9f06a3739a0a443ea8) - **deps**: bump axios in the production-dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [1.2.11] - 2026-05-14
 ### :sparkles: New Features
 - [`d8a6461`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d8a64611409372f0fb4c9b7608935f3b3e2366c7) - implement theme-aware popup styling and backend service structure *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -898,3 +921,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.9]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.8...1.2.9
 [1.2.10]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.9...1.2.10
 [1.2.11]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.10...1.2.11
+[1.2.12]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.11...1.2.12
