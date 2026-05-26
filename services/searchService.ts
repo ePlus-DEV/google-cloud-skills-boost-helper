@@ -327,6 +327,24 @@ class SearchService {
       );
     }
 
+    // If query contains a course ID, try direct post match first (fast path)
+    if (queryCourseId) {
+      const courseIdMatch = posts.find((post) => {
+        const postCourseId = this.extractCourseId(post.title);
+        return postCourseId === queryCourseId && !!post.url;
+      });
+      if (courseIdMatch?.url) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✓ Direct course ID match:",
+            courseIdMatch.title,
+          );
+        }
+        const separator = courseIdMatch.url.includes("?") ? "&" : "?";
+        return `${courseIdMatch.url}${separator}t=${Date.now()}`;
+      }
+    }
+
     // Use refactored helper flow to get and filter results
     const results = this.getFuseResults(posts, normalizedQuery, fuseOptions);
     this.sortResultsByCourseId(results, queryCourseId);
