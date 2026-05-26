@@ -312,13 +312,11 @@ class SearchService {
       console.info("[SearchService] Search query:", searchQuery);
     }
 
-    // Normalize search query once to avoid repeated normalization
     const normalizedQuery = this.normalizeTitle(searchQuery);
     if (import.meta.env.DEV) {
       console.info("[SearchService] Normalized query:", normalizedQuery);
     }
 
-    // Extract course ID early for direct matching
     const queryCourseId = this.extractCourseId(normalizedQuery);
     if (import.meta.env.DEV && queryCourseId) {
       console.info(
@@ -327,25 +325,45 @@ class SearchService {
       );
     }
 
-    // If query contains a course ID, try direct post match first (fast path)
+    // If query contains a course ID, prefer searching only among posts with that ID first
     if (queryCourseId) {
-      const courseIdMatch = posts.find((post) => {
-        const postCourseId = this.extractCourseId(post.title);
-        return postCourseId === queryCourseId && !!post.url;
-      });
-      if (courseIdMatch?.url) {
+      const postsWithCourse = posts.filter(
+        (post) => this.extractCourseId(post.title) === queryCourseId,
+      );
+
+      if (postsWithCourse.length > 0) {
         if (import.meta.env.DEV) {
           console.info(
-            "[SearchService] ✓ Direct course ID match:",
-            courseIdMatch.title,
+            "[SearchService] Searching within posts matching course ID:",
+            queryCourseId,
+            postsWithCourse.length,
           );
         }
-        const separator = courseIdMatch.url.includes("?") ? "&" : "?";
-        return `${courseIdMatch.url}${separator}t=${Date.now()}`;
+
+        const courseResults = this.getFuseResults(
+          postsWithCourse,
+          normalizedQuery,
+          fuseOptions,
+        );
+        this.sortResultsByCourseId(courseResults, queryCourseId);
+        const validCourseResults = this.filterValidResults(
+          courseResults,
+          normalizedQuery,
+          queryCourseId,
+        );
+
+        if (validCourseResults.length) {
+          const best = validCourseResults[0];
+          const url = best.item.url;
+          if (url) {
+            const separator = url.includes("?") ? "&" : "?";
+            return `${url}${separator}t=${Date.now()}`;
+          }
+        }
+        // otherwise fallthrough to searching all posts by title
       }
     }
 
-    // Use refactored helper flow to get and filter results
     const results = this.getFuseResults(posts, normalizedQuery, fuseOptions);
     this.sortResultsByCourseId(results, queryCourseId);
 
@@ -355,7 +373,6 @@ class SearchService {
       queryCourseId,
     );
 
-    // If no valid results after filtering, try fallbacks
     if (!validResults.length) {
       const fallback = this.getFallbackUrl(posts, queryCourseId);
       if (fallback) return fallback;
@@ -373,13 +390,6 @@ class SearchService {
     const separator = url.includes("?") ? "&" : "?";
     return `${url}${separator}t=${Date.now()}`;
   }
-
-  /**
-   * Run Fuse.js search on the posts with provided options and return results.
-   * @param posts Array of post objects to index
-   * @param normalizedQuery Normalized query string to search for
-   * @param fuseOptions Options passed to Fuse.js
-   */
   private static getFuseResults(
     posts: Array<{ title: string; url: string }>,
     normalizedQuery: string,
