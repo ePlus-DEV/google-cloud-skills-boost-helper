@@ -451,29 +451,6 @@ const UIComponents = {
   },
 
   /**
-   * Search the current lab on Google
-   */
-  searchOnGoogle(): void {
-    try {
-      const combined = SearchService.createCombinedQuery();
-      const encodedQuery = encodeURIComponent(
-        combined ||
-          browser.i18n.getMessage("labFallbackQuery") ||
-          "Google Cloud lab tutorial",
-      );
-      const googleSearchUrl = `https://www.google.com/search?q=${encodedQuery}`;
-      window.open(googleSearchUrl, "_blank");
-    } catch (error) {
-      // Fallback to simple search
-      const fallbackQuery = encodeURIComponent(
-        browser.i18n.getMessage("labFallbackQuery") ||
-          "Google Cloud lab tutorial",
-      );
-      window.open(`https://www.google.com/search?q=${fallbackQuery}`, "_blank");
-    }
-  },
-
-  /**
    * Search the current lab on YouTube
    */
   searchOnYouTube(): void {

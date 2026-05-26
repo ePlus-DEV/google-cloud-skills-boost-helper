@@ -652,8 +652,40 @@ class SearchService {
       console.info("[LabService] Looking for lab title...");
     }
 
-    // Try selector h1.ql-title-large (direct, no shadow DOM)
-    const titleElement = document.querySelector("h1.ql-title-large");
+    // Priority: some lab pages (e.g., /focuses/62711) render title inside nested
+    // shadow roots under ql-lab-header -> ql-header. Try the explicit path first.
+    try {
+      const labHeader = document.querySelector(
+        "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
+      ) as Element | null;
+      if (labHeader && labHeader.shadowRoot) {
+        const qlHeader = labHeader.shadowRoot.querySelector(
+          "ql-header",
+        ) as Element | null;
+        if (qlHeader && qlHeader.shadowRoot) {
+          const deepH1 = qlHeader.shadowRoot.querySelector(
+            "div > div.main-container > div > h1",
+          );
+          if (deepH1) {
+            const title = deepH1.textContent?.trim() || "";
+            if (import.meta.env.MODE === "development") {
+              console.info(
+                "[LabService] ✓ Extracted title from nested shadow path:",
+                title,
+              );
+            }
+            return title;
+          }
+        }
+      }
+    } catch (e) {
+      // ignore and continue with other heuristics
+    }
+
+    // Try selector h1.ql-title-large (search including shadow DOM)
+    const titleElement =
+      this.querySelectorDeep("h1.ql-title-large") ||
+      document.querySelector("h1.ql-title-large");
     if (titleElement) {
       const title = titleElement.textContent?.trim() || "";
       if (import.meta.env.MODE === "development") {
@@ -668,8 +700,9 @@ class SearchService {
       console.info("[LabService] ✗ h1.ql-title-large not found");
     }
 
-    // Try just h1 element as fallback
-    const h1Element = document.querySelector("h1");
+    // Try just h1 element as fallback (search including shadow DOM)
+    const h1Element =
+      this.querySelectorDeep("h1") || document.querySelector("h1");
     if (h1Element) {
       const title = h1Element.textContent?.trim() || "";
       if (import.meta.env.MODE === "development") {
@@ -678,11 +711,11 @@ class SearchService {
       return title;
     }
 
-    // Fallback to old selector
-    const fallbackTitle =
-      document
-        .querySelector(".ql-display-large.lab-preamble__title")
-        ?.textContent?.trim() || "";
+    // Fallback to old selector (search including shadow DOM)
+    const fallbackEl =
+      this.querySelectorDeep(".ql-display-large.lab-preamble__title") ||
+      document.querySelector(".ql-display-large.lab-preamble__title");
+    const fallbackTitle = fallbackEl?.textContent?.trim() || "";
     if (import.meta.env.MODE === "development") {
       console.info(
         "[LabService] Extracted title from fallback selector:",
@@ -690,6 +723,45 @@ class SearchService {
       );
     }
     return fallbackTitle;
+  }
+
+  /**
+   * Query selector that searches into shadow roots recursively.
+   * Returns the first matching Element or null.
+   */
+  private static querySelectorDeep(selector: string): Element | null {
+    try {
+      // Quick check on document
+      const direct = document.querySelector(selector);
+      if (direct) return direct;
+
+      // BFS through all elements to look into shadowRoots
+      const nodes = Array.from(document.querySelectorAll("*"));
+      for (const el of nodes) {
+        try {
+          const sr = (el as Element).shadowRoot;
+          if (sr) {
+            const found = sr.querySelector(selector);
+            if (found) return found;
+
+            // also search one level deeper inside nested shadow roots
+            const nested = Array.from(sr.querySelectorAll("*"));
+            for (const n of nested) {
+              try {
+                const nsr = (n as Element).shadowRoot;
+                if (nsr) {
+                  const f = nsr.querySelector(selector);
+                  if (f) return f;
+                }
+              } catch {}
+            }
+          }
+        } catch {}
+      }
+    } catch (e) {
+      // ignore
+    }
+    return null;
   }
 
   /**
