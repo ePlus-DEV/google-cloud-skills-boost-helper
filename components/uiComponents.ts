@@ -167,7 +167,7 @@ const UIComponents = {
           try {
             window.scrollTo(0, 0);
           } catch {
-            void 0;
+            undefined;
           }
         }
       });

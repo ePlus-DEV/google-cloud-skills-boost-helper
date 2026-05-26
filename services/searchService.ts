@@ -333,7 +333,7 @@ class SearchService {
         const postCourseId = this.extractCourseId(post.title);
         return postCourseId === queryCourseId;
       });
-      if (courseIdMatch && courseIdMatch.url) {
+      if (courseIdMatch?.url) {
         if (import.meta.env.DEV) {
           console.info(
             "[SearchService] ✓ Direct course ID match:",
@@ -461,7 +461,7 @@ class SearchService {
         const courseIdMatch = posts.find((p) =>
           p.title.includes(queryCourseId),
         );
-        if (courseIdMatch && courseIdMatch.url) {
+        if (courseIdMatch?.url) {
           if (import.meta.env.DEV) {
             console.info(
               "[SearchService] ✓ Fallback matched by course ID:",
