@@ -273,6 +273,8 @@ const UIComponents = {
 
       if (isSearchEnabled) {
         // No solution found - show "No solution" and search options
+        const showEplus = await StorageService.isEplusSearchEnabled();
+
         solutionElement.innerHTML = `
           <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; row-gap:6px;">
             <ql-infobox style="display:flex; gap:6px; flex-wrap:wrap; row-gap:6px;">
@@ -286,6 +288,21 @@ const UIComponents = {
               >
                 ${browser.i18n.getMessage("labGoogleSearch")}
               </ql-button>
+              ${
+                showEplus
+                  ? `
+              <ql-button
+                icon="search"
+                type="button"
+                title="${browser.i18n.getMessage("labEplusSearch")}" 
+                data-aria-label="${browser.i18n.getMessage("labEplusSearch")}" 
+                id="eplus-search-btn"
+              >
+                ${browser.i18n.getMessage("labEplusSearch")}
+              </ql-button>
+              `
+                  : ""
+              }
               <ql-button
                 icon="video_library"
                 type="button"
@@ -593,25 +610,70 @@ try {
   ) {
     browser.runtime.onMessage.addListener((msg: any) => {
       try {
-        if (!msg || msg.type !== "preferredSearchEngineChanged") return;
-        const engine = String(msg.engine || "google");
-        // update configured button label using localized messages
+        if (!msg || !msg.type) return;
 
-        document
-          .querySelectorAll<HTMLSelectElement>("#search-engine-select")
-          .forEach((sel) => {
-            try {
-              sel.value = engine;
-            } catch {}
-          });
+        if (msg.type === "preferredSearchEngineChanged") {
+          const engine = String(msg.engine || "google");
 
-        document
-          .querySelectorAll<HTMLElement>("#configured-search-btn")
-          .forEach((btn) => {
-            try {
-              btn.textContent = getEngineLabel(engine);
-            } catch {}
-          });
+          document
+            .querySelectorAll<HTMLSelectElement>("#search-engine-select")
+            .forEach((sel) => {
+              try {
+                sel.value = engine;
+              } catch {}
+            });
+
+          document
+            .querySelectorAll<HTMLElement>("#configured-search-btn")
+            .forEach((btn) => {
+              try {
+                btn.textContent = getEngineLabel(engine);
+              } catch {}
+            });
+          return;
+        }
+
+        if (msg.type === "searchFeatureChanged") {
+          const enabled = Boolean(msg.enabled);
+          // Disable/enable ePlus button(s) when main search feature toggles
+          document
+            .querySelectorAll<HTMLElement>("#eplus-search-btn")
+            .forEach((btn) => {
+              try {
+                if (!enabled) {
+                  btn.setAttribute("disabled", "true");
+                  btn.style.opacity = "0.6";
+                  btn.style.pointerEvents = "none";
+                  btn.style.cursor = "not-allowed";
+                  try {
+                    (btn as HTMLElement).style.filter = "grayscale(40%)";
+                  } catch {}
+                } else {
+                  btn.removeAttribute("disabled");
+                  btn.style.opacity = "";
+                  btn.style.pointerEvents = "auto";
+                  btn.style.cursor = "pointer";
+                  try {
+                    (btn as HTMLElement).style.filter = "";
+                  } catch {}
+                }
+              } catch {}
+            });
+          return;
+        }
+
+        if (msg.type === "enableEplusSearchChanged") {
+          const enabled = Boolean(msg.enabled);
+          // Show or hide ePlus button(s) based on setting
+          document
+            .querySelectorAll<HTMLElement>("#eplus-search-btn")
+            .forEach((btn) => {
+              try {
+                btn.style.display = enabled ? "inline-flex" : "none";
+              } catch {}
+            });
+          return;
+        }
       } catch (e) {
         // ignore
       }

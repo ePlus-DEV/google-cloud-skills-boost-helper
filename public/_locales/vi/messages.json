@@ -188,68 +188,120 @@
   "labelProgress": {
     "message": "Tiến độ"
   },
-  "errorEnterProfileUrl": { "message": "Vui lòng nhập URL hồ sơ!" },
-  "errorInvalidProfileUrl": { "message": "URL hồ sơ không hợp lệ!" },
-  "errorAccountExistsTitle": { "message": "Tài khoản đã tồn tại" },
+  "errorEnterProfileUrl": {
+    "message": "Vui lòng nhập URL hồ sơ!"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "URL hồ sơ không hợp lệ!"
+  },
+  "errorAccountExistsTitle": {
+    "message": "Tài khoản đã tồn tại"
+  },
   "errorAccountExistsMsg": {
     "message": "Đã tồn tại tài khoản với URL này: \"$1\"."
   },
   "errorNoNameFromProfile": {
     "message": "Không lấy được tên từ hồ sơ. Vui lòng thử lại!"
   },
-  "labelAdding": { "message": "Đang thêm..." },
-  "successAccountAdded": { "message": "Thêm tài khoản thành công!" },
+  "labelAdding": {
+    "message": "Đang thêm..."
+  },
+  "successAccountAdded": {
+    "message": "Thêm tài khoản thành công!"
+  },
   "errorAddAccountGeneric": {
     "message": "Có lỗi khi thêm tài khoản. Vui lòng thử lại!"
   },
-  "errorAccountExistsMsgSimple": { "message": "Tài khoản đã tồn tại." },
-  "labelAddAccount": { "message": "Thêm tài khoản" },
-  "successSwitchedAccount": { "message": "Chuyển tài khoản thành công!" },
-  "errorSwitchAccount": { "message": "Lỗi khi chuyển tài khoản." },
-  "errorAccountNotFound": { "message": "Không tìm thấy tài khoản." },
+  "errorAccountExistsMsgSimple": {
+    "message": "Tài khoản đã tồn tại."
+  },
+  "labelAddAccount": {
+    "message": "Thêm tài khoản"
+  },
+  "successSwitchedAccount": {
+    "message": "Chuyển tài khoản thành công!"
+  },
+  "errorSwitchAccount": {
+    "message": "Lỗi khi chuyển tài khoản."
+  },
+  "errorAccountNotFound": {
+    "message": "Không tìm thấy tài khoản."
+  },
   "infoUpdatingAccountData": {
     "message": "Đang cập nhật dữ liệu tài khoản..."
   },
   "successAccountDataUpdated": {
     "message": "Cập nhật dữ liệu tài khoản thành công!"
   },
-  "errorFetchDataFromApi": { "message": "Không thể lấy dữ liệu từ API." },
-  "errorUpdatingAccount": { "message": "Lỗi khi cập nhật tài khoản." },
+  "errorFetchDataFromApi": {
+    "message": "Không thể lấy dữ liệu từ API."
+  },
+  "errorUpdatingAccount": {
+    "message": "Lỗi khi cập nhật tài khoản."
+  },
   "errorProfileUrlNotFound": {
     "message": "Không tìm thấy URL hồ sơ cho tài khoản này."
   },
-  "errorOpeningProfile": { "message": "Lỗi khi mở hồ sơ." },
+  "errorOpeningProfile": {
+    "message": "Lỗi khi mở hồ sơ."
+  },
   "errorNoActiveAccountOrProfileUrl": {
     "message": "Không có tài khoản hoạt động hoặc URL hồ sơ."
   },
   "errorAccountNotFoundToUpdate": {
     "message": "Không tìm thấy tài khoản để cập nhật!"
   },
-  "successNicknameSaved": { "message": "Lưu biệt danh thành công!" },
-  "errorSavingNickname": { "message": "Lỗi khi lưu biệt danh!" },
-  "successNicknameUpdated": { "message": "Cập nhật biệt danh thành công!" },
+  "successNicknameSaved": {
+    "message": "Lưu biệt danh thành công!"
+  },
+  "errorSavingNickname": {
+    "message": "Lỗi khi lưu biệt danh!"
+  },
+  "successNicknameUpdated": {
+    "message": "Cập nhật biệt danh thành công!"
+  },
   "errorUpdatingAccountGeneric": {
     "message": "Có lỗi khi cập nhật tài khoản!"
   },
   "errorCannotDeleteLastAccount": {
     "message": "Không thể xóa tài khoản cuối cùng!"
   },
-  "successAccountDeleted": { "message": "Xóa tài khoản thành công!" },
-  "errorDeletingAccountGeneric": { "message": "Có lỗi khi xóa tài khoản!" },
-  "successDataExported": { "message": "Xuất dữ liệu thành công!" },
-  "errorExportingData": { "message": "Có lỗi khi xuất dữ liệu!" },
+  "successAccountDeleted": {
+    "message": "Xóa tài khoản thành công!"
+  },
+  "errorDeletingAccountGeneric": {
+    "message": "Có lỗi khi xóa tài khoản!"
+  },
+  "successDataExported": {
+    "message": "Xuất dữ liệu thành công!"
+  },
+  "errorExportingData": {
+    "message": "Có lỗi khi xuất dữ liệu!"
+  },
   "errorNoImportData": {
     "message": "Vui lòng chọn file hoặc dán nội dung JSON!"
   },
-  "successDataImported": { "message": "Nhập dữ liệu thành công!" },
+  "successDataImported": {
+    "message": "Nhập dữ liệu thành công!"
+  },
   "errorInvalidImportData": {
     "message": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!"
   },
-  "errorImportingData": { "message": "Có lỗi khi nhập dữ liệu!" },
-  "labelFacilitatorProgram": { "message": "Chương trình Facilitator" },
-  "messageBadgeEnabled": { "message": "Đã bật hiển thị huy hiệu" },
-  "messageBadgeDisabled": { "message": "Đã tắt hiển thị huy hiệu" },
-  "labelShowBadge": { "message": "Hiển thị huy hiệu trên biểu tượng" },
+  "errorImportingData": {
+    "message": "Có lỗi khi nhập dữ liệu!"
+  },
+  "labelFacilitatorProgram": {
+    "message": "Chương trình Facilitator"
+  },
+  "messageBadgeEnabled": {
+    "message": "Đã bật hiển thị huy hiệu"
+  },
+  "messageBadgeDisabled": {
+    "message": "Đã tắt hiển thị huy hiệu"
+  },
+  "labelShowBadge": {
+    "message": "Hiển thị huy hiệu trên biểu tượng"
+  },
   "descriptionShowBadge": {
     "message": "Bật/tắt hiển thị tổng điểm trên biểu tượng tiện ích trình duyệt."
   },
@@ -259,199 +311,574 @@
   "arcadeDeadlinePassed": {
     "message": "Mùa Arcade đã khép lại cho năm nay. Hẹn gặp bạn ở mùa sau!"
   },
-  "programEnded": { "message": "Chương trình kết thúc" },
-  "statusCompleted": { "message": "Hoàn thành" },
-  "statusInProgress": { "message": "Đang tiến hành" },
-  "statusNotStarted": { "message": "Chưa bắt đầu" },
-  "anonymous": { "message": "Ẩn danh" },
-  "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Lỗi khi tải dữ liệu" },
-  "labelBack": { "message": "Quay lại" },
-  "backToTop": { "message": "Lên đầu trang" },
-  "changelogWhatsNew": { "message": "Có gì mới" },
-  "changelogLatestUpdates": { "message": "Cập nhật và cải tiến mới nhất" },
-  "changelogLoading": { "message": "Đang tải nhật ký thay đổi..." },
+  "programEnded": {
+    "message": "Chương trình kết thúc"
+  },
+  "statusCompleted": {
+    "message": "Hoàn thành"
+  },
+  "statusInProgress": {
+    "message": "Đang tiến hành"
+  },
+  "statusNotStarted": {
+    "message": "Chưa bắt đầu"
+  },
+  "anonymous": {
+    "message": "Ẩn danh"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "Lỗi khi tải dữ liệu"
+  },
+  "labelBack": {
+    "message": "Quay lại"
+  },
+  "backToTop": {
+    "message": "Lên đầu trang"
+  },
+  "changelogWhatsNew": {
+    "message": "Có gì mới"
+  },
+  "changelogLatestUpdates": {
+    "message": "Cập nhật và cải tiến mới nhất"
+  },
+  "changelogLoading": {
+    "message": "Đang tải nhật ký thay đổi..."
+  },
   "changelogFooterNotice": {
     "message": "Tiện ích này không liên kết với Google Cloud Skills Boost. Bảo lưu mọi quyền."
   },
-  "announcementTitle": { "message": "Thông báo quan trọng" },
-  "markdownShowMore": { "message": "Xem thêm" },
-  "accountsTitle": { "message": "Tài khoản của bạn" },
-  "noAccountsYet": { "message": "Chưa có tài khoản" },
-  "addAccountFirst": { "message": "Thêm tài khoản đầu tiên!" },
-  "dataManagementTitle": { "message": "Quản lý dữ liệu" },
-  "dataManagementSubtitle": { "message": "Sao lưu và khôi phục" },
-  "exportData": { "message": "Xuất dữ liệu" },
-  "importData": { "message": "Nhập dữ liệu" },
-  "modalAddAccountTitle": { "message": "Thêm tài khoản mới" },
-  "howToGetProfileUrl": { "message": "Cách lấy URL hồ sơ" },
-  "howToGetProfileSubtitle": { "message": "Làm theo các bước bên dưới" },
-  "openProfilePage": { "message": "Mở trang hồ sơ" },
-  "errorPrefix": { "message": "Lỗi:" },
-  "successPrefix": { "message": "Thành công:" },
-  "accountErrorFallback": { "message": "Đã xảy ra lỗi. Vui lòng thử lại." },
-  "accountSuccessFallback": { "message": "Hành động của bạn đã thành công!" },
-  "viewBadges": { "message": "Xem huy hiệu" },
-  "openProfile": { "message": "Mở hồ sơ" },
-  "arcadePointsTitle": { "message": "Điểm Arcade" },
-  "milestonesTitle": { "message": "Cột mốc" },
-  "accountsCardTitle": { "message": "Quản lý tài khoản & Bộ đếm điểm Arcade" },
+  "announcementTitle": {
+    "message": "Thông báo quan trọng"
+  },
+  "markdownShowMore": {
+    "message": "Xem thêm"
+  },
+  "accountsTitle": {
+    "message": "Tài khoản của bạn"
+  },
+  "noAccountsYet": {
+    "message": "Chưa có tài khoản"
+  },
+  "addAccountFirst": {
+    "message": "Thêm tài khoản đầu tiên!"
+  },
+  "dataManagementTitle": {
+    "message": "Quản lý dữ liệu"
+  },
+  "dataManagementSubtitle": {
+    "message": "Sao lưu và khôi phục"
+  },
+  "exportData": {
+    "message": "Xuất dữ liệu"
+  },
+  "importData": {
+    "message": "Nhập dữ liệu"
+  },
+  "modalAddAccountTitle": {
+    "message": "Thêm tài khoản mới"
+  },
+  "howToGetProfileUrl": {
+    "message": "Cách lấy URL hồ sơ"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "Làm theo các bước bên dưới"
+  },
+  "openProfilePage": {
+    "message": "Mở trang hồ sơ"
+  },
+  "errorPrefix": {
+    "message": "Lỗi:"
+  },
+  "successPrefix": {
+    "message": "Thành công:"
+  },
+  "accountErrorFallback": {
+    "message": "Đã xảy ra lỗi. Vui lòng thử lại."
+  },
+  "accountSuccessFallback": {
+    "message": "Hành động của bạn đã thành công!"
+  },
+  "viewBadges": {
+    "message": "Xem huy hiệu"
+  },
+  "openProfile": {
+    "message": "Mở hồ sơ"
+  },
+  "arcadePointsTitle": {
+    "message": "Điểm Arcade"
+  },
+  "milestonesTitle": {
+    "message": "Cột mốc"
+  },
+  "accountsCardTitle": {
+    "message": "Quản lý tài khoản & Bộ đếm điểm Arcade"
+  },
   "accountsCardSubtitle": {
     "message": "Quản lý nhiều tài khoản và tính điểm Arcade."
   },
-  "clickOpenProfileButton": { "message": "Nhấn nút \"Mở trang hồ sơ\"" },
-  "programDeadline": { "message": "Hạn chót chương trình" },
-  "labelDays": { "message": "Ngày" },
-  "labelHours": { "message": "Giờ" },
-  "labelMinutes": { "message": "Phút" },
-  "labelSeconds": { "message": "Giây" },
+  "clickOpenProfileButton": {
+    "message": "Nhấn nút \"Mở trang hồ sơ\""
+  },
+  "programDeadline": {
+    "message": "Hạn chót chương trình"
+  },
+  "labelDays": {
+    "message": "Ngày"
+  },
+  "labelHours": {
+    "message": "Giờ"
+  },
+  "labelMinutes": {
+    "message": "Phút"
+  },
+  "labelSeconds": {
+    "message": "Giây"
+  },
   "milestoneDeadlineNotice": {
     "message": "Hoàn thành cột mốc trước hạn để nhận điểm thưởng!"
   },
   "arcadeMotivation": {
     "message": "Giữ phong độ và leo bảng xếp hạng Arcade!"
   },
-  "totalBonusEarned": { "message": "Tổng điểm thưởng đã đạt:" },
+  "totalBonusEarned": {
+    "message": "Tổng điểm thưởng đã đạt:"
+  },
   "maxPossibleNote": {
     "message": "Tối đa có thể: 25 điểm (chỉ cột mốc cao nhất)"
   },
-  "pointsBreakdown": { "message": "Phân tích điểm" },
-  "arcadeBase": { "message": "Cơ bản Arcade:" },
-  "facilitatorBonus": { "message": "Điểm thưởng Facilitator:" },
-  "gameBadgeLabel": { "message": "Huy hiệu Trò chơi" },
+  "pointsBreakdown": {
+    "message": "Phân tích điểm"
+  },
+  "arcadeBase": {
+    "message": "Cơ bản Arcade:"
+  },
+  "facilitatorBonus": {
+    "message": "Điểm thưởng Facilitator:"
+  },
+  "gameBadgeLabel": {
+    "message": "Huy hiệu Trò chơi"
+  },
   "gameBadgeLabelTooltip": {
     "message": "Arcade hiện không còn cấp độ. Track mới: Adventure (nền tảng cloud), Voyage (luyện kỹ năng), Trail (học AI)."
   },
-  "triviaBadgeLabel": { "message": "Huy hiệu Câu hỏi" },
+  "triviaBadgeLabel": {
+    "message": "Huy hiệu Câu hỏi"
+  },
   "triviaBadgeLabelTooltip": {
     "message": "Trivia nay là Sprint: quiz nhanh để ôn lại kiến thức và nhận điểm Arcade."
   },
-  "skillBadgeLabel": { "message": "Huy hiệu Kỹ năng" },
-  "specialPointsLabel": { "message": "Điểm đặc biệt" },
-  "arcadeSeasonCountdown": { "message": "Đếm ngược mùa Arcade" },
-  "milestone1": { "message": "Cột mốc 1" },
-  "milestone1Bonus": { "message": "+2 Điểm thưởng" },
-  "milestone2": { "message": "Cột mốc 2" },
-  "milestone2Bonus": { "message": "+8 Điểm thưởng" },
-  "milestone3": { "message": "Cột mốc 3" },
-  "milestone3Bonus": { "message": "+15 Điểm thưởng" },
-  "milestoneUltimate": { "message": "Tối thượng" },
-  "milestoneUltimateBonus": { "message": "+25 Điểm thưởng" },
-  "progressLabel": { "message": "Tiến độ:" },
-  "gamesLabel": { "message": "Trò chơi:" },
-  "triviaLabel": { "message": "Câu hỏi:" },
-  "skillsLabel": { "message": "Kỹ năng:" },
-  "labFreeLabel": { "message": "Không cần lab:" },
-  "switchAccount": { "message": "Chuyển tài khoản" },
-  "statusActive": { "message": "Hoạt động" },
-  "quickSearch": { "message": "Tìm kiếm nhanh" },
-  "youtubeResults": { "message": "Kết quả YouTube" },
-  "searchFeatureTip": { "message": "Giúp bạn tìm câu trả lời nhanh hơn!" },
-  "successAccountCreated": { "message": "Tạo tài khoản thành công!" },
+  "skillBadgeLabel": {
+    "message": "Huy hiệu Kỹ năng"
+  },
+  "specialPointsLabel": {
+    "message": "Điểm đặc biệt"
+  },
+  "arcadeSeasonCountdown": {
+    "message": "Đếm ngược mùa Arcade"
+  },
+  "milestone1": {
+    "message": "Cột mốc 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 Điểm thưởng"
+  },
+  "milestone2": {
+    "message": "Cột mốc 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 Điểm thưởng"
+  },
+  "milestone3": {
+    "message": "Cột mốc 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 Điểm thưởng"
+  },
+  "milestoneUltimate": {
+    "message": "Tối thượng"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 Điểm thưởng"
+  },
+  "progressLabel": {
+    "message": "Tiến độ:"
+  },
+  "gamesLabel": {
+    "message": "Trò chơi:"
+  },
+  "triviaLabel": {
+    "message": "Câu hỏi:"
+  },
+  "skillsLabel": {
+    "message": "Kỹ năng:"
+  },
+  "labFreeLabel": {
+    "message": "Không cần lab:"
+  },
+  "switchAccount": {
+    "message": "Chuyển tài khoản"
+  },
+  "statusActive": {
+    "message": "Hoạt động"
+  },
+  "quickSearch": {
+    "message": "Tìm kiếm nhanh"
+  },
+  "youtubeResults": {
+    "message": "Kết quả YouTube"
+  },
+  "searchFeatureTip": {
+    "message": "Giúp bạn tìm câu trả lời nhanh hơn!"
+  },
+  "successAccountCreated": {
+    "message": "Tạo tài khoản thành công!"
+  },
   "successAddNickname": {
     "message": "Bạn có thể thêm biệt danh để dễ dàng nhận biết tài khoản này."
   },
-  "newlyCreated": { "message": "Mới tạo" },
-  "labelNickname": { "message": "Biệt danh:" },
-  "noNicknameYet": { "message": "Chưa có biệt danh" },
-  "labelUpdated": { "message": "Cập nhật:" },
-  "justCreated": { "message": "Vừa tạo" },
-  "markdownShowLess": { "message": "Ẩn bớt" },
-  "importantNoticeTitle": { "message": "Thông báo quan trọng" },
+  "newlyCreated": {
+    "message": "Mới tạo"
+  },
+  "labelNickname": {
+    "message": "Biệt danh:"
+  },
+  "noNicknameYet": {
+    "message": "Chưa có biệt danh"
+  },
+  "labelUpdated": {
+    "message": "Cập nhật:"
+  },
+  "justCreated": {
+    "message": "Vừa tạo"
+  },
+  "markdownShowLess": {
+    "message": "Ẩn bớt"
+  },
+  "importantNoticeTitle": {
+    "message": "Thông báo quan trọng"
+  },
   "importantNoticeText": {
     "message": "Mỗi URL hồ sơ chỉ có thể được thêm một lần. Hệ thống sẽ kiểm tra và thông báo nếu tài khoản đã tồn tại."
   },
-  "enterProfileUrlLabel": { "message": "Nhập URL hồ sơ và tạo tài khoản" },
-  "createAccountButton": { "message": "Tạo tài khoản" },
-  "instructionsLabel": { "message": "Hướng dẫn:" },
+  "enterProfileUrlLabel": {
+    "message": "Nhập URL hồ sơ và tạo tài khoản"
+  },
+  "createAccountButton": {
+    "message": "Tạo tài khoản"
+  },
+  "instructionsLabel": {
+    "message": "Hướng dẫn:"
+  },
   "instructionsText": {
     "message": "Nhập URL và nhấp \"Tạo tài khoản\". Hệ thống sẽ tự động tải thông tin và tạo tài khoản mới."
   },
-  "step1Title": { "message": "Nhấn nút \"Mở trang hồ sơ\"" },
+  "step1Title": {
+    "message": "Nhấn nút \"Mở trang hồ sơ\""
+  },
   "step1Subtitle": {
     "message": "Sẽ mở Google Cloud Skills Boost trong tab mới"
   },
-  "step2Title": { "message": "Đăng nhập (nếu chưa đăng nhập)" },
-  "step2Subtitle": { "message": "Sử dụng tài khoản Google của bạn" },
-  "step3Title": { "message": "Tìm mục \"Public profile\"" },
-  "step3Subtitle": { "message": "Cuộn xuống trong trang hồ sơ" },
-  "step4Title": { "message": "Sao chép URL từ thanh địa chỉ" },
-  "step4Subtitle": { "message": "Dán vào ô bên dưới" },
-  "newAccountBadge": { "message": "Tài khoản mới" },
-  "totalBadgesLabel": { "message": "Tổng Huy hiệu" },
-  "skillBadgesLabel": { "message": "Huy hiệu Kỹ năng" },
-  "arcadePointsLabel": { "message": "Điểm Arcade" },
-  "accountNicknameLabel": { "message": "Biệt danh tài khoản" },
+  "step2Title": {
+    "message": "Đăng nhập (nếu chưa đăng nhập)"
+  },
+  "step2Subtitle": {
+    "message": "Sử dụng tài khoản Google của bạn"
+  },
+  "step3Title": {
+    "message": "Tìm mục \"Public profile\""
+  },
+  "step3Subtitle": {
+    "message": "Cuộn xuống trong trang hồ sơ"
+  },
+  "step4Title": {
+    "message": "Sao chép URL từ thanh địa chỉ"
+  },
+  "step4Subtitle": {
+    "message": "Dán vào ô bên dưới"
+  },
+  "newAccountBadge": {
+    "message": "Tài khoản mới"
+  },
+  "totalBadgesLabel": {
+    "message": "Tổng Huy hiệu"
+  },
+  "skillBadgesLabel": {
+    "message": "Huy hiệu Kỹ năng"
+  },
+  "arcadePointsLabel": {
+    "message": "Điểm Arcade"
+  },
+  "accountNicknameLabel": {
+    "message": "Biệt danh tài khoản"
+  },
   "nicknamePlaceholder": {
     "message": "VD: Tài khoản chính, Tài khoản công việc, Tài khoản học tập..."
   },
   "nicknameHelpText": {
     "message": "Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau"
   },
-  "editAccountTitle": { "message": "Chỉnh sửa tài khoản" },
-  "displayNameLabel": { "message": "Tên hiển thị:" },
+  "editAccountTitle": {
+    "message": "Chỉnh sửa tài khoản"
+  },
+  "displayNameLabel": {
+    "message": "Tên hiển thị:"
+  },
   "displayNameInfo": {
     "message": "Tên hiển thị được lấy từ Google Cloud Skills Boost và không thể chỉnh sửa"
   },
-  "nicknameLabel": { "message": "Biệt danh:" },
+  "nicknameLabel": {
+    "message": "Biệt danh:"
+  },
   "enterNicknamePlaceholder": {
     "message": "Nhập biệt danh để dễ nhận biết..."
   },
   "nicknameExample": {
     "message": "Ví dụ: \"Tài khoản chính\", \"Tài khoản công việc\", \"Tài khoản học tập\"..."
   },
-  "cancelButton": { "message": "Hủy" },
-  "saveChangesButton": { "message": "Lưu thay đổi" },
-  "themeStudioTitle": { "message": "Studio Chủ đề" },
+  "cancelButton": {
+    "message": "Hủy"
+  },
+  "saveChangesButton": {
+    "message": "Lưu thay đổi"
+  },
+  "themeStudioTitle": {
+    "message": "Studio Chủ đề"
+  },
   "themeStudioDescription": {
     "message": "Tùy chỉnh giao diện popup với xem trước thời gian thực."
   },
-  "labelBackground1": { "message": "Nền 1" },
-  "labelBackground2": { "message": "Nền 2" },
-  "labelBackground3": { "message": "Nền 3" },
-  "labelAccent": { "message": "Màu nhấn" },
-  "labelArcadePoints": { "message": "Điểm Arcade" },
-  "labelTextPrimary": { "message": "Màu chữ chính" },
-  "labelTextSecondary": { "message": "Màu chữ phụ" },
-  "labelTextMuted": { "message": "Màu chữ mờ" },
-  "btnApplySave": { "message": "Áp dụng & Lưu" },
-  "btnResetToDark": { "message": "Đặt lại về Dark" },
-  "btnSyncFromPopup": { "message": "Đồng bộ từ Popup hiện tại" },
+  "labelBackground1": {
+    "message": "Nền 1"
+  },
+  "labelBackground2": {
+    "message": "Nền 2"
+  },
+  "labelBackground3": {
+    "message": "Nền 3"
+  },
+  "labelAccent": {
+    "message": "Màu nhấn"
+  },
+  "labelArcadePoints": {
+    "message": "Điểm Arcade"
+  },
+  "labelTextPrimary": {
+    "message": "Màu chữ chính"
+  },
+  "labelTextSecondary": {
+    "message": "Màu chữ phụ"
+  },
+  "labelTextMuted": {
+    "message": "Màu chữ mờ"
+  },
+  "btnApplySave": {
+    "message": "Áp dụng & Lưu"
+  },
+  "btnResetToDark": {
+    "message": "Đặt lại về Dark"
+  },
+  "btnSyncFromPopup": {
+    "message": "Đồng bộ từ Popup hiện tại"
+  },
   "previewNote": {
     "message": "Xem trước sử dụng giao diện popup thực và dữ liệu tài khoản hiện tại."
   },
-  "popupLivePreviewTitle": { "message": "Xem trước Popup trực tiếp" },
-  "btnApplyCustomTheme": { "message": "Áp dụng chủ đề tùy chỉnh" },
-  "btnResetCustomTheme": { "message": "Đặt lại" },
-  "btnOpenThemeStudio": { "message": "Mở Theme Studio (Xem trước trực tiếp)" },
-  "btnChangeTheme": { "message": "Thay đổi chủ đề" },
-  "labThinking": { "message": "Đang suy nghĩ..." },
-  "labSolutionTitle": { "message": "Nhấn để mở bài giải" },
-  "labSolutionButton": { "message": "Xem bài giải" },
+  "popupLivePreviewTitle": {
+    "message": "Xem trước Popup trực tiếp"
+  },
+  "btnApplyCustomTheme": {
+    "message": "Áp dụng chủ đề tùy chỉnh"
+  },
+  "btnResetCustomTheme": {
+    "message": "Đặt lại"
+  },
+  "btnOpenThemeStudio": {
+    "message": "Mở Theme Studio (Xem trước trực tiếp)"
+  },
+  "btnChangeTheme": {
+    "message": "Thay đổi chủ đề"
+  },
+  "labThinking": {
+    "message": "Đang suy nghĩ..."
+  },
+  "labSolutionTitle": {
+    "message": "Nhấn để mở bài giải"
+  },
+  "labSolutionButton": {
+    "message": "Xem bài giải"
+  },
   "labSupportTitle": {
     "message": "Nhấn để báo lỗi hoặc nhận hỗ trợ qua Telegram"
   },
-  "labSupportButton": { "message": "Báo lỗi / Hỗ trợ" },
-  "labNoSolution": { "message": "Không có bài giải" },
-  "labEplusSearch": { "message": "Tìm trên ePlus" },
-  "labGoogleSearch": { "message": "Tìm trên Google" },
-  "labBingSearch": { "message": "Bing Search" },
-  "labYandexSearch": { "message": "Yandex Search" },
-  "labBraveSearch": { "message": "Brave Search" },
-  "labDuckDuckGoSearch": { "message": "DuckDuckGo Search" },
-  "labBaiduSearch": { "message": "Baidu Search" },
-  "labYahooSearch": { "message": "Yahoo! Search" },
-  "labCoccocSearch": { "message": "Cốc Cốc Search" },
-  "labelSearch": { "message": "Tìm kiếm" },
-  "labelCopyLink": { "message": "Sao chép liên kết" },
-  "labFallbackQuery": { "message": "Google Cloud lab tutorial" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "Xuất dữ liệu của tôi" },
-  "exportJSON": { "message": "Xuất JSON" },
-  "exportCSV": { "message": "Xuất Badges CSV" },
-  "exportSuccess": { "message": "Xuất thành công!" },
-  "exportNoData": { "message": "Không có dữ liệu để xuất." },
-  "compactMode": { "message": "Thu gọn" },
-  "fullMode": { "message": "Đầy đủ" },
-  "shortcutHint": { "message": "R làm mới · S cài đặt · C thu gọn" }
+  "labSupportButton": {
+    "message": "Báo lỗi / Hỗ trợ"
+  },
+  "labNoSolution": {
+    "message": "Không có bài giải"
+  },
+  "labEplusSearch": {
+    "message": "Tìm trên ePlus"
+  },
+  "labGoogleSearch": {
+    "message": "Tìm trên Google"
+  },
+  "labBingSearch": {
+    "message": "Bing Search"
+  },
+  "labYandexSearch": {
+    "message": "Yandex Search"
+  },
+  "labBraveSearch": {
+    "message": "Brave Search"
+  },
+  "labDuckDuckGoSearch": {
+    "message": "DuckDuckGo Search"
+  },
+  "labBaiduSearch": {
+    "message": "Baidu Search"
+  },
+  "labYahooSearch": {
+    "message": "Yahoo! Search"
+  },
+  "labCoccocSearch": {
+    "message": "Cốc Cốc Search"
+  },
+  "labelSearch": {
+    "message": "Tìm kiếm"
+  },
+  "labelCopyLink": {
+    "message": "Sao chép liên kết"
+  },
+  "labFallbackQuery": {
+    "message": "Google Cloud lab tutorial"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "exportDataTitle": {
+    "message": "Xuất dữ liệu của tôi"
+  },
+  "exportJSON": {
+    "message": "Xuất JSON"
+  },
+  "exportCSV": {
+    "message": "Xuất Badges CSV"
+  },
+  "exportSuccess": {
+    "message": "Xuất thành công!"
+  },
+  "exportNoData": {
+    "message": "Không có dữ liệu để xuất."
+  },
+  "compactMode": {
+    "message": "Thu gọn"
+  },
+  "fullMode": {
+    "message": "Đầy đủ"
+  },
+  "shortcutHint": {
+    "message": "R làm mới · S cài đặt · C thu gọn"
+  },
+  "messageEplusSearchSaved": {
+    "message": "Đã lưu cài đặt tìm kiếm ePlus"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Hãy bật Tính năng tìm kiếm chính trước khi bật ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Đặt làm tài khoản mặc định"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Bật/tắt Chương trình Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "Cập nhật tài khoản"
+  },
+  "titleViewPublicProfile": {
+    "message": "Xem hồ sơ công khai"
+  },
+  "titleEditAccount": {
+    "message": "Sửa tài khoản"
+  },
+  "titleDeleteAccount": {
+    "message": "Xóa tài khoản"
+  },
+  "exportNoBadgesData": {
+    "message": "Không có huy hiệu để xuất."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Đã lưu công cụ tìm kiếm ưu tiên"
+  },
+  "labelEnabled": {
+    "message": "đã bật"
+  },
+  "labelDisabled": {
+    "message": "đã tắt"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Chương trình Facilitator $1 cho $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Lỗi khi cập nhật cài đặt Chương trình Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "Không thể tải dữ liệu. Vui lòng thử lại sau."
+  },
+  "errorGenericRetry": {
+    "message": "Đã xảy ra lỗi. Vui lòng thử lại."
+  },
+  "labelNewAccount": {
+    "message": "Tài khoản mới"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Đã tạo tài khoản \"$1\" thành công!"
+  },
+  "successDataSaved": {
+    "message": "Đã lưu dữ liệu thành công!"
+  },
+  "successAccountUpdated": {
+    "message": "Đã cập nhật tài khoản thành công!"
+  },
+  "errorSaveSetting": {
+    "message": "Không thể lưu cài đặt"
+  },
+  "errorUnableFetchProfile": {
+    "message": "Không thể lấy thông tin từ hồ sơ này"
+  },
+  "errorUnableGetUserName": {
+    "message": "Không thể lấy tên người dùng từ hồ sơ này"
+  },
+  "errorUnableCreateAccount": {
+    "message": "Không thể tạo tài khoản. Vui lòng kiểm tra URL và thử lại!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "Không thể lấy thông tin hồ sơ. Vui lòng kiểm tra URL và thử lại!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "Không tìm thấy ID hồ sơ"
+  },
+  "switchToAccountNamed": {
+    "message": "Chuyển sang tài khoản \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Đã chuyển sang tài khoản \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "Bạn có chắc muốn xóa tài khoản \"$1\" không?"
+  },
+  "btnCancel": {
+    "message": "Hủy"
+  },
+  "btnDelete": {
+    "message": "Xóa"
+  },
+  "labelImporting": {
+    "message": "Đang nhập..."
+  },
+  "labelImportData": {
+    "message": "Nhập dữ liệu"
+  }
 }

@@ -236,8 +236,8 @@
                   <span data-i18n="youtubeResults">YouTube Results</span>
                 </span>
               </div>
-              <div class="mt-4 flex items-center justify-between">
-                <div class="flex-1">
+              <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                <div>
                   <label for="preferred-search-engine" class="block text-sm font-medium text-gray-700 mb-2">Preferred
                     search engine</label>
                   <select id="preferred-search-engine"
@@ -252,11 +252,11 @@
                     <option value="coccoc">Cốc Cốc</option>
                   </select>
                 </div>
-                <!-- badge removed: preference is set by the select -->
+                <div></div>
               </div>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
+          <div class="flex flex-col items-end space-y-3">
             <div class="flex items-center space-x-3">
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" id="search-feature-toggle" class="sr-only peer" checked />
@@ -268,6 +268,22 @@
                 </div>
               </label>
               <span id="search-feature-status" class="text-sm font-medium text-gray-700">Enabled</span>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="text-right">
+                <div class="text-sm font-medium text-gray-800" data-i18n="labEplusSearch"></div>
+                <div class="text-xs text-gray-500" data-i18n="descriptionEnableEplusSearch"></div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="enable-eplus-search" class="sr-only peer" checked />
+                <div
+                  class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 transition-colors duration-200 peer-checked:bg-green-600">
+                </div>
+                <div
+                  class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6">
+                </div>
+              </label>
             </div>
           </div>
         </div>
@@ -933,12 +949,68 @@
         if (!searchToggle || !searchStatus) return;
         const checked = 'checked' in searchToggle ? searchToggle.checked : false;
         searchStatus.textContent = checked ? i18nMsg('labelEnabled', 'Enabled') : i18nMsg('labelDisabled', 'Disabled');
+
+        // Ensure ePlus toggle is disabled when main search feature is off (parent-child relation)
+        try {
+          const eplus = document.getElementById('enable-eplus-search') as HTMLInputElement | null;
+          if (eplus) {
+            eplus.disabled = !checked;
+            if (!checked) {
+              // also uncheck when parent disabled so it can't stay selected
+              try {
+                eplus.checked = false;
+              } catch { }
+            }
+            // If disabled, visually indicate and prevent label clicks
+            const parentLabel = eplus.closest && eplus.closest('label');
+            if (parentLabel && parentLabel instanceof HTMLElement) {
+              parentLabel.style.opacity = !checked ? '0.6' : '';
+              parentLabel.style.pointerEvents = !checked ? 'none' : '';
+            }
+            // Also update any sibling visual toggles if needed (no-op if not present)
+          }
+        } catch (e) {
+          // ignore in older build outputs
+        }
       }
       if (searchToggle) {
         updateSearchStatus();
         if ('addEventListener' in searchToggle) {
           searchToggle.addEventListener('change', updateSearchStatus);
         }
+      }
+
+      // Protective handlers: prevent toggling ePlus when parent search feature is off
+      try {
+        const eplusInput = document.getElementById('enable-eplus-search') as HTMLInputElement | null;
+        if (eplus) {
+          eplus.disabled = !checked;
+          // If disabled, visually indicate and prevent label clicks
+          const parentLabel = eplus.closest && eplus.closest('label');
+          if (parentLabel && parentLabel instanceof HTMLElement) {
+            parentLabel.style.opacity = !checked ? '0.6' : '';
+            parentLabel.style.pointerEvents = !checked ? 'none' : '';
+            parentLabel.style.cursor = !checked ? 'not-allowed' : '';
+          }
+          try {
+            (eplus as HTMLInputElement).style.cursor = !checked ? 'not-allowed' : '';
+          } catch { }
+
+          // Click on label may still toggle; prevent clicks when parent is off
+          const label = eplusInput.closest && eplusInput.closest('label');
+          if (label && label instanceof HTMLElement) {
+            label.addEventListener('click', function (ev) {
+              const parentChecked = searchToggle && 'checked' in searchToggle ? (searchToggle as HTMLInputElement).checked : false;
+              if (!parentChecked) {
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                return false;
+              }
+            });
+          }
+        }
+      } catch (e) {
+        // ignore
       }
     });
   </script>

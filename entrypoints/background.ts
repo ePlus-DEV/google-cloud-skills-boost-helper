@@ -324,6 +324,42 @@ export default defineBackground(() => {
             );
           }
           break;
+        case "searchFeatureChanged":
+          try {
+            const enabled = Boolean(message.enabled);
+            const tabs = await browser.tabs.query({});
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "searchFeatureChanged",
+                    enabled,
+                  });
+                }
+              } catch (err) {}
+            }
+          } catch (err) {
+            console.debug("Failed to broadcast searchFeatureChanged:", err);
+          }
+          break;
+        case "enableEplusSearchChanged":
+          try {
+            const enabled = Boolean(message.enabled);
+            const tabs = await browser.tabs.query({});
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "enableEplusSearchChanged",
+                    enabled,
+                  });
+                }
+              } catch (err) {}
+            }
+          } catch (err) {
+            console.debug("Failed to broadcast enableEplusSearchChanged:", err);
+          }
+          break;
         case "refreshBadge":
           await handleRefreshBadge();
           break;

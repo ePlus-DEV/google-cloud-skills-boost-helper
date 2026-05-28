@@ -759,5 +759,104 @@
   },
   "shortcutHint": {
     "message": "R aggiorna · S impostazioni · C compatto"
+  },
+  "messageEplusSearchSaved": {
+    "message": "Impostazione ricerca ePlus salvata"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Attiva la funzione di ricerca principale prima di attivare ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Imposta come account predefinito"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Attiva/disattiva programma Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "Aggiorna account"
+  },
+  "titleViewPublicProfile": {
+    "message": "Visualizza profilo pubblico"
+  },
+  "titleEditAccount": {
+    "message": "Modifica account"
+  },
+  "titleDeleteAccount": {
+    "message": "Elimina account"
+  },
+  "exportNoBadgesData": {
+    "message": "Nessun badge da esportare."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Motore di ricerca preferito salvato"
+  },
+  "labelEnabled": {
+    "message": "attivato"
+  },
+  "labelDisabled": {
+    "message": "disattivato"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Programma Facilitator $1 per $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Errore durante l?aggiornamento dell?impostazione del programma Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "Impossibile recuperare i dati. Riprova pi? tardi."
+  },
+  "errorGenericRetry": {
+    "message": "Si ? verificato un errore. Riprova."
+  },
+  "labelNewAccount": {
+    "message": "Nuovo account"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Account \"$1\" creato correttamente!"
+  },
+  "successDataSaved": {
+    "message": "Dati salvati correttamente!"
+  },
+  "successAccountUpdated": {
+    "message": "Account aggiornato correttamente!"
+  },
+  "errorSaveSetting": {
+    "message": "Impossibile salvare l?impostazione"
+  },
+  "errorUnableFetchProfile": {
+    "message": "Impossibile recuperare informazioni da questo profilo"
+  },
+  "errorUnableGetUserName": {
+    "message": "Impossibile ottenere il nome utente da questo profilo"
+  },
+  "errorUnableCreateAccount": {
+    "message": "Impossibile creare l?account. Controlla l?URL e riprova!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "Impossibile recuperare le informazioni del profilo. Controlla l?URL e riprova!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "ID profilo non trovato"
+  },
+  "switchToAccountNamed": {
+    "message": "Passa all?account \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Passato all?account \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "Vuoi davvero eliminare l?account \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "Annulla"
+  },
+  "btnDelete": {
+    "message": "Elimina"
+  },
+  "labelImporting": {
+    "message": "Importazione..."
+  },
+  "labelImportData": {
+    "message": "Importa dati"
   }
 }

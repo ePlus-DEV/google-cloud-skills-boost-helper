@@ -759,5 +759,104 @@
   },
   "shortcutHint": {
     "message": "R actualizar · S ajustes · C compacto"
+  },
+  "messageEplusSearchSaved": {
+    "message": "Configuraci?n de b?squeda ePlus guardada"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Activa la funci?n principal de b?squeda antes de activar ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Establecer como cuenta predeterminada"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Activar o desactivar el programa Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "Actualizar cuenta"
+  },
+  "titleViewPublicProfile": {
+    "message": "Ver perfil p?blico"
+  },
+  "titleEditAccount": {
+    "message": "Editar cuenta"
+  },
+  "titleDeleteAccount": {
+    "message": "Eliminar cuenta"
+  },
+  "exportNoBadgesData": {
+    "message": "No hay insignias para exportar."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Motor de b?squeda preferido guardado"
+  },
+  "labelEnabled": {
+    "message": "activado"
+  },
+  "labelDisabled": {
+    "message": "desactivado"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Programa Facilitator $1 para $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Error al actualizar la configuraci?n del programa Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "No se pudieron obtener los datos. Int?ntalo de nuevo m?s tarde."
+  },
+  "errorGenericRetry": {
+    "message": "Se produjo un error. Int?ntalo de nuevo."
+  },
+  "labelNewAccount": {
+    "message": "Cuenta nueva"
+  },
+  "successAccountCreatedNamed": {
+    "message": "?Cuenta \"$1\" creada correctamente!"
+  },
+  "successDataSaved": {
+    "message": "?Datos guardados correctamente!"
+  },
+  "successAccountUpdated": {
+    "message": "?Cuenta actualizada correctamente!"
+  },
+  "errorSaveSetting": {
+    "message": "No se pudo guardar la configuraci?n"
+  },
+  "errorUnableFetchProfile": {
+    "message": "No se pudo obtener informaci?n de este perfil"
+  },
+  "errorUnableGetUserName": {
+    "message": "No se pudo obtener el nombre de usuario de este perfil"
+  },
+  "errorUnableCreateAccount": {
+    "message": "No se pudo crear la cuenta. Revisa la URL e int?ntalo de nuevo."
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "No se pudo obtener la informaci?n del perfil. Revisa la URL e int?ntalo de nuevo."
+  },
+  "errorProfileIdNotFound": {
+    "message": "No se encontr? el ID del perfil"
+  },
+  "switchToAccountNamed": {
+    "message": "Cambiar a la cuenta \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "?Se cambi? a la cuenta \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "?Seguro que quieres eliminar la cuenta \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "Cancelar"
+  },
+  "btnDelete": {
+    "message": "Eliminar"
+  },
+  "labelImporting": {
+    "message": "Importando..."
+  },
+  "labelImportData": {
+    "message": "Importar datos"
   }
 }

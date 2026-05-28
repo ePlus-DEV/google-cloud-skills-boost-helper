@@ -759,5 +759,104 @@
   },
   "shortcutHint": {
     "message": "R atualizar · S configurações · C compacto"
+  },
+  "messageEplusSearchSaved": {
+    "message": "Configura??o da busca ePlus salva"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Ative o recurso principal de busca antes de ativar o ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Definir como conta padr?o"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Ativar/desativar Programa Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "Atualizar conta"
+  },
+  "titleViewPublicProfile": {
+    "message": "Ver perfil p?blico"
+  },
+  "titleEditAccount": {
+    "message": "Editar conta"
+  },
+  "titleDeleteAccount": {
+    "message": "Excluir conta"
+  },
+  "exportNoBadgesData": {
+    "message": "N?o h? badges para exportar."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Mecanismo de busca preferido salvo"
+  },
+  "labelEnabled": {
+    "message": "ativado"
+  },
+  "labelDisabled": {
+    "message": "desativado"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Programa Facilitator $1 para $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Erro ao atualizar a configura??o do Programa Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "N?o foi poss?vel buscar os dados. Tente novamente mais tarde."
+  },
+  "errorGenericRetry": {
+    "message": "Ocorreu um erro. Tente novamente."
+  },
+  "labelNewAccount": {
+    "message": "Nova conta"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Conta \"$1\" criada com sucesso!"
+  },
+  "successDataSaved": {
+    "message": "Dados salvos com sucesso!"
+  },
+  "successAccountUpdated": {
+    "message": "Conta atualizada com sucesso!"
+  },
+  "errorSaveSetting": {
+    "message": "Falha ao salvar a configura??o"
+  },
+  "errorUnableFetchProfile": {
+    "message": "N?o foi poss?vel buscar informa??es deste perfil"
+  },
+  "errorUnableGetUserName": {
+    "message": "N?o foi poss?vel obter o nome de usu?rio deste perfil"
+  },
+  "errorUnableCreateAccount": {
+    "message": "N?o foi poss?vel criar a conta. Verifique a URL e tente novamente!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "N?o foi poss?vel buscar as informa??es do perfil. Verifique a URL e tente novamente!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "ID do perfil n?o encontrado"
+  },
+  "switchToAccountNamed": {
+    "message": "Mudar para a conta \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Mudou para a conta \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "Tem certeza de que deseja excluir a conta \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "Cancelar"
+  },
+  "btnDelete": {
+    "message": "Excluir"
+  },
+  "labelImporting": {
+    "message": "Importando..."
+  },
+  "labelImportData": {
+    "message": "Importar dados"
   }
 }

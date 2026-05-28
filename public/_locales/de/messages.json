@@ -759,5 +759,104 @@
   },
   "shortcutHint": {
     "message": "R aktualisieren · S Einstellungen · C kompakt"
+  },
+  "messageEplusSearchSaved": {
+    "message": "ePlus-Sucheinstellung gespeichert"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Aktiviere zuerst die Hauptsuchfunktion, bevor du ePlus aktivierst."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Als Standardkonto festlegen"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Facilitator-Programm umschalten"
+  },
+  "titleUpdateAccount": {
+    "message": "Konto aktualisieren"
+  },
+  "titleViewPublicProfile": {
+    "message": "?ffentliches Profil ansehen"
+  },
+  "titleEditAccount": {
+    "message": "Konto bearbeiten"
+  },
+  "titleDeleteAccount": {
+    "message": "Konto l?schen"
+  },
+  "exportNoBadgesData": {
+    "message": "Keine Badges zum Exportieren."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Bevorzugte Suchmaschine gespeichert"
+  },
+  "labelEnabled": {
+    "message": "aktiviert"
+  },
+  "labelDisabled": {
+    "message": "deaktiviert"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Facilitator-Programm f?r $2 $1"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Fehler beim Aktualisieren der Facilitator-Programmeinstellung"
+  },
+  "errorFetchDataRetry": {
+    "message": "Daten konnten nicht abgerufen werden. Bitte versuche es sp?ter erneut."
+  },
+  "errorGenericRetry": {
+    "message": "Ein Fehler ist aufgetreten. Bitte versuche es erneut."
+  },
+  "labelNewAccount": {
+    "message": "Neues Konto"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Konto \"$1\" wurde erfolgreich erstellt!"
+  },
+  "successDataSaved": {
+    "message": "Daten wurden erfolgreich gespeichert!"
+  },
+  "successAccountUpdated": {
+    "message": "Konto wurde erfolgreich aktualisiert!"
+  },
+  "errorSaveSetting": {
+    "message": "Einstellung konnte nicht gespeichert werden"
+  },
+  "errorUnableFetchProfile": {
+    "message": "Informationen aus diesem Profil konnten nicht abgerufen werden"
+  },
+  "errorUnableGetUserName": {
+    "message": "Benutzername konnte aus diesem Profil nicht gelesen werden"
+  },
+  "errorUnableCreateAccount": {
+    "message": "Konto konnte nicht erstellt werden. Bitte pr?fe die URL und versuche es erneut!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "Profilinformationen konnten nicht abgerufen werden. Bitte pr?fe die URL und versuche es erneut!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "Profil-ID nicht gefunden"
+  },
+  "switchToAccountNamed": {
+    "message": "Zu Konto \"$1\" wechseln"
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Zu Konto \"$1\" gewechselt!"
+  },
+  "confirmDeleteAccount": {
+    "message": "M?chtest du das Konto \"$1\" wirklich l?schen?"
+  },
+  "btnCancel": {
+    "message": "Abbrechen"
+  },
+  "btnDelete": {
+    "message": "L?schen"
+  },
+  "labelImporting": {
+    "message": "Wird importiert..."
+  },
+  "labelImportData": {
+    "message": "Daten importieren"
   }
 }

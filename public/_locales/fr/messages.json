@@ -759,5 +759,104 @@
   },
   "shortcutHint": {
     "message": "R actualiser · S paramètres · C compact"
+  },
+  "messageEplusSearchSaved": {
+    "message": "Param?tre de recherche ePlus enregistr?"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Activez d?abord la fonction de recherche principale avant d?activer ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "D?finir comme compte par d?faut"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Activer ou d?sactiver le programme Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "Mettre ? jour le compte"
+  },
+  "titleViewPublicProfile": {
+    "message": "Voir le profil public"
+  },
+  "titleEditAccount": {
+    "message": "Modifier le compte"
+  },
+  "titleDeleteAccount": {
+    "message": "Supprimer le compte"
+  },
+  "exportNoBadgesData": {
+    "message": "Aucun badge ? exporter."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Moteur de recherche pr?f?r? enregistr?"
+  },
+  "labelEnabled": {
+    "message": "activ?"
+  },
+  "labelDisabled": {
+    "message": "d?sactiv?"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Programme Facilitator $1 pour $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Erreur lors de la mise ? jour du param?tre du programme Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "Impossible de r?cup?rer les donn?es. Veuillez r?essayer plus tard."
+  },
+  "errorGenericRetry": {
+    "message": "Une erreur est survenue. Veuillez r?essayer."
+  },
+  "labelNewAccount": {
+    "message": "Nouveau compte"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Compte \"$1\" cr?? avec succ?s !"
+  },
+  "successDataSaved": {
+    "message": "Donn?es enregistr?es avec succ?s !"
+  },
+  "successAccountUpdated": {
+    "message": "Compte mis ? jour avec succ?s !"
+  },
+  "errorSaveSetting": {
+    "message": "Impossible d?enregistrer le param?tre"
+  },
+  "errorUnableFetchProfile": {
+    "message": "Impossible de r?cup?rer les informations de ce profil"
+  },
+  "errorUnableGetUserName": {
+    "message": "Impossible d?obtenir le nom d?utilisateur depuis ce profil"
+  },
+  "errorUnableCreateAccount": {
+    "message": "Impossible de cr?er le compte. V?rifiez l?URL puis r?essayez !"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "Impossible de r?cup?rer les informations du profil. V?rifiez l?URL puis r?essayez !"
+  },
+  "errorProfileIdNotFound": {
+    "message": "ID de profil introuvable"
+  },
+  "switchToAccountNamed": {
+    "message": "Passer au compte \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Passage au compte \"$1\" effectu? !"
+  },
+  "confirmDeleteAccount": {
+    "message": "Voulez-vous vraiment supprimer le compte \"$1\" ?"
+  },
+  "btnCancel": {
+    "message": "Annuler"
+  },
+  "btnDelete": {
+    "message": "Supprimer"
+  },
+  "labelImporting": {
+    "message": "Importation..."
+  },
+  "labelImportData": {
+    "message": "Importer les donn?es"
   }
 }

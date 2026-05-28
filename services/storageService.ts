@@ -13,6 +13,7 @@ const STORAGE_KEYS = {
   arcadeData: "local:arcadeData" as const,
   urlProfile: "local:urlProfile" as const,
   enableSearchFeature: "local:enableSearchFeature" as const,
+  enableEplusSearch: "local:enableEplusSearch" as const,
   showBadge: "local:showBadge" as const,
   preferredSearchEngine: "local:preferredSearchEngine" as const,
   accountsData: "local:accountsData" as const,
@@ -392,6 +393,49 @@ async function isSearchFeatureEnabled(): Promise<boolean> {
 }
 
 /**
+ * Check if the ePlus search button should be shown. Defaults to true.
+ */
+async function isEplusSearchEnabled(): Promise<boolean> {
+  try {
+    const settings = await AccountService.getSettings();
+    if (settings && typeof settings.enableEplusSearch === "boolean") {
+      return settings.enableEplusSearch;
+    }
+  } catch {
+    // ignore and fallback
+  }
+
+  try {
+    const legacy = await storage.getItem<boolean>(
+      STORAGE_KEYS.enableEplusSearch,
+    );
+    if (typeof legacy === "boolean") return legacy;
+  } catch {}
+
+  return true; // default to enabled
+}
+
+/**
+ * Save ePlus search enabled/disabled to storage
+ */
+async function saveEplusSearchEnabled(enabled: boolean): Promise<void> {
+  try {
+    try {
+      await AccountService.updateSettings({
+        enableEplusSearch: Boolean(enabled),
+      });
+      return;
+    } catch {
+      // fallback
+    }
+
+    await storage.setItem(STORAGE_KEYS.enableEplusSearch, enabled);
+  } catch (e) {
+    console.debug("Failed to save ePlus search enabled setting:", e);
+  }
+}
+
+/**
  * Get preferred search engine from settings or legacy storage.
  * Returns a string key like 'google', 'bing', 'yandex', 'brave', 'duckduckgo'.
  */
@@ -515,6 +559,8 @@ const StorageService = {
   isSearchFeatureEnabled,
   getPreferredSearchEngine,
   savePreferredSearchEngine,
+  isEplusSearchEnabled,
+  saveEplusSearchEnabled,
   isBadgeDisplayEnabled,
   saveBadgeDisplayEnabled,
   saveSearchFeatureEnabled,
