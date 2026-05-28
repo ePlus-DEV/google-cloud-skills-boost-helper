@@ -811,6 +811,51 @@ const OptionsService = {
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
+      await this.syncSearchChildControlState(isEnabled);
+    }
+  },
+
+  /**
+   * Keep Search child controls locked behind the main Search Feature toggle.
+   */
+  async syncSearchChildControlState(searchEnabled?: boolean): Promise<void> {
+    const eplusCheckbox = document.getElementById(
+      "enable-eplus-search",
+    ) as HTMLInputElement | null;
+    const preferredSearchSelect = document.getElementById(
+      "preferred-search-engine",
+    ) as HTMLSelectElement | null;
+
+    const enabled =
+      typeof searchEnabled === "boolean"
+        ? searchEnabled
+        : await StorageService.isSearchFeatureEnabled();
+
+    if (preferredSearchSelect) {
+      preferredSearchSelect.disabled = !enabled;
+      preferredSearchSelect.setAttribute("aria-disabled", String(!enabled));
+      preferredSearchSelect.classList.toggle("opacity-60", !enabled);
+      preferredSearchSelect.classList.toggle("cursor-not-allowed", !enabled);
+    }
+
+    if (!eplusCheckbox) return;
+
+    const parentLabel = eplusCheckbox.closest("label") as HTMLElement | null;
+    const eplusText = eplusCheckbox
+      .closest(".flex.items-center")
+      ?.querySelector(".text-right") as HTMLElement | null;
+
+    eplusCheckbox.disabled = !enabled;
+    eplusCheckbox.setAttribute("aria-disabled", String(!enabled));
+
+    if (parentLabel) {
+      parentLabel.classList.toggle("opacity-60", !enabled);
+      parentLabel.classList.toggle("cursor-not-allowed", !enabled);
+      parentLabel.classList.toggle("cursor-pointer", enabled);
+    }
+
+    if (eplusText) {
+      eplusText.classList.toggle("opacity-60", !enabled);
     }
   },
 
@@ -826,12 +871,19 @@ const OptionsService = {
     try {
       const preferred = await StorageService.getPreferredSearchEngine();
       select.value = preferred || "google";
+      await this.syncSearchChildControlState();
     } catch (e) {
       console.error("Failed to load preferred search engine:", e);
     }
 
     select.addEventListener("change", async (ev) => {
       try {
+        if (!(await StorageService.isSearchFeatureEnabled())) {
+          select.value = await StorageService.getPreferredSearchEngine();
+          await this.syncSearchChildControlState(false);
+          return;
+        }
+
         const v = (ev.target as HTMLSelectElement).value;
         await StorageService.savePreferredSearchEngine(v);
         const message = browser.i18n.getMessage(
@@ -867,8 +919,9 @@ const OptionsService = {
     if (!checkbox) return;
 
     try {
-      const enabled = await StorageService.isEplusSearchEnabled();
-      checkbox.checked = Boolean(enabled);
+      const searchEnabled = await StorageService.isSearchFeatureEnabled();
+      checkbox.checked = await StorageService.isEplusSearchEnabled();
+      await this.syncSearchChildControlState(searchEnabled);
     } catch (e) {
       console.error("Failed to load ePlus search setting:", e);
     }
@@ -876,14 +929,10 @@ const OptionsService = {
     checkbox.addEventListener("change", async (ev) => {
       try {
         const v = (ev.target as HTMLInputElement).checked;
-        await StorageService.saveEplusSearchEnabled(Boolean(v));
-        // If the main search feature is disabled, StorageService will
-        // enforce ePlus to remain disabled. Ensure UI reflects that and
-        // notify the user.
         const searchEnabled = await StorageService.isSearchFeatureEnabled();
-        if (!searchEnabled && v) {
-          // revert checkbox and inform user
-          checkbox.checked = false;
+        if (!searchEnabled) {
+          checkbox.checked = await StorageService.isEplusSearchEnabled();
+          await this.syncSearchChildControlState(false);
           const warn = browser.i18n.getMessage("messageEnableSearchFirst");
           const warnEl = document.createElement("div");
           warnEl.className =
@@ -901,6 +950,8 @@ const OptionsService = {
           }
           return;
         }
+
+        await StorageService.saveEplusSearchEnabled(Boolean(v));
         const message = browser.i18n.getMessage("messageEplusSearchSaved");
         const messageElement = document.createElement("div");
         messageElement.className =
@@ -1007,27 +1058,9 @@ const OptionsService = {
           err,
         );
       }
-      // Update the options UI to disable/enable the ePlus control without
-      // changing its stored value. The child control should remain disabled
-      // while the parent feature is off but retain its current on/off state.
+      // Update child controls immediately when the parent changes.
       try {
-        const eplusCheckbox = document.getElementById(
-          "enable-eplus-search",
-        ) as HTMLInputElement | null;
-        if (eplusCheckbox) {
-          eplusCheckbox.disabled = !enabled;
-          try {
-            eplusCheckbox.style.cursor = !enabled ? "not-allowed" : "";
-          } catch {}
-          const label = document.querySelector(
-            'label[for="enable-eplus-search"]',
-          ) as HTMLElement | null;
-          if (label) {
-            label.style.opacity = !enabled ? "0.6" : "";
-            label.style.pointerEvents = !enabled ? "none" : "";
-            label.style.cursor = !enabled ? "not-allowed" : "";
-          }
-        }
+        await this.syncSearchChildControlState(Boolean(enabled));
       } catch (err) {
         console.debug(
           "Failed to update ePlus UI state after search toggle:",
@@ -1056,11 +1089,19 @@ const OptionsService = {
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
         MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
       );
+      OptionsService.refreshMarkdownShowMore();
     } catch (error) {
       // Show error if loading fails
       OptionsService.showMarkdownError();
       console.error("Failed to load markdown content:", error);
     }
+  },
+
+  /**
+   * Recalculate the announcement show more/less state after markdown renders.
+   */
+  refreshMarkdownShowMore(): void {
+    window.dispatchEvent(new CustomEvent("markdown-content-rendered"));
   },
 
   /**
