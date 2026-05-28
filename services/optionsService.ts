@@ -129,9 +129,7 @@ const OptionsService = {
       : 0;
     const finalPoints = (arcadePoints || 0) + (facilitatorBonus || 0);
     const activeLabel = browser.i18n.getMessage("statusActive");
-    const facilitatorLabel = browser.i18n.getMessage(
-      "labelFacilitatorProgram",
-    );
+    const facilitatorLabel = browser.i18n.getMessage("labelFacilitatorProgram");
     const nicknameLabel = browser.i18n.getMessage("labelNickname");
     const pointsLabel = browser.i18n.getMessage("textPoints");
     const updatedLabel = browser.i18n.getMessage("labelUpdated");
@@ -175,9 +173,9 @@ const OptionsService = {
                   ${finalPoints.toLocaleString()} ${pointsLabel}
                 </span>
                 <span class="text-xs text-gray-400">
-                  ${updatedLabel} ${new Date(account.lastUsed).toLocaleDateString(
-                    browser.i18n.getUILanguage(),
-                  )}
+                  ${updatedLabel} ${new Date(
+                    account.lastUsed,
+                  ).toLocaleDateString(browser.i18n.getUILanguage())}
                 </span>
               </div>
             </div>
@@ -452,20 +450,14 @@ const OptionsService = {
       exportJsonBtn.addEventListener("click", async () => {
         const activeAccount = await AccountService.getActiveAccount();
         if (!activeAccount?.arcadeData) {
-          this.showMessage(
-            browser.i18n.getMessage("exportNoData"),
-            "error",
-          );
+          this.showMessage(browser.i18n.getMessage("exportNoData"), "error");
           return;
         }
         ExportService.exportAsJSON(
           activeAccount.arcadeData,
           `arcade-data-${activeAccount.name}`,
         );
-        this.showMessage(
-          browser.i18n.getMessage("exportSuccess"),
-          "success",
-        );
+        this.showMessage(browser.i18n.getMessage("exportSuccess"), "success");
       });
     }
 
@@ -483,10 +475,7 @@ const OptionsService = {
           return;
         }
         ExportService.exportBadgesAsCSV(badges, `badges-${activeAccount.name}`);
-        this.showMessage(
-          browser.i18n.getMessage("exportSuccess"),
-          "success",
-        );
+        this.showMessage(browser.i18n.getMessage("exportSuccess"), "success");
       });
     }
 
@@ -772,11 +761,12 @@ const OptionsService = {
       messageText = browser.i18n.getMessage("successAccountUpdated");
     }
 
-    PopupUIService.showMessage(
-      "#success-message",
-      messageText,
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
-    );
+    PopupUIService.showMessage("#success-message", messageText, [
+      "text-green-500",
+      "font-bold",
+      "mt-2",
+      "animate-pulse",
+    ]);
 
     PopupUIService.updateOptionsUI(data);
 
@@ -1736,7 +1726,10 @@ const OptionsService = {
           );
         } catch (error) {
           console.error("Error switching account:", error);
-          this.showMessage(browser.i18n.getMessage("errorSwitchAccount"), "error");
+          this.showMessage(
+            browser.i18n.getMessage("errorSwitchAccount"),
+            "error",
+          );
         }
       });
 
