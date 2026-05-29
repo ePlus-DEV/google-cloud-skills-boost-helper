@@ -504,7 +504,7 @@ const UIComponents = {
           browser.i18n.getMessage("labFallbackQuery") ||
           "Google Cloud lab tutorial",
       );
-      let url = `https://www.google.com/search?q=${encodedQuery}`;
+      let url: string;
       switch ((engine || "").toLowerCase()) {
         case "bing":
           url = `https://www.bing.com/search?q=${encodedQuery}`;
