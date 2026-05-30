@@ -44,10 +44,7 @@ describe("SearchService.getLabTitle", () => {
     sr2.appendChild(outerDiv);
 
     const title = SearchService.getLabTitle();
-    // (Kept original tests below — shadow-DOM specific tests moved to separate file)
-      "Deploy a Kubernetes Cluster",
-    );
-    expect(result).toContain("deploy-k8s");
+    expect(title).toBe("Deep Shadow Title");
   });
 
   it("returns null when no good match found", () => {
