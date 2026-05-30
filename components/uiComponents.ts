@@ -11,7 +11,7 @@ const TELEGRAM_SUPPORT_URL = "https://t.me/eplus_google";
  * Return a localized label for a search engine, falling back to '<Engine> Search'.
  */
 function getEngineLabel(engine: string): string {
-  const keyMap: Record<string, string> = {
+  const keyMap = {
     google: "labGoogleSearch",
     bing: "labBingSearch",
     yandex: "labYandexSearch",
@@ -20,10 +20,10 @@ function getEngineLabel(engine: string): string {
     baidu: "labBaiduSearch",
     yahoo: "labYahooSearch",
     coccoc: "labCoccocSearch",
-  };
+  } as const;
 
-  const key = keyMap[engine];
-  if (key) {
+  if (engine in keyMap) {
+    const key = keyMap[engine as keyof typeof keyMap];
     const msg = browser.i18n.getMessage(key);
     if (msg) return msg;
   }
@@ -491,6 +491,13 @@ const UIComponents = {
         "_blank",
       );
     }
+  },
+
+  /**
+   * Search the current lab on Google
+   */
+  searchOnGoogle(): void {
+    UIComponents.searchOnEngine("google");
   },
 
   /**

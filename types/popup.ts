@@ -72,6 +72,8 @@ export interface AccountsData {
   activeAccountId: string | null;
   settings: {
     enableSearchFeature: boolean;
+    enableEplusSearch?: boolean;
+    preferredSearchEngine?: string;
     showBadge?: boolean;
   };
 }
@@ -89,4 +91,6 @@ export interface StorageKeys {
   urlProfile: "local:urlProfile";
   accountsData: "local:accountsData";
   enableSearchFeature: "local:enableSearchFeature";
+  enableEplusSearch: "local:enableEplusSearch";
+  preferredSearchEngine: "local:preferredSearchEngine";
 }
