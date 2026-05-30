@@ -313,15 +313,6 @@ const UIComponents = {
                 ${browser.i18n.getMessage("labYouTube")}
               </ql-button>
               <ql-button
-                icon="search"
-                type="button"
-                title="${browser.i18n.getMessage("labEplusSearch")}"
-                data-aria-label="${browser.i18n.getMessage("labEplusSearch")}"
-                id="eplus-search-btn"
-              >
-                ${browser.i18n.getMessage("labEplusSearch")}
-              </ql-button>
-              <ql-button
                 icon="help"
                 type="button"
                 outlined=""
