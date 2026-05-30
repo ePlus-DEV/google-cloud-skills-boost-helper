@@ -44,12 +44,14 @@
     "@wxt-dev/module-react": "1.2.2",
     "jsdom": "^29.0.1",
     "typescript": "^5.6.3",
+    "tmp": "^0.2.6",
     "vite": "^8.0.5",
     "vitest": "^4.1.0",
     "wxt": "^0.20.26"
   },
   "resolutions": {
-    "uuid": "file:vendor/uuid"
+    "uuid": "file:vendor/uuid",
+    "tmp": "^0.2.6"
   },
   "engines": {
     "node": ">=24.0.0"
