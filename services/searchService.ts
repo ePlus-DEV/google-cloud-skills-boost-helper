@@ -3,7 +3,7 @@ import type { FuseOptions } from "../types/api";
 
 class SearchService {
   private static readonly DEFAULT_FUSE_OPTIONS: FuseOptions = {
-    threshold: 0.15, // Even more strict threshold to avoid false positives
+    threshold: 0.2, // Very lenient threshold to find matches
     keys: ["title"],
   };
 
@@ -39,6 +39,7 @@ class SearchService {
   private static readonly MONTH_YEAR_PATTERN = /([A-Za-z]+)\s+(\d{4})/;
   private static readonly MONTH_YEAR_ID_PATTERN = /^[a-z]+\d{4}$/;
   private static readonly ALPHANUMERIC_PATTERN = /^[a-zA-Z0-9]+$/;
+  private static readonly COURSE_ID_PATTERN = /GSP\d+/;
 
   // Common words to filter out (cached as Set)
   private static readonly COMMON_WORDS = new Set([
@@ -75,10 +76,21 @@ class SearchService {
   ]);
 
   /**
-   * Normalize title by removing "(Solution)" suffix
+   * Extract course ID from title (e.g., GSP016)
+   */
+  private static extractCourseId(text: string): string | null {
+    const match = text.match(this.COURSE_ID_PATTERN);
+    return match ? match[0] : null;
+  }
+
+  /**
+   * Normalize title by removing "(Solution)" suffix and year prefixes like [2025]
    */
   private static normalizeTitle(title: string): string {
-    return title.replace(this.SOLUTION_PATTERN, "").trim();
+    return title
+      .replace(this.SOLUTION_PATTERN, "") // Remove (Solution)
+      .replace(/\[\d{4}\]\s*/g, "") // Remove [2025] style year prefixes
+      .trim();
   }
 
   /**
@@ -116,8 +128,11 @@ class SearchService {
    * Extract distinctive words that are likely important for matching
    */
   private static extractDistinctiveWords(text: string): Set<string> {
+    // Remove year prefixes like [2025], [2024], etc. before processing
+    const processed = text.replace(/\[\d{4}\]\s*/g, "");
+
     // Split on whitespace and hyphens to handle "multi-modal" → ["multi", "modal"]
-    const words = text.toLowerCase().split(/[\s-]+/);
+    const words = processed.toLowerCase().split(/[\s-]+/);
 
     const distinctive = new Set<string>();
     for (const word of words) {
@@ -281,52 +296,326 @@ class SearchService {
     searchQuery: string,
     fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
   ): string | null {
-    if (!posts || posts.length === 0) return null;
-
-    // Normalize search query once to avoid repeated normalization
-    const normalizedQuery = this.normalizeTitle(searchQuery);
-
-    // Use Fuse.js directly on the posts array
-    const fuse = new Fuse(posts, fuseOptions);
-    const results = fuse.search(normalizedQuery);
-
-    // Enhanced filtering with flexible matching criteria
-    const validResults = results.filter((result) => {
-      const title = result.item.title;
-
-      // 1. Must have compatible identifiers
-      if (!this.hasCompatibleIdentifiers(normalizedQuery, title)) {
-        return false;
+    if (!posts || posts.length === 0) {
+      if (import.meta.env.DEV) {
+        console.info("[SearchService] No posts provided, returning null");
       }
+      return null;
+    }
 
-      // 2. Must have matching distinctive words
-      if (!this.hasMatchingDistinctiveWords(normalizedQuery, title)) {
-        return false;
-      }
-
-      // 3. Must meet advanced similarity threshold
-      const similarityScore = this.calculateAdvancedSimilarity(
-        normalizedQuery,
-        title,
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Posts received:", posts.length);
+      console.info(
+        "[SearchService] Post titles:",
+        posts.map((p) => p.title),
       );
-      if (similarityScore < 0.75) {
-        // 75% similarity threshold
-        return false;
+      console.info("[SearchService] Search query:", searchQuery);
+    }
+
+    const normalizedQuery = this.normalizeTitle(searchQuery);
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Normalized query:", normalizedQuery);
+    }
+
+    const queryCourseId = this.extractCourseId(normalizedQuery);
+    if (import.meta.env.DEV && queryCourseId) {
+      console.info(
+        "[SearchService] Extracted course ID from query:",
+        queryCourseId,
+      );
+    }
+
+    // If query contains a course ID, prefer searching only among posts with that ID first
+    if (queryCourseId) {
+      const postsWithCourse = posts.filter(
+        (post) => this.extractCourseId(post.title) === queryCourseId,
+      );
+
+      if (postsWithCourse.length > 0) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] Searching within posts matching course ID:",
+            queryCourseId,
+            postsWithCourse.length,
+          );
+        }
+
+        const courseResults = this.getFuseResults(
+          postsWithCourse,
+          normalizedQuery,
+          fuseOptions,
+        );
+        this.sortResultsByCourseId(courseResults, queryCourseId);
+        const validCourseResults = this.filterValidResults(
+          courseResults,
+          normalizedQuery,
+          queryCourseId,
+        );
+
+        if (validCourseResults.length) {
+          const best = validCourseResults[0];
+          const url = best.item.url;
+          if (url) {
+            const separator = url.includes("?") ? "&" : "?";
+            return `${url}${separator}t=${Date.now()}`;
+          }
+        }
+        // otherwise fallthrough to searching all posts by title
       }
+    }
 
-      return true;
-    });
+    const results = this.getFuseResults(posts, normalizedQuery, fuseOptions);
+    this.sortResultsByCourseId(results, queryCourseId);
 
-    // If no valid results after filtering, return null
-    if (!validResults.length) return null;
+    const validResults = this.filterValidResults(
+      results,
+      normalizedQuery,
+      queryCourseId,
+    );
+
+    if (!validResults.length) {
+      const fallback = this.getFallbackUrl(posts, queryCourseId);
+      if (fallback) return fallback;
+      return null;
+    }
 
     const bestMatch = validResults[0];
     const url = bestMatch.item.url;
     if (!url) return null;
 
-    // Append timestamp to bypass page-level cache on the solution site
+    if (import.meta.env.DEV) {
+      console.info("[SearchService] Best match URL:", url);
+    }
+
     const separator = url.includes("?") ? "&" : "?";
     return `${url}${separator}t=${Date.now()}`;
+  }
+  /**
+   * Run Fuse.js search on the provided posts using the given options
+   * and return Fuse search results for the normalized query.
+   * @param posts Array of post objects with `title` and `url` fields
+   * @param normalizedQuery Pre-normalized query string to search for
+   * @param fuseOptions Fuse.js configuration options
+   * @returns Fuse search results array
+   */
+  private static getFuseResults(
+    posts: Array<{ title: string; url: string }>,
+    normalizedQuery: string,
+    fuseOptions: FuseOptions,
+  ) {
+    const fuse = new Fuse(posts, fuseOptions);
+    const results = fuse.search(normalizedQuery);
+    if (import.meta.env.DEV) {
+      console.info(
+        "[SearchService] Fuse.js returned",
+        results.length,
+        "results",
+      );
+      if (results.length > 0) {
+        console.info(
+          "[SearchService] Fuse results:",
+          results.map((r) => ({ score: r.score, title: r.item.title })),
+        );
+      }
+    }
+    return results;
+  }
+
+  /**
+   * Find the best match and return both URL and title when available.
+   * This wraps the existing `findBestMatchUrl` logic and resolves the
+   * corresponding post title from the posts array.
+   * @param posts Posts array to search
+   * @param searchQuery Query string to use for matching
+   */
+  static findBestMatch(
+    posts: Array<{
+      id: string;
+      title: string;
+      slug: string;
+      url: string;
+      datePublished: string;
+    }> | null,
+    searchQuery: string,
+    fuseOptions: FuseOptions = this.DEFAULT_FUSE_OPTIONS,
+  ): { url: string; title: string } | null {
+    const url = this.findBestMatchUrl(posts, searchQuery, fuseOptions);
+    if (!url) return null;
+
+    try {
+      const parsed = new URL(url);
+      // remove timestamp param for matching against original post URLs
+      const searchParams = parsed.searchParams;
+      searchParams.delete("t");
+      const stripped = `${parsed.origin}${parsed.pathname}${
+        searchParams.toString() ? `?${searchParams.toString()}` : ""
+      }`;
+
+      const match = (posts || []).find((p) => {
+        if (!p.url) return false;
+        try {
+          const pUrl = new URL(p.url);
+          const pStripped = `${pUrl.origin}${pUrl.pathname}${
+            pUrl.search ? pUrl.search : ""
+          }`;
+          return (
+            pStripped === stripped || url.startsWith(pStripped) || p.url === url
+          );
+        } catch (e) {
+          return p.url === url || url.startsWith(p.url);
+        }
+      });
+
+      return { url, title: match ? match.title : "" };
+    } catch (e) {
+      return { url, title: "" };
+    }
+  }
+
+  /**
+   * Sort search results to prioritize items matching the query course ID.
+   * This reorders the results array in-place.
+   * @param results Fuse search results to sort
+   * @param queryCourseId Course ID extracted from the query, or null
+   */
+  private static sortResultsByCourseId(
+    results: Array<{ item: { title: string } }>,
+    queryCourseId: string | null,
+  ) {
+    results.sort((a, b) => {
+      const aCourseId = this.extractCourseId(a.item.title);
+      const bCourseId = this.extractCourseId(b.item.title);
+
+      if (queryCourseId) {
+        const aMatches = aCourseId === queryCourseId ? 1 : 0;
+        const bMatches = bCourseId === queryCourseId ? 1 : 0;
+        if (aMatches !== bMatches) {
+          return bMatches - aMatches;
+        }
+      }
+      return 0;
+    });
+  }
+
+  /**
+   * Filter Fuse results with additional compatibility and similarity checks.
+   * Returns only results that meet identifier, distinctive-word and similarity thresholds.
+   * @param results Fuse.js results to filter
+   * @param normalizedQuery Normalized query string used for similarity checks
+   * @param queryCourseId Optional course ID extracted from the query
+   */
+  private static filterValidResults(
+    results: Array<{ item: { title: string; url?: string } }>,
+    normalizedQuery: string,
+    queryCourseId: string | null,
+  ) {
+    return results.filter((result) => {
+      const title = result.item.title;
+      const postCourseId = this.extractCourseId(title);
+
+      if (queryCourseId && postCourseId && queryCourseId === postCourseId) {
+        if (import.meta.env.DEV) {
+          console.info("[SearchService] ✓ Accepted (course ID match):", title);
+        }
+        return true;
+      }
+
+      if (!this.hasCompatibleIdentifiers(normalizedQuery, title)) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✗ Rejected (incompatible identifiers):",
+            title,
+          );
+        }
+        return false;
+      }
+
+      if (!this.hasMatchingDistinctiveWords(normalizedQuery, title)) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✗ Rejected (no matching distinctive words):",
+            title,
+          );
+        }
+        return false;
+      }
+
+      const similarityScore = this.calculateAdvancedSimilarity(
+        normalizedQuery,
+        title,
+      );
+      if (similarityScore < 0.6) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✗ Rejected (low similarity:",
+            similarityScore.toFixed(2),
+            "):",
+            title,
+          );
+        }
+        return false;
+      }
+
+      if (import.meta.env.DEV) {
+        console.info(
+          "[SearchService] ✓ Accepted (similarity:",
+          similarityScore.toFixed(2),
+          "):",
+          title,
+        );
+      }
+      return true;
+    });
+  }
+
+  /**
+   * Attempt fallback strategies when no valid Fuse results are found.
+   * Tries direct course ID match first, then returns the first post if it contains a course ID.
+   * @param posts Original posts array
+   * @param queryCourseId Optional course ID extracted from the query
+   * @returns A URL string with timestamp or null if none found
+   */
+  private static getFallbackUrl(
+    posts: Array<{ title: string; url: string }>,
+    queryCourseId: string | null,
+  ): string | null {
+    if (import.meta.env.DEV) {
+      console.info(
+        "[SearchService] No valid results after filtering. All posts rejected.",
+      );
+    }
+
+    if (queryCourseId && posts.length > 0) {
+      if (import.meta.env.DEV) {
+        console.info(
+          "[SearchService] Attempting fallback: direct course ID match",
+        );
+      }
+      const courseIdMatch = posts.find((p) => p.title.includes(queryCourseId));
+      if (courseIdMatch?.url) {
+        if (import.meta.env.DEV) {
+          console.info(
+            "[SearchService] ✓ Fallback matched by course ID:",
+            courseIdMatch.title,
+          );
+        }
+        const separator = courseIdMatch.url.includes("?") ? "&" : "?";
+        return `${courseIdMatch.url}${separator}t=${Date.now()}`;
+      }
+    }
+
+    if (posts.length > 0 && this.extractCourseId(posts[0].title)) {
+      if (import.meta.env.DEV) {
+        console.info(
+          "[SearchService] ✓ Final fallback: returning first post:",
+          posts[0].title,
+        );
+      }
+      const separator = posts[0].url.includes("?") ? "&" : "?";
+      return `${posts[0].url}${separator}t=${Date.now()}`;
+    }
+
+    return null;
   }
 
   /**
@@ -363,8 +652,40 @@ class SearchService {
       console.info("[LabService] Looking for lab title...");
     }
 
-    // Try selector h1.ql-title-large (direct, no shadow DOM)
-    const titleElement = document.querySelector("h1.ql-title-large");
+    // Priority: some lab pages (e.g., /focuses/62711) render title inside nested
+    // shadow roots under ql-lab-header -> ql-header. Try the explicit path first.
+    try {
+      const labHeader = document.querySelector(
+        "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
+      ) as Element | null;
+      if (labHeader?.shadowRoot) {
+        const qlHeader = labHeader.shadowRoot.querySelector(
+          "ql-header",
+        ) as Element | null;
+        if (qlHeader?.shadowRoot) {
+          const deepH1 = qlHeader.shadowRoot.querySelector(
+            "div > div.main-container > div > h1",
+          );
+          if (deepH1) {
+            const title = deepH1.textContent?.trim() || "";
+            if (import.meta.env.MODE === "development") {
+              console.info(
+                "[LabService] ✓ Extracted title from nested shadow path:",
+                title,
+              );
+            }
+            return title;
+          }
+        }
+      }
+    } catch (e) {
+      // ignore and continue with other heuristics
+    }
+
+    // Try selector h1.ql-title-large (search including shadow DOM)
+    const titleElement =
+      this.querySelectorDeep("h1.ql-title-large") ||
+      document.querySelector("h1.ql-title-large");
     if (titleElement) {
       const title = titleElement.textContent?.trim() || "";
       if (import.meta.env.MODE === "development") {
@@ -379,8 +700,9 @@ class SearchService {
       console.info("[LabService] ✗ h1.ql-title-large not found");
     }
 
-    // Try just h1 element as fallback
-    const h1Element = document.querySelector("h1");
+    // Try just h1 element as fallback (search including shadow DOM)
+    const h1Element =
+      this.querySelectorDeep("h1") || document.querySelector("h1");
     if (h1Element) {
       const title = h1Element.textContent?.trim() || "";
       if (import.meta.env.MODE === "development") {
@@ -389,11 +711,11 @@ class SearchService {
       return title;
     }
 
-    // Fallback to old selector
-    const fallbackTitle =
-      document
-        .querySelector(".ql-display-large.lab-preamble__title")
-        ?.textContent?.trim() || "";
+    // Fallback to old selector (search including shadow DOM)
+    const fallbackEl =
+      this.querySelectorDeep(".ql-display-large.lab-preamble__title") ||
+      document.querySelector(".ql-display-large.lab-preamble__title");
+    const fallbackTitle = fallbackEl?.textContent?.trim() || "";
     if (import.meta.env.MODE === "development") {
       console.info(
         "[LabService] Extracted title from fallback selector:",
@@ -401,6 +723,49 @@ class SearchService {
       );
     }
     return fallbackTitle;
+  }
+
+  /**
+   * Query selector that searches into shadow roots recursively.
+   * Returns the first matching Element or null.
+   */
+  private static querySelectorDeep(selector: string): Element | null {
+    try {
+      // Quick check on document
+      const direct = document.querySelector(selector);
+      if (direct) return direct;
+
+      // BFS through all elements to look into shadowRoots
+      const nodes = Array.from(document.querySelectorAll("*"));
+      for (const el of nodes) {
+        try {
+          const sr = (el as Element).shadowRoot;
+          if (sr) {
+            const found = sr.querySelector(selector);
+            if (found) return found;
+
+            // also search one level deeper inside nested shadow roots
+            const nested = Array.from(sr.querySelectorAll("*"));
+            for (const nestedElement of nested) {
+              try {
+                const nestedShadowRoot = (nestedElement as Element).shadowRoot;
+                if (nestedShadowRoot) {
+                  const foundElement = nestedShadowRoot.querySelector(selector);
+                  if (foundElement) return foundElement;
+                }
+              } catch {
+                // ignore errors from accessing shadow roots
+              }
+            }
+          }
+        } catch {
+          // ignore errors from accessing shadow roots
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+    return null;
   }
 
   /**
@@ -433,8 +798,8 @@ class SearchService {
     const gspId = this.getGspId();
     const queryText = this.extractQueryText();
 
-    // Build query with GSP ID first (more specific) then title
-    const parts = [gspId, labTitle, queryText].filter(Boolean);
+    // Build query with title first, then GSP ID (preferred format: "title - id")
+    const parts = [labTitle, gspId, queryText].filter(Boolean);
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
       console.info("[LabService] Combined query for search:", combinedQuery);

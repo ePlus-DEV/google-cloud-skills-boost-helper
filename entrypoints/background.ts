@@ -201,7 +201,7 @@ export default defineBackground(() => {
   });
 
   // Listen for messages (from popup/options) requesting badge updates
-  async function handleSetBadge(message: Record<string, any>) {
+  function handleSetBadge(message: Record<string, any>) {
     const text = message.text || "0";
     const color = message.color || UI_COLORS?.BADGE || "#155dfc";
 
@@ -229,7 +229,8 @@ export default defineBackground(() => {
     }
   }
 
-  async function handleClearBadge() {
+  // Clear the badge text from the extension icon
+  function handleClearBadge() {
     try {
       const browserAction = getBrowserAction();
       if (browserAction) {
@@ -294,11 +295,75 @@ export default defineBackground(() => {
 
       switch (message.type) {
         case "setBadge":
-          await handleSetBadge(message);
+          handleSetBadge(message);
           break;
 
         case "clearBadge":
-          await handleClearBadge();
+          handleClearBadge();
+          break;
+        case "preferredSearchEngineChanged":
+          try {
+            const engine = message.engine || "google";
+            // Broadcast to all tabs so content scripts can update UI in-place
+            const tabs = await browser.tabs.query({});
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "preferredSearchEngineChanged",
+                    engine,
+                  });
+                }
+              } catch (err) {
+                // ignore send errors for tabs that don't have the content script
+              }
+            }
+          } catch (err) {
+            console.debug(
+              "Failed to broadcast preferredSearchEngineChanged:",
+              err,
+            );
+          }
+          break;
+        case "searchFeatureChanged":
+          try {
+            const enabled = Boolean(message.enabled);
+            const tabs = await browser.tabs.query({});
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "searchFeatureChanged",
+                    enabled,
+                  });
+                }
+              } catch (err) {
+                // ignore
+              }
+            }
+          } catch (err) {
+            console.debug("Failed to broadcast searchFeatureChanged:", err);
+          }
+          break;
+        case "enableEplusSearchChanged":
+          try {
+            const enabled = Boolean(message.enabled);
+            const tabs = await browser.tabs.query({});
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "enableEplusSearchChanged",
+                    enabled,
+                  });
+                }
+              } catch (err) {
+                // ignore
+              }
+            }
+          } catch (err) {
+            console.debug("Failed to broadcast enableEplusSearchChanged:", err);
+          }
           break;
         case "refreshBadge":
           await handleRefreshBadge();

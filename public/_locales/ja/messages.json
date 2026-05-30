@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - ヘルパー"
   },
@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "戻る"
   },
+  "backToTop": { "message": "トップへ戻る" },
   "changelogWhatsNew": {
     "message": "新機能"
   },
@@ -641,44 +642,222 @@
   "saveChangesButton": {
     "message": "変更を保存"
   },
-  "themeStudioTitle": { "message": "テーマスタジオ" },
+  "themeStudioTitle": {
+    "message": "テーマスタジオ"
+  },
   "themeStudioDescription": {
     "message": "リアルタイムプレビューでポップアップのテーマをカスタマイズします。"
   },
-  "labelBackground1": { "message": "背景 1" },
-  "labelBackground2": { "message": "背景 2" },
-  "labelBackground3": { "message": "背景 3" },
-  "labelAccent": { "message": "アクセント" },
-  "labelArcadePoints": { "message": "アーケードポイント" },
-  "labelTextPrimary": { "message": "主要テキスト" },
-  "labelTextSecondary": { "message": "二次テキスト" },
-  "labelTextMuted": { "message": "薄いテキスト" },
-  "btnApplySave": { "message": "適用して保存" },
-  "btnResetToDark": { "message": "ダークにリセット" },
-  "btnSyncFromPopup": { "message": "現在のポップアップから同期" },
+  "labelBackground1": {
+    "message": "背景 1"
+  },
+  "labelBackground2": {
+    "message": "背景 2"
+  },
+  "labelBackground3": {
+    "message": "背景 3"
+  },
+  "labelAccent": {
+    "message": "アクセント"
+  },
+  "labelArcadePoints": {
+    "message": "アーケードポイント"
+  },
+  "labelTextPrimary": {
+    "message": "主要テキスト"
+  },
+  "labelTextSecondary": {
+    "message": "二次テキスト"
+  },
+  "labelTextMuted": {
+    "message": "薄いテキスト"
+  },
+  "btnApplySave": {
+    "message": "適用して保存"
+  },
+  "btnResetToDark": {
+    "message": "ダークにリセット"
+  },
+  "btnSyncFromPopup": {
+    "message": "現在のポップアップから同期"
+  },
   "previewNote": {
     "message": "プレビューは実際のポップアップUIと現在のアカウントデータを使用します。"
   },
-  "popupLivePreviewTitle": { "message": "ポップアップのライブプレビュー" },
-  "btnApplyCustomTheme": { "message": "カスタムテーマを適用" },
-  "btnResetCustomTheme": { "message": "リセット" },
+  "popupLivePreviewTitle": {
+    "message": "ポップアップのライブプレビュー"
+  },
+  "btnApplyCustomTheme": {
+    "message": "カスタムテーマを適用"
+  },
+  "btnResetCustomTheme": {
+    "message": "リセット"
+  },
   "btnOpenThemeStudio": {
     "message": "テーマスタジオを開く（ライブプレビュー）"
   },
-  "btnChangeTheme": { "message": "テーマを変更" },
-  "labThinking": { "message": "考え中..." },
-  "labSolutionTitle": { "message": "クリックして解答を開く" },
-  "labSolutionButton": { "message": "このラボの解答" },
-  "labNoSolution": { "message": "解答なし" },
-  "labEplusSearch": { "message": "ePlus検索" },
-  "labGoogleSearch": { "message": "Google検索" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "データをエクスポート" },
-  "exportJSON": { "message": "JSONエクスポート" },
-  "exportCSV": { "message": "バッジCSVエクスポート" },
-  "exportSuccess": { "message": "エクスポートしました！" },
-  "exportNoData": { "message": "エクスポートするデータがありません。" },
-  "compactMode": { "message": "コンパクト" },
-  "fullMode": { "message": "フル表示" },
-  "shortcutHint": { "message": "R 更新 · S 設定 · C コンパクト" }
+  "btnChangeTheme": {
+    "message": "テーマを変更"
+  },
+  "labThinking": {
+    "message": "考え中..."
+  },
+  "labSolutionTitle": {
+    "message": "クリックして解答を開く"
+  },
+  "labSolutionButton": {
+    "message": "このラボの解答"
+  },
+  "labSupportTitle": {
+    "message": "Telegramでサポートを受けるか、問題を報告するにはクリックしてください"
+  },
+  "labSupportButton": {
+    "message": "サポート / 報告"
+  },
+  "labNoSolution": {
+    "message": "解答なし"
+  },
+  "labEplusSearch": {
+    "message": "ePlus検索"
+  },
+  "labGoogleSearch": {
+    "message": "Google検索"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": { "message": "Bingで検索" },
+  "labYandexSearch": { "message": "Yandexで検索" },
+  "labBraveSearch": { "message": "Braveで検索" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGoで検索" },
+  "labBaiduSearch": { "message": "Baiduで検索" },
+  "labYahooSearch": { "message": "Yahoo!で検索" },
+  "labCoccocSearch": { "message": "Cốc Cốcで検索" },
+  "labelSearch": { "message": "検索" },
+  "labelCopyLink": { "message": "リンクをコピー" },
+  "labFallbackQuery": { "message": "Google Cloud ラボ チュートリアル" },
+  "exportDataTitle": {
+    "message": "データをエクスポート"
+  },
+  "exportJSON": {
+    "message": "JSONエクスポート"
+  },
+  "exportCSV": {
+    "message": "バッジCSVエクスポート"
+  },
+  "exportSuccess": {
+    "message": "エクスポートしました！"
+  },
+  "exportNoData": {
+    "message": "エクスポートするデータがありません。"
+  },
+  "compactMode": {
+    "message": "コンパクト"
+  },
+  "fullMode": {
+    "message": "フル表示"
+  },
+  "shortcutHint": {
+    "message": "R 更新 · S 設定 · C コンパクト"
+  }
+   ,"messageEplusSearchSaved": { "message": "ePlus search setting saved" },
+    "messageEnableSearchFirst": {
+    "message": "ePlus ????????????????????????????"
+  },
+  "titleSetDefaultAccount": {
+    "message": "?????????????"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Facilitator ??????????"
+  },
+  "titleUpdateAccount": {
+    "message": "????????"
+  },
+  "titleViewPublicProfile": {
+    "message": "???????????"
+  },
+  "titleEditAccount": {
+    "message": "????????"
+  },
+  "titleDeleteAccount": {
+    "message": "????????"
+  },
+  "exportNoBadgesData": {
+    "message": "??????????????????"
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "???????????????"
+  },
+  "labelEnabled": {
+    "message": "??"
+  },
+  "labelDisabled": {
+    "message": "??"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "$2 ? Facilitator ??????$1?????"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Facilitator ??????????????????????"
+  },
+  "errorFetchDataRetry": {
+    "message": "?????????????????????????????"
+  },
+  "errorGenericRetry": {
+    "message": "???????????????????????"
+  },
+  "labelNewAccount": {
+    "message": "????????"
+  },
+  "successAccountCreatedNamed": {
+    "message": "??????$1?????????"
+  },
+  "successDataSaved": {
+    "message": "???????????"
+  },
+  "successAccountUpdated": {
+    "message": "?????????????"
+  },
+  "errorSaveSetting": {
+    "message": "?????????????"
+  },
+  "errorUnableFetchProfile": {
+    "message": "???????????????????????"
+  },
+  "errorUnableGetUserName": {
+    "message": "??????????????????????????"
+  },
+  "errorUnableCreateAccount": {
+    "message": "?????????????????URL ?????????????????"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "????????????????????URL ?????????????????"
+  },
+  "errorProfileIdNotFound": {
+    "message": "?????? ID ????????"
+  },
+  "switchToAccountNamed": {
+    "message": "??????$1??????"
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "??????$1??????????"
+  },
+  "confirmDeleteAccount": {
+    "message": "??????$1???????????????"
+  },
+  "btnCancel": {
+    "message": "?????"
+  },
+  "btnDelete": {
+    "message": "??"
+  },
+  "labelImporting": {
+    "message": "??????..."
+  },
+  "labelImportData": {
+    "message": "?????????"
+  },
+  "messageEplusSearchSaved": {
+    "message": "ePlus ???????????"
+  }
 }

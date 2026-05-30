@@ -31,6 +31,8 @@ const OptionsService = {
     await OptionsService.initializeAccountManagement();
     await OptionsService.loadExistingData();
     await OptionsService.loadSearchFeatureSetting();
+    await OptionsService.loadEplusSearchSetting();
+    await OptionsService.loadPreferredSearchEngineSetting();
     await OptionsService.loadBadgeDisplaySetting();
     await OptionsService.initializeMarkdown();
 
@@ -126,6 +128,11 @@ const OptionsService = {
       ? calculateFacilitatorBonus(account.arcadeData?.faciCounts)
       : 0;
     const finalPoints = (arcadePoints || 0) + (facilitatorBonus || 0);
+    const activeLabel = browser.i18n.getMessage("statusActive");
+    const facilitatorLabel = browser.i18n.getMessage("labelFacilitatorProgram");
+    const nicknameLabel = browser.i18n.getMessage("labelNickname");
+    const pointsLabel = browser.i18n.getMessage("textPoints");
+    const updatedLabel = browser.i18n.getMessage("labelUpdated");
 
     card.innerHTML = `
       <div class="p-4">
@@ -134,7 +141,7 @@ const OptionsService = {
             ${
               avatarSrc
                 ? `<img src="${avatarSrc}" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-white shadow-sm">`
-                : `<div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">${displayName
+                : `<div class="w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">${displayName
                     .charAt(0)
                     .toUpperCase()}</div>`
             }
@@ -144,31 +151,31 @@ const OptionsService = {
                 <h4 class="text-lg font-semibold text-gray-900 truncate">${displayName}</h4>
                 ${
                   isActive
-                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i><span data-i18n="statusActive">Active</span></span>'
+                    ? `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"><i class="fa-solid fa-check mr-1"></i><span>${activeLabel}</span></span>`
                     : ""
                 }
                 ${
                   account.facilitatorProgram
-                    ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"><i class="fa-solid fa-chalkboard-teacher mr-1"></i><span data-i18n="labelFacilitatorProgram">Facilitator</span></span>'
+                    ? `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"><i class="fa-solid fa-chalkboard-teacher mr-1"></i><span>${facilitatorLabel}</span></span>`
                     : ""
                 }
               </div>
               
               ${
                 nickname
-                  ? `<p class="text-sm text-gray-500 truncate">Nickname: ${nickname}</p>`
+                  ? `<p class="text-sm text-gray-500 truncate">${nicknameLabel} ${nickname}</p>`
                   : ""
               }
               
               <div class="flex items-center space-x-4 mt-2">
                 <span class="text-sm text-gray-600">
                   <i class="fa-solid fa-trophy text-yellow-500 mr-1"></i>
-                  ${finalPoints.toLocaleString()} points
+                  ${finalPoints.toLocaleString()} ${pointsLabel}
                 </span>
                 <span class="text-xs text-gray-400">
-                  Updated: ${new Date(account.lastUsed).toLocaleDateString(
-                    "en-US",
-                  )}
+                  ${updatedLabel} ${new Date(
+                    account.lastUsed,
+                  ).toLocaleDateString(browser.i18n.getUILanguage())}
                 </span>
               </div>
             </div>
@@ -177,7 +184,7 @@ const OptionsService = {
           <div class="flex items-center space-x-2 ml-3">
             ${
               !isActive
-                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}" title="Set as default account">
+                ? `<button class="switch-account-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200" data-account-id="${account.id}" title="${browser.i18n.getMessage("titleSetDefaultAccount")}">
                 <i class="fa-solid fa-star mr-1"></i>
               </button>`
                 : ""
@@ -190,31 +197,31 @@ const OptionsService = {
                 : "bg-gray-200 hover:bg-gray-300 text-gray-600"
             } p-2 rounded-lg transition duration-200" data-account-id="${
               account.id
-            }" title="Toggle Facilitator Program">
+            }" title="${browser.i18n.getMessage("titleToggleFacilitatorProgram")}">
               <i class="fa-solid fa-chalkboard-teacher"></i>
             </button>
             
             <button class="update-account-btn text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Update account">
+            }" title="${browser.i18n.getMessage("titleUpdateAccount")}">
               <i class="fa-solid fa-sync-alt"></i>
             </button>
 
             <button class="view-profile-btn text-purple-600 hover:text-purple-800 p-2 rounded-lg hover:bg-purple-50 transition duration-200" data-account-id="${
               account.id
-            }" title="View public profile">
+            }" title="${browser.i18n.getMessage("titleViewPublicProfile")}">
               <i class="fa-solid fa-eye"></i>
             </button>
             
             <button class="edit-account-btn text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Edit account">
+            }" title="${browser.i18n.getMessage("titleEditAccount")}">
               <i class="fa-solid fa-edit"></i>
             </button>
             
             <button class="delete-account-btn text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition duration-200" data-account-id="${
               account.id
-            }" title="Delete account">
+            }" title="${browser.i18n.getMessage("titleDeleteAccount")}">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -389,8 +396,8 @@ const OptionsService = {
     const accountsList = document.getElementById("accounts-list");
     if (accountsList) {
       // Handle button clicks
-      accountsList.addEventListener("click", async (e) => {
-        const target = e.target as HTMLElement;
+      accountsList.addEventListener("click", async (clickEvent) => {
+        const target = clickEvent.target as HTMLElement;
         const button = target.closest("button");
 
         if (!button) return;
@@ -443,20 +450,14 @@ const OptionsService = {
       exportJsonBtn.addEventListener("click", async () => {
         const activeAccount = await AccountService.getActiveAccount();
         if (!activeAccount?.arcadeData) {
-          this.showMessage(
-            browser.i18n.getMessage("exportNoData") || "No data to export",
-            "error",
-          );
+          this.showMessage(browser.i18n.getMessage("exportNoData"), "error");
           return;
         }
         ExportService.exportAsJSON(
           activeAccount.arcadeData,
           `arcade-data-${activeAccount.name}`,
         );
-        this.showMessage(
-          browser.i18n.getMessage("exportSuccess") || "Exported successfully",
-          "success",
-        );
+        this.showMessage(browser.i18n.getMessage("exportSuccess"), "success");
       });
     }
 
@@ -468,16 +469,13 @@ const OptionsService = {
         const badges = activeAccount?.arcadeData?.badges;
         if (!badges || badges.length === 0) {
           this.showMessage(
-            browser.i18n.getMessage("exportNoData") || "No badges to export",
+            browser.i18n.getMessage("exportNoBadgesData"),
             "error",
           );
           return;
         }
         ExportService.exportBadgesAsCSV(badges, `badges-${activeAccount.name}`);
-        this.showMessage(
-          browser.i18n.getMessage("exportSuccess") || "Exported successfully",
-          "success",
-        );
+        this.showMessage(browser.i18n.getMessage("exportSuccess"), "success");
       });
     }
 
@@ -581,14 +579,20 @@ const OptionsService = {
       }
 
       this.showMessage(
-        `Facilitator Program ${enabled ? "enabled" : "disabled"} for ${
-          account.name
-        }`,
+        browser.i18n.getMessage("messageFacilitatorProgramUpdated", [
+          enabled
+            ? browser.i18n.getMessage("labelEnabled")
+            : browser.i18n.getMessage("labelDisabled"),
+          account.name,
+        ]),
         "success",
       );
     } catch (error) {
       console.error("Error updating facilitator program:", error);
-      this.showMessage("Error updating Facilitator Program setting", "error");
+      this.showMessage(
+        browser.i18n.getMessage("errorUpdatingFacilitatorProgram"),
+        "error",
+      );
 
       // UI will be corrected on next loadAccounts() call
       await this.loadAccounts();
@@ -695,7 +699,7 @@ const OptionsService = {
       } else {
         PopupUIService.showMessage(
           "#error-message",
-          "Failed to fetch data. Please try again later.",
+          browser.i18n.getMessage("errorFetchDataRetry"),
           ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
         );
       }
@@ -703,7 +707,7 @@ const OptionsService = {
       console.error("Error in handleSubmit:", error);
       PopupUIService.showMessage(
         "#error-message",
-        "An error occurred. Please try again.",
+        browser.i18n.getMessage("errorGenericRetry"),
         ["text-red-500", "font-bold", "mt-2", "animate-pulse"],
       );
     } finally {
@@ -730,19 +734,22 @@ const OptionsService = {
         try {
           // Use userName from API if available
           const userDetail = this.extractUserDetails(data);
-          const accountName = userDetail?.userName || "New account";
+          const accountName =
+            userDetail?.userName || browser.i18n.getMessage("labelNewAccount");
 
           await AccountService.createAccount({
             name: accountName,
             profileUrl,
             arcadeData: data,
           });
-          messageText = `Created account "${accountName}" successfully!`;
+          messageText = browser.i18n.getMessage("successAccountCreatedNamed", [
+            accountName,
+          ]);
         } catch {
           // Fallback to old storage method
           await StorageService.saveArcadeData(data);
           await StorageService.saveProfileUrl(profileUrl);
-          messageText = "Data saved successfully!";
+          messageText = browser.i18n.getMessage("successDataSaved");
         }
       }
     } else {
@@ -751,14 +758,15 @@ const OptionsService = {
       if (profileUrl) {
         await AccountService.updateAccount(activeAccount.id, { profileUrl });
       }
-      messageText = "Account updated successfully!";
+      messageText = browser.i18n.getMessage("successAccountUpdated");
     }
 
-    PopupUIService.showMessage(
-      "#success-message",
-      messageText || browser.i18n.getMessage("successSettingsSaved"),
-      ["text-green-500", "font-bold", "mt-2", "animate-pulse"],
-    );
+    PopupUIService.showMessage("#success-message", messageText, [
+      "text-green-500",
+      "font-bold",
+      "mt-2",
+      "animate-pulse",
+    ]);
 
     PopupUIService.updateOptionsUI(data);
 
@@ -793,7 +801,166 @@ const OptionsService = {
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
+      await this.syncSearchChildControlState(isEnabled);
     }
+  },
+
+  /**
+   * Keep Search child controls locked behind the main Search Feature toggle.
+   */
+  async syncSearchChildControlState(searchEnabled?: boolean): Promise<void> {
+    const eplusCheckbox = document.getElementById(
+      "enable-eplus-search",
+    ) as HTMLInputElement | null;
+    const preferredSearchSelect = document.getElementById(
+      "preferred-search-engine",
+    ) as HTMLSelectElement | null;
+
+    const enabled =
+      typeof searchEnabled === "boolean"
+        ? searchEnabled
+        : await StorageService.isSearchFeatureEnabled();
+
+    if (preferredSearchSelect) {
+      preferredSearchSelect.disabled = !enabled;
+      preferredSearchSelect.setAttribute("aria-disabled", String(!enabled));
+      preferredSearchSelect.classList.toggle("opacity-60", !enabled);
+      preferredSearchSelect.classList.toggle("cursor-not-allowed", !enabled);
+    }
+
+    if (!eplusCheckbox) return;
+
+    const parentLabel = eplusCheckbox.closest("label") as HTMLElement | null;
+    const eplusText = eplusCheckbox
+      .closest(".flex.items-center")
+      ?.querySelector(".text-right") as HTMLElement | null;
+
+    eplusCheckbox.disabled = !enabled;
+    eplusCheckbox.setAttribute("aria-disabled", String(!enabled));
+
+    if (parentLabel) {
+      parentLabel.classList.toggle("opacity-60", !enabled);
+      parentLabel.classList.toggle("cursor-not-allowed", !enabled);
+      parentLabel.classList.toggle("cursor-pointer", enabled);
+    }
+
+    if (eplusText) {
+      eplusText.classList.toggle("opacity-60", !enabled);
+    }
+  },
+
+  /**
+   * Load preferred search engine from storage and update UI
+   */
+  async loadPreferredSearchEngineSetting(): Promise<void> {
+    const select = document.getElementById(
+      "preferred-search-engine",
+    ) as HTMLSelectElement | null;
+    if (!select) return;
+
+    try {
+      const preferred = await StorageService.getPreferredSearchEngine();
+      select.value = preferred || "google";
+      await this.syncSearchChildControlState();
+    } catch (e) {
+      console.error("Failed to load preferred search engine:", e);
+    }
+
+    select.addEventListener("change", async (ev) => {
+      try {
+        if (!(await StorageService.isSearchFeatureEnabled())) {
+          select.value = await StorageService.getPreferredSearchEngine();
+          await this.syncSearchChildControlState(false);
+          return;
+        }
+
+        const selectedEngine = (ev.target as HTMLSelectElement).value;
+        await StorageService.savePreferredSearchEngine(selectedEngine);
+        const message = browser.i18n.getMessage(
+          "messagePreferredSearchEngineSaved",
+        );
+        const messageElement = document.createElement("div");
+        messageElement.className =
+          "fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50";
+        messageElement.textContent = message;
+        document.body.appendChild(messageElement);
+        setTimeout(() => messageElement.remove(), 2500);
+        try {
+          await sendRuntimeMessage({
+            type: "preferredSearchEngineChanged",
+            engine: selectedEngine,
+          });
+        } catch (err) {
+          // non-fatal
+        }
+      } catch (err) {
+        console.error("Failed to save preferred search engine:", err);
+      }
+    });
+  },
+
+  /**
+   * Load ePlus search enabled setting and update the options UI
+   */
+  async loadEplusSearchSetting(): Promise<void> {
+    const checkbox = document.getElementById(
+      "enable-eplus-search",
+    ) as HTMLInputElement | null;
+    if (!checkbox) return;
+
+    try {
+      const searchEnabled = await StorageService.isSearchFeatureEnabled();
+      checkbox.checked = await StorageService.isEplusSearchEnabled();
+      await this.syncSearchChildControlState(searchEnabled);
+    } catch (e) {
+      console.error("Failed to load ePlus search setting:", e);
+    }
+
+    checkbox.addEventListener("change", async (ev) => {
+      try {
+        const isEplusEnabled = (ev.target as HTMLInputElement).checked;
+        const searchEnabled = await StorageService.isSearchFeatureEnabled();
+        if (!searchEnabled) {
+          checkbox.checked = await StorageService.isEplusSearchEnabled();
+          await this.syncSearchChildControlState(false);
+          const warn = browser.i18n.getMessage("messageEnableSearchFirst");
+          const warnEl = document.createElement("div");
+          warnEl.className =
+            "fixed top-4 right-4 bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-lg z-50";
+          warnEl.textContent = warn;
+          document.body.appendChild(warnEl);
+          setTimeout(() => warnEl.remove(), 3500);
+          try {
+            await sendRuntimeMessage({
+              type: "enableEplusSearchChanged",
+              enabled: false,
+            });
+          } catch (err) {
+            console.debug("Failed to broadcast enableEplusSearchChanged:", err);
+          }
+          return;
+        }
+
+        await StorageService.saveEplusSearchEnabled(Boolean(isEplusEnabled));
+        const message = browser.i18n.getMessage("messageEplusSearchSaved");
+        const messageElement = document.createElement("div");
+        messageElement.className =
+          "fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50";
+        messageElement.textContent = message;
+        document.body.appendChild(messageElement);
+        setTimeout(() => messageElement.remove(), 2500);
+        try {
+          await sendRuntimeMessage({
+            type: "enableEplusSearchChanged",
+            enabled: Boolean(isEplusEnabled),
+          });
+        } catch (err) {
+          console.debug("Failed to broadcast enableEplusSearchChanged:", err);
+        }
+      } catch (err) {
+        console.error("Failed to save ePlus search setting:", err);
+      }
+    });
   },
 
   /**
@@ -835,15 +1002,13 @@ const OptionsService = {
 
       this.showMessage(
         enabled
-          ? browser.i18n.getMessage("messageBadgeEnabled") ||
-              "Badge display enabled"
-          : browser.i18n.getMessage("messageBadgeDisabled") ||
-              "Badge display disabled",
+          ? browser.i18n.getMessage("messageBadgeEnabled")
+          : browser.i18n.getMessage("messageBadgeDisabled"),
         "success",
       );
     } catch (error) {
       console.error("Error saving badge display setting:", error);
-      this.showMessage("Failed to save setting", "error");
+      this.showMessage(browser.i18n.getMessage("errorSaveSetting"), "error");
     }
   },
 
@@ -871,6 +1036,27 @@ const OptionsService = {
       setTimeout(() => {
         messageElement.remove();
       }, 3000);
+      // Broadcast change to open tabs so content scripts can update immediately
+      try {
+        await sendRuntimeMessage({
+          type: "searchFeatureChanged",
+          enabled: Boolean(enabled),
+        });
+      } catch (err) {
+        console.debug(
+          "Failed to send searchFeatureChanged runtime message:",
+          err,
+        );
+      }
+      // Update child controls immediately when the parent changes.
+      try {
+        await this.syncSearchChildControlState(Boolean(enabled));
+      } catch (err) {
+        console.debug(
+          "Failed to update ePlus UI state after search toggle:",
+          err,
+        );
+      }
     } catch (error) {
       console.error("Error saving search feature setting:", error);
     }
@@ -893,11 +1079,19 @@ const OptionsService = {
         MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
         MARKDOWN_CONFIG.DEFAULT_CONTENT_SELECTOR,
       );
+      OptionsService.refreshMarkdownShowMore();
     } catch (error) {
       // Show error if loading fails
       OptionsService.showMarkdownError();
       console.error("Failed to load markdown content:", error);
     }
+  },
+
+  /**
+   * Recalculate the announcement show more/less state after markdown renders.
+   */
+  refreshMarkdownShowMore(): void {
+    window.dispatchEvent(new CustomEvent("markdown-content-rendered"));
   },
 
   /**
@@ -990,8 +1184,8 @@ const OptionsService = {
       {
         id: "account-url-input",
         event: "keypress",
-        handler: (e: Event) => {
-          const keyboardEvent = e as KeyboardEvent;
+        handler: (keyPressEvent: Event) => {
+          const keyboardEvent = keyPressEvent as KeyboardEvent;
           if (keyboardEvent.key === "Enter") {
             this.handleCreateAccount();
           }
@@ -1082,18 +1276,22 @@ const OptionsService = {
     });
 
     // File input change handler
-    DOMUtils.addEventListener("import-file-input", "change", (e: Event) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      const textArea = DOMUtils.getTextAreaElement("import-json-textarea");
+    DOMUtils.addEventListener(
+      "import-file-input",
+      "change",
+      (changeEvent: Event) => {
+        const file = (changeEvent.target as HTMLInputElement).files?.[0];
+        const textArea = DOMUtils.getTextAreaElement("import-json-textarea");
 
-      if (file && textArea) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          textArea.value = event.target?.result as string;
-        };
-        reader.readAsText(file);
-      }
-    });
+        if (file && textArea) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            textArea.value = event.target?.result as string;
+          };
+          reader.readAsText(file);
+        }
+      },
+    );
   },
 
   /**
@@ -1174,12 +1372,12 @@ const OptionsService = {
     }
 
     if (!trimmedUrl) {
-      this.showProfileError("Please enter a profile URL!");
+      this.showProfileError(browser.i18n.getMessage("errorEnterProfileUrl"));
       return;
     }
 
     if (!ArcadeApiService.isValidProfileUrl(trimmedUrl)) {
-      this.showProfileError("Invalid profile URL!");
+      this.showProfileError(browser.i18n.getMessage("errorInvalidProfileUrl"));
       return;
     }
 
@@ -1190,8 +1388,10 @@ const OptionsService = {
       const existingAccount = await AccountService.isAccountExists(trimmedUrl);
       if (existingAccount) {
         this.showProfileError(
-          `An account with this URL already exists: "${existingAccount.name}".`,
-          "Account already exists",
+          browser.i18n.getMessage("errorAccountExistsMsg", [
+            existingAccount.name,
+          ]),
+          browser.i18n.getMessage("errorAccountExistsTitle"),
           true,
           existingAccount,
         );
@@ -1210,13 +1410,13 @@ const OptionsService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(trimmedUrl);
 
       if (!arcadeData) {
-        throw new Error("Unable to fetch information from this profile");
+        throw new Error(browser.i18n.getMessage("errorUnableFetchProfile"));
       }
 
       // Check if we have user details and can extract user name
       const userDetail = this.extractUserDetails(arcadeData);
       if (!userDetail?.userName) {
-        throw new Error("Unable to get user name from this profile");
+        throw new Error(browser.i18n.getMessage("errorUnableGetUserName"));
       }
 
       // Create account directly
@@ -1264,7 +1464,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Unable to create account. Please check the URL and try again!",
+          : browser.i18n.getMessage("errorUnableCreateAccount"),
       );
     } finally {
       this.isCreateAccountInFlight = false;
@@ -1346,12 +1546,12 @@ const OptionsService = {
     const stepPreview = document.getElementById("step-profile-preview");
 
     if (!urlInput.value.trim()) {
-      this.showProfileError("Please enter a profile URL!");
+      this.showProfileError(browser.i18n.getMessage("errorEnterProfileUrl"));
       return;
     }
 
     if (!ArcadeApiService.isValidProfileUrl(urlInput.value)) {
-      this.showProfileError("Invalid profile URL!");
+      this.showProfileError(browser.i18n.getMessage("errorInvalidProfileUrl"));
       return;
     }
 
@@ -1362,8 +1562,10 @@ const OptionsService = {
       );
       if (existingAccount) {
         this.showProfileError(
-          `An account with this URL already exists: "${existingAccount.name}".`,
-          "Account already exists",
+          browser.i18n.getMessage("errorAccountExistsMsg", [
+            existingAccount.name,
+          ]),
+          browser.i18n.getMessage("errorAccountExistsTitle"),
           true,
           existingAccount,
         );
@@ -1382,13 +1584,13 @@ const OptionsService = {
       const arcadeData = await ArcadeApiService.fetchArcadeData(urlInput.value);
 
       if (!arcadeData) {
-        throw new Error("Unable to fetch information from this profile");
+        throw new Error(browser.i18n.getMessage("errorUnableFetchProfile"));
       }
 
       // Check if we have user details and can extract user name
       const userDetail = this.extractUserDetails(arcadeData);
       if (!userDetail?.userName) {
-        throw new Error("Unable to get user name from this profile");
+        throw new Error(browser.i18n.getMessage("errorUnableGetUserName"));
       }
 
       // Hide loading, show preview
@@ -1412,7 +1614,7 @@ const OptionsService = {
       this.showProfileError(
         error instanceof Error
           ? error.message
-          : "Unable to fetch profile information. Please check the URL and try again!",
+          : browser.i18n.getMessage("errorUnableFetchProfileInfo"),
       );
     }
   },
@@ -1458,9 +1660,12 @@ const OptionsService = {
           const url = new URL(profileUrl);
           const pathParts = url.pathname.split("/");
           const profileId = pathParts[pathParts.length - 1];
-          previewEmail.textContent = profileId || "Profile ID not found";
+          previewEmail.textContent =
+            profileId || browser.i18n.getMessage("errorProfileIdNotFound");
         } catch {
-          previewEmail.textContent = "Profile ID not found";
+          previewEmail.textContent = browser.i18n.getMessage(
+            "errorProfileIdNotFound",
+          );
         }
       }
     }
@@ -1511,19 +1716,24 @@ const OptionsService = {
       const switchButton = document.createElement("button");
       switchButton.className =
         "mt-1 bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200";
-      switchButton.innerHTML = `<i class="fa-solid fa-arrow-right mr-1"></i>Switch to account "${existingAccount.name}"`;
+      switchButton.innerHTML = `<i class="fa-solid fa-arrow-right mr-1"></i>${browser.i18n.getMessage("switchToAccountNamed", [existingAccount.name])}`;
 
       switchButton.addEventListener("click", async () => {
         try {
           await this.switchAccount(existingAccount.id);
           this.hideAddAccountModal();
           this.showMessage(
-            `Switched to account "${existingAccount.name}"!`,
+            browser.i18n.getMessage("successSwitchedToAccountNamed", [
+              existingAccount.name,
+            ]),
             "success",
           );
         } catch (error) {
           console.error("Error switching account:", error);
-          this.showMessage("Error switching account!", "error");
+          this.showMessage(
+            browser.i18n.getMessage("errorSwitchAccount"),
+            "error",
+          );
         }
       });
 
@@ -1813,11 +2023,11 @@ const OptionsService = {
       modal.innerHTML = `
         <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
           <div class="mb-4 text-gray-800 font-semibold">
-            Are you sure you want to delete the account "${account.name}"?
+            ${browser.i18n.getMessage("confirmDeleteAccount", [account.name])}
           </div>
           <div class="flex justify-end space-x-2">
-            <button id="cancel-delete-account-btn" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700">Cancel</button>
-            <button id="confirm-delete-account-btn" class="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white">Delete</button>
+            <button id="cancel-delete-account-btn" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700">${browser.i18n.getMessage("btnCancel")}</button>
+            <button id="confirm-delete-account-btn" class="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white">${browser.i18n.getMessage("btnDelete")}</button>
           </div>
         </div>
       `;
@@ -1914,7 +2124,7 @@ const OptionsService = {
     }
 
     if (confirmBtn) {
-      confirmBtn.textContent = "Importing...";
+      confirmBtn.textContent = browser.i18n.getMessage("labelImporting");
       (confirmBtn as HTMLButtonElement).disabled = true;
     }
 
@@ -1944,7 +2154,7 @@ const OptionsService = {
       this.showMessage(browser.i18n.getMessage("errorImportingData"), "error");
     } finally {
       if (confirmBtn) {
-        confirmBtn.textContent = "Import data";
+        confirmBtn.textContent = browser.i18n.getMessage("labelImportData");
         (confirmBtn as HTMLButtonElement).disabled = false;
       }
     }

@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - المساعد"
   },
@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "رجوع"
   },
+  "backToTop": { "message": "الرجوع إلى الأعلى" },
   "changelogWhatsNew": {
     "message": "ما الجديد"
   },
@@ -641,42 +642,221 @@
   "saveChangesButton": {
     "message": "حفظ التغييرات"
   },
-  "themeStudioTitle": { "message": "ستوديو الثيم" },
+  "themeStudioTitle": {
+    "message": "ستوديو الثيم"
+  },
   "themeStudioDescription": {
     "message": "خصص سمة النافذة المنبثقة مع معاينة فورية."
   },
-  "labelBackground1": { "message": "الخلفية 1" },
-  "labelBackground2": { "message": "الخلفية 2" },
-  "labelBackground3": { "message": "الخلفية 3" },
-  "labelAccent": { "message": "اللون المميز" },
-  "labelArcadePoints": { "message": "نقاط الآركيد" },
-  "labelTextPrimary": { "message": "لون النص الأساسي" },
-  "labelTextSecondary": { "message": "لون النص الثانوي" },
-  "labelTextMuted": { "message": "لون النص المخفف" },
-  "btnApplySave": { "message": "تطبيق وحفظ" },
-  "btnResetToDark": { "message": "إعادة التعيين إلى الوضع الداكن" },
-  "btnSyncFromPopup": { "message": "مزامنة من النافذة الحالية" },
+  "labelBackground1": {
+    "message": "الخلفية 1"
+  },
+  "labelBackground2": {
+    "message": "الخلفية 2"
+  },
+  "labelBackground3": {
+    "message": "الخلفية 3"
+  },
+  "labelAccent": {
+    "message": "اللون المميز"
+  },
+  "labelArcadePoints": {
+    "message": "نقاط الآركيد"
+  },
+  "labelTextPrimary": {
+    "message": "لون النص الأساسي"
+  },
+  "labelTextSecondary": {
+    "message": "لون النص الثانوي"
+  },
+  "labelTextMuted": {
+    "message": "لون النص المخفف"
+  },
+  "btnApplySave": {
+    "message": "تطبيق وحفظ"
+  },
+  "btnResetToDark": {
+    "message": "إعادة التعيين إلى الوضع الداكن"
+  },
+  "btnSyncFromPopup": {
+    "message": "مزامنة من النافذة الحالية"
+  },
   "previewNote": {
     "message": "المعاينة تستخدم واجهة النافذة الفعلية وبيانات الحساب الحالية."
   },
-  "popupLivePreviewTitle": { "message": "معاينة النافذة الحية" },
-  "btnApplyCustomTheme": { "message": "تطبيق السمة المخصصة" },
-  "btnResetCustomTheme": { "message": "إعادة ضبط" },
-  "btnOpenThemeStudio": { "message": "فتح ستوديو الثيم (معاينة مباشرة)" },
-  "btnChangeTheme": { "message": "تغيير السمة" },
-  "labThinking": { "message": "أفكّر..." },
-  "labSolutionTitle": { "message": "انقر لفتح الحل" },
-  "labSolutionButton": { "message": "حل هذا المختبر" },
-  "labNoSolution": { "message": "لا يوجد حل" },
-  "labEplusSearch": { "message": "بحث ePlus" },
-  "labGoogleSearch": { "message": "بحث Google" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "تصدير بياناتي" },
-  "exportJSON": { "message": "تصدير JSON" },
-  "exportCSV": { "message": "تصدير الشارات CSV" },
-  "exportSuccess": { "message": "تم التصدير بنجاح!" },
-  "exportNoData": { "message": "لا توجد بيانات للتصدير." },
-  "compactMode": { "message": "مضغوط" },
-  "fullMode": { "message": "عرض كامل" },
-  "shortcutHint": { "message": "R تحديث · S الإعدادات · C مضغوط" }
+  "popupLivePreviewTitle": {
+    "message": "معاينة النافذة الحية"
+  },
+  "btnApplyCustomTheme": {
+    "message": "تطبيق السمة المخصصة"
+  },
+  "btnResetCustomTheme": {
+    "message": "إعادة ضبط"
+  },
+  "btnOpenThemeStudio": {
+    "message": "فتح ستوديو الثيم (معاينة مباشرة)"
+  },
+  "btnChangeTheme": {
+    "message": "تغيير السمة"
+  },
+  "labThinking": {
+    "message": "أفكّر..."
+  },
+  "labSolutionTitle": {
+    "message": "انقر لفتح الحل"
+  },
+  "labSolutionButton": {
+    "message": "حل هذا المختبر"
+  },
+  "labSupportTitle": {
+    "message": "Click to get support or report issue on Telegram"
+  },
+  "labSupportButton": {
+    "message": "Report / Support"
+  },
+  "labNoSolution": {
+    "message": "لا يوجد حل"
+  },
+  "labEplusSearch": {
+    "message": "بحث ePlus"
+  },
+  "labGoogleSearch": {
+    "message": "بحث Google"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": { "message": "بحث Bing" },
+  "labYandexSearch": { "message": "بحث Yandex" },
+  "labBraveSearch": { "message": "بحث Brave" },
+  "labDuckDuckGoSearch": { "message": "بحث DuckDuckGo" },
+  "labBaiduSearch": { "message": "بحث Baidu" },
+  "labYahooSearch": { "message": "بحث Yahoo!" },
+  "labCoccocSearch": { "message": "بحث Cốc Cốc" },
+  "labelSearch": { "message": "بحث" },
+  "labelCopyLink": { "message": "نسخ الرابط" },
+  "labFallbackQuery": { "message": "دليل مختبر Google Cloud" },
+  "exportDataTitle": {
+    "message": "تصدير بياناتي"
+  },
+  "exportJSON": {
+    "message": "تصدير JSON"
+  },
+  "exportCSV": {
+    "message": "تصدير الشارات CSV"
+  },
+  "exportSuccess": {
+    "message": "تم التصدير بنجاح!"
+  },
+  "exportNoData": {
+    "message": "لا توجد بيانات للتصدير."
+  },
+  "compactMode": {
+    "message": "مضغوط"
+  },
+  "fullMode": {
+    "message": "عرض كامل"
+  },
+  "shortcutHint": {
+    "message": "R تحديث · S الإعدادات · C مضغوط"
+  },
+  "messageEplusSearchSaved": {
+    "message": "?? ??? ????? ??? ePlus"
+  },
+  "messageEnableSearchFirst": {
+    "message": "???? ???? ????? ???????? ??? ????? ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "????? ????? ???????"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "????? ?????? ??????"
+  },
+  "titleUpdateAccount": {
+    "message": "????? ??????"
+  },
+  "titleViewPublicProfile": {
+    "message": "??? ????? ?????? ?????"
+  },
+  "titleEditAccount": {
+    "message": "????? ??????"
+  },
+  "titleDeleteAccount": {
+    "message": "??? ??????"
+  },
+  "exportNoBadgesData": {
+    "message": "?? ???? ????? ???????."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "?? ??? ???? ????? ??????"
+  },
+  "labelEnabled": {
+    "message": "????"
+  },
+  "labelDisabled": {
+    "message": "????"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "?????? ?????? $1 ?? $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "??? ??? ????? ????? ????? ?????? ??????"
+  },
+  "errorFetchDataRetry": {
+    "message": "???? ??? ????????. ???? ???????? ??????."
+  },
+  "errorGenericRetry": {
+    "message": "??? ???. ???? ???????? ??? ????."
+  },
+  "labelNewAccount": {
+    "message": "???? ????"
+  },
+  "successAccountCreatedNamed": {
+    "message": "?? ????? ?????? \"$1\" ?????!"
+  },
+  "successDataSaved": {
+    "message": "?? ??? ???????? ?????!"
+  },
+  "successAccountUpdated": {
+    "message": "?? ????? ?????? ?????!"
+  },
+  "errorSaveSetting": {
+    "message": "??? ??? ???????"
+  },
+  "errorUnableFetchProfile": {
+    "message": "???? ??? ????????? ?? ??? ????? ??????"
+  },
+  "errorUnableGetUserName": {
+    "message": "???? ?????? ??? ??? ???????? ?? ??? ????? ??????"
+  },
+  "errorUnableCreateAccount": {
+    "message": "???? ????? ??????. ???? ?????? ?? ?????? ????????? ??? ????!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "???? ??? ??????? ????? ??????. ???? ?????? ?? ?????? ????????? ??? ????!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "?? ??? ?????? ??? ???? ????? ??????"
+  },
+  "switchToAccountNamed": {
+    "message": "??????? ??? ?????? \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "?? ??????? ??? ?????? \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "?? ??? ????? ?? ??? ?????? \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "?????"
+  },
+  "btnDelete": {
+    "message": "???"
+  },
+  "labelImporting": {
+    "message": "???? ?????????..."
+  },
+  "labelImportData": {
+    "message": "??????? ????????"
+  }
 }

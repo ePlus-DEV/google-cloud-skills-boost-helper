@@ -41,6 +41,8 @@ const AccountService = {
           enableSearchFeature: true,
           // default to false (badge off) for new installs unless migrated value exists
           showBadge: false,
+          // preferredSearchEngine can be: 'google', 'bing', 'yandex', 'brave', 'duckduckgo'
+          preferredSearchEngine: "google",
         },
       };
     }
@@ -63,6 +65,9 @@ const AccountService = {
     return data;
   },
 
+  /**
+   * No-op touch to create apply_patch context (will follow with real updates).
+   */
   /**
    * Save accounts data to storage
    */
@@ -237,7 +242,7 @@ const AccountService = {
   /**
    * Update account's arcade data
    */
-  async updateAccountArcadeData(
+  updateAccountArcadeData(
     accountId: string,
     arcadeData: ArcadeData,
   ): Promise<boolean> {
@@ -324,7 +329,7 @@ const AccountService = {
 
     // If there was old data, create an account from it
     if (oldProfileUrl) {
-      const account = await this.createAccountFromOldData(
+      const account = this.createAccountFromOldData(
         oldProfileUrl,
         oldArcadeData || undefined,
       );
@@ -357,10 +362,10 @@ const AccountService = {
   /**
    * Create account from old data format
    */
-  async createAccountFromOldData(
+  createAccountFromOldData(
     profileUrl: string,
     arcadeData?: ArcadeData,
-  ): Promise<Account> {
+  ): Account {
     const accountId = this.generateAccountId();
     const now = new Date().toISOString();
 

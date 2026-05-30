@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "Indietro"
   },
+  "backToTop": { "message": "Torna su" },
   "changelogWhatsNew": {
     "message": "Novità"
   },
@@ -641,42 +642,221 @@
   "saveChangesButton": {
     "message": "Salva modifiche"
   },
-  "themeStudioTitle": { "message": "Studio Temi" },
+  "themeStudioTitle": {
+    "message": "Studio Temi"
+  },
   "themeStudioDescription": {
     "message": "Personalizza il tema del popup con anteprima in tempo reale."
   },
-  "labelBackground1": { "message": "Sfondo 1" },
-  "labelBackground2": { "message": "Sfondo 2" },
-  "labelBackground3": { "message": "Sfondo 3" },
-  "labelAccent": { "message": "Accento" },
-  "labelArcadePoints": { "message": "Punti Arcade" },
-  "labelTextPrimary": { "message": "Testo primario" },
-  "labelTextSecondary": { "message": "Testo secondario" },
-  "labelTextMuted": { "message": "Testo attenuato" },
-  "btnApplySave": { "message": "Applica e salva" },
-  "btnResetToDark": { "message": "Reimposta su scuro" },
-  "btnSyncFromPopup": { "message": "Sincronizza dal popup corrente" },
+  "labelBackground1": {
+    "message": "Sfondo 1"
+  },
+  "labelBackground2": {
+    "message": "Sfondo 2"
+  },
+  "labelBackground3": {
+    "message": "Sfondo 3"
+  },
+  "labelAccent": {
+    "message": "Accento"
+  },
+  "labelArcadePoints": {
+    "message": "Punti Arcade"
+  },
+  "labelTextPrimary": {
+    "message": "Testo primario"
+  },
+  "labelTextSecondary": {
+    "message": "Testo secondario"
+  },
+  "labelTextMuted": {
+    "message": "Testo attenuato"
+  },
+  "btnApplySave": {
+    "message": "Applica e salva"
+  },
+  "btnResetToDark": {
+    "message": "Reimposta su scuro"
+  },
+  "btnSyncFromPopup": {
+    "message": "Sincronizza dal popup corrente"
+  },
   "previewNote": {
     "message": "L'anteprima usa l'interfaccia reale del popup e i dati dell'account corrente."
   },
-  "popupLivePreviewTitle": { "message": "Anteprima live del popup" },
-  "btnApplyCustomTheme": { "message": "Applica tema personalizzato" },
-  "btnResetCustomTheme": { "message": "Reimposta" },
-  "btnOpenThemeStudio": { "message": "Apri Theme Studio (Anteprima live)" },
-  "btnChangeTheme": { "message": "Cambia tema" },
-  "labThinking": { "message": "Sto pensando..." },
-  "labSolutionTitle": { "message": "Clicca per aprire la soluzione" },
-  "labSolutionButton": { "message": "Soluzione del lab" },
-  "labNoSolution": { "message": "Nessuna soluzione" },
-  "labEplusSearch": { "message": "Cerca su ePlus" },
-  "labGoogleSearch": { "message": "Cerca su Google" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "Esporta i miei dati" },
-  "exportJSON": { "message": "Esporta JSON" },
-  "exportCSV": { "message": "Esporta badge CSV" },
-  "exportSuccess": { "message": "Esportato con successo!" },
-  "exportNoData": { "message": "Nessun dato da esportare." },
-  "compactMode": { "message": "Compatto" },
-  "fullMode": { "message": "Vista completa" },
-  "shortcutHint": { "message": "R aggiorna · S impostazioni · C compatto" }
+  "popupLivePreviewTitle": {
+    "message": "Anteprima live del popup"
+  },
+  "btnApplyCustomTheme": {
+    "message": "Applica tema personalizzato"
+  },
+  "btnResetCustomTheme": {
+    "message": "Reimposta"
+  },
+  "btnOpenThemeStudio": {
+    "message": "Apri Theme Studio (Anteprima live)"
+  },
+  "btnChangeTheme": {
+    "message": "Cambia tema"
+  },
+  "labThinking": {
+    "message": "Sto pensando..."
+  },
+  "labSolutionTitle": {
+    "message": "Clicca per aprire la soluzione"
+  },
+  "labSolutionButton": {
+    "message": "Soluzione del lab"
+  },
+  "labSupportTitle": {
+    "message": "Click to get support or report issue on Telegram"
+  },
+  "labSupportButton": {
+    "message": "Report / Support"
+  },
+  "labNoSolution": {
+    "message": "Nessuna soluzione"
+  },
+  "labEplusSearch": {
+    "message": "Cerca su ePlus"
+  },
+  "labGoogleSearch": {
+    "message": "Cerca su Google"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": { "message": "Cerca su Bing" },
+  "labYandexSearch": { "message": "Cerca su Yandex" },
+  "labBraveSearch": { "message": "Cerca su Brave" },
+  "labDuckDuckGoSearch": { "message": "Cerca su DuckDuckGo" },
+  "labBaiduSearch": { "message": "Cerca su Baidu" },
+  "labYahooSearch": { "message": "Cerca su Yahoo!" },
+  "labCoccocSearch": { "message": "Cerca su Cốc Cốc" },
+  "labelSearch": { "message": "Cerca" },
+  "labelCopyLink": { "message": "Copia link" },
+  "labFallbackQuery": { "message": "Tutorial del laboratorio Google Cloud" },
+  "exportDataTitle": {
+    "message": "Esporta i miei dati"
+  },
+  "exportJSON": {
+    "message": "Esporta JSON"
+  },
+  "exportCSV": {
+    "message": "Esporta badge CSV"
+  },
+  "exportSuccess": {
+    "message": "Esportato con successo!"
+  },
+  "exportNoData": {
+    "message": "Nessun dato da esportare."
+  },
+  "compactMode": {
+    "message": "Compatto"
+  },
+  "fullMode": {
+    "message": "Vista completa"
+  },
+  "shortcutHint": {
+    "message": "R aggiorna · S impostazioni · C compatto"
+  },
+  "messageEplusSearchSaved": {
+    "message": "Impostazione ricerca ePlus salvata"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Attiva la funzione di ricerca principale prima di attivare ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Imposta come account predefinito"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Attiva/disattiva programma Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "Aggiorna account"
+  },
+  "titleViewPublicProfile": {
+    "message": "Visualizza profilo pubblico"
+  },
+  "titleEditAccount": {
+    "message": "Modifica account"
+  },
+  "titleDeleteAccount": {
+    "message": "Elimina account"
+  },
+  "exportNoBadgesData": {
+    "message": "Nessun badge da esportare."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Motore di ricerca preferito salvato"
+  },
+  "labelEnabled": {
+    "message": "attivato"
+  },
+  "labelDisabled": {
+    "message": "disattivato"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Programma Facilitator $1 per $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Errore durante l?aggiornamento dell?impostazione del programma Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "Impossibile recuperare i dati. Riprova pi? tardi."
+  },
+  "errorGenericRetry": {
+    "message": "Si ? verificato un errore. Riprova."
+  },
+  "labelNewAccount": {
+    "message": "Nuovo account"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Account \"$1\" creato correttamente!"
+  },
+  "successDataSaved": {
+    "message": "Dati salvati correttamente!"
+  },
+  "successAccountUpdated": {
+    "message": "Account aggiornato correttamente!"
+  },
+  "errorSaveSetting": {
+    "message": "Impossibile salvare l?impostazione"
+  },
+  "errorUnableFetchProfile": {
+    "message": "Impossibile recuperare informazioni da questo profilo"
+  },
+  "errorUnableGetUserName": {
+    "message": "Impossibile ottenere il nome utente da questo profilo"
+  },
+  "errorUnableCreateAccount": {
+    "message": "Impossibile creare l?account. Controlla l?URL e riprova!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "Impossibile recuperare le informazioni del profilo. Controlla l?URL e riprova!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "ID profilo non trovato"
+  },
+  "switchToAccountNamed": {
+    "message": "Passa all?account \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Passato all?account \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "Vuoi davvero eliminare l?account \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "Annulla"
+  },
+  "btnDelete": {
+    "message": "Elimina"
+  },
+  "labelImporting": {
+    "message": "Importazione..."
+  },
+  "labelImportData": {
+    "message": "Importa dati"
+  }
 }

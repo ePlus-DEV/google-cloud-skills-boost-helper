@@ -270,6 +270,7 @@
   "vip": { "message": "VIP" },
   "errorLoadingData": { "message": "Error loading data" },
   "labelBack": { "message": "Back" },
+  "backToTop": { "message": "Back to top" },
   "changelogWhatsNew": { "message": "What's New" },
   "changelogLatestUpdates": { "message": "Latest updates and improvements" },
   "changelogLoading": { "message": "Loading changelog..." },
@@ -434,10 +435,24 @@
   "labThinking": { "message": "Thinking..." },
   "labSolutionTitle": { "message": "Click to open the solution" },
   "labSolutionButton": { "message": "Solution this lab" },
+  "labSupportTitle": {
+    "message": "Click to get support or report issue on Telegram"
+  },
+  "labSupportButton": { "message": "Report / Support" },
   "labNoSolution": { "message": "No solution" },
   "labEplusSearch": { "message": "ePlus Search" },
   "labGoogleSearch": { "message": "Google Search" },
   "labYouTube": { "message": "YouTube" },
+  "labBingSearch": { "message": "Bing Search" },
+  "labYandexSearch": { "message": "Yandex Search" },
+  "labBraveSearch": { "message": "Brave Search" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGo Search" },
+  "labBaiduSearch": { "message": "Baidu Search" },
+  "labYahooSearch": { "message": "Yahoo! Search" },
+  "labCoccocSearch": { "message": "Cốc Cốc Search" },
+  "labelSearch": { "message": "Search" },
+  "labelCopyLink": { "message": "Copy Link" },
+  "labFallbackQuery": { "message": "Google Cloud lab tutorial" },
   "exportDataTitle": { "message": "Export My Data" },
   "exportJSON": { "message": "Export JSON" },
   "exportCSV": { "message": "Export Badges CSV" },
@@ -445,5 +460,104 @@
   "exportNoData": { "message": "No data to export." },
   "compactMode": { "message": "Compact" },
   "fullMode": { "message": "Full View" },
-  "shortcutHint": { "message": "R refresh · S settings · C compact" }
+  "shortcutHint": { "message": "R refresh · S settings · C compact" },
+  "messageEplusSearchSaved": {
+    "message": "ePlus search setting saved"
+  },
+  "messageEnableSearchFirst": {
+    "message": "Enable the main Search Feature before enabling ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "Set as default account"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Toggle Facilitator Program"
+  },
+  "titleUpdateAccount": {
+    "message": "Update account"
+  },
+  "titleViewPublicProfile": {
+    "message": "View public profile"
+  },
+  "titleEditAccount": {
+    "message": "Edit account"
+  },
+  "titleDeleteAccount": {
+    "message": "Delete account"
+  },
+  "exportNoBadgesData": {
+    "message": "No badges to export."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "Preferred search engine saved"
+  },
+  "labelEnabled": {
+    "message": "enabled"
+  },
+  "labelDisabled": {
+    "message": "disabled"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "Facilitator Program $1 for $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Error updating Facilitator Program setting"
+  },
+  "errorFetchDataRetry": {
+    "message": "Failed to fetch data. Please try again later."
+  },
+  "errorGenericRetry": {
+    "message": "An error occurred. Please try again."
+  },
+  "labelNewAccount": {
+    "message": "New account"
+  },
+  "successAccountCreatedNamed": {
+    "message": "Created account \"$1\" successfully!"
+  },
+  "successDataSaved": {
+    "message": "Data saved successfully!"
+  },
+  "successAccountUpdated": {
+    "message": "Account updated successfully!"
+  },
+  "errorSaveSetting": {
+    "message": "Failed to save setting"
+  },
+  "errorUnableFetchProfile": {
+    "message": "Unable to fetch information from this profile"
+  },
+  "errorUnableGetUserName": {
+    "message": "Unable to get user name from this profile"
+  },
+  "errorUnableCreateAccount": {
+    "message": "Unable to create account. Please check the URL and try again!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "Unable to fetch profile information. Please check the URL and try again!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "Profile ID not found"
+  },
+  "switchToAccountNamed": {
+    "message": "Switch to account \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "Switched to account \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "Are you sure you want to delete the account \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "Cancel"
+  },
+  "btnDelete": {
+    "message": "Delete"
+  },
+  "labelImporting": {
+    "message": "Importing..."
+  },
+  "labelImportData": {
+    "message": "Import data"
+  }
 }

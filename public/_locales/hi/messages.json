@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - Helper"
   },
@@ -335,6 +335,7 @@
   "labelBack": {
     "message": "पीछे"
   },
+  "backToTop": { "message": "ऊपर जाएँ" },
   "changelogWhatsNew": {
     "message": "नया क्या है"
   },
@@ -641,42 +642,221 @@
   "saveChangesButton": {
     "message": "परिवर्तन सहेजें"
   },
-  "themeStudioTitle": { "message": "थीम स्टूडियो" },
+  "themeStudioTitle": {
+    "message": "थीम स्टूडियो"
+  },
   "themeStudioDescription": {
     "message": "रीयल-टाइम पूर्वावलोकन के साथ अपने पॉपअप थीम को कस्टमाइज़ करें।"
   },
-  "labelBackground1": { "message": "पृष्ठभूमि 1" },
-  "labelBackground2": { "message": "पृष्ठभूमि 2" },
-  "labelBackground3": { "message": "पृष्ठभूमि 3" },
-  "labelAccent": { "message": "एक्सेंट" },
-  "labelArcadePoints": { "message": "आर्केड अंक" },
-  "labelTextPrimary": { "message": "प्राथमिक पाठ रंग" },
-  "labelTextSecondary": { "message": "द्वितीयक पाठ रंग" },
-  "labelTextMuted": { "message": "म्यूटेड पाठ रंग" },
-  "btnApplySave": { "message": "लागू करें और सहेजें" },
-  "btnResetToDark": { "message": "डार्क पर रीसेट करें" },
-  "btnSyncFromPopup": { "message": "वर्तमान पॉपअप से सिंक करें" },
+  "labelBackground1": {
+    "message": "पृष्ठभूमि 1"
+  },
+  "labelBackground2": {
+    "message": "पृष्ठभूमि 2"
+  },
+  "labelBackground3": {
+    "message": "पृष्ठभूमि 3"
+  },
+  "labelAccent": {
+    "message": "एक्सेंट"
+  },
+  "labelArcadePoints": {
+    "message": "आर्केड अंक"
+  },
+  "labelTextPrimary": {
+    "message": "प्राथमिक पाठ रंग"
+  },
+  "labelTextSecondary": {
+    "message": "द्वितीयक पाठ रंग"
+  },
+  "labelTextMuted": {
+    "message": "म्यूटेड पाठ रंग"
+  },
+  "btnApplySave": {
+    "message": "लागू करें और सहेजें"
+  },
+  "btnResetToDark": {
+    "message": "डार्क पर रीसेट करें"
+  },
+  "btnSyncFromPopup": {
+    "message": "वर्तमान पॉपअप से सिंक करें"
+  },
   "previewNote": {
     "message": "पूर्वावलोकन वास्तविक पॉपअप UI और वर्तमान खाते के डेटा का उपयोग करता है।"
   },
-  "popupLivePreviewTitle": { "message": "पॉपअप लाइव पूर्वावलोकन" },
-  "btnApplyCustomTheme": { "message": "कस्टम थीम लागू करें" },
-  "btnResetCustomTheme": { "message": "रीसेट" },
-  "btnOpenThemeStudio": { "message": "थीम स्टूडियो खोलें (लाइव पूर्वावलोकन)" },
-  "btnChangeTheme": { "message": "थीम बदलें" },
-  "labThinking": { "message": "सोच रहा है..." },
-  "labSolutionTitle": { "message": "समाधान खोलने के लिए क्लिक करें" },
-  "labSolutionButton": { "message": "इस लैब का समाधान" },
-  "labNoSolution": { "message": "कोई समाधान नहीं" },
-  "labEplusSearch": { "message": "ePlus खोज" },
-  "labGoogleSearch": { "message": "Google खोज" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "मेरा डेटा निर्यात करें" },
-  "exportJSON": { "message": "JSON निर्यात करें" },
-  "exportCSV": { "message": "बैज CSV निर्यात करें" },
-  "exportSuccess": { "message": "सफलतापूर्वक निर्यात किया गया!" },
-  "exportNoData": { "message": "निर्यात के लिए कोई डेटा नहीं।" },
-  "compactMode": { "message": "संक्षिप्त" },
-  "fullMode": { "message": "पूर्ण दृश्य" },
-  "shortcutHint": { "message": "R रीफ्रेश · S सेटिंग्स · C संक्षिप्त" }
+  "popupLivePreviewTitle": {
+    "message": "पॉपअप लाइव पूर्वावलोकन"
+  },
+  "btnApplyCustomTheme": {
+    "message": "कस्टम थीम लागू करें"
+  },
+  "btnResetCustomTheme": {
+    "message": "रीसेट"
+  },
+  "btnOpenThemeStudio": {
+    "message": "थीम स्टूडियो खोलें (लाइव पूर्वावलोकन)"
+  },
+  "btnChangeTheme": {
+    "message": "थीम बदलें"
+  },
+  "labThinking": {
+    "message": "सोच रहा है..."
+  },
+  "labSolutionTitle": {
+    "message": "समाधान खोलने के लिए क्लिक करें"
+  },
+  "labSolutionButton": {
+    "message": "इस लैब का समाधान"
+  },
+  "labSupportTitle": {
+    "message": "Click to get support or report issue on Telegram"
+  },
+  "labSupportButton": {
+    "message": "Report / Support"
+  },
+  "labNoSolution": {
+    "message": "कोई समाधान नहीं"
+  },
+  "labEplusSearch": {
+    "message": "ePlus खोज"
+  },
+  "labGoogleSearch": {
+    "message": "Google खोज"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": { "message": "Bing पर खोजें" },
+  "labYandexSearch": { "message": "Yandex पर खोजें" },
+  "labBraveSearch": { "message": "Brave पर खोजें" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGo पर खोजें" },
+  "labBaiduSearch": { "message": "Baidu पर खोजें" },
+  "labYahooSearch": { "message": "Yahoo! पर खोजें" },
+  "labCoccocSearch": { "message": "Cốc Cốc पर खोजें" },
+  "labelSearch": { "message": "खोज" },
+  "labelCopyLink": { "message": "लिंक कॉपी करें" },
+  "labFallbackQuery": { "message": "Google Cloud लैब ट्यूटोरियल" },
+  "exportDataTitle": {
+    "message": "मेरा डेटा निर्यात करें"
+  },
+  "exportJSON": {
+    "message": "JSON निर्यात करें"
+  },
+  "exportCSV": {
+    "message": "बैज CSV निर्यात करें"
+  },
+  "exportSuccess": {
+    "message": "सफलतापूर्वक निर्यात किया गया!"
+  },
+  "exportNoData": {
+    "message": "निर्यात के लिए कोई डेटा नहीं।"
+  },
+  "compactMode": {
+    "message": "संक्षिप्त"
+  },
+  "fullMode": {
+    "message": "पूर्ण दृश्य"
+  },
+  "shortcutHint": {
+    "message": "R रीफ्रेश · S सेटिंग्स · C संक्षिप्त"
+  },
+  "messageEplusSearchSaved": {
+    "message": "ePlus ??? ?????? ????? ??"
+  },
+  "messageEnableSearchFirst": {
+    "message": "ePlus ???? ???? ?? ???? ????? ??? ?????? ???? ????."
+  },
+  "titleSetDefaultAccount": {
+    "message": "???????? ???? ?????"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Facilitator ????????? ???? ????"
+  },
+  "titleUpdateAccount": {
+    "message": "???? ????? ????"
+  },
+  "titleViewPublicProfile": {
+    "message": "????????? ????????? ?????"
+  },
+  "titleEditAccount": {
+    "message": "???? ??????? ????"
+  },
+  "titleDeleteAccount": {
+    "message": "???? ?????"
+  },
+  "exportNoBadgesData": {
+    "message": "??????? ???? ?? ??? ??? ??? ???? ??."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "??????? ??? ???? ????? ???"
+  },
+  "labelEnabled": {
+    "message": "????"
+  },
+  "labelDisabled": {
+    "message": "???"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "$2 ?? ??? Facilitator ????????? $1"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Facilitator ????????? ?????? ????? ???? ??? ??????"
+  },
+  "errorFetchDataRetry": {
+    "message": "???? ??????? ???? ?? ???. ????? ??? ??? ??? ????? ????."
+  },
+  "errorGenericRetry": {
+    "message": "?? ?????? ???. ????? ??? ????? ????."
+  },
+  "labelNewAccount": {
+    "message": "??? ????"
+  },
+  "successAccountCreatedNamed": {
+    "message": "???? \"$1\" ??????????? ????? ???!"
+  },
+  "successDataSaved": {
+    "message": "???? ??????????? ????? ???!"
+  },
+  "successAccountUpdated": {
+    "message": "???? ??????????? ????? ???!"
+  },
+  "errorSaveSetting": {
+    "message": "?????? ?????? ??? ????"
+  },
+  "errorUnableFetchProfile": {
+    "message": "?? ????????? ?? ??????? ??????? ???? ?? ???"
+  },
+  "errorUnableGetUserName": {
+    "message": "?? ????????? ?? ?????????? ??? ???? ??? ???"
+  },
+  "errorUnableCreateAccount": {
+    "message": "???? ???? ????? ?? ???. ????? URL ?????? ?? ??? ????? ????!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "????????? ??????? ??????? ???? ?? ???. ????? URL ?????? ?? ??? ????? ????!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "????????? ID ???? ????"
+  },
+  "switchToAccountNamed": {
+    "message": "???? \"$1\" ?? ????? ????"
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "???? \"$1\" ?? ????? ???? ???!"
+  },
+  "confirmDeleteAccount": {
+    "message": "???? ?? ???? ???? \"$1\" ????? ????? ????"
+  },
+  "btnCancel": {
+    "message": "???? ????"
+  },
+  "btnDelete": {
+    "message": "?????"
+  },
+  "labelImporting": {
+    "message": "???? ?? ??? ??..."
+  },
+  "labelImportData": {
+    "message": "???? ???? ????"
+  }
 }

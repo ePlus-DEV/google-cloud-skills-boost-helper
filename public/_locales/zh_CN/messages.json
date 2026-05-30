@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - 助手"
   },
@@ -188,70 +188,120 @@
   "labelProgress": {
     "message": "进度"
   },
-  "errorEnterProfileUrl": { "message": "请输入个人资料 URL！" },
-  "errorInvalidProfileUrl": { "message": "无效的个人资料 URL！" },
-  "errorAccountExistsTitle": { "message": "账户已存在" },
+  "errorEnterProfileUrl": {
+    "message": "请输入个人资料 URL！"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "无效的个人资料 URL！"
+  },
+  "errorAccountExistsTitle": {
+    "message": "账户已存在"
+  },
   "errorAccountExistsMsg": {
     "message": "此 URL 的账户已存在：\"$1\"。"
   },
   "errorNoNameFromProfile": {
     "message": "无法从个人资料获取名称。请重试！"
   },
-  "labelAdding": { "message": "添加中..." },
-  "successAccountAdded": { "message": "账户添加成功！" },
+  "labelAdding": {
+    "message": "添加中..."
+  },
+  "successAccountAdded": {
+    "message": "账户添加成功！"
+  },
   "errorAddAccountGeneric": {
     "message": "添加账户时发生错误。请重试！"
   },
-  "errorAccountExistsMsgSimple": { "message": "账户已存在。" },
-  "labelAddAccount": { "message": "添加账户" },
-  "successSwitchedAccount": { "message": "账户切换成功！" },
-  "errorSwitchAccount": { "message": "账户切换错误。" },
-  "errorAccountNotFound": { "message": "未找到账户。" },
-  "infoUpdatingAccountData": { "message": "正在更新账户数据..." },
+  "errorAccountExistsMsgSimple": {
+    "message": "账户已存在。"
+  },
+  "labelAddAccount": {
+    "message": "添加账户"
+  },
+  "successSwitchedAccount": {
+    "message": "账户切换成功！"
+  },
+  "errorSwitchAccount": {
+    "message": "账户切换错误。"
+  },
+  "errorAccountNotFound": {
+    "message": "未找到账户。"
+  },
+  "infoUpdatingAccountData": {
+    "message": "正在更新账户数据..."
+  },
   "successAccountDataUpdated": {
     "message": "账户数据更新成功！"
   },
-  "errorFetchDataFromApi": { "message": "无法从 API 获取数据。" },
-  "errorUpdatingAccount": { "message": "更新账户错误。" },
+  "errorFetchDataFromApi": {
+    "message": "无法从 API 获取数据。"
+  },
+  "errorUpdatingAccount": {
+    "message": "更新账户错误。"
+  },
   "errorProfileUrlNotFound": {
     "message": "未找到此账户的个人资料 URL。"
   },
-  "errorOpeningProfile": { "message": "打开个人资料错误。" },
+  "errorOpeningProfile": {
+    "message": "打开个人资料错误。"
+  },
   "errorNoActiveAccountOrProfileUrl": {
     "message": "未找到活跃账户或个人资料 URL。"
   },
   "errorAccountNotFoundToUpdate": {
     "message": "找不到要更新的账户！"
   },
-  "successNicknameSaved": { "message": "昵称保存成功！" },
-  "errorSavingNickname": { "message": "保存昵称错误！" },
-  "successNicknameUpdated": { "message": "昵称更新成功！" },
+  "successNicknameSaved": {
+    "message": "昵称保存成功！"
+  },
+  "errorSavingNickname": {
+    "message": "保存昵称错误！"
+  },
+  "successNicknameUpdated": {
+    "message": "昵称更新成功！"
+  },
   "errorUpdatingAccountGeneric": {
     "message": "更新账户时发生错误！"
   },
   "errorCannotDeleteLastAccount": {
     "message": "无法删除最后一个账户！"
   },
-  "successAccountDeleted": { "message": "账户删除成功！" },
+  "successAccountDeleted": {
+    "message": "账户删除成功！"
+  },
   "errorDeletingAccountGeneric": {
     "message": "删除账户时发生错误！"
   },
-  "successDataExported": { "message": "数据导出成功！" },
+  "successDataExported": {
+    "message": "数据导出成功！"
+  },
   "errorExportingData": {
     "message": "导出数据时发生错误！"
   },
   "errorNoImportData": {
     "message": "请选择文件或粘贴 JSON 内容！"
   },
-  "successDataImported": { "message": "数据导入成功！" },
-  "errorInvalidImportData": { "message": "无效数据。请重新检查！" },
+  "successDataImported": {
+    "message": "数据导入成功！"
+  },
+  "errorInvalidImportData": {
+    "message": "无效数据。请重新检查！"
+  },
   "errorImportingData": {
     "message": "导入数据时发生错误！"
   },
-  "labelFacilitatorProgram": { "message": "Facilitator 计划" },
-  "messageBadgeEnabled": { "message": "徽章显示已启用" },
-  "messageBadgeDisabled": { "message": "徽章显示已禁用" },
-  "labelShowBadge": { "message": "在扩展图标上显示徽章" },
+  "labelFacilitatorProgram": {
+    "message": "Facilitator 计划"
+  },
+  "messageBadgeEnabled": {
+    "message": "徽章显示已启用"
+  },
+  "messageBadgeDisabled": {
+    "message": "徽章显示已禁用"
+  },
+  "labelShowBadge": {
+    "message": "在扩展图标上显示徽章"
+  },
   "descriptionShowBadge": {
     "message": "切换扩展是否在浏览器工具栏图标上显示总积分。"
   },
@@ -261,189 +311,555 @@
   "arcadeDeadlinePassed": {
     "message": "Arcade 赛季今年已结束。下个赛季见！"
   },
-  "programEnded": { "message": "计划已结束" },
-  "statusCompleted": { "message": "已完成" },
-  "statusInProgress": { "message": "进行中" },
-  "statusNotStarted": { "message": "未开始" },
-  "anonymous": { "message": "匿名" },
-  "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "加载数据错误" },
-  "labelBack": { "message": "返回" },
-  "changelogWhatsNew": { "message": "更新内容" },
-  "changelogLatestUpdates": { "message": "最新更新和改进" },
-  "changelogLoading": { "message": "加载更新日志中..." },
+  "programEnded": {
+    "message": "计划已结束"
+  },
+  "statusCompleted": {
+    "message": "已完成"
+  },
+  "statusInProgress": {
+    "message": "进行中"
+  },
+  "statusNotStarted": {
+    "message": "未开始"
+  },
+  "anonymous": {
+    "message": "匿名"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "加载数据错误"
+  },
+  "labelBack": {
+    "message": "返回"
+  },
+  "backToTop": { "message": "回到顶部" },
+  "changelogWhatsNew": {
+    "message": "更新内容"
+  },
+  "changelogLatestUpdates": {
+    "message": "最新更新和改进"
+  },
+  "changelogLoading": {
+    "message": "加载更新日志中..."
+  },
   "changelogFooterNotice": {
     "message": "此扩展与 Google Cloud Skills Boost 无关。保留所有权利。"
   },
-  "announcementTitle": { "message": "重要公告" },
-  "markdownShowMore": { "message": "显示更多" },
-  "accountsTitle": { "message": "您的账户" },
-  "noAccountsYet": { "message": "还没有账户" },
-  "addAccountFirst": { "message": "添加您的第一个账户！" },
-  "dataManagementTitle": { "message": "数据管理" },
-  "dataManagementSubtitle": { "message": "备份和恢复" },
-  "exportData": { "message": "导出数据" },
-  "importData": { "message": "导入数据" },
-  "modalAddAccountTitle": { "message": "添加新账户" },
-  "howToGetProfileUrl": { "message": "如何获取个人资料 URL" },
-  "howToGetProfileSubtitle": { "message": "按照以下步骤操作" },
-  "openProfilePage": { "message": "打开个人资料页面" },
-  "errorPrefix": { "message": "错误：" },
-  "successPrefix": { "message": "成功：" },
+  "announcementTitle": {
+    "message": "重要公告"
+  },
+  "markdownShowMore": {
+    "message": "显示更多"
+  },
+  "accountsTitle": {
+    "message": "您的账户"
+  },
+  "noAccountsYet": {
+    "message": "还没有账户"
+  },
+  "addAccountFirst": {
+    "message": "添加您的第一个账户！"
+  },
+  "dataManagementTitle": {
+    "message": "数据管理"
+  },
+  "dataManagementSubtitle": {
+    "message": "备份和恢复"
+  },
+  "exportData": {
+    "message": "导出数据"
+  },
+  "importData": {
+    "message": "导入数据"
+  },
+  "modalAddAccountTitle": {
+    "message": "添加新账户"
+  },
+  "howToGetProfileUrl": {
+    "message": "如何获取个人资料 URL"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "按照以下步骤操作"
+  },
+  "openProfilePage": {
+    "message": "打开个人资料页面"
+  },
+  "errorPrefix": {
+    "message": "错误："
+  },
+  "successPrefix": {
+    "message": "成功："
+  },
   "accountErrorFallback": {
     "message": "出了点问题。请重试。"
   },
-  "accountSuccessFallback": { "message": "操作成功！" },
-  "viewBadges": { "message": "查看徽章" },
-  "openProfile": { "message": "打开个人资料" },
-  "arcadePointsTitle": { "message": "Arcade 积分" },
-  "milestonesTitle": { "message": "里程碑" },
+  "accountSuccessFallback": {
+    "message": "操作成功！"
+  },
+  "viewBadges": {
+    "message": "查看徽章"
+  },
+  "openProfile": {
+    "message": "打开个人资料"
+  },
+  "arcadePointsTitle": {
+    "message": "Arcade 积分"
+  },
+  "milestonesTitle": {
+    "message": "里程碑"
+  },
   "accountsCardTitle": {
     "message": "账户管理 & Arcade 积分计算器"
   },
   "accountsCardSubtitle": {
     "message": "管理多个账户并计算 arcade 积分。"
   },
-  "clickOpenProfileButton": { "message": "点击\"打开个人资料页面\"按钮" },
-  "programDeadline": { "message": "计划截止日期" },
-  "labelDays": { "message": "天" },
-  "labelHours": { "message": "小时" },
-  "labelMinutes": { "message": "分钟" },
-  "labelSeconds": { "message": "秒" },
+  "clickOpenProfileButton": {
+    "message": "点击\"打开个人资料页面\"按钮"
+  },
+  "programDeadline": {
+    "message": "计划截止日期"
+  },
+  "labelDays": {
+    "message": "天"
+  },
+  "labelHours": {
+    "message": "小时"
+  },
+  "labelMinutes": {
+    "message": "分钟"
+  },
+  "labelSeconds": {
+    "message": "秒"
+  },
   "milestoneDeadlineNotice": {
     "message": "在截止日期前完成里程碑以获得奖励积分！"
   },
   "arcadeMotivation": {
     "message": "保持势头，攀登 Arcade 排行榜！"
   },
-  "totalBonusEarned": { "message": "已获得总奖励：" },
+  "totalBonusEarned": {
+    "message": "已获得总奖励："
+  },
   "maxPossibleNote": {
     "message": "最高可能：25 积分（仅限最高里程碑）"
   },
-  "pointsBreakdown": { "message": "积分明细" },
-  "arcadeBase": { "message": "Arcade 基础：" },
-  "facilitatorBonus": { "message": "Facilitator 奖励：" },
-  "gameBadgeLabel": { "message": "游戏徽章" },
+  "pointsBreakdown": {
+    "message": "积分明细"
+  },
+  "arcadeBase": {
+    "message": "Arcade 基础："
+  },
+  "facilitatorBonus": {
+    "message": "Facilitator 奖励："
+  },
+  "gameBadgeLabel": {
+    "message": "游戏徽章"
+  },
   "gameBadgeLabelTooltip": {
     "message": "Arcade 现已取消等级。新路线：Adventure（云基础）、Voyage（技能练习）、Trail（AI 学习）。"
   },
-  "triviaBadgeLabel": { "message": "问答徽章" },
+  "triviaBadgeLabel": {
+    "message": "问答徽章"
+  },
   "triviaBadgeLabelTooltip": {
     "message": "Trivia 现更名为 Sprint：通过快速问答复习概念并获得 Arcade 积分。"
   },
-  "skillBadgeLabel": { "message": "技能徽章" },
-  "specialPointsLabel": { "message": "特殊积分" },
-  "arcadeSeasonCountdown": { "message": "Arcade 赛季倒计时" },
-  "milestone1": { "message": "里程碑 1" },
-  "milestone1Bonus": { "message": "+2 奖励积分" },
-  "milestone2": { "message": "里程碑 2" },
-  "milestone2Bonus": { "message": "+8 奖励积分" },
-  "milestone3": { "message": "里程碑 3" },
-  "milestone3Bonus": { "message": "+15 奖励积分" },
-  "milestoneUltimate": { "message": "终极" },
-  "milestoneUltimateBonus": { "message": "+25 奖励积分" },
-  "progressLabel": { "message": "进度：" },
-  "gamesLabel": { "message": "游戏：" },
-  "triviaLabel": { "message": "问答：" },
-  "skillsLabel": { "message": "技能：" },
-  "labFreeLabel": { "message": "免实验室：" },
-  "switchAccount": { "message": "切换账户" },
-  "statusActive": { "message": "活跃" },
-  "quickSearch": { "message": "快速搜索" },
-  "youtubeResults": { "message": "YouTube 结果" },
-  "searchFeatureTip": { "message": "帮助您更快找到答案！" },
-  "successAccountCreated": { "message": "账户创建成功！" },
+  "skillBadgeLabel": {
+    "message": "技能徽章"
+  },
+  "specialPointsLabel": {
+    "message": "特殊积分"
+  },
+  "arcadeSeasonCountdown": {
+    "message": "Arcade 赛季倒计时"
+  },
+  "milestone1": {
+    "message": "里程碑 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 奖励积分"
+  },
+  "milestone2": {
+    "message": "里程碑 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 奖励积分"
+  },
+  "milestone3": {
+    "message": "里程碑 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 奖励积分"
+  },
+  "milestoneUltimate": {
+    "message": "终极"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 奖励积分"
+  },
+  "progressLabel": {
+    "message": "进度："
+  },
+  "gamesLabel": {
+    "message": "游戏："
+  },
+  "triviaLabel": {
+    "message": "问答："
+  },
+  "skillsLabel": {
+    "message": "技能："
+  },
+  "labFreeLabel": {
+    "message": "免实验室："
+  },
+  "switchAccount": {
+    "message": "切换账户"
+  },
+  "statusActive": {
+    "message": "活跃"
+  },
+  "quickSearch": {
+    "message": "快速搜索"
+  },
+  "youtubeResults": {
+    "message": "YouTube 结果"
+  },
+  "searchFeatureTip": {
+    "message": "帮助您更快找到答案！"
+  },
+  "successAccountCreated": {
+    "message": "账户创建成功！"
+  },
   "successAddNickname": {
     "message": "您可以添加昵称以便轻松识别此账户。"
   },
-  "newlyCreated": { "message": "新创建" },
-  "labelNickname": { "message": "昵称：" },
-  "noNicknameYet": { "message": "还没有昵称" },
-  "labelUpdated": { "message": "已更新：" },
-  "justCreated": { "message": "刚刚创建" },
-  "markdownShowLess": { "message": "显示更少" },
-  "importantNoticeTitle": { "message": "重要提示" },
+  "newlyCreated": {
+    "message": "新创建"
+  },
+  "labelNickname": {
+    "message": "昵称："
+  },
+  "noNicknameYet": {
+    "message": "还没有昵称"
+  },
+  "labelUpdated": {
+    "message": "已更新："
+  },
+  "justCreated": {
+    "message": "刚刚创建"
+  },
+  "markdownShowLess": {
+    "message": "显示更少"
+  },
+  "importantNoticeTitle": {
+    "message": "重要提示"
+  },
   "importantNoticeText": {
     "message": "每个个人资料 URL 只能添加一次。系统会检查并在账户已存在时通知您。"
   },
-  "enterProfileUrlLabel": { "message": "输入个人资料 URL 并创建账户" },
-  "createAccountButton": { "message": "创建账户" },
-  "instructionsLabel": { "message": "说明：" },
+  "enterProfileUrlLabel": {
+    "message": "输入个人资料 URL 并创建账户"
+  },
+  "createAccountButton": {
+    "message": "创建账户"
+  },
+  "instructionsLabel": {
+    "message": "说明："
+  },
   "instructionsText": {
     "message": "输入 URL 并点击\"创建账户\"。系统将自动加载信息并创建新账户。"
   },
-  "step1Title": { "message": "点击\"打开个人资料页面\"按钮" },
+  "step1Title": {
+    "message": "点击\"打开个人资料页面\"按钮"
+  },
   "step1Subtitle": {
     "message": "将在新标签页中打开 Google Cloud Skills Boost"
   },
-  "step2Title": { "message": "登录（如果尚未登录）" },
-  "step2Subtitle": { "message": "使用您的 Google 账户" },
-  "step3Title": { "message": "找到\"公开个人资料\"部分" },
-  "step3Subtitle": { "message": "在个人资料页面向下滚动" },
-  "step4Title": { "message": "从地址栏复制 URL" },
-  "step4Subtitle": { "message": "粘贴到下面的字段中" },
-  "newAccountBadge": { "message": "新账户" },
-  "totalBadgesLabel": { "message": "总徽章数" },
-  "skillBadgesLabel": { "message": "技能徽章" },
-  "arcadePointsLabel": { "message": "Arcade 积分" },
-  "accountNicknameLabel": { "message": "账户昵称" },
+  "step2Title": {
+    "message": "登录（如果尚未登录）"
+  },
+  "step2Subtitle": {
+    "message": "使用您的 Google 账户"
+  },
+  "step3Title": {
+    "message": "找到\"公开个人资料\"部分"
+  },
+  "step3Subtitle": {
+    "message": "在个人资料页面向下滚动"
+  },
+  "step4Title": {
+    "message": "从地址栏复制 URL"
+  },
+  "step4Subtitle": {
+    "message": "粘贴到下面的字段中"
+  },
+  "newAccountBadge": {
+    "message": "新账户"
+  },
+  "totalBadgesLabel": {
+    "message": "总徽章数"
+  },
+  "skillBadgesLabel": {
+    "message": "技能徽章"
+  },
+  "arcadePointsLabel": {
+    "message": "Arcade 积分"
+  },
+  "accountNicknameLabel": {
+    "message": "账户昵称"
+  },
   "nicknamePlaceholder": {
     "message": "例如：主账户、工作账户、学习账户..."
   },
   "nicknameHelpText": {
     "message": "昵称帮助您在拥有多个不同账户时轻松识别账户"
   },
-  "editAccountTitle": { "message": "编辑账户" },
-  "displayNameLabel": { "message": "显示名称：" },
+  "editAccountTitle": {
+    "message": "编辑账户"
+  },
+  "displayNameLabel": {
+    "message": "显示名称："
+  },
   "displayNameInfo": {
     "message": "显示名称来自 Google Cloud Skills Boost，无法编辑"
   },
-  "nicknameLabel": { "message": "昵称：" },
+  "nicknameLabel": {
+    "message": "昵称："
+  },
   "enterNicknamePlaceholder": {
     "message": "输入昵称以便识别..."
   },
   "nicknameExample": {
     "message": "例如：\"主账户\"、\"工作账户\"、\"学习账户\"..."
   },
-  "cancelButton": { "message": "取消" },
-  "saveChangesButton": { "message": "保存更改" },
-  "themeStudioTitle": { "message": "主题工作室" },
-  "themeStudioDescription": { "message": "使用实时预览自定义弹出窗口的主题。" },
-  "labelBackground1": { "message": "背景 1" },
-  "labelBackground2": { "message": "背景 2" },
-  "labelBackground3": { "message": "背景 3" },
-  "labelAccent": { "message": "强调色" },
-  "labelArcadePoints": { "message": "Arcade 积分" },
-  "labelTextPrimary": { "message": "主文本" },
-  "labelTextSecondary": { "message": "次要文本" },
-  "labelTextMuted": { "message": "弱化文本" },
-  "btnApplySave": { "message": "应用并保存" },
-  "btnResetToDark": { "message": "重置为暗色" },
-  "btnSyncFromPopup": { "message": "从当前弹出窗口同步" },
-  "previewNote": { "message": "预览使用真实的弹出窗口界面和当前账户数据。" },
-  "popupLivePreviewTitle": { "message": "弹出窗口实时预览" },
-  "btnApplyCustomTheme": { "message": "应用自定义主题" },
-  "btnResetCustomTheme": { "message": "重置" },
-  "btnOpenThemeStudio": { "message": "打开主题工作室（实时预览）" },
+  "cancelButton": {
+    "message": "取消"
+  },
+  "saveChangesButton": {
+    "message": "保存更改"
+  },
+  "themeStudioTitle": {
+    "message": "主题工作室"
+  },
+  "themeStudioDescription": {
+    "message": "使用实时预览自定义弹出窗口的主题。"
+  },
+  "labelBackground1": {
+    "message": "背景 1"
+  },
+  "labelBackground2": {
+    "message": "背景 2"
+  },
+  "labelBackground3": {
+    "message": "背景 3"
+  },
+  "labelAccent": {
+    "message": "强调色"
+  },
+  "labelArcadePoints": {
+    "message": "Arcade 积分"
+  },
+  "labelTextPrimary": {
+    "message": "主文本"
+  },
+  "labelTextSecondary": {
+    "message": "次要文本"
+  },
+  "labelTextMuted": {
+    "message": "弱化文本"
+  },
+  "btnApplySave": {
+    "message": "应用并保存"
+  },
+  "btnResetToDark": {
+    "message": "重置为暗色"
+  },
+  "btnSyncFromPopup": {
+    "message": "从当前弹出窗口同步"
+  },
+  "previewNote": {
+    "message": "预览使用真实的弹出窗口界面和当前账户数据。"
+  },
+  "popupLivePreviewTitle": {
+    "message": "弹出窗口实时预览"
+  },
+  "btnApplyCustomTheme": {
+    "message": "应用自定义主题"
+  },
+  "btnResetCustomTheme": {
+    "message": "重置"
+  },
+  "btnOpenThemeStudio": {
+    "message": "打开主题工作室（实时预览）"
+  },
   "changelogPageTitle": {
     "message": "更新日志 - Google Cloud Skills Boost 助手"
   },
-  "labelEnabled": { "message": "已启用" },
-  "labelDisabled": { "message": "已禁用" },
-  "btnChangeTheme": { "message": "更改主题" },
-  "labThinking": { "message": "思考中..." },
-  "labSolutionTitle": { "message": "点击打开解答" },
-  "labSolutionButton": { "message": "查看解答" },
-  "labNoSolution": { "message": "暂无解答" },
-  "labEplusSearch": { "message": "ePlus搜索" },
-  "labGoogleSearch": { "message": "Google搜索" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "导出我的数据" },
-  "exportJSON": { "message": "导出 JSON" },
-  "exportCSV": { "message": "导出徽章 CSV" },
-  "exportSuccess": { "message": "导出成功！" },
-  "exportNoData": { "message": "没有可导出的数据。" },
-  "compactMode": { "message": "紧凑模式" },
-  "fullMode": { "message": "完整视图" },
-  "shortcutHint": { "message": "R 刷新 · S 设置 · C 紧凑" }
+  "labelEnabled": {
+    "message": "???"
+  },
+  "labelDisabled": {
+    "message": "???"
+  },
+  "btnChangeTheme": {
+    "message": "更改主题"
+  },
+  "labThinking": {
+    "message": "思考中..."
+  },
+  "labSolutionTitle": {
+    "message": "点击打开解答"
+  },
+  "labSolutionButton": {
+    "message": "查看解答"
+  },
+  "labSupportTitle": {
+    "message": "点击在 Telegram 上获取支持 or 报告问题"
+  },
+  "labSupportButton": {
+    "message": "报告 / 支持"
+  },
+  "labNoSolution": {
+    "message": "暂无解答"
+  },
+  "labEplusSearch": {
+    "message": "ePlus搜索"
+  },
+  "labGoogleSearch": {
+    "message": "Google搜索"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": { "message": "Bing 搜索" },
+  "labYandexSearch": { "message": "Yandex 搜索" },
+  "labBraveSearch": { "message": "Brave 搜索" },
+  "labDuckDuckGoSearch": { "message": "DuckDuckGo 搜索" },
+  "labBaiduSearch": { "message": "Baidu 搜索" },
+  "labYahooSearch": { "message": "Yahoo! 搜索" },
+  "labCoccocSearch": { "message": "Cốc Cốc 搜索" },
+  "labelSearch": { "message": "搜索" },
+  "labelCopyLink": { "message": "复制链接" },
+  "labFallbackQuery": { "message": "Google Cloud 实验教程" },
+  "exportDataTitle": {
+    "message": "导出我的数据"
+  },
+  "exportJSON": {
+    "message": "导出 JSON"
+  },
+  "exportCSV": {
+    "message": "导出徽章 CSV"
+  },
+  "exportSuccess": {
+    "message": "导出成功！"
+  },
+  "exportNoData": {
+    "message": "没有可导出的数据。"
+  },
+  "compactMode": {
+    "message": "紧凑模式"
+  },
+  "fullMode": {
+    "message": "完整视图"
+  },
+  "shortcutHint": {
+    "message": "R 刷新 · S 设置 · C 紧凑"
+  },
+  "messageEplusSearchSaved": {
+    "message": "ePlus ???????"
+  },
+  "messageEnableSearchFirst": {
+    "message": "????????????? ePlus?"
+  },
+  "titleSetDefaultAccount": {
+    "message": "??????"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "?? Facilitator ??"
+  },
+  "titleUpdateAccount": {
+    "message": "????"
+  },
+  "titleViewPublicProfile": {
+    "message": "????????"
+  },
+  "titleEditAccount": {
+    "message": "????"
+  },
+  "titleDeleteAccount": {
+    "message": "????"
+  },
+  "exportNoBadgesData": {
+    "message": "?????????"
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "?????????"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "$2 ? Facilitator ???$1"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "?? Facilitator ???????"
+  },
+  "errorFetchDataRetry": {
+    "message": "?????????????"
+  },
+  "errorGenericRetry": {
+    "message": "?????????"
+  },
+  "labelNewAccount": {
+    "message": "???"
+  },
+  "successAccountCreatedNamed": {
+    "message": "???$1??????"
+  },
+  "successDataSaved": {
+    "message": "???????"
+  },
+  "successAccountUpdated": {
+    "message": "???????"
+  },
+  "errorSaveSetting": {
+    "message": "??????"
+  },
+  "errorUnableFetchProfile": {
+    "message": "????????????"
+  },
+  "errorUnableGetUserName": {
+    "message": "?????????????"
+  },
+  "errorUnableCreateAccount": {
+    "message": "?????????? URL ????"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "?????????????? URL ????"
+  },
+  "errorProfileIdNotFound": {
+    "message": "??????? ID"
+  },
+  "switchToAccountNamed": {
+    "message": "??????$1?"
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "???????$1??"
+  },
+  "confirmDeleteAccount": {
+    "message": "????????$1???"
+  },
+  "btnCancel": {
+    "message": "??"
+  },
+  "btnDelete": {
+    "message": "??"
+  },
+  "labelImporting": {
+    "message": "????..."
+  },
+  "labelImportData": {
+    "message": "????"
+  }
 }

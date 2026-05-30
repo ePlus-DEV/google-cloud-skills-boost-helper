@@ -17,7 +17,9 @@ const ApiClient = (() => {
     const { query } = params;
 
     try {
-      const response = await fetch(import.meta.env.WXT_API_URL);
+      const baseUrl = import.meta.env.WXT_API_URL;
+      const separator = baseUrl.includes("?") ? "&" : "?";
+      const response = await fetch(`${baseUrl}${separator}time=${Date.now()}`);
       if (!response.ok) {
         if (import.meta.env.MODE === "development") {
           console.error("[ApiClient] API response not OK:", response.status);

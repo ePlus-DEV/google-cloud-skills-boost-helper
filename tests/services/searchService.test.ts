@@ -1,37 +1,50 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, afterEach, describe, it, expect } from "vitest";
 import SearchService from "../../services/searchService";
 
-describe("SearchService.findBestMatchUrl", () => {
-  it("returns null for null postsData", () => {
-    expect(SearchService.findBestMatchUrl(null, "some query")).toBeNull();
+describe("SearchService.getLabTitle", () => {
+  beforeEach(() => {
+    // clear DOM before each test
+    document.body.innerHTML = "";
   });
 
-  it("returns null for empty array", () => {
-    expect(SearchService.findBestMatchUrl([], "some query")).toBeNull();
+  afterEach(() => {
+    document.body.innerHTML = "";
   });
 
-  it("finds exact title match", () => {
-    const posts = [
-      {
-        id: "0",
-        title: "Deploy a Kubernetes Cluster",
-        url: "https://example.com/deploy-k8s",
-        slug: "deploy-k8s",
-        datePublished: "",
-      },
-      {
-        id: "1",
-        title: "Setup Cloud Storage",
-        url: "https://example.com/cloud-storage",
-        slug: "cloud-storage",
-        datePublished: "",
-      },
-    ];
-    const result = SearchService.findBestMatchUrl(
-      posts,
-      "Deploy a Kubernetes Cluster",
-    );
-    expect(result).toContain("deploy-k8s");
+  it("extracts title from nested ql-lab-header -> ql-header shadow roots", () => {
+    // Build the nested structure matching the real page
+    const labInstructions = document.createElement("div");
+    labInstructions.id = "lab-instructions";
+    const wrapper = document.createElement("div");
+    const renderable = document.createElement("div");
+    renderable.className =
+      "lab-content__renderable-instructions js-lab-content";
+    const qlLabHeader = document.createElement("ql-lab-header");
+    renderable.appendChild(qlLabHeader);
+    wrapper.appendChild(renderable);
+    labInstructions.appendChild(wrapper);
+    document.body.appendChild(labInstructions);
+
+    // first shadow root on ql-lab-header containing ql-header
+    const sr1 = qlLabHeader.attachShadow({ mode: "open" });
+    const qlHeader = document.createElement("ql-header");
+    sr1.appendChild(qlHeader);
+
+    // second shadow root on ql-header with the deep h1
+    const sr2 = qlHeader.attachShadow({ mode: "open" });
+    const outerDiv = document.createElement("div");
+    const innerDiv = document.createElement("div");
+    innerDiv.className = "main-container";
+    const container = document.createElement("div");
+    const h1 = document.createElement("h1");
+    h1.textContent = "Deep Shadow Title";
+    container.appendChild(h1);
+    innerDiv.appendChild(container);
+    outerDiv.appendChild(innerDiv);
+    sr2.appendChild(outerDiv);
+
+    const title = SearchService.getLabTitle();
+    expect(title).toBe("Deep Shadow Title");
   });
 
   it("returns null when no good match found", () => {

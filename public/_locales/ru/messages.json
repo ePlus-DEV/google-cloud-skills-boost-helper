@@ -1,4 +1,4 @@
-﻿{
+{
   "extName": {
     "message": "Google Cloud Skills Boost - Помощник"
   },
@@ -188,73 +188,120 @@
   "labelProgress": {
     "message": "Прогресс"
   },
-
-  "errorEnterProfileUrl": { "message": "Пожалуйста, введите URL профиля!" },
-  "errorInvalidProfileUrl": { "message": "Недействительный URL профиля!" },
-  "errorAccountExistsTitle": { "message": "Аккаунт уже существует" },
+  "errorEnterProfileUrl": {
+    "message": "Пожалуйста, введите URL профиля!"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "Недействительный URL профиля!"
+  },
+  "errorAccountExistsTitle": {
+    "message": "Аккаунт уже существует"
+  },
   "errorAccountExistsMsg": {
     "message": "Аккаунт с этим URL уже существует: \"$1\"."
   },
   "errorNoNameFromProfile": {
     "message": "Невозможно получить имя из профиля. Пожалуйста, попробуйте ещё раз!"
   },
-  "labelAdding": { "message": "Добавление..." },
-  "successAccountAdded": { "message": "Аккаунт успешно добавлен!" },
+  "labelAdding": {
+    "message": "Добавление..."
+  },
+  "successAccountAdded": {
+    "message": "Аккаунт успешно добавлен!"
+  },
   "errorAddAccountGeneric": {
     "message": "Произошла ошибка при добавлении аккаунта. Пожалуйста, попробуйте ещё раз!"
   },
-  "errorAccountExistsMsgSimple": { "message": "Аккаунт уже существует." },
-  "labelAddAccount": { "message": "Добавить аккаунт" },
-  "successSwitchedAccount": { "message": "Аккаунт успешно переключён!" },
-  "errorSwitchAccount": { "message": "Ошибка при переключении аккаунта." },
-  "errorAccountNotFound": { "message": "Аккаунт не найден." },
-  "infoUpdatingAccountData": { "message": "Обновление данных аккаунта..." },
+  "errorAccountExistsMsgSimple": {
+    "message": "Аккаунт уже существует."
+  },
+  "labelAddAccount": {
+    "message": "Добавить аккаунт"
+  },
+  "successSwitchedAccount": {
+    "message": "Аккаунт успешно переключён!"
+  },
+  "errorSwitchAccount": {
+    "message": "Ошибка при переключении аккаунта."
+  },
+  "errorAccountNotFound": {
+    "message": "Аккаунт не найден."
+  },
+  "infoUpdatingAccountData": {
+    "message": "Обновление данных аккаунта..."
+  },
   "successAccountDataUpdated": {
     "message": "Данные аккаунта успешно обновлены!"
   },
-  "errorFetchDataFromApi": { "message": "Не удалось получить данные из API." },
-  "errorUpdatingAccount": { "message": "Ошибка при обновлении аккаунта." },
+  "errorFetchDataFromApi": {
+    "message": "Не удалось получить данные из API."
+  },
+  "errorUpdatingAccount": {
+    "message": "Ошибка при обновлении аккаунта."
+  },
   "errorProfileUrlNotFound": {
     "message": "URL профиля для этого аккаунта не найден."
   },
-  "errorOpeningProfile": { "message": "Ошибка при открытии профиля." },
+  "errorOpeningProfile": {
+    "message": "Ошибка при открытии профиля."
+  },
   "errorNoActiveAccountOrProfileUrl": {
     "message": "Не найден активный аккаунт или URL профиля."
   },
   "errorAccountNotFoundToUpdate": {
     "message": "Не удалось найти аккаунт для обновления!"
   },
-  "successNicknameSaved": { "message": "Псевдоним успешно сохранён!" },
-  "errorSavingNickname": { "message": "Ошибка при сохранении псевдонима!" },
-  "successNicknameUpdated": { "message": "Псевдоним успешно обновлён!" },
+  "successNicknameSaved": {
+    "message": "Псевдоним успешно сохранён!"
+  },
+  "errorSavingNickname": {
+    "message": "Ошибка при сохранении псевдонима!"
+  },
+  "successNicknameUpdated": {
+    "message": "Псевдоним успешно обновлён!"
+  },
   "errorUpdatingAccountGeneric": {
     "message": "Произошла ошибка при обновлении аккаунта!"
   },
   "errorCannotDeleteLastAccount": {
     "message": "Невозможно удалить последний аккаунт!"
   },
-  "successAccountDeleted": { "message": "Аккаунт успешно удалён!" },
+  "successAccountDeleted": {
+    "message": "Аккаунт успешно удалён!"
+  },
   "errorDeletingAccountGeneric": {
     "message": "Произошла ошибка при удалении аккаунта!"
   },
-  "successDataExported": { "message": "Данные успешно экспортированы!" },
+  "successDataExported": {
+    "message": "Данные успешно экспортированы!"
+  },
   "errorExportingData": {
     "message": "Произошла ошибка при экспорте данных!"
   },
   "errorNoImportData": {
     "message": "Пожалуйста, выберите файл или вставьте содержимое JSON!"
   },
-  "successDataImported": { "message": "Данные успешно импортированы!" },
+  "successDataImported": {
+    "message": "Данные успешно импортированы!"
+  },
   "errorInvalidImportData": {
     "message": "Недействительные данные. Пожалуйста, проверьте ещё раз!"
   },
   "errorImportingData": {
     "message": "Произошла ошибка при импорте данных!"
   },
-  "labelFacilitatorProgram": { "message": "Программа фасилитаторов" },
-  "messageBadgeEnabled": { "message": "Отображение значка включено" },
-  "messageBadgeDisabled": { "message": "Отображение значка отключено" },
-  "labelShowBadge": { "message": "Показывать значок на иконке расширения" },
+  "labelFacilitatorProgram": {
+    "message": "Программа фасилитаторов"
+  },
+  "messageBadgeEnabled": {
+    "message": "Отображение значка включено"
+  },
+  "messageBadgeDisabled": {
+    "message": "Отображение значка отключено"
+  },
+  "labelShowBadge": {
+    "message": "Показывать значок на иконке расширения"
+  },
   "descriptionShowBadge": {
     "message": "Переключить отображение общих очков на иконке расширения на панели инструментов браузера."
   },
@@ -264,45 +311,106 @@
   "arcadeDeadlinePassed": {
     "message": "Сезон Arcade завершён в этом году. До встречи в следующем сезоне!"
   },
-  "programEnded": { "message": "Программа завершена" },
-  "statusCompleted": { "message": "Завершено" },
-  "statusInProgress": { "message": "В процессе" },
-  "statusNotStarted": { "message": "Не начато" },
-  "anonymous": { "message": "Анонимный" },
-  "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Ошибка при загрузке данных" },
-  "labelBack": { "message": "Назад" },
-  "changelogWhatsNew": { "message": "Что нового" },
-  "changelogLatestUpdates": { "message": "Последние обновления и улучшения" },
-  "changelogLoading": { "message": "Загрузка журнала изменений..." },
+  "programEnded": {
+    "message": "Программа завершена"
+  },
+  "statusCompleted": {
+    "message": "Завершено"
+  },
+  "statusInProgress": {
+    "message": "В процессе"
+  },
+  "statusNotStarted": {
+    "message": "Не начато"
+  },
+  "anonymous": {
+    "message": "Анонимный"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "Ошибка при загрузке данных"
+  },
+  "labelBack": {
+    "message": "Назад"
+  },
+  "backToTop": { "message": "Наверх" },
+  "changelogWhatsNew": {
+    "message": "Что нового"
+  },
+  "changelogLatestUpdates": {
+    "message": "Последние обновления и улучшения"
+  },
+  "changelogLoading": {
+    "message": "Загрузка журнала изменений..."
+  },
   "changelogFooterNotice": {
     "message": "Это расширение не связано с Google Cloud Skills Boost. Все права защищены."
   },
-  "announcementTitle": { "message": "Важное объявление" },
-  "markdownShowMore": { "message": "Показать больше" },
-  "accountsTitle": { "message": "Ваши аккаунты" },
-  "noAccountsYet": { "message": "Пока нет аккаунтов" },
-  "addAccountFirst": { "message": "Добавьте ваш первый аккаунт!" },
-  "dataManagementTitle": { "message": "Управление данными" },
+  "announcementTitle": {
+    "message": "Важное объявление"
+  },
+  "markdownShowMore": {
+    "message": "Показать больше"
+  },
+  "accountsTitle": {
+    "message": "Ваши аккаунты"
+  },
+  "noAccountsYet": {
+    "message": "Пока нет аккаунтов"
+  },
+  "addAccountFirst": {
+    "message": "Добавьте ваш первый аккаунт!"
+  },
+  "dataManagementTitle": {
+    "message": "Управление данными"
+  },
   "dataManagementSubtitle": {
     "message": "Резервное копирование и восстановление"
   },
-  "exportData": { "message": "Экспортировать данные" },
-  "importData": { "message": "Импортировать данные" },
-  "modalAddAccountTitle": { "message": "Добавить новый аккаунт" },
-  "howToGetProfileUrl": { "message": "Как получить URL профиля" },
-  "howToGetProfileSubtitle": { "message": "Следуйте шагам ниже" },
-  "openProfilePage": { "message": "Открыть страницу профиля" },
-  "errorPrefix": { "message": "Ошибка:" },
-  "successPrefix": { "message": "Успешно:" },
+  "exportData": {
+    "message": "Экспортировать данные"
+  },
+  "importData": {
+    "message": "Импортировать данные"
+  },
+  "modalAddAccountTitle": {
+    "message": "Добавить новый аккаунт"
+  },
+  "howToGetProfileUrl": {
+    "message": "Как получить URL профиля"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "Следуйте шагам ниже"
+  },
+  "openProfilePage": {
+    "message": "Открыть страницу профиля"
+  },
+  "errorPrefix": {
+    "message": "Ошибка:"
+  },
+  "successPrefix": {
+    "message": "Успешно:"
+  },
   "accountErrorFallback": {
     "message": "Что-то пошло не так. Пожалуйста, попробуйте ещё раз."
   },
-  "accountSuccessFallback": { "message": "Ваше действие выполнено успешно!" },
-  "viewBadges": { "message": "Просмотреть значки" },
-  "openProfile": { "message": "Открыть профиль" },
-  "arcadePointsTitle": { "message": "Очки Arcade" },
-  "milestonesTitle": { "message": "Контрольные точки" },
+  "accountSuccessFallback": {
+    "message": "Ваше действие выполнено успешно!"
+  },
+  "viewBadges": {
+    "message": "Просмотреть значки"
+  },
+  "openProfile": {
+    "message": "Открыть профиль"
+  },
+  "arcadePointsTitle": {
+    "message": "Очки Arcade"
+  },
+  "milestonesTitle": {
+    "message": "Контрольные точки"
+  },
   "accountsCardTitle": {
     "message": "Управление аккаунтами и калькулятор очков Arcade"
   },
@@ -312,124 +420,264 @@
   "clickOpenProfileButton": {
     "message": "Нажмите кнопку \"Открыть страницу профиля\""
   },
-  "programDeadline": { "message": "Срок программы" },
-  "labelDays": { "message": "Дней" },
-  "labelHours": { "message": "Часов" },
-  "labelMinutes": { "message": "Минут" },
-  "labelSeconds": { "message": "Секунд" },
+  "programDeadline": {
+    "message": "Срок программы"
+  },
+  "labelDays": {
+    "message": "Дней"
+  },
+  "labelHours": {
+    "message": "Часов"
+  },
+  "labelMinutes": {
+    "message": "Минут"
+  },
+  "labelSeconds": {
+    "message": "Секунд"
+  },
   "milestoneDeadlineNotice": {
     "message": "Выполните контрольные точки до дедлайна, чтобы заработать бонусные очки!"
   },
   "arcadeMotivation": {
     "message": "Продолжайте двигаться вперёд и поднимайтесь в таблице лидеров Arcade!"
   },
-  "totalBonusEarned": { "message": "Всего заработано бонусов:" },
+  "totalBonusEarned": {
+    "message": "Всего заработано бонусов:"
+  },
   "maxPossibleNote": {
     "message": "Максимально возможно: 25 очков (только наивысшая контрольная точка)"
   },
-  "pointsBreakdown": { "message": "Разбивка очков" },
-  "arcadeBase": { "message": "Базовые Arcade:" },
-  "facilitatorBonus": { "message": "Бонус фасилитатора:" },
-  "gameBadgeLabel": { "message": "Игровой значок" },
+  "pointsBreakdown": {
+    "message": "Разбивка очков"
+  },
+  "arcadeBase": {
+    "message": "Базовые Arcade:"
+  },
+  "facilitatorBonus": {
+    "message": "Бонус фасилитатора:"
+  },
+  "gameBadgeLabel": {
+    "message": "Игровой значок"
+  },
   "gameBadgeLabelTooltip": {
     "message": "В Arcade теперь нет уровней. Новые треки: Adventure (основы облака), Voyage (практика навыков), Trail (обучение ИИ)."
   },
-  "triviaBadgeLabel": { "message": "Значок викторины" },
+  "triviaBadgeLabel": {
+    "message": "Значок викторины"
+  },
   "triviaBadgeLabelTooltip": {
     "message": "Trivia теперь называется Sprint: короткие викторины для повторения и получения очков Arcade."
   },
-  "skillBadgeLabel": { "message": "Значок навыка" },
-  "specialPointsLabel": { "message": "Специальные очки" },
-  "arcadeSeasonCountdown": { "message": "Обратный отсчёт сезона Arcade" },
-  "milestone1": { "message": "Контрольная точка 1" },
-  "milestone1Bonus": { "message": "+2 бонусных очка" },
-  "milestone2": { "message": "Контрольная точка 2" },
-  "milestone2Bonus": { "message": "+8 бонусных очков" },
-  "milestone3": { "message": "Контрольная точка 3" },
-  "milestone3Bonus": { "message": "+15 бонусных очков" },
-  "milestoneUltimate": { "message": "Максимум" },
-  "milestoneUltimateBonus": { "message": "+25 бонусных очков" },
-  "progressLabel": { "message": "Прогресс:" },
-  "gamesLabel": { "message": "Игры:" },
-  "triviaLabel": { "message": "Викторины:" },
-  "skillsLabel": { "message": "Навыки:" },
-  "labFreeLabel": { "message": "Без лабораторий:" },
-  "switchAccount": { "message": "Переключить аккаунт" },
-  "statusActive": { "message": "Активный" },
-  "quickSearch": { "message": "Быстрый поиск" },
-  "youtubeResults": { "message": "Результаты YouTube" },
-  "searchFeatureTip": { "message": "Помогает найти ответы быстрее!" },
-  "successAccountCreated": { "message": "Аккаунт успешно создан!" },
+  "skillBadgeLabel": {
+    "message": "Значок навыка"
+  },
+  "specialPointsLabel": {
+    "message": "Специальные очки"
+  },
+  "arcadeSeasonCountdown": {
+    "message": "Обратный отсчёт сезона Arcade"
+  },
+  "milestone1": {
+    "message": "Контрольная точка 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 бонусных очка"
+  },
+  "milestone2": {
+    "message": "Контрольная точка 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 бонусных очков"
+  },
+  "milestone3": {
+    "message": "Контрольная точка 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 бонусных очков"
+  },
+  "milestoneUltimate": {
+    "message": "Максимум"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 бонусных очков"
+  },
+  "progressLabel": {
+    "message": "Прогресс:"
+  },
+  "gamesLabel": {
+    "message": "Игры:"
+  },
+  "triviaLabel": {
+    "message": "Викторины:"
+  },
+  "skillsLabel": {
+    "message": "Навыки:"
+  },
+  "labFreeLabel": {
+    "message": "Без лабораторий:"
+  },
+  "switchAccount": {
+    "message": "Переключить аккаунт"
+  },
+  "statusActive": {
+    "message": "Активный"
+  },
+  "quickSearch": {
+    "message": "Быстрый поиск"
+  },
+  "youtubeResults": {
+    "message": "Результаты YouTube"
+  },
+  "searchFeatureTip": {
+    "message": "Помогает найти ответы быстрее!"
+  },
+  "successAccountCreated": {
+    "message": "Аккаунт успешно создан!"
+  },
   "successAddNickname": {
     "message": "Вы можете добавить псевдоним для лёгкой идентификации этого аккаунта."
   },
-  "newlyCreated": { "message": "Только что создан" },
-  "labelNickname": { "message": "Псевдоним:" },
-  "noNicknameYet": { "message": "Пока нет псевдонима" },
-  "labelUpdated": { "message": "Обновлено:" },
-  "justCreated": { "message": "Только что создан" },
-  "markdownShowLess": { "message": "Показать меньше" },
-  "importantNoticeTitle": { "message": "Важное уведомление" },
+  "newlyCreated": {
+    "message": "Только что создан"
+  },
+  "labelNickname": {
+    "message": "Псевдоним:"
+  },
+  "noNicknameYet": {
+    "message": "Пока нет псевдонима"
+  },
+  "labelUpdated": {
+    "message": "Обновлено:"
+  },
+  "justCreated": {
+    "message": "Только что создан"
+  },
+  "markdownShowLess": {
+    "message": "Показать меньше"
+  },
+  "importantNoticeTitle": {
+    "message": "Важное уведомление"
+  },
   "importantNoticeText": {
     "message": "Каждый URL профиля может быть добавлен только один раз. Система проверит и уведомит, если аккаунт уже существует."
   },
   "enterProfileUrlLabel": {
     "message": "Введите URL профиля и создайте аккаунт"
   },
-  "createAccountButton": { "message": "Создать аккаунт" },
-  "instructionsLabel": { "message": "Инструкции:" },
+  "createAccountButton": {
+    "message": "Создать аккаунт"
+  },
+  "instructionsLabel": {
+    "message": "Инструкции:"
+  },
   "instructionsText": {
     "message": "Введите URL и нажмите \"Создать аккаунт\". Система автоматически загрузит информацию и создаст новый аккаунт."
   },
-  "step1Title": { "message": "Нажмите кнопку \"Открыть страницу профиля\"" },
+  "step1Title": {
+    "message": "Нажмите кнопку \"Открыть страницу профиля\""
+  },
   "step1Subtitle": {
     "message": "Откроет Google Cloud Skills Boost в новой вкладке"
   },
-  "step2Title": { "message": "Войдите (если ещё не вошли)" },
-  "step2Subtitle": { "message": "Используйте ваш аккаунт Google" },
-  "step3Title": { "message": "Найдите раздел \"Публичный профиль\"" },
-  "step3Subtitle": { "message": "Прокрутите вниз на странице профиля" },
-  "step4Title": { "message": "Скопируйте URL из адресной строки" },
-  "step4Subtitle": { "message": "Вставьте в поле ниже" },
-  "newAccountBadge": { "message": "Новый аккаунт" },
-  "totalBadgesLabel": { "message": "Всего значков" },
-  "skillBadgesLabel": { "message": "Значки навыков" },
-  "arcadePointsLabel": { "message": "Очки Arcade" },
-  "accountNicknameLabel": { "message": "Псевдоним аккаунта" },
+  "step2Title": {
+    "message": "Войдите (если ещё не вошли)"
+  },
+  "step2Subtitle": {
+    "message": "Используйте ваш аккаунт Google"
+  },
+  "step3Title": {
+    "message": "Найдите раздел \"Публичный профиль\""
+  },
+  "step3Subtitle": {
+    "message": "Прокрутите вниз на странице профиля"
+  },
+  "step4Title": {
+    "message": "Скопируйте URL из адресной строки"
+  },
+  "step4Subtitle": {
+    "message": "Вставьте в поле ниже"
+  },
+  "newAccountBadge": {
+    "message": "Новый аккаунт"
+  },
+  "totalBadgesLabel": {
+    "message": "Всего значков"
+  },
+  "skillBadgesLabel": {
+    "message": "Значки навыков"
+  },
+  "arcadePointsLabel": {
+    "message": "Очки Arcade"
+  },
+  "accountNicknameLabel": {
+    "message": "Псевдоним аккаунта"
+  },
   "nicknamePlaceholder": {
     "message": "например: Основной аккаунт, Рабочий аккаунт, Учебный аккаунт..."
   },
   "nicknameHelpText": {
     "message": "Псевдонимы помогают легко идентифицировать аккаунты, когда у вас есть несколько различных аккаунтов"
   },
-  "editAccountTitle": { "message": "Редактировать аккаунт" },
-  "displayNameLabel": { "message": "Отображаемое имя:" },
+  "editAccountTitle": {
+    "message": "Редактировать аккаунт"
+  },
+  "displayNameLabel": {
+    "message": "Отображаемое имя:"
+  },
   "displayNameInfo": {
     "message": "Отображаемое имя берётся из Google Cloud Skills Boost и не может быть изменено"
   },
-  "nicknameLabel": { "message": "Псевдоним:" },
+  "nicknameLabel": {
+    "message": "Псевдоним:"
+  },
   "enterNicknamePlaceholder": {
     "message": "Введите псевдоним для лёгкой идентификации..."
   },
   "nicknameExample": {
     "message": "Пример: \"Основной аккаунт\", \"Рабочий аккаунт\", \"Учебный аккаунт\"..."
   },
-  "cancelButton": { "message": "Отмена" },
-  "saveChangesButton": { "message": "Сохранить изменения" },
-  "themeStudioTitle": { "message": "Студия тем" },
+  "cancelButton": {
+    "message": "Отмена"
+  },
+  "saveChangesButton": {
+    "message": "Сохранить изменения"
+  },
+  "themeStudioTitle": {
+    "message": "Студия тем"
+  },
   "themeStudioDescription": {
     "message": "Настройте тему всплывающего окна с предварительным просмотром в реальном времени."
   },
-  "labelBackground1": { "message": "Фон 1" },
-  "labelBackground2": { "message": "Фон 2" },
-  "labelBackground3": { "message": "Фон 3" },
-  "labelAccent": { "message": "Акцент" },
-  "labelArcadePoints": { "message": "Аркадные очки" },
-  "labelTextPrimary": { "message": "Основной текст" },
-  "labelTextSecondary": { "message": "Вторичный текст" },
-  "labelTextMuted": { "message": "Приглушённый текст" },
-  "btnApplySave": { "message": "Применить и сохранить" },
-  "btnResetToDark": { "message": "Сбросить на тёмную" },
+  "labelBackground1": {
+    "message": "Фон 1"
+  },
+  "labelBackground2": {
+    "message": "Фон 2"
+  },
+  "labelBackground3": {
+    "message": "Фон 3"
+  },
+  "labelAccent": {
+    "message": "Акцент"
+  },
+  "labelArcadePoints": {
+    "message": "Аркадные очки"
+  },
+  "labelTextPrimary": {
+    "message": "Основной текст"
+  },
+  "labelTextSecondary": {
+    "message": "Вторичный текст"
+  },
+  "labelTextMuted": {
+    "message": "Приглушённый текст"
+  },
+  "btnApplySave": {
+    "message": "Применить и сохранить"
+  },
+  "btnResetToDark": {
+    "message": "Сбросить на тёмную"
+  },
   "btnSyncFromPopup": {
     "message": "Синхронизировать с текущим всплывающим окном"
   },
@@ -439,25 +687,176 @@
   "popupLivePreviewTitle": {
     "message": "Предварительный просмотр всплывающего окна"
   },
-  "btnApplyCustomTheme": { "message": "Применить пользовательскую тему" },
-  "btnResetCustomTheme": { "message": "Сбросить" },
+  "btnApplyCustomTheme": {
+    "message": "Применить пользовательскую тему"
+  },
+  "btnResetCustomTheme": {
+    "message": "Сбросить"
+  },
   "btnOpenThemeStudio": {
     "message": "Открыть студию тем (живой предварительный просмотр)"
   },
-  "btnChangeTheme": { "message": "Изменить тему" },
-  "labThinking": { "message": "Думаю..." },
-  "labSolutionTitle": { "message": "Нажмите, чтобы открыть решение" },
-  "labSolutionButton": { "message": "Решение лабораторной" },
-  "labNoSolution": { "message": "Нет решения" },
-  "labEplusSearch": { "message": "Поиск ePlus" },
-  "labGoogleSearch": { "message": "Поиск Google" },
-  "labYouTube": { "message": "YouTube" },
-  "exportDataTitle": { "message": "Экспорт моих данных" },
-  "exportJSON": { "message": "Экспорт JSON" },
-  "exportCSV": { "message": "Экспорт значков CSV" },
-  "exportSuccess": { "message": "Экспорт выполнен успешно!" },
-  "exportNoData": { "message": "Нет данных для экспорта." },
-  "compactMode": { "message": "Компактный" },
-  "fullMode": { "message": "Полный вид" },
-  "shortcutHint": { "message": "R обновить · S настройки · C компактный" }
+  "btnChangeTheme": {
+    "message": "Изменить тему"
+  },
+  "labThinking": {
+    "message": "Думаю..."
+  },
+  "labSolutionTitle": {
+    "message": "Нажмите, чтобы открыть решение"
+  },
+  "labSolutionButton": {
+    "message": "Решение лабораторной"
+  },
+  "labSupportTitle": {
+    "message": "Нажмите, чтобы получить поддержку или сообщить о проблеме в Telegram"
+  },
+  "labSupportButton": {
+    "message": "Поддержка / Отчет"
+  },
+  "labNoSolution": {
+    "message": "Нет решения"
+  },
+  "labEplusSearch": {
+    "message": "Поиск ePlus"
+  },
+  "labGoogleSearch": {
+    "message": "Поиск Google"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": { "message": "Поиск в Bing" },
+  "labYandexSearch": { "message": "Поиск в Yandex" },
+  "labBraveSearch": { "message": "Поиск в Brave" },
+  "labDuckDuckGoSearch": { "message": "Поиск в DuckDuckGo" },
+  "labBaiduSearch": { "message": "Поиск в Baidu" },
+  "labYahooSearch": { "message": "Поиск в Yahoo!" },
+  "labCoccocSearch": { "message": "Поиск в Cốc Cốc" },
+  "labelSearch": { "message": "Поиск" },
+  "labelCopyLink": { "message": "Копировать ссылку" },
+  "labFallbackQuery": { "message": "Учебник по лаборатории Google Cloud" },
+  "exportDataTitle": {
+    "message": "Экспорт моих данных"
+  },
+  "exportJSON": {
+    "message": "Экспорт JSON"
+  },
+  "exportCSV": {
+    "message": "Экспорт значков CSV"
+  },
+  "exportSuccess": {
+    "message": "Экспорт выполнен успешно!"
+  },
+  "exportNoData": {
+    "message": "Нет данных для экспорта."
+  },
+  "compactMode": {
+    "message": "Компактный"
+  },
+  "fullMode": {
+    "message": "Полный вид"
+  },
+  "shortcutHint": {
+    "message": "R обновить · S настройки · C компактный"
+  },
+  "messageEplusSearchSaved": {
+    "message": "????????? ?????? ePlus ?????????"
+  },
+  "messageEnableSearchFirst": {
+    "message": "???????? ???????? ??????? ?????? ????? ?????????? ePlus."
+  },
+  "titleSetDefaultAccount": {
+    "message": "??????? ????????? ?? ?????????"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "??????????? ????????? Facilitator"
+  },
+  "titleUpdateAccount": {
+    "message": "???????? ???????"
+  },
+  "titleViewPublicProfile": {
+    "message": "??????? ????????? ???????"
+  },
+  "titleEditAccount": {
+    "message": "????????????? ???????"
+  },
+  "titleDeleteAccount": {
+    "message": "??????? ???????"
+  },
+  "exportNoBadgesData": {
+    "message": "??? ??????? ??? ????????."
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "?????????????? ????????? ??????? ?????????"
+  },
+  "labelEnabled": {
+    "message": "????????"
+  },
+  "labelDisabled": {
+    "message": "?????????"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "????????? Facilitator $1 ??? $2"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "?????? ??? ?????????? ????????? ????????? Facilitator"
+  },
+  "errorFetchDataRetry": {
+    "message": "?? ??????? ???????? ??????. ????????? ??????? ?????."
+  },
+  "errorGenericRetry": {
+    "message": "????????? ??????. ????????? ???????."
+  },
+  "labelNewAccount": {
+    "message": "????? ???????"
+  },
+  "successAccountCreatedNamed": {
+    "message": "??????? \"$1\" ??????? ??????!"
+  },
+  "successDataSaved": {
+    "message": "?????? ??????? ?????????!"
+  },
+  "successAccountUpdated": {
+    "message": "??????? ??????? ????????!"
+  },
+  "errorSaveSetting": {
+    "message": "?? ??????? ????????? ?????????"
+  },
+  "errorUnableFetchProfile": {
+    "message": "?? ??????? ???????? ?????????? ?? ????? ???????"
+  },
+  "errorUnableGetUserName": {
+    "message": "?? ??????? ???????? ??? ???????????? ?? ????? ???????"
+  },
+  "errorUnableCreateAccount": {
+    "message": "?? ??????? ??????? ???????. ????????? URL ? ????????? ???????!"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "?? ??????? ???????? ?????????? ???????. ????????? URL ? ????????? ???????!"
+  },
+  "errorProfileIdNotFound": {
+    "message": "ID ??????? ?? ??????"
+  },
+  "switchToAccountNamed": {
+    "message": "????????????? ?? ??????? \"$1\""
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "??????????? ?? ??????? \"$1\"!"
+  },
+  "confirmDeleteAccount": {
+    "message": "?? ???????, ??? ?????? ??????? ??????? \"$1\"?"
+  },
+  "btnCancel": {
+    "message": "??????"
+  },
+  "btnDelete": {
+    "message": "???????"
+  },
+  "labelImporting": {
+    "message": "??????..."
+  },
+  "labelImportData": {
+    "message": "????????????? ??????"
+  }
 }

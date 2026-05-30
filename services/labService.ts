@@ -59,16 +59,19 @@ const LabService = {
     });
 
     let bestMatchUrl: string | null = null;
+    let bestMatchTitle: string | null = null;
     if (postsData && postsData.length > 0) {
       if (import.meta.env.DEV) {
         console.info(`[LabService] Received ${postsData.length} posts`);
       }
-      bestMatchUrl = SearchService.findBestMatchUrl(
-        postsData,
-        combinedQueryText,
-      );
-      if (bestMatchUrl && import.meta.env.DEV) {
-        console.info("[LabService] Found best match URL:", bestMatchUrl);
+      const best = SearchService.findBestMatch(postsData, combinedQueryText);
+      if (best) {
+        bestMatchUrl = best.url;
+        bestMatchTitle = best.title || null;
+        if (import.meta.env.DEV) {
+          console.info("[LabService] Found best match URL:", bestMatchUrl);
+          console.info("[LabService] Found best match title:", bestMatchTitle);
+        }
       }
     } else {
       if (import.meta.env.DEV) {
@@ -76,23 +79,86 @@ const LabService = {
       }
     }
 
-    // If the result points to hoangit.hashnode.dev, rewrite to eplus.dev
-    if (bestMatchUrl) {
-      try {
-        const parsed = new URL(bestMatchUrl);
-        if (parsed.hostname === "hoangit.hashnode.dev") {
-          parsed.hostname = "eplus.dev";
-          bestMatchUrl = parsed.toString();
-        }
-      } catch (err) {
-        // ignore malformed URLs
-      }
-    }
-
     // Replace loading with actual result
     const solutionElement =
       await UIComponents.createSolutionElement(bestMatchUrl);
     loadingElement.replaceWith(solutionElement);
+
+    if (bestMatchUrl) {
+      this.injectSolutionIntoDrawer(bestMatchUrl);
+    }
+  },
+
+  /**
+   * Dynamically injects and maintains the solution button inside the nested shadow DOM drawer
+   */
+  injectSolutionIntoDrawer(bestMatchUrl: string): void {
+    /**
+     * Locate the drawer credential container inside nested shadow DOMs.
+     * Returns the element or null if not found.
+     */
+    function getContainer(): HTMLElement | null {
+      try {
+        const labHeader = document.querySelector<HTMLElement>(
+          "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
+        );
+
+        const sideSheet = labHeader?.shadowRoot?.querySelector<HTMLElement>(
+          "#lab-sticky-controls > ql-lab-control-side-sheet",
+        );
+
+        const container = sideSheet?.shadowRoot?.querySelector<HTMLElement>(
+          "ql-drawer-container > ql-drawer > div.content > div.credential-container",
+        );
+
+        return container ?? null;
+      } catch (e) {
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console
+          console.warn("[LabService] getContainer threw:", e);
+        }
+        return null;
+      }
+    }
+
+    /**
+     * Attempt to inject the solution element into the drawer.
+     * Returns true if injection was performed or already present.
+     */
+    async function inject(): Promise<boolean> {
+      const container = getContainer();
+      if (!container) return false;
+
+      // Avoid duplicates
+      if (container.querySelector(".eplus-drawer-solution")) return true;
+
+      // Create a fresh solution element for the drawer
+      const drawerSolutionEl =
+        await UIComponents.createSolutionElement(bestMatchUrl);
+      drawerSolutionEl.classList.add("eplus-drawer-solution");
+
+      // Additional styling for the drawer container
+      drawerSolutionEl.style.marginTop = "16px";
+      drawerSolutionEl.style.marginBottom = "8px";
+      drawerSolutionEl.style.width = "100%";
+
+      container.appendChild(drawerSolutionEl);
+      return true;
+    }
+
+    // Initial injection attempt
+    inject();
+
+    // Check periodically to handle dynamic setup changes or starting the lab
+    const interval = setInterval(async () => {
+      const container = getContainer();
+      if (container && !container.querySelector(".eplus-drawer-solution")) {
+        await inject();
+      }
+    }, 1500);
+
+    // Clear interval after 30 minutes just to be safe with memory
+    setTimeout(() => clearInterval(interval), 30 * 60 * 1000);
   },
 
   /**
