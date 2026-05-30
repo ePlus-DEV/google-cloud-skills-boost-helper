@@ -1,15 +1,15 @@
 {
   "extName": {
-    "message": "Google Cloud Skills Boost - Trợ giúp"
+    "message": "Google Cloud Skills Boost - Trợ lý"
   },
   "extDescription": {
-    "message": "Tiện ích mở rộng trình duyệt được thiết kế để tối ưu hóa trải nghiệm học tập của bạn trên Google Cloud Skills Boost."
+    "message": "Tiện ích trình duyệt được thiết kế để tối ưu trải nghiệm học tập của bạn trên Google Cloud Skills Boost."
   },
   "optionsPageTitle": {
-    "message": "Google Cloud Skills Boost - Trợ giúp Tùy chọn"
+    "message": "Tùy chọn Google Cloud Skills Boost - Trợ lý"
   },
   "optionsPageDescription": {
-    "message": "Tùy chỉnh trải nghiệm của bạn với Google Cloud Skills Boost - Trợ giúp."
+    "message": "Tùy chỉnh trải nghiệm của bạn với Google Cloud Skills Boost - Trợ lý."
   },
   "labelFeature": {
     "message": "Tính năng"
@@ -18,10 +18,10 @@
     "message": "Hành động"
   },
   "labelShowLeaderboard": {
-    "message": "Hiển thị Bảng xếp hạng"
+    "message": "Hiện bảng xếp hạng"
   },
   "labelHideLeaderboard": {
-    "message": "Ẩn Bảng xếp hạng"
+    "message": "Ẩn bảng xếp hạng"
   },
   "labelMyBadges": {
     "message": "Huy hiệu của tôi"
@@ -30,7 +30,7 @@
     "message": "Hồ sơ công khai"
   },
   "labelArcadePointsCalculator": {
-    "message": "Tính điểm Arcade"
+    "message": "Công cụ tính điểm Arcade"
   },
   "labelSave": {
     "message": "Lưu"
@@ -45,7 +45,7 @@
     "message": "Hoạt động gần đây"
   },
   "labelBadgesAchievements": {
-    "message": "Huy hiệu & Thành tựu"
+    "message": "Huy hiệu và thành tích"
   },
   "labelUpdatePoints": {
     "message": "Cập nhật điểm"
@@ -60,13 +60,13 @@
     "message": "Tải thêm"
   },
   "textCurrentLevel": {
-    "message": "Cấp độ hiện tại"
+    "message": "Cấp hiện tại"
   },
   "textMaxLevel": {
-    "message": "Cấp độ tối đa"
+    "message": "Cấp tối đa"
   },
   "textNextLevelInPoints": {
-    "message": "Cấp độ tiếp theo trong"
+    "message": "Cấp tiếp theo sau"
   },
   "textPoints": {
     "message": "điểm"
@@ -75,16 +75,16 @@
     "message": "Vui lòng thiết lập cài đặt"
   },
   "errorInvalidUrl": {
-    "message": "Vui lòng nhập một URL hợp lệ bắt đầu bằng 'https://www.skills.google/public_profiles/xxx'"
+    "message": "Vui lòng nhập URL hợp lệ bắt đầu bằng 'https://www.skills.google/public_profiles/xxx'."
   },
   "successSettingsSaved": {
-    "message": "Cài đặt đã được lưu thành công!"
+    "message": "Đã lưu cài đặt thành công!"
   },
   "notePleaseSetUpTheSettings": {
-    "message": "<strong>Note:</strong> <br>⚠️ Bạn đã bật tùy chọn <strong>\"Make profile public\"</strong>, nhưng chưa lưu thay đổi.<br>👉 Vui lòng nhấn nút <strong>\"Update settings\"</strong> để xác nhận và lưu lại cài đặt mới.<br>❌Nếu bạn không lưu, hồ sơ của bạn sẽ <strong>không được công khai</strong> và đường dẫn sẽ không được tạo."
+    "message": "<strong>Lưu ý:</strong><br>Bạn đã bật tùy chọn <strong>\"Đặt hồ sơ ở chế độ công khai\"</strong>, nhưng chưa lưu thay đổi.<br>Vui lòng nhấn <strong>\"Cập nhật cài đặt\"</strong> để xác nhận và lưu cài đặt mới.<br>Nếu không lưu, hồ sơ của bạn sẽ <strong>không được đặt công khai</strong> và liên kết sẽ không được tạo."
   },
   "messageLinkCopiedToClipboard": {
-    "message": "✔️ Đường dẫn đã được sao chép vào clipboard!"
+    "message": "Đã sao chép liên kết vào bộ nhớ tạm!"
   },
   "copyProfileUrl": {
     "message": "Nhấn để sao chép URL hồ sơ công khai"
@@ -93,13 +93,13 @@
     "message": "Bật tính năng tìm kiếm"
   },
   "descriptionEnableSearchFeature": {
-    "message": "Hiển thị nút tìm kiếm Google và YouTube khi không tìm thấy giải pháp."
+    "message": "Hiển thị nút Google Search và YouTube khi không tìm thấy lời giải."
   },
   "messageSearchFeatureEnabled": {
-    "message": "Tính năng tìm kiếm đã được bật - Nút tìm kiếm Google và YouTube sẽ xuất hiện khi không tìm thấy giải pháp"
+    "message": "Đã bật tìm kiếm: nút Google và YouTube sẽ xuất hiện khi không tìm thấy lời giải"
   },
   "messageSearchFeatureDisabled": {
-    "message": "Tính năng tìm kiếm đã được tắt - Chỉ hiển thị \"Không có giải pháp\" khi không tìm thấy giải pháp"
+    "message": "Đã tắt tìm kiếm: chỉ hiển thị \"Không có lời giải\" khi không tìm thấy lời giải"
   },
   "tourStartButton": {
     "message": "Hướng dẫn sử dụng"
@@ -117,25 +117,25 @@
     "message": "Thêm tài khoản mới"
   },
   "tourAddAccountContent": {
-    "message": "Click vào nút này để thêm tài khoản Google Cloud Skills Boost đầu tiên. Bạn có thể quản lý nhiều tài khoản cùng lúc."
+    "message": "Nhấn nút này để thêm tài khoản Google Cloud Skills Boost đầu tiên. Bạn có thể quản lý nhiều tài khoản cùng lúc."
   },
   "tourAccountListTitle": {
     "message": "Danh sách tài khoản"
   },
   "tourAccountListContent": {
-    "message": "Sau khi tạo tài khoản, chúng sẽ hiển thị ở đây. Bạn có thể:<br>• Chuyển đổi giữa các tài khoản<br>• Cập nhật dữ liệu arcade points<br>• Chỉnh sửa biệt danh<br>• Xem profile công khai"
+    "message": "Sau khi tạo, các tài khoản sẽ xuất hiện tại đây. Bạn có thể:<br>- Chuyển đổi giữa các tài khoản<br>- Cập nhật dữ liệu điểm Arcade<br>- Chỉnh sửa biệt danh<br>- Xem hồ sơ công khai"
   },
   "tourModalStep1Title": {
-    "message": "Bước 1: Mở trang Profile"
+    "message": "Bước 1: Mở trang hồ sơ"
   },
   "tourModalStep1Content": {
-    "message": "Click vào nút này để mở Google Cloud Skills Boost Profile trong tab mới. Bạn sẽ cần đăng nhập và lấy URL từ trang profile."
+    "message": "Nhấn nút này để mở hồ sơ Google Cloud Skills Boost trong tab mới. Bạn cần đăng nhập và lấy URL từ trang hồ sơ."
   },
   "tourModalStep2Title": {
-    "message": "Bước 2: Nhập URL Profile"
+    "message": "Bước 2: Nhập URL hồ sơ"
   },
   "tourModalStep2Content": {
-    "message": "Sau khi đăng nhập, copy URL từ thanh địa chỉ và dán vào đây."
+    "message": "Sau khi đăng nhập, hãy sao chép URL từ thanh địa chỉ và dán vào đây."
   },
   "tourModalStep2Tip": {
     "message": "URL sẽ có dạng: https://www.skills.google/public_profiles/xxxxx"
@@ -144,22 +144,22 @@
     "message": "Bước 3: Tạo tài khoản"
   },
   "tourModalStep3Content": {
-    "message": "Click vào nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ profile và tạo tài khoản mới cho bạn."
+    "message": "Nhấn nút này để tạo tài khoản. Hệ thống sẽ tự động lấy thông tin từ hồ sơ và tạo tài khoản mới cho bạn."
   },
   "tourCompletedTitle": {
-    "message": "Hoàn thành hướng dẫn!"
+    "message": "Đã hoàn tất hướng dẫn!"
   },
   "tourCompletedContent": {
     "message": "Bây giờ bạn có thể bắt đầu tạo tài khoản đầu tiên."
   },
   "tourModalCompletedTitle": {
-    "message": "Sẵn sàng tạo tài khoản!"
+    "message": "Đã sẵn sàng tạo tài khoản!"
   },
   "tourModalCompletedContent": {
-    "message": "Hãy thử nhập URL profile và tạo tài khoản đầu tiên của bạn."
+    "message": "Hãy thử nhập URL hồ sơ và tạo tài khoản đầu tiên."
   },
   "tourButtonNext": {
-    "message": "Tiếp theo"
+    "message": "Tiếp"
   },
   "tourButtonPrevious": {
     "message": "Quay lại"
@@ -168,19 +168,19 @@
     "message": "Bỏ qua"
   },
   "tourButtonComplete": {
-    "message": "Hoàn thành"
+    "message": "Xong"
   },
   "tourCloseButton": {
     "message": "Đóng"
   },
   "badgeToolbarNote": {
-    "message": "Khi bật, tiện ích sẽ cập nhật biểu tượng thanh công cụ bằng tổng điểm của bạn (bao gồm điểm thưởng Facilitator nếu đang hoạt động)."
+    "message": "Khi bật, tiện ích sẽ cập nhật huy hiệu trên thanh công cụ bằng tổng điểm của bạn, bao gồm điểm thưởng Facilitator khi đang hoạt động."
   },
   "badgeViewDescription": {
     "message": "Xem tất cả huy hiệu và thành tích bạn đã đạt được."
   },
   "badgeTrackProgress": {
-    "message": "Theo dõi tiến trình học tập của bạn!"
+    "message": "Theo dõi tiến độ học tập của bạn!"
   },
   "labelAchievements": {
     "message": "Thành tích"
@@ -198,19 +198,19 @@
     "message": "Tài khoản đã tồn tại"
   },
   "errorAccountExistsMsg": {
-    "message": "Đã tồn tại tài khoản với URL này: \"$1\"."
+    "message": "Tài khoản với URL này đã tồn tại: \"$1\"."
   },
   "errorNoNameFromProfile": {
-    "message": "Không lấy được tên từ hồ sơ. Vui lòng thử lại!"
+    "message": "Không thể lấy tên từ hồ sơ. Vui lòng thử lại!"
   },
   "labelAdding": {
     "message": "Đang thêm..."
   },
   "successAccountAdded": {
-    "message": "Thêm tài khoản thành công!"
+    "message": "Đã thêm tài khoản thành công!"
   },
   "errorAddAccountGeneric": {
-    "message": "Có lỗi khi thêm tài khoản. Vui lòng thử lại!"
+    "message": "Đã xảy ra lỗi khi thêm tài khoản. Vui lòng thử lại!"
   },
   "errorAccountExistsMsgSimple": {
     "message": "Tài khoản đã tồn tại."
@@ -219,7 +219,7 @@
     "message": "Thêm tài khoản"
   },
   "successSwitchedAccount": {
-    "message": "Chuyển tài khoản thành công!"
+    "message": "Đã chuyển tài khoản thành công!"
   },
   "errorSwitchAccount": {
     "message": "Lỗi khi chuyển tài khoản."
@@ -231,7 +231,7 @@
     "message": "Đang cập nhật dữ liệu tài khoản..."
   },
   "successAccountDataUpdated": {
-    "message": "Cập nhật dữ liệu tài khoản thành công!"
+    "message": "Đã cập nhật dữ liệu tài khoản thành công!"
   },
   "errorFetchDataFromApi": {
     "message": "Không thể lấy dữ liệu từ API."
@@ -246,49 +246,49 @@
     "message": "Lỗi khi mở hồ sơ."
   },
   "errorNoActiveAccountOrProfileUrl": {
-    "message": "Không có tài khoản hoạt động hoặc URL hồ sơ."
+    "message": "Không tìm thấy tài khoản đang hoạt động hoặc URL hồ sơ."
   },
   "errorAccountNotFoundToUpdate": {
     "message": "Không tìm thấy tài khoản để cập nhật!"
   },
   "successNicknameSaved": {
-    "message": "Lưu biệt danh thành công!"
+    "message": "Đã lưu biệt danh thành công!"
   },
   "errorSavingNickname": {
     "message": "Lỗi khi lưu biệt danh!"
   },
   "successNicknameUpdated": {
-    "message": "Cập nhật biệt danh thành công!"
+    "message": "Đã cập nhật biệt danh thành công!"
   },
   "errorUpdatingAccountGeneric": {
-    "message": "Có lỗi khi cập nhật tài khoản!"
+    "message": "Đã xảy ra lỗi khi cập nhật tài khoản!"
   },
   "errorCannotDeleteLastAccount": {
     "message": "Không thể xóa tài khoản cuối cùng!"
   },
   "successAccountDeleted": {
-    "message": "Xóa tài khoản thành công!"
+    "message": "Đã xóa tài khoản thành công!"
   },
   "errorDeletingAccountGeneric": {
-    "message": "Có lỗi khi xóa tài khoản!"
+    "message": "Đã xảy ra lỗi khi xóa tài khoản!"
   },
   "successDataExported": {
-    "message": "Xuất dữ liệu thành công!"
+    "message": "Đã xuất dữ liệu thành công!"
   },
   "errorExportingData": {
-    "message": "Có lỗi khi xuất dữ liệu!"
+    "message": "Đã xảy ra lỗi khi xuất dữ liệu!"
   },
   "errorNoImportData": {
     "message": "Vui lòng chọn file hoặc dán nội dung JSON!"
   },
   "successDataImported": {
-    "message": "Nhập dữ liệu thành công!"
+    "message": "Đã nhập dữ liệu thành công!"
   },
   "errorInvalidImportData": {
     "message": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại!"
   },
   "errorImportingData": {
-    "message": "Có lỗi khi nhập dữ liệu!"
+    "message": "Đã xảy ra lỗi khi nhập dữ liệu!"
   },
   "labelFacilitatorProgram": {
     "message": "Chương trình Facilitator"
@@ -300,25 +300,25 @@
     "message": "Đã tắt hiển thị huy hiệu"
   },
   "labelShowBadge": {
-    "message": "Hiển thị huy hiệu trên biểu tượng"
+    "message": "Hiển thị huy hiệu trên biểu tượng tiện ích"
   },
   "descriptionShowBadge": {
-    "message": "Bật/tắt hiển thị tổng điểm trên biểu tượng tiện ích trình duyệt."
+    "message": "Bật hoặc tắt việc hiển thị tổng điểm trên biểu tượng tiện ích ở thanh công cụ trình duyệt."
   },
   "facilitatorDeadlinePassed": {
     "message": "Hạn chót chương trình Facilitator đã qua"
   },
   "arcadeDeadlinePassed": {
-    "message": "Mùa Arcade đã khép lại cho năm nay. Hẹn gặp bạn ở mùa sau!"
+    "message": "Mùa Arcade của năm nay đã kết thúc. Hẹn gặp lại bạn mùa sau!"
   },
   "programEnded": {
-    "message": "Chương trình kết thúc"
+    "message": "Chương trình đã kết thúc"
   },
   "statusCompleted": {
-    "message": "Hoàn thành"
+    "message": "Đã hoàn thành"
   },
   "statusInProgress": {
-    "message": "Đang tiến hành"
+    "message": "Đang thực hiện"
   },
   "statusNotStarted": {
     "message": "Chưa bắt đầu"
@@ -342,19 +342,19 @@
     "message": "Có gì mới"
   },
   "changelogLatestUpdates": {
-    "message": "Cập nhật và cải tiến mới nhất"
+    "message": "Các cập nhật và cải tiến mới nhất"
   },
   "changelogLoading": {
     "message": "Đang tải nhật ký thay đổi..."
   },
   "changelogFooterNotice": {
-    "message": "Tiện ích này không liên kết với Google Cloud Skills Boost. Bảo lưu mọi quyền."
+    "message": "Tiện ích này không liên kết với Google Cloud Skills Boost. Mọi quyền được bảo lưu."
   },
   "announcementTitle": {
     "message": "Thông báo quan trọng"
   },
   "markdownShowMore": {
-    "message": "Xem thêm"
+    "message": "Hiển thị thêm"
   },
   "accountsTitle": {
     "message": "Tài khoản của bạn"
@@ -363,7 +363,7 @@
     "message": "Chưa có tài khoản"
   },
   "addAccountFirst": {
-    "message": "Thêm tài khoản đầu tiên!"
+    "message": "Thêm tài khoản đầu tiên của bạn!"
   },
   "dataManagementTitle": {
     "message": "Quản lý dữ liệu"
@@ -399,7 +399,7 @@
     "message": "Đã xảy ra lỗi. Vui lòng thử lại."
   },
   "accountSuccessFallback": {
-    "message": "Hành động của bạn đã thành công!"
+    "message": "Thao tác của bạn đã thành công!"
   },
   "viewBadges": {
     "message": "Xem huy hiệu"
@@ -414,7 +414,7 @@
     "message": "Cột mốc"
   },
   "accountsCardTitle": {
-    "message": "Quản lý tài khoản & Bộ đếm điểm Arcade"
+    "message": "Quản lý tài khoản và công cụ tính điểm Arcade"
   },
   "accountsCardSubtitle": {
     "message": "Quản lý nhiều tài khoản và tính điểm Arcade."
@@ -438,40 +438,40 @@
     "message": "Giây"
   },
   "milestoneDeadlineNotice": {
-    "message": "Hoàn thành cột mốc trước hạn để nhận điểm thưởng!"
+    "message": "Hoàn thành các cột mốc trước hạn để nhận điểm thưởng!"
   },
   "arcadeMotivation": {
-    "message": "Giữ phong độ và leo bảng xếp hạng Arcade!"
+    "message": "Giữ vững đà tiến và leo lên bảng xếp hạng Arcade!"
   },
   "totalBonusEarned": {
-    "message": "Tổng điểm thưởng đã đạt:"
+    "message": "Tổng điểm thưởng đã nhận:"
   },
   "maxPossibleNote": {
-    "message": "Tối đa có thể: 25 điểm (chỉ cột mốc cao nhất)"
+    "message": "Tối đa có thể đạt: 25 điểm (chỉ tính cột mốc cao nhất)"
   },
   "pointsBreakdown": {
-    "message": "Phân tích điểm"
+    "message": "Chi tiết điểm"
   },
   "arcadeBase": {
-    "message": "Cơ bản Arcade:"
+    "message": "Arcade Base Camp:"
   },
   "facilitatorBonus": {
     "message": "Điểm thưởng Facilitator:"
   },
   "gameBadgeLabel": {
-    "message": "Huy hiệu Trò chơi"
+    "message": "Huy hiệu trò chơi"
   },
   "gameBadgeLabelTooltip": {
-    "message": "Arcade hiện không còn cấp độ. Track mới: Adventure (nền tảng cloud), Voyage (luyện kỹ năng), Trail (học AI)."
+    "message": "Arcade hiện không còn cấp độ. Các lộ trình mới: Adventure (kiến thức cloud cơ bản), Voyage (luyện kỹ năng), Trail (học AI)."
   },
   "triviaBadgeLabel": {
-    "message": "Huy hiệu Câu hỏi"
+    "message": "Huy hiệu câu đố"
   },
   "triviaBadgeLabelTooltip": {
-    "message": "Trivia nay là Sprint: quiz nhanh để ôn lại kiến thức và nhận điểm Arcade."
+    "message": "Trivia hiện là Sprint: các câu hỏi nhanh để ôn lại khái niệm và nhận điểm Arcade."
   },
   "skillBadgeLabel": {
-    "message": "Huy hiệu Kỹ năng"
+    "message": "Huy hiệu kỹ năng"
   },
   "specialPointsLabel": {
     "message": "Điểm đặc biệt"
@@ -483,25 +483,25 @@
     "message": "Cột mốc 1"
   },
   "milestone1Bonus": {
-    "message": "+2 Điểm thưởng"
+    "message": "+2 điểm thưởng"
   },
   "milestone2": {
     "message": "Cột mốc 2"
   },
   "milestone2Bonus": {
-    "message": "+8 Điểm thưởng"
+    "message": "+8 điểm thưởng"
   },
   "milestone3": {
     "message": "Cột mốc 3"
   },
   "milestone3Bonus": {
-    "message": "+15 Điểm thưởng"
+    "message": "+15 điểm thưởng"
   },
   "milestoneUltimate": {
-    "message": "Tối thượng"
+    "message": "Ultimate"
   },
   "milestoneUltimateBonus": {
-    "message": "+25 Điểm thưởng"
+    "message": "+25 điểm thưởng"
   },
   "progressLabel": {
     "message": "Tiến độ:"
@@ -510,7 +510,7 @@
     "message": "Trò chơi:"
   },
   "triviaLabel": {
-    "message": "Câu hỏi:"
+    "message": "Câu đố:"
   },
   "skillsLabel": {
     "message": "Kỹ năng:"
@@ -522,7 +522,7 @@
     "message": "Chuyển tài khoản"
   },
   "statusActive": {
-    "message": "Hoạt động"
+    "message": "Đang hoạt động"
   },
   "quickSearch": {
     "message": "Tìm kiếm nhanh"
@@ -534,13 +534,13 @@
     "message": "Giúp bạn tìm câu trả lời nhanh hơn!"
   },
   "successAccountCreated": {
-    "message": "Tạo tài khoản thành công!"
+    "message": "Đã tạo tài khoản thành công!"
   },
   "successAddNickname": {
-    "message": "Bạn có thể thêm biệt danh để dễ dàng nhận biết tài khoản này."
+    "message": "Bạn có thể thêm biệt danh để dễ nhận biết tài khoản này."
   },
   "newlyCreated": {
-    "message": "Mới tạo"
+    "message": "Vừa tạo"
   },
   "labelNickname": {
     "message": "Biệt danh:"
@@ -549,16 +549,16 @@
     "message": "Chưa có biệt danh"
   },
   "labelUpdated": {
-    "message": "Cập nhật:"
+    "message": "Đã cập nhật:"
   },
   "justCreated": {
     "message": "Vừa tạo"
   },
   "markdownShowLess": {
-    "message": "Ẩn bớt"
+    "message": "Hiển thị ít hơn"
   },
   "importantNoticeTitle": {
-    "message": "Thông báo quan trọng"
+    "message": "Lưu ý quan trọng"
   },
   "importantNoticeText": {
     "message": "Mỗi URL hồ sơ chỉ có thể được thêm một lần. Hệ thống sẽ kiểm tra và thông báo nếu tài khoản đã tồn tại."
@@ -573,22 +573,22 @@
     "message": "Hướng dẫn:"
   },
   "instructionsText": {
-    "message": "Nhập URL và nhấp \"Tạo tài khoản\". Hệ thống sẽ tự động tải thông tin và tạo tài khoản mới."
+    "message": "Nhập URL và nhấn \"Tạo tài khoản\". Hệ thống sẽ tự động tải thông tin và tạo tài khoản mới."
   },
   "step1Title": {
     "message": "Nhấn nút \"Mở trang hồ sơ\""
   },
   "step1Subtitle": {
-    "message": "Sẽ mở Google Cloud Skills Boost trong tab mới"
+    "message": "Google Cloud Skills Boost sẽ mở trong tab mới"
   },
   "step2Title": {
-    "message": "Đăng nhập (nếu chưa đăng nhập)"
+    "message": "Đăng nhập nếu chưa đăng nhập"
   },
   "step2Subtitle": {
     "message": "Sử dụng tài khoản Google của bạn"
   },
   "step3Title": {
-    "message": "Tìm mục \"Public profile\""
+    "message": "Tìm phần \"Hồ sơ công khai\""
   },
   "step3Subtitle": {
     "message": "Cuộn xuống trong trang hồ sơ"
@@ -603,10 +603,10 @@
     "message": "Tài khoản mới"
   },
   "totalBadgesLabel": {
-    "message": "Tổng Huy hiệu"
+    "message": "Tổng huy hiệu"
   },
   "skillBadgesLabel": {
-    "message": "Huy hiệu Kỹ năng"
+    "message": "Huy hiệu kỹ năng"
   },
   "arcadePointsLabel": {
     "message": "Điểm Arcade"
@@ -618,7 +618,7 @@
     "message": "VD: Tài khoản chính, Tài khoản công việc, Tài khoản học tập..."
   },
   "nicknameHelpText": {
-    "message": "Biệt danh giúp bạn dễ dàng nhận biết tài khoản khi có nhiều tài khoản khác nhau"
+    "message": "Biệt danh giúp bạn dễ nhận biết khi quản lý nhiều tài khoản"
   },
   "editAccountTitle": {
     "message": "Chỉnh sửa tài khoản"
@@ -645,10 +645,10 @@
     "message": "Lưu thay đổi"
   },
   "themeStudioTitle": {
-    "message": "Studio Chủ đề"
+    "message": "Theme Studio"
   },
   "themeStudioDescription": {
-    "message": "Tùy chỉnh giao diện popup với xem trước thời gian thực."
+    "message": "Tùy chỉnh giao diện popup với bản xem trước theo thời gian thực."
   },
   "labelBackground1": {
     "message": "Nền 1"
@@ -666,85 +666,88 @@
     "message": "Điểm Arcade"
   },
   "labelTextPrimary": {
-    "message": "Màu chữ chính"
+    "message": "Văn bản chính"
   },
   "labelTextSecondary": {
-    "message": "Màu chữ phụ"
+    "message": "Văn bản phụ"
   },
   "labelTextMuted": {
-    "message": "Màu chữ mờ"
+    "message": "Văn bản mờ"
   },
   "btnApplySave": {
-    "message": "Áp dụng & Lưu"
+    "message": "Áp dụng và lưu"
   },
   "btnResetToDark": {
-    "message": "Đặt lại về Dark"
+    "message": "Đặt lại về tối"
   },
   "btnSyncFromPopup": {
-    "message": "Đồng bộ từ Popup hiện tại"
+    "message": "Đồng bộ từ popup hiện tại"
   },
   "previewNote": {
-    "message": "Xem trước sử dụng giao diện popup thực và dữ liệu tài khoản hiện tại."
+    "message": "Bản xem trước dùng giao diện popup thật và dữ liệu tài khoản hiện tại."
   },
   "popupLivePreviewTitle": {
-    "message": "Xem trước Popup trực tiếp"
+    "message": "Xem trước popup trực tiếp"
   },
   "btnApplyCustomTheme": {
-    "message": "Áp dụng chủ đề tùy chỉnh"
+    "message": "Áp dụng giao diện tùy chỉnh"
   },
   "btnResetCustomTheme": {
     "message": "Đặt lại"
   },
   "btnOpenThemeStudio": {
-    "message": "Mở Theme Studio (Xem trước trực tiếp)"
+    "message": "Mở Theme Studio (xem trước trực tiếp)"
   },
   "btnChangeTheme": {
-    "message": "Thay đổi chủ đề"
+    "message": "Đổi giao diện"
   },
   "labThinking": {
-    "message": "Đang suy nghĩ..."
+    "message": "Đang xử lý..."
   },
   "labSolutionTitle": {
-    "message": "Nhấn để mở bài giải"
+    "message": "Nhấn để mở lời giải"
   },
   "labSolutionButton": {
-    "message": "Xem bài giải"
+    "message": "Xem lời giải lab này"
   },
   "labSupportTitle": {
-    "message": "Nhấn để báo lỗi hoặc nhận hỗ trợ qua Telegram"
+    "message": "Nhấn để nhận hỗ trợ hoặc báo lỗi trên Telegram"
   },
   "labSupportButton": {
     "message": "Báo lỗi / Hỗ trợ"
   },
   "labNoSolution": {
-    "message": "Không có bài giải"
+    "message": "Không có lời giải"
   },
   "labEplusSearch": {
-    "message": "Tìm trên ePlus"
+    "message": "Tìm kiếm ePlus"
   },
   "labGoogleSearch": {
-    "message": "Tìm trên Google"
+    "message": "Tìm kiếm Google"
+  },
+  "labYouTube": {
+    "message": "YouTube"
   },
   "labBingSearch": {
-    "message": "Bing Search"
+    "message": "Tìm kiếm Bing"
   },
   "labYandexSearch": {
-    "message": "Yandex Search"
+    "message": "Tìm kiếm Yandex"
   },
   "labBraveSearch": {
-    "message": "Brave Search"
+    "message": "Tìm kiếm Brave"
   },
   "labDuckDuckGoSearch": {
-    "message": "DuckDuckGo Search"
+    "message": "Tìm kiếm DuckDuckGo"
   },
   "labBaiduSearch": {
-    "message": "Baidu Search"
+    "message": "Tìm kiếm Baidu"
   },
   "labYahooSearch": {
-    "message": "Yahoo! Search"
+    "message": "Tìm kiếm Yahoo!"
   },
   "labCoccocSearch": {
-    "message": "Cốc Cốc Search"
+    "message": "Tìm kiếm Cốc Cốc"
   },
   "labelSearch": {
     "message": "Tìm kiếm"
@@ -753,10 +756,7 @@
     "message": "Sao chép liên kết"
   },
   "labFallbackQuery": {
-    "message": "Google Cloud lab tutorial"
-  },
-  "labYouTube": {
-    "message": "YouTube"
+    "message": "Hướng dẫn lab Google Cloud"
   },
   "exportDataTitle": {
     "message": "Xuất dữ liệu của tôi"
@@ -765,10 +765,10 @@
     "message": "Xuất JSON"
   },
   "exportCSV": {
-    "message": "Xuất Badges CSV"
+    "message": "Xuất CSV huy hiệu"
   },
   "exportSuccess": {
-    "message": "Xuất thành công!"
+    "message": "Đã xuất thành công!"
   },
   "exportNoData": {
     "message": "Không có dữ liệu để xuất."
@@ -777,22 +777,22 @@
     "message": "Thu gọn"
   },
   "fullMode": {
-    "message": "Đầy đủ"
+    "message": "Xem đầy đủ"
   },
   "shortcutHint": {
-    "message": "R làm mới · S cài đặt · C thu gọn"
+    "message": "R làm mới / S cài đặt / C thu gọn"
   },
   "messageEplusSearchSaved": {
     "message": "Đã lưu cài đặt tìm kiếm ePlus"
   },
   "messageEnableSearchFirst": {
-    "message": "Hãy bật Tính năng tìm kiếm chính trước khi bật ePlus."
+    "message": "Hãy bật tính năng tìm kiếm chính trước khi bật ePlus."
   },
   "titleSetDefaultAccount": {
     "message": "Đặt làm tài khoản mặc định"
   },
   "titleToggleFacilitatorProgram": {
-    "message": "Bật/tắt Chương trình Facilitator"
+    "message": "Bật/tắt chương trình Facilitator"
   },
   "titleUpdateAccount": {
     "message": "Cập nhật tài khoản"
@@ -801,7 +801,7 @@
     "message": "Xem hồ sơ công khai"
   },
   "titleEditAccount": {
-    "message": "Sửa tài khoản"
+    "message": "Chỉnh sửa tài khoản"
   },
   "titleDeleteAccount": {
     "message": "Xóa tài khoản"
@@ -822,10 +822,10 @@
     "message": "Chương trình Facilitator $1 cho $2"
   },
   "errorUpdatingFacilitatorProgram": {
-    "message": "Lỗi khi cập nhật cài đặt Chương trình Facilitator"
+    "message": "Lỗi khi cập nhật cài đặt chương trình Facilitator"
   },
   "errorFetchDataRetry": {
-    "message": "Không thể tải dữ liệu. Vui lòng thử lại sau."
+    "message": "Không thể lấy dữ liệu. Vui lòng thử lại sau."
   },
   "errorGenericRetry": {
     "message": "Đã xảy ra lỗi. Vui lòng thử lại."
