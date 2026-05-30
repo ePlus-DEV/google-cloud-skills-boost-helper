@@ -201,7 +201,7 @@ export default defineBackground(() => {
   });
 
   // Listen for messages (from popup/options) requesting badge updates
-  async function handleSetBadge(message: Record<string, any>) {
+  function handleSetBadge(message: Record<string, any>) {
     const text = message.text || "0";
     const color = message.color || UI_COLORS?.BADGE || "#155dfc";
 
@@ -229,7 +229,7 @@ export default defineBackground(() => {
     }
   }
 
-  async function handleClearBadge() {
+  function handleClearBadge() {
     try {
       const browserAction = getBrowserAction();
       if (browserAction) {
@@ -294,11 +294,11 @@ export default defineBackground(() => {
 
       switch (message.type) {
         case "setBadge":
-          await handleSetBadge(message);
+          handleSetBadge(message);
           break;
 
         case "clearBadge":
-          await handleClearBadge();
+          handleClearBadge();
           break;
         case "preferredSearchEngineChanged":
           try {
