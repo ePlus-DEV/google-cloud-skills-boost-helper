@@ -3,34 +3,34 @@
     "message": "Google Cloud Skills Boost - Helper"
   },
   "extDescription": {
-    "message": "A browser 확장 프로그램 designed to optimize your learning experience on Google Cloud Skills Boost."
+    "message": "Google Cloud Skills Boost에서의 학습 경험을 최적화하도록 설계된 브라우저 확장 프로그램입니다."
   },
   "optionsPageTitle": {
-    "message": "Google Cloud Skills Boost - Helper Options"
+    "message": "Google Cloud Skills Boost - Helper 옵션"
   },
   "optionsPageDescription": {
-    "message": "Customize your experience with Google Cloud Skills Boost - Helper."
+    "message": "Google Cloud Skills Boost - Helper 사용 환경을 맞춤 설정합니다."
   },
   "labelFeature": {
-    "message": "Feature"
+    "message": "기능"
   },
   "labelAction": {
-    "message": "Action"
+    "message": "작업"
   },
   "labelShowLeaderboard": {
-    "message": "Show Leaderboard"
+    "message": "리더보드 표시"
   },
   "labelHideLeaderboard": {
-    "message": "Hide Leaderboard"
+    "message": "리더보드 숨기기"
   },
   "labelMyBadges": {
-    "message": "My 배지"
+    "message": "내 배지"
   },
   "labelPublicProfile": {
     "message": "공개 프로필"
   },
   "labelArcadePointsCalculator": {
-    "message": "Arcade 포인트 Calculator"
+    "message": "Arcade 포인트 계산기"
   },
   "labelSave": {
     "message": "저장"
@@ -39,124 +39,124 @@
     "message": "로딩 중..."
   },
   "messageNoDataAvailable": {
-    "message": "No 데이터 available"
+    "message": "사용 가능한 데이터가 없습니다"
   },
   "labelRecentActivity": {
-    "message": "Recent Activity"
+    "message": "최근 활동"
   },
   "labelBadgesAchievements": {
-    "message": "배지 & Achievements"
+    "message": "배지 및 업적"
   },
   "labelUpdatePoints": {
-    "message": "업데이트 포인트"
+    "message": "포인트 업데이트"
   },
   "labelLastUpdated": {
-    "message": "Last Updated"
+    "message": "마지막 업데이트"
   },
   "labelPage": {
     "message": "페이지"
   },
   "labelLoadMore": {
-    "message": "Load More"
+    "message": "더 불러오기"
   },
   "textCurrentLevel": {
-    "message": "Current Level"
+    "message": "현재 레벨"
   },
   "textMaxLevel": {
-    "message": "Max level"
+    "message": "최대 레벨"
   },
   "textNextLevelInPoints": {
-    "message": "다음 level in"
+    "message": "다음 레벨까지"
   },
   "textPoints": {
     "message": "포인트"
   },
   "textPleaseSetUpTheSettings": {
-    "message": "부디 set up the 설정"
+    "message": "설정을 완료해 주세요"
   },
   "errorInvalidUrl": {
-    "message": "부디 enter a valid URL starting with 'https://www.skills.google/public_profiles/xxx"
+    "message": "'https://www.skills.google/public_profiles/xxx'로 시작하는 올바른 URL을 입력해 주세요."
   },
   "successSettingsSaved": {
-    "message": "설정 저장됨 성공했습니다!"
+    "message": "설정이 성공적으로 저장되었습니다!"
   },
   "notePleaseSetUpTheSettings": {
-    "message": "<strong>Note:</strong> <br>⚠️ You have 활성화됨 the <strong>\"Make profile public\"</strong> option, but haven't 저장됨 the changes yet.<br>👉 부디 클릭 the <strong>\"Update settings\"</strong> 버튼 to confirm and save your new 설정.<br>❌ If you don't save, your 프로필 will <strong>not be made 공개</strong> and the link will not be generated."
+    "message": "<strong>참고:</strong><br><strong>\"프로필 공개\"</strong> 옵션을 켰지만 아직 변경 사항을 저장하지 않았습니다.<br>새 설정을 확인하고 저장하려면 <strong>\"설정 업데이트\"</strong>를 클릭하세요.<br>저장하지 않으면 프로필이 <strong>공개되지 않으며</strong> 링크도 생성되지 않습니다."
   },
   "messageLinkCopiedToClipboard": {
-    "message": "✔️ Link copied to clipboard!"
+    "message": "링크가 클립보드에 복사되었습니다!"
   },
   "copyProfileUrl": {
-    "message": "클릭 to copy 공개 프로필 URL"
+    "message": "클릭하여 공개 프로필 URL 복사"
   },
   "labelEnableSearchFeature": {
-    "message": "Enable 검색 Feature"
+    "message": "검색 기능 사용"
   },
   "descriptionEnableSearchFeature": {
-    "message": "Show Google 검색 and YouTube buttons when no solution is found."
+    "message": "해결책을 찾지 못했을 때 Google Search 및 YouTube 버튼을 표시합니다."
   },
   "messageSearchFeatureEnabled": {
-    "message": "검색 feature 활성화됨 - Google and YouTube 검색 buttons will appear when no solution is found"
+    "message": "검색 기능이 켜졌습니다. 해결책을 찾지 못하면 Google 및 YouTube 검색 버튼이 표시됩니다"
   },
   "messageSearchFeatureDisabled": {
-    "message": "검색 feature 비활성화됨 - Only \"No solution\" will be shown when no solution is found"
+    "message": "검색 기능이 꺼졌습니다. 해결책을 찾지 못하면 \"해결책 없음\"만 표시됩니다"
   },
   "tourStartButton": {
-    "message": "User 가이드"
+    "message": "사용자 가이드"
   },
   "tourWelcomeTitle": {
-    "message": "Welcome to the 계정 Creation 가이드!"
+    "message": "계정 생성 가이드에 오신 것을 환영합니다!"
   },
   "tourWelcomeContent": {
-    "message": "We will 가이드 you step by step to 생성 your first Google Cloud Skills Boost 계정."
+    "message": "첫 Google Cloud Skills Boost 계정을 만들 수 있도록 단계별로 안내합니다."
   },
   "tourWelcomeTip": {
-    "message": "<strong>Tip:</strong> You can skip this 가이드 at any time by clicking \"Skip\"."
+    "message": "<strong>팁:</strong> 언제든지 \"건너뛰기\"를 클릭하여 이 가이드를 건너뛸 수 있습니다."
   },
   "tourAddAccountTitle": {
-    "message": "Add New 계정"
+    "message": "새 계정 추가"
   },
   "tourAddAccountContent": {
-    "message": "클릭 this 버튼 to add your first Google Cloud Skills Boost 계정. You can manage multiple accounts simultaneously."
+    "message": "이 버튼을 클릭하여 첫 Google Cloud Skills Boost 계정을 추가하세요. 여러 계정을 동시에 관리할 수 있습니다."
   },
   "tourAccountListTitle": {
-    "message": "계정 List"
+    "message": "계정 목록"
   },
   "tourAccountListContent": {
-    "message": "After creating accounts, they will appear here. You can:<br>• Switch between accounts<br>• 업데이트 arcade 포인트 데이터<br>• Edit nicknames<br>• View 공개 profiles"
+    "message": "계정을 만들면 여기에 표시됩니다. 할 수 있는 작업:<br>- 계정 전환<br>- Arcade 포인트 데이터 업데이트<br>- 별명 수정<br>- 공개 프로필 보기"
   },
   "tourModalStep1Title": {
-    "message": "Step 1: 열기 프로필 페이지"
+    "message": "1단계: 프로필 페이지 열기"
   },
   "tourModalStep1Content": {
-    "message": "클릭 this 버튼 to 열기 Google Cloud Skills Boost 프로필 in a new tab. You will need to log in and get the URL from the 프로필 페이지."
+    "message": "이 버튼을 클릭하여 Google Cloud Skills Boost 프로필을 새 탭에서 엽니다. 로그인한 뒤 프로필 페이지에서 URL을 가져와야 합니다."
   },
   "tourModalStep2Title": {
-    "message": "Step 2: Enter 프로필 URL"
+    "message": "2단계: 프로필 URL 입력"
   },
   "tourModalStep2Content": {
-    "message": "After logging in, copy the URL from the address bar and paste it here."
+    "message": "로그인 후 주소 표시줄의 URL을 복사하여 여기에 붙여넣으세요."
   },
   "tourModalStep2Tip": {
-    "message": "The URL will look like: https://www.skills.google/public_profiles/xxxxx"
+    "message": "URL은 다음과 같은 형식입니다: https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
-    "message": "Step 3: 생성 계정"
+    "message": "3단계: 계정 만들기"
   },
   "tourModalStep3Content": {
-    "message": "클릭 this 버튼 to 생성 the 계정. The system will automatically fetch information from the 프로필 and 생성 a new 계정 for you."
+    "message": "이 버튼을 클릭하여 계정을 만듭니다. 시스템이 프로필에서 정보를 자동으로 가져와 새 계정을 생성합니다."
   },
   "tourCompletedTitle": {
-    "message": "가이드 Completed!"
+    "message": "가이드 완료!"
   },
   "tourCompletedContent": {
-    "message": "Now you can start creating your first 계정."
+    "message": "이제 첫 계정을 만들 수 있습니다."
   },
   "tourModalCompletedTitle": {
-    "message": "Ready to 생성 계정!"
+    "message": "계정을 만들 준비가 되었습니다!"
   },
   "tourModalCompletedContent": {
-    "message": "Try entering a 프로필 URL and 생성 your first 계정."
+    "message": "프로필 URL을 입력하고 첫 계정을 만들어 보세요."
   },
   "tourButtonNext": {
     "message": "다음"
@@ -165,154 +165,154 @@
     "message": "뒤로"
   },
   "tourButtonSkip": {
-    "message": "Skip"
+    "message": "건너뛰기"
   },
   "tourButtonComplete": {
-    "message": "Done"
+    "message": "완료"
   },
   "tourCloseButton": {
     "message": "닫기"
   },
   "badgeToolbarNote": {
-    "message": "When 활성화됨, the 확장 프로그램 will 업데이트 the toolbar badge with your total 포인트 (includes facilitator bonus when active)."
+    "message": "사용 설정하면 확장 프로그램이 전체 포인트로 툴바 배지를 업데이트합니다. 활성 상태의 Facilitator 보너스도 포함됩니다."
   },
   "badgeViewDescription": {
-    "message": "View all your earned 배지 and achievements."
+    "message": "획득한 모든 배지와 업적을 확인합니다."
   },
   "badgeTrackProgress": {
-    "message": "Track your learning progress!"
+    "message": "학습 진행 상황을 추적하세요!"
   },
   "labelAchievements": {
-    "message": "Achievements"
+    "message": "업적"
   },
   "labelProgress": {
-    "message": "Progress"
+    "message": "진행 상황"
   },
   "errorEnterProfileUrl": {
-    "message": "부디 enter a 프로필 URL!"
+    "message": "프로필 URL을 입력해 주세요!"
   },
   "errorInvalidProfileUrl": {
-    "message": "Invalid 프로필 URL!"
+    "message": "잘못된 프로필 URL입니다!"
   },
   "errorAccountExistsTitle": {
-    "message": "계정 already exists"
+    "message": "계정이 이미 존재합니다"
   },
   "errorAccountExistsMsg": {
-    "message": "An 계정 with this URL already exists: \"$1\"."
+    "message": "이 URL의 계정이 이미 존재합니다: \"$1\"."
   },
   "errorNoNameFromProfile": {
-    "message": "Unable to get name from 프로필. 부디 try again!"
+    "message": "프로필에서 이름을 가져올 수 없습니다. 다시 시도해 주세요!"
   },
   "labelAdding": {
-    "message": "Adding..."
+    "message": "추가 중..."
   },
   "successAccountAdded": {
-    "message": "계정 added 성공했습니다!"
+    "message": "계정이 성공적으로 추가되었습니다!"
   },
   "errorAddAccountGeneric": {
-    "message": "An 오류 occurred while adding the 계정. 부디 try again!"
+    "message": "계정을 추가하는 중 오류가 발생했습니다. 다시 시도해 주세요!"
   },
   "errorAccountExistsMsgSimple": {
-    "message": "계정 already exists."
+    "message": "계정이 이미 존재합니다."
   },
   "labelAddAccount": {
-    "message": "Add 계정"
+    "message": "계정 추가"
   },
   "successSwitchedAccount": {
-    "message": "Switched 계정 성공했습니다!"
+    "message": "계정이 성공적으로 전환되었습니다!"
   },
   "errorSwitchAccount": {
-    "message": "오류 switching 계정."
+    "message": "계정 전환 중 오류가 발생했습니다."
   },
   "errorAccountNotFound": {
-    "message": "계정 not found."
+    "message": "계정을 찾을 수 없습니다."
   },
   "infoUpdatingAccountData": {
-    "message": "Updating 계정 데이터..."
+    "message": "계정 데이터를 업데이트하는 중..."
   },
   "successAccountDataUpdated": {
-    "message": "계정 데이터 updated 성공했습니다!"
+    "message": "계정 데이터가 성공적으로 업데이트되었습니다!"
   },
   "errorFetchDataFromApi": {
-    "message": "Could not fetch 데이터 from API."
+    "message": "API에서 데이터를 가져올 수 없습니다."
   },
   "errorUpdatingAccount": {
-    "message": "오류 updating 계정."
+    "message": "계정을 업데이트하는 중 오류가 발생했습니다."
   },
   "errorProfileUrlNotFound": {
-    "message": "프로필 URL not found for this 계정."
+    "message": "이 계정의 프로필 URL을 찾을 수 없습니다."
   },
   "errorOpeningProfile": {
-    "message": "오류 opening 프로필."
+    "message": "프로필을 여는 중 오류가 발생했습니다."
   },
   "errorNoActiveAccountOrProfileUrl": {
-    "message": "No active 계정 or 프로필 URL found."
+    "message": "활성 계정 또는 프로필 URL을 찾을 수 없습니다."
   },
   "errorAccountNotFoundToUpdate": {
-    "message": "Could not find 계정 to 업데이트!"
+    "message": "업데이트할 계정을 찾을 수 없습니다!"
   },
   "successNicknameSaved": {
-    "message": "닉네임 저장됨 성공했습니다!"
+    "message": "별명이 성공적으로 저장되었습니다!"
   },
   "errorSavingNickname": {
-    "message": "오류 saving 닉네임!"
+    "message": "별명을 저장하는 중 오류가 발생했습니다!"
   },
   "successNicknameUpdated": {
-    "message": "닉네임 updated 성공했습니다!"
+    "message": "별명이 성공적으로 업데이트되었습니다!"
   },
   "errorUpdatingAccountGeneric": {
-    "message": "An 오류 occurred while updating the 계정!"
+    "message": "계정을 업데이트하는 중 오류가 발생했습니다!"
   },
   "errorCannotDeleteLastAccount": {
-    "message": "Cannot 삭제 the last 계정!"
+    "message": "마지막 계정은 삭제할 수 없습니다!"
   },
   "successAccountDeleted": {
-    "message": "계정 deleted 성공했습니다!"
+    "message": "계정이 성공적으로 삭제되었습니다!"
   },
   "errorDeletingAccountGeneric": {
-    "message": "An 오류 occurred while deleting the 계정!"
+    "message": "계정을 삭제하는 중 오류가 발생했습니다!"
   },
   "successDataExported": {
-    "message": "데이터 exported 성공했습니다!"
+    "message": "데이터가 성공적으로 내보내졌습니다!"
   },
   "errorExportingData": {
-    "message": "An 오류 occurred while exporting 데이터!"
+    "message": "데이터를 내보내는 중 오류가 발생했습니다!"
   },
   "errorNoImportData": {
-    "message": "부디 select a file or paste JSON content!"
+    "message": "파일을 선택하거나 JSON 내용을 붙여넣어 주세요!"
   },
   "successDataImported": {
-    "message": "데이터 imported 성공했습니다!"
+    "message": "데이터가 성공적으로 가져와졌습니다!"
   },
   "errorInvalidImportData": {
-    "message": "Invalid 데이터. 부디 check again!"
+    "message": "잘못된 데이터입니다. 다시 확인해 주세요!"
   },
   "errorImportingData": {
-    "message": "An 오류 occurred while importing 데이터!"
+    "message": "데이터를 가져오는 중 오류가 발생했습니다!"
   },
   "labelFacilitatorProgram": {
-    "message": "Facilitator Program"
+    "message": "Facilitator 프로그램"
   },
   "messageBadgeEnabled": {
-    "message": "Badge display 활성화됨"
+    "message": "배지 표시가 켜졌습니다"
   },
   "messageBadgeDisabled": {
-    "message": "Badge display 비활성화됨"
+    "message": "배지 표시가 꺼졌습니다"
   },
   "labelShowBadge": {
-    "message": "Show badge on 확장 프로그램 icon"
+    "message": "확장 프로그램 아이콘에 배지 표시"
   },
   "descriptionShowBadge": {
-    "message": "Toggle whether the 확장 프로그램 shows the total 포인트 on the browser toolbar icon."
+    "message": "브라우저 툴바 아이콘에 전체 포인트를 표시할지 전환합니다."
   },
   "facilitatorDeadlinePassed": {
-    "message": "Facilitator program deadline has passed"
+    "message": "Facilitator 프로그램 마감일이 지났습니다"
   },
   "arcadeDeadlinePassed": {
-    "message": "The Arcade season has wrapped up for the year. See you next season!"
+    "message": "올해 Arcade 시즌이 종료되었습니다. 다음 시즌에 만나요!"
   },
   "programEnded": {
-    "message": "Program Ended"
+    "message": "프로그램 종료"
   },
   "statusCompleted": {
     "message": "완료"
@@ -321,7 +321,7 @@
     "message": "진행 중"
   },
   "statusNotStarted": {
-    "message": "시작 안 함"
+    "message": "시작 전"
   },
   "anonymous": {
     "message": "익명"
@@ -330,64 +330,64 @@
     "message": "VIP"
   },
   "errorLoadingData": {
-    "message": "오류 loading 데이터"
+    "message": "데이터 로드 오류"
   },
   "labelBack": {
     "message": "뒤로"
   },
   "backToTop": {
-    "message": "뒤로 to top"
+    "message": "맨 위로"
   },
   "changelogWhatsNew": {
-    "message": "What's New"
+    "message": "새로운 기능"
   },
   "changelogLatestUpdates": {
-    "message": "Latest updates and improvements"
+    "message": "최신 업데이트 및 개선 사항"
   },
   "changelogLoading": {
-    "message": "로딩 중 changelog..."
+    "message": "변경 로그 로딩 중..."
   },
   "changelogFooterNotice": {
-    "message": "This 확장 프로그램 is not affiliated with Google Cloud Skills Boost. All rights reserved."
+    "message": "이 확장 프로그램은 Google Cloud Skills Boost와 제휴되어 있지 않습니다. 모든 권리 보유."
   },
   "announcementTitle": {
-    "message": "Important Announcement"
+    "message": "중요 공지"
   },
   "markdownShowMore": {
-    "message": "Show more"
+    "message": "더 보기"
   },
   "accountsTitle": {
-    "message": "Your Accounts"
+    "message": "내 계정"
   },
   "noAccountsYet": {
-    "message": "No accounts yet"
+    "message": "아직 계정이 없습니다"
   },
   "addAccountFirst": {
-    "message": "Add your first 계정!"
+    "message": "첫 계정을 추가하세요!"
   },
   "dataManagementTitle": {
-    "message": "데이터 Management"
+    "message": "데이터 관리"
   },
   "dataManagementSubtitle": {
-    "message": "Backup and restore"
+    "message": "백업 및 복원"
   },
   "exportData": {
-    "message": "Export 데이터"
+    "message": "데이터 내보내기"
   },
   "importData": {
-    "message": "Import 데이터"
+    "message": "데이터 가져오기"
   },
   "modalAddAccountTitle": {
-    "message": "Add New 계정"
+    "message": "새 계정 추가"
   },
   "howToGetProfileUrl": {
-    "message": "How to get 프로필 URL"
+    "message": "프로필 URL 가져오는 방법"
   },
   "howToGetProfileSubtitle": {
-    "message": "Follow the steps below"
+    "message": "아래 단계를 따르세요"
   },
   "openProfilePage": {
-    "message": "열기 프로필 페이지"
+    "message": "프로필 페이지 열기"
   },
   "errorPrefix": {
     "message": "오류:"
@@ -396,325 +396,325 @@
     "message": "성공:"
   },
   "accountErrorFallback": {
-    "message": "Something went wrong. 부디 try again."
+    "message": "문제가 발생했습니다. 다시 시도해 주세요."
   },
   "accountSuccessFallback": {
-    "message": "Your action was successful!"
+    "message": "작업이 성공적으로 완료되었습니다!"
   },
   "viewBadges": {
-    "message": "View 배지"
+    "message": "배지 보기"
   },
   "openProfile": {
-    "message": "열기 프로필"
+    "message": "프로필 열기"
   },
   "arcadePointsTitle": {
     "message": "Arcade 포인트"
   },
   "milestonesTitle": {
-    "message": "Milestones"
+    "message": "마일스톤"
   },
   "accountsCardTitle": {
-    "message": "계정 Management & Arcade 포인트 Calculator"
+    "message": "계정 관리 및 Arcade 포인트 계산기"
   },
   "accountsCardSubtitle": {
-    "message": "Manage multiple accounts and calculate arcade 포인트."
+    "message": "여러 계정을 관리하고 Arcade 포인트를 계산하세요."
   },
   "clickOpenProfileButton": {
-    "message": "클릭 \"Open Profile Page\" 버튼"
+    "message": "\"프로필 페이지 열기\" 버튼 클릭"
   },
   "programDeadline": {
-    "message": "Program Deadline"
+    "message": "프로그램 마감일"
   },
   "labelDays": {
-    "message": "Days"
+    "message": "일"
   },
   "labelHours": {
-    "message": "Hours"
+    "message": "시간"
   },
   "labelMinutes": {
-    "message": "Minutes"
+    "message": "분"
   },
   "labelSeconds": {
-    "message": "Seconds"
+    "message": "초"
   },
   "milestoneDeadlineNotice": {
-    "message": "Complete milestones before the deadline to earn bonus 포인트!"
+    "message": "마감일 전에 마일스톤을 완료하여 보너스 포인트를 받으세요!"
   },
   "arcadeMotivation": {
-    "message": "Keep the momentum going and climb the Arcade leaderboard!"
+    "message": "흐름을 유지하고 Arcade 리더보드에서 올라가세요!"
   },
   "totalBonusEarned": {
-    "message": "Total Bonus Earned:"
+    "message": "획득한 총 보너스:"
   },
   "maxPossibleNote": {
-    "message": "Maximum possible: 25 포인트 (highest milestone only)"
+    "message": "최대 가능: 25포인트(가장 높은 마일스톤만 적용)"
   },
   "pointsBreakdown": {
-    "message": "포인트 Breakdown"
+    "message": "포인트 내역"
   },
   "arcadeBase": {
     "message": "Arcade Base Camp:"
   },
   "facilitatorBonus": {
-    "message": "Facilitator Bonus:"
+    "message": "Facilitator 보너스:"
   },
   "gameBadgeLabel": {
-    "message": "Game Badge"
+    "message": "게임 배지"
   },
   "gameBadgeLabelTooltip": {
-    "message": "Arcade is level-free now. New tracks: Adventure (cloud basics), Voyage (skill practice), Trail (AI learning)."
+    "message": "Arcade는 이제 레벨이 없습니다. 새 트랙: Adventure(클라우드 기초), Voyage(스킬 연습), Trail(AI 학습)."
   },
   "triviaBadgeLabel": {
-    "message": "Trivia Badge"
+    "message": "퀴즈 배지"
   },
   "triviaBadgeLabelTooltip": {
-    "message": "Trivia is now Sprint: quick quizzes to refresh concepts and earn Arcade 포인트."
+    "message": "Trivia는 이제 Sprint입니다. 빠른 퀴즈로 개념을 복습하고 Arcade 포인트를 얻으세요."
   },
   "skillBadgeLabel": {
-    "message": "Skill Badge"
+    "message": "스킬 배지"
   },
   "specialPointsLabel": {
-    "message": "Special 포인트"
+    "message": "특별 포인트"
   },
   "arcadeSeasonCountdown": {
-    "message": "Arcade Season Countdown"
+    "message": "Arcade 시즌 카운트다운"
   },
   "milestone1": {
-    "message": "Milestone 1"
+    "message": "마일스톤 1"
   },
   "milestone1Bonus": {
-    "message": "+2 Bonus 포인트"
+    "message": "+2 보너스 포인트"
   },
   "milestone2": {
-    "message": "Milestone 2"
+    "message": "마일스톤 2"
   },
   "milestone2Bonus": {
-    "message": "+8 Bonus 포인트"
+    "message": "+8 보너스 포인트"
   },
   "milestone3": {
-    "message": "Milestone 3"
+    "message": "마일스톤 3"
   },
   "milestone3Bonus": {
-    "message": "+15 Bonus 포인트"
+    "message": "+15 보너스 포인트"
   },
   "milestoneUltimate": {
     "message": "Ultimate"
   },
   "milestoneUltimateBonus": {
-    "message": "+25 Bonus 포인트"
+    "message": "+25 보너스 포인트"
   },
   "progressLabel": {
-    "message": "Progress:"
+    "message": "진행 상황:"
   },
   "gamesLabel": {
-    "message": "Games:"
+    "message": "게임:"
   },
   "triviaLabel": {
-    "message": "Trivia:"
+    "message": "퀴즈:"
   },
   "skillsLabel": {
-    "message": "Skills:"
+    "message": "스킬:"
   },
   "labFreeLabel": {
-    "message": "Lab-free:"
+    "message": "Lab 불필요:"
   },
   "switchAccount": {
-    "message": "Switch 계정"
+    "message": "계정 전환"
   },
   "statusActive": {
     "message": "활성"
   },
   "quickSearch": {
-    "message": "Quick 검색"
+    "message": "빠른 검색"
   },
   "youtubeResults": {
-    "message": "YouTube Results"
+    "message": "YouTube 결과"
   },
   "searchFeatureTip": {
-    "message": "Helps you find answers faster!"
+    "message": "답을 더 빠르게 찾는 데 도움이 됩니다!"
   },
   "successAccountCreated": {
-    "message": "계정 created 성공했습니다!"
+    "message": "계정이 성공적으로 생성되었습니다!"
   },
   "successAddNickname": {
-    "message": "You can add a 닉네임 to easily identify this 계정."
+    "message": "이 계정을 쉽게 식별할 수 있도록 별명을 추가할 수 있습니다."
   },
   "newlyCreated": {
-    "message": "Newly created"
+    "message": "새로 생성됨"
   },
   "labelNickname": {
-    "message": "닉네임:"
+    "message": "별명:"
   },
   "noNicknameYet": {
-    "message": "No 닉네임 yet"
+    "message": "아직 별명이 없습니다"
   },
   "labelUpdated": {
-    "message": "Updated:"
+    "message": "업데이트:"
   },
   "justCreated": {
-    "message": "Just created"
+    "message": "방금 생성됨"
   },
   "markdownShowLess": {
-    "message": "Show less"
+    "message": "간단히 보기"
   },
   "importantNoticeTitle": {
-    "message": "Important Notice"
+    "message": "중요 알림"
   },
   "importantNoticeText": {
-    "message": "Each 프로필 URL can only be added once. The system will check and notify if the 계정 already exists."
+    "message": "각 프로필 URL은 한 번만 추가할 수 있습니다. 계정이 이미 있으면 시스템이 확인 후 알려줍니다."
   },
   "enterProfileUrlLabel": {
-    "message": "Enter 프로필 URL and 생성 계정"
+    "message": "프로필 URL을 입력하고 계정 만들기"
   },
   "createAccountButton": {
-    "message": "생성 계정"
+    "message": "계정 만들기"
   },
   "instructionsLabel": {
-    "message": "Instructions:"
+    "message": "안내:"
   },
   "instructionsText": {
-    "message": "Enter URL and 클릭 \"Create Account\". The system will automatically load information and 생성 a new 계정."
+    "message": "URL을 입력하고 \"계정 만들기\"를 클릭하세요. 시스템이 정보를 자동으로 불러와 새 계정을 만듭니다."
   },
   "step1Title": {
-    "message": "클릭 \"Open Profile Page\" 버튼"
+    "message": "\"프로필 페이지 열기\" 버튼 클릭"
   },
   "step1Subtitle": {
-    "message": "Will 열기 Google Cloud Skills Boost in new tab"
+    "message": "Google Cloud Skills Boost가 새 탭에서 열립니다"
   },
   "step2Title": {
-    "message": "Log in (if not already)"
+    "message": "아직 로그인하지 않았다면 로그인"
   },
   "step2Subtitle": {
-    "message": "Use your Google 계정"
+    "message": "Google 계정을 사용하세요"
   },
   "step3Title": {
-    "message": "Find \"Public profile\" section"
+    "message": "\"공개 프로필\" 섹션 찾기"
   },
   "step3Subtitle": {
-    "message": "Scroll down in the 프로필 페이지"
+    "message": "프로필 페이지에서 아래로 스크롤하세요"
   },
   "step4Title": {
-    "message": "Copy URL from address bar"
+    "message": "주소 표시줄에서 URL 복사"
   },
   "step4Subtitle": {
-    "message": "Paste into the field below"
+    "message": "아래 입력란에 붙여넣으세요"
   },
   "newAccountBadge": {
-    "message": "New 계정"
+    "message": "새 계정"
   },
   "totalBadgesLabel": {
-    "message": "Total 배지"
+    "message": "총 배지"
   },
   "skillBadgesLabel": {
-    "message": "Skill 배지"
+    "message": "스킬 배지"
   },
   "arcadePointsLabel": {
     "message": "Arcade 포인트"
   },
   "accountNicknameLabel": {
-    "message": "계정 닉네임"
+    "message": "계정 별명"
   },
   "nicknamePlaceholder": {
-    "message": "e.g: Main 계정, Work 계정, Study 계정..."
+    "message": "예: 기본 계정, 업무 계정, 학습 계정..."
   },
   "nicknameHelpText": {
-    "message": "Nicknames help you easily identify accounts when you have multiple different accounts"
+    "message": "별명은 여러 계정을 관리할 때 계정을 쉽게 구분하는 데 도움이 됩니다"
   },
   "editAccountTitle": {
-    "message": "Edit 계정"
+    "message": "계정 편집"
   },
   "displayNameLabel": {
-    "message": "Display name:"
+    "message": "표시 이름:"
   },
   "displayNameInfo": {
-    "message": "Display name is taken from Google Cloud Skills Boost and cannot be edited"
+    "message": "표시 이름은 Google Cloud Skills Boost에서 가져오며 수정할 수 없습니다"
   },
   "nicknameLabel": {
-    "message": "닉네임:"
+    "message": "별명:"
   },
   "enterNicknamePlaceholder": {
-    "message": "Enter 닉네임 for easy identification..."
+    "message": "쉽게 식별할 수 있는 별명을 입력하세요..."
   },
   "nicknameExample": {
-    "message": "Example: \"Main account\", \"Work account\", \"Study account\"..."
+    "message": "예: \"기본 계정\", \"업무 계정\", \"학습 계정\"..."
   },
   "cancelButton": {
     "message": "취소"
   },
   "saveChangesButton": {
-    "message": "저장 changes"
+    "message": "변경 사항 저장"
   },
   "themeStudioTitle": {
     "message": "Theme Studio"
   },
   "themeStudioDescription": {
-    "message": "Customize your popup theme with real-time preview."
+    "message": "실시간 미리보기로 popup 테마를 맞춤 설정합니다."
   },
   "labelBackground1": {
-    "message": "Background 1"
+    "message": "배경 1"
   },
   "labelBackground2": {
-    "message": "Background 2"
+    "message": "배경 2"
   },
   "labelBackground3": {
-    "message": "Background 3"
+    "message": "배경 3"
   },
   "labelAccent": {
-    "message": "Accent"
+    "message": "강조 색상"
   },
   "labelArcadePoints": {
     "message": "Arcade 포인트"
   },
   "labelTextPrimary": {
-    "message": "Text Primary"
+    "message": "기본 텍스트"
   },
   "labelTextSecondary": {
-    "message": "Text Secondary"
+    "message": "보조 텍스트"
   },
   "labelTextMuted": {
-    "message": "Text Muted"
+    "message": "흐린 텍스트"
   },
   "btnApplySave": {
-    "message": "Apply & 저장"
+    "message": "적용 및 저장"
   },
   "btnResetToDark": {
-    "message": "Reset to Dark"
+    "message": "다크로 초기화"
   },
   "btnSyncFromPopup": {
-    "message": "Sync From Current Popup"
+    "message": "현재 popup에서 동기화"
   },
   "previewNote": {
-    "message": "Preview uses real popup UI and current 계정 데이터."
+    "message": "미리보기는 실제 popup UI와 현재 계정 데이터를 사용합니다."
   },
   "popupLivePreviewTitle": {
-    "message": "Popup Live Preview"
+    "message": "Popup 실시간 미리보기"
   },
   "btnApplyCustomTheme": {
-    "message": "Apply Custom Theme"
+    "message": "맞춤 테마 적용"
   },
   "btnResetCustomTheme": {
-    "message": "Reset"
+    "message": "초기화"
   },
   "btnOpenThemeStudio": {
-    "message": "열기 Theme Studio (Live Preview)"
+    "message": "Theme Studio 열기(실시간 미리보기)"
   },
   "btnChangeTheme": {
-    "message": "Change Theme"
+    "message": "테마 변경"
   },
   "labThinking": {
-    "message": "Thinking..."
+    "message": "처리 중..."
   },
   "labSolutionTitle": {
-    "message": "클릭 to 열기 the solution"
+    "message": "클릭하여 해결책 열기"
   },
   "labSolutionButton": {
-    "message": "Solution this lab"
+    "message": "이 lab의 해결책 보기"
   },
   "labSupportTitle": {
-    "message": "클릭 to get support or report issue on Telegram"
+    "message": "Telegram에서 지원을 받거나 문제를 신고하려면 클릭하세요"
   },
   "labSupportButton": {
-    "message": "Report / Support"
+    "message": "신고 / 지원"
   },
   "labNoSolution": {
     "message": "해결책 없음"
@@ -756,94 +756,94 @@
     "message": "링크 복사"
   },
   "labFallbackQuery": {
-    "message": "Google Cloud lab tutorial"
+    "message": "Google Cloud lab 튜토리얼"
   },
   "exportDataTitle": {
-    "message": "Export My 데이터"
+    "message": "내 데이터 내보내기"
   },
   "exportJSON": {
     "message": "JSON 내보내기"
   },
   "exportCSV": {
-    "message": "Export 배지 CSV"
+    "message": "배지 CSV 내보내기"
   },
   "exportSuccess": {
-    "message": "Exported 성공했습니다!"
+    "message": "내보내기 완료!"
   },
   "exportNoData": {
-    "message": "No 데이터 to export."
+    "message": "내보낼 데이터가 없습니다."
   },
   "compactMode": {
-    "message": "Compact"
+    "message": "간단히"
   },
   "fullMode": {
-    "message": "Full View"
+    "message": "전체 보기"
   },
   "shortcutHint": {
-    "message": "R refresh · S 설정 · C compact"
+    "message": "R 새로고침 / S 설정 / C 간단히"
   },
   "messageEplusSearchSaved": {
-    "message": "ePlus 검색 setting 저장됨"
+    "message": "ePlus 검색 설정이 저장되었습니다"
   },
   "messageEnableSearchFirst": {
-    "message": "Enable the main 검색 Feature before enabling ePlus."
+    "message": "ePlus를 사용하기 전에 기본 검색 기능을 먼저 켜세요."
   },
   "titleSetDefaultAccount": {
-    "message": "Set as default 계정"
+    "message": "기본 계정으로 설정"
   },
   "titleToggleFacilitatorProgram": {
-    "message": "Toggle Facilitator Program"
+    "message": "Facilitator 프로그램 전환"
   },
   "titleUpdateAccount": {
-    "message": "업데이트 계정"
+    "message": "계정 업데이트"
   },
   "titleViewPublicProfile": {
-    "message": "View 공개 프로필"
+    "message": "공개 프로필 보기"
   },
   "titleEditAccount": {
-    "message": "Edit 계정"
+    "message": "계정 편집"
   },
   "titleDeleteAccount": {
-    "message": "삭제 계정"
+    "message": "계정 삭제"
   },
   "exportNoBadgesData": {
-    "message": "No 배지 to export."
+    "message": "내보낼 배지가 없습니다."
   },
   "messagePreferredSearchEngineSaved": {
-    "message": "Preferred 검색 engine 저장됨"
+    "message": "선호 검색 엔진이 저장되었습니다"
   },
   "labelEnabled": {
-    "message": "활성화됨"
+    "message": "사용"
   },
   "labelDisabled": {
-    "message": "비활성화됨"
+    "message": "사용 안 함"
   },
   "messageFacilitatorProgramUpdated": {
-    "message": "Facilitator Program $1 for $2"
+    "message": "$2의 Facilitator 프로그램이 $1 상태로 변경되었습니다"
   },
   "errorUpdatingFacilitatorProgram": {
-    "message": "오류 updating Facilitator Program setting"
+    "message": "Facilitator 프로그램 설정 업데이트 중 오류가 발생했습니다"
   },
   "errorFetchDataRetry": {
-    "message": "Failed to fetch 데이터. 부디 try again later."
+    "message": "데이터를 가져오지 못했습니다. 나중에 다시 시도해 주세요."
   },
   "errorGenericRetry": {
-    "message": "An 오류 occurred. 부디 try again."
+    "message": "오류가 발생했습니다. 다시 시도해 주세요."
   },
   "labelNewAccount": {
-    "message": "New 계정"
+    "message": "새 계정"
   },
   "successAccountCreatedNamed": {
-    "message": "\"$1\" 계정이 생성되었습니다!"
+    "message": "계정 \"$1\"이 성공적으로 생성되었습니다!"
   },
   "successDataSaved": {
-    "message": "데이터가 저장되었습니다!"
+    "message": "데이터가 성공적으로 저장되었습니다!"
   },
   "successAccountUpdated": {
-    "message": "계정이 업데이트되었습니다!"
+    "message": "계정이 성공적으로 업데이트되었습니다!"
   },
   "errorSaveSetting": {
-    "message": "설정 저장에 실패했습니다"
+    "message": "설정을 저장하지 못했습니다"
   },
   "errorUnableFetchProfile": {
     "message": "이 프로필에서 정보를 가져올 수 없습니다"
@@ -852,22 +852,22 @@
     "message": "이 프로필에서 사용자 이름을 가져올 수 없습니다"
   },
   "errorUnableCreateAccount": {
-    "message": "계정을 만들 수 없습니다. URL을 확인하고 다시 시도하세요!"
+    "message": "계정을 만들 수 없습니다. URL을 확인한 뒤 다시 시도해 주세요!"
   },
   "errorUnableFetchProfileInfo": {
-    "message": "프로필 정보를 가져올 수 없습니다. URL을 확인하고 다시 시도하세요!"
+    "message": "프로필 정보를 가져올 수 없습니다. URL을 확인한 뒤 다시 시도해 주세요!"
   },
   "errorProfileIdNotFound": {
     "message": "프로필 ID를 찾을 수 없습니다"
   },
   "switchToAccountNamed": {
-    "message": "\"$1\" 계정으로 전환"
+    "message": "계정 \"$1\"로 전환"
   },
   "successSwitchedToAccountNamed": {
-    "message": "\"$1\" 계정으로 전환했습니다!"
+    "message": "계정 \"$1\"로 전환되었습니다!"
   },
   "confirmDeleteAccount": {
-    "message": "\"$1\" 계정을 삭제하시겠습니까?"
+    "message": "계정 \"$1\"을 정말 삭제하시겠습니까?"
   },
   "btnCancel": {
     "message": "취소"

@@ -3,322 +3,322 @@
     "message": "Google Cloud Skills Boost - Helper"
   },
   "extDescription": {
-    "message": "A browser एक्सटेंशन designed to optimize your learning experience on Google Cloud Skills Boost."
+    "message": "Google Cloud Skills Boost पर आपके सीखने के अनुभव को बेहतर बनाने के लिए बनाया गया ब्राउज़र एक्सटेंशन।"
   },
   "optionsPageTitle": {
-    "message": "Google Cloud Skills Boost - Helper Options"
+    "message": "Google Cloud Skills Boost - Helper विकल्प"
   },
   "optionsPageDescription": {
-    "message": "Customize your experience with Google Cloud Skills Boost - Helper."
+    "message": "Google Cloud Skills Boost - Helper के साथ अपना अनुभव अनुकूलित करें।"
   },
   "labelFeature": {
-    "message": "Feature"
+    "message": "सुविधा"
   },
   "labelAction": {
-    "message": "Action"
+    "message": "कार्रवाई"
   },
   "labelShowLeaderboard": {
-    "message": "Show Leaderboard"
+    "message": "लीडरबोर्ड दिखाएं"
   },
   "labelHideLeaderboard": {
-    "message": "Hide Leaderboard"
+    "message": "लीडरबोर्ड छिपाएं"
   },
   "labelMyBadges": {
-    "message": "My बैज"
+    "message": "मेरे बैज"
   },
   "labelPublicProfile": {
     "message": "सार्वजनिक प्रोफ़ाइल"
   },
   "labelArcadePointsCalculator": {
-    "message": "Arcade अंक Calculator"
+    "message": "Arcade पॉइंट कैलकुलेटर"
   },
   "labelSave": {
-    "message": "सहेजें"
+    "message": "सेव करें"
   },
   "labelLoading": {
     "message": "लोड हो रहा है..."
   },
   "messageNoDataAvailable": {
-    "message": "No डेटा available"
+    "message": "कोई डेटा उपलब्ध नहीं है"
   },
   "labelRecentActivity": {
-    "message": "Recent Activity"
+    "message": "हाल की गतिविधि"
   },
   "labelBadgesAchievements": {
-    "message": "बैज & Achievements"
+    "message": "बैज और उपलब्धियां"
   },
   "labelUpdatePoints": {
-    "message": "अपडेट अंक"
+    "message": "पॉइंट अपडेट करें"
   },
   "labelLastUpdated": {
-    "message": "Last Updated"
+    "message": "अंतिम अपडेट"
   },
   "labelPage": {
     "message": "पेज"
   },
   "labelLoadMore": {
-    "message": "Load More"
+    "message": "और लोड करें"
   },
   "textCurrentLevel": {
-    "message": "Current Level"
+    "message": "वर्तमान स्तर"
   },
   "textMaxLevel": {
-    "message": "Max level"
+    "message": "अधिकतम स्तर"
   },
   "textNextLevelInPoints": {
-    "message": "अगला level in"
+    "message": "अगले स्तर के लिए"
   },
   "textPoints": {
-    "message": "अंक"
+    "message": "पॉइंट"
   },
   "textPleaseSetUpTheSettings": {
-    "message": "कृपया set up the सेटिंग्स"
+    "message": "कृपया सेटिंग्स पूरी करें"
   },
   "errorInvalidUrl": {
-    "message": "कृपया enter a valid URL starting with 'https://www.skills.google/public_profiles/xxx"
+    "message": "कृपया 'https://www.skills.google/public_profiles/xxx' से शुरू होने वाला मान्य URL दर्ज करें।"
   },
   "successSettingsSaved": {
-    "message": "सेटिंग्स सहेजा गया सफलतापूर्वक!"
+    "message": "सेटिंग्स सफलतापूर्वक सेव हो गईं!"
   },
   "notePleaseSetUpTheSettings": {
-    "message": "<strong>Note:</strong> <br>⚠️ You have सक्षम the <strong>\"Make profile public\"</strong> option, but haven't सहेजा गया the changes yet.<br>👉 कृपया क्लिक करें the <strong>\"Update settings\"</strong> बटन to confirm and save your new सेटिंग्स.<br>❌ If you don't save, your प्रोफ़ाइल will <strong>not be made सार्वजनिक</strong> and the link will not be generated."
+    "message": "<strong>नोट:</strong><br>आपने <strong>\"प्रोफ़ाइल सार्वजनिक करें\"</strong> विकल्प चालू किया है, लेकिन बदलाव अभी सेव नहीं किए हैं।<br>नई सेटिंग्स की पुष्टि और सेव करने के लिए <strong>\"सेटिंग्स अपडेट करें\"</strong> पर क्लिक करें।<br>अगर आप सेव नहीं करते, तो आपकी प्रोफ़ाइल <strong>सार्वजनिक नहीं होगी</strong> और लिंक जनरेट नहीं होगा।"
   },
   "messageLinkCopiedToClipboard": {
-    "message": "✔️ Link copied to clipboard!"
+    "message": "लिंक क्लिपबोर्ड पर कॉपी हो गया!"
   },
   "copyProfileUrl": {
-    "message": "क्लिक करें to copy सार्वजनिक प्रोफ़ाइल URL"
+    "message": "सार्वजनिक प्रोफ़ाइल URL कॉपी करने के लिए क्लिक करें"
   },
   "labelEnableSearchFeature": {
-    "message": "Enable खोज Feature"
+    "message": "खोज सुविधा चालू करें"
   },
   "descriptionEnableSearchFeature": {
-    "message": "Show Google खोज and YouTube buttons when no solution is found."
+    "message": "जब कोई समाधान न मिले, तब Google Search और YouTube बटन दिखाएं।"
   },
   "messageSearchFeatureEnabled": {
-    "message": "खोज feature सक्षम - Google and YouTube खोज buttons will appear when no solution is found"
+    "message": "खोज सुविधा चालू है: समाधान न मिलने पर Google और YouTube खोज बटन दिखाई देंगे"
   },
   "messageSearchFeatureDisabled": {
-    "message": "खोज feature अक्षम - Only \"No solution\" will be shown when no solution is found"
+    "message": "खोज सुविधा बंद है: समाधान न मिलने पर केवल \"कोई समाधान नहीं\" दिखेगा"
   },
   "tourStartButton": {
-    "message": "User गाइड"
+    "message": "उपयोगकर्ता गाइड"
   },
   "tourWelcomeTitle": {
-    "message": "Welcome to the खाता Creation गाइड!"
+    "message": "खाता बनाने की गाइड में आपका स्वागत है!"
   },
   "tourWelcomeContent": {
-    "message": "We will गाइड you step by step to बनाएँ your first Google Cloud Skills Boost खाता."
+    "message": "हम आपका पहला Google Cloud Skills Boost खाता बनाने में चरण दर चरण मदद करेंगे।"
   },
   "tourWelcomeTip": {
-    "message": "<strong>Tip:</strong> You can skip this गाइड at any time by clicking \"Skip\"."
+    "message": "<strong>टिप:</strong> आप कभी भी \"छोड़ें\" पर क्लिक करके यह गाइड छोड़ सकते हैं।"
   },
   "tourAddAccountTitle": {
-    "message": "Add New खाता"
+    "message": "नया खाता जोड़ें"
   },
   "tourAddAccountContent": {
-    "message": "क्लिक करें this बटन to add your first Google Cloud Skills Boost खाता. You can manage multiple accounts simultaneously."
+    "message": "अपना पहला Google Cloud Skills Boost खाता जोड़ने के लिए इस बटन पर क्लिक करें। आप एक साथ कई खाते प्रबंधित कर सकते हैं।"
   },
   "tourAccountListTitle": {
-    "message": "खाता List"
+    "message": "खाता सूची"
   },
   "tourAccountListContent": {
-    "message": "After creating accounts, they will appear here. You can:<br>• Switch between accounts<br>• अपडेट arcade अंक डेटा<br>• Edit nicknames<br>• View सार्वजनिक profiles"
+    "message": "खाते बनाने के बाद वे यहां दिखाई देंगे। आप कर सकते हैं:<br>- खातों के बीच स्विच करें<br>- Arcade पॉइंट डेटा अपडेट करें<br>- उपनाम संपादित करें<br>- सार्वजनिक प्रोफ़ाइल देखें"
   },
   "tourModalStep1Title": {
-    "message": "Step 1: खोलें प्रोफ़ाइल पेज"
+    "message": "चरण 1: प्रोफ़ाइल पेज खोलें"
   },
   "tourModalStep1Content": {
-    "message": "क्लिक करें this बटन to खोलें Google Cloud Skills Boost प्रोफ़ाइल in a new tab. You will need to log in and get the URL from the प्रोफ़ाइल पेज."
+    "message": "Google Cloud Skills Boost प्रोफ़ाइल को नए टैब में खोलने के लिए इस बटन पर क्लिक करें। आपको लॉग इन करके प्रोफ़ाइल पेज से URL लेना होगा।"
   },
   "tourModalStep2Title": {
-    "message": "Step 2: Enter प्रोफ़ाइल URL"
+    "message": "चरण 2: प्रोफ़ाइल URL दर्ज करें"
   },
   "tourModalStep2Content": {
-    "message": "After logging in, copy the URL from the address bar and paste it here."
+    "message": "लॉग इन करने के बाद, पता बार से URL कॉपी करें और यहां पेस्ट करें।"
   },
   "tourModalStep2Tip": {
-    "message": "The URL will look like: https://www.skills.google/public_profiles/xxxxx"
+    "message": "URL ऐसा दिखेगा: https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
-    "message": "Step 3: बनाएँ खाता"
+    "message": "चरण 3: खाता बनाएं"
   },
   "tourModalStep3Content": {
-    "message": "क्लिक करें this बटन to बनाएँ the खाता. The system will automatically fetch information from the प्रोफ़ाइल and बनाएँ a new खाता for you."
+    "message": "खाता बनाने के लिए इस बटन पर क्लिक करें। सिस्टम प्रोफ़ाइल से जानकारी अपने आप लेगा और आपके लिए नया खाता बनाएगा।"
   },
   "tourCompletedTitle": {
-    "message": "गाइड Completed!"
+    "message": "गाइड पूरी हुई!"
   },
   "tourCompletedContent": {
-    "message": "Now you can start creating your first खाता."
+    "message": "अब आप अपना पहला खाता बनाना शुरू कर सकते हैं।"
   },
   "tourModalCompletedTitle": {
-    "message": "Ready to बनाएँ खाता!"
+    "message": "खाता बनाने के लिए तैयार!"
   },
   "tourModalCompletedContent": {
-    "message": "Try entering a प्रोफ़ाइल URL and बनाएँ your first खाता."
+    "message": "प्रोफ़ाइल URL दर्ज करके अपना पहला खाता बनाने की कोशिश करें।"
   },
   "tourButtonNext": {
-    "message": "अगला"
+    "message": "आगे"
   },
   "tourButtonPrevious": {
-    "message": "वापस"
+    "message": "पीछे"
   },
   "tourButtonSkip": {
-    "message": "Skip"
+    "message": "छोड़ें"
   },
   "tourButtonComplete": {
-    "message": "Done"
+    "message": "पूरा"
   },
   "tourCloseButton": {
     "message": "बंद करें"
   },
   "badgeToolbarNote": {
-    "message": "When सक्षम, the एक्सटेंशन will अपडेट the toolbar badge with your total अंक (includes facilitator bonus when active)."
+    "message": "चालू होने पर, एक्सटेंशन टूलबार बैज को आपके कुल पॉइंट से अपडेट करेगा। सक्रिय होने पर Facilitator बोनस भी शामिल होगा।"
   },
   "badgeViewDescription": {
-    "message": "View all your earned बैज and achievements."
+    "message": "अपने सभी अर्जित बैज और उपलब्धियां देखें।"
   },
   "badgeTrackProgress": {
-    "message": "Track your learning progress!"
+    "message": "अपनी सीखने की प्रगति ट्रैक करें!"
   },
   "labelAchievements": {
-    "message": "Achievements"
+    "message": "उपलब्धियां"
   },
   "labelProgress": {
-    "message": "Progress"
+    "message": "प्रगति"
   },
   "errorEnterProfileUrl": {
-    "message": "कृपया enter a प्रोफ़ाइल URL!"
+    "message": "कृपया प्रोफ़ाइल URL दर्ज करें!"
   },
   "errorInvalidProfileUrl": {
-    "message": "Invalid प्रोफ़ाइल URL!"
+    "message": "अमान्य प्रोफ़ाइल URL!"
   },
   "errorAccountExistsTitle": {
-    "message": "खाता already exists"
+    "message": "खाता पहले से मौजूद है"
   },
   "errorAccountExistsMsg": {
-    "message": "An खाता with this URL already exists: \"$1\"."
+    "message": "इस URL वाला खाता पहले से मौजूद है: \"$1\"।"
   },
   "errorNoNameFromProfile": {
-    "message": "Unable to get name from प्रोफ़ाइल. कृपया try again!"
+    "message": "प्रोफ़ाइल से नाम नहीं मिल सका। कृपया फिर कोशिश करें!"
   },
   "labelAdding": {
-    "message": "Adding..."
+    "message": "जोड़ा जा रहा है..."
   },
   "successAccountAdded": {
-    "message": "खाता added सफलतापूर्वक!"
+    "message": "खाता सफलतापूर्वक जोड़ा गया!"
   },
   "errorAddAccountGeneric": {
-    "message": "An त्रुटि occurred while adding the खाता. कृपया try again!"
+    "message": "खाता जोड़ते समय त्रुटि हुई। कृपया फिर कोशिश करें!"
   },
   "errorAccountExistsMsgSimple": {
-    "message": "खाता already exists."
+    "message": "खाता पहले से मौजूद है।"
   },
   "labelAddAccount": {
-    "message": "Add खाता"
+    "message": "खाता जोड़ें"
   },
   "successSwitchedAccount": {
-    "message": "Switched खाता सफलतापूर्वक!"
+    "message": "खाता सफलतापूर्वक स्विच हुआ!"
   },
   "errorSwitchAccount": {
-    "message": "त्रुटि switching खाता."
+    "message": "खाता स्विच करते समय त्रुटि हुई।"
   },
   "errorAccountNotFound": {
-    "message": "खाता not found."
+    "message": "खाता नहीं मिला।"
   },
   "infoUpdatingAccountData": {
-    "message": "Updating खाता डेटा..."
+    "message": "खाता डेटा अपडेट हो रहा है..."
   },
   "successAccountDataUpdated": {
-    "message": "खाता डेटा updated सफलतापूर्वक!"
+    "message": "खाता डेटा सफलतापूर्वक अपडेट हुआ!"
   },
   "errorFetchDataFromApi": {
-    "message": "Could not fetch डेटा from API."
+    "message": "API से डेटा नहीं मिल सका।"
   },
   "errorUpdatingAccount": {
-    "message": "त्रुटि updating खाता."
+    "message": "खाता अपडेट करते समय त्रुटि हुई।"
   },
   "errorProfileUrlNotFound": {
-    "message": "प्रोफ़ाइल URL not found for this खाता."
+    "message": "इस खाते के लिए प्रोफ़ाइल URL नहीं मिला।"
   },
   "errorOpeningProfile": {
-    "message": "त्रुटि opening प्रोफ़ाइल."
+    "message": "प्रोफ़ाइल खोलते समय त्रुटि हुई।"
   },
   "errorNoActiveAccountOrProfileUrl": {
-    "message": "No active खाता or प्रोफ़ाइल URL found."
+    "message": "कोई सक्रिय खाता या प्रोफ़ाइल URL नहीं मिला।"
   },
   "errorAccountNotFoundToUpdate": {
-    "message": "Could not find खाता to अपडेट!"
+    "message": "अपडेट करने के लिए खाता नहीं मिला!"
   },
   "successNicknameSaved": {
-    "message": "उपनाम सहेजा गया सफलतापूर्वक!"
+    "message": "उपनाम सफलतापूर्वक सेव हुआ!"
   },
   "errorSavingNickname": {
-    "message": "त्रुटि saving उपनाम!"
+    "message": "उपनाम सेव करते समय त्रुटि हुई!"
   },
   "successNicknameUpdated": {
-    "message": "उपनाम updated सफलतापूर्वक!"
+    "message": "उपनाम सफलतापूर्वक अपडेट हुआ!"
   },
   "errorUpdatingAccountGeneric": {
-    "message": "An त्रुटि occurred while updating the खाता!"
+    "message": "खाता अपडेट करते समय त्रुटि हुई!"
   },
   "errorCannotDeleteLastAccount": {
-    "message": "Cannot हटाएँ the last खाता!"
+    "message": "अंतिम खाता हटाया नहीं जा सकता!"
   },
   "successAccountDeleted": {
-    "message": "खाता deleted सफलतापूर्वक!"
+    "message": "खाता सफलतापूर्वक हटाया गया!"
   },
   "errorDeletingAccountGeneric": {
-    "message": "An त्रुटि occurred while deleting the खाता!"
+    "message": "खाता हटाते समय त्रुटि हुई!"
   },
   "successDataExported": {
-    "message": "डेटा exported सफलतापूर्वक!"
+    "message": "डेटा सफलतापूर्वक एक्सपोर्ट हुआ!"
   },
   "errorExportingData": {
-    "message": "An त्रुटि occurred while exporting डेटा!"
+    "message": "डेटा एक्सपोर्ट करते समय त्रुटि हुई!"
   },
   "errorNoImportData": {
-    "message": "कृपया select a file or paste JSON content!"
+    "message": "कृपया फ़ाइल चुनें या JSON सामग्री पेस्ट करें!"
   },
   "successDataImported": {
-    "message": "डेटा imported सफलतापूर्वक!"
+    "message": "डेटा सफलतापूर्वक इम्पोर्ट हुआ!"
   },
   "errorInvalidImportData": {
-    "message": "Invalid डेटा. कृपया check again!"
+    "message": "डेटा अमान्य है। कृपया फिर जांचें!"
   },
   "errorImportingData": {
-    "message": "An त्रुटि occurred while importing डेटा!"
+    "message": "डेटा इम्पोर्ट करते समय त्रुटि हुई!"
   },
   "labelFacilitatorProgram": {
-    "message": "Facilitator Program"
+    "message": "Facilitator कार्यक्रम"
   },
   "messageBadgeEnabled": {
-    "message": "Badge display सक्षम"
+    "message": "बैज डिस्प्ले चालू है"
   },
   "messageBadgeDisabled": {
-    "message": "Badge display अक्षम"
+    "message": "बैज डिस्प्ले बंद है"
   },
   "labelShowBadge": {
-    "message": "Show badge on एक्सटेंशन icon"
+    "message": "एक्सटेंशन आइकन पर बैज दिखाएं"
   },
   "descriptionShowBadge": {
-    "message": "Toggle whether the एक्सटेंशन shows the total अंक on the browser toolbar icon."
+    "message": "ब्राउज़र टूलबार आइकन पर कुल पॉइंट दिखाने या छिपाने के लिए टॉगल करें।"
   },
   "facilitatorDeadlinePassed": {
-    "message": "Facilitator program deadline has passed"
+    "message": "Facilitator कार्यक्रम की समय सीमा बीत चुकी है"
   },
   "arcadeDeadlinePassed": {
-    "message": "The Arcade season has wrapped up for the year. See you next season!"
+    "message": "इस साल का Arcade सीज़न समाप्त हो गया है। अगले सीज़न में मिलते हैं!"
   },
   "programEnded": {
-    "message": "Program Ended"
+    "message": "कार्यक्रम समाप्त"
   },
   "statusCompleted": {
-    "message": "पूर्ण"
+    "message": "पूरा"
   },
   "statusInProgress": {
-    "message": "प्रगति में"
+    "message": "जारी"
   },
   "statusNotStarted": {
     "message": "शुरू नहीं हुआ"
@@ -330,391 +330,391 @@
     "message": "VIP"
   },
   "errorLoadingData": {
-    "message": "त्रुटि loading डेटा"
+    "message": "डेटा लोड करने में त्रुटि"
   },
   "labelBack": {
-    "message": "वापस"
+    "message": "पीछे"
   },
   "backToTop": {
-    "message": "वापस to top"
+    "message": "ऊपर जाएं"
   },
   "changelogWhatsNew": {
-    "message": "What's New"
+    "message": "नया क्या है"
   },
   "changelogLatestUpdates": {
-    "message": "Latest updates and improvements"
+    "message": "नवीनतम अपडेट और सुधार"
   },
   "changelogLoading": {
-    "message": "लोड हो रहा है changelog..."
+    "message": "चेंजलॉग लोड हो रहा है..."
   },
   "changelogFooterNotice": {
-    "message": "This एक्सटेंशन is not affiliated with Google Cloud Skills Boost. All rights reserved."
+    "message": "यह एक्सटेंशन Google Cloud Skills Boost से संबद्ध नहीं है। सभी अधिकार सुरक्षित।"
   },
   "announcementTitle": {
-    "message": "Important Announcement"
+    "message": "महत्वपूर्ण घोषणा"
   },
   "markdownShowMore": {
-    "message": "Show more"
+    "message": "और दिखाएं"
   },
   "accountsTitle": {
-    "message": "Your Accounts"
+    "message": "आपके खाते"
   },
   "noAccountsYet": {
-    "message": "No accounts yet"
+    "message": "अभी कोई खाता नहीं"
   },
   "addAccountFirst": {
-    "message": "Add your first खाता!"
+    "message": "अपना पहला खाता जोड़ें!"
   },
   "dataManagementTitle": {
-    "message": "डेटा Management"
+    "message": "डेटा प्रबंधन"
   },
   "dataManagementSubtitle": {
-    "message": "Backup and restore"
+    "message": "बैकअप और पुनर्स्थापना"
   },
   "exportData": {
-    "message": "Export डेटा"
+    "message": "डेटा एक्सपोर्ट करें"
   },
   "importData": {
-    "message": "Import डेटा"
+    "message": "डेटा इम्पोर्ट करें"
   },
   "modalAddAccountTitle": {
-    "message": "Add New खाता"
+    "message": "नया खाता जोड़ें"
   },
   "howToGetProfileUrl": {
-    "message": "How to get प्रोफ़ाइल URL"
+    "message": "प्रोफ़ाइल URL कैसे प्राप्त करें"
   },
   "howToGetProfileSubtitle": {
-    "message": "Follow the steps below"
+    "message": "नीचे दिए गए चरणों का पालन करें"
   },
   "openProfilePage": {
-    "message": "खोलें प्रोफ़ाइल पेज"
+    "message": "प्रोफ़ाइल पेज खोलें"
   },
   "errorPrefix": {
     "message": "त्रुटि:"
   },
   "successPrefix": {
-    "message": "सफलता:"
+    "message": "सफल:"
   },
   "accountErrorFallback": {
-    "message": "Something went wrong. कृपया try again."
+    "message": "कुछ गलत हुआ। कृपया फिर कोशिश करें।"
   },
   "accountSuccessFallback": {
-    "message": "Your action was successful!"
+    "message": "आपकी कार्रवाई सफल रही!"
   },
   "viewBadges": {
-    "message": "View बैज"
+    "message": "बैज देखें"
   },
   "openProfile": {
-    "message": "खोलें प्रोफ़ाइल"
+    "message": "प्रोफ़ाइल खोलें"
   },
   "arcadePointsTitle": {
-    "message": "Arcade अंक"
+    "message": "Arcade पॉइंट"
   },
   "milestonesTitle": {
-    "message": "Milestones"
+    "message": "माइलस्टोन"
   },
   "accountsCardTitle": {
-    "message": "खाता Management & Arcade अंक Calculator"
+    "message": "खाता प्रबंधन और Arcade पॉइंट कैलकुलेटर"
   },
   "accountsCardSubtitle": {
-    "message": "Manage multiple accounts and calculate arcade अंक."
+    "message": "कई खाते प्रबंधित करें और Arcade पॉइंट की गणना करें।"
   },
   "clickOpenProfileButton": {
-    "message": "क्लिक करें \"Open Profile Page\" बटन"
+    "message": "\"प्रोफ़ाइल पेज खोलें\" बटन पर क्लिक करें"
   },
   "programDeadline": {
-    "message": "Program Deadline"
+    "message": "कार्यक्रम की समय सीमा"
   },
   "labelDays": {
-    "message": "Days"
+    "message": "दिन"
   },
   "labelHours": {
-    "message": "Hours"
+    "message": "घंटे"
   },
   "labelMinutes": {
-    "message": "Minutes"
+    "message": "मिनट"
   },
   "labelSeconds": {
-    "message": "Seconds"
+    "message": "सेकंड"
   },
   "milestoneDeadlineNotice": {
-    "message": "Complete milestones before the deadline to earn bonus अंक!"
+    "message": "बोनस पॉइंट पाने के लिए समय सीमा से पहले माइलस्टोन पूरे करें!"
   },
   "arcadeMotivation": {
-    "message": "Keep the momentum going and climb the Arcade leaderboard!"
+    "message": "गति बनाए रखें और Arcade लीडरबोर्ड पर ऊपर चढ़ें!"
   },
   "totalBonusEarned": {
-    "message": "Total Bonus Earned:"
+    "message": "कुल बोनस प्राप्त:"
   },
   "maxPossibleNote": {
-    "message": "Maximum possible: 25 अंक (highest milestone only)"
+    "message": "अधिकतम संभव: 25 पॉइंट (केवल सबसे ऊंचा माइलस्टोन)"
   },
   "pointsBreakdown": {
-    "message": "अंक Breakdown"
+    "message": "पॉइंट विवरण"
   },
   "arcadeBase": {
     "message": "Arcade Base Camp:"
   },
   "facilitatorBonus": {
-    "message": "Facilitator Bonus:"
+    "message": "Facilitator बोनस:"
   },
   "gameBadgeLabel": {
-    "message": "Game Badge"
+    "message": "गेम बैज"
   },
   "gameBadgeLabelTooltip": {
-    "message": "Arcade is level-free now. New tracks: Adventure (cloud basics), Voyage (skill practice), Trail (AI learning)."
+    "message": "Arcade अब लेवल-फ्री है। नए ट्रैक: Adventure (क्लाउड की मूल बातें), Voyage (कौशल अभ्यास), Trail (AI सीखना)।"
   },
   "triviaBadgeLabel": {
-    "message": "Trivia Badge"
+    "message": "Trivia बैज"
   },
   "triviaBadgeLabelTooltip": {
-    "message": "Trivia is now Sprint: quick quizzes to refresh concepts and earn Arcade अंक."
+    "message": "Trivia अब Sprint है: अवधारणाएं दोहराने और Arcade पॉइंट पाने के लिए तेज़ क्विज़।"
   },
   "skillBadgeLabel": {
-    "message": "Skill Badge"
+    "message": "कौशल बैज"
   },
   "specialPointsLabel": {
-    "message": "Special अंक"
+    "message": "विशेष पॉइंट"
   },
   "arcadeSeasonCountdown": {
-    "message": "Arcade Season Countdown"
+    "message": "Arcade सीज़न काउंटडाउन"
   },
   "milestone1": {
-    "message": "Milestone 1"
+    "message": "माइलस्टोन 1"
   },
   "milestone1Bonus": {
-    "message": "+2 Bonus अंक"
+    "message": "+2 बोनस पॉइंट"
   },
   "milestone2": {
-    "message": "Milestone 2"
+    "message": "माइलस्टोन 2"
   },
   "milestone2Bonus": {
-    "message": "+8 Bonus अंक"
+    "message": "+8 बोनस पॉइंट"
   },
   "milestone3": {
-    "message": "Milestone 3"
+    "message": "माइलस्टोन 3"
   },
   "milestone3Bonus": {
-    "message": "+15 Bonus अंक"
+    "message": "+15 बोनस पॉइंट"
   },
   "milestoneUltimate": {
     "message": "Ultimate"
   },
   "milestoneUltimateBonus": {
-    "message": "+25 Bonus अंक"
+    "message": "+25 बोनस पॉइंट"
   },
   "progressLabel": {
-    "message": "Progress:"
+    "message": "प्रगति:"
   },
   "gamesLabel": {
-    "message": "Games:"
+    "message": "गेम:"
   },
   "triviaLabel": {
     "message": "Trivia:"
   },
   "skillsLabel": {
-    "message": "Skills:"
+    "message": "कौशल:"
   },
   "labFreeLabel": {
     "message": "Lab-free:"
   },
   "switchAccount": {
-    "message": "Switch खाता"
+    "message": "खाता बदलें"
   },
   "statusActive": {
     "message": "सक्रिय"
   },
   "quickSearch": {
-    "message": "Quick खोज"
+    "message": "त्वरित खोज"
   },
   "youtubeResults": {
-    "message": "YouTube Results"
+    "message": "YouTube परिणाम"
   },
   "searchFeatureTip": {
-    "message": "Helps you find answers faster!"
+    "message": "आपको उत्तर तेजी से खोजने में मदद करता है!"
   },
   "successAccountCreated": {
-    "message": "खाता created सफलतापूर्वक!"
+    "message": "खाता सफलतापूर्वक बनाया गया!"
   },
   "successAddNickname": {
-    "message": "You can add a उपनाम to easily identify this खाता."
+    "message": "इस खाते को आसानी से पहचानने के लिए आप उपनाम जोड़ सकते हैं।"
   },
   "newlyCreated": {
-    "message": "Newly created"
+    "message": "अभी बनाया गया"
   },
   "labelNickname": {
     "message": "उपनाम:"
   },
   "noNicknameYet": {
-    "message": "No उपनाम yet"
+    "message": "अभी कोई उपनाम नहीं"
   },
   "labelUpdated": {
-    "message": "Updated:"
+    "message": "अपडेट:"
   },
   "justCreated": {
-    "message": "Just created"
+    "message": "अभी बनाया गया"
   },
   "markdownShowLess": {
-    "message": "Show less"
+    "message": "कम दिखाएं"
   },
   "importantNoticeTitle": {
-    "message": "Important Notice"
+    "message": "महत्वपूर्ण सूचना"
   },
   "importantNoticeText": {
-    "message": "Each प्रोफ़ाइल URL can only be added once. The system will check and notify if the खाता already exists."
+    "message": "हर प्रोफ़ाइल URL केवल एक बार जोड़ा जा सकता है। खाता पहले से मौजूद होने पर सिस्टम जांचकर सूचना देगा।"
   },
   "enterProfileUrlLabel": {
-    "message": "Enter प्रोफ़ाइल URL and बनाएँ खाता"
+    "message": "प्रोफ़ाइल URL दर्ज करें और खाता बनाएं"
   },
   "createAccountButton": {
-    "message": "बनाएँ खाता"
+    "message": "खाता बनाएं"
   },
   "instructionsLabel": {
-    "message": "Instructions:"
+    "message": "निर्देश:"
   },
   "instructionsText": {
-    "message": "Enter URL and क्लिक करें \"Create Account\". The system will automatically load information and बनाएँ a new खाता."
+    "message": "URL दर्ज करें और \"खाता बनाएं\" पर क्लिक करें। सिस्टम अपने आप जानकारी लोड करेगा और नया खाता बनाएगा।"
   },
   "step1Title": {
-    "message": "क्लिक करें \"Open Profile Page\" बटन"
+    "message": "\"प्रोफ़ाइल पेज खोलें\" बटन पर क्लिक करें"
   },
   "step1Subtitle": {
-    "message": "Will खोलें Google Cloud Skills Boost in new tab"
+    "message": "Google Cloud Skills Boost नए टैब में खुलेगा"
   },
   "step2Title": {
-    "message": "Log in (if not already)"
+    "message": "लॉग इन करें, अगर पहले से नहीं हैं"
   },
   "step2Subtitle": {
-    "message": "Use your Google खाता"
+    "message": "अपना Google खाता इस्तेमाल करें"
   },
   "step3Title": {
-    "message": "Find \"Public profile\" section"
+    "message": "\"सार्वजनिक प्रोफ़ाइल\" सेक्शन खोजें"
   },
   "step3Subtitle": {
-    "message": "Scroll down in the प्रोफ़ाइल पेज"
+    "message": "प्रोफ़ाइल पेज में नीचे स्क्रॉल करें"
   },
   "step4Title": {
-    "message": "Copy URL from address bar"
+    "message": "पता बार से URL कॉपी करें"
   },
   "step4Subtitle": {
-    "message": "Paste into the field below"
+    "message": "नीचे दिए फ़ील्ड में पेस्ट करें"
   },
   "newAccountBadge": {
-    "message": "New खाता"
+    "message": "नया खाता"
   },
   "totalBadgesLabel": {
-    "message": "Total बैज"
+    "message": "कुल बैज"
   },
   "skillBadgesLabel": {
-    "message": "Skill बैज"
+    "message": "कौशल बैज"
   },
   "arcadePointsLabel": {
-    "message": "Arcade अंक"
+    "message": "Arcade पॉइंट"
   },
   "accountNicknameLabel": {
     "message": "खाता उपनाम"
   },
   "nicknamePlaceholder": {
-    "message": "e.g: Main खाता, Work खाता, Study खाता..."
+    "message": "जैसे: मुख्य खाता, काम का खाता, अध्ययन खाता..."
   },
   "nicknameHelpText": {
-    "message": "Nicknames help you easily identify accounts when you have multiple different accounts"
+    "message": "कई खाते प्रबंधित करते समय उपनाम आपको खाते पहचानने में मदद करते हैं"
   },
   "editAccountTitle": {
-    "message": "Edit खाता"
+    "message": "खाता संपादित करें"
   },
   "displayNameLabel": {
-    "message": "Display name:"
+    "message": "दिखाया जाने वाला नाम:"
   },
   "displayNameInfo": {
-    "message": "Display name is taken from Google Cloud Skills Boost and cannot be edited"
+    "message": "दिखाया जाने वाला नाम Google Cloud Skills Boost से लिया जाता है और बदला नहीं जा सकता"
   },
   "nicknameLabel": {
     "message": "उपनाम:"
   },
   "enterNicknamePlaceholder": {
-    "message": "Enter उपनाम for easy identification..."
+    "message": "आसान पहचान के लिए उपनाम दर्ज करें..."
   },
   "nicknameExample": {
-    "message": "Example: \"Main account\", \"Work account\", \"Study account\"..."
+    "message": "उदाहरण: \"मुख्य खाता\", \"काम का खाता\", \"अध्ययन खाता\"..."
   },
   "cancelButton": {
     "message": "रद्द करें"
   },
   "saveChangesButton": {
-    "message": "सहेजें changes"
+    "message": "बदलाव सेव करें"
   },
   "themeStudioTitle": {
     "message": "Theme Studio"
   },
   "themeStudioDescription": {
-    "message": "Customize your popup theme with real-time preview."
+    "message": "रीयल-टाइम पूर्वावलोकन के साथ popup थीम अनुकूलित करें।"
   },
   "labelBackground1": {
-    "message": "Background 1"
+    "message": "बैकग्राउंड 1"
   },
   "labelBackground2": {
-    "message": "Background 2"
+    "message": "बैकग्राउंड 2"
   },
   "labelBackground3": {
-    "message": "Background 3"
+    "message": "बैकग्राउंड 3"
   },
   "labelAccent": {
-    "message": "Accent"
+    "message": "एक्सेंट"
   },
   "labelArcadePoints": {
-    "message": "Arcade अंक"
+    "message": "Arcade पॉइंट"
   },
   "labelTextPrimary": {
-    "message": "Text Primary"
+    "message": "मुख्य टेक्स्ट"
   },
   "labelTextSecondary": {
-    "message": "Text Secondary"
+    "message": "द्वितीयक टेक्स्ट"
   },
   "labelTextMuted": {
-    "message": "Text Muted"
+    "message": "हल्का टेक्स्ट"
   },
   "btnApplySave": {
-    "message": "Apply & सहेजें"
+    "message": "लागू करें और सेव करें"
   },
   "btnResetToDark": {
-    "message": "Reset to Dark"
+    "message": "डार्क पर रीसेट करें"
   },
   "btnSyncFromPopup": {
-    "message": "Sync From Current Popup"
+    "message": "मौजूदा popup से सिंक करें"
   },
   "previewNote": {
-    "message": "Preview uses real popup UI and current खाता डेटा."
+    "message": "पूर्वावलोकन असली popup UI और मौजूदा खाते के डेटा का उपयोग करता है।"
   },
   "popupLivePreviewTitle": {
-    "message": "Popup Live Preview"
+    "message": "Popup लाइव पूर्वावलोकन"
   },
   "btnApplyCustomTheme": {
-    "message": "Apply Custom Theme"
+    "message": "कस्टम थीम लागू करें"
   },
   "btnResetCustomTheme": {
-    "message": "Reset"
+    "message": "रीसेट"
   },
   "btnOpenThemeStudio": {
-    "message": "खोलें Theme Studio (Live Preview)"
+    "message": "Theme Studio खोलें (लाइव पूर्वावलोकन)"
   },
   "btnChangeTheme": {
-    "message": "Change Theme"
+    "message": "थीम बदलें"
   },
   "labThinking": {
-    "message": "Thinking..."
+    "message": "सोच रहा है..."
   },
   "labSolutionTitle": {
-    "message": "क्लिक करें to खोलें the solution"
+    "message": "समाधान खोलने के लिए क्लिक करें"
   },
   "labSolutionButton": {
-    "message": "Solution this lab"
+    "message": "इस lab का समाधान देखें"
   },
   "labSupportTitle": {
-    "message": "क्लिक करें to get support or report issue on Telegram"
+    "message": "Telegram पर सहायता पाने या समस्या रिपोर्ट करने के लिए क्लिक करें"
   },
   "labSupportButton": {
-    "message": "Report / Support"
+    "message": "रिपोर्ट / सहायता"
   },
   "labNoSolution": {
     "message": "कोई समाधान नहीं"
@@ -756,129 +756,129 @@
     "message": "लिंक कॉपी करें"
   },
   "labFallbackQuery": {
-    "message": "Google Cloud lab tutorial"
+    "message": "Google Cloud lab ट्यूटोरियल"
   },
   "exportDataTitle": {
-    "message": "Export My डेटा"
+    "message": "मेरा डेटा एक्सपोर्ट करें"
   },
   "exportJSON": {
-    "message": "JSON निर्यात करें"
+    "message": "JSON एक्सपोर्ट करें"
   },
   "exportCSV": {
-    "message": "Export बैज CSV"
+    "message": "बैज CSV एक्सपोर्ट करें"
   },
   "exportSuccess": {
-    "message": "Exported सफलतापूर्वक!"
+    "message": "सफलतापूर्वक एक्सपोर्ट हुआ!"
   },
   "exportNoData": {
-    "message": "No डेटा to export."
+    "message": "एक्सपोर्ट करने के लिए कोई डेटा नहीं।"
   },
   "compactMode": {
-    "message": "Compact"
+    "message": "कॉम्पैक्ट"
   },
   "fullMode": {
-    "message": "Full View"
+    "message": "पूरा दृश्य"
   },
   "shortcutHint": {
-    "message": "R refresh · S सेटिंग्स · C compact"
+    "message": "R रीफ़्रेश / S सेटिंग्स / C कॉम्पैक्ट"
   },
   "messageEplusSearchSaved": {
-    "message": "ePlus खोज setting सहेजा गया"
+    "message": "ePlus खोज सेटिंग सेव हो गई"
   },
   "messageEnableSearchFirst": {
-    "message": "Enable the main खोज Feature before enabling ePlus."
+    "message": "ePlus चालू करने से पहले मुख्य खोज सुविधा चालू करें।"
   },
   "titleSetDefaultAccount": {
-    "message": "Set as default खाता"
+    "message": "डिफ़ॉल्ट खाता बनाएं"
   },
   "titleToggleFacilitatorProgram": {
-    "message": "Toggle Facilitator Program"
+    "message": "Facilitator कार्यक्रम टॉगल करें"
   },
   "titleUpdateAccount": {
-    "message": "अपडेट खाता"
+    "message": "खाता अपडेट करें"
   },
   "titleViewPublicProfile": {
-    "message": "View सार्वजनिक प्रोफ़ाइल"
+    "message": "सार्वजनिक प्रोफ़ाइल देखें"
   },
   "titleEditAccount": {
-    "message": "Edit खाता"
+    "message": "खाता संपादित करें"
   },
   "titleDeleteAccount": {
-    "message": "हटाएँ खाता"
+    "message": "खाता हटाएं"
   },
   "exportNoBadgesData": {
-    "message": "No बैज to export."
+    "message": "एक्सपोर्ट करने के लिए कोई बैज नहीं।"
   },
   "messagePreferredSearchEngineSaved": {
-    "message": "Preferred खोज engine सहेजा गया"
+    "message": "पसंदीदा खोज इंजन सेव हो गया"
   },
   "labelEnabled": {
-    "message": "सक्षम"
+    "message": "चालू"
   },
   "labelDisabled": {
-    "message": "अक्षम"
+    "message": "बंद"
   },
   "messageFacilitatorProgramUpdated": {
-    "message": "Facilitator Program $1 for $2"
+    "message": "$2 के लिए Facilitator कार्यक्रम $1"
   },
   "errorUpdatingFacilitatorProgram": {
-    "message": "त्रुटि updating Facilitator Program setting"
+    "message": "Facilitator कार्यक्रम सेटिंग अपडेट करते समय त्रुटि"
   },
   "errorFetchDataRetry": {
-    "message": "Failed to fetch डेटा. कृपया try again later."
+    "message": "डेटा लाने में विफल। कृपया बाद में फिर कोशिश करें।"
   },
   "errorGenericRetry": {
-    "message": "An त्रुटि occurred. कृपया try again."
+    "message": "त्रुटि हुई। कृपया फिर कोशिश करें।"
   },
   "labelNewAccount": {
-    "message": "New खाता"
+    "message": "नया खाता"
   },
   "successAccountCreatedNamed": {
     "message": "खाता \"$1\" सफलतापूर्वक बनाया गया!"
   },
   "successDataSaved": {
-    "message": "डेटा सफलतापूर्वक सहेजा गया!"
+    "message": "डेटा सफलतापूर्वक सेव हुआ!"
   },
   "successAccountUpdated": {
-    "message": "खाता सफलतापूर्वक अपडेट किया गया!"
+    "message": "खाता सफलतापूर्वक अपडेट हुआ!"
   },
   "errorSaveSetting": {
-    "message": "सेटिंग सहेजने में विफल"
+    "message": "सेटिंग सेव करने में विफल"
   },
   "errorUnableFetchProfile": {
-    "message": "इस प्रोफ़ाइल से जानकारी प्राप्त नहीं की जा सकी"
+    "message": "इस प्रोफ़ाइल से जानकारी नहीं मिल सकी"
   },
   "errorUnableGetUserName": {
-    "message": "इस प्रोफ़ाइल से उपयोगकर्ता नाम प्राप्त नहीं किया जा सका"
+    "message": "इस प्रोफ़ाइल से उपयोगकर्ता नाम नहीं मिल सका"
   },
   "errorUnableCreateAccount": {
-    "message": "खाता नहीं बनाया जा सका। कृपया URL जांचें और फिर से प्रयास करें!"
+    "message": "खाता नहीं बनाया जा सका। कृपया URL जांचें और फिर कोशिश करें!"
   },
   "errorUnableFetchProfileInfo": {
-    "message": "प्रोफ़ाइल जानकारी प्राप्त नहीं की जा सकी। कृपया URL जांचें और फिर से प्रयास करें!"
+    "message": "प्रोफ़ाइल जानकारी नहीं मिल सकी। कृपया URL जांचें और फिर कोशिश करें!"
   },
   "errorProfileIdNotFound": {
     "message": "प्रोफ़ाइल ID नहीं मिली"
   },
   "switchToAccountNamed": {
-    "message": "खाते \"$1\" पर स्विच करें"
+    "message": "खाता \"$1\" पर स्विच करें"
   },
   "successSwitchedToAccountNamed": {
-    "message": "खाते \"$1\" पर स्विच किया गया!"
+    "message": "खाता \"$1\" पर स्विच किया गया!"
   },
   "confirmDeleteAccount": {
-    "message": "क्या आप वाकई खाते \"$1\" को हटाना चाहते हैं?"
+    "message": "क्या आप वाकई खाता \"$1\" हटाना चाहते हैं?"
   },
   "btnCancel": {
     "message": "रद्द करें"
   },
   "btnDelete": {
-    "message": "हटाएँ"
+    "message": "हटाएं"
   },
   "labelImporting": {
-    "message": "आयात हो रहा है..."
+    "message": "इम्पोर्ट हो रहा है..."
   },
   "labelImportData": {
-    "message": "डेटा आयात करें"
+    "message": "डेटा इम्पोर्ट करें"
   }
 }
