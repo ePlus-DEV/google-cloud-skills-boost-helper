@@ -620,7 +620,9 @@ try {
             .forEach((sel) => {
               try {
                 sel.value = engine;
-              } catch {}
+              } catch (e) {
+                // Ignore errors if element doesn't support value property
+              }
             });
 
           document
@@ -628,7 +630,9 @@ try {
             .forEach((btn) => {
               try {
                 btn.textContent = getEngineLabel(engine);
-              } catch {}
+              } catch (e) {
+                // Ignore errors if element doesn't exist or update fails
+              }
             });
           return;
         }
@@ -647,7 +651,9 @@ try {
                   btn.style.cursor = "not-allowed";
                   try {
                     (btn as HTMLElement).style.filter = "grayscale(40%)";
-                  } catch {}
+                  } catch (e) {
+                    // Ignore errors if style assignment fails
+                  }
                 } else {
                   btn.removeAttribute("disabled");
                   btn.style.opacity = "";
@@ -655,9 +661,13 @@ try {
                   btn.style.cursor = "pointer";
                   try {
                     (btn as HTMLElement).style.filter = "";
-                  } catch {}
+                  } catch (e) {
+                    // Ignore errors if style assignment fails
+                  }
                 }
-              } catch {}
+              } catch (e) {
+                // Ignore errors if style assignment fails
+              }
             });
           return;
         }
@@ -670,7 +680,9 @@ try {
             .forEach((btn) => {
               try {
                 btn.style.display = enabled ? "inline-flex" : "none";
-              } catch {}
+              } catch (e) {
+                // Ignore errors if element doesn't exist
+              }
             });
           return;
         }
