@@ -242,7 +242,7 @@ const AccountService = {
   /**
    * Update account's arcade data
    */
-  async updateAccountArcadeData(
+  updateAccountArcadeData(
     accountId: string,
     arcadeData: ArcadeData,
   ): Promise<boolean> {

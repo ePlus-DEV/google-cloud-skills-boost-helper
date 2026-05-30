@@ -141,7 +141,7 @@ const OptionsService = {
             ${
               avatarSrc
                 ? `<img src="${avatarSrc}" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-white shadow-sm">`
-                : `<div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">${displayName
+                : `<div class="w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">${displayName
                     .charAt(0)
                     .toUpperCase()}</div>`
             }

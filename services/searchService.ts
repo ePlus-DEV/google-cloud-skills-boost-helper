@@ -658,11 +658,11 @@ class SearchService {
       const labHeader = document.querySelector(
         "#lab-instructions > div > div.lab-content__renderable-instructions.js-lab-content > ql-lab-header",
       ) as Element | null;
-      if (labHeader && labHeader.shadowRoot) {
+      if (labHeader?.shadowRoot) {
         const qlHeader = labHeader.shadowRoot.querySelector(
           "ql-header",
         ) as Element | null;
-        if (qlHeader && qlHeader.shadowRoot) {
+        if (qlHeader?.shadowRoot) {
           const deepH1 = qlHeader.shadowRoot.querySelector(
             "div > div.main-container > div > h1",
           );
