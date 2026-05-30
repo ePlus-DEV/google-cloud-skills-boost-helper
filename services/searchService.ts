@@ -746,17 +746,21 @@ class SearchService {
 
             // also search one level deeper inside nested shadow roots
             const nested = Array.from(sr.querySelectorAll("*"));
-            for (const n of nested) {
+            for (const nestedElement of nested) {
               try {
-                const nsr = (n as Element).shadowRoot;
-                if (nsr) {
-                  const f = nsr.querySelector(selector);
-                  if (f) return f;
+                const nestedShadowRoot = (nestedElement as Element).shadowRoot;
+                if (nestedShadowRoot) {
+                  const foundElement = nestedShadowRoot.querySelector(selector);
+                  if (foundElement) return foundElement;
                 }
-              } catch {}
+              } catch {
+                // ignore errors from accessing shadow roots
+              }
             }
           }
-        } catch {}
+        } catch {
+          // ignore errors from accessing shadow roots
+        }
       }
     } catch (e) {
       // ignore

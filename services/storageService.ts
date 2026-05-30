@@ -442,7 +442,7 @@ async function saveEplusSearchEnabled(enabled: boolean): Promise<void> {
 async function getPreferredSearchEngine(): Promise<string> {
   try {
     const settings = await AccountService.getSettings();
-    if (settings && settings.preferredSearchEngine) {
+    if (settings?.preferredSearchEngine) {
       return settings.preferredSearchEngine as string;
     }
   } catch {
