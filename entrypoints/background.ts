@@ -229,6 +229,7 @@ export default defineBackground(() => {
     }
   }
 
+  // Clear the badge text from the extension icon
   function handleClearBadge() {
     try {
       const browserAction = getBrowserAction();

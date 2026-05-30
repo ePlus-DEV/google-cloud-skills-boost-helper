@@ -329,7 +329,7 @@ const AccountService = {
 
     // If there was old data, create an account from it
     if (oldProfileUrl) {
-      const account = await this.createAccountFromOldData(
+      const account = this.createAccountFromOldData(
         oldProfileUrl,
         oldArcadeData || undefined,
       );
@@ -362,10 +362,10 @@ const AccountService = {
   /**
    * Create account from old data format
    */
-  async createAccountFromOldData(
+  createAccountFromOldData(
     profileUrl: string,
     arcadeData?: ArcadeData,
-  ): Promise<Account> {
+  ): Account {
     const accountId = this.generateAccountId();
     const now = new Date().toISOString();
 

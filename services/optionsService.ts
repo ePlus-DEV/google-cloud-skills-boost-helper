@@ -396,8 +396,8 @@ const OptionsService = {
     const accountsList = document.getElementById("accounts-list");
     if (accountsList) {
       // Handle button clicks
-      accountsList.addEventListener("click", async (e) => {
-        const target = e.target as HTMLElement;
+      accountsList.addEventListener("click", async (clickEvent) => {
+        const target = clickEvent.target as HTMLElement;
         const button = target.closest("button");
 
         if (!button) return;
@@ -874,8 +874,8 @@ const OptionsService = {
           return;
         }
 
-        const v = (ev.target as HTMLSelectElement).value;
-        await StorageService.savePreferredSearchEngine(v);
+        const selectedEngine = (ev.target as HTMLSelectElement).value;
+        await StorageService.savePreferredSearchEngine(selectedEngine);
         const message = browser.i18n.getMessage(
           "messagePreferredSearchEngineSaved",
         );
@@ -888,7 +888,7 @@ const OptionsService = {
         try {
           await sendRuntimeMessage({
             type: "preferredSearchEngineChanged",
-            engine: v,
+            engine: selectedEngine,
           });
         } catch (err) {
           // non-fatal
@@ -918,7 +918,7 @@ const OptionsService = {
 
     checkbox.addEventListener("change", async (ev) => {
       try {
-        const v = (ev.target as HTMLInputElement).checked;
+        const isEplusEnabled = (ev.target as HTMLInputElement).checked;
         const searchEnabled = await StorageService.isSearchFeatureEnabled();
         if (!searchEnabled) {
           checkbox.checked = await StorageService.isEplusSearchEnabled();
@@ -941,7 +941,7 @@ const OptionsService = {
           return;
         }
 
-        await StorageService.saveEplusSearchEnabled(Boolean(v));
+        await StorageService.saveEplusSearchEnabled(Boolean(isEplusEnabled));
         const message = browser.i18n.getMessage("messageEplusSearchSaved");
         const messageElement = document.createElement("div");
         messageElement.className =
@@ -952,7 +952,7 @@ const OptionsService = {
         try {
           await sendRuntimeMessage({
             type: "enableEplusSearchChanged",
-            enabled: Boolean(v),
+            enabled: Boolean(isEplusEnabled),
           });
         } catch (err) {
           console.debug("Failed to broadcast enableEplusSearchChanged:", err);
@@ -1184,8 +1184,8 @@ const OptionsService = {
       {
         id: "account-url-input",
         event: "keypress",
-        handler: (e: Event) => {
-          const keyboardEvent = e as KeyboardEvent;
+        handler: (keyPressEvent: Event) => {
+          const keyboardEvent = keyPressEvent as KeyboardEvent;
           if (keyboardEvent.key === "Enter") {
             this.handleCreateAccount();
           }
@@ -1276,18 +1276,22 @@ const OptionsService = {
     });
 
     // File input change handler
-    DOMUtils.addEventListener("import-file-input", "change", (e: Event) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      const textArea = DOMUtils.getTextAreaElement("import-json-textarea");
+    DOMUtils.addEventListener(
+      "import-file-input",
+      "change",
+      (changeEvent: Event) => {
+        const file = (changeEvent.target as HTMLInputElement).files?.[0];
+        const textArea = DOMUtils.getTextAreaElement("import-json-textarea");
 
-      if (file && textArea) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          textArea.value = event.target?.result as string;
-        };
-        reader.readAsText(file);
-      }
-    });
+        if (file && textArea) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            textArea.value = event.target?.result as string;
+          };
+          reader.readAsText(file);
+        }
+      },
+    );
   },
 
   /**

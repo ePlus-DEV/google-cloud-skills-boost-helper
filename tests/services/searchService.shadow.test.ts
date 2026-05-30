@@ -44,19 +44,19 @@ describe("SearchService.getLabTitle (shadow DOM)", () => {
   });
 
   it("prefers h1.ql-title-large when present", () => {
-    const h = document.createElement("h1");
-    h.className = "ql-title-large";
-    h.textContent = "Title Large";
-    document.body.appendChild(h);
+    const headingElement = document.createElement("h1");
+    headingElement.className = "ql-title-large";
+    headingElement.textContent = "Title Large";
+    document.body.appendChild(headingElement);
 
     const title = SearchService.getLabTitle();
     expect(title).toBe("Title Large");
   });
 
   it("falls back to first h1 when no special selectors exist", () => {
-    const h = document.createElement("h1");
-    h.textContent = "Simple H1";
-    document.body.appendChild(h);
+    const headingElement = document.createElement("h1");
+    headingElement.textContent = "Simple H1";
+    document.body.appendChild(headingElement);
 
     const title = SearchService.getLabTitle();
     expect(title).toBe("Simple H1");
