@@ -410,7 +410,9 @@ async function isEplusSearchEnabled(): Promise<boolean> {
       STORAGE_KEYS.enableEplusSearch,
     );
     if (typeof legacy === "boolean") return legacy;
-  } catch {}
+  } catch {
+    // ignore and fallback
+  }
 
   return true; // default to enabled
 }
