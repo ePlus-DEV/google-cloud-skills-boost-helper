@@ -1,15 +1,15 @@
 {
   "extName": {
-    "message": "Google Cloud Skills Boost - Assistant"
+    "message": "Google Cloud Skills Boost - Helper"
   },
   "extDescription": {
     "message": "Une extension de navigateur conçue pour optimiser votre expérience d'apprentissage sur Google Cloud Skills Boost."
   },
   "optionsPageTitle": {
-    "message": "Google Cloud Skills Boost - Assistant Options"
+    "message": "Options de Google Cloud Skills Boost - Helper"
   },
   "optionsPageDescription": {
-    "message": "Personnalisez votre expérience avec Google Cloud Skills Boost - Assistant."
+    "message": "Personnalisez votre expérience avec Google Cloud Skills Boost - Helper."
   },
   "labelFeature": {
     "message": "Fonctionnalité"
@@ -30,7 +30,7 @@
     "message": "Profil public"
   },
   "labelArcadePointsCalculator": {
-    "message": "Calculateur de points d'arcade"
+    "message": "Calculateur de points Arcade"
   },
   "labelSave": {
     "message": "Enregistrer"
@@ -45,7 +45,7 @@
     "message": "Activité récente"
   },
   "labelBadgesAchievements": {
-    "message": "Badges et réalisations"
+    "message": "Badges et réussites"
   },
   "labelUpdatePoints": {
     "message": "Mettre à jour les points"
@@ -75,40 +75,40 @@
     "message": "Veuillez configurer les paramètres"
   },
   "errorInvalidUrl": {
-    "message": "Veuillez entrer une URL valide commençant par 'https://www.skills.google/public_profiles/xxx"
+    "message": "Veuillez saisir une URL valide commençant par 'https://www.skills.google/public_profiles/xxx'."
   },
   "successSettingsSaved": {
     "message": "Paramètres enregistrés avec succès !"
   },
   "notePleaseSetUpTheSettings": {
-    "message": "<strong>Remarque :</strong> <br>⚠️ Vous avez activé l’option <strong>\"Rendre le profil public\"</strong>, mais vous n’avez pas encore enregistré les modifications.<br>👉 Veuillez cliquer sur le bouton <strong>\"Mettre à jour les paramètres\"</strong> pour confirmer et sauvegarder vos nouveaux réglages.<br>❌ Si vous ne les enregistrez pas, votre profil <strong>ne sera pas rendu public</strong> et le lien ne sera pas généré."
+    "message": "<strong>Remarque :</strong><br>Vous avez activé l'option <strong>\"Rendre le profil public\"</strong>, mais vous n'avez pas encore enregistré les modifications.<br>Cliquez sur <strong>\"Mettre à jour les paramètres\"</strong> pour confirmer et enregistrer vos nouveaux paramètres.<br>Si vous n'enregistrez pas, votre profil <strong>ne sera pas rendu public</strong> et le lien ne sera pas généré."
   },
   "messageLinkCopiedToClipboard": {
-    "message": "✔️ Le lien a été copié dans le presse-papiers !"
+    "message": "Lien copié dans le presse-papiers !"
   },
   "copyProfileUrl": {
-    "message": "Cliquez pour copier l'URL du profil"
+    "message": "Cliquer pour copier l'URL du profil public"
   },
   "labelEnableSearchFeature": {
-    "message": "Activer la fonction de recherche"
+    "message": "Activer la recherche"
   },
   "descriptionEnableSearchFeature": {
-    "message": "Afficher les boutons de recherche Google et YouTube quand aucune solution n'est trouvée."
+    "message": "Afficher les boutons Google Search et YouTube lorsqu'aucune solution n'est trouvée."
   },
   "messageSearchFeatureEnabled": {
-    "message": "Fonction de recherche activée - Les boutons de recherche Google et YouTube apparaîtront quand aucune solution n'est trouvée"
+    "message": "Recherche activée : les boutons Google et YouTube apparaîtront lorsqu'aucune solution n'est trouvée"
   },
   "messageSearchFeatureDisabled": {
-    "message": "Fonction de recherche désactivée - Seul \"Aucune solution\" sera affiché quand aucune solution n'est trouvée"
+    "message": "Recherche désactivée : seul \"Aucune solution\" sera affiché lorsqu'aucune solution n'est trouvée"
   },
   "tourStartButton": {
-    "message": "Guide d'utilisation"
+    "message": "Guide utilisateur"
   },
   "tourWelcomeTitle": {
     "message": "Bienvenue dans le guide de création de compte !"
   },
   "tourWelcomeContent": {
-    "message": "Nous vous guiderons étape par étape pour créer votre premier compte Google Cloud Skills Boost."
+    "message": "Nous allons vous guider étape par étape pour créer votre premier compte Google Cloud Skills Boost."
   },
   "tourWelcomeTip": {
     "message": "<strong>Astuce :</strong> Vous pouvez ignorer ce guide à tout moment en cliquant sur \"Ignorer\"."
@@ -123,25 +123,25 @@
     "message": "Liste des comptes"
   },
   "tourAccountListContent": {
-    "message": "Après avoir créé des comptes, ils apparaîtront ici. Vous pouvez :<br>• Basculer entre les comptes<br>• Mettre à jour les données des points d'arcade<br>• Modifier les surnoms<br>• Voir les profils publics"
+    "message": "Après leur création, les comptes apparaîtront ici. Vous pouvez :<br>- Passer d'un compte à l'autre<br>- Mettre à jour les données de points Arcade<br>- Modifier les surnoms<br>- Voir les profils publics"
   },
   "tourModalStep1Title": {
-    "message": "Étape 1 : Ouvrir la page de profil"
+    "message": "Étape 1 : ouvrir la page du profil"
   },
   "tourModalStep1Content": {
-    "message": "Cliquez sur ce bouton pour ouvrir Google Cloud Skills Boost Profile dans un nouvel onglet. Vous devrez vous connecter et obtenir l'URL de la page de profil."
+    "message": "Cliquez sur ce bouton pour ouvrir le profil Google Cloud Skills Boost dans un nouvel onglet. Vous devrez vous connecter et récupérer l'URL depuis la page du profil."
   },
   "tourModalStep2Title": {
-    "message": "Étape 2 : Entrer l'URL du profil"
+    "message": "Étape 2 : saisir l'URL du profil"
   },
   "tourModalStep2Content": {
-    "message": "Après vous être connecté, copiez l'URL de la barre d'adresse et collez-la ici."
+    "message": "Après vous être connecté, copiez l'URL depuis la barre d'adresse et collez-la ici."
   },
   "tourModalStep2Tip": {
     "message": "L'URL ressemblera à : https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
-    "message": "Étape 3 : Créer le compte"
+    "message": "Étape 3 : créer le compte"
   },
   "tourModalStep3Content": {
     "message": "Cliquez sur ce bouton pour créer le compte. Le système récupérera automatiquement les informations du profil et créera un nouveau compte pour vous."
@@ -150,13 +150,13 @@
     "message": "Guide terminé !"
   },
   "tourCompletedContent": {
-    "message": "Vous pouvez maintenant commencer à créer votre premier compte."
+    "message": "Vous pouvez maintenant créer votre premier compte."
   },
   "tourModalCompletedTitle": {
-    "message": "Prêt à créer un compte !"
+    "message": "Prêt à créer le compte !"
   },
   "tourModalCompletedContent": {
-    "message": "Essayez d'entrer une URL de profil et créez votre premier compte."
+    "message": "Essayez de saisir une URL de profil et de créer votre premier compte."
   },
   "tourButtonNext": {
     "message": "Suivant"
@@ -174,25 +174,25 @@
     "message": "Fermer"
   },
   "badgeToolbarNote": {
-    "message": "Lorsque activé, l'extension mettra à jour le badge de la barre d'outils avec votre total de points (inclut le bonus Facilitateur si actif)."
+    "message": "Lorsque cette option est activée, l'extension met à jour le badge de la barre d'outils avec votre total de points, bonus Facilitator inclus lorsqu'il est actif."
   },
   "badgeViewDescription": {
-    "message": "Voir tous vos badges et réalisations obtenus."
+    "message": "Afficher tous vos badges et réussites obtenus."
   },
   "badgeTrackProgress": {
     "message": "Suivez votre progression d'apprentissage !"
   },
   "labelAchievements": {
-    "message": "Réalisations"
+    "message": "Réussites"
   },
   "labelProgress": {
     "message": "Progression"
   },
   "errorEnterProfileUrl": {
-    "message": "Veuillez saisir l'URL du profil !"
+    "message": "Veuillez saisir une URL de profil !"
   },
   "errorInvalidProfileUrl": {
-    "message": "URL du profil invalide !"
+    "message": "URL de profil non valide !"
   },
   "errorAccountExistsTitle": {
     "message": "Le compte existe déjà"
@@ -204,7 +204,7 @@
     "message": "Impossible d'obtenir le nom depuis le profil. Veuillez réessayer !"
   },
   "labelAdding": {
-    "message": "Ajout en cours..."
+    "message": "Ajout..."
   },
   "successAccountAdded": {
     "message": "Compte ajouté avec succès !"
@@ -219,7 +219,7 @@
     "message": "Ajouter un compte"
   },
   "successSwitchedAccount": {
-    "message": "Changement de compte réussi !"
+    "message": "Compte changé avec succès !"
   },
   "errorSwitchAccount": {
     "message": "Erreur lors du changement de compte."
@@ -231,7 +231,7 @@
     "message": "Mise à jour des données du compte..."
   },
   "successAccountDataUpdated": {
-    "message": "Données du compte mises à jour avec succès !"
+    "message": "Données du compte mises à jour avec succès !"
   },
   "errorFetchDataFromApi": {
     "message": "Impossible de récupérer les données depuis l'API."
@@ -240,58 +240,58 @@
     "message": "Erreur lors de la mise à jour du compte."
   },
   "errorProfileUrlNotFound": {
-    "message": "URL du profil introuvable pour ce compte."
+    "message": "URL de profil introuvable pour ce compte."
   },
   "errorOpeningProfile": {
     "message": "Erreur lors de l'ouverture du profil."
   },
   "errorNoActiveAccountOrProfileUrl": {
-    "message": "Aucun compte actif ou URL de profil trouvée."
+    "message": "Aucun compte actif ou URL de profil trouvé."
   },
   "errorAccountNotFoundToUpdate": {
-    "message": "Impossible de trouver le compte à mettre à jour !"
+    "message": "Impossible de trouver le compte à mettre à jour !"
   },
   "successNicknameSaved": {
-    "message": "Surnom enregistré avec succès !"
+    "message": "Surnom enregistré avec succès !"
   },
   "errorSavingNickname": {
-    "message": "Erreur lors de l'enregistrement du surnom !"
+    "message": "Erreur lors de l'enregistrement du surnom !"
   },
   "successNicknameUpdated": {
-    "message": "Surnom mis à jour avec succès !"
+    "message": "Surnom mis à jour avec succès !"
   },
   "errorUpdatingAccountGeneric": {
-    "message": "Une erreur s'est produite lors de la mise à jour du compte !"
+    "message": "Une erreur s'est produite lors de la mise à jour du compte !"
   },
   "errorCannotDeleteLastAccount": {
-    "message": "Impossible de supprimer le dernier compte !"
+    "message": "Impossible de supprimer le dernier compte !"
   },
   "successAccountDeleted": {
-    "message": "Compte supprimé avec succès !"
+    "message": "Compte supprimé avec succès !"
   },
   "errorDeletingAccountGeneric": {
-    "message": "Une erreur s'est produite lors de la suppression du compte !"
+    "message": "Une erreur s'est produite lors de la suppression du compte !"
   },
   "successDataExported": {
-    "message": "Données exportées avec succès !"
+    "message": "Données exportées avec succès !"
   },
   "errorExportingData": {
-    "message": "Une erreur s'est produite lors de l'exportation des données !"
+    "message": "Une erreur s'est produite lors de l'exportation des données !"
   },
   "errorNoImportData": {
-    "message": "Veuillez sélectionner un fichier ou coller le contenu JSON !"
+    "message": "Veuillez sélectionner un fichier ou coller du contenu JSON !"
   },
   "successDataImported": {
-    "message": "Données importées avec succès !"
+    "message": "Données importées avec succès !"
   },
   "errorInvalidImportData": {
-    "message": "Données invalides. Veuillez vérifier à nouveau !"
+    "message": "Données non valides. Veuillez vérifier à nouveau !"
   },
   "errorImportingData": {
-    "message": "Une erreur s'est produite lors de l'importation des données !"
+    "message": "Une erreur s'est produite lors de l'importation des données !"
   },
   "labelFacilitatorProgram": {
-    "message": "Programme Facilitateur"
+    "message": "Programme Facilitator"
   },
   "messageBadgeEnabled": {
     "message": "Affichage du badge activé"
@@ -300,16 +300,16 @@
     "message": "Affichage du badge désactivé"
   },
   "labelShowBadge": {
-    "message": "Afficher le badge sur l'icône"
+    "message": "Afficher le badge sur l'icône de l'extension"
   },
   "descriptionShowBadge": {
-    "message": "Activer/désactiver l'affichage du total des points sur l'icône de la barre d'outils du navigateur."
+    "message": "Active ou désactive l'affichage du total des points sur l'icône de l'extension dans la barre d'outils du navigateur."
   },
   "facilitatorDeadlinePassed": {
-    "message": "La date limite du programme Facilitateur est passée"
+    "message": "La date limite du programme Facilitator est passée"
   },
   "arcadeDeadlinePassed": {
-    "message": "La saison Arcade est terminée pour l'année. À la saison prochaine !"
+    "message": "La saison Arcade est terminée pour cette année. À la prochaine saison !"
   },
   "programEnded": {
     "message": "Programme terminé"
@@ -321,7 +321,7 @@
     "message": "En cours"
   },
   "statusNotStarted": {
-    "message": "Pas commencé"
+    "message": "Non commencé"
   },
   "anonymous": {
     "message": "Anonyme"
@@ -335,7 +335,9 @@
   "labelBack": {
     "message": "Retour"
   },
-  "backToTop": { "message": "Retour en haut" },
+  "backToTop": {
+    "message": "Retour en haut"
+  },
   "changelogWhatsNew": {
     "message": "Nouveautés"
   },
@@ -343,7 +345,7 @@
     "message": "Dernières mises à jour et améliorations"
   },
   "changelogLoading": {
-    "message": "Chargement du journal..."
+    "message": "Chargement du journal des modifications..."
   },
   "changelogFooterNotice": {
     "message": "Cette extension n'est pas affiliée à Google Cloud Skills Boost. Tous droits réservés."
@@ -385,7 +387,7 @@
     "message": "Suivez les étapes ci-dessous"
   },
   "openProfilePage": {
-    "message": "Ouvrir la page de profil"
+    "message": "Ouvrir la page du profil"
   },
   "errorPrefix": {
     "message": "Erreur :"
@@ -394,7 +396,7 @@
     "message": "Succès :"
   },
   "accountErrorFallback": {
-    "message": "Une erreur est survenue. Veuillez réessayer."
+    "message": "Une erreur s'est produite. Veuillez réessayer."
   },
   "accountSuccessFallback": {
     "message": "Votre action a réussi !"
@@ -409,7 +411,7 @@
     "message": "Points Arcade"
   },
   "milestonesTitle": {
-    "message": "Étapes importantes"
+    "message": "Jalons"
   },
   "accountsCardTitle": {
     "message": "Gestion des comptes et calculateur de points Arcade"
@@ -418,7 +420,7 @@
     "message": "Gérez plusieurs comptes et calculez les points Arcade."
   },
   "clickOpenProfileButton": {
-    "message": "Cliquez sur le bouton \"Ouvrir la page de profil\""
+    "message": "Cliquez sur le bouton \"Ouvrir la page du profil\""
   },
   "programDeadline": {
     "message": "Date limite du programme"
@@ -436,40 +438,40 @@
     "message": "Secondes"
   },
   "milestoneDeadlineNotice": {
-    "message": "Complétez les étapes avant la date limite pour gagner des points bonus !"
+    "message": "Terminez les jalons avant la date limite pour gagner des points bonus !"
   },
   "arcadeMotivation": {
-    "message": "Gardez l'élan et grimpez dans le classement Arcade !"
+    "message": "Gardez le rythme et grimpez dans le classement Arcade !"
   },
   "totalBonusEarned": {
-    "message": "Bonus total gagné :"
+    "message": "Total des bonus obtenus :"
   },
   "maxPossibleNote": {
-    "message": "Maximum possible : 25 points (seulement le plus haut palier)"
+    "message": "Maximum possible : 25 points (seul le jalon le plus élevé compte)"
   },
   "pointsBreakdown": {
-    "message": "Répartition des points"
+    "message": "Détail des points"
   },
   "arcadeBase": {
-    "message": "Base Arcade :"
+    "message": "Arcade Base Camp :"
   },
   "facilitatorBonus": {
-    "message": "Bonus Facilitateur :"
+    "message": "Bonus Facilitator :"
   },
   "gameBadgeLabel": {
     "message": "Badge de jeu"
   },
   "gameBadgeLabelTooltip": {
-    "message": "Arcade est désormais sans niveaux. Nouveaux parcours : Adventure (bases du cloud), Voyage (pratique des compétences), Trail (apprentissage IA)."
+    "message": "Arcade n'a plus de niveaux. Nouveaux parcours : Adventure (bases du cloud), Voyage (pratique des compétences), Trail (apprentissage de l'IA)."
   },
   "triviaBadgeLabel": {
-    "message": "Badge Quiz"
+    "message": "Badge de quiz"
   },
   "triviaBadgeLabelTooltip": {
-    "message": "La Trivia s'appelle désormais Sprint : des quiz rapides pour réviser et gagner des points Arcade."
+    "message": "Trivia s'appelle maintenant Sprint : des quiz rapides pour revoir les concepts et gagner des points Arcade."
   },
   "skillBadgeLabel": {
-    "message": "Badge Compétence"
+    "message": "Badge de compétence"
   },
   "specialPointsLabel": {
     "message": "Points spéciaux"
@@ -478,25 +480,25 @@
     "message": "Compte à rebours de la saison Arcade"
   },
   "milestone1": {
-    "message": "Palier 1"
+    "message": "Jalon 1"
   },
   "milestone1Bonus": {
     "message": "+2 points bonus"
   },
   "milestone2": {
-    "message": "Palier 2"
+    "message": "Jalon 2"
   },
   "milestone2Bonus": {
     "message": "+8 points bonus"
   },
   "milestone3": {
-    "message": "Palier 3"
+    "message": "Jalon 3"
   },
   "milestone3Bonus": {
     "message": "+15 points bonus"
   },
   "milestoneUltimate": {
-    "message": "Ultime"
+    "message": "Ultimate"
   },
   "milestoneUltimateBonus": {
     "message": "+25 points bonus"
@@ -514,7 +516,7 @@
     "message": "Compétences :"
   },
   "labFreeLabel": {
-    "message": "Sans labo :"
+    "message": "Sans lab :"
   },
   "switchAccount": {
     "message": "Changer de compte"
@@ -529,28 +531,28 @@
     "message": "Résultats YouTube"
   },
   "searchFeatureTip": {
-    "message": "Vous aide à trouver des réponses plus rapidement !"
+    "message": "Vous aide à trouver des réponses plus vite !"
   },
   "successAccountCreated": {
     "message": "Compte créé avec succès !"
   },
   "successAddNickname": {
-    "message": "Vous pouvez ajouter un surnom pour identifier plus facilement ce compte."
+    "message": "Vous pouvez ajouter un surnom pour identifier facilement ce compte."
   },
   "newlyCreated": {
-    "message": "Nouvellement créé"
+    "message": "Récemment créé"
   },
   "labelNickname": {
     "message": "Surnom :"
   },
   "noNicknameYet": {
-    "message": "Pas encore de surnom"
+    "message": "Aucun surnom pour le moment"
   },
   "labelUpdated": {
     "message": "Mis à jour :"
   },
   "justCreated": {
-    "message": "Vient d'être créé"
+    "message": "Tout juste créé"
   },
   "markdownShowLess": {
     "message": "Afficher moins"
@@ -559,28 +561,28 @@
     "message": "Avis important"
   },
   "importantNoticeText": {
-    "message": "Chaque URL de profil ne peut être ajoutée qu'une seule fois. Le système vérifiera et notifiera si le compte existe déjà."
+    "message": "Chaque URL de profil ne peut être ajoutée qu'une seule fois. Le système vérifiera et vous avertira si le compte existe déjà."
   },
   "enterProfileUrlLabel": {
-    "message": "Entrez l'URL du profil et créez un compte"
+    "message": "Saisir l'URL du profil et créer le compte"
   },
   "createAccountButton": {
-    "message": "Créer un compte"
+    "message": "Créer le compte"
   },
   "instructionsLabel": {
     "message": "Instructions :"
   },
   "instructionsText": {
-    "message": "Entrez l'URL et cliquez sur \"Créer un compte\". Le système chargera automatiquement les informations et créera un nouveau compte."
+    "message": "Saisissez l'URL et cliquez sur \"Créer le compte\". Le système chargera automatiquement les informations et créera un nouveau compte."
   },
   "step1Title": {
-    "message": "Cliquez sur le bouton \"Ouvrir la page de profil\""
+    "message": "Cliquez sur \"Ouvrir la page du profil\""
   },
   "step1Subtitle": {
     "message": "Ouvrira Google Cloud Skills Boost dans un nouvel onglet"
   },
   "step2Title": {
-    "message": "Connectez-vous (si ce n'est pas déjà fait)"
+    "message": "Connectez-vous si ce n'est pas déjà fait"
   },
   "step2Subtitle": {
     "message": "Utilisez votre compte Google"
@@ -589,13 +591,13 @@
     "message": "Trouvez la section \"Profil public\""
   },
   "step3Subtitle": {
-    "message": "Faites défiler vers le bas dans la page de profil"
+    "message": "Faites défiler la page du profil vers le bas"
   },
   "step4Title": {
     "message": "Copiez l'URL depuis la barre d'adresse"
   },
   "step4Subtitle": {
-    "message": "Collez dans le champ ci-dessous"
+    "message": "Collez-la dans le champ ci-dessous"
   },
   "newAccountBadge": {
     "message": "Nouveau compte"
@@ -613,28 +615,28 @@
     "message": "Surnom du compte"
   },
   "nicknamePlaceholder": {
-    "message": "ex: Compte principal, Compte travail, Compte études..."
+    "message": "ex. : compte principal, compte travail, compte étude..."
   },
   "nicknameHelpText": {
-    "message": "Les surnoms vous aident à identifier facilement les comptes lorsque vous avez plusieurs comptes différents"
+    "message": "Les surnoms vous aident à identifier vos comptes lorsque vous en gérez plusieurs"
   },
   "editAccountTitle": {
     "message": "Modifier le compte"
   },
   "displayNameLabel": {
-    "message": "Nom d'affichage :"
+    "message": "Nom affiché :"
   },
   "displayNameInfo": {
-    "message": "Le nom d'affichage provient de Google Cloud Skills Boost et ne peut pas être modifié"
+    "message": "Le nom affiché vient de Google Cloud Skills Boost et ne peut pas être modifié"
   },
   "nicknameLabel": {
     "message": "Surnom :"
   },
   "enterNicknamePlaceholder": {
-    "message": "Entrez un surnom pour faciliter l'identification..."
+    "message": "Saisissez un surnom pour l'identifier facilement..."
   },
   "nicknameExample": {
-    "message": "Exemple : \"Compte principal\", \"Compte travail\", \"Compte études\"..."
+    "message": "Exemples : \"Compte principal\", \"Compte travail\", \"Compte étude\"..."
   },
   "cancelButton": {
     "message": "Annuler"
@@ -643,10 +645,10 @@
     "message": "Enregistrer les modifications"
   },
   "themeStudioTitle": {
-    "message": "Studio de thème"
+    "message": "Theme Studio"
   },
   "themeStudioDescription": {
-    "message": "Personnalisez le thème de la popup avec aperçu en temps réel."
+    "message": "Personnalisez le thème de votre popup avec un aperçu en temps réel."
   },
   "labelBackground1": {
     "message": "Arrière-plan 1"
@@ -682,7 +684,7 @@
     "message": "Synchroniser depuis le popup actuel"
   },
   "previewNote": {
-    "message": "L'aperçu utilise l'UI réelle du popup et les données de compte actuelles."
+    "message": "L'aperçu utilise la vraie interface du popup et les données du compte actuel."
   },
   "popupLivePreviewTitle": {
     "message": "Aperçu en direct du popup"
@@ -694,28 +696,28 @@
     "message": "Réinitialiser"
   },
   "btnOpenThemeStudio": {
-    "message": "Ouvrir le Studio de thème (Aperçu en direct)"
+    "message": "Ouvrir Theme Studio (aperçu en direct)"
   },
   "btnChangeTheme": {
-    "message": "Changer le thème"
+    "message": "Changer de thème"
   },
   "labThinking": {
-    "message": "Réflexion en cours..."
+    "message": "Réflexion..."
   },
   "labSolutionTitle": {
-    "message": "Cliquez pour ouvrir la solution"
+    "message": "Cliquer pour ouvrir la solution"
   },
   "labSolutionButton": {
-    "message": "Solution du lab"
+    "message": "Voir la solution de ce lab"
   },
   "labSupportTitle": {
-    "message": "Click to get support or report issue on Telegram"
+    "message": "Cliquer pour obtenir de l'aide ou signaler un problème sur Telegram"
   },
   "labSupportButton": {
-    "message": "Report / Support"
+    "message": "Signaler / Assistance"
   },
   "labNoSolution": {
-    "message": "Pas de solution"
+    "message": "Aucune solution"
   },
   "labEplusSearch": {
     "message": "Recherche ePlus"
@@ -726,16 +728,36 @@
   "labYouTube": {
     "message": "YouTube"
   },
-  "labBingSearch": { "message": "Recherche Bing" },
-  "labYandexSearch": { "message": "Recherche Yandex" },
-  "labBraveSearch": { "message": "Recherche Brave" },
-  "labDuckDuckGoSearch": { "message": "Recherche DuckDuckGo" },
-  "labBaiduSearch": { "message": "Recherche Baidu" },
-  "labYahooSearch": { "message": "Recherche Yahoo!" },
-  "labCoccocSearch": { "message": "Recherche Cốc Cốc" },
-  "labelSearch": { "message": "Rechercher" },
-  "labelCopyLink": { "message": "Copier le lien" },
-  "labFallbackQuery": { "message": "Tutoriel du laboratoire Google Cloud" },
+  "labBingSearch": {
+    "message": "Recherche Bing"
+  },
+  "labYandexSearch": {
+    "message": "Recherche Yandex"
+  },
+  "labBraveSearch": {
+    "message": "Recherche Brave"
+  },
+  "labDuckDuckGoSearch": {
+    "message": "Recherche DuckDuckGo"
+  },
+  "labBaiduSearch": {
+    "message": "Recherche Baidu"
+  },
+  "labYahooSearch": {
+    "message": "Recherche Yahoo!"
+  },
+  "labCoccocSearch": {
+    "message": "Recherche Cốc Cốc"
+  },
+  "labelSearch": {
+    "message": "Rechercher"
+  },
+  "labelCopyLink": {
+    "message": "Copier le lien"
+  },
+  "labFallbackQuery": {
+    "message": "tutoriel lab Google Cloud"
+  },
   "exportDataTitle": {
     "message": "Exporter mes données"
   },
@@ -743,10 +765,10 @@
     "message": "Exporter JSON"
   },
   "exportCSV": {
-    "message": "Exporter les badges CSV"
+    "message": "Exporter les badges en CSV"
   },
   "exportSuccess": {
-    "message": "Exporté avec succès !"
+    "message": "Exportation réussie !"
   },
   "exportNoData": {
     "message": "Aucune donnée à exporter."
@@ -758,22 +780,22 @@
     "message": "Vue complète"
   },
   "shortcutHint": {
-    "message": "R actualiser · S paramètres · C compact"
+    "message": "R actualiser / S paramètres / C compact"
   },
   "messageEplusSearchSaved": {
-    "message": "Param?tre de recherche ePlus enregistr?"
+    "message": "Paramètre de recherche ePlus enregistré"
   },
   "messageEnableSearchFirst": {
-    "message": "Activez d?abord la fonction de recherche principale avant d?activer ePlus."
-  },
+    "message": "Activez d'abord la fonction principale de recherche avant d'activer ePlus."
+  },
   "titleSetDefaultAccount": {
-    "message": "D?finir comme compte par d?faut"
+    "message": "Définir comme compte par défaut"
   },
   "titleToggleFacilitatorProgram": {
-    "message": "Activer ou d?sactiver le programme Facilitator"
+    "message": "Activer/désactiver le programme Facilitator"
   },
   "titleUpdateAccount": {
-    "message": "Mettre ? jour le compte"
+    "message": "Mettre à jour le compte"
   },
   "titleViewPublicProfile": {
     "message": "Voir le profil public"
@@ -785,64 +807,64 @@
     "message": "Supprimer le compte"
   },
   "exportNoBadgesData": {
-    "message": "Aucun badge ? exporter."
+    "message": "Aucun badge à exporter."
   },
   "messagePreferredSearchEngineSaved": {
-    "message": "Moteur de recherche pr?f?r? enregistr?"
+    "message": "Moteur de recherche préféré enregistré"
   },
   "labelEnabled": {
-    "message": "activ?"
+    "message": "activé"
   },
   "labelDisabled": {
-    "message": "d?sactiv?"
+    "message": "désactivé"
   },
   "messageFacilitatorProgramUpdated": {
     "message": "Programme Facilitator $1 pour $2"
   },
   "errorUpdatingFacilitatorProgram": {
-    "message": "Erreur lors de la mise ? jour du param?tre du programme Facilitator"
+    "message": "Erreur lors de la mise à jour du paramètre du programme Facilitator"
   },
   "errorFetchDataRetry": {
-    "message": "Impossible de r?cup?rer les donn?es. Veuillez r?essayer plus tard."
+    "message": "Impossible de récupérer les données. Veuillez réessayer plus tard."
   },
   "errorGenericRetry": {
-    "message": "Une erreur est survenue. Veuillez r?essayer."
+    "message": "Une erreur s'est produite. Veuillez réessayer."
   },
   "labelNewAccount": {
     "message": "Nouveau compte"
   },
   "successAccountCreatedNamed": {
-    "message": "Compte \"$1\" cr?? avec succ?s !"
+    "message": "Compte \"$1\" créé avec succès !"
   },
   "successDataSaved": {
-    "message": "Donn?es enregistr?es avec succ?s !"
+    "message": "Données enregistrées avec succès !"
   },
   "successAccountUpdated": {
-    "message": "Compte mis ? jour avec succ?s !"
+    "message": "Compte mis à jour avec succès !"
   },
   "errorSaveSetting": {
-    "message": "Impossible d?enregistrer le param?tre"
+    "message": "Échec de l'enregistrement du paramètre"
   },
   "errorUnableFetchProfile": {
-    "message": "Impossible de r?cup?rer les informations de ce profil"
+    "message": "Impossible de récupérer les informations de ce profil"
   },
   "errorUnableGetUserName": {
-    "message": "Impossible d?obtenir le nom d?utilisateur depuis ce profil"
+    "message": "Impossible d'obtenir le nom d'utilisateur depuis ce profil"
   },
   "errorUnableCreateAccount": {
-    "message": "Impossible de cr?er le compte. V?rifiez l?URL puis r?essayez !"
+    "message": "Impossible de créer le compte. Vérifiez l'URL et réessayez !"
   },
   "errorUnableFetchProfileInfo": {
-    "message": "Impossible de r?cup?rer les informations du profil. V?rifiez l?URL puis r?essayez !"
+    "message": "Impossible de récupérer les informations du profil. Vérifiez l'URL et réessayez !"
   },
   "errorProfileIdNotFound": {
-    "message": "ID de profil introuvable"
+    "message": "ID du profil introuvable"
   },
   "switchToAccountNamed": {
     "message": "Passer au compte \"$1\""
   },
   "successSwitchedToAccountNamed": {
-    "message": "Passage au compte \"$1\" effectu? !"
+    "message": "Compte \"$1\" sélectionné !"
   },
   "confirmDeleteAccount": {
     "message": "Voulez-vous vraiment supprimer le compte \"$1\" ?"
@@ -857,6 +879,6 @@
     "message": "Importation..."
   },
   "labelImportData": {
-    "message": "Importer les donn?es"
+    "message": "Importer les données"
   }
 }

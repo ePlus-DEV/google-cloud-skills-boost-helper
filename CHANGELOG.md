@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.13] - 2026-05-30
+### :sparkles: New Features
+- [`160845b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/160845b9c97b0e63e435c2b251e5f7aaddb0ab5f) - update search functionality to handle course ID extraction and year prefixes in titles; add tests for new matching logic *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`857fba9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/857fba94290c37a43179ba7aee6157f991612fb9) - implement API client for solution fetching and lab page service for UI integration *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e60b705`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e60b70541c219d1df85888e0cbdcf19392834199) - add UI components and localized labels for lab solutions and search navigation *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4b2d654`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4b2d654b200be8145d985f3c8a9ed2c850c26941) - enhance UI button layout and styling for solution elements in lab page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0f7ef77`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0f7ef777c063af54da2e04dd7b4270803d0d4982) - implement floating back-to-top button functionality and ensure its presence on the page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6cee02e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6cee02ed85a7410071f6f67ce2db3575149faf3e) - add error handling and logging for malformed URLs in LabService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4b4288d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4b4288d9d1719a10c293d2e5539d08d28a2e24c2) - add "Back to top" button functionality and localize messages in multiple languages *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`19ced13`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/19ced13e32490719b54608af0db4e260acd879a6) - add direct course ID match optimization in search results *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`182c0ee`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/182c0ee3a9e486168a25f759c65ec02a65194dc3) - add support for configurable preferred search engine with localization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f14767a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f14767af682163e3de6f68a8d90eacb84cc32484) - **locales**: add scripts to compare locale files against English *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`95bd021`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/95bd0218afcbdfffa14a210e64facb00e09add2a) - **options**: synchronize search child controls with main search feature toggle *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3e0911a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3e0911a6ee26d660fd513f91ef8c39aa6ffc9072) - **search**: add support for preferred search engine and enable Eplus search option *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`3ccb226`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3ccb22666581417f2476f37cd7101661483d0459) - simplify conditional checks for element styles in UIComponents *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e25c688`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e25c688250841cafb0dffbf758d89c76dd51a07c) - replace void 0 with undefined for better clarity and consistency *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4a763e2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4a763e2be7b5701586aa93154d0cc7a5c019551a) - **uiComponents**: improve error handling for UI element updates *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f6040fd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f6040fd7a9ac089937bcd783f28107fe92a1fa08) - **background**: improve error handling by adding comments for ignored errors *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d15e234`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d15e234a15c19abbb9a8860a907b67ba87e7a43b) - **tests**: update expected title in SearchService.getLabTitle test *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`39a2aa1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/39a2aa15276bfb16a343bdcffb39132f2e511090) - **search**: improve error handling in isEplusSearchEnabled function *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`b6358f2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b6358f2f44c1abf3b5f6d1d755530d6e3ba15ecb) - improve readability and documentation in UIComponents and LabService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`887d0ef`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/887d0ef9ba74128fea59342d325ae687a8d4e2bc) - enhance search result handling with improved filtering and fallback logic *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6397187`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6397187c88d56af29302d011d6a69cdb9a060ce6) - enhance search functionality with additional methods for result handling and filtering *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ecf08cd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ecf08cdf6ba0b67ef8bb2e0fd1462367c222e4df) - optimize course ID matching in search results for improved performance *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b352f34`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b352f34269647788e7c8f4762537a79d8e1ee443) - adjust search query construction to prioritize title over GSP ID *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4d8baf8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4d8baf833d5e893295b7b0fc6cdbf6dbe39a92d8) - add documentation for getFuseResults method in SearchService *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`de16ed7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/de16ed7ddffa5078bf21e016f65a305034e800ee) - implement findBestMatch method to return both URL and title for improved search results *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6b14cf1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6b14cf15bef3ac543141de3338a058632b21533a) - replace hardcoded Telegram support URL with a constant for better maintainability *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e8f9275`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e8f9275595c34978b9b7dd3b2e09358491ffd6c4) - remove deprecated searchOnGoogle method and enhance title extraction logic with shadow DOM support *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`46d8a00`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/46d8a001f014c66d0515f9a327d172301f79f8b9) - **badge**: remove async from badge handling functions for improved performance *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d24bf7a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d24bf7a1e6d8d7f207e2a82ae05f67de215c56f2) - **tests**: rename variables for clarity in SearchService tests *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c78d7e6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c78d7e611907ce5f44e508739d8ff701fb1e17c5) - **search**: use optional chaining for safer DOM access in lab header *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d914828`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d9148283da1387754b2d91f7620853d87a74c1c4) - **search**: improve shadow root access handling with clearer variable names *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`503e484`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/503e484582ce77cdfcde5497ab52db4234fd8bd1) - **ui**: remove unused ePlus search button from UI components *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :white_check_mark: Tests
+- [`aeefab1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/aeefab17a3ce61568cc0ebba64225c2ec3678b37) - add shadow DOM specific tests for getLabTitle method *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`152debb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/152debb8d380f49c65d574c6a28692410bcd6506) - **deps**: bump marked in the production-dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [1.2.12] - 2026-05-21
 ### :bug: Bug Fixes
 - [`2fe9688`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2fe96886c05defd59afcde0253e9ec42e8b649d9) - revert version number to 1.2.13 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -922,3 +968,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.10]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.9...1.2.10
 [1.2.11]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.10...1.2.11
 [1.2.12]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.11...1.2.12
+[1.2.13]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.12...1.2.13

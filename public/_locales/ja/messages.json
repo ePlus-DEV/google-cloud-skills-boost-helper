@@ -1,21 +1,21 @@
 {
   "extName": {
-    "message": "Google Cloud Skills Boost - ヘルパー"
+    "message": "Google Cloud Skills Boost - Helper"
   },
   "extDescription": {
-    "message": "Google Cloud Skills Boostでの学習体験を最適化するために設計されたブラウザ拡張機能です。"
+    "message": "Google Cloud Skills Boost での学習体験を最適化するためのブラウザ拡張機能です。"
   },
   "optionsPageTitle": {
-    "message": "Google Cloud Skills Boost - ヘルパー オプション"
+    "message": "Google Cloud Skills Boost - Helper のオプション"
   },
   "optionsPageDescription": {
-    "message": "Google Cloud Skills Boost - ヘルパーでの体験をカスタマイズします。"
+    "message": "Google Cloud Skills Boost - Helper の使い心地をカスタマイズします。"
   },
   "labelFeature": {
     "message": "機能"
   },
   "labelAction": {
-    "message": "アクション"
+    "message": "操作"
   },
   "labelShowLeaderboard": {
     "message": "リーダーボードを表示"
@@ -24,13 +24,13 @@
     "message": "リーダーボードを非表示"
   },
   "labelMyBadges": {
-    "message": "マイバッジ"
+    "message": "自分のバッジ"
   },
   "labelPublicProfile": {
     "message": "公開プロフィール"
   },
   "labelArcadePointsCalculator": {
-    "message": "Arcadeポイント計算機"
+    "message": "Arcade ポイント計算ツール"
   },
   "labelSave": {
     "message": "保存"
@@ -39,7 +39,7 @@
     "message": "読み込み中..."
   },
   "messageNoDataAvailable": {
-    "message": "データがありません"
+    "message": "利用できるデータがありません"
   },
   "labelRecentActivity": {
     "message": "最近のアクティビティ"
@@ -72,91 +72,91 @@
     "message": "ポイント"
   },
   "textPleaseSetUpTheSettings": {
-    "message": "設定をセットアップしてください"
+    "message": "設定を行ってください"
   },
   "errorInvalidUrl": {
-    "message": "'https://www.skills.google/public_profiles/xxx' で始まる有効なURLを入力してください"
+    "message": "'https://www.skills.google/public_profiles/xxx' で始まる有効な URL を入力してください。"
   },
   "successSettingsSaved": {
-    "message": "設定が正常に保存されました！"
+    "message": "設定を保存しました。"
   },
   "notePleaseSetUpTheSettings": {
-    "message": "<strong>注意:</strong> <br>⚠️ <strong>「プロフィールを公開」</strong>オプションを有効にしましたが、まだ変更を保存していません。<br>👉 <strong>「設定を更新」</strong>ボタンをクリックして、新しい設定を確認して保存してください。<br>❌ 保存しない場合、プロフィールは<strong>公開されず</strong>、リンクも生成されません。"
+    "message": "<strong>注意:</strong><br><strong>\"プロフィールを公開する\"</strong> を有効にしましたが、変更はまだ保存されていません。<br><strong>\"設定を更新\"</strong> をクリックして、新しい設定を確認して保存してください。<br>保存しない場合、プロフィールは <strong>公開されず</strong>、リンクも生成されません。"
   },
   "messageLinkCopiedToClipboard": {
-    "message": "✔️ リンクをクリップボードにコピーしました！"
+    "message": "リンクをクリップボードにコピーしました。"
   },
   "copyProfileUrl": {
-    "message": "クリックしてプロフィールURLをコピー"
+    "message": "クリックして公開プロフィール URL をコピー"
   },
   "labelEnableSearchFeature": {
-    "message": "検索機能を有効化"
+    "message": "検索機能を有効にする"
   },
   "descriptionEnableSearchFeature": {
-    "message": "解決策が見つからない場合にGoogle検索とYouTubeボタンを表示します。"
+    "message": "解決策が見つからない場合に Google Search と YouTube のボタンを表示します。"
   },
   "messageSearchFeatureEnabled": {
-    "message": "検索機能が有効になりました - 解決策が見つからない場合、Google検索とYouTube検索ボタンが表示されます"
+    "message": "検索機能が有効です。解決策が見つからない場合、Google と YouTube の検索ボタンが表示されます"
   },
   "messageSearchFeatureDisabled": {
-    "message": "検索機能が無効になりました - 解決策が見つからない場合、「解決策なし」のみが表示されます"
+    "message": "検索機能が無効です。解決策が見つからない場合は「解決策なし」のみ表示されます"
   },
   "tourStartButton": {
     "message": "ユーザーガイド"
   },
   "tourWelcomeTitle": {
-    "message": "アカウント作成ガイドへようこそ！"
+    "message": "アカウント作成ガイドへようこそ。"
   },
   "tourWelcomeContent": {
-    "message": "最初のGoogle Cloud Skills Boostアカウントを作成するために、ステップバイステップでガイドします。"
+    "message": "最初の Google Cloud Skills Boost アカウントを作成できるよう、手順を順番に案内します。"
   },
   "tourWelcomeTip": {
-    "message": "<strong>ヒント:</strong> 「スキップ」をクリックすることで、いつでもこのガイドをスキップできます。"
+    "message": "<strong>ヒント:</strong> このガイドはいつでも「スキップ」をクリックして終了できます。"
   },
   "tourAddAccountTitle": {
     "message": "新しいアカウントを追加"
   },
   "tourAddAccountContent": {
-    "message": "このボタンをクリックして、最初のGoogle Cloud Skills Boostアカウントを追加します。複数のアカウントを同時に管理できます。"
+    "message": "このボタンをクリックして、最初の Google Cloud Skills Boost アカウントを追加します。複数のアカウントを同時に管理できます。"
   },
   "tourAccountListTitle": {
-    "message": "アカウントリスト"
+    "message": "アカウント一覧"
   },
   "tourAccountListContent": {
-    "message": "アカウントを作成すると、ここに表示されます。以下のことができます:<br>• アカウント間の切り替え<br>• Arcadeポイントデータの更新<br>• ニックネームの編集<br>• 公開プロフィールの表示"
+    "message": "作成したアカウントはここに表示されます。できること:<br>- アカウントを切り替える<br>- Arcade ポイントデータを更新する<br>- ニックネームを編集する<br>- 公開プロフィールを表示する"
   },
   "tourModalStep1Title": {
-    "message": "ステップ1: プロフィールページを開く"
+    "message": "ステップ 1: プロフィールページを開く"
   },
   "tourModalStep1Content": {
-    "message": "このボタンをクリックして、新しいタブでGoogle Cloud Skills Boostプロフィールを開きます。ログインしてプロフィールページからURLを取得する必要があります。"
+    "message": "このボタンをクリックして、Google Cloud Skills Boost のプロフィールを新しいタブで開きます。ログインして、プロフィールページの URL を取得してください。"
   },
   "tourModalStep2Title": {
-    "message": "ステップ2: プロフィールURLを入力"
+    "message": "ステップ 2: プロフィール URL を入力"
   },
   "tourModalStep2Content": {
-    "message": "ログイン後、アドレスバーからURLをコピーしてここに貼り付けます。"
+    "message": "ログイン後、アドレスバーの URL をコピーしてここに貼り付けます。"
   },
   "tourModalStep2Tip": {
-    "message": "URLは次のようになります: https://www.skills.google/public_profiles/xxxxx"
+    "message": "URL は次のような形式です: https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
-    "message": "ステップ3: アカウントを作成"
+    "message": "ステップ 3: アカウントを作成"
   },
   "tourModalStep3Content": {
-    "message": "このボタンをクリックしてアカウントを作成します。システムは自動的にプロフィールから情報を取得し、新しいアカウントを作成します。"
+    "message": "このボタンをクリックしてアカウントを作成します。システムがプロフィールから情報を自動取得し、新しいアカウントを作成します。"
   },
   "tourCompletedTitle": {
-    "message": "ガイド完了！"
+    "message": "ガイドが完了しました。"
   },
   "tourCompletedContent": {
-    "message": "これで最初のアカウントの作成を開始できます。"
+    "message": "これで最初のアカウントを作成できます。"
   },
   "tourModalCompletedTitle": {
-    "message": "アカウント作成の準備完了！"
+    "message": "アカウント作成の準備ができました。"
   },
   "tourModalCompletedContent": {
-    "message": "プロフィールURLを入力して、最初のアカウントを作成してみてください。"
+    "message": "プロフィール URL を入力して、最初のアカウントを作成してみてください。"
   },
   "tourButtonNext": {
     "message": "次へ"
@@ -174,13 +174,13 @@
     "message": "閉じる"
   },
   "badgeToolbarNote": {
-    "message": "有効にすると、拡張機能はツールバーバッジを合計ポイント数で更新します（アクティブな場合はファシリテーターボーナスを含む）。"
+    "message": "有効にすると、拡張機能はツールバーのバッジを合計ポイントで更新します。Facilitator ボーナスが有効な場合はそれも含まれます。"
   },
   "badgeViewDescription": {
-    "message": "獲得したすべてのバッジと実績を表示します。"
+    "message": "獲得済みのすべてのバッジと実績を表示します。"
   },
   "badgeTrackProgress": {
-    "message": "学習の進捗を追跡しましょう！"
+    "message": "学習の進捗を追跡しましょう。"
   },
   "labelAchievements": {
     "message": "実績"
@@ -189,28 +189,28 @@
     "message": "進捗"
   },
   "errorEnterProfileUrl": {
-    "message": "プロフィールURLを入力してください！"
+    "message": "プロフィール URL を入力してください。"
   },
   "errorInvalidProfileUrl": {
-    "message": "無効なプロフィールURLです！"
+    "message": "プロフィール URL が無効です。"
   },
   "errorAccountExistsTitle": {
     "message": "アカウントは既に存在します"
   },
   "errorAccountExistsMsg": {
-    "message": "このURLのアカウントは既に存在します: \"$1\"。"
+    "message": "この URL のアカウントは既に存在します: \"$1\"。"
   },
   "errorNoNameFromProfile": {
-    "message": "プロフィールから名前を取得できません。もう一度お試しください！"
+    "message": "プロフィールから名前を取得できません。もう一度お試しください。"
   },
   "labelAdding": {
     "message": "追加中..."
   },
   "successAccountAdded": {
-    "message": "アカウントが正常に追加されました！"
+    "message": "アカウントを追加しました。"
   },
   "errorAddAccountGeneric": {
-    "message": "アカウントの追加中にエラーが発生しました。もう一度お試しください！"
+    "message": "アカウントの追加中にエラーが発生しました。もう一度お試しください。"
   },
   "errorAccountExistsMsgSimple": {
     "message": "アカウントは既に存在します。"
@@ -219,10 +219,10 @@
     "message": "アカウントを追加"
   },
   "successSwitchedAccount": {
-    "message": "アカウントの切り替えに成功しました！"
+    "message": "アカウントを切り替えました。"
   },
   "errorSwitchAccount": {
-    "message": "アカウントの切り替えエラー。"
+    "message": "アカウントの切り替え中にエラーが発生しました。"
   },
   "errorAccountNotFound": {
     "message": "アカウントが見つかりません。"
@@ -231,85 +231,85 @@
     "message": "アカウントデータを更新中..."
   },
   "successAccountDataUpdated": {
-    "message": "アカウントデータが正常に更新されました！"
+    "message": "アカウントデータを更新しました。"
   },
   "errorFetchDataFromApi": {
-    "message": "APIからデータを取得できませんでした。"
+    "message": "API からデータを取得できませんでした。"
   },
   "errorUpdatingAccount": {
-    "message": "アカウントの更新エラー。"
+    "message": "アカウントの更新中にエラーが発生しました。"
   },
   "errorProfileUrlNotFound": {
-    "message": "このアカウントのプロフィールURLが見つかりません。"
+    "message": "このアカウントのプロフィール URL が見つかりません。"
   },
   "errorOpeningProfile": {
-    "message": "プロフィールを開くエラー。"
+    "message": "プロフィールを開く際にエラーが発生しました。"
   },
   "errorNoActiveAccountOrProfileUrl": {
-    "message": "アクティブなアカウントまたはプロフィールURLが見つかりません。"
+    "message": "有効なアカウントまたはプロフィール URL が見つかりません。"
   },
   "errorAccountNotFoundToUpdate": {
-    "message": "更新するアカウントが見つかりません！"
+    "message": "更新するアカウントが見つかりません。"
   },
   "successNicknameSaved": {
-    "message": "ニックネームが正常に保存されました！"
+    "message": "ニックネームを保存しました。"
   },
   "errorSavingNickname": {
-    "message": "ニックネームの保存エラー！"
+    "message": "ニックネームの保存中にエラーが発生しました。"
   },
   "successNicknameUpdated": {
-    "message": "ニックネームが正常に更新されました！"
+    "message": "ニックネームを更新しました。"
   },
   "errorUpdatingAccountGeneric": {
-    "message": "アカウントの更新中にエラーが発生しました！"
+    "message": "アカウントの更新中にエラーが発生しました。"
   },
   "errorCannotDeleteLastAccount": {
-    "message": "最後のアカウントは削除できません！"
+    "message": "最後のアカウントは削除できません。"
   },
   "successAccountDeleted": {
-    "message": "アカウントが正常に削除されました！"
+    "message": "アカウントを削除しました。"
   },
   "errorDeletingAccountGeneric": {
-    "message": "アカウントの削除中にエラーが発生しました！"
+    "message": "アカウントの削除中にエラーが発生しました。"
   },
   "successDataExported": {
-    "message": "データが正常にエクスポートされました！"
+    "message": "データをエクスポートしました。"
   },
   "errorExportingData": {
-    "message": "データのエクスポート中にエラーが発生しました！"
+    "message": "データのエクスポート中にエラーが発生しました。"
   },
   "errorNoImportData": {
-    "message": "ファイルを選択するか、JSONコンテンツを貼り付けてください！"
+    "message": "ファイルを選択するか、JSON 内容を貼り付けてください。"
   },
   "successDataImported": {
-    "message": "データが正常にインポートされました！"
+    "message": "データをインポートしました。"
   },
   "errorInvalidImportData": {
-    "message": "無効なデータです。もう一度確認してください！"
+    "message": "データが無効です。もう一度確認してください。"
   },
   "errorImportingData": {
-    "message": "データのインポート中にエラーが発生しました！"
+    "message": "データのインポート中にエラーが発生しました。"
   },
   "labelFacilitatorProgram": {
-    "message": "ファシリテータープログラム"
+    "message": "Facilitator プログラム"
   },
   "messageBadgeEnabled": {
-    "message": "バッジ表示が有効になりました"
+    "message": "バッジ表示を有効にしました"
   },
   "messageBadgeDisabled": {
-    "message": "バッジ表示が無効になりました"
+    "message": "バッジ表示を無効にしました"
   },
   "labelShowBadge": {
     "message": "拡張機能アイコンにバッジを表示"
   },
   "descriptionShowBadge": {
-    "message": "拡張機能がブラウザツールバーアイコンに合計ポイントを表示するかどうかを切り替えます。"
+    "message": "ブラウザのツールバーアイコンに合計ポイントを表示するかどうかを切り替えます。"
   },
   "facilitatorDeadlinePassed": {
-    "message": "ファシリテータープログラムの締め切りが過ぎました"
+    "message": "Facilitator プログラムの期限は過ぎています"
   },
   "arcadeDeadlinePassed": {
-    "message": "Arcadeシーズンは今年終了しました。次のシーズンでお会いしましょう！"
+    "message": "今年の Arcade シーズンは終了しました。次のシーズンでお会いしましょう。"
   },
   "programEnded": {
     "message": "プログラム終了"
@@ -335,33 +335,35 @@
   "labelBack": {
     "message": "戻る"
   },
-  "backToTop": { "message": "トップへ戻る" },
+  "backToTop": {
+    "message": "トップへ戻る"
+  },
   "changelogWhatsNew": {
     "message": "新機能"
   },
   "changelogLatestUpdates": {
-    "message": "最新のアップデートと改善"
+    "message": "最新の更新と改善"
   },
   "changelogLoading": {
     "message": "変更履歴を読み込み中..."
   },
   "changelogFooterNotice": {
-    "message": "この拡張機能はGoogle Cloud Skills Boostと提携していません。全著作権所有。"
+    "message": "この拡張機能は Google Cloud Skills Boost と提携していません。All rights reserved."
   },
   "announcementTitle": {
     "message": "重要なお知らせ"
   },
   "markdownShowMore": {
-    "message": "もっと見る"
+    "message": "もっと表示"
   },
   "accountsTitle": {
     "message": "あなたのアカウント"
   },
   "noAccountsYet": {
-    "message": "まだアカウントがありません"
+    "message": "アカウントはまだありません"
   },
   "addAccountFirst": {
-    "message": "最初のアカウントを追加しましょう！"
+    "message": "最初のアカウントを追加しましょう。"
   },
   "dataManagementTitle": {
     "message": "データ管理"
@@ -379,7 +381,7 @@
     "message": "新しいアカウントを追加"
   },
   "howToGetProfileUrl": {
-    "message": "プロフィールURLの取得方法"
+    "message": "プロフィール URL の取得方法"
   },
   "howToGetProfileSubtitle": {
     "message": "以下の手順に従ってください"
@@ -397,7 +399,7 @@
     "message": "問題が発生しました。もう一度お試しください。"
   },
   "accountSuccessFallback": {
-    "message": "アクションが成功しました！"
+    "message": "操作が完了しました。"
   },
   "viewBadges": {
     "message": "バッジを表示"
@@ -406,22 +408,22 @@
     "message": "プロフィールを開く"
   },
   "arcadePointsTitle": {
-    "message": "Arcadeポイント"
+    "message": "Arcade ポイント"
   },
   "milestonesTitle": {
     "message": "マイルストーン"
   },
   "accountsCardTitle": {
-    "message": "アカウント管理とArcadeポイント計算機"
+    "message": "アカウント管理と Arcade ポイント計算ツール"
   },
   "accountsCardSubtitle": {
-    "message": "複数のアカウントを管理し、Arcadeポイントを計算します。"
+    "message": "複数のアカウントを管理し、Arcade ポイントを計算します。"
   },
   "clickOpenProfileButton": {
     "message": "「プロフィールページを開く」ボタンをクリック"
   },
   "programDeadline": {
-    "message": "プログラム締め切り"
+    "message": "プログラム期限"
   },
   "labelDays": {
     "message": "日"
@@ -436,37 +438,37 @@
     "message": "秒"
   },
   "milestoneDeadlineNotice": {
-    "message": "締め切り前にマイルストーンを完了してボーナスポイントを獲得しましょう！"
+    "message": "期限までにマイルストーンを完了してボーナスポイントを獲得しましょう。"
   },
   "arcadeMotivation": {
-    "message": "勢いを保ち、Arcadeリーダーボードを登っていきましょう！"
+    "message": "勢いを保って Arcade リーダーボードを駆け上がりましょう。"
   },
   "totalBonusEarned": {
-    "message": "獲得した合計ボーナス:"
+    "message": "獲得したボーナス合計:"
   },
   "maxPossibleNote": {
-    "message": "最大可能: 25ポイント（最高マイルストーンのみ）"
+    "message": "最大: 25 ポイント（最も高いマイルストーンのみ）"
   },
   "pointsBreakdown": {
     "message": "ポイント内訳"
   },
   "arcadeBase": {
-    "message": "Arcadeベース:"
+    "message": "Arcade Base Camp:"
   },
   "facilitatorBonus": {
-    "message": "ファシリテーターボーナス:"
+    "message": "Facilitator ボーナス:"
   },
   "gameBadgeLabel": {
     "message": "ゲームバッジ"
   },
   "gameBadgeLabelTooltip": {
-    "message": "Arcade はレベル制ではなくなりました。新しいトラック: Adventure（クラウド基礎）、Voyage（スキル実践）、Trail（AI学習）。"
+    "message": "Arcade は現在レベル制ではありません。新しいトラック: Adventure（クラウド基礎）、Voyage（スキル練習）、Trail（AI 学習）。"
   },
   "triviaBadgeLabel": {
-    "message": "トリビアバッジ"
+    "message": "クイズバッジ"
   },
   "triviaBadgeLabelTooltip": {
-    "message": "Trivia は Sprint に変わりました。短いクイズで復習し、Arcade ポイントを獲得できます。"
+    "message": "Trivia は Sprint になりました。短いクイズで概念を復習し、Arcade ポイントを獲得できます。"
   },
   "skillBadgeLabel": {
     "message": "スキルバッジ"
@@ -475,28 +477,28 @@
     "message": "特別ポイント"
   },
   "arcadeSeasonCountdown": {
-    "message": "Arcadeシーズンカウントダウン"
+    "message": "Arcade シーズンカウントダウン"
   },
   "milestone1": {
-    "message": "マイルストーン1"
+    "message": "マイルストーン 1"
   },
   "milestone1Bonus": {
     "message": "+2 ボーナスポイント"
   },
   "milestone2": {
-    "message": "マイルストーン2"
+    "message": "マイルストーン 2"
   },
   "milestone2Bonus": {
     "message": "+8 ボーナスポイント"
   },
   "milestone3": {
-    "message": "マイルストーン3"
+    "message": "マイルストーン 3"
   },
   "milestone3Bonus": {
     "message": "+15 ボーナスポイント"
   },
   "milestoneUltimate": {
-    "message": "アルティメット"
+    "message": "Ultimate"
   },
   "milestoneUltimateBonus": {
     "message": "+25 ボーナスポイント"
@@ -508,34 +510,34 @@
     "message": "ゲーム:"
   },
   "triviaLabel": {
-    "message": "トリビア:"
+    "message": "クイズ:"
   },
   "skillsLabel": {
     "message": "スキル:"
   },
   "labFreeLabel": {
-    "message": "ラボなし:"
+    "message": "ラボ不要:"
   },
   "switchAccount": {
     "message": "アカウントを切り替え"
   },
   "statusActive": {
-    "message": "アクティブ"
+    "message": "有効"
   },
   "quickSearch": {
     "message": "クイック検索"
   },
   "youtubeResults": {
-    "message": "YouTube結果"
+    "message": "YouTube の結果"
   },
   "searchFeatureTip": {
-    "message": "答えをより速く見つけるのに役立ちます！"
+    "message": "答えをより早く見つけるのに役立ちます。"
   },
   "successAccountCreated": {
-    "message": "アカウントが正常に作成されました！"
+    "message": "アカウントを作成しました。"
   },
   "successAddNickname": {
-    "message": "このアカウントを簡単に識別できるようにニックネームを追加できます。"
+    "message": "このアカウントを識別しやすくするため、ニックネームを追加できます。"
   },
   "newlyCreated": {
     "message": "新規作成"
@@ -544,25 +546,25 @@
     "message": "ニックネーム:"
   },
   "noNicknameYet": {
-    "message": "まだニックネームがありません"
+    "message": "ニックネームはまだありません"
   },
   "labelUpdated": {
-    "message": "更新日時:"
+    "message": "更新:"
   },
   "justCreated": {
-    "message": "作成したばかり"
+    "message": "作成直後"
   },
   "markdownShowLess": {
     "message": "表示を減らす"
   },
   "importantNoticeTitle": {
-    "message": "重要なお知らせ"
+    "message": "重要な注意"
   },
   "importantNoticeText": {
-    "message": "各プロフィールURLは一度だけ追加できます。システムはアカウントが既に存在する場合にチェックして通知します。"
+    "message": "各プロフィール URL は一度だけ追加できます。アカウントが既に存在する場合、システムが確認して通知します。"
   },
   "enterProfileUrlLabel": {
-    "message": "プロフィールURLを入力してアカウントを作成"
+    "message": "プロフィール URL を入力してアカウントを作成"
   },
   "createAccountButton": {
     "message": "アカウントを作成"
@@ -571,52 +573,52 @@
     "message": "手順:"
   },
   "instructionsText": {
-    "message": "URLを入力して「アカウントを作成」をクリックしてください。システムは自動的に情報を読み込み、新しいアカウントを作成します。"
+    "message": "URL を入力して「アカウントを作成」をクリックします。システムが情報を自動的に読み込み、新しいアカウントを作成します。"
   },
   "step1Title": {
     "message": "「プロフィールページを開く」ボタンをクリック"
   },
   "step1Subtitle": {
-    "message": "新しいタブでGoogle Cloud Skills Boostを開きます"
+    "message": "Google Cloud Skills Boost が新しいタブで開きます"
   },
   "step2Title": {
-    "message": "ログイン（まだの場合）"
+    "message": "未ログインの場合はログイン"
   },
   "step2Subtitle": {
-    "message": "Googleアカウントを使用"
+    "message": "Google アカウントを使用します"
   },
   "step3Title": {
-    "message": "「公開プロフィール」セクションを見つける"
+    "message": "「公開プロフィール」セクションを探す"
   },
   "step3Subtitle": {
-    "message": "プロフィールページを下にスクロール"
+    "message": "プロフィールページを下にスクロールします"
   },
   "step4Title": {
-    "message": "アドレスバーからURLをコピー"
+    "message": "アドレスバーから URL をコピー"
   },
   "step4Subtitle": {
-    "message": "以下のフィールドに貼り付け"
+    "message": "下の入力欄に貼り付けます"
   },
   "newAccountBadge": {
     "message": "新しいアカウント"
   },
   "totalBadgesLabel": {
-    "message": "合計バッジ数"
+    "message": "バッジ合計"
   },
   "skillBadgesLabel": {
     "message": "スキルバッジ"
   },
   "arcadePointsLabel": {
-    "message": "Arcadeポイント"
+    "message": "Arcade ポイント"
   },
   "accountNicknameLabel": {
     "message": "アカウントのニックネーム"
   },
   "nicknamePlaceholder": {
-    "message": "例: メインアカウント、仕事用アカウント、勉強用アカウント..."
+    "message": "例: メインアカウント、仕事用アカウント、学習用アカウント..."
   },
   "nicknameHelpText": {
-    "message": "ニックネームは、複数の異なるアカウントがある場合にアカウントを簡単に識別するのに役立ちます"
+    "message": "ニックネームを使うと、複数のアカウントを簡単に識別できます"
   },
   "editAccountTitle": {
     "message": "アカウントを編集"
@@ -625,16 +627,16 @@
     "message": "表示名:"
   },
   "displayNameInfo": {
-    "message": "表示名はGoogle Cloud Skills Boostから取得され、編集できません"
+    "message": "表示名は Google Cloud Skills Boost から取得され、編集できません"
   },
   "nicknameLabel": {
     "message": "ニックネーム:"
   },
   "enterNicknamePlaceholder": {
-    "message": "簡単に識別できるようにニックネームを入力してください..."
+    "message": "識別しやすいニックネームを入力..."
   },
   "nicknameExample": {
-    "message": "例: 「メインアカウント」、「仕事用アカウント」、「勉強用アカウント」..."
+    "message": "例: \"メインアカウント\"、\"仕事用アカウント\"、\"学習用アカウント\"..."
   },
   "cancelButton": {
     "message": "キャンセル"
@@ -643,10 +645,10 @@
     "message": "変更を保存"
   },
   "themeStudioTitle": {
-    "message": "テーマスタジオ"
+    "message": "Theme Studio"
   },
   "themeStudioDescription": {
-    "message": "リアルタイムプレビューでポップアップのテーマをカスタマイズします。"
+    "message": "リアルタイムプレビューで popup テーマをカスタマイズします。"
   },
   "labelBackground1": {
     "message": "背景 1"
@@ -661,16 +663,16 @@
     "message": "アクセント"
   },
   "labelArcadePoints": {
-    "message": "アーケードポイント"
+    "message": "Arcade ポイント"
   },
   "labelTextPrimary": {
-    "message": "主要テキスト"
+    "message": "メインテキスト"
   },
   "labelTextSecondary": {
-    "message": "二次テキスト"
+    "message": "サブテキスト"
   },
   "labelTextMuted": {
-    "message": "薄いテキスト"
+    "message": "控えめなテキスト"
   },
   "btnApplySave": {
     "message": "適用して保存"
@@ -679,13 +681,13 @@
     "message": "ダークにリセット"
   },
   "btnSyncFromPopup": {
-    "message": "現在のポップアップから同期"
+    "message": "現在の popup から同期"
   },
   "previewNote": {
-    "message": "プレビューは実際のポップアップUIと現在のアカウントデータを使用します。"
+    "message": "プレビューには実際の popup UI と現在のアカウントデータが使用されます。"
   },
   "popupLivePreviewTitle": {
-    "message": "ポップアップのライブプレビュー"
+    "message": "Popup ライブプレビュー"
   },
   "btnApplyCustomTheme": {
     "message": "カスタムテーマを適用"
@@ -694,59 +696,79 @@
     "message": "リセット"
   },
   "btnOpenThemeStudio": {
-    "message": "テーマスタジオを開く（ライブプレビュー）"
+    "message": "Theme Studio を開く（ライブプレビュー）"
   },
   "btnChangeTheme": {
     "message": "テーマを変更"
   },
   "labThinking": {
-    "message": "考え中..."
+    "message": "処理中..."
   },
   "labSolutionTitle": {
-    "message": "クリックして解答を開く"
+    "message": "クリックして解決策を開く"
   },
   "labSolutionButton": {
-    "message": "このラボの解答"
+    "message": "このラボの解決策を見る"
   },
   "labSupportTitle": {
-    "message": "Telegramでサポートを受けるか、問題を報告するにはクリックしてください"
+    "message": "クリックして Telegram でサポートを受ける、または問題を報告する"
   },
   "labSupportButton": {
-    "message": "サポート / 報告"
+    "message": "報告 / サポート"
   },
   "labNoSolution": {
-    "message": "解答なし"
+    "message": "解決策なし"
   },
   "labEplusSearch": {
-    "message": "ePlus検索"
+    "message": "ePlus 検索"
   },
   "labGoogleSearch": {
-    "message": "Google検索"
+    "message": "Google 検索"
   },
   "labYouTube": {
     "message": "YouTube"
   },
-  "labBingSearch": { "message": "Bingで検索" },
-  "labYandexSearch": { "message": "Yandexで検索" },
-  "labBraveSearch": { "message": "Braveで検索" },
-  "labDuckDuckGoSearch": { "message": "DuckDuckGoで検索" },
-  "labBaiduSearch": { "message": "Baiduで検索" },
-  "labYahooSearch": { "message": "Yahoo!で検索" },
-  "labCoccocSearch": { "message": "Cốc Cốcで検索" },
-  "labelSearch": { "message": "検索" },
-  "labelCopyLink": { "message": "リンクをコピー" },
-  "labFallbackQuery": { "message": "Google Cloud ラボ チュートリアル" },
+  "labBingSearch": {
+    "message": "Bing 検索"
+  },
+  "labYandexSearch": {
+    "message": "Yandex 検索"
+  },
+  "labBraveSearch": {
+    "message": "Brave 検索"
+  },
+  "labDuckDuckGoSearch": {
+    "message": "DuckDuckGo 検索"
+  },
+  "labBaiduSearch": {
+    "message": "Baidu 検索"
+  },
+  "labYahooSearch": {
+    "message": "Yahoo! 検索"
+  },
+  "labCoccocSearch": {
+    "message": "Cốc Cốc 検索"
+  },
+  "labelSearch": {
+    "message": "検索"
+  },
+  "labelCopyLink": {
+    "message": "リンクをコピー"
+  },
+  "labFallbackQuery": {
+    "message": "Google Cloud ラボ チュートリアル"
+  },
   "exportDataTitle": {
-    "message": "データをエクスポート"
+    "message": "自分のデータをエクスポート"
   },
   "exportJSON": {
-    "message": "JSONエクスポート"
+    "message": "JSON をエクスポート"
   },
   "exportCSV": {
-    "message": "バッジCSVエクスポート"
+    "message": "バッジ CSV をエクスポート"
   },
   "exportSuccess": {
-    "message": "エクスポートしました！"
+    "message": "エクスポートしました。"
   },
   "exportNoData": {
     "message": "エクスポートするデータがありません。"
@@ -758,106 +780,105 @@
     "message": "フル表示"
   },
   "shortcutHint": {
-    "message": "R 更新 · S 設定 · C コンパクト"
-  }
-   ,"messageEplusSearchSaved": { "message": "ePlus search setting saved" },
-    "messageEnableSearchFirst": {
-    "message": "ePlus ????????????????????????????"
-  },
-  "titleSetDefaultAccount": {
-    "message": "?????????????"
-  },
-  "titleToggleFacilitatorProgram": {
-    "message": "Facilitator ??????????"
-  },
-  "titleUpdateAccount": {
-    "message": "????????"
-  },
-  "titleViewPublicProfile": {
-    "message": "???????????"
-  },
-  "titleEditAccount": {
-    "message": "????????"
-  },
-  "titleDeleteAccount": {
-    "message": "????????"
-  },
-  "exportNoBadgesData": {
-    "message": "??????????????????"
-  },
-  "messagePreferredSearchEngineSaved": {
-    "message": "???????????????"
-  },
-  "labelEnabled": {
-    "message": "??"
-  },
-  "labelDisabled": {
-    "message": "??"
-  },
-  "messageFacilitatorProgramUpdated": {
-    "message": "$2 ? Facilitator ??????$1?????"
-  },
-  "errorUpdatingFacilitatorProgram": {
-    "message": "Facilitator ??????????????????????"
-  },
-  "errorFetchDataRetry": {
-    "message": "?????????????????????????????"
-  },
-  "errorGenericRetry": {
-    "message": "???????????????????????"
-  },
-  "labelNewAccount": {
-    "message": "????????"
-  },
-  "successAccountCreatedNamed": {
-    "message": "??????$1?????????"
-  },
-  "successDataSaved": {
-    "message": "???????????"
-  },
-  "successAccountUpdated": {
-    "message": "?????????????"
-  },
-  "errorSaveSetting": {
-    "message": "?????????????"
-  },
-  "errorUnableFetchProfile": {
-    "message": "???????????????????????"
-  },
-  "errorUnableGetUserName": {
-    "message": "??????????????????????????"
-  },
-  "errorUnableCreateAccount": {
-    "message": "?????????????????URL ?????????????????"
-  },
-  "errorUnableFetchProfileInfo": {
-    "message": "????????????????????URL ?????????????????"
-  },
-  "errorProfileIdNotFound": {
-    "message": "?????? ID ????????"
-  },
-  "switchToAccountNamed": {
-    "message": "??????$1??????"
-  },
-  "successSwitchedToAccountNamed": {
-    "message": "??????$1??????????"
-  },
-  "confirmDeleteAccount": {
-    "message": "??????$1???????????????"
-  },
-  "btnCancel": {
-    "message": "?????"
-  },
-  "btnDelete": {
-    "message": "??"
-  },
-  "labelImporting": {
-    "message": "??????..."
-  },
-  "labelImportData": {
-    "message": "?????????"
+    "message": "R 更新 / S 設定 / C コンパクト"
   },
   "messageEplusSearchSaved": {
-    "message": "ePlus ???????????"
+    "message": "ePlus 検索設定を保存しました"
+  },
+  "messageEnableSearchFirst": {
+    "message": "ePlus を有効にする前に、メインの検索機能を有効にしてください。"
+  },
+  "titleSetDefaultAccount": {
+    "message": "既定のアカウントに設定"
+  },
+  "titleToggleFacilitatorProgram": {
+    "message": "Facilitator プログラムを切り替え"
+  },
+  "titleUpdateAccount": {
+    "message": "アカウントを更新"
+  },
+  "titleViewPublicProfile": {
+    "message": "公開プロフィールを表示"
+  },
+  "titleEditAccount": {
+    "message": "アカウントを編集"
+  },
+  "titleDeleteAccount": {
+    "message": "アカウントを削除"
+  },
+  "exportNoBadgesData": {
+    "message": "エクスポートするバッジがありません。"
+  },
+  "messagePreferredSearchEngineSaved": {
+    "message": "優先検索エンジンを保存しました"
+  },
+  "labelEnabled": {
+    "message": "有効"
+  },
+  "labelDisabled": {
+    "message": "無効"
+  },
+  "messageFacilitatorProgramUpdated": {
+    "message": "$2 の Facilitator プログラムを $1 にしました"
+  },
+  "errorUpdatingFacilitatorProgram": {
+    "message": "Facilitator プログラム設定の更新中にエラーが発生しました"
+  },
+  "errorFetchDataRetry": {
+    "message": "データの取得に失敗しました。後でもう一度お試しください。"
+  },
+  "errorGenericRetry": {
+    "message": "エラーが発生しました。もう一度お試しください。"
+  },
+  "labelNewAccount": {
+    "message": "新しいアカウント"
+  },
+  "successAccountCreatedNamed": {
+    "message": "アカウント \"$1\" を作成しました。"
+  },
+  "successDataSaved": {
+    "message": "データを保存しました。"
+  },
+  "successAccountUpdated": {
+    "message": "アカウントを更新しました。"
+  },
+  "errorSaveSetting": {
+    "message": "設定を保存できませんでした"
+  },
+  "errorUnableFetchProfile": {
+    "message": "このプロフィールから情報を取得できません"
+  },
+  "errorUnableGetUserName": {
+    "message": "このプロフィールからユーザー名を取得できません"
+  },
+  "errorUnableCreateAccount": {
+    "message": "アカウントを作成できません。URL を確認してもう一度お試しください。"
+  },
+  "errorUnableFetchProfileInfo": {
+    "message": "プロフィール情報を取得できません。URL を確認してもう一度お試しください。"
+  },
+  "errorProfileIdNotFound": {
+    "message": "プロフィール ID が見つかりません"
+  },
+  "switchToAccountNamed": {
+    "message": "アカウント \"$1\" に切り替える"
+  },
+  "successSwitchedToAccountNamed": {
+    "message": "アカウント \"$1\" に切り替えました。"
+  },
+  "confirmDeleteAccount": {
+    "message": "アカウント \"$1\" を削除してもよろしいですか？"
+  },
+  "btnCancel": {
+    "message": "キャンセル"
+  },
+  "btnDelete": {
+    "message": "削除"
+  },
+  "labelImporting": {
+    "message": "インポート中..."
+  },
+  "labelImportData": {
+    "message": "データをインポート"
   }
 }

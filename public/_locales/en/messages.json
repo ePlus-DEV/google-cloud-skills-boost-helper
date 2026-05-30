@@ -188,71 +188,120 @@
   "labelProgress": {
     "message": "Progress"
   },
-
-  "errorEnterProfileUrl": { "message": "Please enter a profile URL!" },
-  "errorInvalidProfileUrl": { "message": "Invalid profile URL!" },
-  "errorAccountExistsTitle": { "message": "Account already exists" },
+  "errorEnterProfileUrl": {
+    "message": "Please enter a profile URL!"
+  },
+  "errorInvalidProfileUrl": {
+    "message": "Invalid profile URL!"
+  },
+  "errorAccountExistsTitle": {
+    "message": "Account already exists"
+  },
   "errorAccountExistsMsg": {
     "message": "An account with this URL already exists: \"$1\"."
   },
   "errorNoNameFromProfile": {
     "message": "Unable to get name from profile. Please try again!"
   },
-  "labelAdding": { "message": "Adding..." },
-  "successAccountAdded": { "message": "Account added successfully!" },
+  "labelAdding": {
+    "message": "Adding..."
+  },
+  "successAccountAdded": {
+    "message": "Account added successfully!"
+  },
   "errorAddAccountGeneric": {
     "message": "An error occurred while adding the account. Please try again!"
   },
-  "errorAccountExistsMsgSimple": { "message": "Account already exists." },
-  "labelAddAccount": { "message": "Add account" },
-  "successSwitchedAccount": { "message": "Switched account successfully!" },
-  "errorSwitchAccount": { "message": "Error switching account." },
-  "errorAccountNotFound": { "message": "Account not found." },
-  "infoUpdatingAccountData": { "message": "Updating account data..." },
+  "errorAccountExistsMsgSimple": {
+    "message": "Account already exists."
+  },
+  "labelAddAccount": {
+    "message": "Add account"
+  },
+  "successSwitchedAccount": {
+    "message": "Switched account successfully!"
+  },
+  "errorSwitchAccount": {
+    "message": "Error switching account."
+  },
+  "errorAccountNotFound": {
+    "message": "Account not found."
+  },
+  "infoUpdatingAccountData": {
+    "message": "Updating account data..."
+  },
   "successAccountDataUpdated": {
     "message": "Account data updated successfully!"
   },
-  "errorFetchDataFromApi": { "message": "Could not fetch data from API." },
-  "errorUpdatingAccount": { "message": "Error updating account." },
+  "errorFetchDataFromApi": {
+    "message": "Could not fetch data from API."
+  },
+  "errorUpdatingAccount": {
+    "message": "Error updating account."
+  },
   "errorProfileUrlNotFound": {
     "message": "Profile URL not found for this account."
   },
-  "errorOpeningProfile": { "message": "Error opening profile." },
+  "errorOpeningProfile": {
+    "message": "Error opening profile."
+  },
   "errorNoActiveAccountOrProfileUrl": {
     "message": "No active account or profile URL found."
   },
   "errorAccountNotFoundToUpdate": {
     "message": "Could not find account to update!"
   },
-  "successNicknameSaved": { "message": "Nickname saved successfully!" },
-  "errorSavingNickname": { "message": "Error saving nickname!" },
-  "successNicknameUpdated": { "message": "Nickname updated successfully!" },
+  "successNicknameSaved": {
+    "message": "Nickname saved successfully!"
+  },
+  "errorSavingNickname": {
+    "message": "Error saving nickname!"
+  },
+  "successNicknameUpdated": {
+    "message": "Nickname updated successfully!"
+  },
   "errorUpdatingAccountGeneric": {
     "message": "An error occurred while updating the account!"
   },
   "errorCannotDeleteLastAccount": {
     "message": "Cannot delete the last account!"
   },
-  "successAccountDeleted": { "message": "Account deleted successfully!" },
+  "successAccountDeleted": {
+    "message": "Account deleted successfully!"
+  },
   "errorDeletingAccountGeneric": {
     "message": "An error occurred while deleting the account!"
   },
-  "successDataExported": { "message": "Data exported successfully!" },
+  "successDataExported": {
+    "message": "Data exported successfully!"
+  },
   "errorExportingData": {
     "message": "An error occurred while exporting data!"
   },
   "errorNoImportData": {
     "message": "Please select a file or paste JSON content!"
   },
-  "successDataImported": { "message": "Data imported successfully!" },
-  "errorInvalidImportData": { "message": "Invalid data. Please check again!" },
+  "successDataImported": {
+    "message": "Data imported successfully!"
+  },
+  "errorInvalidImportData": {
+    "message": "Invalid data. Please check again!"
+  },
   "errorImportingData": {
     "message": "An error occurred while importing data!"
   },
-  "labelFacilitatorProgram": { "message": "Facilitator Program" },
-  "messageBadgeEnabled": { "message": "Badge display enabled" },
-  "messageBadgeDisabled": { "message": "Badge display disabled" },
-  "labelShowBadge": { "message": "Show badge on extension icon" },
+  "labelFacilitatorProgram": {
+    "message": "Facilitator Program"
+  },
+  "messageBadgeEnabled": {
+    "message": "Badge display enabled"
+  },
+  "messageBadgeDisabled": {
+    "message": "Badge display disabled"
+  },
+  "labelShowBadge": {
+    "message": "Show badge on extension icon"
+  },
   "descriptionShowBadge": {
     "message": "Toggle whether the extension shows the total points on the browser toolbar icon."
   },
@@ -262,211 +311,483 @@
   "arcadeDeadlinePassed": {
     "message": "The Arcade season has wrapped up for the year. See you next season!"
   },
-  "programEnded": { "message": "Program Ended" },
-  "statusCompleted": { "message": "Completed" },
-  "statusInProgress": { "message": "In Progress" },
-  "statusNotStarted": { "message": "Not Started" },
-  "anonymous": { "message": "Anonymous" },
-  "vip": { "message": "VIP" },
-  "errorLoadingData": { "message": "Error loading data" },
-  "labelBack": { "message": "Back" },
-  "backToTop": { "message": "Back to top" },
-  "changelogWhatsNew": { "message": "What's New" },
-  "changelogLatestUpdates": { "message": "Latest updates and improvements" },
-  "changelogLoading": { "message": "Loading changelog..." },
+  "programEnded": {
+    "message": "Program Ended"
+  },
+  "statusCompleted": {
+    "message": "Completed"
+  },
+  "statusInProgress": {
+    "message": "In Progress"
+  },
+  "statusNotStarted": {
+    "message": "Not Started"
+  },
+  "anonymous": {
+    "message": "Anonymous"
+  },
+  "vip": {
+    "message": "VIP"
+  },
+  "errorLoadingData": {
+    "message": "Error loading data"
+  },
+  "labelBack": {
+    "message": "Back"
+  },
+  "backToTop": {
+    "message": "Back to top"
+  },
+  "changelogWhatsNew": {
+    "message": "What's New"
+  },
+  "changelogLatestUpdates": {
+    "message": "Latest updates and improvements"
+  },
+  "changelogLoading": {
+    "message": "Loading changelog..."
+  },
   "changelogFooterNotice": {
     "message": "This extension is not affiliated with Google Cloud Skills Boost. All rights reserved."
   },
-  "announcementTitle": { "message": "Important Announcement" },
-  "markdownShowMore": { "message": "Show more" },
-  "accountsTitle": { "message": "Your Accounts" },
-  "noAccountsYet": { "message": "No accounts yet" },
-  "addAccountFirst": { "message": "Add your first account!" },
-  "dataManagementTitle": { "message": "Data Management" },
-  "dataManagementSubtitle": { "message": "Backup and restore" },
-  "exportData": { "message": "Export Data" },
-  "importData": { "message": "Import Data" },
-  "modalAddAccountTitle": { "message": "Add New Account" },
-  "howToGetProfileUrl": { "message": "How to get Profile URL" },
-  "howToGetProfileSubtitle": { "message": "Follow the steps below" },
-  "openProfilePage": { "message": "Open Profile Page" },
-  "errorPrefix": { "message": "Error:" },
-  "successPrefix": { "message": "Success:" },
+  "announcementTitle": {
+    "message": "Important Announcement"
+  },
+  "markdownShowMore": {
+    "message": "Show more"
+  },
+  "accountsTitle": {
+    "message": "Your Accounts"
+  },
+  "noAccountsYet": {
+    "message": "No accounts yet"
+  },
+  "addAccountFirst": {
+    "message": "Add your first account!"
+  },
+  "dataManagementTitle": {
+    "message": "Data Management"
+  },
+  "dataManagementSubtitle": {
+    "message": "Backup and restore"
+  },
+  "exportData": {
+    "message": "Export Data"
+  },
+  "importData": {
+    "message": "Import Data"
+  },
+  "modalAddAccountTitle": {
+    "message": "Add New Account"
+  },
+  "howToGetProfileUrl": {
+    "message": "How to get Profile URL"
+  },
+  "howToGetProfileSubtitle": {
+    "message": "Follow the steps below"
+  },
+  "openProfilePage": {
+    "message": "Open Profile Page"
+  },
+  "errorPrefix": {
+    "message": "Error:"
+  },
+  "successPrefix": {
+    "message": "Success:"
+  },
   "accountErrorFallback": {
     "message": "Something went wrong. Please try again."
   },
-  "accountSuccessFallback": { "message": "Your action was successful!" },
-  "viewBadges": { "message": "View Badges" },
-  "openProfile": { "message": "Open Profile" },
-  "arcadePointsTitle": { "message": "Arcade Points" },
-  "milestonesTitle": { "message": "Milestones" },
+  "accountSuccessFallback": {
+    "message": "Your action was successful!"
+  },
+  "viewBadges": {
+    "message": "View Badges"
+  },
+  "openProfile": {
+    "message": "Open Profile"
+  },
+  "arcadePointsTitle": {
+    "message": "Arcade Points"
+  },
+  "milestonesTitle": {
+    "message": "Milestones"
+  },
   "accountsCardTitle": {
     "message": "Account Management & Arcade Points Calculator"
   },
   "accountsCardSubtitle": {
     "message": "Manage multiple accounts and calculate arcade points."
   },
-  "clickOpenProfileButton": { "message": "Click \"Open Profile Page\" button" },
-  "programDeadline": { "message": "Program Deadline" },
-  "labelDays": { "message": "Days" },
-  "labelHours": { "message": "Hours" },
-  "labelMinutes": { "message": "Minutes" },
-  "labelSeconds": { "message": "Seconds" },
+  "clickOpenProfileButton": {
+    "message": "Click \"Open Profile Page\" button"
+  },
+  "programDeadline": {
+    "message": "Program Deadline"
+  },
+  "labelDays": {
+    "message": "Days"
+  },
+  "labelHours": {
+    "message": "Hours"
+  },
+  "labelMinutes": {
+    "message": "Minutes"
+  },
+  "labelSeconds": {
+    "message": "Seconds"
+  },
   "milestoneDeadlineNotice": {
     "message": "Complete milestones before the deadline to earn bonus points!"
   },
   "arcadeMotivation": {
     "message": "Keep the momentum going and climb the Arcade leaderboard!"
   },
-  "totalBonusEarned": { "message": "Total Bonus Earned:" },
+  "totalBonusEarned": {
+    "message": "Total Bonus Earned:"
+  },
   "maxPossibleNote": {
     "message": "Maximum possible: 25 points (highest milestone only)"
   },
-  "pointsBreakdown": { "message": "Points Breakdown" },
-  "arcadeBase": { "message": "Arcade Base Camp:" },
-  "facilitatorBonus": { "message": "Facilitator Bonus:" },
-  "gameBadgeLabel": { "message": "Game Badge" },
+  "pointsBreakdown": {
+    "message": "Points Breakdown"
+  },
+  "arcadeBase": {
+    "message": "Arcade Base Camp:"
+  },
+  "facilitatorBonus": {
+    "message": "Facilitator Bonus:"
+  },
+  "gameBadgeLabel": {
+    "message": "Game Badge"
+  },
   "gameBadgeLabelTooltip": {
     "message": "Arcade is level-free now. New tracks: Adventure (cloud basics), Voyage (skill practice), Trail (AI learning)."
   },
-  "triviaBadgeLabel": { "message": "Trivia Badge" },
+  "triviaBadgeLabel": {
+    "message": "Trivia Badge"
+  },
   "triviaBadgeLabelTooltip": {
     "message": "Trivia is now Sprint: quick quizzes to refresh concepts and earn Arcade points."
   },
-  "skillBadgeLabel": { "message": "Skill Badge" },
-  "specialPointsLabel": { "message": "Special Points" },
-  "arcadeSeasonCountdown": { "message": "Arcade Season Countdown" },
-  "milestone1": { "message": "Milestone 1" },
-  "milestone1Bonus": { "message": "+2 Bonus Points" },
-  "milestone2": { "message": "Milestone 2" },
-  "milestone2Bonus": { "message": "+8 Bonus Points" },
-  "milestone3": { "message": "Milestone 3" },
-  "milestone3Bonus": { "message": "+15 Bonus Points" },
-  "milestoneUltimate": { "message": "Ultimate" },
-  "milestoneUltimateBonus": { "message": "+25 Bonus Points" },
-  "progressLabel": { "message": "Progress:" },
-  "gamesLabel": { "message": "Games:" },
-  "triviaLabel": { "message": "Trivia:" },
-  "skillsLabel": { "message": "Skills:" },
-  "labFreeLabel": { "message": "Lab-free:" },
-  "switchAccount": { "message": "Switch Account" },
-  "statusActive": { "message": "Active" },
-  "quickSearch": { "message": "Quick Search" },
-  "youtubeResults": { "message": "YouTube Results" },
-  "searchFeatureTip": { "message": "Helps you find answers faster!" },
-  "successAccountCreated": { "message": "Account created successfully!" },
+  "skillBadgeLabel": {
+    "message": "Skill Badge"
+  },
+  "specialPointsLabel": {
+    "message": "Special Points"
+  },
+  "arcadeSeasonCountdown": {
+    "message": "Arcade Season Countdown"
+  },
+  "milestone1": {
+    "message": "Milestone 1"
+  },
+  "milestone1Bonus": {
+    "message": "+2 Bonus Points"
+  },
+  "milestone2": {
+    "message": "Milestone 2"
+  },
+  "milestone2Bonus": {
+    "message": "+8 Bonus Points"
+  },
+  "milestone3": {
+    "message": "Milestone 3"
+  },
+  "milestone3Bonus": {
+    "message": "+15 Bonus Points"
+  },
+  "milestoneUltimate": {
+    "message": "Ultimate"
+  },
+  "milestoneUltimateBonus": {
+    "message": "+25 Bonus Points"
+  },
+  "progressLabel": {
+    "message": "Progress:"
+  },
+  "gamesLabel": {
+    "message": "Games:"
+  },
+  "triviaLabel": {
+    "message": "Trivia:"
+  },
+  "skillsLabel": {
+    "message": "Skills:"
+  },
+  "labFreeLabel": {
+    "message": "Lab-free:"
+  },
+  "switchAccount": {
+    "message": "Switch Account"
+  },
+  "statusActive": {
+    "message": "Active"
+  },
+  "quickSearch": {
+    "message": "Quick Search"
+  },
+  "youtubeResults": {
+    "message": "YouTube Results"
+  },
+  "searchFeatureTip": {
+    "message": "Helps you find answers faster!"
+  },
+  "successAccountCreated": {
+    "message": "Account created successfully!"
+  },
   "successAddNickname": {
     "message": "You can add a nickname to easily identify this account."
   },
-  "newlyCreated": { "message": "Newly created" },
-  "labelNickname": { "message": "Nickname:" },
-  "noNicknameYet": { "message": "No nickname yet" },
-  "labelUpdated": { "message": "Updated:" },
-  "justCreated": { "message": "Just created" },
-  "markdownShowLess": { "message": "Show less" },
-  "importantNoticeTitle": { "message": "Important Notice" },
+  "newlyCreated": {
+    "message": "Newly created"
+  },
+  "labelNickname": {
+    "message": "Nickname:"
+  },
+  "noNicknameYet": {
+    "message": "No nickname yet"
+  },
+  "labelUpdated": {
+    "message": "Updated:"
+  },
+  "justCreated": {
+    "message": "Just created"
+  },
+  "markdownShowLess": {
+    "message": "Show less"
+  },
+  "importantNoticeTitle": {
+    "message": "Important Notice"
+  },
   "importantNoticeText": {
     "message": "Each profile URL can only be added once. The system will check and notify if the account already exists."
   },
-  "enterProfileUrlLabel": { "message": "Enter Profile URL and Create Account" },
-  "createAccountButton": { "message": "Create Account" },
-  "instructionsLabel": { "message": "Instructions:" },
+  "enterProfileUrlLabel": {
+    "message": "Enter Profile URL and Create Account"
+  },
+  "createAccountButton": {
+    "message": "Create Account"
+  },
+  "instructionsLabel": {
+    "message": "Instructions:"
+  },
   "instructionsText": {
     "message": "Enter URL and click \"Create Account\". The system will automatically load information and create a new account."
   },
-  "step1Title": { "message": "Click \"Open Profile Page\" button" },
+  "step1Title": {
+    "message": "Click \"Open Profile Page\" button"
+  },
   "step1Subtitle": {
     "message": "Will open Google Cloud Skills Boost in new tab"
   },
-  "step2Title": { "message": "Log in (if not already)" },
-  "step2Subtitle": { "message": "Use your Google account" },
-  "step3Title": { "message": "Find \"Public profile\" section" },
-  "step3Subtitle": { "message": "Scroll down in the profile page" },
-  "step4Title": { "message": "Copy URL from address bar" },
-  "step4Subtitle": { "message": "Paste into the field below" },
-  "newAccountBadge": { "message": "New account" },
-  "totalBadgesLabel": { "message": "Total Badges" },
-  "skillBadgesLabel": { "message": "Skill Badges" },
-  "arcadePointsLabel": { "message": "Arcade Points" },
-  "accountNicknameLabel": { "message": "Account nickname" },
+  "step2Title": {
+    "message": "Log in (if not already)"
+  },
+  "step2Subtitle": {
+    "message": "Use your Google account"
+  },
+  "step3Title": {
+    "message": "Find \"Public profile\" section"
+  },
+  "step3Subtitle": {
+    "message": "Scroll down in the profile page"
+  },
+  "step4Title": {
+    "message": "Copy URL from address bar"
+  },
+  "step4Subtitle": {
+    "message": "Paste into the field below"
+  },
+  "newAccountBadge": {
+    "message": "New account"
+  },
+  "totalBadgesLabel": {
+    "message": "Total Badges"
+  },
+  "skillBadgesLabel": {
+    "message": "Skill Badges"
+  },
+  "arcadePointsLabel": {
+    "message": "Arcade Points"
+  },
+  "accountNicknameLabel": {
+    "message": "Account nickname"
+  },
   "nicknamePlaceholder": {
     "message": "e.g: Main account, Work account, Study account..."
   },
   "nicknameHelpText": {
     "message": "Nicknames help you easily identify accounts when you have multiple different accounts"
   },
-  "editAccountTitle": { "message": "Edit account" },
-  "displayNameLabel": { "message": "Display name:" },
+  "editAccountTitle": {
+    "message": "Edit account"
+  },
+  "displayNameLabel": {
+    "message": "Display name:"
+  },
   "displayNameInfo": {
     "message": "Display name is taken from Google Cloud Skills Boost and cannot be edited"
   },
-  "nicknameLabel": { "message": "Nickname:" },
+  "nicknameLabel": {
+    "message": "Nickname:"
+  },
   "enterNicknamePlaceholder": {
     "message": "Enter nickname for easy identification..."
   },
   "nicknameExample": {
     "message": "Example: \"Main account\", \"Work account\", \"Study account\"..."
   },
-  "cancelButton": { "message": "Cancel" },
-  "saveChangesButton": { "message": "Save changes" },
-  "themeStudioTitle": { "message": "Theme Studio" },
+  "cancelButton": {
+    "message": "Cancel"
+  },
+  "saveChangesButton": {
+    "message": "Save changes"
+  },
+  "themeStudioTitle": {
+    "message": "Theme Studio"
+  },
   "themeStudioDescription": {
     "message": "Customize your popup theme with real-time preview."
   },
-  "labelBackground1": { "message": "Background 1" },
-  "labelBackground2": { "message": "Background 2" },
-  "labelBackground3": { "message": "Background 3" },
-  "labelAccent": { "message": "Accent" },
-  "labelArcadePoints": { "message": "Arcade Points" },
-  "labelTextPrimary": { "message": "Text Primary" },
-  "labelTextSecondary": { "message": "Text Secondary" },
-  "labelTextMuted": { "message": "Text Muted" },
-  "btnApplySave": { "message": "Apply & Save" },
-  "btnResetToDark": { "message": "Reset to Dark" },
-  "btnSyncFromPopup": { "message": "Sync From Current Popup" },
+  "labelBackground1": {
+    "message": "Background 1"
+  },
+  "labelBackground2": {
+    "message": "Background 2"
+  },
+  "labelBackground3": {
+    "message": "Background 3"
+  },
+  "labelAccent": {
+    "message": "Accent"
+  },
+  "labelArcadePoints": {
+    "message": "Arcade Points"
+  },
+  "labelTextPrimary": {
+    "message": "Text Primary"
+  },
+  "labelTextSecondary": {
+    "message": "Text Secondary"
+  },
+  "labelTextMuted": {
+    "message": "Text Muted"
+  },
+  "btnApplySave": {
+    "message": "Apply & Save"
+  },
+  "btnResetToDark": {
+    "message": "Reset to Dark"
+  },
+  "btnSyncFromPopup": {
+    "message": "Sync From Current Popup"
+  },
   "previewNote": {
     "message": "Preview uses real popup UI and current account data."
   },
-  "popupLivePreviewTitle": { "message": "Popup Live Preview" },
-  "btnApplyCustomTheme": { "message": "Apply Custom Theme" },
-  "btnResetCustomTheme": { "message": "Reset" },
-  "btnOpenThemeStudio": { "message": "Open Theme Studio (Live Preview)" },
-  "btnChangeTheme": { "message": "Change Theme" },
-  "labThinking": { "message": "Thinking..." },
-  "labSolutionTitle": { "message": "Click to open the solution" },
-  "labSolutionButton": { "message": "Solution this lab" },
+  "popupLivePreviewTitle": {
+    "message": "Popup Live Preview"
+  },
+  "btnApplyCustomTheme": {
+    "message": "Apply Custom Theme"
+  },
+  "btnResetCustomTheme": {
+    "message": "Reset"
+  },
+  "btnOpenThemeStudio": {
+    "message": "Open Theme Studio (Live Preview)"
+  },
+  "btnChangeTheme": {
+    "message": "Change Theme"
+  },
+  "labThinking": {
+    "message": "Thinking..."
+  },
+  "labSolutionTitle": {
+    "message": "Click to open the solution"
+  },
+  "labSolutionButton": {
+    "message": "Solution this lab"
+  },
   "labSupportTitle": {
     "message": "Click to get support or report issue on Telegram"
   },
-  "labSupportButton": { "message": "Report / Support" },
-  "labNoSolution": { "message": "No solution" },
-  "labEplusSearch": { "message": "ePlus Search" },
-  "labGoogleSearch": { "message": "Google Search" },
-  "labYouTube": { "message": "YouTube" },
-  "labBingSearch": { "message": "Bing Search" },
-  "labYandexSearch": { "message": "Yandex Search" },
-  "labBraveSearch": { "message": "Brave Search" },
-  "labDuckDuckGoSearch": { "message": "DuckDuckGo Search" },
-  "labBaiduSearch": { "message": "Baidu Search" },
-  "labYahooSearch": { "message": "Yahoo! Search" },
-  "labCoccocSearch": { "message": "Cốc Cốc Search" },
-  "labelSearch": { "message": "Search" },
-  "labelCopyLink": { "message": "Copy Link" },
-  "labFallbackQuery": { "message": "Google Cloud lab tutorial" },
-  "exportDataTitle": { "message": "Export My Data" },
-  "exportJSON": { "message": "Export JSON" },
-  "exportCSV": { "message": "Export Badges CSV" },
-  "exportSuccess": { "message": "Exported successfully!" },
-  "exportNoData": { "message": "No data to export." },
-  "compactMode": { "message": "Compact" },
-  "fullMode": { "message": "Full View" },
-  "shortcutHint": { "message": "R refresh · S settings · C compact" },
+  "labSupportButton": {
+    "message": "Report / Support"
+  },
+  "labNoSolution": {
+    "message": "No solution"
+  },
+  "labEplusSearch": {
+    "message": "ePlus Search"
+  },
+  "labGoogleSearch": {
+    "message": "Google Search"
+  },
+  "labYouTube": {
+    "message": "YouTube"
+  },
+  "labBingSearch": {
+    "message": "Bing Search"
+  },
+  "labYandexSearch": {
+    "message": "Yandex Search"
+  },
+  "labBraveSearch": {
+    "message": "Brave Search"
+  },
+  "labDuckDuckGoSearch": {
+    "message": "DuckDuckGo Search"
+  },
+  "labBaiduSearch": {
+    "message": "Baidu Search"
+  },
+  "labYahooSearch": {
+    "message": "Yahoo! Search"
+  },
+  "labCoccocSearch": {
+    "message": "Cốc Cốc Search"
+  },
+  "labelSearch": {
+    "message": "Search"
+  },
+  "labelCopyLink": {
+    "message": "Copy Link"
+  },
+  "labFallbackQuery": {
+    "message": "Google Cloud lab tutorial"
+  },
+  "exportDataTitle": {
+    "message": "Export My Data"
+  },
+  "exportJSON": {
+    "message": "Export JSON"
+  },
+  "exportCSV": {
+    "message": "Export Badges CSV"
+  },
+  "exportSuccess": {
+    "message": "Exported successfully!"
+  },
+  "exportNoData": {
+    "message": "No data to export."
+  },
+  "compactMode": {
+    "message": "Compact"
+  },
+  "fullMode": {
+    "message": "Full View"
+  },
+  "shortcutHint": {
+    "message": "R refresh · S settings · C compact"
+  },
   "messageEplusSearchSaved": {
     "message": "ePlus search setting saved"
   },
   "messageEnableSearchFirst": {
     "message": "Enable the main Search Feature before enabling ePlus."
-  },
+  },
   "titleSetDefaultAccount": {
     "message": "Set as default account"
   },

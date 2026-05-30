@@ -1,15 +1,15 @@
 {
   "extName": {
-    "message": "Google Cloud Skills Boost - المساعد"
+    "message": "Google Cloud Skills Boost - Helper"
   },
   "extDescription": {
-    "message": "إضافة متصفح مصممة لتحسين تجربة التعلم الخاصة بك على Google Cloud Skills Boost."
+    "message": "إضافة متصفح مصممة لتحسين تجربة التعلم على Google Cloud Skills Boost."
   },
   "optionsPageTitle": {
-    "message": "Google Cloud Skills Boost - خيارات المساعد"
+    "message": "خيارات Google Cloud Skills Boost - Helper"
   },
   "optionsPageDescription": {
-    "message": "قم بتخصيص تجربتك مع Google Cloud Skills Boost - المساعد."
+    "message": "خصص تجربتك مع Google Cloud Skills Boost - Helper."
   },
   "labelFeature": {
     "message": "الميزة"
@@ -36,7 +36,7 @@
     "message": "حفظ"
   },
   "labelLoading": {
-    "message": "جاري التحميل..."
+    "message": "جار التحميل..."
   },
   "messageNoDataAvailable": {
     "message": "لا توجد بيانات متاحة"
@@ -54,7 +54,7 @@
     "message": "آخر تحديث"
   },
   "labelPage": {
-    "message": "صفحة"
+    "message": "الصفحة"
   },
   "labelLoadMore": {
     "message": "تحميل المزيد"
@@ -63,106 +63,106 @@
     "message": "المستوى الحالي"
   },
   "textMaxLevel": {
-    "message": "المستوى الأقصى"
+    "message": "أعلى مستوى"
   },
   "textNextLevelInPoints": {
-    "message": "المستوى التالي في"
+    "message": "المستوى التالي بعد"
   },
   "textPoints": {
-    "message": "نقاط"
+    "message": "نقطة"
   },
   "textPleaseSetUpTheSettings": {
-    "message": "يرجى إعداد الإعدادات"
+    "message": "يرجى إعداد الخيارات"
   },
   "errorInvalidUrl": {
-    "message": "يرجى إدخال رابط صحيح يبدأ بـ 'https://www.skills.google/public_profiles/xxx"
+    "message": "يرجى إدخال رابط صالح يبدأ بـ 'https://www.skills.google/public_profiles/xxx'."
   },
   "successSettingsSaved": {
     "message": "تم حفظ الإعدادات بنجاح!"
   },
   "notePleaseSetUpTheSettings": {
-    "message": "<strong>ملاحظة:</strong> <br>⚠️ لقد قمت بتفعيل خيار <strong>\"جعل الملف الشخصي عاماً\"</strong>، ولكن لم تقم بحفظ التغييرات بعد.<br>👉 يرجى النقر على زر <strong>\"تحديث الإعدادات\"</strong> لتأكيد وحفظ إعداداتك الجديدة.<br>❌ إذا لم تقم بالحفظ، لن يتم <strong>جعل ملفك الشخصي عاماً</strong> ولن يتم إنشاء الرابط."
+    "message": "<strong>ملاحظة:</strong><br>لقد فعّلت خيار <strong>\"جعل الملف الشخصي عامًا\"</strong>، لكنك لم تحفظ التغييرات بعد.<br>يرجى الضغط على <strong>\"تحديث الإعدادات\"</strong> لتأكيد الإعدادات الجديدة وحفظها.<br>إذا لم تحفظ، فلن يصبح ملفك الشخصي <strong>عامًا</strong> ولن يتم إنشاء الرابط."
   },
   "messageLinkCopiedToClipboard": {
-    "message": "✔️ تم نسخ الرابط إلى الحافظة!"
+    "message": "تم نسخ الرابط إلى الحافظة!"
   },
   "copyProfileUrl": {
-    "message": "انقر لنسخ رابط الملف الشخصي"
+    "message": "انقر لنسخ رابط الملف الشخصي العام"
   },
   "labelEnableSearchFeature": {
     "message": "تفعيل ميزة البحث"
   },
   "descriptionEnableSearchFeature": {
-    "message": "إظهار أزرار بحث Google و YouTube عندما لا يتم العثور على حل."
+    "message": "إظهار أزرار Google Search وYouTube عند عدم العثور على حل."
   },
   "messageSearchFeatureEnabled": {
-    "message": "تم تفعيل ميزة البحث - ستظهر أزرار بحث Google و YouTube عندما لا يتم العثور على حل"
+    "message": "تم تفعيل البحث: ستظهر أزرار Google وYouTube عند عدم العثور على حل"
   },
   "messageSearchFeatureDisabled": {
-    "message": "تم تعطيل ميزة البحث - سيظهر فقط \"لا يوجد حل\" عندما لا يتم العثور على حل"
+    "message": "تم تعطيل البحث: سيظهر فقط \"لا يوجد حل\" عند عدم العثور على حل"
   },
   "tourStartButton": {
     "message": "دليل المستخدم"
   },
   "tourWelcomeTitle": {
-    "message": "مرحباً بك في دليل إنشاء الحساب!"
+    "message": "مرحبًا بك في دليل إنشاء الحساب!"
   },
   "tourWelcomeContent": {
-    "message": "سنقوم بإرشادك خطوة بخطوة لإنشاء أول حساب Google Cloud Skills Boost الخاص بك."
+    "message": "سنرشدك خطوة بخطوة لإنشاء أول حساب لك على Google Cloud Skills Boost."
   },
   "tourWelcomeTip": {
-    "message": "<strong>نصيحة:</strong> يمكنك تخطي هذا الدليل في أي وقت من خلال النقر على \"تخطي\"."
+    "message": "<strong>نصيحة:</strong> يمكنك تخطي هذا الدليل في أي وقت بالنقر على \"تخطي\"."
   },
   "tourAddAccountTitle": {
     "message": "إضافة حساب جديد"
   },
   "tourAddAccountContent": {
-    "message": "انقر على هذا الزر لإضافة أول حساب Google Cloud Skills Boost الخاص بك. يمكنك إدارة حسابات متعددة في وقت واحد."
+    "message": "انقر على هذا الزر لإضافة أول حساب لك على Google Cloud Skills Boost. يمكنك إدارة عدة حسابات في الوقت نفسه."
   },
   "tourAccountListTitle": {
     "message": "قائمة الحسابات"
   },
   "tourAccountListContent": {
-    "message": "بعد إنشاء الحسابات، ستظهر هنا. يمكنك:<br>• التبديل بين الحسابات<br>• تحديث بيانات نقاط Arcade<br>• تحرير الألقاب<br>• عرض الملفات الشخصية العامة"
+    "message": "بعد إنشاء الحسابات، ستظهر هنا. يمكنك:<br>- التبديل بين الحسابات<br>- تحديث بيانات نقاط Arcade<br>- تعديل الألقاب<br>- عرض الملفات الشخصية العامة"
   },
   "tourModalStep1Title": {
-    "message": "الخطوة 1: فتح صفحة الملف الشخصي"
+    "message": "الخطوة 1: افتح صفحة الملف الشخصي"
   },
   "tourModalStep1Content": {
-    "message": "انقر على هذا الزر لفتح ملف Google Cloud Skills Boost الشخصي في علامة تبويب جديدة. ستحتاج إلى تسجيل الدخول والحصول على الرابط من صفحة الملف الشخصي."
+    "message": "انقر على هذا الزر لفتح ملف Google Cloud Skills Boost الشخصي في تبويب جديد. ستحتاج إلى تسجيل الدخول والحصول على الرابط من صفحة الملف الشخصي."
   },
   "tourModalStep2Title": {
-    "message": "الخطوة 2: إدخال رابط الملف الشخصي"
+    "message": "الخطوة 2: أدخل رابط الملف الشخصي"
   },
   "tourModalStep2Content": {
     "message": "بعد تسجيل الدخول، انسخ الرابط من شريط العنوان والصقه هنا."
   },
   "tourModalStep2Tip": {
-    "message": "سيبدو الرابط مثل: https://www.skills.google/public_profiles/xxxxx"
+    "message": "سيكون الرابط بهذا الشكل: https://www.skills.google/public_profiles/xxxxx"
   },
   "tourModalStep3Title": {
-    "message": "الخطوة 3: إنشاء الحساب"
+    "message": "الخطوة 3: أنشئ الحساب"
   },
   "tourModalStep3Content": {
-    "message": "انقر على هذا الزر لإنشاء الحساب. سيقوم النظام تلقائياً بجلب المعلومات من الملف الشخصي وإنشاء حساب جديد لك."
+    "message": "انقر على هذا الزر لإنشاء الحساب. سيجلب النظام المعلومات تلقائيًا من الملف الشخصي وينشئ حسابًا جديدًا لك."
   },
   "tourCompletedTitle": {
     "message": "اكتمل الدليل!"
   },
   "tourCompletedContent": {
-    "message": "الآن يمكنك البدء في إنشاء حسابك الأول."
+    "message": "يمكنك الآن البدء بإنشاء حسابك الأول."
   },
   "tourModalCompletedTitle": {
-    "message": "جاهز لإنشاء الحساب!"
+    "message": "أنت جاهز لإنشاء الحساب!"
   },
   "tourModalCompletedContent": {
-    "message": "حاول إدخال رابط ملف شخصي وأنشئ حسابك الأول."
+    "message": "جرّب إدخال رابط الملف الشخصي وأنشئ حسابك الأول."
   },
   "tourButtonNext": {
     "message": "التالي"
   },
   "tourButtonPrevious": {
-    "message": "السابق"
+    "message": "رجوع"
   },
   "tourButtonSkip": {
     "message": "تخطي"
@@ -174,13 +174,13 @@
     "message": "إغلاق"
   },
   "badgeToolbarNote": {
-    "message": "عند التفعيل، ستقوم الإضافة بتحديث شارة شريط الأدوات بإجمالي نقاطك (يشمل مكافأة الميسر عند تفعيلها)."
+    "message": "عند التفعيل، ستحدّث الإضافة شارة شريط الأدوات بإجمالي نقاطك، بما في ذلك مكافأة Facilitator عند تفعيلها."
   },
   "badgeViewDescription": {
-    "message": "عرض جميع شاراتك وإنجازاتك المكتسبة."
+    "message": "اعرض كل الشارات والإنجازات التي حصلت عليها."
   },
   "badgeTrackProgress": {
-    "message": "تتبع تقدمك في التعلم!"
+    "message": "تابع تقدمك في التعلم!"
   },
   "labelAchievements": {
     "message": "الإنجازات"
@@ -192,7 +192,7 @@
     "message": "يرجى إدخال رابط الملف الشخصي!"
   },
   "errorInvalidProfileUrl": {
-    "message": "رابط ملف شخصي غير صالح!"
+    "message": "رابط الملف الشخصي غير صالح!"
   },
   "errorAccountExistsTitle": {
     "message": "الحساب موجود بالفعل"
@@ -204,7 +204,7 @@
     "message": "تعذر الحصول على الاسم من الملف الشخصي. يرجى المحاولة مرة أخرى!"
   },
   "labelAdding": {
-    "message": "جاري الإضافة..."
+    "message": "جار الإضافة..."
   },
   "successAccountAdded": {
     "message": "تمت إضافة الحساب بنجاح!"
@@ -219,16 +219,16 @@
     "message": "إضافة حساب"
   },
   "successSwitchedAccount": {
-    "message": "تم التبديل إلى الحساب بنجاح!"
+    "message": "تم تبديل الحساب بنجاح!"
   },
   "errorSwitchAccount": {
-    "message": "خطأ في التبديل إلى الحساب."
+    "message": "حدث خطأ أثناء تبديل الحساب."
   },
   "errorAccountNotFound": {
-    "message": "الحساب غير موجود."
+    "message": "لم يتم العثور على الحساب."
   },
   "infoUpdatingAccountData": {
-    "message": "جاري تحديث بيانات الحساب..."
+    "message": "جار تحديث بيانات الحساب..."
   },
   "successAccountDataUpdated": {
     "message": "تم تحديث بيانات الحساب بنجاح!"
@@ -237,25 +237,25 @@
     "message": "تعذر جلب البيانات من API."
   },
   "errorUpdatingAccount": {
-    "message": "خطأ في تحديث الحساب."
+    "message": "حدث خطأ أثناء تحديث الحساب."
   },
   "errorProfileUrlNotFound": {
-    "message": "رابط الملف الشخصي غير موجود لهذا الحساب."
+    "message": "لم يتم العثور على رابط الملف الشخصي لهذا الحساب."
   },
   "errorOpeningProfile": {
-    "message": "خطأ في فتح الملف الشخصي."
+    "message": "حدث خطأ أثناء فتح الملف الشخصي."
   },
   "errorNoActiveAccountOrProfileUrl": {
-    "message": "لا يوجد حساب نشط أو رابط ملف شخصي."
+    "message": "لم يتم العثور على حساب نشط أو رابط ملف شخصي."
   },
   "errorAccountNotFoundToUpdate": {
-    "message": "تعذر العثور على الحساب للتحديث!"
+    "message": "تعذر العثور على الحساب المطلوب تحديثه!"
   },
   "successNicknameSaved": {
     "message": "تم حفظ اللقب بنجاح!"
   },
   "errorSavingNickname": {
-    "message": "خطأ في حفظ اللقب!"
+    "message": "حدث خطأ أثناء حفظ اللقب!"
   },
   "successNicknameUpdated": {
     "message": "تم تحديث اللقب بنجاح!"
@@ -264,7 +264,7 @@
     "message": "حدث خطأ أثناء تحديث الحساب!"
   },
   "errorCannotDeleteLastAccount": {
-    "message": "لا يمكن حذف الحساب الأخير!"
+    "message": "لا يمكن حذف آخر حساب!"
   },
   "successAccountDeleted": {
     "message": "تم حذف الحساب بنجاح!"
@@ -279,19 +279,19 @@
     "message": "حدث خطأ أثناء تصدير البيانات!"
   },
   "errorNoImportData": {
-    "message": "يرجى تحديد ملف أو لصق محتوى JSON!"
+    "message": "يرجى اختيار ملف أو لصق محتوى JSON!"
   },
   "successDataImported": {
     "message": "تم استيراد البيانات بنجاح!"
   },
   "errorInvalidImportData": {
-    "message": "بيانات غير صالحة. يرجى التحقق مرة أخرى!"
+    "message": "البيانات غير صالحة. يرجى التحقق مرة أخرى!"
   },
   "errorImportingData": {
     "message": "حدث خطأ أثناء استيراد البيانات!"
   },
   "labelFacilitatorProgram": {
-    "message": "برنامج الميسر"
+    "message": "برنامج Facilitator"
   },
   "messageBadgeEnabled": {
     "message": "تم تفعيل عرض الشارة"
@@ -303,13 +303,13 @@
     "message": "إظهار الشارة على أيقونة الإضافة"
   },
   "descriptionShowBadge": {
-    "message": "تبديل ما إذا كانت الإضافة تظهر إجمالي النقاط على أيقونة شريط أدوات المتصفح."
+    "message": "بدّل ما إذا كانت الإضافة تعرض إجمالي النقاط على أيقونة شريط أدوات المتصفح."
   },
   "facilitatorDeadlinePassed": {
-    "message": "انتهى الموعد النهائي لبرنامج الميسر"
+    "message": "انتهت مهلة برنامج Facilitator"
   },
   "arcadeDeadlinePassed": {
-    "message": "انتهى موسم Arcade لهذا العام. نراكم في الموسم القادم!"
+    "message": "انتهى موسم Arcade لهذا العام. نراك في الموسم القادم!"
   },
   "programEnded": {
     "message": "انتهى البرنامج"
@@ -318,7 +318,7 @@
     "message": "مكتمل"
   },
   "statusInProgress": {
-    "message": "قيد التنفيذ"
+    "message": "قيد التقدم"
   },
   "statusNotStarted": {
     "message": "لم يبدأ"
@@ -335,7 +335,9 @@
   "labelBack": {
     "message": "رجوع"
   },
-  "backToTop": { "message": "الرجوع إلى الأعلى" },
+  "backToTop": {
+    "message": "العودة إلى الأعلى"
+  },
   "changelogWhatsNew": {
     "message": "ما الجديد"
   },
@@ -343,7 +345,7 @@
     "message": "آخر التحديثات والتحسينات"
   },
   "changelogLoading": {
-    "message": "جاري تحميل سجل التغييرات..."
+    "message": "جار تحميل سجل التغييرات..."
   },
   "changelogFooterNotice": {
     "message": "هذه الإضافة غير تابعة لـ Google Cloud Skills Boost. جميع الحقوق محفوظة."
@@ -391,13 +393,13 @@
     "message": "خطأ:"
   },
   "successPrefix": {
-    "message": "نجح:"
+    "message": "نجاح:"
   },
   "accountErrorFallback": {
     "message": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
   },
   "accountSuccessFallback": {
-    "message": "تمت عمليتك بنجاح!"
+    "message": "تم تنفيذ الإجراء بنجاح!"
   },
   "viewBadges": {
     "message": "عرض الشارات"
@@ -409,13 +411,13 @@
     "message": "نقاط Arcade"
   },
   "milestonesTitle": {
-    "message": "المعالم"
+    "message": "المراحل"
   },
   "accountsCardTitle": {
     "message": "إدارة الحسابات وحاسبة نقاط Arcade"
   },
   "accountsCardSubtitle": {
-    "message": "إدارة حسابات متعددة وحساب نقاط Arcade."
+    "message": "أدر عدة حسابات واحسب نقاط Arcade."
   },
   "clickOpenProfileButton": {
     "message": "انقر على زر \"فتح صفحة الملف الشخصي\""
@@ -433,40 +435,40 @@
     "message": "دقائق"
   },
   "labelSeconds": {
-    "message": "ثواني"
+    "message": "ثوانٍ"
   },
   "milestoneDeadlineNotice": {
-    "message": "أكمل المعالم قبل الموعد النهائي لكسب نقاط إضافية!"
+    "message": "أكمل المراحل قبل الموعد النهائي لتحصل على نقاط إضافية!"
   },
   "arcadeMotivation": {
-    "message": "حافظ على الزخم واصعد إلى أعلى لوحة متصدري Arcade!"
+    "message": "حافظ على الزخم واصعد في لوحة متصدري Arcade!"
   },
   "totalBonusEarned": {
-    "message": "إجمالي المكافأة المكتسبة:"
+    "message": "إجمالي المكافآت المكتسبة:"
   },
   "maxPossibleNote": {
-    "message": "الحد الأقصى الممكن: 25 نقطة (المعلم الأعلى فقط)"
+    "message": "الحد الأقصى الممكن: 25 نقطة (أعلى مرحلة فقط)"
   },
   "pointsBreakdown": {
     "message": "تفصيل النقاط"
   },
   "arcadeBase": {
-    "message": "نقاط Arcade الأساسية:"
+    "message": "Arcade Base Camp:"
   },
   "facilitatorBonus": {
-    "message": "مكافأة الميسر:"
+    "message": "مكافأة Facilitator:"
   },
   "gameBadgeLabel": {
     "message": "شارة اللعبة"
   },
   "gameBadgeLabelTooltip": {
-    "message": "أصبحت Arcade الآن بدون مستويات. المسارات الجديدة: Adventure (أساسيات السحابة)، Voyage (تدريب المهارات)، Trail (تعلم الذكاء الاصطناعي)."
+    "message": "Arcade أصبح بلا مستويات الآن. المسارات الجديدة: Adventure (أساسيات السحابة)، Voyage (تدريب المهارات)، Trail (تعلم الذكاء الاصطناعي)."
   },
   "triviaBadgeLabel": {
-    "message": "شارة المعلومات العامة"
+    "message": "شارة Trivia"
   },
   "triviaBadgeLabelTooltip": {
-    "message": "أصبحت Trivia الآن Sprint: اختبارات قصيرة لمراجعة المفاهيم وكسب نقاط Arcade."
+    "message": "أصبحت Trivia الآن Sprint: اختبارات سريعة لمراجعة المفاهيم وكسب نقاط Arcade."
   },
   "skillBadgeLabel": {
     "message": "شارة المهارة"
@@ -478,28 +480,28 @@
     "message": "العد التنازلي لموسم Arcade"
   },
   "milestone1": {
-    "message": "المعلم 1"
+    "message": "المرحلة 1"
   },
   "milestone1Bonus": {
-    "message": "+2 نقاط مكافأة"
+    "message": "+2 نقطة إضافية"
   },
   "milestone2": {
-    "message": "المعلم 2"
+    "message": "المرحلة 2"
   },
   "milestone2Bonus": {
-    "message": "+8 نقاط مكافأة"
+    "message": "+8 نقاط إضافية"
   },
   "milestone3": {
-    "message": "المعلم 3"
+    "message": "المرحلة 3"
   },
   "milestone3Bonus": {
-    "message": "+15 نقطة مكافأة"
+    "message": "+15 نقطة إضافية"
   },
   "milestoneUltimate": {
-    "message": "النهائي"
+    "message": "Ultimate"
   },
   "milestoneUltimateBonus": {
-    "message": "+25 نقطة مكافأة"
+    "message": "+25 نقطة إضافية"
   },
   "progressLabel": {
     "message": "التقدم:"
@@ -508,13 +510,13 @@
     "message": "الألعاب:"
   },
   "triviaLabel": {
-    "message": "المعلومات العامة:"
+    "message": "Trivia:"
   },
   "skillsLabel": {
     "message": "المهارات:"
   },
   "labFreeLabel": {
-    "message": "بدون معمل:"
+    "message": "بدون lab:"
   },
   "switchAccount": {
     "message": "تبديل الحساب"
@@ -529,16 +531,16 @@
     "message": "نتائج YouTube"
   },
   "searchFeatureTip": {
-    "message": "يساعدك في العثور على الإجابات بشكل أسرع!"
+    "message": "يساعدك في العثور على الإجابات بسرعة أكبر!"
   },
   "successAccountCreated": {
     "message": "تم إنشاء الحساب بنجاح!"
   },
   "successAddNickname": {
-    "message": "يمكنك إضافة لقب لتحديد هذا الحساب بسهولة."
+    "message": "يمكنك إضافة لقب لتسهيل التعرف على هذا الحساب."
   },
   "newlyCreated": {
-    "message": "تم إنشاؤه حديثاً"
+    "message": "تم إنشاؤه حديثًا"
   },
   "labelNickname": {
     "message": "اللقب:"
@@ -550,16 +552,16 @@
     "message": "تم التحديث:"
   },
   "justCreated": {
-    "message": "تم إنشاؤه للتو"
+    "message": "تم إنشاؤه الآن"
   },
   "markdownShowLess": {
     "message": "عرض أقل"
   },
   "importantNoticeTitle": {
-    "message": "ملاحظة مهمة"
+    "message": "تنبيه مهم"
   },
   "importantNoticeText": {
-    "message": "يمكن إضافة كل رابط ملف شخصي مرة واحدة فقط. سيقوم النظام بالتحقق وإخطارك إذا كان الحساب موجوداً بالفعل."
+    "message": "يمكن إضافة كل رابط ملف شخصي مرة واحدة فقط. سيتحقق النظام ويبلغك إذا كان الحساب موجودًا بالفعل."
   },
   "enterProfileUrlLabel": {
     "message": "أدخل رابط الملف الشخصي وأنشئ الحساب"
@@ -571,16 +573,16 @@
     "message": "التعليمات:"
   },
   "instructionsText": {
-    "message": "أدخل الرابط وانقر على \"إنشاء حساب\". سيقوم النظام تلقائياً بتحميل المعلومات وإنشاء حساب جديد."
+    "message": "أدخل الرابط وانقر على \"إنشاء حساب\". سيحمّل النظام المعلومات تلقائيًا وينشئ حسابًا جديدًا."
   },
   "step1Title": {
     "message": "انقر على زر \"فتح صفحة الملف الشخصي\""
   },
   "step1Subtitle": {
-    "message": "سيتم فتح Google Cloud Skills Boost في علامة تبويب جديدة"
+    "message": "سيفتح Google Cloud Skills Boost في تبويب جديد"
   },
   "step2Title": {
-    "message": "تسجيل الدخول (إذا لم تكن قد سجلت الدخول بالفعل)"
+    "message": "سجّل الدخول إذا لم تكن قد فعلت ذلك"
   },
   "step2Subtitle": {
     "message": "استخدم حساب Google الخاص بك"
@@ -589,7 +591,7 @@
     "message": "ابحث عن قسم \"الملف الشخصي العام\""
   },
   "step3Subtitle": {
-    "message": "قم بالتمرير لأسفل في صفحة الملف الشخصي"
+    "message": "مرر لأسفل في صفحة الملف الشخصي"
   },
   "step4Title": {
     "message": "انسخ الرابط من شريط العنوان"
@@ -613,28 +615,28 @@
     "message": "لقب الحساب"
   },
   "nicknamePlaceholder": {
-    "message": "مثل: الحساب الرئيسي، حساب العمل، حساب الدراسة..."
+    "message": "مثال: الحساب الرئيسي، حساب العمل، حساب الدراسة..."
   },
   "nicknameHelpText": {
-    "message": "تساعدك الألقاب في تحديد الحسابات بسهولة عندما يكون لديك حسابات متعددة مختلفة"
+    "message": "تساعدك الألقاب على تمييز الحسابات عند إدارة عدة حسابات"
   },
   "editAccountTitle": {
-    "message": "تحرير الحساب"
+    "message": "تعديل الحساب"
   },
   "displayNameLabel": {
-    "message": "الاسم المعروض:"
+    "message": "اسم العرض:"
   },
   "displayNameInfo": {
-    "message": "الاسم المعروض مأخوذ من Google Cloud Skills Boost ولا يمكن تعديله"
+    "message": "يتم أخذ اسم العرض من Google Cloud Skills Boost ولا يمكن تعديله"
   },
   "nicknameLabel": {
     "message": "اللقب:"
   },
   "enterNicknamePlaceholder": {
-    "message": "أدخل لقباً للتحديد السهل..."
+    "message": "أدخل لقبًا لتسهيل التعرف..."
   },
   "nicknameExample": {
-    "message": "مثال: \"الحساب الرئيسي\"، \"حساب العمل\"، \"حساب الدراسة\"..."
+    "message": "أمثلة: \"الحساب الرئيسي\"، \"حساب العمل\"، \"حساب الدراسة\"..."
   },
   "cancelButton": {
     "message": "إلغاء"
@@ -643,10 +645,10 @@
     "message": "حفظ التغييرات"
   },
   "themeStudioTitle": {
-    "message": "ستوديو الثيم"
+    "message": "Theme Studio"
   },
   "themeStudioDescription": {
-    "message": "خصص سمة النافذة المنبثقة مع معاينة فورية."
+    "message": "خصص سمة popup مع معاينة فورية."
   },
   "labelBackground1": {
     "message": "الخلفية 1"
@@ -658,34 +660,34 @@
     "message": "الخلفية 3"
   },
   "labelAccent": {
-    "message": "اللون المميز"
+    "message": "لون التمييز"
   },
   "labelArcadePoints": {
-    "message": "نقاط الآركيد"
+    "message": "نقاط Arcade"
   },
   "labelTextPrimary": {
-    "message": "لون النص الأساسي"
+    "message": "النص الأساسي"
   },
   "labelTextSecondary": {
-    "message": "لون النص الثانوي"
+    "message": "النص الثانوي"
   },
   "labelTextMuted": {
-    "message": "لون النص المخفف"
+    "message": "النص الخافت"
   },
   "btnApplySave": {
     "message": "تطبيق وحفظ"
   },
   "btnResetToDark": {
-    "message": "إعادة التعيين إلى الوضع الداكن"
+    "message": "إعادة الضبط إلى الداكن"
   },
   "btnSyncFromPopup": {
-    "message": "مزامنة من النافذة الحالية"
+    "message": "المزامنة من popup الحالي"
   },
   "previewNote": {
-    "message": "المعاينة تستخدم واجهة النافذة الفعلية وبيانات الحساب الحالية."
+    "message": "تستخدم المعاينة واجهة popup الحقيقية وبيانات الحساب الحالي."
   },
   "popupLivePreviewTitle": {
-    "message": "معاينة النافذة الحية"
+    "message": "معاينة popup مباشرة"
   },
   "btnApplyCustomTheme": {
     "message": "تطبيق السمة المخصصة"
@@ -694,25 +696,25 @@
     "message": "إعادة ضبط"
   },
   "btnOpenThemeStudio": {
-    "message": "فتح ستوديو الثيم (معاينة مباشرة)"
+    "message": "فتح Theme Studio (معاينة مباشرة)"
   },
   "btnChangeTheme": {
     "message": "تغيير السمة"
   },
   "labThinking": {
-    "message": "أفكّر..."
+    "message": "جار التفكير..."
   },
   "labSolutionTitle": {
     "message": "انقر لفتح الحل"
   },
   "labSolutionButton": {
-    "message": "حل هذا المختبر"
+    "message": "عرض حل هذا lab"
   },
   "labSupportTitle": {
-    "message": "Click to get support or report issue on Telegram"
+    "message": "انقر للحصول على الدعم أو الإبلاغ عن مشكلة على Telegram"
   },
   "labSupportButton": {
-    "message": "Report / Support"
+    "message": "إبلاغ / دعم"
   },
   "labNoSolution": {
     "message": "لا يوجد حل"
@@ -726,16 +728,36 @@
   "labYouTube": {
     "message": "YouTube"
   },
-  "labBingSearch": { "message": "بحث Bing" },
-  "labYandexSearch": { "message": "بحث Yandex" },
-  "labBraveSearch": { "message": "بحث Brave" },
-  "labDuckDuckGoSearch": { "message": "بحث DuckDuckGo" },
-  "labBaiduSearch": { "message": "بحث Baidu" },
-  "labYahooSearch": { "message": "بحث Yahoo!" },
-  "labCoccocSearch": { "message": "بحث Cốc Cốc" },
-  "labelSearch": { "message": "بحث" },
-  "labelCopyLink": { "message": "نسخ الرابط" },
-  "labFallbackQuery": { "message": "دليل مختبر Google Cloud" },
+  "labBingSearch": {
+    "message": "بحث Bing"
+  },
+  "labYandexSearch": {
+    "message": "بحث Yandex"
+  },
+  "labBraveSearch": {
+    "message": "بحث Brave"
+  },
+  "labDuckDuckGoSearch": {
+    "message": "بحث DuckDuckGo"
+  },
+  "labBaiduSearch": {
+    "message": "بحث Baidu"
+  },
+  "labYahooSearch": {
+    "message": "بحث Yahoo!"
+  },
+  "labCoccocSearch": {
+    "message": "بحث Cốc Cốc"
+  },
+  "labelSearch": {
+    "message": "بحث"
+  },
+  "labelCopyLink": {
+    "message": "نسخ الرابط"
+  },
+  "labFallbackQuery": {
+    "message": "شرح lab على Google Cloud"
+  },
   "exportDataTitle": {
     "message": "تصدير بياناتي"
   },
@@ -743,7 +765,7 @@
     "message": "تصدير JSON"
   },
   "exportCSV": {
-    "message": "تصدير الشارات CSV"
+    "message": "تصدير شارات CSV"
   },
   "exportSuccess": {
     "message": "تم التصدير بنجاح!"
@@ -758,105 +780,105 @@
     "message": "عرض كامل"
   },
   "shortcutHint": {
-    "message": "R تحديث · S الإعدادات · C مضغوط"
+    "message": "R تحديث / S إعدادات / C مضغوط"
   },
   "messageEplusSearchSaved": {
-    "message": "?? ??? ????? ??? ePlus"
+    "message": "تم حفظ إعداد بحث ePlus"
   },
   "messageEnableSearchFirst": {
-    "message": "???? ???? ????? ???????? ??? ????? ePlus."
-  },
+    "message": "فعّل ميزة البحث الرئيسية قبل تفعيل ePlus."
+  },
   "titleSetDefaultAccount": {
-    "message": "????? ????? ???????"
+    "message": "تعيين كحساب افتراضي"
   },
   "titleToggleFacilitatorProgram": {
-    "message": "????? ?????? ??????"
+    "message": "تبديل برنامج Facilitator"
   },
   "titleUpdateAccount": {
-    "message": "????? ??????"
+    "message": "تحديث الحساب"
   },
   "titleViewPublicProfile": {
-    "message": "??? ????? ?????? ?????"
+    "message": "عرض الملف الشخصي العام"
   },
   "titleEditAccount": {
-    "message": "????? ??????"
+    "message": "تعديل الحساب"
   },
   "titleDeleteAccount": {
-    "message": "??? ??????"
+    "message": "حذف الحساب"
   },
   "exportNoBadgesData": {
-    "message": "?? ???? ????? ???????."
+    "message": "لا توجد شارات للتصدير."
   },
   "messagePreferredSearchEngineSaved": {
-    "message": "?? ??? ???? ????? ??????"
+    "message": "تم حفظ محرك البحث المفضل"
   },
   "labelEnabled": {
-    "message": "????"
+    "message": "مفعّل"
   },
   "labelDisabled": {
-    "message": "????"
+    "message": "معطّل"
   },
   "messageFacilitatorProgramUpdated": {
-    "message": "?????? ?????? $1 ?? $2"
+    "message": "برنامج Facilitator $1 لـ $2"
   },
   "errorUpdatingFacilitatorProgram": {
-    "message": "??? ??? ????? ????? ????? ?????? ??????"
+    "message": "خطأ أثناء تحديث إعداد برنامج Facilitator"
   },
   "errorFetchDataRetry": {
-    "message": "???? ??? ????????. ???? ???????? ??????."
+    "message": "فشل جلب البيانات. يرجى المحاولة لاحقًا."
   },
   "errorGenericRetry": {
-    "message": "??? ???. ???? ???????? ??? ????."
+    "message": "حدث خطأ. يرجى المحاولة مرة أخرى."
   },
   "labelNewAccount": {
-    "message": "???? ????"
+    "message": "حساب جديد"
   },
   "successAccountCreatedNamed": {
-    "message": "?? ????? ?????? \"$1\" ?????!"
+    "message": "تم إنشاء الحساب \"$1\" بنجاح!"
   },
   "successDataSaved": {
-    "message": "?? ??? ???????? ?????!"
+    "message": "تم حفظ البيانات بنجاح!"
   },
   "successAccountUpdated": {
-    "message": "?? ????? ?????? ?????!"
+    "message": "تم تحديث الحساب بنجاح!"
   },
   "errorSaveSetting": {
-    "message": "??? ??? ???????"
+    "message": "فشل حفظ الإعداد"
   },
   "errorUnableFetchProfile": {
-    "message": "???? ??? ????????? ?? ??? ????? ??????"
+    "message": "تعذر جلب المعلومات من هذا الملف الشخصي"
   },
   "errorUnableGetUserName": {
-    "message": "???? ?????? ??? ??? ???????? ?? ??? ????? ??????"
+    "message": "تعذر الحصول على اسم المستخدم من هذا الملف الشخصي"
   },
   "errorUnableCreateAccount": {
-    "message": "???? ????? ??????. ???? ?????? ?? ?????? ????????? ??? ????!"
+    "message": "تعذر إنشاء الحساب. يرجى التحقق من الرابط والمحاولة مرة أخرى!"
   },
   "errorUnableFetchProfileInfo": {
-    "message": "???? ??? ??????? ????? ??????. ???? ?????? ?? ?????? ????????? ??? ????!"
+    "message": "تعذر جلب معلومات الملف الشخصي. يرجى التحقق من الرابط والمحاولة مرة أخرى!"
   },
   "errorProfileIdNotFound": {
-    "message": "?? ??? ?????? ??? ???? ????? ??????"
+    "message": "لم يتم العثور على معرف الملف الشخصي"
   },
   "switchToAccountNamed": {
-    "message": "??????? ??? ?????? \"$1\""
+    "message": "التبديل إلى الحساب \"$1\""
   },
   "successSwitchedToAccountNamed": {
-    "message": "?? ??????? ??? ?????? \"$1\"!"
+    "message": "تم التبديل إلى الحساب \"$1\"!"
   },
   "confirmDeleteAccount": {
-    "message": "?? ??? ????? ?? ??? ?????? \"$1\"?"
+    "message": "هل أنت متأكد أنك تريد حذف الحساب \"$1\"؟"
   },
   "btnCancel": {
-    "message": "?????"
+    "message": "إلغاء"
   },
   "btnDelete": {
-    "message": "???"
+    "message": "حذف"
   },
   "labelImporting": {
-    "message": "???? ?????????..."
+    "message": "جار الاستيراد..."
   },
   "labelImportData": {
-    "message": "??????? ????????"
+    "message": "استيراد البيانات"
   }
 }
