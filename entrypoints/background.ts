@@ -336,7 +336,9 @@ export default defineBackground(() => {
                     enabled,
                   });
                 }
-              } catch (err) {}
+              } catch (err) {
+                // ignore
+              }
             }
           } catch (err) {
             console.debug("Failed to broadcast searchFeatureChanged:", err);
@@ -354,7 +356,9 @@ export default defineBackground(() => {
                     enabled,
                   });
                 }
-              } catch (err) {}
+              } catch (err) {
+                // ignore
+              }
             }
           } catch (err) {
             console.debug("Failed to broadcast enableEplusSearchChanged:", err);
