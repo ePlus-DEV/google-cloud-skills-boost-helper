@@ -4,6 +4,7 @@
 
 import StorageService from "../services/storageService";
 import SearchService from "../services/searchService";
+import { addSolutionUtmParams } from "../utils/trackingUrl";
 
 const TELEGRAM_SUPPORT_URL = "https://t.me/eplus_google";
 
@@ -195,16 +196,7 @@ const UIComponents = {
     });
 
     if (url) {
-      // Validate and normalize the URL
-      let safeUrl: string | null = null;
-      try {
-        const parsedUrl = new URL(url, "https://eplus.dev");
-        if (parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:") {
-          safeUrl = parsedUrl.toString();
-        }
-      } catch (e) {
-        // Invalid URL, do not render button
-      }
+      const safeUrl = addSolutionUtmParams(url);
 
       if (safeUrl) {
         // Use the same innerHTML-based insertion as the "No solution" branch
