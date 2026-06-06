@@ -29,6 +29,8 @@ describe("addSolutionUtmParams", () => {
   });
 
   it("rejects non-http protocols", () => {
-    expect(addSolutionUtmParams("javascript:alert(1)")).toBeNull();
+    expect(
+      addSolutionUtmParams("data:text/html,<script>alert(1)</script>"),
+    ).toBeNull();
   });
 });
