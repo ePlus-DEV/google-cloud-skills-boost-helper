@@ -1486,10 +1486,10 @@ atomically@^2.0.3:
     stubborn-fs "^2.0.0"
     when-exit "^2.1.4"
 
-axios@^1.16.1:
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.16.1.tgz#517e29291d19d6e8cf919ff264f4fe157261ba12"
-  integrity sha512-caYkukvroVPO8KrzuJEb50Hm07KwfBZPEC3VeFHTsqWHvKTsy54hjJz9BS/cdaypROE2rH6xvm9mHX4fgWkr3A==
+axios@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.17.0.tgz#ae5a1164a4f719942cd73c67e6a3f62d3ccb8f2b"
+  integrity sha512-J8SwNxprqqpbfenehxWYXE7CW+wM1BB4w3+N+g+/Wx40xM4rsLrfPmHHxSWIxJLYDgSY/HqlFPIYb2/S3rxafw==
   dependencies:
     follow-redirects "^1.16.0"
     form-data "^4.0.5"
@@ -2220,10 +2220,10 @@ function-bind@^1.1.2:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.2.tgz#2c02d864d97f3ea6c8830c464cbd11ab6eab7a1c"
   integrity sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==
 
-fuse.js@^7.4.0:
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-7.4.0.tgz#4f39e13e8823a1b809ba76476b65a1a6b88a844e"
-  integrity sha512-3UqmoSFwzX1sNB1YSk+Co0EdH29XCW2p9g48OAiy93cjKqzuABsqw2VIgSN3CmsT/wo6pIJ3F0Jxeiiby8rhIQ==
+fuse.js@^7.4.2:
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-7.4.2.tgz#a0513219603f1f3f09bbba587c7b919cc3ba6294"
+  integrity sha512-LVbzjD4WA6UP5B1UnP8wuaXJiLnqMdM/E4fiJXTJ5haJ5b/MBNsK29h2fm6swEoQaVQjvYFWKLE2RanyZIoRVQ==
 
 fx-runner@1.4.0:
   version "1.4.0"
@@ -2929,10 +2929,10 @@ many-keys-map@^3.0.0:
   resolved "https://registry.yarnpkg.com/many-keys-map/-/many-keys-map-3.0.3.tgz#f9f124ed1a6f4c21b395c94028dc3021c0490505"
   integrity sha512-1DiZmDHPXMBgMRjeUtHy1q1VYmeJscHxhIAexX9z/zjRMP80+0ETuPfssi8z+kMY4DwUgsKuHqpjxgmeA9gBNA==
 
-marked@^18.0.4:
-  version "18.0.4"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-18.0.4.tgz#7a54421f506c8729db32f852719972d2f939a77b"
-  integrity sha512-c/BTaKzg0G6ezQx97DAkYU7k0HM6ys0FqYeKBL6hlBByZwy+ycA1+f0vDdjMHKKeEjdgkx0GOv9Il6D+85cOqA==
+marked@^18.0.5:
+  version "18.0.5"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-18.0.5.tgz#c229c0ac6ad1e275ae8e5037c6168f76d2f42e61"
+  integrity sha512-S6GcvALHg6K4ohtu4E7x0a1AqhAjp6cV8KhLSyN9qVapnzJkusVBxZRcIU9AeYsbe6P1hKDusSbEOzGyyuce6w==
 
 marky@^1.2.2:
   version "1.3.0"
