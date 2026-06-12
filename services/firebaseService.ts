@@ -90,9 +90,10 @@ class FirebaseService {
       import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR || nextSeasonDeadline;
     const envArcadeMilestones = import.meta.env.WXT_ARCADE_MILESTONES;
     const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
-    const defaultArcadeMilestones = !forceRemote && envArcadeMilestones?.trim()
-      ? envArcadeMilestones || ""
-      : "";
+    const defaultArcadeMilestones =
+      !forceRemote && envArcadeMilestones?.trim()
+        ? envArcadeMilestones || ""
+        : "";
 
     return {
       countdown_deadline_facilitator: defaultFacilitatorDeadline,

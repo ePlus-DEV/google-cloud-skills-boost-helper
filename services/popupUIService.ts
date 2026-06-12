@@ -340,7 +340,8 @@ const PopupUIService = {
         ? milestones[nextIndex - 1]
         : null;
     const currentLeague =
-      pointTier?.league || this.getI18nMessage("textNotQualified", "Not qualified");
+      pointTier?.league ||
+      this.getI18nMessage("textNotQualified", "Not qualified");
     const eligibleMilestones = milestones.filter(
       (milestone) => roundedPoints >= milestone.points,
     );
@@ -359,7 +360,8 @@ const PopupUIService = {
           hasSpotsLeftData ? (milestone.spotsLeft ?? 0) > 0 : true,
         ) || null;
     const waterfallApplied =
-      Boolean(pointTier && prizeTier) && pointTier?.league !== prizeTier?.league;
+      Boolean(pointTier && prizeTier) &&
+      pointTier?.league !== prizeTier?.league;
 
     const previousMilestonePoints = pointTier?.points ?? 0;
     const progressPercent = isMaxLevel
@@ -443,7 +445,11 @@ const PopupUIService = {
 
     if (poolInfo) {
       const poolText = prizeTier
-        ? this.formatPrizePoolText(prizeTier, hasPrizePoolData, waterfallApplied)
+        ? this.formatPrizePoolText(
+            prizeTier,
+            hasPrizePoolData,
+            waterfallApplied,
+          )
         : hasPrizePoolData
           ? this.formatPrizePoolText(
               nextMilestone,
