@@ -21,11 +21,37 @@ const PopupUIService = {
     number
   >,
 
-  DEFAULT_ARCADE_MILESTONES_JSON:
-    '[{"points":50,"league":"Arcade Trooper","slots":6000},{"points":75,"league":"Arcade Ranger","slots":4000},{"points":95,"league":"Arcade Champion","slots":3000},{"points":120,"league":"Arcade Legend","slots":2500}]',
+  /**
+   * Load Arcade tier config. Local env wins unless remote is explicitly forced.
+   */
+  async getArcadeMilestonesJson(): Promise<string> {
+    const envValue = import.meta.env.WXT_ARCADE_MILESTONES;
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+
+    if (!forceRemote && envValue?.trim()) {
+      return envValue;
+    }
+
+    const firebaseService = (await import("./firebaseService")).default;
+
+    if (!firebaseService.isInitialized()) {
+      await firebaseService.initialize();
+    }
+
+    try {
+      await firebaseService.fetchRemoteConfig?.();
+    } catch (error) {
+      console.debug(
+        "[getArcadeMilestonesJson] Could not fetch fresh Remote Config:",
+        error,
+      );
+    }
+
+    return firebaseService.getStringParam("arcade_milestones", "");
+  },
 
   /**
-   * Load Arcade milestones from Firebase Remote Config (REQUIRED)
+   * Load Arcade milestones from local env or Remote Config.
    */
   async getArcadeMilestones(): Promise<Milestone[]> {
     console.debug("[getArcadeMilestones] START");
@@ -37,48 +63,16 @@ const PopupUIService = {
     }
 
     try {
-      console.debug(
-        "[getArcadeMilestones] Loading milestones from Firebase...",
-      );
-      const firebaseService = (await import("./firebaseService")).default;
+      const milestonesJson = await this.getArcadeMilestonesJson();
 
-      if (!firebaseService.isInitialized()) {
-        console.debug("[getArcadeMilestones] Initializing Firebase service...");
-        await firebaseService.initialize();
-      }
-
-      console.debug(
-        "[getArcadeMilestones] Firebase initialized, fetching config...",
-      );
-
-      // Force fetch latest config from Firebase
-      try {
-        console.debug("[getArcadeMilestones] Calling fetchRemoteConfig...");
-        await firebaseService.fetchRemoteConfig?.();
-        console.debug("[getArcadeMilestones] fetchRemoteConfig completed");
-      } catch (e) {
-        console.debug(
-          "[getArcadeMilestones] Could not fetch fresh remote config:",
-          e,
-        );
-      }
-
-      // Get milestones from Firebase Remote Config
-      // Will fallback to env var or hardcoded defaults if remote not available
-      console.debug("[getArcadeMilestones] Calling getStringParam...");
-      const milestonesJson = await firebaseService.getStringParam(
-        "arcade_milestones",
-        this.DEFAULT_ARCADE_MILESTONES_JSON,
-      );
-
-      console.debug("[getArcadeMilestones] getStringParam returned:", {
+      console.debug("[getArcadeMilestones] Config returned:", {
         length: milestonesJson?.length,
         preview: milestonesJson?.substring(0, 80),
       });
 
       if (!milestonesJson) {
         throw new Error(
-          "arcade_milestones returned empty from Firebase/fallback",
+          "Arcade milestones config is empty. Set WXT_ARCADE_MILESTONES or Remote Config arcade_milestones.",
         );
       }
 
@@ -102,11 +96,19 @@ const PopupUIService = {
         if (!league || !Number.isFinite(points)) return null;
 
         const slots = this.parseOptionalNumber(
-          item.slots ?? item.totalSlots ?? item.prizeSlots,
+          item.slots ??
+            item.totalSlots ??
+            item.prizeSlots ??
+            item.total_spots ??
+            item.totalSpots,
         );
         const spotsLeft = this.parseOptionalNumber(
           item.spotsLeft ??
             item.spots_left ??
+            item.available ??
+            item.availableSpots ??
+            item.spotsAvailable ??
+            item.remainingSpots ??
             item.remainingSlots ??
             item.remaining ??
             item.availableSlots,
@@ -124,20 +126,11 @@ const PopupUIService = {
         ? (parsed.map(normalizeItem).filter((v) => v !== null) as Milestone[])
         : [];
 
-      // If nothing valid, fall back to built-in default string
+      // If nothing valid, stop instead of silently inventing tier data.
       if (!normalized || normalized.length === 0) {
-        console.warn(
-          "[getArcadeMilestones] Parsed milestones invalid or empty, falling back to defaults",
+        throw new Error(
+          "Arcade milestones config is invalid or empty after normalization.",
         );
-        const fallback = (JSON.parse(this.DEFAULT_ARCADE_MILESTONES_JSON) as any[])
-          .map(normalizeItem)
-          .filter((v) => v !== null) as Milestone[];
-        this._arcadeMilestonesCache = fallback;
-        console.debug(
-          "✅ [getArcadeMilestones] Using fallback milestones:",
-          fallback,
-        );
-        return fallback;
       }
 
       // Sort ascending by points and enforce strict monotonic increase
@@ -157,18 +150,9 @@ const PopupUIService = {
       }
 
       if (strict.length === 0) {
-        console.warn(
-          "[getArcadeMilestones] No valid monotonic milestones, using fallback",
+        throw new Error(
+          "Arcade milestones config does not contain increasing point thresholds.",
         );
-        const fallback = (JSON.parse(this.DEFAULT_ARCADE_MILESTONES_JSON) as any[])
-          .map(normalizeItem)
-          .filter((v) => v !== null) as Milestone[];
-        this._arcadeMilestonesCache = fallback;
-        console.debug(
-          "✅ [getArcadeMilestones] Using fallback milestones:",
-          fallback,
-        );
-        return fallback;
       }
 
       this._arcadeMilestonesCache = strict;
@@ -249,8 +233,8 @@ const PopupUIService = {
   parseNumericPoints(value: unknown): number {
     if (typeof value === "number" && Number.isFinite(value)) return value;
     if (typeof value === "string") {
-      const match = /-?\d+(?:\.\d+)?/.exec(value);
-      return match ? Number.parseFloat(match[0]) : 0;
+      const match = /-?\d[\d,]*(?:\.\d+)?/.exec(value);
+      return match ? Number.parseFloat(match[0].replace(/,/g, "")) : 0;
     }
     return 0;
   },
@@ -360,15 +344,19 @@ const PopupUIService = {
     const eligibleMilestones = milestones.filter(
       (milestone) => roundedPoints >= milestone.points,
     );
-    const hasPrizePoolData = milestones.some(
+    const hasSpotsLeftData = milestones.some(
       (milestone) => milestone.spotsLeft !== undefined,
+    );
+    const hasPrizePoolData = milestones.some(
+      (milestone) =>
+        milestone.spotsLeft !== undefined || milestone.slots !== undefined,
     );
     const prizeTier =
       eligibleMilestones
         .slice()
         .reverse()
         .find((milestone) =>
-          hasPrizePoolData ? (milestone.spotsLeft ?? 0) > 0 : true,
+          hasSpotsLeftData ? (milestone.spotsLeft ?? 0) > 0 : true,
         ) || null;
     const waterfallApplied =
       Boolean(pointTier && prizeTier) && pointTier?.league !== prizeTier?.league;
@@ -424,6 +412,13 @@ const PopupUIService = {
       : "";
 
     if (!hasPrizePoolData || prizeTier.spotsLeft === undefined) {
+      if (prizeTier.slots !== undefined) {
+        const slotsLabel = this.getI18nMessage("textTotalSlots", "total slots");
+        const formattedSlots = new Intl.NumberFormat(navigator.language).format(
+          prizeTier.slots,
+        );
+        return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSlots} ${slotsLabel})`;
+      }
       return `${poolLabel}: ${prizeTier.league}${waterfall}`;
     }
 
@@ -466,14 +461,19 @@ const PopupUIService = {
     }
 
     if (help) {
-      const tooltip = hasPrizePoolData
-        ? this.getI18nMessage(
-            "textWaterfallTooltip",
-            "Prize pools are first-come, first-served. If your point tier is full, eligibility rolls down to the next lower tier with available spots. Slot counts come from Remote Config.",
-          )
+      const tooltip = prizeTier
+        ? waterfallApplied
+          ? this.getI18nMessage(
+              "textWaterfallTooltipApplied",
+              "Your point tier is full, so your prize eligibility rolls down to the next available tier shown here.",
+            )
+          : this.getI18nMessage(
+              "textWaterfallTooltipEligible",
+              "This is the prize pool you currently qualify for. Prize pools are first-come, first-served.",
+            )
         : this.getI18nMessage(
-            "textWaterfallTooltipNoData",
-            "Slot counts are not available because Remote Config arcade_milestones does not include spotsLeft yet. Add slots and spotsLeft to show live pool availability.",
+            "textWaterfallTooltipNext",
+            "You have not reached the next prize tier yet. This shows the next pool and how many points you still need.",
           );
 
       help.setAttribute("data-tooltip", tooltip);
