@@ -13,8 +13,8 @@ function i18nMsg(key: string, fallback: string): string {
       (typeof chrome !== "undefined" && chrome.i18n) ||
       (typeof browser !== "undefined" && (browser as any).i18n);
     if (i18nAPI && typeof i18nAPI.getMessage === "function") {
-      const m = i18nAPI.getMessage(key);
-      return m || fallback;
+      const msg = i18nAPI.getMessage(key);
+      return msg || fallback;
     }
   } catch (_) {
     // ignored
@@ -33,6 +33,9 @@ function initBadgeDisplayToggle(): void {
 
   if (!badgeToggle || !badgeStatus) return;
 
+  /**
+   * Update the badge display status text based on the toggle's checked state.
+   */
   function updateBadgeStatus(): void {
     const checked = badgeToggle.checked;
     badgeStatus.textContent = checked
@@ -55,6 +58,9 @@ function initSearchFeatureToggle(): void {
 
   if (!searchToggle || !searchStatus) return;
 
+  /**
+   * Update the search feature status text and sync dependent controls.
+   */
   function updateSearchStatus(): void {
     const checked = searchToggle.checked;
     searchStatus.textContent = checked
@@ -65,6 +71,10 @@ function initSearchFeatureToggle(): void {
     updateDependentControls(checked);
   }
 
+  /**
+   * Enable or disable UI controls that depend on the search feature.
+   * @param isSearchEnabled - Whether the main search feature is enabled
+   */
   function updateDependentControls(isSearchEnabled: boolean): void {
     try {
       // Update preferred search engine

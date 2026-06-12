@@ -18,8 +18,7 @@ function i18nMsg(key: string, fallback: string): string {
   try {
     // Support both chrome and browser APIs via globalThis to avoid TS 'chrome' name errors.
     const gh: any = globalThis as any;
-    const i18nAPI =
-      (gh.chrome && gh.chrome.i18n) || (gh.browser && gh.browser.i18n);
+    const i18nAPI = gh.chrome?.i18n || gh.browser?.i18n;
     if (i18nAPI && typeof i18nAPI.getMessage === "function") {
       const msg = i18nAPI.getMessage(key);
       return msg || fallback;
@@ -52,8 +51,8 @@ export function initMarkdownToggle(): void {
   }
 
   // Capture non-null references to satisfy TypeScript in async callbacks
-  const mc: HTMLElement = markdownContent!;
-  const btn: HTMLElement = markdownToggleBtn!;
+  const mc = markdownContent as HTMLElement;
+  const btn = markdownToggleBtn as HTMLElement;
 
   const state: MarkdownToggleState = {
     isExpanded: false,
