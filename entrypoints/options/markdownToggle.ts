@@ -104,6 +104,20 @@ export function initMarkdownToggle(): void {
     state.isExpanded = !state.isExpanded;
 
     if (state.isExpanded) {
+      // Ensure we have a measured fullHeight before expanding
+      if (!state.fullHeight || state.fullHeight === 0) {
+        // Temporarily remove constraints to measure
+        const prevMax = mc.style.maxHeight;
+        const prevOverflow = mc.style.overflow;
+        mc.style.maxHeight = "none";
+        mc.style.overflow = "visible";
+        const measured = mc.scrollHeight || MAX_HEIGHT_PX;
+        state.fullHeight = measured;
+        // restore previous inline styles (we'll set desired height next)
+        mc.style.maxHeight = prevMax;
+        mc.style.overflow = prevOverflow;
+      }
+
       // Expand to full height
       mc.style.maxHeight = `${state.fullHeight}px`;
       mc.style.overflow = "visible";
@@ -171,5 +185,8 @@ export function initMarkdownToggle(): void {
   });
 
   // Initial check
+  // Do an immediate measurement to avoid an early click expanding to 0px.
+  // Also schedule a follow-up measurement after a short delay to catch late images.
+  checkContentHeight();
   setTimeout(checkContentHeight, 500);
 }

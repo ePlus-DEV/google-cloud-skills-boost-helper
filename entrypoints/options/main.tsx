@@ -2,6 +2,7 @@ import { OptionsService, BrowserService } from "../../services";
 import { initMarkdownToggle } from "./markdownToggle";
 import { initDataManagementToggle } from "./dataManagementToggle";
 import { initUIToggles } from "./uiToggles";
+import { initNicknamePreview } from "./nicknamePreview";
 
 // Set document title
 document.title =
@@ -49,4 +50,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initMarkdownToggle();
   initDataManagementToggle();
   initUIToggles();
+  initNicknamePreview();
 });
