@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Импорт данных"
+  },
+  "textNotQualified": {
+    "message": "Не соответствует требованиям"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Призовой фонд: нет доступных мест"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Призовой фонд: данные о слотах недоступны"
+  },
+  "textPrizePool": {
+    "message": "Призовой фонд"
+  },
+  "textNextPool": {
+    "message": "Следующий фонд"
+  },
+  "textSpotsLeft": {
+    "message": "мест осталось"
+  },
+  "textTotalSlots": {
+    "message": "всего слотов"
+  },
+  "textViaWaterfall": {
+    "message": "через waterfall"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "Ваш уровень по баллам уже заполнен, поэтому ваша eligibility на приз переносится на следующий доступный уровень, показанный здесь."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "Это призовой фонд, на который вы сейчас имеете право. Призовые фонды распределяются в порядке очереди."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "Вы ещё не достигли следующего призового уровня. Здесь показан следующий фонд и сколько баллов вам ещё нужно."
   }
 }

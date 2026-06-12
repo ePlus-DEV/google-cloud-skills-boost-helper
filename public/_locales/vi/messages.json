@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Nhập dữ liệu"
+  },
+  "textNotQualified": {
+    "message": "Chưa đủ điều kiện"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Quỹ giải thưởng: không còn suất trống"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Quỹ giải thưởng: không có dữ liệu suất"
+  },
+  "textPrizePool": {
+    "message": "Quỹ giải thưởng"
+  },
+  "textNextPool": {
+    "message": "Quỹ tiếp theo"
+  },
+  "textSpotsLeft": {
+    "message": "suất còn lại"
+  },
+  "textTotalSlots": {
+    "message": "tổng số suất"
+  },
+  "textViaWaterfall": {
+    "message": "qua cơ chế waterfall"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "Hạng điểm của bạn đã đầy, nên điều kiện nhận giải của bạn được chuyển xuống hạng khả dụng tiếp theo được hiển thị tại đây."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "Đây là quỹ giải thưởng mà bạn hiện đủ điều kiện. Các quỹ giải thưởng được áp dụng theo nguyên tắc ai đến trước được trước."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "Bạn chưa đạt hạng giải thưởng tiếp theo. Phần này hiển thị quỹ tiếp theo và số điểm bạn vẫn cần đạt thêm."
   }
 }

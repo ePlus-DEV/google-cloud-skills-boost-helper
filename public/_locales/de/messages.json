@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Daten importieren"
+  },
+  "textNotQualified": {
+    "message": "Nicht qualifiziert"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Preispool: keine Plätze verfügbar"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Preispool: Platzdaten nicht verfügbar"
+  },
+  "textPrizePool": {
+    "message": "Preispool"
+  },
+  "textNextPool": {
+    "message": "Nächster Pool"
+  },
+  "textSpotsLeft": {
+    "message": "Plätze übrig"
+  },
+  "textTotalSlots": {
+    "message": "Plätze insgesamt"
+  },
+  "textViaWaterfall": {
+    "message": "per Waterfall"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "Deine Punktestufe ist voll, daher wird deine Preisberechtigung auf die nächste hier angezeigte verfügbare Stufe übertragen."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "Dies ist der Preispool, für den du dich derzeit qualifizierst. Preispools werden nach dem Prinzip „Wer zuerst kommt, mahlt zuerst“ vergeben."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "Du hast die nächste Preisstufe noch nicht erreicht. Hier siehst du den nächsten Pool und wie viele Punkte du noch benötigst."
   }
 }

@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "डेटा इम्पोर्ट करें"
+  },
+  "textNotQualified": {
+    "message": "योग्य नहीं"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "पुरस्कार पूल: कोई स्थान उपलब्ध नहीं"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "पुरस्कार पूल: स्लॉट डेटा उपलब्ध नहीं"
+  },
+  "textPrizePool": {
+    "message": "पुरस्कार पूल"
+  },
+  "textNextPool": {
+    "message": "अगला पूल"
+  },
+  "textSpotsLeft": {
+    "message": "स्थान शेष"
+  },
+  "textTotalSlots": {
+    "message": "कुल स्लॉट"
+  },
+  "textViaWaterfall": {
+    "message": "वॉटरफॉल के माध्यम से"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "आपका पॉइंट टियर भर चुका है, इसलिए आपकी पुरस्कार पात्रता यहाँ दिखाए गए अगले उपलब्ध टियर में स्थानांतरित हो जाती है."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "यह वह पुरस्कार पूल है जिसके लिए आप वर्तमान में योग्य हैं. पुरस्कार पूल पहले आओ, पहले पाओ के आधार पर दिए जाते हैं."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "आप अभी अगले पुरस्कार टियर तक नहीं पहुँचे हैं. यह अगला पूल और आपको अभी कितने अंक चाहिए, यह दिखाता है."
   }
 }

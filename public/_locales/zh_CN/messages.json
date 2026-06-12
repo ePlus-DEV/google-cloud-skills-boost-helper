@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "导入数据"
+  },
+  "textNotQualified": {
+    "message": "未符合资格"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "奖品池：暂无可用名额"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "奖品池：名额数据不可用"
+  },
+  "textPrizePool": {
+    "message": "奖品池"
+  },
+  "textNextPool": {
+    "message": "下一个奖品池"
+  },
+  "textSpotsLeft": {
+    "message": "剩余名额"
+  },
+  "textTotalSlots": {
+    "message": "总名额"
+  },
+  "textViaWaterfall": {
+    "message": "通过瀑布机制"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "你的积分等级已满，因此你的奖品资格会顺延到此处显示的下一个可用等级。"
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "这是你当前符合资格的奖品池。奖品池按先到先得原则分配。"
+  },
+  "textWaterfallTooltipNext": {
+    "message": "你尚未达到下一个奖品等级。这里显示下一个奖品池以及你仍需获得的积分数。"
   }
 }

@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Importar dados"
+  },
+  "textNotQualified": {
+    "message": "Não qualificado"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Pool de prêmios: não há vagas disponíveis"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Pool de prêmios: dados de vagas indisponíveis"
+  },
+  "textPrizePool": {
+    "message": "Pool de prêmios"
+  },
+  "textNextPool": {
+    "message": "Próximo pool"
+  },
+  "textSpotsLeft": {
+    "message": "vagas restantes"
+  },
+  "textTotalSlots": {
+    "message": "total de vagas"
+  },
+  "textViaWaterfall": {
+    "message": "via waterfall"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "Seu nível de pontos está cheio, então sua elegibilidade ao prêmio desce para o próximo nível disponível mostrado aqui."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "Este é o pool de prêmios para o qual você se qualifica atualmente. Os pools de prêmios são por ordem de chegada."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "Você ainda não alcançou o próximo nível de prêmio. Isto mostra o próximo pool e quantos pontos você ainda precisa."
   }
 }

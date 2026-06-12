@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Importer les données"
+  },
+  "textNotQualified": {
+    "message": "Non éligible"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Réserve de prix : aucune place disponible"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Réserve de prix : données des places indisponibles"
+  },
+  "textPrizePool": {
+    "message": "Réserve de prix"
+  },
+  "textNextPool": {
+    "message": "Réserve suivante"
+  },
+  "textSpotsLeft": {
+    "message": "places restantes"
+  },
+  "textTotalSlots": {
+    "message": "places au total"
+  },
+  "textViaWaterfall": {
+    "message": "via cascade"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "Votre niveau de points est complet, votre éligibilité au prix est donc transférée au prochain niveau disponible affiché ici."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "Voici la réserve de prix à laquelle vous êtes actuellement éligible. Les réserves de prix sont attribuées selon le principe du premier arrivé, premier servi."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "Vous n’avez pas encore atteint le prochain niveau de prix. Ceci affiche la prochaine réserve et le nombre de points qu’il vous reste à obtenir."
   }
 }

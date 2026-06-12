@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "استيراد البيانات"
+  },
+  "textNotQualified": {
+    "message": "غير مؤهل"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "مجموعة الجوائز: لا توجد أماكن متاحة"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "مجموعة الجوائز: بيانات المقاعد غير متاحة"
+  },
+  "textPrizePool": {
+    "message": "مجموعة الجوائز"
+  },
+  "textNextPool": {
+    "message": "المجموعة التالية"
+  },
+  "textSpotsLeft": {
+    "message": "أماكن متبقية"
+  },
+  "textTotalSlots": {
+    "message": "إجمالي المقاعد"
+  },
+  "textViaWaterfall": {
+    "message": "عبر آلية التدرج"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "فئة نقاطك ممتلئة، لذلك تنتقل أهليتك للجائزة إلى الفئة التالية المتاحة المعروضة هنا."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "هذه هي مجموعة الجوائز التي أنت مؤهل لها حاليًا. مجموعات الجوائز تُمنح بأسبقية الوصول."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "لم تصل بعد إلى فئة الجوائز التالية. يعرض هذا المجموعة التالية وعدد النقاط التي ما زلت بحاجة إليها."
   }
 }

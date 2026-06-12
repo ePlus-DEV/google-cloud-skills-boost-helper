@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Importar datos"
+  },
+  "textNotQualified": {
+    "message": "No calificado"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Bolsa de premios: no hay plazas disponibles"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Bolsa de premios: datos de plazas no disponibles"
+  },
+  "textPrizePool": {
+    "message": "Bolsa de premios"
+  },
+  "textNextPool": {
+    "message": "Siguiente bolsa"
+  },
+  "textSpotsLeft": {
+    "message": "plazas restantes"
+  },
+  "textTotalSlots": {
+    "message": "plazas totales"
+  },
+  "textViaWaterfall": {
+    "message": "mediante cascada"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "Tu nivel de puntos está lleno, por lo que tu elegibilidad para el premio pasa al siguiente nivel disponible que se muestra aquí."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "Esta es la bolsa de premios para la que actualmente calificas. Las bolsas de premios se asignan por orden de llegada."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "Aún no has alcanzado el siguiente nivel de premios. Esto muestra la siguiente bolsa y cuántos puntos aún necesitas."
   }
 }
