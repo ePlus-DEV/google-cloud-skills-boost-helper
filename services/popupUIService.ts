@@ -34,9 +34,7 @@ const PopupUIService = {
 
     const firebaseService = (await import("./firebaseService")).default;
 
-    if (!firebaseService.isInitialized()) {
-      await firebaseService.initialize();
-    }
+    await firebaseService.initialize(undefined, { forceRemote: true });
 
     try {
       await firebaseService.fetchRemoteConfig?.();

@@ -21,6 +21,7 @@ class FirebaseService {
 
   // Local config store for development
   private localConfigStore: Record<string, string | boolean | number> = {};
+  private forceRemoteSession = false;
 
   /**
    * Check if running in local environment (getter to evaluate fresh each time)
@@ -36,7 +37,7 @@ class FirebaseService {
     console.debug(
       `[isLocalEnvironment] isDev=${isDev}, forceRemote=${forceRemote}, initialized=${this.initialized}`,
     );
-    return isDev && !forceRemote;
+    return isDev && !forceRemote && !this.forceRemoteSession;
   }
 
   /**
@@ -115,11 +116,23 @@ class FirebaseService {
   /**
    * Initialize Firebase and Remote Config
    */
-  async initialize(config?: Partial<FirebaseConfig>): Promise<void> {
+  async initialize(
+    config?: Partial<FirebaseConfig>,
+    options?: { forceRemote?: boolean },
+  ): Promise<void> {
     try {
+      if (options?.forceRemote) {
+        this.forceRemoteSession = true;
+      }
+
       if (this.initialized) {
-        console.debug("[initialize] Already initialized, skipping...");
-        return;
+        if (options?.forceRemote && !this.remoteConfig) {
+          this.initialized = false;
+          this.localConfigStore = {};
+        } else {
+          console.debug("[initialize] Already initialized, skipping...");
+          return;
+        }
       }
 
       console.debug(
