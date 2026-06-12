@@ -501,7 +501,9 @@ class FirebaseService {
       }
 
       // Ensure remote config is recent (deduped by `ensureFetched`)
-      console.debug(`[getStringParam] Ensuring recent remote config for ${key}...`);
+      console.debug(
+        `[getStringParam] Ensuring recent remote config for ${key}...`,
+      );
       await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, key);
