@@ -33,18 +33,22 @@ function initBadgeDisplayToggle(): void {
 
   if (!badgeToggle || !badgeStatus) return;
 
-  /**
-   * Update the badge display status text based on the toggle's checked state.
-   */
-  function updateBadgeStatus(): void {
-    const checked = badgeToggle.checked;
-    badgeStatus.textContent = checked
-      ? i18nMsg("labelEnabled", "Enabled")
-      : i18nMsg("labelDisabled", "Disabled");
-  }
+    // Create non-null references after the guard so nested functions can use them
+    const badgeToggleEl = badgeToggle as HTMLInputElement;
+    const badgeStatusEl = badgeStatus as HTMLElement;
 
-  updateBadgeStatus();
-  badgeToggle.addEventListener("change", updateBadgeStatus);
+    /**
+     * Update the badge display status text based on the toggle's checked state.
+     */
+    function updateBadgeStatus(): void {
+      const checked = badgeToggleEl.checked;
+      badgeStatusEl.textContent = checked
+        ? i18nMsg("labelEnabled", "Enabled")
+        : i18nMsg("labelDisabled", "Disabled");
+    }
+
+    updateBadgeStatus();
+    badgeToggleEl.addEventListener("change", updateBadgeStatus);
 }
 
 /**
@@ -58,18 +62,22 @@ function initSearchFeatureToggle(): void {
 
   if (!searchToggle || !searchStatus) return;
 
-  /**
-   * Update the search feature status text and sync dependent controls.
-   */
-  function updateSearchStatus(): void {
-    const checked = searchToggle.checked;
-    searchStatus.textContent = checked
-      ? i18nMsg("labelEnabled", "Enabled")
-      : i18nMsg("labelDisabled", "Disabled");
+    // Create non-null references for nested use
+    const searchToggleEl = searchToggle as HTMLInputElement;
+    const searchStatusEl = searchStatus as HTMLElement;
 
-    // Sync dependent controls
-    updateDependentControls(checked);
-  }
+    /**
+     * Update the search feature status text and sync dependent controls.
+     */
+    function updateSearchStatus(): void {
+      const checked = searchToggleEl.checked;
+      searchStatusEl.textContent = checked
+        ? i18nMsg("labelEnabled", "Enabled")
+        : i18nMsg("labelDisabled", "Disabled");
+
+      // Sync dependent controls
+      updateDependentControls(checked);
+    }
 
   /**
    * Enable or disable UI controls that depend on the search feature.
@@ -117,32 +125,33 @@ function initSearchFeatureToggle(): void {
   }
 
   updateSearchStatus();
-  searchToggle.addEventListener("change", updateSearchStatus);
+  searchToggleEl.addEventListener("change", updateSearchStatus);
 
   // Prevent toggling eplus when parent search feature is off
   const eplusInput = document.getElementById(
     "enable-eplus-search",
   ) as HTMLInputElement | null;
   if (eplusInput) {
-    const label = eplusInput.closest("label");
-    if (label) {
-      label.addEventListener("click", (ev: Event) => {
-        const parentChecked = searchToggle.checked;
+    if (eplusInput) {
+      const label = eplusInput.closest("label");
+      if (label) {
+        label.addEventListener("click", (ev: Event) => {
+          const parentChecked = searchToggleEl.checked;
+          if (!parentChecked) {
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+          }
+        });
+      }
+
+      eplusInput.addEventListener("change", () => {
+        const parentChecked = searchToggleEl.checked;
         if (!parentChecked) {
-          ev.preventDefault();
-          ev.stopImmediatePropagation();
+          eplusInput.disabled = true;
+          updateSearchStatus();
         }
       });
     }
-
-    eplusInput.addEventListener("change", () => {
-      const parentChecked = searchToggle.checked;
-      if (!parentChecked) {
-        eplusInput.disabled = true;
-        updateSearchStatus();
-      }
-    });
-  }
 }
 
 /**
