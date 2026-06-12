@@ -5,11 +5,13 @@
 
 interface MarkdownToggleState {
   isExpanded: boolean;
+  isAnimating: boolean;
   fullHeight: number;
   heightTimer: number;
 }
 
 const MAX_HEIGHT_PX = 500;
+const EXPAND_TRANSITION_MS = 360;
 
 /**
  * Helper function to get i18n messages
@@ -56,9 +58,53 @@ export function initMarkdownToggle(): void {
 
   const state: MarkdownToggleState = {
     isExpanded: false,
+    isAnimating: false,
     fullHeight: 0,
     heightTimer: 0,
   };
+
+  /**
+   * Update button label and icon for the current expanded state.
+   */
+  function updateToggleControl(): void {
+    if (markdownToggleText) {
+      markdownToggleText.textContent = state.isExpanded
+        ? i18nMsg("markdownShowLess", "Show less")
+        : i18nMsg("markdownShowMore", "Show more");
+    }
+
+    if (markdownToggleIcon) {
+      markdownToggleIcon.classList.toggle("rotate-180", state.isExpanded);
+    }
+
+    btn.setAttribute("aria-expanded", String(state.isExpanded));
+  }
+
+  /**
+   * Set collapsed/expanded classes that drive the edge fade and button state.
+   */
+  function updateVisualState(): void {
+    mc.classList.toggle("is-expanded", state.isExpanded);
+    mc.classList.toggle("is-collapsed", !state.isExpanded);
+    btn.classList.toggle("is-expanded", state.isExpanded);
+  }
+
+  /**
+   * Measure the full content height without leaving visible layout changes behind.
+   */
+  function measureFullHeight(): number {
+    const prevMaxHeight = mc.style.maxHeight;
+    const prevOverflow = mc.style.overflow;
+
+    mc.style.maxHeight = "none";
+    mc.style.overflow = "visible";
+    const measuredHeight = mc.scrollHeight || MAX_HEIGHT_PX;
+
+    mc.style.maxHeight = prevMaxHeight;
+    mc.style.overflow = prevOverflow;
+
+    return measuredHeight;
+  }
 
   /**
    * Calculate and update content height
@@ -70,17 +116,18 @@ export function initMarkdownToggle(): void {
 
     state.heightTimer = window.setTimeout(() => {
       // Temporarily set to get full height
-      mc.style.maxHeight = "none";
-      mc.style.overflow = "visible";
-      const actualHeight = mc.scrollHeight;
+      const actualHeight = measureFullHeight();
       state.fullHeight = actualHeight;
 
       if (actualHeight > MAX_HEIGHT_PX) {
         // Content is taller than max height, show the toggle button
         btn.classList.remove("hidden");
+        updateVisualState();
+        updateToggleControl();
+
         if (state.isExpanded) {
           mc.style.maxHeight = `${actualHeight}px`;
-          mc.style.overflow = "visible";
+          mc.style.overflow = state.isAnimating ? "hidden" : "visible";
         } else {
           mc.style.overflow = "hidden";
           mc.style.maxHeight = `${MAX_HEIGHT_PX}px`;
@@ -101,49 +148,42 @@ export function initMarkdownToggle(): void {
     event.preventDefault();
     event.stopPropagation();
 
+    if (state.isAnimating) {
+      return;
+    }
+
     state.isExpanded = !state.isExpanded;
+    state.isAnimating = true;
+    btn.setAttribute("disabled", "true");
+    updateVisualState();
+    updateToggleControl();
 
     if (state.isExpanded) {
       // Ensure we have a measured fullHeight before expanding
       if (!state.fullHeight || state.fullHeight === 0) {
-        // Temporarily remove constraints to measure
-        const prevMax = mc.style.maxHeight;
-        const prevOverflow = mc.style.overflow;
-        mc.style.maxHeight = "none";
-        mc.style.overflow = "visible";
-        const measured = mc.scrollHeight || MAX_HEIGHT_PX;
-        state.fullHeight = measured;
-        // restore previous inline styles (we'll set desired height next)
-        mc.style.maxHeight = prevMax;
-        mc.style.overflow = prevOverflow;
+        state.fullHeight = measureFullHeight();
       }
 
       // Expand to full height
-      mc.style.maxHeight = `${state.fullHeight}px`;
-      mc.style.overflow = "visible";
-      if (markdownToggleText) {
-        markdownToggleText.textContent = i18nMsg(
-          "markdownShowLess",
-          "Show less",
-        );
-      }
-      if (markdownToggleIcon) {
-        markdownToggleIcon.classList.add("rotate-180");
-      }
+      mc.style.overflow = "hidden";
+      mc.style.maxHeight = `${MAX_HEIGHT_PX}px`;
+      window.requestAnimationFrame(() => {
+        mc.style.maxHeight = `${state.fullHeight}px`;
+      });
     } else {
       // Collapse to max height
-      mc.style.maxHeight = `${MAX_HEIGHT_PX}px`;
       mc.style.overflow = "hidden";
-      if (markdownToggleText) {
-        markdownToggleText.textContent = i18nMsg(
-          "markdownShowMore",
-          "Show more",
-        );
-      }
-      if (markdownToggleIcon) {
-        markdownToggleIcon.classList.remove("rotate-180");
-      }
+      mc.style.maxHeight = `${state.fullHeight || mc.scrollHeight}px`;
+      window.requestAnimationFrame(() => {
+        mc.style.maxHeight = `${MAX_HEIGHT_PX}px`;
+      });
     }
+
+    window.setTimeout(() => {
+      state.isAnimating = false;
+      btn.removeAttribute("disabled");
+      mc.style.overflow = state.isExpanded ? "visible" : "hidden";
+    }, EXPAND_TRANSITION_MS);
   }
 
   // Attach click event listener
@@ -175,12 +215,8 @@ export function initMarkdownToggle(): void {
   // Listen for markdown content render completion
   window.addEventListener("markdown-content-rendered", () => {
     state.isExpanded = false;
-    if (markdownToggleText) {
-      markdownToggleText.textContent = i18nMsg("markdownShowMore", "Show more");
-    }
-    if (markdownToggleIcon) {
-      markdownToggleIcon.classList.remove("rotate-180");
-    }
+    updateVisualState();
+    updateToggleControl();
     checkContentHeight();
   });
 
