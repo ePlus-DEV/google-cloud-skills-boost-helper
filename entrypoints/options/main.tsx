@@ -1,4 +1,7 @@
 import { OptionsService, BrowserService } from "../../services";
+import { initMarkdownToggle } from "./markdownToggle";
+import { initDataManagementToggle } from "./dataManagementToggle";
+import { initUIToggles } from "./uiToggles";
 
 // Set document title
 document.title =
@@ -41,4 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
   OptionsService.initialize();
   localizeElements();
   showBrowserStoreBadge();
+  
+  // Initialize UI interactions
+  initMarkdownToggle();
+  initDataManagementToggle();
+  initUIToggles();
 });
