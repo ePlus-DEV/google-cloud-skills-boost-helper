@@ -85,9 +85,10 @@ const PopupUIService = {
       // Normalize/validate parsed items into safe Milestone[]
       const normalizeItem = (item: any): Milestone | null => {
         if (!item || typeof item !== "object") return null;
-        const league = typeof item.league === "string" && item.league.trim()
-          ? item.league.trim()
-          : null;
+        const league =
+          typeof item.league === "string" && item.league.trim()
+            ? item.league.trim()
+            : null;
 
         // Prefer numeric conversion, fall back to parseNumericPoints
         let points = Number(item.points);
@@ -104,7 +105,8 @@ const PopupUIService = {
         : [];
 
       // If nothing valid, fall back to built-in default string
-      const DEFAULT_JSON = '[{"points":50,"league":"Arcade Trooper"},{"points":75,"league":"Arcade Ranger"},{"points":95,"league":"Arcade Champion"},{"points":120,"league":"Arcade Legend"}]';
+      const DEFAULT_JSON =
+        '[{"points":50,"league":"Arcade Trooper"},{"points":75,"league":"Arcade Ranger"},{"points":95,"league":"Arcade Champion"},{"points":120,"league":"Arcade Legend"}]';
       if (!normalized || normalized.length === 0) {
         console.warn(
           "[getArcadeMilestones] Parsed milestones invalid or empty, falling back to defaults",
@@ -113,7 +115,10 @@ const PopupUIService = {
           .map(normalizeItem)
           .filter((v) => v !== null) as Milestone[];
         this._arcadeMilestonesCache = fallback;
-        console.debug("✅ [getArcadeMilestones] Using fallback milestones:", fallback);
+        console.debug(
+          "✅ [getArcadeMilestones] Using fallback milestones:",
+          fallback,
+        );
         return fallback;
       }
 
@@ -141,12 +146,18 @@ const PopupUIService = {
           .map(normalizeItem)
           .filter((v) => v !== null) as Milestone[];
         this._arcadeMilestonesCache = fallback;
-        console.debug("✅ [getArcadeMilestones] Using fallback milestones:", fallback);
+        console.debug(
+          "✅ [getArcadeMilestones] Using fallback milestones:",
+          fallback,
+        );
         return fallback;
       }
 
       this._arcadeMilestonesCache = strict;
-      console.debug("✅ [getArcadeMilestones] Loaded arcade milestones:", strict);
+      console.debug(
+        "✅ [getArcadeMilestones] Loaded arcade milestones:",
+        strict,
+      );
       return strict;
     } catch (error) {
       console.error(
@@ -274,17 +285,17 @@ const PopupUIService = {
    * milestone immediately below the next one. If there is no next
    * milestone the user is at MAX LEVEL.
    *
-  * Milestones are loaded from Firebase Remote Config and validated.
-  * If remote config is unavailable or invalid, a safe default set of
-  * milestones is used so the popup can still render league/progress.
+   * Milestones are loaded from Firebase Remote Config and validated.
+   * If remote config is unavailable or invalid, a safe default set of
+   * milestones is used so the popup can still render league/progress.
    */
   async calculateLeagueInfo(totalPoints: number) {
     const roundedPoints = Math.floor(totalPoints);
     const milestones = await this.getArcadeMilestones(); // May throw error if remote config unavailable
 
     // Find the first milestone that requires more points than the user has
-    const nextIndex = milestones.findIndex((milestone) =>
-      this.parseNumericPoints(milestone.points) > roundedPoints,
+    const nextIndex = milestones.findIndex(
+      (milestone) => this.parseNumericPoints(milestone.points) > roundedPoints,
     );
 
     const lastIndex = milestones.length - 1;
