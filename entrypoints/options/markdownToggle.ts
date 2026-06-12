@@ -35,7 +35,7 @@ function i18nMsg(key: string, fallback: string): string {
  */
 export function initMarkdownToggle(): void {
   const markdownContent = document.getElementById(
-    "markdown-content-collapsible"
+    "markdown-content-collapsible",
   );
   const markdownToggleBtn = document.getElementById("markdown-toggle-btn");
   const markdownToggleText = document.getElementById("markdown-toggle-text");
@@ -101,7 +101,7 @@ export function initMarkdownToggle(): void {
       if (markdownToggleText) {
         markdownToggleText.textContent = i18nMsg(
           "markdownShowLess",
-          "Show less"
+          "Show less",
         );
       }
       if (markdownToggleIcon) {
@@ -114,7 +114,7 @@ export function initMarkdownToggle(): void {
       if (markdownToggleText) {
         markdownToggleText.textContent = i18nMsg(
           "markdownShowMore",
-          "Show more"
+          "Show more",
         );
       }
       if (markdownToggleIcon) {
@@ -146,7 +146,7 @@ export function initMarkdownToggle(): void {
         checkContentHeight();
       }
     },
-    true
+    true,
   );
 
   // Listen for markdown content render completion

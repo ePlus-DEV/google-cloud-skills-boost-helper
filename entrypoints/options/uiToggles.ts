@@ -27,7 +27,7 @@ function i18nMsg(key: string, fallback: string): string {
  */
 function initBadgeDisplayToggle(): void {
   const badgeToggle = document.getElementById(
-    "badge-display-toggle"
+    "badge-display-toggle",
   ) as HTMLInputElement | null;
   const badgeStatus = document.getElementById("badge-display-status");
 
@@ -49,7 +49,7 @@ function initBadgeDisplayToggle(): void {
  */
 function initSearchFeatureToggle(): void {
   const searchToggle = document.getElementById(
-    "search-feature-toggle"
+    "search-feature-toggle",
   ) as HTMLInputElement | null;
   const searchStatus = document.getElementById("search-feature-status");
 
@@ -69,7 +69,7 @@ function initSearchFeatureToggle(): void {
     try {
       // Update preferred search engine
       const preferredSearch = document.getElementById(
-        "preferred-search-engine"
+        "preferred-search-engine",
       ) as HTMLSelectElement | null;
       if (preferredSearch) {
         preferredSearch.disabled = !isSearchEnabled;
@@ -80,7 +80,7 @@ function initSearchFeatureToggle(): void {
 
       // Update eplus search toggle
       const eplusToggle = document.getElementById(
-        "enable-eplus-search"
+        "enable-eplus-search",
       ) as HTMLInputElement | null;
       if (eplusToggle) {
         eplusToggle.disabled = !isSearchEnabled;
@@ -111,7 +111,7 @@ function initSearchFeatureToggle(): void {
 
   // Prevent toggling eplus when parent search feature is off
   const eplusInput = document.getElementById(
-    "enable-eplus-search"
+    "enable-eplus-search",
   ) as HTMLInputElement | null;
   if (eplusInput) {
     const label = eplusInput.closest("label");
