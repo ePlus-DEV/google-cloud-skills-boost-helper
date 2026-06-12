@@ -34,12 +34,18 @@ function i18nMsg(key: string, fallback: string): string {
  * Initialize markdown toggle functionality
  */
 export function initMarkdownToggle(): void {
-  const markdownContent = document.getElementById(
+  const markdownContent: HTMLElement | null = document.getElementById(
     "markdown-content-collapsible",
   );
-  const markdownToggleBtn = document.getElementById("markdown-toggle-btn");
-  const markdownToggleText = document.getElementById("markdown-toggle-text");
-  const markdownToggleIcon = document.getElementById("markdown-toggle-icon");
+  const markdownToggleBtn: HTMLElement | null = document.getElementById(
+    "markdown-toggle-btn",
+  );
+  const markdownToggleText: HTMLElement | null = document.getElementById(
+    "markdown-toggle-text",
+  );
+  const markdownToggleIcon: HTMLElement | null = document.getElementById(
+    "markdown-toggle-icon",
+  );
 
   if (!markdownContent || !markdownToggleBtn) {
     return;
@@ -88,9 +94,9 @@ export function initMarkdownToggle(): void {
   /**
    * Toggle expand/collapse state
    */
-  function toggleExpand(e: Event): void {
-    e.preventDefault();
-    e.stopPropagation();
+  function toggleExpand(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
 
     state.isExpanded = !state.isExpanded;
 
