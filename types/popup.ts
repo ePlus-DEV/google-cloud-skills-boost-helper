@@ -45,9 +45,11 @@ export interface BadgeData {
 }
 
 export interface Milestone {
-  /** Normalized milestone shape: `points` is a finite number and `league` is a non-empty string. */
+  /** Normalized milestone shape loaded from Remote Config. */
   points: number;
   league: string;
+  slots?: number;
+  spotsLeft?: number;
 }
 
 export interface UIUpdateData {

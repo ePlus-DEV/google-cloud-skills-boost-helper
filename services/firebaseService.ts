@@ -90,7 +90,7 @@ class FirebaseService {
       import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR || nextSeasonDeadline;
     const defaultArcadeMilestones =
       import.meta.env.WXT_ARCADE_MILESTONES ||
-      '[{"points":50,"league":"Arcade Trooper"},{"points":75,"league":"Arcade Ranger"},{"points":95,"league":"Arcade Champion"},{"points":120,"league":"Arcade Legend"}]';
+      '[{"points":50,"league":"Arcade Trooper","slots":6000},{"points":75,"league":"Arcade Ranger","slots":4000},{"points":95,"league":"Arcade Champion","slots":3000},{"points":120,"league":"Arcade Legend","slots":2500}]';
 
     return {
       countdown_deadline_facilitator: defaultFacilitatorDeadline,
