@@ -204,7 +204,7 @@ class FirebaseService {
       // from fetch throttling; set WXT_FIREBASE_FETCH_INTERVAL_MS=0 only for
       // short development sessions that need immediate Firebase updates.
       const minInterval = Number.parseInt(
-        import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+        import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "900000",
       );
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: minInterval,
@@ -270,7 +270,7 @@ class FirebaseService {
     if (force) return this.fetchConfig();
 
     const minInterval = Number.parseInt(
-      import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+      import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "900000",
     );
 
     if (this.lastFetchAt && Date.now() - this.lastFetchAt < minInterval) {
@@ -698,7 +698,7 @@ class FirebaseService {
       config: FirebaseService.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "900000",
         ),
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
