@@ -15,15 +15,24 @@ class FirebaseService {
   private remoteConfig: RemoteConfig | null = null;
   private initialized = false;
 
-  // Detect if running in local environment
-  private isLocalEnvironment =
-    import.meta.env.MODE === "development" ||
-    import.meta.env.DEV === true ||
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
-
   // Local config store for development
   private localConfigStore: Record<string, string | boolean | number> = {};
+
+  /**
+   * Check if running in local environment (getter to evaluate fresh each time)
+   */
+  private get isLocalEnvironment(): boolean {
+    const isDev =
+      import.meta.env.MODE === "development" ||
+      import.meta.env.DEV === true ||
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+    console.debug(
+      `[isLocalEnvironment] isDev=${isDev}, forceRemote=${forceRemote}`,
+    );
+    return isDev && !forceRemote;
+  }
 
   /**
    * Get Firebase configuration from environment variables
@@ -74,6 +83,9 @@ class FirebaseService {
       import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE || nextSeasonDeadline;
     const defaultFacilitatorDeadline =
       import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR || nextSeasonDeadline;
+    const defaultArcadeMilestones =
+      import.meta.env.WXT_ARCADE_MILESTONES ||
+      '[{"points":50,"league":"Arcade Trooper"},{"points":75,"league":"Arcade Ranger"},{"points":95,"league":"Arcade Champion"},{"points":120,"league":"Arcade Legend"}]';
 
     return {
       countdown_deadline_facilitator: defaultFacilitatorDeadline,
@@ -82,6 +94,7 @@ class FirebaseService {
       countdown_deadline_arcade: defaultArcadeDeadline,
       countdown_enabled_arcade:
         import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
+      arcade_milestones: defaultArcadeMilestones,
     };
   }
 
@@ -97,8 +110,13 @@ class FirebaseService {
   async initialize(config?: Partial<FirebaseConfig>): Promise<void> {
     try {
       if (this.initialized) {
+        console.debug("[initialize] Already initialized, skipping...");
         return;
       }
+
+      console.debug(
+        `[initialize] isLocalEnvironment=${this.isLocalEnvironment}, MODE=${import.meta.env.MODE}, FORCE_REMOTE=${import.meta.env.WXT_FORCE_REMOTE_CONFIG}`,
+      );
 
       // In local environment, use local store instead of Firebase
       if (this.isLocalEnvironment) {
@@ -107,9 +125,15 @@ class FirebaseService {
         );
         // Initialize local store with default values
         this.localConfigStore = { ...this.defaultValues };
+        console.debug(
+          "[initialize] Local config store initialized with:",
+          this.localConfigStore,
+        );
         this.initialized = true;
         return;
       }
+
+      console.info("🔗 FirebaseService: Connecting to Firebase Remote Config...");
 
       // Use provided config or default
       const firebaseConfig = { ...this.defaultConfig, ...config };
@@ -122,18 +146,22 @@ class FirebaseService {
 
       // If required keys are missing, skip initialization and keep using defaults
       if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-        console.warn(
-          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values.",
+        console.error(
+          "❌ FirebaseService: apiKey or projectId missing; cannot connect to Firebase!",
+          { apiKey: !!firebaseConfig.apiKey, projectId: !!firebaseConfig.projectId },
         );
-        this.initialized = false;
-        return;
+        throw new Error("Firebase config incomplete - missing apiKey or projectId");
       }
 
       // Initialize Firebase App
+      console.debug("[initialize] Initializing Firebase App...");
       this.app = initializeApp(firebaseConfig);
+      console.debug("[initialize] Firebase App initialized successfully");
 
       // Initialize Remote Config
+      console.debug("[initialize] Getting Remote Config instance...");
       this.remoteConfig = getRemoteConfig(this.app);
+      console.debug("[initialize] Remote Config instance obtained");
 
       // Set default values. Assign to `defaultConfig` property which works
       // with the bundled SDK used by the build. Use ts-ignore because the
@@ -142,24 +170,37 @@ class FirebaseService {
       // @ts-ignore
       this.remoteConfig.defaultConfig = this.defaultValues;
 
+      console.debug(
+        "[initialize] Set defaultConfig to:",
+        this.defaultValues,
+      );
+
       // Configure Remote Config settings
       this.remoteConfig.settings = {
-        minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
-        ), // 1 hour
+        minimumFetchIntervalMillis: 0, // Always fetch fresh
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ), // 1 minute
       };
 
+      console.debug("[initialize] Remote Config settings configured");
+
       this.initialized = true;
+      console.debug("[initialize] Set initialized=true");
 
       // Fetch initial config
+      console.debug("[initialize] Fetching initial config...");
       await this.fetchConfig();
+      console.debug("[initialize] Initial fetch completed");
     } catch (error) {
       console.error("❌ Failed to initialize Firebase:", error);
-      // Continue with default values even if Firebase fails
+      // In local environment, continue without Firebase
+      // In remote environment, will fallback to defaults
       this.initialized = false;
+      this.remoteConfig = null;
+      console.warn(
+        "[initialize] Fallback: will use default values",
+      );
     }
   }
 
@@ -169,14 +210,21 @@ class FirebaseService {
   async fetchConfig(): Promise<boolean> {
     try {
       if (!this.remoteConfig) {
+        console.error("[fetchConfig] remoteConfig is null!");
         return false;
       }
 
+      console.debug("[fetchConfig] Starting fetchAndActivate...");
       const activated = await fetchAndActivate(this.remoteConfig);
+      console.debug("[fetchConfig] fetchAndActivate result:", activated);
+
+      // Log all params after fetch
+      const allParams = this.getAllParams();
+      console.debug("[fetchConfig] All params after fetch:", allParams);
 
       return activated;
     } catch (error) {
-      console.error("❌ Failed to fetch Remote Config:", error);
+      console.error("❌ [fetchConfig] Failed to fetch Remote Config:", error);
       return false;
     }
   }
@@ -185,6 +233,14 @@ class FirebaseService {
    * Refresh (fetch & activate) and return whether activation succeeded
    */
   async refreshConfig(): Promise<boolean> {
+    return this.fetchConfig();
+  }
+
+  /**
+   * Alias for fetchConfig (called from popupUIService)
+   */
+  async fetchRemoteConfig(): Promise<boolean> {
+    console.debug("[fetchRemoteConfig] Attempting to fetch fresh config...");
     return this.fetchConfig();
   }
 
@@ -367,49 +423,65 @@ class FirebaseService {
 
   /**
    * Generic helper to get a string parameter from Remote Config with fallback
+   * Follows same pattern as getCountdownDeadline() - always has fallback
    */
   async getStringParam(key: string, fallback: string): Promise<string> {
     try {
+      console.debug(
+        `[getStringParam] key=${key}, isLocalEnvironment=${this.isLocalEnvironment}, initialized=${this.initialized}`,
+      );
+
       // In local environment, use local store
       if (this.isLocalEnvironment) {
         const value = this.localConfigStore[key] as string;
         console.debug(
-          `FirebaseService: Using LOCAL ${key}:`,
+          `✅ [getStringParam] Using LOCAL ${key}:`,
           value || fallback,
         );
         return value || fallback;
       }
 
+      // If Firebase is NOT initialized, use fallback
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          `FirebaseService: Not initialized, using fallback for ${key}`,
+          `[getStringParam] Firebase not initialized, using fallback for ${key}`,
         );
         return fallback;
       }
 
       // Fetch remote config to ensure we have the latest values
+      console.debug(`[getStringParam] Fetching fresh remote config for ${key}...`);
       await this.fetchConfig();
 
       const val = getValue(this.remoteConfig, key);
+      console.debug(`[getStringParam] getValue result for ${key}:`, val);
+
       const source =
         typeof (val as any).getSource === "function"
           ? (val as any).getSource()
           : undefined;
 
       const value = val.asString();
+      console.debug(
+        `[getStringParam] asString result for ${key}: value="${value?.substring(0, 50)}...", source="${source}"`,
+      );
 
       // Only use remote value if it exists and is from remote source
       if (value && source === "remote") {
-        console.debug(`FirebaseService: Using remote ${key}:`, value);
+        console.debug(
+          `✅ [getStringParam] Using REMOTE ${key}:`,
+          value.substring(0, 50),
+        );
         return value;
       }
 
+      // Otherwise use fallback
       console.debug(
-        `FirebaseService: Using fallback for ${key} (source: ${source})`,
+        `[getStringParam] Using fallback for ${key} (source: ${source})`,
       );
       return fallback;
     } catch (e) {
-      console.error(`Failed to get string param ${key}:`, e);
+      console.error(`❌ [getStringParam] Failed to get ${key}:`, e);
       return fallback;
     }
   }

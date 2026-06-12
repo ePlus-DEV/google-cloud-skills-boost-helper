@@ -11,14 +11,8 @@ import {
  */
 const PopupUIService = {
   // No persistent timers now; we use small spinner icon indicators next to numeric fields
-  // Arcade program: League-based progression system
-  ARCADE_MILESTONES: [
-    { points: 25, league: "Arcade Novice" },
-    { points: 45, league: "Arcade Trooper" },
-    { points: 65, league: "Arcade Ranger" },
-    { points: 75, league: "Arcade Champion" },
-    { points: 95, league: "Arcade Legend" },
-  ] as Milestone[],
+  // Cached milestones loaded from Firebase Remote Config (REQUIRED - no fallback)
+  _arcadeMilestonesCache: null as Milestone[] | null,
 
   // Use shared facilitator definitions from facilitatorService
   FACILITATOR_MILESTONE_REQUIREMENTS: SHARED_FACI_REQUIREMENTS,
@@ -26,6 +20,88 @@ const PopupUIService = {
     string | number,
     number
   >,
+
+  /**
+   * Load Arcade milestones from Firebase Remote Config (REQUIRED)
+   */
+  async getArcadeMilestones(): Promise<Milestone[]> {
+    console.debug("[getArcadeMilestones] START");
+
+    // Return cached value if already loaded
+    if (this._arcadeMilestonesCache !== null) {
+      console.debug("[getArcadeMilestones] Returning cached milestones");
+      return this._arcadeMilestonesCache;
+    }
+
+    try {
+      console.debug("[getArcadeMilestones] Loading milestones from Firebase...");
+      const firebaseService = (await import("./firebaseService")).default;
+
+      if (!firebaseService.isInitialized()) {
+        console.debug("[getArcadeMilestones] Initializing Firebase service...");
+        await firebaseService.initialize();
+      }
+
+      console.debug("[getArcadeMilestones] Firebase initialized, fetching config...");
+
+      // Force fetch latest config from Firebase
+      try {
+        console.debug("[getArcadeMilestones] Calling fetchRemoteConfig...");
+        await firebaseService.fetchRemoteConfig?.();
+        console.debug("[getArcadeMilestones] fetchRemoteConfig completed");
+      } catch (e) {
+        console.debug(
+          "[getArcadeMilestones] Could not fetch fresh remote config:",
+          e,
+        );
+      }
+
+      // Get milestones from Firebase Remote Config
+      // Will fallback to env var or hardcoded defaults if remote not available
+      console.debug("[getArcadeMilestones] Calling getStringParam...");
+      const milestonesJson = await firebaseService.getStringParam(
+        "arcade_milestones",
+        '[{"points":50,"league":"Arcade Trooper"},{"points":75,"league":"Arcade Ranger"},{"points":95,"league":"Arcade Champion"},{"points":120,"league":"Arcade Legend"}]',
+      );
+
+      console.debug("[getArcadeMilestones] getStringParam returned:", {
+        length: milestonesJson?.length,
+        preview: milestonesJson?.substring(0, 80),
+      });
+
+      if (!milestonesJson) {
+        throw new Error(
+          "arcade_milestones returned empty from Firebase/fallback",
+        );
+      }
+
+      console.debug("[getArcadeMilestones] Parsing JSON...");
+      const parsed = JSON.parse(milestonesJson);
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        throw new Error("arcade_milestones must be non-empty array");
+      }
+
+      this._arcadeMilestonesCache = parsed;
+      console.debug(
+        "✅ [getArcadeMilestones] Loaded arcade milestones:",
+        parsed,
+      );
+      return parsed;
+    } catch (error) {
+      console.error(
+        "❌ [getArcadeMilestones] ERROR loading milestones:",
+        error,
+      );
+      throw error; // Re-throw so caller handles it
+    }
+  },
+
+  /**
+   * Clear cached milestones to force reload on next call
+   */
+  clearMilestonesCache(): void {
+    this._arcadeMilestonesCache = null;
+  },
 
   /**
    * Generic DOM element selector with type safety
@@ -136,30 +212,34 @@ const PopupUIService = {
    * the rounded total points and derives the current league from the
    * milestone immediately below the next one. If there is no next
    * milestone the user is at MAX LEVEL.
+   *
+   * Milestones are loaded from Firebase Remote Config (REQUIRED - no fallback).
+   * Throws error if remote config is not available or invalid.
    */
-  calculateLeagueInfo(totalPoints: number) {
+  async calculateLeagueInfo(totalPoints: number) {
     const roundedPoints = Math.floor(totalPoints);
+    const milestones = await this.getArcadeMilestones(); // May throw error if remote config unavailable
 
     // Find the first milestone that requires more points than the user has
-    const nextIndex = this.ARCADE_MILESTONES.findIndex(
+    const nextIndex = milestones.findIndex(
       (milestone) => milestone.points > roundedPoints,
     );
 
-    const lastIndex = this.ARCADE_MILESTONES.length - 1;
+    const lastIndex = milestones.length - 1;
     const isMaxLevel = nextIndex === -1;
 
     const nextMilestone = isMaxLevel
-      ? this.ARCADE_MILESTONES[lastIndex]
-      : this.ARCADE_MILESTONES[nextIndex];
+      ? milestones[lastIndex]
+      : milestones[nextIndex];
 
     let currentLeague: string;
     if (isMaxLevel) {
-      currentLeague = this.ARCADE_MILESTONES[lastIndex].league;
+      currentLeague = milestones[lastIndex].league;
     } else if (nextIndex === 0) {
       // Not yet reached the first milestone -> show the first league as current
-      currentLeague = this.ARCADE_MILESTONES[0].league;
+      currentLeague = milestones[0].league;
     } else {
-      currentLeague = this.ARCADE_MILESTONES[nextIndex - 1].league;
+      currentLeague = milestones[nextIndex - 1].league;
     }
 
     return {
@@ -484,17 +564,30 @@ const PopupUIService = {
     }
 
     // Update league info with bonus points included
-    const leagueInfo = this.calculateLeagueInfo(finalTotalPoints);
-    this.updateLeagueInfo(
-      leagueInfo.currentLeague,
-      leagueInfo.isMaxLevel,
-      leagueInfo.nextMilestone.points,
-      finalTotalPoints,
-    );
-    this.updateProgressBar(
-      leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points,
-    );
+    try {
+      const leagueInfo = await this.calculateLeagueInfo(finalTotalPoints);
+      this.updateLeagueInfo(
+        leagueInfo.currentLeague,
+        leagueInfo.isMaxLevel,
+        leagueInfo.nextMilestone.points,
+        finalTotalPoints,
+      );
+      this.updateProgressBar(
+        leagueInfo.roundedPoints,
+        leagueInfo.nextMilestone.points,
+      );
+    } catch (error) {
+      console.error(
+        "❌ Failed to load arcade milestones for league calculation:",
+        error,
+      );
+      // Show error message but continue with basic UI update
+      this.showMessage(
+        "#error-message",
+        browser.i18n.getMessage("errorLoadingData"),
+        ["text-red-500"],
+      );
+    }
     this.updateLastUpdated(lastUpdated);
 
     // Show arcade points section
