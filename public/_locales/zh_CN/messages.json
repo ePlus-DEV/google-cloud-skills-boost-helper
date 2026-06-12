@@ -884,34 +884,14 @@
   "textNotQualified": {
     "message": "未符合资格"
   },
-  "textPrizePoolUnavailable": {
-    "message": "奖品池：暂无可用名额"
-  },
-  "textPrizePoolDataUnavailable": {
-    "message": "奖品池：名额数据不可用"
-  },
-  "textPrizePool": {
-    "message": "奖品池"
-  },
-  "textNextPool": {
-    "message": "下一个奖品池"
-  },
-  "textSpotsLeft": {
-    "message": "剩余名额"
-  },
-  "textTotalSlots": {
-    "message": "总名额"
-  },
-  "textViaWaterfall": {
-    "message": "通过瀑布机制"
-  },
-  "textWaterfallTooltipApplied": {
-    "message": "你的积分等级已满，因此你的奖品资格会顺延到此处显示的下一个可用等级。"
-  },
-  "textWaterfallTooltipEligible": {
-    "message": "这是你当前符合资格的奖品池。奖品池按先到先得原则分配。"
-  },
-  "textWaterfallTooltipNext": {
-    "message": "你尚未达到下一个奖品等级。这里显示下一个奖品池以及你仍需获得的积分数。"
-  }
+  "textPrizePoolUnavailable": { "message": "预估奖池：没有剩余名额" },
+  "textPrizePoolDataUnavailable": { "message": "预估奖池：名额数据不可用" },
+  "textPrizePool": { "message": "预估奖池" },
+  "textNextPool": { "message": "下一个预估奖池" },
+  "textSpotsLeft": { "message": "剩余名额" },
+  "textTotalSlots": { "message": "总名额" },
+  "textViaWaterfall": { "message": "通过瀑布机制" },
+  "textWaterfallTooltipApplied": { "message": "这是根据你的积分和最新可用奖池名额得出的预估。你的积分等级似乎已满，因此预估结果会顺延到此处显示的可用等级。最终资格由 Google 的奖品分配结果决定。" },
+  "textWaterfallTooltipEligible": { "message": "这是根据你的积分和最新可用奖池名额得出的预估。最终资格由 Google 按先到先得原则进行奖品分配来决定。" },
+  "textWaterfallTooltipNext": { "message": "你尚未达到下一个奖品等级。这里显示下一个预估奖池以及你还需要多少积分。" }
 }

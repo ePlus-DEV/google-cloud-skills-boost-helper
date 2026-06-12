@@ -885,16 +885,16 @@
     "message": "Not qualified"
   },
   "textPrizePoolUnavailable": {
-    "message": "Prize pool: no available spots"
+    "message": "Estimated pool: no spots left"
   },
   "textPrizePoolDataUnavailable": {
-    "message": "Prize pool: slot data unavailable"
+    "message": "Estimated pool: slot data unavailable"
   },
   "textPrizePool": {
-    "message": "Prize pool"
+    "message": "Estimated pool"
   },
   "textNextPool": {
-    "message": "Next pool"
+    "message": "Next estimated pool"
   },
   "textSpotsLeft": {
     "message": "spots left"
@@ -906,12 +906,12 @@
     "message": "via waterfall"
   },
   "textWaterfallTooltipApplied": {
-    "message": "Your point tier is full, so your prize eligibility rolls down to the next available tier shown here."
+    "message": "This is an estimate based on your points and the latest available pool slots. Your point tier appears full, so the estimate rolls down to the available tier shown here. Final eligibility is decided by Google's prize allocation."
   },
   "textWaterfallTooltipEligible": {
-    "message": "This is the prize pool you currently qualify for. Prize pools are first-come, first-served."
+    "message": "This is an estimate based on your points and the latest available pool slots. Final eligibility is decided by Google's first-come, first-served prize allocation."
   },
   "textWaterfallTooltipNext": {
-    "message": "You have not reached the next prize tier yet. This shows the next pool and how many points you still need."
+    "message": "You have not reached the next prize tier yet. This shows the next estimated pool and how many more points you need."
   }
 }

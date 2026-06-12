@@ -884,34 +884,14 @@
   "textNotQualified": {
     "message": "No calificado"
   },
-  "textPrizePoolUnavailable": {
-    "message": "Bolsa de premios: no hay plazas disponibles"
-  },
-  "textPrizePoolDataUnavailable": {
-    "message": "Bolsa de premios: datos de plazas no disponibles"
-  },
-  "textPrizePool": {
-    "message": "Bolsa de premios"
-  },
-  "textNextPool": {
-    "message": "Siguiente bolsa"
-  },
-  "textSpotsLeft": {
-    "message": "plazas restantes"
-  },
-  "textTotalSlots": {
-    "message": "plazas totales"
-  },
-  "textViaWaterfall": {
-    "message": "mediante cascada"
-  },
-  "textWaterfallTooltipApplied": {
-    "message": "Tu nivel de puntos está lleno, por lo que tu elegibilidad para el premio pasa al siguiente nivel disponible que se muestra aquí."
-  },
-  "textWaterfallTooltipEligible": {
-    "message": "Esta es la bolsa de premios para la que actualmente calificas. Las bolsas de premios se asignan por orden de llegada."
-  },
-  "textWaterfallTooltipNext": {
-    "message": "Aún no has alcanzado el siguiente nivel de premios. Esto muestra la siguiente bolsa y cuántos puntos aún necesitas."
-  }
+  "textPrizePoolUnavailable": { "message": "Bolsa estimada: no quedan plazas" },
+  "textPrizePoolDataUnavailable": { "message": "Bolsa estimada: datos de plazas no disponibles" },
+  "textPrizePool": { "message": "Bolsa estimada" },
+  "textNextPool": { "message": "Siguiente bolsa estimada" },
+  "textSpotsLeft": { "message": "plazas restantes" },
+  "textTotalSlots": { "message": "plazas totales" },
+  "textViaWaterfall": { "message": "mediante cascada" },
+  "textWaterfallTooltipApplied": { "message": "Esta es una estimación basada en tus puntos y las últimas plazas disponibles en la bolsa. Parece que tu nivel de puntos está lleno, por lo que la estimación baja al nivel disponible que se muestra aquí. La elegibilidad final la decide la asignación de premios de Google." },
+  "textWaterfallTooltipEligible": { "message": "Esta es una estimación basada en tus puntos y las últimas plazas disponibles en la bolsa. La elegibilidad final la decide la asignación de premios de Google por orden de llegada." },
+  "textWaterfallTooltipNext": { "message": "Aún no has alcanzado el siguiente nivel de premios. Esto muestra la siguiente bolsa estimada y cuántos puntos más necesitas." }
 }

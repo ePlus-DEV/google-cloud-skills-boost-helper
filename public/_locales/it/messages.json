@@ -884,34 +884,14 @@
   "textNotQualified": {
     "message": "Non qualificato"
   },
-  "textPrizePoolUnavailable": {
-    "message": "Montepremi: nessun posto disponibile"
-  },
-  "textPrizePoolDataUnavailable": {
-    "message": "Montepremi: dati sugli slot non disponibili"
-  },
-  "textPrizePool": {
-    "message": "Montepremi"
-  },
-  "textNextPool": {
-    "message": "Prossimo pool"
-  },
-  "textSpotsLeft": {
-    "message": "posti rimasti"
-  },
-  "textTotalSlots": {
-    "message": "slot totali"
-  },
-  "textViaWaterfall": {
-    "message": "tramite waterfall"
-  },
-  "textWaterfallTooltipApplied": {
-    "message": "Il tuo livello di punti è pieno, quindi la tua idoneità al premio passa al livello disponibile successivo mostrato qui."
-  },
-  "textWaterfallTooltipEligible": {
-    "message": "Questo è il montepremi per cui sei attualmente idoneo. I montepremi vengono assegnati in ordine di arrivo."
-  },
-  "textWaterfallTooltipNext": {
-    "message": "Non hai ancora raggiunto il livello premio successivo. Qui viene mostrato il prossimo pool e quanti punti ti mancano ancora."
-  }
+  "textPrizePoolUnavailable": { "message": "Pool stimato: nessun posto rimasto" },
+  "textPrizePoolDataUnavailable": { "message": "Pool stimato: dati sugli slot non disponibili" },
+  "textPrizePool": { "message": "Pool stimato" },
+  "textNextPool": { "message": "Prossimo pool stimato" },
+  "textSpotsLeft": { "message": "posti rimasti" },
+  "textTotalSlots": { "message": "slot totali" },
+  "textViaWaterfall": { "message": "tramite waterfall" },
+  "textWaterfallTooltipApplied": { "message": "Questa è una stima basata sui tuoi punti e sugli ultimi slot disponibili nel pool. Il tuo livello di punti sembra pieno, quindi la stima scende al livello disponibile mostrato qui. L’idoneità finale è decisa dall’assegnazione dei premi di Google." },
+  "textWaterfallTooltipEligible": { "message": "Questa è una stima basata sui tuoi punti e sugli ultimi slot disponibili nel pool. L’idoneità finale è decisa dall’assegnazione dei premi di Google in ordine di arrivo." },
+  "textWaterfallTooltipNext": { "message": "Non hai ancora raggiunto il livello premio successivo. Questo mostra il prossimo pool stimato e quanti punti ti servono ancora." }
 }

@@ -884,34 +884,14 @@
   "textNotQualified": {
     "message": "対象外"
   },
-  "textPrizePoolUnavailable": {
-    "message": "賞品枠: 空き枠はありません"
-  },
-  "textPrizePoolDataUnavailable": {
-    "message": "賞品枠: 枠データを利用できません"
-  },
-  "textPrizePool": {
-    "message": "賞品枠"
-  },
-  "textNextPool": {
-    "message": "次の枠"
-  },
-  "textSpotsLeft": {
-    "message": "残り枠"
-  },
-  "textTotalSlots": {
-    "message": "合計枠数"
-  },
-  "textViaWaterfall": {
-    "message": "ウォーターフォール経由"
-  },
-  "textWaterfallTooltipApplied": {
-    "message": "あなたのポイントティアは満員のため、賞品の対象資格はここに表示されている次の利用可能なティアに繰り下がります。"
-  },
-  "textWaterfallTooltipEligible": {
-    "message": "これは現在あなたが対象となっている賞品枠です。賞品枠は先着順です。"
-  },
-  "textWaterfallTooltipNext": {
-    "message": "まだ次の賞品ティアに到達していません。ここでは次の枠と、あと何ポイント必要かを表示しています。"
-  }
+  "textPrizePoolUnavailable": { "message": "推定プール: 残り枠はありません" },
+  "textPrizePoolDataUnavailable": { "message": "推定プール: 枠データを利用できません" },
+  "textPrizePool": { "message": "推定プール" },
+  "textNextPool": { "message": "次の推定プール" },
+  "textSpotsLeft": { "message": "残り枠" },
+  "textTotalSlots": { "message": "合計枠数" },
+  "textViaWaterfall": { "message": "ウォーターフォール経由" },
+  "textWaterfallTooltipApplied": { "message": "これは、あなたのポイントと最新の利用可能なプール枠に基づく推定です。あなたのポイントティアは満員のように見えるため、推定はここに表示されている利用可能なティアに繰り下がります。最終的な対象資格は Google の賞品割り当てによって決定されます。" },
+  "textWaterfallTooltipEligible": { "message": "これは、あなたのポイントと最新の利用可能なプール枠に基づく推定です。最終的な対象資格は、Google の先着順による賞品割り当てによって決定されます。" },
+  "textWaterfallTooltipNext": { "message": "まだ次の賞品ティアに到達していません。ここでは次の推定プールと、あと何ポイント必要かを表示しています。" }
 }

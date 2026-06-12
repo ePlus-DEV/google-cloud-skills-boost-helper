@@ -392,7 +392,7 @@ const PopupUIService = {
   },
 
   /**
-   * Format prize pool metadata for the compact level row.
+   * Format estimated prize pool metadata for the compact level row.
    */
   formatPrizePoolText(
     prizeTier: Milestone | null,
@@ -403,12 +403,12 @@ const PopupUIService = {
     if (!prizeTier) {
       return this.getI18nMessage(
         "textPrizePoolUnavailable",
-        "Prize pool: no available spots",
+        "Estimated pool: no spots left",
       );
     }
 
     const poolLabel =
-      label || this.getI18nMessage("textPrizePool", "Prize pool");
+      label || this.getI18nMessage("textPrizePool", "Estimated pool");
     const waterfall = waterfallApplied
       ? ` ${this.getI18nMessage("textViaWaterfall", "via waterfall")}`
       : "";
@@ -432,7 +432,7 @@ const PopupUIService = {
   },
 
   /**
-   * Update the dedicated prize pool row and Waterfall tooltip.
+   * Update the dedicated estimated prize pool row and Waterfall tooltip.
    */
   updatePrizePoolInfo(
     nextMilestone: Milestone,
@@ -455,11 +455,11 @@ const PopupUIService = {
               nextMilestone,
               hasPrizePoolData,
               false,
-              this.getI18nMessage("textNextPool", "Next pool"),
+              this.getI18nMessage("textNextPool", "Next estimated pool"),
             )
           : this.getI18nMessage(
               "textPrizePoolDataUnavailable",
-              "Prize pool: slot data unavailable",
+              "Estimated pool: slot data unavailable",
             );
 
       poolInfo.textContent = poolText;
@@ -471,15 +471,15 @@ const PopupUIService = {
         ? waterfallApplied
           ? this.getI18nMessage(
               "textWaterfallTooltipApplied",
-              "Your point tier is full, so your prize eligibility rolls down to the next available tier shown here.",
+              "This is an estimate based on your points and the latest available pool slots. Your point tier appears full, so the estimate rolls down to the available tier shown here. Final eligibility is decided by Google's prize allocation.",
             )
           : this.getI18nMessage(
               "textWaterfallTooltipEligible",
-              "This is the prize pool you currently qualify for. Prize pools are first-come, first-served.",
+              "This is an estimate based on your points and the latest available pool slots. Final eligibility is decided by Google's first-come, first-served prize allocation.",
             )
         : this.getI18nMessage(
             "textWaterfallTooltipNext",
-            "You have not reached the next prize tier yet. This shows the next pool and how many points you still need.",
+            "You have not reached the next prize tier yet. This shows the next estimated pool and how many more points you need.",
           );
 
       help.setAttribute("data-tooltip", tooltip);
