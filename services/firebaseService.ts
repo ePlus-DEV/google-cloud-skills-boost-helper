@@ -15,6 +15,10 @@ class FirebaseService {
   private remoteConfig: RemoteConfig | null = null;
   private initialized = false;
 
+  // Memoization for fetches to avoid repeated fetchAndActivate calls
+  private lastFetchAt: number | null = null;
+  private fetchPromise: Promise<boolean> | null = null;
+
   // Local config store for development
   private localConfigStore: Record<string, string | boolean | number> = {};
 
@@ -179,12 +183,18 @@ class FirebaseService {
 
       console.debug("[initialize] Set defaultConfig to:", this.defaultValues);
 
-      // Configure Remote Config settings
+      // Configure Remote Config settings. Respect env unless forced for dev.
+      const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+      const minInterval = forceRemote
+        ? 0
+        : Number.parseInt(
+            import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          );
       this.remoteConfig.settings = {
-        minimumFetchIntervalMillis: 0, // Always fetch fresh
+        minimumFetchIntervalMillis: minInterval,
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
-        ), // 1 minute
+        ),
       };
 
       console.debug("[initialize] Remote Config settings configured");
@@ -192,9 +202,10 @@ class FirebaseService {
       this.initialized = true;
       console.debug("[initialize] Set initialized=true");
 
-      // Fetch initial config
+      // Fetch initial config (force during initialization)
       console.debug("[initialize] Fetching initial config...");
       await this.fetchConfig();
+      this.lastFetchAt = Date.now();
       console.debug("[initialize] Initial fetch completed");
     } catch (error) {
       console.error("❌ Failed to initialize Firebase:", error);
@@ -220,6 +231,9 @@ class FirebaseService {
       const activated = await fetchAndActivate(this.remoteConfig);
       console.debug("[fetchConfig] fetchAndActivate result:", activated);
 
+      // Update last successful fetch timestamp
+      this.lastFetchAt = Date.now();
+
       // Log all params after fetch
       const allParams = this.getAllParams();
       console.debug("[fetchConfig] All params after fetch:", allParams);
@@ -229,6 +243,40 @@ class FirebaseService {
       console.error("❌ [fetchConfig] Failed to fetch Remote Config:", error);
       return false;
     }
+  }
+
+  /**
+   * Ensure a recent fetch — uses simple memoization so multiple callers
+   * in a short time window share the same fetch instead of triggering
+   * repeated network requests.
+   */
+  private async ensureFetched(force = false): Promise<boolean> {
+    if (force) return this.fetchConfig();
+
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+    const minInterval = forceRemote
+      ? 0
+      : Number.parseInt(
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+        );
+
+    if (this.lastFetchAt && Date.now() - this.lastFetchAt < minInterval) {
+      return true; // cache still fresh
+    }
+
+    if (this.fetchPromise) return this.fetchPromise;
+
+    this.fetchPromise = this.fetchConfig()
+      .then((res) => {
+        this.fetchPromise = null;
+        return res;
+      })
+      .catch((e) => {
+        this.fetchPromise = null;
+        return false;
+      });
+
+    return this.fetchPromise;
   }
 
   /**
@@ -327,8 +375,8 @@ class FirebaseService {
         return this.defaultValues.countdown_deadline_facilitator;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, "countdown_deadline_facilitator");
       const source =
@@ -386,8 +434,8 @@ class FirebaseService {
         return defaultEnabled;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, "countdown_enabled_facilitator");
       const source =
@@ -451,11 +499,9 @@ class FirebaseService {
         return fallback;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      console.debug(
-        `[getStringParam] Fetching fresh remote config for ${key}...`,
-      );
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      console.debug(`[getStringParam] Ensuring recent remote config for ${key}...`);
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, key);
       console.debug(`[getStringParam] getValue result for ${key}:`, val);
@@ -511,8 +557,8 @@ class FirebaseService {
         return fallback;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, key);
       const source =
@@ -553,8 +599,8 @@ class FirebaseService {
 
       // If the current value is not from the remote server, attempt to fetch & activate
       if (src !== "remote") {
-        // fetchConfig will return true when activated
-        await this.fetchConfig();
+        // Use ensureFetched so concurrent callers are deduped
+        await this.ensureFetched();
       }
     } catch (e) {
       // Non-fatal: leave defaults in place
@@ -636,7 +682,9 @@ class FirebaseService {
       source: isUsingEnv ? "environment" : "fallback",
       config: FirebaseService.getFirebaseConfig(),
       settings: {
-        minimumFetchIntervalMillis: 0, // Always fetch fresh
+        minimumFetchIntervalMillis: Number.parseInt(
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+        ),
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
