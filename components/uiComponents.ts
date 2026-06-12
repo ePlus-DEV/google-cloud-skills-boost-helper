@@ -81,6 +81,38 @@ const UIComponents = {
         visibility: "hidden",
       } as Partial<CSSStyleDeclaration>);
 
+      const backToTopLabel =
+        browser.i18n.getMessage("backToTop") || "Back to top";
+      container.innerHTML = `
+        <ql-button
+          icon="arrow_upward"
+          type="button"
+          title="${backToTopLabel}"
+          data-aria-label="${backToTopLabel}"
+        ></ql-button>
+      `;
+
+      const qbtn = container.querySelector("ql-button") as HTMLElement | null;
+      if (qbtn?.style) {
+        Object.assign(qbtn.style, {
+          width: "44px",
+          height: "44px",
+          minWidth: "44px",
+          minHeight: "44px",
+          borderRadius: "50%",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxSizing: "border-box",
+          padding: "0",
+          cursor: "pointer",
+          backgroundColor: "#ffffff",
+          border: "1px solid rgba(0,0,0,0.12)",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
+          color: "#111",
+        } as Partial<CSSStyleDeclaration>);
+      }
+
       const THRESHOLD = 300; // px scrolled before showing button
 
       /**

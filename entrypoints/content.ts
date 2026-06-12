@@ -28,6 +28,8 @@ export default defineContentScript({
   async main(ctx) {
     const { pathname } = window.location;
 
+    UIComponents.createFloatingBackToTop();
+
     // Handle lab pages
     if (LabService.isLabPage()) {
       await LabService.processLabPage();
