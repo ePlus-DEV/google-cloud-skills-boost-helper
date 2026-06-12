@@ -24,6 +24,9 @@ export function initNicknamePreview(): void {
   // runs before this initializer in main.tsx)
   const defaultText = previewTextEl.textContent || "";
 
+  /**
+   * Update the visible nickname preview based on the current input value.
+   */
   function updatePreview(): void {
     const val = inputEl.value.trim();
     if (val) {
