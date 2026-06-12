@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   OptionsService.initialize();
   localizeElements();
   showBrowserStoreBadge();
-  
+
   // Initialize UI interactions
   initMarkdownToggle();
   initDataManagementToggle();

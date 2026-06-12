@@ -133,7 +133,9 @@ class FirebaseService {
         return;
       }
 
-      console.info("🔗 FirebaseService: Connecting to Firebase Remote Config...");
+      console.info(
+        "🔗 FirebaseService: Connecting to Firebase Remote Config...",
+      );
 
       // Use provided config or default
       const firebaseConfig = { ...this.defaultConfig, ...config };
@@ -148,9 +150,14 @@ class FirebaseService {
       if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
         console.error(
           "❌ FirebaseService: apiKey or projectId missing; cannot connect to Firebase!",
-          { apiKey: !!firebaseConfig.apiKey, projectId: !!firebaseConfig.projectId },
+          {
+            apiKey: !!firebaseConfig.apiKey,
+            projectId: !!firebaseConfig.projectId,
+          },
         );
-        throw new Error("Firebase config incomplete - missing apiKey or projectId");
+        throw new Error(
+          "Firebase config incomplete - missing apiKey or projectId",
+        );
       }
 
       // Initialize Firebase App
@@ -170,10 +177,7 @@ class FirebaseService {
       // @ts-ignore
       this.remoteConfig.defaultConfig = this.defaultValues;
 
-      console.debug(
-        "[initialize] Set defaultConfig to:",
-        this.defaultValues,
-      );
+      console.debug("[initialize] Set defaultConfig to:", this.defaultValues);
 
       // Configure Remote Config settings
       this.remoteConfig.settings = {
@@ -198,9 +202,7 @@ class FirebaseService {
       // In remote environment, will fallback to defaults
       this.initialized = false;
       this.remoteConfig = null;
-      console.warn(
-        "[initialize] Fallback: will use default values",
-      );
+      console.warn("[initialize] Fallback: will use default values");
     }
   }
 
@@ -450,7 +452,9 @@ class FirebaseService {
       }
 
       // Fetch remote config to ensure we have the latest values
-      console.debug(`[getStringParam] Fetching fresh remote config for ${key}...`);
+      console.debug(
+        `[getStringParam] Fetching fresh remote config for ${key}...`,
+      );
       await this.fetchConfig();
 
       const val = getValue(this.remoteConfig, key);

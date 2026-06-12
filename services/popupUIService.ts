@@ -34,7 +34,9 @@ const PopupUIService = {
     }
 
     try {
-      console.debug("[getArcadeMilestones] Loading milestones from Firebase...");
+      console.debug(
+        "[getArcadeMilestones] Loading milestones from Firebase...",
+      );
       const firebaseService = (await import("./firebaseService")).default;
 
       if (!firebaseService.isInitialized()) {
@@ -42,7 +44,9 @@ const PopupUIService = {
         await firebaseService.initialize();
       }
 
-      console.debug("[getArcadeMilestones] Firebase initialized, fetching config...");
+      console.debug(
+        "[getArcadeMilestones] Firebase initialized, fetching config...",
+      );
 
       // Force fetch latest config from Firebase
       try {
