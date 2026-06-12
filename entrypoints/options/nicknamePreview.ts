@@ -10,9 +10,9 @@ export function initNicknamePreview(): void {
   const previewDisplay = document.getElementById(
     "preview-nickname-display",
   ) as HTMLElement | null;
-  const previewText = document.getElementById("preview-nickname-text") as
-    | HTMLElement
-    | null;
+  const previewText = document.getElementById(
+    "preview-nickname-text",
+  ) as HTMLElement | null;
 
   if (!input || !previewDisplay || !previewText) return;
   // Create non-null locals so TS understands these are safe to use below
