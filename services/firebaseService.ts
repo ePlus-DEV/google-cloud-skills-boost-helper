@@ -632,9 +632,7 @@ class FirebaseService {
       source: isUsingEnv ? "environment" : "fallback",
       config: FirebaseService.getFirebaseConfig(),
       settings: {
-        minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
-        ),
+        minimumFetchIntervalMillis: 0, // Always fetch fresh
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
         ),
