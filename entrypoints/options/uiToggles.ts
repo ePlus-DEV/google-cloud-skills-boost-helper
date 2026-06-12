@@ -26,7 +26,9 @@ function i18nMsg(key: string, fallback: string): string {
  * Initialize badge display toggle status sync
  */
 function initBadgeDisplayToggle(): void {
-  const badgeToggle = document.getElementById("badge-display-toggle") as HTMLInputElement | null;
+  const badgeToggle = document.getElementById(
+    "badge-display-toggle",
+  ) as HTMLInputElement | null;
   const badgeStatus = document.getElementById("badge-display-status");
 
   if (!badgeToggle || !badgeStatus) return;
@@ -53,7 +55,9 @@ function initBadgeDisplayToggle(): void {
  * Initialize search feature toggle status sync
  */
 function initSearchFeatureToggle(): void {
-  const searchToggle = document.getElementById("search-feature-toggle") as HTMLInputElement | null;
+  const searchToggle = document.getElementById(
+    "search-feature-toggle",
+  ) as HTMLInputElement | null;
   const searchStatus = document.getElementById("search-feature-status");
 
   if (!searchToggle || !searchStatus) return;
@@ -82,7 +86,9 @@ function initSearchFeatureToggle(): void {
   function updateDependentControls(isSearchEnabled: boolean): void {
     try {
       // Update preferred search engine
-      const preferredSearch = document.getElementById("preferred-search-engine") as HTMLSelectElement | null;
+      const preferredSearch = document.getElementById(
+        "preferred-search-engine",
+      ) as HTMLSelectElement | null;
       if (preferredSearch) {
         preferredSearch.disabled = !isSearchEnabled;
         preferredSearch.setAttribute("aria-disabled", String(!isSearchEnabled));
@@ -91,7 +97,9 @@ function initSearchFeatureToggle(): void {
       }
 
       // Update eplus search toggle
-      const eplusToggle = document.getElementById("enable-eplus-search") as HTMLInputElement | null;
+      const eplusToggle = document.getElementById(
+        "enable-eplus-search",
+      ) as HTMLInputElement | null;
       if (eplusToggle) {
         eplusToggle.disabled = !isSearchEnabled;
         eplusToggle.setAttribute("aria-disabled", String(!isSearchEnabled));
@@ -120,7 +128,9 @@ function initSearchFeatureToggle(): void {
   searchToggleEl.addEventListener("change", updateSearchStatus);
 
   // Prevent toggling eplus when parent search feature is off
-  const eplusInput = document.getElementById("enable-eplus-search") as HTMLInputElement | null;
+  const eplusInput = document.getElementById(
+    "enable-eplus-search",
+  ) as HTMLInputElement | null;
   if (eplusInput) {
     const label = eplusInput.closest("label");
     if (label) {
