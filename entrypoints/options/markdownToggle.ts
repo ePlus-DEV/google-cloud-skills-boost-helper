@@ -21,8 +21,8 @@ function i18nMsg(key: string, fallback: string): string {
       (typeof chrome !== "undefined" && chrome.i18n) ||
       (typeof browser !== "undefined" && (browser as any).i18n);
     if (i18nAPI && typeof i18nAPI.getMessage === "function") {
-      const m = i18nAPI.getMessage(key);
-      return m || fallback;
+      const msg = i18nAPI.getMessage(key);
+      return msg || fallback;
     }
   } catch (_) {
     // ignored
@@ -51,6 +51,10 @@ export function initMarkdownToggle(): void {
     return;
   }
 
+  // Capture non-null references to satisfy TypeScript in async callbacks
+  const mc: HTMLElement = markdownContent!;
+  const btn: HTMLElement = markdownToggleBtn!;
+
   const state: MarkdownToggleState = {
     isExpanded: false,
     fullHeight: 0,
@@ -61,32 +65,32 @@ export function initMarkdownToggle(): void {
    * Calculate and update content height
    */
   function checkContentHeight(): void {
-    if (!markdownContent || !markdownToggleBtn) return;
+    if (!mc || !btn) return;
 
     window.clearTimeout(state.heightTimer);
 
     state.heightTimer = window.setTimeout(() => {
       // Temporarily set to get full height
-      markdownContent.style.maxHeight = "none";
-      markdownContent.style.overflow = "visible";
-      const actualHeight = markdownContent.scrollHeight;
+      mc.style.maxHeight = "none";
+      mc.style.overflow = "visible";
+      const actualHeight = mc.scrollHeight;
       state.fullHeight = actualHeight;
 
       if (actualHeight > MAX_HEIGHT_PX) {
         // Content is taller than max height, show the toggle button
-        markdownToggleBtn.classList.remove("hidden");
+        btn.classList.remove("hidden");
         if (state.isExpanded) {
-          markdownContent.style.maxHeight = actualHeight + "px";
-          markdownContent.style.overflow = "visible";
+          mc.style.maxHeight = `${actualHeight}px`;
+          mc.style.overflow = "visible";
         } else {
-          markdownContent.style.overflow = "hidden";
-          markdownContent.style.maxHeight = MAX_HEIGHT_PX + "px";
+          mc.style.overflow = "hidden";
+          mc.style.maxHeight = `${MAX_HEIGHT_PX}px`;
         }
       } else {
         // Content fits, hide the toggle button
-        markdownToggleBtn.classList.add("hidden");
-        markdownContent.style.overflow = "visible";
-        markdownContent.style.maxHeight = "none";
+        btn.classList.add("hidden");
+        mc.style.overflow = "visible";
+        mc.style.maxHeight = "none";
       }
     }, 50);
   }
@@ -102,8 +106,8 @@ export function initMarkdownToggle(): void {
 
     if (state.isExpanded) {
       // Expand to full height
-      markdownContent.style.maxHeight = state.fullHeight + "px";
-      markdownContent.style.overflow = "visible";
+      mc.style.maxHeight = `${state.fullHeight}px`;
+      mc.style.overflow = "visible";
       if (markdownToggleText) {
         markdownToggleText.textContent = i18nMsg(
           "markdownShowLess",
@@ -115,8 +119,8 @@ export function initMarkdownToggle(): void {
       }
     } else {
       // Collapse to max height
-      markdownContent.style.maxHeight = MAX_HEIGHT_PX + "px";
-      markdownContent.style.overflow = "hidden";
+      mc.style.maxHeight = `${MAX_HEIGHT_PX}px`;
+      mc.style.overflow = "hidden";
       if (markdownToggleText) {
         markdownToggleText.textContent = i18nMsg(
           "markdownShowMore",
@@ -137,14 +141,14 @@ export function initMarkdownToggle(): void {
     setTimeout(checkContentHeight, 100);
   });
 
-  observer.observe(markdownContent, {
+  observer.observe(mc, {
     childList: true,
     subtree: true,
     characterData: true,
   });
 
   // Handle image loading
-  markdownContent.addEventListener(
+  mc.addEventListener(
     "load",
     (event: Event) => {
       const target = event.target;
