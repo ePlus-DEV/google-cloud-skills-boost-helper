@@ -411,10 +411,14 @@ const PopupUIService = {
     label?: string,
   ): string {
     if (!prizeTier) {
-      return this.getI18nMessage("textPrizePoolUnavailable", "Prize pool: no available spots");
+      return this.getI18nMessage(
+        "textPrizePoolUnavailable",
+        "Prize pool: no available spots",
+      );
     }
 
-    const poolLabel = label || this.getI18nMessage("textPrizePool", "Prize pool");
+    const poolLabel =
+      label || this.getI18nMessage("textPrizePool", "Prize pool");
     const waterfall = waterfallApplied
       ? ` ${this.getI18nMessage("textViaWaterfall", "via waterfall")}`
       : "";
@@ -428,6 +432,53 @@ const PopupUIService = {
       prizeTier.spotsLeft,
     );
     return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSpots} ${spotsLabel})`;
+  },
+
+  /**
+   * Update the dedicated prize pool row and Waterfall tooltip.
+   */
+  updatePrizePoolInfo(
+    nextMilestone: Milestone,
+    prizeTier: Milestone | null,
+    hasPrizePoolData: boolean,
+    waterfallApplied: boolean,
+  ): void {
+    const poolInfo = this.querySelector<HTMLElement>("#prize-pool-info");
+    const help = this.querySelector<HTMLElement>("#prize-pool-help");
+
+    if (poolInfo) {
+      const poolText = prizeTier
+        ? this.formatPrizePoolText(prizeTier, hasPrizePoolData, waterfallApplied)
+        : hasPrizePoolData
+          ? this.formatPrizePoolText(
+              nextMilestone,
+              hasPrizePoolData,
+              false,
+              this.getI18nMessage("textNextPool", "Next pool"),
+            )
+          : this.getI18nMessage(
+              "textPrizePoolDataUnavailable",
+              "Prize pool: slot data unavailable",
+            );
+
+      poolInfo.textContent = poolText;
+      poolInfo.title = poolText;
+    }
+
+    if (help) {
+      const tooltip = hasPrizePoolData
+        ? this.getI18nMessage(
+            "textWaterfallTooltip",
+            "Prize pools are first-come, first-served. If your point tier is full, eligibility rolls down to the next lower tier with available spots. Slot counts come from Remote Config.",
+          )
+        : this.getI18nMessage(
+            "textWaterfallTooltipNoData",
+            "Slot counts are not available because Remote Config arcade_milestones does not include spotsLeft yet. Add slots and spotsLeft to show live pool availability.",
+          );
+
+      help.setAttribute("data-tooltip", tooltip);
+      help.setAttribute("title", tooltip);
+    }
   },
 
   /**
@@ -448,28 +499,18 @@ const PopupUIService = {
       `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
     );
 
-    const prizePoolText =
-      prizeTier
-        ? this.formatPrizePoolText(prizeTier, hasPrizePoolData, waterfallApplied)
-        : hasPrizePoolData
-          ? this.formatPrizePoolText(
-              nextMilestone,
-              hasPrizePoolData,
-              false,
-              this.getI18nMessage("textNextPool", "Next pool"),
-            )
-        : "";
     const nextLevelText = isMaxLevel
       ? browser.i18n.getMessage("textMaxLevel")
       : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${this.formatPointDelta(
           nextMilestonePoints - totalPoints,
         )} ${browser.i18n.getMessage("textPoints")}`;
 
-    this.updateElementText(
-      "#next-level",
-      prizePoolText && !isMaxLevel
-        ? `${nextLevelText} • ${prizePoolText}`
-        : prizePoolText || nextLevelText,
+    this.updateElementText("#next-level", nextLevelText);
+    this.updatePrizePoolInfo(
+      nextMilestone,
+      prizeTier,
+      hasPrizePoolData,
+      waterfallApplied,
     );
   },
 
