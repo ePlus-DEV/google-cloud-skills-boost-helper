@@ -11,7 +11,7 @@ import {
  */
 const PopupUIService = {
   // No persistent timers now; we use small spinner icon indicators next to numeric fields
-  // Cached milestones loaded from Firebase Remote Config (REQUIRED - no fallback)
+  // Cached milestones loaded from Firebase Remote Config (falls back to defaults on error)
   _arcadeMilestonesCache: null as Milestone[] | null,
 
   // Use shared facilitator definitions from facilitatorService
@@ -81,16 +81,73 @@ const PopupUIService = {
 
       console.debug("[getArcadeMilestones] Parsing JSON...");
       const parsed = JSON.parse(milestonesJson);
-      if (!Array.isArray(parsed) || parsed.length === 0) {
-        throw new Error("arcade_milestones must be non-empty array");
+
+      // Normalize/validate parsed items into safe Milestone[]
+      const normalizeItem = (item: any): Milestone | null => {
+        if (!item || typeof item !== "object") return null;
+        const league = typeof item.league === "string" && item.league.trim()
+          ? item.league.trim()
+          : null;
+
+        // Prefer numeric conversion, fall back to parseNumericPoints
+        let points = Number(item.points);
+        if (!Number.isFinite(points)) {
+          points = this.parseNumericPoints(item.points);
+        }
+
+        if (!league || !Number.isFinite(points)) return null;
+        return { league, points };
+      };
+
+      const normalized = Array.isArray(parsed)
+        ? (parsed.map(normalizeItem).filter((v) => v !== null) as Milestone[])
+        : [];
+
+      // If nothing valid, fall back to built-in default string
+      const DEFAULT_JSON = '[{"points":50,"league":"Arcade Trooper"},{"points":75,"league":"Arcade Ranger"},{"points":95,"league":"Arcade Champion"},{"points":120,"league":"Arcade Legend"}]';
+      if (!normalized || normalized.length === 0) {
+        console.warn(
+          "[getArcadeMilestones] Parsed milestones invalid or empty, falling back to defaults",
+        );
+        const fallback = (JSON.parse(DEFAULT_JSON) as any[])
+          .map(normalizeItem)
+          .filter((v) => v !== null) as Milestone[];
+        this._arcadeMilestonesCache = fallback;
+        console.debug("✅ [getArcadeMilestones] Using fallback milestones:", fallback);
+        return fallback;
       }
 
-      this._arcadeMilestonesCache = parsed;
-      console.debug(
-        "✅ [getArcadeMilestones] Loaded arcade milestones:",
-        parsed,
-      );
-      return parsed;
+      // Sort ascending by points and enforce strict monotonic increase
+      normalized.sort((a, b) => a.points - b.points);
+      const strict: Milestone[] = [];
+      let last = -Infinity;
+      for (const m of normalized) {
+        if (m.points > last) {
+          strict.push(m);
+          last = m.points;
+        } else {
+          console.warn(
+            "[getArcadeMilestones] Dropping non-increasing milestone:",
+            m,
+          );
+        }
+      }
+
+      if (strict.length === 0) {
+        console.warn(
+          "[getArcadeMilestones] No valid monotonic milestones, using fallback",
+        );
+        const fallback = (JSON.parse(DEFAULT_JSON) as any[])
+          .map(normalizeItem)
+          .filter((v) => v !== null) as Milestone[];
+        this._arcadeMilestonesCache = fallback;
+        console.debug("✅ [getArcadeMilestones] Using fallback milestones:", fallback);
+        return fallback;
+      }
+
+      this._arcadeMilestonesCache = strict;
+      console.debug("✅ [getArcadeMilestones] Loaded arcade milestones:", strict);
+      return strict;
     } catch (error) {
       console.error(
         "❌ [getArcadeMilestones] ERROR loading milestones:",
@@ -217,16 +274,17 @@ const PopupUIService = {
    * milestone immediately below the next one. If there is no next
    * milestone the user is at MAX LEVEL.
    *
-   * Milestones are loaded from Firebase Remote Config (REQUIRED - no fallback).
-   * Throws error if remote config is not available or invalid.
+  * Milestones are loaded from Firebase Remote Config and validated.
+  * If remote config is unavailable or invalid, a safe default set of
+  * milestones is used so the popup can still render league/progress.
    */
   async calculateLeagueInfo(totalPoints: number) {
     const roundedPoints = Math.floor(totalPoints);
     const milestones = await this.getArcadeMilestones(); // May throw error if remote config unavailable
 
     // Find the first milestone that requires more points than the user has
-    const nextIndex = milestones.findIndex(
-      (milestone) => milestone.points > roundedPoints,
+    const nextIndex = milestones.findIndex((milestone) =>
+      this.parseNumericPoints(milestone.points) > roundedPoints,
     );
 
     const lastIndex = milestones.length - 1;

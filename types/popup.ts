@@ -45,6 +45,7 @@ export interface BadgeData {
 }
 
 export interface Milestone {
+  /** Normalized milestone shape: `points` is a finite number and `league` is a non-empty string. */
   points: number;
   league: string;
 }
