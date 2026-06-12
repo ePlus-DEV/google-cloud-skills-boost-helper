@@ -11,14 +11,8 @@ import {
  */
 const PopupUIService = {
   // No persistent timers now; we use small spinner icon indicators next to numeric fields
-  // Arcade program: League-based progression system
-  ARCADE_MILESTONES: [
-    { points: 25, league: "Arcade Novice" },
-    { points: 45, league: "Arcade Trooper" },
-    { points: 65, league: "Arcade Ranger" },
-    { points: 75, league: "Arcade Champion" },
-    { points: 95, league: "Arcade Legend" },
-  ] as Milestone[],
+  // Cached milestones loaded from Firebase Remote Config (falls back to defaults on error)
+  _arcadeMilestonesCache: null as Milestone[] | null,
 
   // Use shared facilitator definitions from facilitatorService
   FACILITATOR_MILESTONE_REQUIREMENTS: SHARED_FACI_REQUIREMENTS,
@@ -26,6 +20,163 @@ const PopupUIService = {
     string | number,
     number
   >,
+
+  /**
+   * Load Arcade tier config. Local env wins unless remote is explicitly forced.
+   */
+  async getArcadeMilestonesJson(): Promise<string> {
+    const envValue = import.meta.env.WXT_ARCADE_MILESTONES;
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+
+    if (!forceRemote && envValue?.trim()) {
+      return envValue;
+    }
+
+    const firebaseService = (await import("./firebaseService")).default;
+
+    await firebaseService.initialize(undefined, { forceRemote: true });
+
+    try {
+      await firebaseService.fetchRemoteConfig?.();
+    } catch (error) {
+      console.debug(
+        "[getArcadeMilestonesJson] Could not fetch fresh Remote Config:",
+        error,
+      );
+    }
+
+    return firebaseService.getStringParam("arcade_milestones", "");
+  },
+
+  /**
+   * Load Arcade milestones from local env or Remote Config.
+   */
+  async getArcadeMilestones(): Promise<Milestone[]> {
+    console.debug("[getArcadeMilestones] START");
+    const envValue = import.meta.env.WXT_ARCADE_MILESTONES;
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+    const shouldUseLocalCache = !forceRemote && envValue?.trim();
+
+    // Return cached value if already loaded
+    if (shouldUseLocalCache && this._arcadeMilestonesCache !== null) {
+      console.debug("[getArcadeMilestones] Returning cached milestones");
+      return this._arcadeMilestonesCache;
+    }
+
+    try {
+      const milestonesJson = await this.getArcadeMilestonesJson();
+
+      console.debug("[getArcadeMilestones] Config returned:", {
+        length: milestonesJson?.length,
+        preview: milestonesJson?.substring(0, 80),
+      });
+
+      if (!milestonesJson) {
+        throw new Error(
+          "Arcade milestones config is empty. Set WXT_ARCADE_MILESTONES or Remote Config arcade_milestones.",
+        );
+      }
+
+      console.debug("[getArcadeMilestones] Parsing JSON...");
+      const parsed = JSON.parse(milestonesJson);
+
+      // Normalize/validate parsed items into safe Milestone[]
+      const normalizeItem = (item: any): Milestone | null => {
+        if (!item || typeof item !== "object") return null;
+        const league =
+          typeof item.league === "string" && item.league.trim()
+            ? item.league.trim()
+            : null;
+
+        // Prefer numeric conversion, fall back to parseNumericPoints
+        let points = Number(item.points);
+        if (!Number.isFinite(points)) {
+          points = this.parseNumericPoints(item.points);
+        }
+
+        if (!league || !Number.isFinite(points)) return null;
+
+        const slots = this.parseOptionalNumber(
+          item.slots ??
+            item.totalSlots ??
+            item.prizeSlots ??
+            item.total_spots ??
+            item.totalSpots,
+        );
+        const spotsLeft = this.parseOptionalNumber(
+          item.spotsLeft ??
+            item.spots_left ??
+            item.available ??
+            item.availableSpots ??
+            item.spotsAvailable ??
+            item.remainingSpots ??
+            item.remainingSlots ??
+            item.remaining ??
+            item.availableSlots,
+        );
+
+        return {
+          league,
+          points,
+          ...(slots !== undefined ? { slots } : {}),
+          ...(spotsLeft !== undefined ? { spotsLeft } : {}),
+        };
+      };
+
+      const normalized = Array.isArray(parsed)
+        ? (parsed.map(normalizeItem).filter((v) => v !== null) as Milestone[])
+        : [];
+
+      // If nothing valid, stop instead of silently inventing tier data.
+      if (!normalized || normalized.length === 0) {
+        throw new Error(
+          "Arcade milestones config is invalid or empty after normalization.",
+        );
+      }
+
+      // Sort ascending by points and enforce strict monotonic increase
+      normalized.sort((a, b) => a.points - b.points);
+      const strict: Milestone[] = [];
+      let last = -Infinity;
+      for (const m of normalized) {
+        if (m.points > last) {
+          strict.push(m);
+          last = m.points;
+        } else {
+          console.warn(
+            "[getArcadeMilestones] Dropping non-increasing milestone:",
+            m,
+          );
+        }
+      }
+
+      if (strict.length === 0) {
+        throw new Error(
+          "Arcade milestones config does not contain increasing point thresholds.",
+        );
+      }
+
+      this._arcadeMilestonesCache = strict;
+      console.debug(
+        "✅ [getArcadeMilestones] Loaded arcade milestones:",
+        strict,
+      );
+      return strict;
+    } catch (error) {
+      console.error(
+        "❌ [getArcadeMilestones] ERROR loading milestones:",
+        error,
+      );
+      throw error; // Re-throw so caller handles it
+    }
+  },
+
+  /**
+   * Clear cached milestones to force reload on next call
+   */
+  clearMilestonesCache(): void {
+    this._arcadeMilestonesCache = null;
+  },
 
   /**
    * Generic DOM element selector with type safety
@@ -83,10 +234,36 @@ const PopupUIService = {
   parseNumericPoints(value: unknown): number {
     if (typeof value === "number" && Number.isFinite(value)) return value;
     if (typeof value === "string") {
-      const match = /-?\d+(?:\.\d+)?/.exec(value);
-      return match ? Number.parseFloat(match[0]) : 0;
+      const match = /-?\d[\d,]*(?:\.\d+)?/.exec(value);
+      return match ? Number.parseFloat(match[0].replace(/,/g, "")) : 0;
     }
     return 0;
+  },
+
+  /**
+   * Parse an optional numeric Remote Config field.
+   */
+  parseOptionalNumber(value: unknown): number | undefined {
+    if (value === undefined || value === null || value === "") {
+      return undefined;
+    }
+
+    const parsed = this.parseNumericPoints(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  },
+
+  /**
+   * Return a localized message when available, otherwise the supplied fallback.
+   */
+  getI18nMessage(key: string, fallback: string): string {
+    try {
+      const message = browser.i18n.getMessage(
+        key as Parameters<typeof browser.i18n.getMessage>[0],
+      );
+      return message || fallback;
+    } catch (_) {
+      return fallback;
+    }
   },
 
   /**
@@ -122,10 +299,11 @@ const PopupUIService = {
   /**
    * Update progress bar
    */
-  updateProgressBar(totalPoints: number, nextMilestonePoints: number): void {
+  updateProgressBar(progressPercent: number): void {
     const progressBar = this.querySelector<HTMLDivElement>("#progress-bar");
     if (progressBar) {
-      progressBar.style.width = `${(totalPoints / nextMilestonePoints) * 100}%`;
+      const normalized = Math.min(100, Math.max(0, progressPercent));
+      progressBar.style.width = `${normalized}%`;
     }
   },
 
@@ -136,38 +314,178 @@ const PopupUIService = {
    * the rounded total points and derives the current league from the
    * milestone immediately below the next one. If there is no next
    * milestone the user is at MAX LEVEL.
+   *
+   * Milestones are loaded from Firebase Remote Config and validated.
+   * If remote config is unavailable or invalid, a safe default set of
+   * milestones is used so the popup can still render league/progress.
    */
-  calculateLeagueInfo(totalPoints: number) {
+  async calculateLeagueInfo(totalPoints: number) {
     const roundedPoints = Math.floor(totalPoints);
+    const milestones = await this.getArcadeMilestones(); // May throw error if remote config unavailable
 
     // Find the first milestone that requires more points than the user has
-    const nextIndex = this.ARCADE_MILESTONES.findIndex(
-      (milestone) => milestone.points > roundedPoints,
+    const nextIndex = milestones.findIndex(
+      (milestone) => this.parseNumericPoints(milestone.points) > roundedPoints,
     );
 
-    const lastIndex = this.ARCADE_MILESTONES.length - 1;
+    const lastIndex = milestones.length - 1;
     const isMaxLevel = nextIndex === -1;
 
     const nextMilestone = isMaxLevel
-      ? this.ARCADE_MILESTONES[lastIndex]
-      : this.ARCADE_MILESTONES[nextIndex];
+      ? milestones[lastIndex]
+      : milestones[nextIndex];
 
-    let currentLeague: string;
-    if (isMaxLevel) {
-      currentLeague = this.ARCADE_MILESTONES[lastIndex].league;
-    } else if (nextIndex === 0) {
-      // Not yet reached the first milestone -> show the first league as current
-      currentLeague = this.ARCADE_MILESTONES[0].league;
-    } else {
-      currentLeague = this.ARCADE_MILESTONES[nextIndex - 1].league;
-    }
+    const pointTier = isMaxLevel
+      ? milestones[lastIndex]
+      : nextIndex > 0
+        ? milestones[nextIndex - 1]
+        : null;
+    const currentLeague =
+      pointTier?.league ||
+      this.getI18nMessage("textNotQualified", "Not qualified");
+    const eligibleMilestones = milestones.filter(
+      (milestone) => roundedPoints >= milestone.points,
+    );
+    const hasSpotsLeftData = milestones.some(
+      (milestone) => milestone.spotsLeft !== undefined,
+    );
+    const hasPrizePoolData = milestones.some(
+      (milestone) =>
+        milestone.spotsLeft !== undefined || milestone.slots !== undefined,
+    );
+    const prizeTier =
+      eligibleMilestones
+        .slice()
+        .reverse()
+        .find((milestone) =>
+          hasSpotsLeftData ? (milestone.spotsLeft ?? 0) > 0 : true,
+        ) || null;
+    const waterfallApplied =
+      Boolean(pointTier && prizeTier) &&
+      pointTier?.league !== prizeTier?.league;
+
+    const previousMilestonePoints = pointTier?.points ?? 0;
+    const progressPercent = isMaxLevel
+      ? 100
+      : ((totalPoints - previousMilestonePoints) /
+          (nextMilestone.points - previousMilestonePoints)) *
+        100;
 
     return {
       currentLeague,
       isMaxLevel,
       nextMilestone,
+      pointTier,
+      prizeTier,
+      hasPrizePoolData,
+      waterfallApplied,
+      progressPercent,
       roundedPoints,
     };
+  },
+
+  /**
+   * Format a point delta without noisy trailing zeros.
+   */
+  formatPointDelta(value: number): string {
+    const rounded = Math.max(0, value);
+    return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+  },
+
+  /**
+   * Format estimated prize pool metadata for the compact level row.
+   */
+  formatPrizePoolText(
+    prizeTier: Milestone | null,
+    hasPrizePoolData: boolean,
+    waterfallApplied: boolean,
+    label?: string,
+  ): string {
+    if (!prizeTier) {
+      return this.getI18nMessage(
+        "textPrizePoolUnavailable",
+        "Estimated pool: no spots left",
+      );
+    }
+
+    const poolLabel =
+      label || this.getI18nMessage("textPrizePool", "Estimated pool");
+    const waterfall = waterfallApplied
+      ? ` ${this.getI18nMessage("textViaWaterfall", "via waterfall")}`
+      : "";
+
+    if (!hasPrizePoolData || prizeTier.spotsLeft === undefined) {
+      if (prizeTier.slots !== undefined) {
+        const slotsLabel = this.getI18nMessage("textTotalSlots", "total slots");
+        const formattedSlots = new Intl.NumberFormat(navigator.language).format(
+          prizeTier.slots,
+        );
+        return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSlots} ${slotsLabel})`;
+      }
+      return `${poolLabel}: ${prizeTier.league}${waterfall}`;
+    }
+
+    const spotsLabel = this.getI18nMessage("textSpotsLeft", "spots left");
+    const formattedSpots = new Intl.NumberFormat(navigator.language).format(
+      prizeTier.spotsLeft,
+    );
+    return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSpots} ${spotsLabel})`;
+  },
+
+  /**
+   * Update the dedicated estimated prize pool row and Waterfall tooltip.
+   */
+  updatePrizePoolInfo(
+    nextMilestone: Milestone,
+    prizeTier: Milestone | null,
+    hasPrizePoolData: boolean,
+    waterfallApplied: boolean,
+  ): void {
+    const poolInfo = this.querySelector<HTMLElement>("#prize-pool-info");
+    const help = this.querySelector<HTMLElement>("#prize-pool-help");
+
+    if (poolInfo) {
+      const poolText = prizeTier
+        ? this.formatPrizePoolText(
+            prizeTier,
+            hasPrizePoolData,
+            waterfallApplied,
+          )
+        : hasPrizePoolData
+          ? this.formatPrizePoolText(
+              nextMilestone,
+              hasPrizePoolData,
+              false,
+              this.getI18nMessage("textNextPool", "Next estimated pool"),
+            )
+          : this.getI18nMessage(
+              "textPrizePoolDataUnavailable",
+              "Estimated pool: slot data unavailable",
+            );
+
+      poolInfo.textContent = poolText;
+      poolInfo.title = poolText;
+    }
+
+    if (help) {
+      const tooltip = prizeTier
+        ? waterfallApplied
+          ? this.getI18nMessage(
+              "textWaterfallTooltipApplied",
+              "This is an estimate based on your points and the latest available pool slots. Your point tier appears full, so the estimate rolls down to the available tier shown here. Final eligibility is decided by Google's prize allocation.",
+            )
+          : this.getI18nMessage(
+              "textWaterfallTooltipEligible",
+              "This is an estimate based on your points and the latest available pool slots. Final eligibility is decided by Google's first-come, first-served prize allocation.",
+            )
+        : this.getI18nMessage(
+            "textWaterfallTooltipNext",
+            "You have not reached the next prize tier yet. This shows the next estimated pool and how many more points you need.",
+          );
+
+      help.setAttribute("data-tooltip", tooltip);
+      help.setAttribute("title", tooltip);
+    }
   },
 
   /**
@@ -178,19 +496,28 @@ const PopupUIService = {
     isMaxLevel: boolean,
     nextMilestonePoints: number,
     totalPoints: number,
+    nextMilestone: Milestone,
+    prizeTier: Milestone | null = null,
+    hasPrizePoolData = false,
+    waterfallApplied = false,
   ): void {
     this.updateElementText(
       "#current-level",
       `${browser.i18n.getMessage("textCurrentLevel")}: ${currentLeague}`,
     );
 
-    this.updateElementText(
-      "#next-level",
-      isMaxLevel
-        ? browser.i18n.getMessage("textMaxLevel")
-        : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${
-            nextMilestonePoints - totalPoints
-          } ${browser.i18n.getMessage("textPoints")}`,
+    const nextLevelText = isMaxLevel
+      ? browser.i18n.getMessage("textMaxLevel")
+      : `${browser.i18n.getMessage("textNextLevelInPoints")}: ${this.formatPointDelta(
+          nextMilestonePoints - totalPoints,
+        )} ${browser.i18n.getMessage("textPoints")}`;
+
+    this.updateElementText("#next-level", nextLevelText);
+    this.updatePrizePoolInfo(
+      nextMilestone,
+      prizeTier,
+      hasPrizePoolData,
+      waterfallApplied,
     );
   },
 
@@ -484,17 +811,31 @@ const PopupUIService = {
     }
 
     // Update league info with bonus points included
-    const leagueInfo = this.calculateLeagueInfo(finalTotalPoints);
-    this.updateLeagueInfo(
-      leagueInfo.currentLeague,
-      leagueInfo.isMaxLevel,
-      leagueInfo.nextMilestone.points,
-      finalTotalPoints,
-    );
-    this.updateProgressBar(
-      leagueInfo.roundedPoints,
-      leagueInfo.nextMilestone.points,
-    );
+    try {
+      const leagueInfo = await this.calculateLeagueInfo(finalTotalPoints);
+      this.updateLeagueInfo(
+        leagueInfo.currentLeague,
+        leagueInfo.isMaxLevel,
+        leagueInfo.nextMilestone.points,
+        finalTotalPoints,
+        leagueInfo.nextMilestone,
+        leagueInfo.prizeTier,
+        leagueInfo.hasPrizePoolData,
+        leagueInfo.waterfallApplied,
+      );
+      this.updateProgressBar(leagueInfo.progressPercent);
+    } catch (error) {
+      console.error(
+        "❌ Failed to load arcade milestones for league calculation:",
+        error,
+      );
+      // Show error message but continue with basic UI update
+      this.showMessage(
+        "#error-message",
+        browser.i18n.getMessage("errorLoadingData"),
+        ["text-red-500"],
+      );
+    }
     this.updateLastUpdated(lastUpdated);
 
     // Show arcade points section

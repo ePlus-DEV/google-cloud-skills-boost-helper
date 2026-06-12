@@ -4,6 +4,7 @@
 
 import StorageService from "../services/storageService";
 import SearchService from "../services/searchService";
+import { addSolutionUtmParams } from "../utils/trackingUrl";
 
 const TELEGRAM_SUPPORT_URL = "https://t.me/eplus_google";
 
@@ -79,6 +80,38 @@ const UIComponents = {
         transition: "opacity 200ms ease, transform 200ms ease",
         visibility: "hidden",
       } as Partial<CSSStyleDeclaration>);
+
+      const backToTopLabel =
+        browser.i18n.getMessage("backToTop") || "Back to top";
+      container.innerHTML = `
+        <ql-button
+          icon="arrow_upward"
+          type="button"
+          title="${backToTopLabel}"
+          data-aria-label="${backToTopLabel}"
+        ></ql-button>
+      `;
+
+      const qbtn = container.querySelector("ql-button") as HTMLElement | null;
+      if (qbtn?.style) {
+        Object.assign(qbtn.style, {
+          width: "44px",
+          height: "44px",
+          minWidth: "44px",
+          minHeight: "44px",
+          borderRadius: "50%",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxSizing: "border-box",
+          padding: "0",
+          cursor: "pointer",
+          backgroundColor: "#ffffff",
+          border: "1px solid rgba(0,0,0,0.12)",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
+          color: "#111",
+        } as Partial<CSSStyleDeclaration>);
+      }
 
       const THRESHOLD = 300; // px scrolled before showing button
 
@@ -195,16 +228,7 @@ const UIComponents = {
     });
 
     if (url) {
-      // Validate and normalize the URL
-      let safeUrl: string | null = null;
-      try {
-        const parsedUrl = new URL(url, "https://eplus.dev");
-        if (parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:") {
-          safeUrl = parsedUrl.toString();
-        }
-      } catch (e) {
-        // Invalid URL, do not render button
-      }
+      const safeUrl = addSolutionUtmParams(url);
 
       if (safeUrl) {
         // Use the same innerHTML-based insertion as the "No solution" branch

@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "Nhập dữ liệu"
-  }
+  },
+  "textNotQualified": {
+    "message": "Chưa đủ điều kiện"
+  },
+  "textPrizePoolUnavailable": { "message": "Quỹ ước tính: không còn suất" },
+  "textPrizePoolDataUnavailable": { "message": "Quỹ ước tính: không có dữ liệu suất" },
+  "textPrizePool": { "message": "Quỹ ước tính" },
+  "textNextPool": { "message": "Quỹ ước tính tiếp theo" },
+  "textSpotsLeft": { "message": "suất còn lại" },
+  "textTotalSlots": { "message": "tổng số suất" },
+  "textViaWaterfall": { "message": "qua cơ chế waterfall" },
+  "textWaterfallTooltipApplied": { "message": "Đây là ước tính dựa trên điểm của bạn và số suất mới nhất còn trong quỹ. Hạng điểm của bạn có vẻ đã đầy, nên ước tính sẽ được chuyển xuống hạng còn suất được hiển thị tại đây. Điều kiện nhận giải cuối cùng do Google quyết định khi phân bổ giải thưởng." },
+  "textWaterfallTooltipEligible": { "message": "Đây là ước tính dựa trên điểm của bạn và số suất mới nhất còn trong quỹ. Điều kiện nhận giải cuối cùng do Google quyết định theo cơ chế phân bổ giải thưởng ai đến trước được trước." },
+  "textWaterfallTooltipNext": { "message": "Bạn chưa đạt hạng giải thưởng tiếp theo. Phần này hiển thị quỹ ước tính tiếp theo và số điểm bạn cần thêm." }
 }

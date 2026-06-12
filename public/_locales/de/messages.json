@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "Daten importieren"
-  }
+  },
+  "textNotQualified": {
+    "message": "Nicht qualifiziert"
+  },
+  "textPrizePoolUnavailable": { "message": "Geschätzter Pool: keine Plätze mehr frei" },
+  "textPrizePoolDataUnavailable": { "message": "Geschätzter Pool: Platzdaten nicht verfügbar" },
+  "textPrizePool": { "message": "Geschätzter Pool" },
+  "textNextPool": { "message": "Nächster geschätzter Pool" },
+  "textSpotsLeft": { "message": "Plätze übrig" },
+  "textTotalSlots": { "message": "Plätze insgesamt" },
+  "textViaWaterfall": { "message": "per Waterfall" },
+  "textWaterfallTooltipApplied": { "message": "Dies ist eine Schätzung basierend auf deinen Punkten und den neuesten verfügbaren Pool-Plätzen. Deine Punktestufe scheint voll zu sein, daher wird die Schätzung auf die hier angezeigte verfügbare Stufe übertragen. Die endgültige Berechtigung wird durch Googles Preisvergabe entschieden." },
+  "textWaterfallTooltipEligible": { "message": "Dies ist eine Schätzung basierend auf deinen Punkten und den neuesten verfügbaren Pool-Plätzen. Die endgültige Berechtigung wird durch Googles Preisvergabe nach dem Prinzip „Wer zuerst kommt, mahlt zuerst“ entschieden." },
+  "textWaterfallTooltipNext": { "message": "Du hast die nächste Preisstufe noch nicht erreicht. Dies zeigt den nächsten geschätzten Pool und wie viele Punkte du noch benötigst." }
 }

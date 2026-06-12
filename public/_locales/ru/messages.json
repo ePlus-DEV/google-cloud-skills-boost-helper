@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "Импорт данных"
-  }
+  },
+  "textNotQualified": {
+    "message": "Не соответствует требованиям"
+  },
+  "textPrizePoolUnavailable": { "message": "Оценочный фонд: мест не осталось" },
+  "textPrizePoolDataUnavailable": { "message": "Оценочный фонд: данные о слотах недоступны" },
+  "textPrizePool": { "message": "Оценочный фонд" },
+  "textNextPool": { "message": "Следующий оценочный фонд" },
+  "textSpotsLeft": { "message": "мест осталось" },
+  "textTotalSlots": { "message": "всего слотов" },
+  "textViaWaterfall": { "message": "через waterfall" },
+  "textWaterfallTooltipApplied": { "message": "Это оценка на основе ваших баллов и последних доступных слотов фонда. Похоже, ваш уровень по баллам заполнен, поэтому оценка переносится на доступный уровень, показанный здесь. Итоговое право на приз определяется распределением призов Google." },
+  "textWaterfallTooltipEligible": { "message": "Это оценка на основе ваших баллов и последних доступных слотов фонда. Итоговое право на приз определяется распределением призов Google в порядке очереди." },
+  "textWaterfallTooltipNext": { "message": "Вы ещё не достигли следующего призового уровня. Здесь показан следующий оценочный фонд и сколько баллов вам ещё нужно." }
 }

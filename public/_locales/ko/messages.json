@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "데이터 가져오기"
-  }
+  },
+  "textNotQualified": {
+    "message": "자격 없음"
+  },
+  "textPrizePoolUnavailable": { "message": "예상 풀: 남은 자리가 없습니다" },
+  "textPrizePoolDataUnavailable": { "message": "예상 풀: 슬롯 데이터를 사용할 수 없습니다" },
+  "textPrizePool": { "message": "예상 풀" },
+  "textNextPool": { "message": "다음 예상 풀" },
+  "textSpotsLeft": { "message": "남은 자리" },
+  "textTotalSlots": { "message": "총 슬롯" },
+  "textViaWaterfall": { "message": "워터폴 방식" },
+  "textWaterfallTooltipApplied": { "message": "이는 현재 포인트와 최신 사용 가능한 풀 슬롯을 기준으로 한 예상입니다. 현재 포인트 티어가 가득 찬 것으로 보여, 예상 결과가 여기에 표시된 사용 가능한 티어로 내려갑니다. 최종 자격은 Google의 상품 배정에 따라 결정됩니다." },
+  "textWaterfallTooltipEligible": { "message": "이는 현재 포인트와 최신 사용 가능한 풀 슬롯을 기준으로 한 예상입니다. 최종 자격은 Google의 선착순 상품 배정에 따라 결정됩니다." },
+  "textWaterfallTooltipNext": { "message": "아직 다음 상품 티어에 도달하지 않았습니다. 다음 예상 풀과 추가로 필요한 포인트 수를 보여줍니다." }
 }

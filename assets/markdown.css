@@ -178,6 +178,76 @@
 
 /* Custom styles for markdown content in options page */
 
+#markdown-content-wrapper {
+  position: relative;
+}
+
+.markdown-collapsible {
+  position: relative;
+  transition:
+    max-height 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease;
+  will-change: max-height;
+}
+
+.markdown-collapsible.is-collapsed::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 88px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(239, 246, 255, 0),
+    rgba(239, 246, 255, 0.96) 82%
+  );
+}
+
+.markdown-toggle-button {
+  min-height: 36px;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  color: #1d4ed8;
+  box-shadow: 0 8px 18px rgba(59, 130, 246, 0.12);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.markdown-toggle-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.42);
+  background: #ffffff;
+  color: #1e40af;
+  box-shadow: 0 10px 22px rgba(59, 130, 246, 0.18);
+}
+
+.markdown-toggle-button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 12px rgba(59, 130, 246, 0.14);
+}
+
+.markdown-toggle-button:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.65);
+  outline-offset: 3px;
+}
+
+.markdown-toggle-button:disabled {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.markdown-toggle-button i {
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Code blocks styling */
 .prose pre {
   background-color: #1f2937;
@@ -462,5 +532,35 @@
 
   .prose hr {
     border-top-color: rgba(148, 163, 184, 0.12);
+  }
+
+  .markdown-collapsible.is-collapsed::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0),
+      rgba(15, 23, 42, 0.96) 82%
+    );
+  }
+
+  .markdown-toggle-button {
+    border-color: rgba(147, 197, 253, 0.28);
+    background: rgba(15, 23, 42, 0.78);
+    color: #bfdbfe;
+    box-shadow: 0 10px 22px rgba(2, 6, 23, 0.28);
+  }
+
+  .markdown-toggle-button:hover {
+    border-color: rgba(147, 197, 253, 0.48);
+    background: rgba(30, 41, 59, 0.94);
+    color: #dbeafe;
+    box-shadow: 0 12px 26px rgba(2, 6, 23, 0.36);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-collapsible,
+  .markdown-toggle-button,
+  .markdown-toggle-button i {
+    transition: none;
   }
 }

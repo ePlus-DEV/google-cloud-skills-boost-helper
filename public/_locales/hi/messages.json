@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "डेटा इम्पोर्ट करें"
-  }
+  },
+  "textNotQualified": {
+    "message": "योग्य नहीं"
+  },
+  "textPrizePoolUnavailable": { "message": "अनुमानित पूल: कोई स्थान शेष नहीं" },
+  "textPrizePoolDataUnavailable": { "message": "अनुमानित पूल: स्लॉट डेटा उपलब्ध नहीं" },
+  "textPrizePool": { "message": "अनुमानित पूल" },
+  "textNextPool": { "message": "अगला अनुमानित पूल" },
+  "textSpotsLeft": { "message": "स्थान शेष" },
+  "textTotalSlots": { "message": "कुल स्लॉट" },
+  "textViaWaterfall": { "message": "वॉटरफॉल के माध्यम से" },
+  "textWaterfallTooltipApplied": { "message": "यह आपके पॉइंट्स और नवीनतम उपलब्ध पूल स्लॉट्स के आधार पर एक अनुमान है. आपका पॉइंट टियर भरा हुआ लगता है, इसलिए अनुमान यहाँ दिखाए गए उपलब्ध टियर तक नीचे चला जाता है. अंतिम पात्रता Google के पुरस्कार आवंटन द्वारा तय की जाती है." },
+  "textWaterfallTooltipEligible": { "message": "यह आपके पॉइंट्स और नवीनतम उपलब्ध पूल स्लॉट्स के आधार पर एक अनुमान है. अंतिम पात्रता Google के पहले आओ, पहले पाओ पुरस्कार आवंटन द्वारा तय की जाती है." },
+  "textWaterfallTooltipNext": { "message": "आप अभी अगले पुरस्कार टियर तक नहीं पहुँचे हैं. यह अगला अनुमानित पूल और आपको कितने और पॉइंट्स चाहिए, यह दिखाता है." }
 }

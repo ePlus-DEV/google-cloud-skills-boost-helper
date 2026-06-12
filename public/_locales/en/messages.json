@@ -880,5 +880,38 @@
   },
   "labelImportData": {
     "message": "Import data"
+  },
+  "textNotQualified": {
+    "message": "Not qualified"
+  },
+  "textPrizePoolUnavailable": {
+    "message": "Estimated pool: no spots left"
+  },
+  "textPrizePoolDataUnavailable": {
+    "message": "Estimated pool: slot data unavailable"
+  },
+  "textPrizePool": {
+    "message": "Estimated pool"
+  },
+  "textNextPool": {
+    "message": "Next estimated pool"
+  },
+  "textSpotsLeft": {
+    "message": "spots left"
+  },
+  "textTotalSlots": {
+    "message": "total slots"
+  },
+  "textViaWaterfall": {
+    "message": "via waterfall"
+  },
+  "textWaterfallTooltipApplied": {
+    "message": "This is an estimate based on your points and the latest available pool slots. Your point tier appears full, so the estimate rolls down to the available tier shown here. Final eligibility is decided by Google's prize allocation."
+  },
+  "textWaterfallTooltipEligible": {
+    "message": "This is an estimate based on your points and the latest available pool slots. Final eligibility is decided by Google's first-come, first-served prize allocation."
+  },
+  "textWaterfallTooltipNext": {
+    "message": "You have not reached the next prize tier yet. This shows the next estimated pool and how many more points you need."
   }
 }

@@ -45,8 +45,11 @@ export interface BadgeData {
 }
 
 export interface Milestone {
+  /** Normalized milestone shape loaded from Remote Config. */
   points: number;
   league: string;
+  slots?: number;
+  spotsLeft?: number;
 }
 
 export interface UIUpdateData {

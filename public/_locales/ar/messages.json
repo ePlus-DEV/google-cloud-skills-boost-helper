@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "استيراد البيانات"
-  }
+  },
+  "textNotQualified": {
+    "message": "غير مؤهل"
+  },
+  "textPrizePoolUnavailable": { "message": "المجموعة المقدّرة: لا توجد أماكن متبقية" },
+  "textPrizePoolDataUnavailable": { "message": "المجموعة المقدّرة: بيانات المقاعد غير متاحة" },
+  "textPrizePool": { "message": "المجموعة المقدّرة" },
+  "textNextPool": { "message": "المجموعة المقدّرة التالية" },
+  "textSpotsLeft": { "message": "أماكن متبقية" },
+  "textTotalSlots": { "message": "إجمالي المقاعد" },
+  "textViaWaterfall": { "message": "عبر آلية التدرج" },
+  "textWaterfallTooltipApplied": { "message": "هذا تقدير يعتمد على نقاطك وأحدث المقاعد المتاحة في المجموعة. يبدو أن فئة نقاطك ممتلئة، لذلك ينتقل التقدير إلى الفئة المتاحة المعروضة هنا. الأهلية النهائية تحددها Google عند تخصيص الجوائز." },
+  "textWaterfallTooltipEligible": { "message": "هذا تقدير يعتمد على نقاطك وأحدث المقاعد المتاحة في المجموعة. الأهلية النهائية تحددها Google وفقًا لتخصيص الجوائز بأسبقية الوصول." },
+  "textWaterfallTooltipNext": { "message": "لم تصل بعد إلى فئة الجوائز التالية. يعرض هذا المجموعة المقدّرة التالية وعدد النقاط الإضافية التي تحتاجها." }
 }

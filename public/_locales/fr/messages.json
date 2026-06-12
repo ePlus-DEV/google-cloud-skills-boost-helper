@@ -880,5 +880,18 @@
   },
   "labelImportData": {
     "message": "Importer les données"
-  }
+  },
+  "textNotQualified": {
+    "message": "Non éligible"
+  },
+  "textPrizePoolUnavailable": { "message": "Réserve estimée : plus aucune place disponible" },
+  "textPrizePoolDataUnavailable": { "message": "Réserve estimée : données des places indisponibles" },
+  "textPrizePool": { "message": "Réserve estimée" },
+  "textNextPool": { "message": "Réserve estimée suivante" },
+  "textSpotsLeft": { "message": "places restantes" },
+  "textTotalSlots": { "message": "places au total" },
+  "textViaWaterfall": { "message": "via cascade" },
+  "textWaterfallTooltipApplied": { "message": "Il s’agit d’une estimation basée sur vos points et les dernières places disponibles dans la réserve. Votre niveau de points semble complet, l’estimation descend donc vers le niveau disponible affiché ici. L’éligibilité finale est décidée par l’attribution des prix de Google." },
+  "textWaterfallTooltipEligible": { "message": "Il s’agit d’une estimation basée sur vos points et les dernières places disponibles dans la réserve. L’éligibilité finale est décidée par l’attribution des prix de Google selon le principe du premier arrivé, premier servi." },
+  "textWaterfallTooltipNext": { "message": "Vous n’avez pas encore atteint le prochain niveau de prix. Ceci affiche la prochaine réserve estimée et le nombre de points supplémentaires dont vous avez besoin." }
 }

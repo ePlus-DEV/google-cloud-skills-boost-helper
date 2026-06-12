@@ -15,15 +15,30 @@ class FirebaseService {
   private remoteConfig: RemoteConfig | null = null;
   private initialized = false;
 
-  // Detect if running in local environment
-  private isLocalEnvironment =
-    import.meta.env.MODE === "development" ||
-    import.meta.env.DEV === true ||
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
+  // Memoization for fetches to avoid repeated fetchAndActivate calls
+  private lastFetchAt: number | null = null;
+  private fetchPromise: Promise<boolean> | null = null;
 
   // Local config store for development
   private localConfigStore: Record<string, string | boolean | number> = {};
+  private forceRemoteSession = false;
+
+  /**
+   * Check if running in local environment (getter to evaluate fresh each time)
+   */
+  private get isLocalEnvironment(): boolean {
+    const isDev =
+      import.meta.env.MODE === "development" ||
+      import.meta.env.DEV === true ||
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+    // Include a reference to `this` so class getter lint rule is satisfied
+    console.debug(
+      `[isLocalEnvironment] isDev=${isDev}, forceRemote=${forceRemote}, initialized=${this.initialized}`,
+    );
+    return isDev && !forceRemote && !this.forceRemoteSession;
+  }
 
   /**
    * Get Firebase configuration from environment variables
@@ -74,6 +89,12 @@ class FirebaseService {
       import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE || nextSeasonDeadline;
     const defaultFacilitatorDeadline =
       import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR || nextSeasonDeadline;
+    const envArcadeMilestones = import.meta.env.WXT_ARCADE_MILESTONES;
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+    const defaultArcadeMilestones =
+      !forceRemote && envArcadeMilestones?.trim()
+        ? envArcadeMilestones || ""
+        : "";
 
     return {
       countdown_deadline_facilitator: defaultFacilitatorDeadline,
@@ -82,6 +103,7 @@ class FirebaseService {
       countdown_deadline_arcade: defaultArcadeDeadline,
       countdown_enabled_arcade:
         import.meta.env.WXT_COUNTDOWN_ENABLED_ARCADE || "true",
+      arcade_milestones: defaultArcadeMilestones,
     };
   }
 
@@ -94,11 +116,28 @@ class FirebaseService {
   /**
    * Initialize Firebase and Remote Config
    */
-  async initialize(config?: Partial<FirebaseConfig>): Promise<void> {
+  async initialize(
+    config?: Partial<FirebaseConfig>,
+    options?: { forceRemote?: boolean },
+  ): Promise<void> {
     try {
-      if (this.initialized) {
-        return;
+      if (options?.forceRemote) {
+        this.forceRemoteSession = true;
       }
+
+      if (this.initialized) {
+        if (options?.forceRemote && !this.remoteConfig) {
+          this.initialized = false;
+          this.localConfigStore = {};
+        } else {
+          console.debug("[initialize] Already initialized, skipping...");
+          return;
+        }
+      }
+
+      console.debug(
+        `[initialize] isLocalEnvironment=${this.isLocalEnvironment}, MODE=${import.meta.env.MODE}, FORCE_REMOTE=${import.meta.env.WXT_FORCE_REMOTE_CONFIG}`,
+      );
 
       // In local environment, use local store instead of Firebase
       if (this.isLocalEnvironment) {
@@ -107,9 +146,17 @@ class FirebaseService {
         );
         // Initialize local store with default values
         this.localConfigStore = { ...this.defaultValues };
+        console.debug(
+          "[initialize] Local config store initialized with:",
+          this.localConfigStore,
+        );
         this.initialized = true;
         return;
       }
+
+      console.info(
+        "🔗 FirebaseService: Connecting to Firebase Remote Config...",
+      );
 
       // Use provided config or default
       const firebaseConfig = { ...this.defaultConfig, ...config };
@@ -122,18 +169,27 @@ class FirebaseService {
 
       // If required keys are missing, skip initialization and keep using defaults
       if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-        console.warn(
-          "FirebaseService: apiKey or projectId missing; skipping Firebase initialization and using default Remote Config values.",
+        console.error(
+          "❌ FirebaseService: apiKey or projectId missing; cannot connect to Firebase!",
+          {
+            apiKey: Boolean(firebaseConfig.apiKey),
+            projectId: Boolean(firebaseConfig.projectId),
+          },
         );
-        this.initialized = false;
-        return;
+        throw new Error(
+          "Firebase config incomplete - missing apiKey or projectId",
+        );
       }
 
       // Initialize Firebase App
+      console.debug("[initialize] Initializing Firebase App...");
       this.app = initializeApp(firebaseConfig);
+      console.debug("[initialize] Firebase App initialized successfully");
 
       // Initialize Remote Config
+      console.debug("[initialize] Getting Remote Config instance...");
       this.remoteConfig = getRemoteConfig(this.app);
+      console.debug("[initialize] Remote Config instance obtained");
 
       // Set default values. Assign to `defaultConfig` property which works
       // with the bundled SDK used by the build. Use ts-ignore because the
@@ -142,24 +198,38 @@ class FirebaseService {
       // @ts-ignore
       this.remoteConfig.defaultConfig = this.defaultValues;
 
-      // Configure Remote Config settings
+      console.debug("[initialize] Set defaultConfig to:", this.defaultValues);
+
+      // Configure Remote Config settings. Keep remote/local selection separate
+      // from fetch throttling; set WXT_FIREBASE_FETCH_INTERVAL_MS=0 only for
+      // short development sessions that need immediate Firebase updates.
+      const minInterval = Number.parseInt(
+        import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "900000",
+      );
       this.remoteConfig.settings = {
-        minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
-        ), // 1 hour
+        minimumFetchIntervalMillis: minInterval,
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
-        ), // 1 minute
+        ),
       };
 
-      this.initialized = true;
+      console.debug("[initialize] Remote Config settings configured");
 
-      // Fetch initial config
+      this.initialized = true;
+      console.debug("[initialize] Set initialized=true");
+
+      // Fetch initial config (force during initialization)
+      console.debug("[initialize] Fetching initial config...");
       await this.fetchConfig();
+      this.lastFetchAt = Date.now();
+      console.debug("[initialize] Initial fetch completed");
     } catch (error) {
       console.error("❌ Failed to initialize Firebase:", error);
-      // Continue with default values even if Firebase fails
+      // In local environment, continue without Firebase
+      // In remote environment, will fallback to defaults
       this.initialized = false;
+      this.remoteConfig = null;
+      console.warn("[initialize] Fallback: will use default values");
     }
   }
 
@@ -169,23 +239,72 @@ class FirebaseService {
   async fetchConfig(): Promise<boolean> {
     try {
       if (!this.remoteConfig) {
+        console.error("[fetchConfig] remoteConfig is null!");
         return false;
       }
 
+      console.debug("[fetchConfig] Starting fetchAndActivate...");
       const activated = await fetchAndActivate(this.remoteConfig);
+      console.debug("[fetchConfig] fetchAndActivate result:", activated);
+
+      // Update last successful fetch timestamp
+      this.lastFetchAt = Date.now();
+
+      // Log all params after fetch
+      const allParams = this.getAllParams();
+      console.debug("[fetchConfig] All params after fetch:", allParams);
 
       return activated;
     } catch (error) {
-      console.error("❌ Failed to fetch Remote Config:", error);
+      console.error("❌ [fetchConfig] Failed to fetch Remote Config:", error);
       return false;
     }
   }
 
   /**
+   * Ensure a recent fetch — uses simple memoization so multiple callers
+   * in a short time window share the same fetch instead of triggering
+   * repeated network requests.
+   */
+  private ensureFetched(force = false): Promise<boolean> {
+    if (force) return this.fetchConfig();
+
+    const minInterval = Number.parseInt(
+      import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "900000",
+    );
+
+    if (this.lastFetchAt && Date.now() - this.lastFetchAt < minInterval) {
+      return Promise.resolve(true); // cache still fresh
+    }
+
+    if (this.fetchPromise) return this.fetchPromise;
+
+    this.fetchPromise = this.fetchConfig()
+      .then((res) => {
+        this.fetchPromise = null;
+        return res;
+      })
+      .catch((e) => {
+        this.fetchPromise = null;
+        return false;
+      });
+
+    return this.fetchPromise;
+  }
+
+  /**
    * Refresh (fetch & activate) and return whether activation succeeded
    */
-  async refreshConfig(): Promise<boolean> {
+  refreshConfig(): Promise<boolean> {
     return this.fetchConfig();
+  }
+
+  /**
+   * Alias for fetchConfig (called from popupUIService)
+   */
+  fetchRemoteConfig(force = false): Promise<boolean> {
+    console.debug("[fetchRemoteConfig] Attempting to fetch fresh config...");
+    return this.ensureFetched(force);
   }
 
   /**
@@ -269,8 +388,8 @@ class FirebaseService {
         return this.defaultValues.countdown_deadline_facilitator;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, "countdown_deadline_facilitator");
       const source =
@@ -328,8 +447,8 @@ class FirebaseService {
         return defaultEnabled;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, "countdown_enabled_facilitator");
       const source =
@@ -367,49 +486,67 @@ class FirebaseService {
 
   /**
    * Generic helper to get a string parameter from Remote Config with fallback
+   * Follows same pattern as getCountdownDeadline() - always has fallback
    */
   async getStringParam(key: string, fallback: string): Promise<string> {
     try {
+      console.debug(
+        `[getStringParam] key=${key}, isLocalEnvironment=${this.isLocalEnvironment}, initialized=${this.initialized}`,
+      );
+
       // In local environment, use local store
       if (this.isLocalEnvironment) {
         const value = this.localConfigStore[key] as string;
         console.debug(
-          `FirebaseService: Using LOCAL ${key}:`,
+          `✅ [getStringParam] Using LOCAL ${key}:`,
           value || fallback,
         );
         return value || fallback;
       }
 
+      // If Firebase is NOT initialized, use fallback
       if (!this.initialized || !this.remoteConfig) {
         console.debug(
-          `FirebaseService: Not initialized, using fallback for ${key}`,
+          `[getStringParam] Firebase not initialized, using fallback for ${key}`,
         );
         return fallback;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      console.debug(
+        `[getStringParam] Ensuring recent remote config for ${key}...`,
+      );
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, key);
+      console.debug(`[getStringParam] getValue result for ${key}:`, val);
+
       const source =
         typeof (val as any).getSource === "function"
           ? (val as any).getSource()
           : undefined;
 
       const value = val.asString();
+      console.debug(
+        `[getStringParam] asString result for ${key}: value="${value?.substring(0, 50)}...", source="${source}"`,
+      );
 
       // Only use remote value if it exists and is from remote source
       if (value && source === "remote") {
-        console.debug(`FirebaseService: Using remote ${key}:`, value);
+        console.debug(
+          `✅ [getStringParam] Using REMOTE ${key}:`,
+          value.substring(0, 50),
+        );
         return value;
       }
 
+      // Otherwise use fallback
       console.debug(
-        `FirebaseService: Using fallback for ${key} (source: ${source})`,
+        `[getStringParam] Using fallback for ${key} (source: ${source})`,
       );
       return fallback;
     } catch (e) {
-      console.error(`Failed to get string param ${key}:`, e);
+      console.error(`❌ [getStringParam] Failed to get ${key}:`, e);
       return fallback;
     }
   }
@@ -435,8 +572,8 @@ class FirebaseService {
         return fallback;
       }
 
-      // Fetch remote config to ensure we have the latest values
-      await this.fetchConfig();
+      // Ensure remote config is recent (deduped by `ensureFetched`)
+      await this.ensureFetched();
 
       const val = getValue(this.remoteConfig, key);
       const source =
@@ -477,8 +614,8 @@ class FirebaseService {
 
       // If the current value is not from the remote server, attempt to fetch & activate
       if (src !== "remote") {
-        // fetchConfig will return true when activated
-        await this.fetchConfig();
+        // Use ensureFetched so concurrent callers are deduped
+        await this.ensureFetched();
       }
     } catch (e) {
       // Non-fatal: leave defaults in place
@@ -561,7 +698,7 @@ class FirebaseService {
       config: FirebaseService.getFirebaseConfig(),
       settings: {
         minimumFetchIntervalMillis: Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "900000",
         ),
         fetchTimeoutMillis: Number.parseInt(
           import.meta.env.WXT_FIREBASE_FETCH_TIMEOUT_MS || "60000",
