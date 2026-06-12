@@ -200,13 +200,12 @@ class FirebaseService {
 
       console.debug("[initialize] Set defaultConfig to:", this.defaultValues);
 
-      // Configure Remote Config settings. Respect env unless forced for dev.
-      const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
-      const minInterval = forceRemote
-        ? 0
-        : Number.parseInt(
-            import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
-          );
+      // Configure Remote Config settings. Keep remote/local selection separate
+      // from fetch throttling; set WXT_FIREBASE_FETCH_INTERVAL_MS=0 only for
+      // short development sessions that need immediate Firebase updates.
+      const minInterval = Number.parseInt(
+        import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+      );
       this.remoteConfig.settings = {
         minimumFetchIntervalMillis: minInterval,
         fetchTimeoutMillis: Number.parseInt(
@@ -270,12 +269,9 @@ class FirebaseService {
   private ensureFetched(force = false): Promise<boolean> {
     if (force) return this.fetchConfig();
 
-    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
-    const minInterval = forceRemote
-      ? 0
-      : Number.parseInt(
-          import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
-        );
+    const minInterval = Number.parseInt(
+      import.meta.env.WXT_FIREBASE_FETCH_INTERVAL_MS || "3600000",
+    );
 
     if (this.lastFetchAt && Date.now() - this.lastFetchAt < minInterval) {
       return Promise.resolve(true); // cache still fresh
@@ -306,9 +302,9 @@ class FirebaseService {
   /**
    * Alias for fetchConfig (called from popupUIService)
    */
-  fetchRemoteConfig(): Promise<boolean> {
+  fetchRemoteConfig(force = false): Promise<boolean> {
     console.debug("[fetchRemoteConfig] Attempting to fetch fresh config...");
-    return this.fetchConfig();
+    return this.ensureFetched(force);
   }
 
   /**

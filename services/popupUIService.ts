@@ -53,9 +53,12 @@ const PopupUIService = {
    */
   async getArcadeMilestones(): Promise<Milestone[]> {
     console.debug("[getArcadeMilestones] START");
+    const envValue = import.meta.env.WXT_ARCADE_MILESTONES;
+    const forceRemote = import.meta.env.WXT_FORCE_REMOTE_CONFIG === "true";
+    const shouldUseLocalCache = !forceRemote && envValue?.trim();
 
     // Return cached value if already loaded
-    if (this._arcadeMilestonesCache !== null) {
+    if (shouldUseLocalCache && this._arcadeMilestonesCache !== null) {
       console.debug("[getArcadeMilestones] Returning cached milestones");
       return this._arcadeMilestonesCache;
     }
