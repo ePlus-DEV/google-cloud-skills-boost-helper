@@ -10,10 +10,7 @@ function sanitizeMarkdownHtml(html: string): string {
     .forEach((el) => el.remove());
   div.querySelectorAll("*").forEach((el) => {
     for (const attr of Array.from(el.attributes)) {
-      if (
-        attr.name.startsWith("on") ||
-        /^\s*javascript:/i.test(attr.value)
-      ) {
+      if (attr.name.startsWith("on") || /^\s*javascript:/i.test(attr.value)) {
         el.removeAttribute(attr.name);
       }
     }
