@@ -12,7 +12,7 @@ function sanitizeMarkdownHtml(html: string): string {
     for (const attr of Array.from(el.attributes)) {
       if (
         attr.name.startsWith("on") ||
-        attr.value.trimStart().toLowerCase().startsWith("javascript:") // skipcq: JS-0007
+        /^\s*javascript:/i.test(attr.value)
       ) {
         el.removeAttribute(attr.name);
       }
