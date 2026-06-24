@@ -3,6 +3,12 @@ name: ✨ Auto-label PR
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: PR number to label
+        required: true
+        type: number
 
 jobs:
   update-pr:
@@ -17,10 +23,16 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
+            const prNumber = context.eventName === 'workflow_dispatch'
+              ? Number('${{ inputs.pr_number }}')
+              : context.payload.pull_request.number;
+
+            core.setOutput('pr_number', prNumber);
+
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
+              pull_number: prNumber
             });
 
             const hasAssignees = pr.assignees && pr.assignees.length > 0;
@@ -30,7 +42,7 @@ jobs:
             const { data: files } = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
+              pull_number: prNumber
             });
 
             const rules = [
@@ -59,7 +71,7 @@ jobs:
 
             core.setOutput('labels', JSON.stringify(newLabels));
             core.setOutput('current_area_labels', JSON.stringify(currentAreaLabels));
-            console.log('New labels:', newLabels);
+            console.log('PR:', prNumber, '| New labels:', newLabels);
             console.log('Current area labels:', currentAreaLabels);
 
       - name: Sync Author
@@ -71,7 +83,7 @@ jobs:
               await github.rest.issues.addAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                issue_number: ${{ steps.check.outputs.pr_number }},
                 assignees: ['${{ steps.check.outputs.author }}']
               });
               console.log('Assigned PR author: ${{ steps.check.outputs.author }}');
@@ -93,7 +105,7 @@ jobs:
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                issue_number: ${{ steps.check.outputs.pr_number }},
                 labels: toAdd
               });
               console.log('Added:', toAdd);
@@ -103,7 +115,7 @@ jobs:
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                issue_number: ${{ steps.check.outputs.pr_number }},
                 name: label
               });
               console.log('Removed:', label);
