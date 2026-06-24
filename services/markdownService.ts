@@ -12,7 +12,9 @@ function sanitizeMarkdownHtml(html: string): string {
     for (const attr of Array.from(el.attributes)) {
       if (
         attr.name.startsWith("on") ||
-        /^\s*javascript:/i.test(attr.value)
+        ["javascript:", "data:", "vbscript:"].some((scheme) =>
+          attr.value.trimStart().toLowerCase().startsWith(scheme),
+        )
       ) {
         el.removeAttribute(attr.name);
       }
@@ -303,7 +305,7 @@ const MarkdownService = {
    */
   async openLink(url: string): Promise<void> {
     try {
-      // First attempt: Use browser.tabs.create if available (most reliable in extensions)
+      // First attempt: Use browser.tabs.create (WXT polyfill covers Chrome + Firefox)
       if (typeof browser !== "undefined" && browser.tabs?.create) {
         await browser.tabs.create({ url });
         return;
@@ -313,17 +315,7 @@ const MarkdownService = {
     }
 
     try {
-      // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
-      if (typeof chrome !== "undefined" && chrome.tabs?.create) {
-        chrome.tabs.create({ url });
-        return;
-      }
-    } catch (error) {
-      console.warn("Failed to open link via chrome.tabs:", error);
-    }
-
-    try {
-      // Third attempt: Use window.open (may not work in all extension contexts)
+      // Second attempt: Use window.open (may not work in all extension contexts)
       const newWindow = window.open(url, "_blank", "noopener,noreferrer");
       if (newWindow) {
         return;
