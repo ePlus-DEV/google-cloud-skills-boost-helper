@@ -68,14 +68,14 @@ yarn test       # Unit tests (coverage minimum: 60%)
 
 ### Project Structure
 
-| Path | Purpose |
-| --- | --- |
+| Path           | Purpose                                                      |
+| -------------- | ------------------------------------------------------------ |
 | `entrypoints/` | WXT entrypoints (background, content script, popup, options) |
-| `services/` | All business logic — keep UI-free |
-| `components/` | DOM element factories for content script UI |
-| `utils/` | Pure utility functions |
-| `types/` | Shared TypeScript types |
-| `tests/` | Vitest unit tests mirroring `services/` and `utils/` |
+| `services/`    | All business logic — keep UI-free                            |
+| `components/`  | DOM element factories for content script UI                  |
+| `utils/`       | Pure utility functions                                       |
+| `types/`       | Shared TypeScript types                                      |
+| `tests/`       | Vitest unit tests mirroring `services/` and `utils/`         |
 
 ---
 

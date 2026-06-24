@@ -29,12 +29,12 @@ yarn test:coverage       # With coverage report
 
 ### Entrypoints
 
-| File | Role |
-|------|------|
-| `entrypoints/background.ts` | Service worker — lifecycle, badge updates, message routing |
-| `entrypoints/content.ts` | Content script injected into Skills Boost pages |
-| `entrypoints/popup/` | React popup — dashboard, arcade points, accounts, leaderboards |
-| `entrypoints/options/` | React options page — settings, data management |
+| File                        | Role                                                           |
+| --------------------------- | -------------------------------------------------------------- |
+| `entrypoints/background.ts` | Service worker — lifecycle, badge updates, message routing     |
+| `entrypoints/content.ts`    | Content script injected into Skills Boost pages                |
+| `entrypoints/popup/`        | React popup — dashboard, arcade points, accounts, leaderboards |
+| `entrypoints/options/`      | React options page — settings, data management                 |
 
 ### Service Layer (`services/`)
 
@@ -53,6 +53,7 @@ All business logic lives here. Key services:
 ### Data Flow
 
 **Content script (lab pages):**
+
 1. `content.ts` → `LabService.isLabPage()` check
 2. `SearchService.extractQueryText()` pulls lab name from DOM
 3. `ApiClient.fetchPostsOfPublication()` hits external solutions API
@@ -60,11 +61,13 @@ All business logic lives here. Key services:
 5. `UIComponents.createSolutionElement()` injects button into page (Shadow DOM)
 
 **Popup:**
+
 1. `PopupService.initialize()` loads active account from `StorageService`
 2. `ArcadeApiService.fetchArcadeData()` hits arcade points API
 3. `PopupUIService.updateMainUI()` renders badges, milestones, leaderboards
 
 **Background:**
+
 - Handles `runtime.onInstalled` / `onStartup`
 - Routes messages between popup and content scripts
 - Updates extension badge with arcade point count
@@ -85,6 +88,7 @@ All business logic lives here. Key services:
 ### Profile URL Canonicalization
 
 Three accepted hosts all canonicalize to `www.skills.google`:
+
 - `www.skills.google`
 - `www.cloudskillsboost.google`
 - `www.qwiklabs.com`
