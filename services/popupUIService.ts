@@ -969,7 +969,10 @@ const PopupUIService = {
       const [currentAccount, facilitatorGloballyEnabled, arcadeEnabled] =
         await Promise.all([
           AccountService.getActiveAccount(),
-          firebaseService.getBooleanParam("countdown_enabled_facilitator", false),
+          firebaseService.getBooleanParam(
+            "countdown_enabled_facilitator",
+            false,
+          ),
           firebaseService.getBooleanParam("countdown_enabled_arcade", false),
         ]);
 

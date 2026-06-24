@@ -327,7 +327,11 @@ const TourService = {
   removeHighlight(): void {
     for (const el of document.querySelectorAll(".tour-highlight")) {
       el.classList.remove("tour-highlight");
-      Object.assign((el as HTMLElement).style, { zIndex: "", boxShadow: "", borderRadius: "" });
+      Object.assign((el as HTMLElement).style, {
+        zIndex: "",
+        boxShadow: "",
+        borderRadius: "",
+      });
     }
   },
 

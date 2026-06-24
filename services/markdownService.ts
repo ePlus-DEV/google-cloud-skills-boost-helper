@@ -229,7 +229,8 @@ const MarkdownService = {
       const contentArea = container.querySelector(contentSelector);
       if (!contentArea) return false;
 
-      (contentArea as HTMLElement).innerHTML = sanitizeMarkdownHtml(markdownHtml);
+      (contentArea as HTMLElement).innerHTML =
+        sanitizeMarkdownHtml(markdownHtml);
 
       // Rewrite relative image srcs based on the source URL
       try {
