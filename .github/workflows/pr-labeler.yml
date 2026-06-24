@@ -1,47 +1,114 @@
-name: PR Labeler
+name: ✨ Auto-label PR
 
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
 
-permissions:
-  contents: read
-  pull-requests: write
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
 jobs:
-  labeler:
-    name: Label PR by changed paths
+  update-pr:
+    name: Update PR
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
-      - name: Apply path-based labels
-        id: labeler
-        uses: actions/labeler@v5
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          sync-labels: true
-
-      - name: Apply fallback label if no area label matched
-        uses: actions/github-script@v7
+      - name: Gather Info
+        id: check
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
-            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+            const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
+              pull_number: context.payload.pull_request.number
             });
 
-            const hasAreaLabel = labels.some(l => l.name.startsWith('area:'));
+            const hasAssignees = pr.assignees && pr.assignees.length > 0;
+            core.setOutput('has_assignees', hasAssignees);
+            core.setOutput('author', pr.user.login);
 
-            if (!hasAreaLabel) {
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const rules = [
+              { label: 'area: services',  test: f => f.startsWith('services/') },
+              { label: 'area: ui',        test: f => f.startsWith('entrypoints/') || f.startsWith('components/') },
+              { label: 'area: tests',     test: f => f.startsWith('tests/') },
+              { label: 'area: i18n',      test: f => f.startsWith('public/_locales/') },
+              { label: 'area: release',   test: f => f === '.github/workflows/release.yml' },
+              { label: 'area: config',    test: f => /^(package\.json|yarn\.lock|.*\.config\.[a-z]+)$/.test(f) || (f.startsWith('.github/') && f !== '.github/workflows/release.yml') },
+              { label: 'area: docs',      test: f => f.endsWith('.md') || f.startsWith('docs/') },
+            ];
+
+            const matched = new Set();
+            for (const file of files) {
+              for (const rule of rules) {
+                if (rule.test(file.filename)) matched.add(rule.label);
+              }
+            }
+
+            if (matched.size === 0) matched.add('area: other');
+
+            const newLabels = Array.from(matched);
+            const currentAreaLabels = pr.labels
+              .map(l => l.name)
+              .filter(n => n.startsWith('area:'));
+
+            core.setOutput('labels', JSON.stringify(newLabels));
+            core.setOutput('current_area_labels', JSON.stringify(currentAreaLabels));
+            console.log('New labels:', newLabels);
+            console.log('Current area labels:', currentAreaLabels);
+
+      - name: Sync Author
+        if: steps.check.outputs.has_assignees == 'false'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                assignees: ['${{ steps.check.outputs.author }}']
+              });
+              console.log('Assigned PR author: ${{ steps.check.outputs.author }}');
+            } catch (err) {
+              console.warn('Error assigning author:', err.message);
+            }
+
+      - name: Sync Labels
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const newLabels = ${{ steps.check.outputs.labels }};
+            const currentLabels = ${{ steps.check.outputs.current_area_labels }};
+
+            const toAdd = newLabels.filter(l => !currentLabels.includes(l));
+            const toRemove = currentLabels.filter(l => !newLabels.includes(l));
+
+            if (toAdd.length > 0) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.payload.pull_request.number,
-                labels: ['area: other'],
+                labels: toAdd
               });
+              console.log('Added:', toAdd);
+            }
+
+            for (const label of toRemove) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                name: label
+              });
+              console.log('Removed:', label);
+            }
+
+            if (toAdd.length === 0 && toRemove.length === 0) {
+              console.log('No label changes needed');
             }
