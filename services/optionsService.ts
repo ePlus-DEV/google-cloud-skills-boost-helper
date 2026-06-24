@@ -8,7 +8,9 @@ import TourService from "./tourService";
 import ExportService from "./exportService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
+import { ModalUtils } from "../utils/modalUtils";
+import { DOMUtils } from "../utils/domUtils";
+import { PreviewUtils } from "../utils/previewUtils";
 import type { ArcadeData, Account, UserDetail } from "../types";
 
 /**

@@ -1242,7 +1242,7 @@
     "@rolldown/pluginutils" "1.0.0-rc.7"
     "@swc/core" "^1.15.11"
 
-"@vitejs/plugin-react@^4.4.1 || ^5.0.0 || ^6.0.0", "@vitejs/plugin-react@^6.0.1":
+"@vitejs/plugin-react@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-6.0.1.tgz#d9113b71a0a592714913eafd9e5e63bcafd0ff15"
   integrity sha512-l9X/E3cDb+xY3SWzlG1MOGt2usfEHGMNIaegaUGFsLkb3RCn/k8/TOXBcab+OndDI4TBtktT8/9BwwW8Vi9KUQ==
@@ -1352,22 +1352,15 @@
     "@types/filesystem" "*"
     "@types/har-format" "*"
 
-"@wxt-dev/browser@^0.1.42":
-  version "0.1.42"
-  resolved "https://registry.yarnpkg.com/@wxt-dev/browser/-/browser-0.1.42.tgz#a521fbe9ee142a5a0cd6975a8093d954cf430f0f"
-  integrity sha512-BSb0H09i4+0WlqFnN7LnZW0M6uCPH9KndciGx7mwOFKRVjNCorqwPk3hiVB58yQ+cyJNpDvYWL6IoPBxvP8qEA==
+"@wxt-dev/browser@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@wxt-dev/browser/-/browser-0.2.0.tgz#8fe339b9da58764158a30f1ed82ad4dd5ed522b5"
+  integrity sha512-gURcpkDUknl6FGe8LTsFqv4ZWfi/EacAalJ18qmtVzOnicCZRKkIGK2SApO7JxG4Ig589UexM/CADbKJ66h8aw==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
 
-"@wxt-dev/module-react@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@wxt-dev/module-react/-/module-react-1.2.2.tgz#e165d55506534fe41eb801e10d837a31c8b3ac24"
-  integrity sha512-+lRLi1r9dAXpLySWSIWHLJ1h/nFzR20iQnx3RNrKyA6oJg4+ClOluVXozHjfPg9Okfy/umtffiOopGayASrg6w==
-  dependencies:
-    "@vitejs/plugin-react" "^4.4.1 || ^5.0.0 || ^6.0.0"
-
-"@wxt-dev/storage@^1.0.0", "@wxt-dev/storage@^1.1.1":
+"@wxt-dev/storage@^1.0.0":
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/@wxt-dev/storage/-/storage-1.2.8.tgz#bb09cb5f70236a44311ed9aebae0aafe26532f47"
   integrity sha512-GWCFKgF5+d7eslOxUDFC70ypA9njupmJb1nQM8uZoX0J3sWT2BO5xJLzb1sYahWAfID9p2BMtnUBN1lkWxPsbQ==
@@ -1559,7 +1552,7 @@ bundle-name@^4.1.0:
   dependencies:
     run-applescript "^7.0.0"
 
-c12@^3.3.3:
+c12@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/c12/-/c12-3.3.4.tgz#1253a5faf8b61244884d42459b4a6412571fe9f3"
   integrity sha512-cM0ApFQSBXuourJejzwv/AuPRvAxordTyParRVcHjjtXirtkzM0uK2L9TTn9s0cXZbG7E55jCivRQzoxYmRAlA==
@@ -2127,10 +2120,10 @@ fdir@^6.5.0:
   resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.5.0.tgz#ed2ab967a331ade62f18d077dae192684d50d350"
   integrity sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==
 
-filesize@^11.0.15:
-  version "11.0.16"
-  resolved "https://registry.yarnpkg.com/filesize/-/filesize-11.0.16.tgz#14bc8f46cbcd018a37e9d374e860be8b80c1e016"
-  integrity sha512-XMcUu0Zxnh0L8rY5b5vrdKKs0H3l3osTp9vNEBulRmwLqYfuQe5SJCagpA0/sGMJx2KHbD+IWOyd6QsJQuYEkQ==
+filesize@^11.0.17:
+  version "11.0.17"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-11.0.17.tgz#fea569a71f0f716129fd7f5110427b7868499823"
+  integrity sha512-oHLTvMLw6imZUl1se/RBQrFlyy50nXce4sU7yGR6Qc0JgCwqnfiFsAnEwotdGmfKLD7SArGUk2/5STU0k8LOBQ==
 
 firebase@^12.15.0:
   version "12.15.0"
@@ -2435,11 +2428,6 @@ ini@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/ini/-/ini-4.1.3.tgz#4c359675a6071a46985eb39b14e4a2c0ec98a795"
   integrity sha512-X7rqawQBvfdjS10YU1y1YVreA3SsLrW9dX2CewP2EbBJM4ypVNLDkO5y04gejPwKIY9lR+7r9gn3rFPt/kmWFg==
-
-intro.js@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/intro.js/-/intro.js-8.3.2.tgz#942129bccf0490a750ab04b1db744e3bb5f000b7"
-  integrity sha512-+QsuU8P7Z/O7stAwZ8Uj6CPyKsY6xVx/7hKTVLjlIEPYHaT43XnEUUYHCln6Ehr7GlDuwczh6I8PD/HGf4EG0A==
 
 is-absolute@^0.1.7:
   version "0.1.7"
@@ -3479,13 +3467,6 @@ run-applescript@^7.0.0:
   resolved "https://registry.yarnpkg.com/run-applescript/-/run-applescript-7.1.0.tgz#2e9e54c4664ec3106c5b5630e249d3d6595c4911"
   integrity sha512-DPe5pVFaAsinSaV6QjQ6gdiedWDcRCbUuiQfQa2wmWV7+xC9bGulGI8+TdRmoFkAPaBXk8CrAbnlY2ISniJ47Q==
 
-rxjs@^7.8.2:
-  version "7.8.2"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.2.tgz#955bc473ed8af11a002a2be52071bf475638607b"
-  integrity sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==
-  dependencies:
-    tslib "^2.1.0"
-
 safe-buffer@>=5.1.0, safe-buffer@^5.0.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
@@ -4143,20 +4124,20 @@ wsl-utils@^0.3.0:
     is-wsl "^3.1.0"
     powershell-utils "^0.1.0"
 
-wxt@^0.20.26:
-  version "0.20.26"
-  resolved "https://registry.yarnpkg.com/wxt/-/wxt-0.20.26.tgz#e52dafb6117636f3577fb2f3f8d1afb68491c1eb"
-  integrity sha512-PMGz7sAlONJgwBkOriInXOoEU6/jlGKrhSFvZfiBPHZocyYPfnw1lod9rGDra957H83WO+TnGjYwJiGYciSIqA==
+wxt@^0.20.27:
+  version "0.20.27"
+  resolved "https://registry.yarnpkg.com/wxt/-/wxt-0.20.27.tgz#791fd8526d6661f5e27d77b537f79feb4e8b19f7"
+  integrity sha512-dm6yixz2awM4YMqpTJnsCa8aOPiTrjiIjbWslgR5hCjgwhuft+hLlla339Dt7gIKwQloee4oOruoK++vaX0APA==
   dependencies:
     "@1natsu/wait-element" "^4.1.2"
     "@aklinker1/rollup-plugin-visualizer" "5.12.0"
     "@webext-core/fake-browser" "^1.3.4"
     "@webext-core/isolated-element" "^1.1.3"
     "@webext-core/match-patterns" "^1.0.3"
-    "@wxt-dev/browser" "^0.1.42"
+    "@wxt-dev/browser" "^0.2.0"
     "@wxt-dev/storage" "^1.0.0"
     async-mutex "^0.5.0"
-    c12 "^3.3.3"
+    c12 "^3.3.4"
     cac "^6.7.14 || ^7.0.0"
     chokidar "^5.0.0"
     ci-info "^4.4.0"
@@ -4164,7 +4145,7 @@ wxt@^0.20.26:
     defu "^6.1.4"
     dotenv-expand "^12.0.3"
     esbuild "^0.27.1"
-    filesize "^11.0.15"
+    filesize "^11.0.17"
     get-port-please "^3.2.0"
     giget "^1.2.3 || ^2.0.0 || ^3.0.0"
     hookable "^6.1.0"
@@ -4185,7 +4166,7 @@ wxt@^0.20.26:
     prompts "^2.4.2"
     publish-browser-extension "^2.3.0 || ^3.0.2 || ^4.0.5"
     scule "^1.3.0"
-    tinyglobby "^0.2.15"
+    tinyglobby "^0.2.16"
     unimport "^3.13.1 || ^4.0.0 || ^5.0.0 || ^6.0.0"
     vite "^5.4.19 || ^6.3.4 || ^7.0.0 || ^8.0.0-0"
     vite-node "^3.2.4 || ^5.0.0 || ^6.0.0"

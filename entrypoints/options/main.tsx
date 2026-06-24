@@ -1,4 +1,5 @@
-import { OptionsService, BrowserService } from "../../services";
+import OptionsService from "../../services/optionsService";
+import * as BrowserService from "../../services/browserService";
 import { initMarkdownToggle } from "./markdownToggle";
 import { initDataManagementToggle } from "./dataManagementToggle";
 import { initUIToggles } from "./uiToggles";
