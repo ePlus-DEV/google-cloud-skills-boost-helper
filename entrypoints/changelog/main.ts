@@ -59,9 +59,7 @@ function addHeadingIds() {
 
     // Add anchor link icon
     const headingElement = heading as HTMLElement;
-    headingElement.style.cursor = "pointer";
-    headingElement.style.position = "relative";
-    headingElement.style.scrollMarginTop = "100px"; // Offset for fixed headers
+    headingElement.style.cssText += ";cursor:pointer;position:relative;scroll-margin-top:100px";
 
     // Add click handler for copying link
     heading.addEventListener("click", () => {

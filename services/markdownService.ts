@@ -1,6 +1,25 @@
 import { marked } from "marked";
 import type { MarkdownLoadOptions, MarkdownConfig } from "../types";
 
+function sanitizeMarkdownHtml(html: string): string {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  div
+    .querySelectorAll("script,iframe,object,embed,form,base")
+    .forEach((el) => el.remove());
+  div.querySelectorAll("*").forEach((el) => {
+    for (const attr of Array.from(el.attributes)) {
+      if (
+        attr.name.startsWith("on") ||
+        attr.value.trimStart().toLowerCase().startsWith("javascript:")
+      ) {
+        el.removeAttribute(attr.name);
+      }
+    }
+  });
+  return div.innerHTML;
+}
+
 /**
  * Service to handle markdown content loading and rendering
  */
@@ -95,9 +114,10 @@ const MarkdownService = {
         const markdownHtml = await marked.parse(markdownText);
 
         if (options.append) {
-          contentArea.innerHTML = contentArea.innerHTML + markdownHtml;
+          contentArea.innerHTML =
+            contentArea.innerHTML + sanitizeMarkdownHtml(markdownHtml);
         } else {
-          contentArea.innerHTML = markdownHtml;
+          contentArea.innerHTML = sanitizeMarkdownHtml(markdownHtml);
         }
 
         // Rewrite relative image srcs to absolute URLs based on source URL
@@ -209,7 +229,7 @@ const MarkdownService = {
       const contentArea = container.querySelector(contentSelector);
       if (!contentArea) return false;
 
-      (contentArea as HTMLElement).innerHTML = markdownHtml;
+      (contentArea as HTMLElement).innerHTML = sanitizeMarkdownHtml(markdownHtml);
 
       // Rewrite relative image srcs based on the source URL
       try {

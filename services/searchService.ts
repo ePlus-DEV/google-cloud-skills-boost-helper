@@ -102,14 +102,18 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-      .filter(Boolean);
+      .flatMap((w) => {
+        const c = w.replaceAll(/[^a-z0-9]/g, "");
+        return c ? [c] : [];
+      });
     const titleWordsSet = new Set(
       normalizedTitle
         .toLowerCase()
         .split(/[\s-]+/)
-        .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-        .filter(Boolean),
+        .flatMap((w) => {
+          const c = w.replaceAll(/[^a-z0-9]/g, "");
+          return c ? [c] : [];
+        }),
     );
 
     if (queryWords.length === 0) return 0;
@@ -189,13 +193,17 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-      .filter(Boolean);
+      .flatMap((w) => {
+        const c = w.replaceAll(/[^a-z0-9]/g, "");
+        return c ? [c] : [];
+      });
     const titleWords = normalizedTitle
       .toLowerCase()
       .split(/[\s-]+/)
-      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-      .filter(Boolean);
+      .flatMap((w) => {
+        const c = w.replaceAll(/[^a-z0-9]/g, "");
+        return c ? [c] : [];
+      });
     const titleWordsSet = new Set(titleWords);
 
     let totalScore = 0;
