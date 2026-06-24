@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.14] - 2026-06-12
+### :sparkles: New Features
+- [`c4a5553`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c4a5553324d2cbbd7254f1fa21d35be158a192fa) - add nickname preview functionality to options page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7dd585d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7dd585d57b73496c71a18c203dc339651c1acc4c) - implement collapsible markdown content with toggle functionality and smooth transitions *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c1df606`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c1df60642b15929d537e65a21be15312c582846c) - add arcade milestones configuration and update related services for enhanced functionality *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`bf78634`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/bf7863403531c16cda12d552efe4d51ce82ca848) - add prize pool information display and tooltip functionality in popup UI *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3ee1c68`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3ee1c68bb907f44aac648831129306e3a61fc77a) - update arcade milestones handling to prioritize environment variable and improve error handling *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7940dab`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7940dab057264bd48a8eb05c733d0f697a894b4f) - add prize pool related messages in multiple languages for improved localization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c21fb3c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c21fb3c9c1c33e858abe3d044191acdab9d8da3b) - update prize pool messages for improved clarity and consistency across multiple languages *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`59fbc30`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/59fbc30ddaf832ea6b4a513bb630ce31a892565f) - add floating back-to-top button functionality to UI components *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`07d44f3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/07d44f3ac4f57ad007eb146586ae17e006d0a381) - add forceRemote option to Firebase initialization for consistent remote config loading *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7f414c2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7f414c2cbbc830c60b0c910cae7a74b495f7c8b2) - refine Remote Config handling to separate fetch throttling from remote/local selection *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`30afb33`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/30afb336af37c66a66c778331bf5a2f8c43d15c0) - update Firebase fetch interval to improve Remote Config update frequency *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`5a674d2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/5a674d2017b60a463d809ade7a6615a4720a3b17) - enhance arcade milestones loading with validation and fallback defaults *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`604fecc`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/604fecc1ade6223662279e5a39cc2fddd501ddcc) - improve type annotations and variable declarations in markdown toggle module *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`747ff84`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/747ff8435da3e6692786023ec3c7b9349dc9091b) - streamline variable usage and improve type safety in markdown toggle module *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`77addc4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/77addc4323ff3cfa445a548ca2ae7accb12bcc7d) - enhance i18n message retrieval by using globalThis for better compatibility *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`fe0a55d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/fe0a55d729603e98412ebec2dadc907e98540159) - implement memoization for Remote Config fetches to optimize network requests *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`47cc4b3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/47cc4b3960ce522840411c2ca3e099a3c04f3f48) - improve i18n message handling and streamline type assertions in markdown and UI toggle modules *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`27fbda8`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/27fbda8553901d1408464b99d6cf965b78d42b36) - streamline badge and search feature toggle implementations for improved readability and maintainability *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f3f61fe`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f3f61fe56d242284998526873ed5648ac0a5f9d7) - improve code readability by consolidating multi-line element retrievals in uiToggles.ts and updating title element in index.html *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`8153779`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/815377972080801a788ae433d9ea310e741c87c7) - enhance code structure by improving function documentation and consolidating non-null reference creation in nickname and UI toggle modules *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`6ec7b0f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6ec7b0f95b5b0440016077261b87ff32f25f0a09) - **deps**: bump the production-dependencies group with 4 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`4234a8f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4234a8fa14a66f66b7c03d3647036cb4764f5ba6) - **deps**: bump the production-dependencies group with 3 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`51e6997`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/51e6997b10df13112d17d28ce8f96a2f2dc7e298) - **deps**: bump @grpc/grpc-js from 1.9.15 to 1.9.16 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [1.2.13] - 2026-05-30
 ### :sparkles: New Features
 - [`160845b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/160845b9c97b0e63e435c2b251e5f7aaddb0ab5f) - update search functionality to handle course ID extraction and year prefixes in titles; add tests for new matching logic *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -969,3 +1000,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.11]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.10...1.2.11
 [1.2.12]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.11...1.2.12
 [1.2.13]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.12...1.2.13
+[1.2.14]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.13...1.2.14
