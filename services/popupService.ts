@@ -7,6 +7,17 @@ import MarkdownService from "./markdownService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import type { Account, ArcadeData } from "../types";
 import sendRuntimeMessage from "./runtimeMessage";
+
+/** Escapes HTML special characters to prevent XSS when interpolating untrusted strings. */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 const PopupService = {
   profileUrl: "",
   currentAccount: null as Account | null,
@@ -16,11 +27,10 @@ const PopupService = {
     // Initialize migration first
     await StorageService.initializeMigration();
 
-    // Initialize markdown service
-    await this.initializeMarkdown();
-
-    // Initialize account management
-    await this.initializeAccountManagement();
+    await Promise.all([
+      this.initializeMarkdown(),
+      this.initializeAccountManagement(),
+    ]);
 
     // Load current account and data
     this.currentAccount = await AccountService.getActiveAccount();
@@ -71,8 +81,10 @@ const PopupService = {
     // Clear existing options
     accountList.innerHTML = "";
 
-    const accounts = await AccountService.getAllAccounts();
-    const activeAccount = await AccountService.getActiveAccount();
+    const [accounts, activeAccount] = await Promise.all([
+      AccountService.getAllAccounts(),
+      AccountService.getActiveAccount(),
+    ]);
 
     // Update account count if present
     if (accountCount) {
@@ -135,14 +147,14 @@ const PopupService = {
    */
   createAvatarHTML(displayText: string, profileImage?: string | null): string {
     if (profileImage) {
-      return `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      return `<img src="${escapeHtml(profileImage)}" alt="${escapeHtml(displayText)}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
-             ${displayText.charAt(0).toUpperCase()}
+             ${escapeHtml(displayText.charAt(0).toUpperCase())}
            </div>`;
     }
 
     return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-             ${displayText.charAt(0).toUpperCase()}
+             ${escapeHtml(displayText.charAt(0).toUpperCase())}
            </div>`;
   },
 
@@ -166,10 +178,10 @@ const PopupService = {
       <div class="flex items-center flex-1 min-w-0">
         ${avatarHTML}
         <div class="min-w-0 flex-1">
-          <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
+          <div class="text-white/95 text-sm font-medium truncate">${escapeHtml(displayText)}</div>
           ${
             account.name !== displayText
-              ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
+              ? `<div class="text-white/70 text-xs truncate">${escapeHtml(account.name)}</div>`
               : ""
           }
         </div>

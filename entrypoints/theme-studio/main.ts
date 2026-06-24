@@ -94,9 +94,10 @@ function colorToHex(color: string): string {
 function extractGradientColors(backgroundImage: string): string[] {
   const colorMatches =
     backgroundImage.match(/#[0-9a-fA-F]{6}|rgba?\([^)]+\)/g) || [];
-  return colorMatches
-    .map((value) => colorToHex(value))
-    .filter((value) => isValidHexColor(value));
+  return colorMatches.flatMap((value) => {
+    const hex = colorToHex(value);
+    return isValidHexColor(hex) ? [hex] : [];
+  });
 }
 
 /** Returns the `contentDocument` of the popup preview iframe, or `null` if unavailable. */

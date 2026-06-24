@@ -8,7 +8,9 @@ import TourService from "./tourService";
 import ExportService from "./exportService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
+import { ModalUtils } from "../utils/modalUtils";
+import { DOMUtils } from "../utils/domUtils";
+import { PreviewUtils } from "../utils/previewUtils";
 import type { ArcadeData, Account, UserDetail } from "../types";
 
 /**
@@ -28,24 +30,26 @@ const OptionsService = {
     OptionsService.setupEventListeners();
     OptionsService.setupVersion();
     OptionsService.setupI18n();
-    await OptionsService.initializeAccountManagement();
-    await OptionsService.loadExistingData();
-    await OptionsService.loadSearchFeatureSetting();
-    await OptionsService.loadEplusSearchSetting();
-    await OptionsService.loadPreferredSearchEngineSetting();
-    await OptionsService.loadBadgeDisplaySetting();
-    await OptionsService.initializeMarkdown();
-
-    // Check if we should show the tour for first-time users
-    await OptionsService.initializeTour();
+    await Promise.all([
+      OptionsService.initializeAccountManagement(),
+      OptionsService.loadExistingData(),
+      OptionsService.loadSearchFeatureSetting(),
+      OptionsService.loadEplusSearchSetting(),
+      OptionsService.loadPreferredSearchEngineSetting(),
+      OptionsService.loadBadgeDisplaySetting(),
+      OptionsService.initializeMarkdown(),
+      OptionsService.initializeTour(),
+    ]);
   },
 
   /**
    * Initialize tour functionality
    */
   async initializeTour(): Promise<void> {
-    const shouldShowTour = await TourService.shouldShowTour();
-    const accounts = await AccountService.getAllAccounts();
+    const [shouldShowTour, accounts] = await Promise.all([
+      TourService.shouldShowTour(),
+      AccountService.getAllAccounts(),
+    ]);
 
     // If no accounts exist and user hasn't seen tour, show it automatically
     if (accounts.length === 0 && shouldShowTour) {
@@ -74,9 +78,10 @@ const OptionsService = {
 
     if (!accountsList) return;
 
-    // Load accounts
-    const accounts = await AccountService.getAllAccounts();
-    const activeAccount = await AccountService.getActiveAccount();
+    const [accounts, activeAccount] = await Promise.all([
+      AccountService.getAllAccounts(),
+      AccountService.getActiveAccount(),
+    ]);
 
     // Clear existing account cards (keep no-accounts message)
     const existingCards = accountsList.querySelectorAll(".account-card");
@@ -549,10 +554,11 @@ const OptionsService = {
         facilitatorProgram: enabled,
       });
 
-      await this.loadAccounts(); // Reload to update badges and buttons
-
-      // Update milestone section visibility if this is the active account
-      const activeAccount = await AccountService.getActiveAccount();
+      // loadAccounts and getActiveAccount are independent after the update
+      const [, activeAccount] = await Promise.all([
+        this.loadAccounts(),
+        AccountService.getActiveAccount(),
+      ]);
       if (activeAccount && activeAccount.id === accountId) {
         // Import PopupUIService to update milestone section
         const PopupUIService = (await import("./popupUIService")).default;
@@ -1917,10 +1923,10 @@ const OptionsService = {
         arcadeData: arcadeData || undefined,
       });
 
-      await this.loadAccounts();
-
-      // Switch to new account
-      await this.switchAccount(newAccount.id);
+      await Promise.all([
+        this.loadAccounts(),
+        this.switchAccount(newAccount.id),
+      ]);
 
       this.hideAddAccountModal();
       this.showMessage(

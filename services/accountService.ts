@@ -306,14 +306,14 @@ const AccountService = {
       return; // Already migrated
     }
 
-    // Get old format data
-    const oldProfileUrl = await storage.getItem<string>("local:urlProfile");
-    const oldArcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
-    const oldSearchFeature = await storage.getItem<boolean>(
-      "local:enableSearchFeature",
-    );
-    // legacy badge setting (was stored directly in local storage)
-    const oldShowBadge = await storage.getItem<boolean>("local:showBadge");
+    // Get old format data (all reads are independent)
+    const [oldProfileUrl, oldArcadeData, oldSearchFeature, oldShowBadge] =
+      await Promise.all([
+        storage.getItem<string>("local:urlProfile"),
+        storage.getItem<ArcadeData>("local:arcadeData"),
+        storage.getItem<boolean>("local:enableSearchFeature"),
+        storage.getItem<boolean>("local:showBadge"),
+      ]);
 
     // Create new accounts data structure
     const accountsData: AccountsData = {
@@ -454,7 +454,7 @@ const AccountService = {
           keeper.nickname = other.nickname;
         }
         // Remove the duplicate account
-        delete accounts[otherId];
+        Reflect.deleteProperty(accounts, otherId);
         // If deleted account was active, set keeper as active
         if (data.activeAccountId === otherId) {
           data.activeAccountId = keeperId;

@@ -1,6 +1,26 @@
 import { marked } from "marked";
 import type { MarkdownLoadOptions, MarkdownConfig } from "../types";
 
+/** Strips dangerous tags and attributes from rendered markdown HTML. */
+function sanitizeMarkdownHtml(html: string): string {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  div
+    .querySelectorAll("script,iframe,object,embed,form,base")
+    .forEach((el) => el.remove());
+  div.querySelectorAll("*").forEach((el) => {
+    for (const attr of Array.from(el.attributes)) {
+      if (
+        attr.name.startsWith("on") ||
+        /^(?:javascript|data|vbscript):/i.test(attr.value.trimStart())
+      ) {
+        el.removeAttribute(attr.name);
+      }
+    }
+  });
+  return div.innerHTML;
+}
+
 /**
  * Service to handle markdown content loading and rendering
  */
@@ -95,9 +115,10 @@ const MarkdownService = {
         const markdownHtml = await marked.parse(markdownText);
 
         if (options.append) {
-          contentArea.innerHTML = contentArea.innerHTML + markdownHtml;
+          contentArea.innerHTML =
+            contentArea.innerHTML + sanitizeMarkdownHtml(markdownHtml);
         } else {
-          contentArea.innerHTML = markdownHtml;
+          contentArea.innerHTML = sanitizeMarkdownHtml(markdownHtml);
         }
 
         // Rewrite relative image srcs to absolute URLs based on source URL
@@ -209,7 +230,8 @@ const MarkdownService = {
       const contentArea = container.querySelector(contentSelector);
       if (!contentArea) return false;
 
-      (contentArea as HTMLElement).innerHTML = markdownHtml;
+      (contentArea as HTMLElement).innerHTML =
+        sanitizeMarkdownHtml(markdownHtml);
 
       // Rewrite relative image srcs based on the source URL
       try {
@@ -281,7 +303,7 @@ const MarkdownService = {
    */
   async openLink(url: string): Promise<void> {
     try {
-      // First attempt: Use browser.tabs.create if available (most reliable in extensions)
+      // First attempt: Use browser.tabs.create (WXT polyfill covers Chrome + Firefox)
       if (typeof browser !== "undefined" && browser.tabs?.create) {
         await browser.tabs.create({ url });
         return;
@@ -291,17 +313,7 @@ const MarkdownService = {
     }
 
     try {
-      // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
-      if (typeof chrome !== "undefined" && chrome.tabs?.create) {
-        chrome.tabs.create({ url });
-        return;
-      }
-    } catch (error) {
-      console.warn("Failed to open link via chrome.tabs:", error);
-    }
-
-    try {
-      // Third attempt: Use window.open (may not work in all extension contexts)
+      // Second attempt: Use window.open (may not work in all extension contexts)
       const newWindow = window.open(url, "_blank", "noopener,noreferrer");
       if (newWindow) {
         return;

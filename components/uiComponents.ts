@@ -258,13 +258,8 @@ const UIComponents = {
 
           [solBtn, telegramBtn].forEach((el) => {
             if ((el as HTMLElement)?.style) {
-              const btnEl = el as HTMLElement;
-              btnEl.style.display = "inline-flex";
-              btnEl.style.alignItems = "center";
-              btnEl.style.gap = "6px";
-              btnEl.style.padding = "3px 3px";
-              btnEl.style.borderRadius = "999px";
-              btnEl.style.boxSizing = "border-box";
+              (el as HTMLElement).style.cssText +=
+                ";display:inline-flex;align-items:center;gap:6px;padding:3px 3px;border-radius:999px;box-sizing:border-box";
             }
           });
 
@@ -367,13 +362,8 @@ const UIComponents = {
           // Normalize ql-button visuals created via innerHTML
           [eplusBtn, configuredBtn, youtubeBtn, telegramBtn].forEach((el) => {
             if ((el as HTMLElement)?.style) {
-              const btnEl = el as HTMLElement;
-              btnEl.style.display = "inline-flex";
-              btnEl.style.alignItems = "center";
-              btnEl.style.gap = "6px";
-              btnEl.style.padding = "3px 3px";
-              btnEl.style.borderRadius = "999px";
-              btnEl.style.boxSizing = "border-box";
+              (el as HTMLElement).style.cssText +=
+                ";display:inline-flex;align-items:center;gap:6px;padding:3px 3px;border-radius:999px;box-sizing:border-box";
             }
           });
 
@@ -668,24 +658,20 @@ try {
               try {
                 if (!enabled) {
                   btn.setAttribute("disabled", "true");
-                  btn.style.opacity = "0.6";
-                  btn.style.pointerEvents = "none";
-                  btn.style.cursor = "not-allowed";
-                  try {
-                    (btn as HTMLElement).style.filter = "grayscale(40%)";
-                  } catch (e) {
-                    // Ignore errors if style assignment fails
-                  }
+                  Object.assign(btn.style, {
+                    opacity: "0.6",
+                    pointerEvents: "none",
+                    cursor: "not-allowed",
+                    filter: "grayscale(40%)",
+                  });
                 } else {
                   btn.removeAttribute("disabled");
-                  btn.style.opacity = "";
-                  btn.style.pointerEvents = "auto";
-                  btn.style.cursor = "pointer";
-                  try {
-                    (btn as HTMLElement).style.filter = "";
-                  } catch (e) {
-                    // Ignore errors if style assignment fails
-                  }
+                  Object.assign(btn.style, {
+                    opacity: "",
+                    pointerEvents: "auto",
+                    cursor: "pointer",
+                    filter: "",
+                  });
                 }
               } catch (e) {
                 // Ignore errors if style assignment fails
