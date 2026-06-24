@@ -102,17 +102,17 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .flatMap((w) => {
-        const c = w.replaceAll(/[^a-z0-9]/g, "");
-        return c ? [c] : [];
+      .flatMap((word) => {
+        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+        return cleaned ? [cleaned] : [];
       });
     const titleWordsSet = new Set(
       normalizedTitle
         .toLowerCase()
         .split(/[\s-]+/)
-        .flatMap((w) => {
-          const c = w.replaceAll(/[^a-z0-9]/g, "");
-          return c ? [c] : [];
+        .flatMap((word) => {
+          const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+          return cleaned ? [cleaned] : [];
         }),
     );
 
@@ -193,16 +193,16 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .flatMap((w) => {
-        const c = w.replaceAll(/[^a-z0-9]/g, "");
-        return c ? [c] : [];
+      .flatMap((word) => {
+        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+        return cleaned ? [cleaned] : [];
       });
     const titleWords = normalizedTitle
       .toLowerCase()
       .split(/[\s-]+/)
-      .flatMap((w) => {
-        const c = w.replaceAll(/[^a-z0-9]/g, "");
-        return c ? [c] : [];
+      .flatMap((word) => {
+        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+        return cleaned ? [cleaned] : [];
       });
     const titleWordsSet = new Set(titleWords);
 

@@ -454,7 +454,7 @@ const AccountService = {
           keeper.nickname = other.nickname;
         }
         // Remove the duplicate account
-        delete accounts[otherId];
+        Reflect.deleteProperty(accounts, otherId);
         // If deleted account was active, set keeper as active
         if (data.activeAccountId === otherId) {
           data.activeAccountId = keeperId;

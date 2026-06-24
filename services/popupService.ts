@@ -8,6 +8,7 @@ import { MARKDOWN_CONFIG } from "../utils/config";
 import type { Account, ArcadeData } from "../types";
 import sendRuntimeMessage from "./runtimeMessage";
 
+/** Escapes HTML special characters to prevent XSS when interpolating untrusted strings. */
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")

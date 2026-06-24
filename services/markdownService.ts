@@ -1,6 +1,7 @@
 import { marked } from "marked";
 import type { MarkdownLoadOptions, MarkdownConfig } from "../types";
 
+/** Strips dangerous tags and attributes from rendered markdown HTML. */
 function sanitizeMarkdownHtml(html: string): string {
   const div = document.createElement("div");
   div.innerHTML = html;
@@ -11,7 +12,7 @@ function sanitizeMarkdownHtml(html: string): string {
     for (const attr of Array.from(el.attributes)) {
       if (
         attr.name.startsWith("on") ||
-        attr.value.trimStart().toLowerCase().startsWith("javascript:")
+        attr.value.trimStart().toLowerCase().startsWith("javascript:") // skipcq: JS-0007
       ) {
         el.removeAttribute(attr.name);
       }
