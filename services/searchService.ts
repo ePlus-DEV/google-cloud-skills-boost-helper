@@ -777,25 +777,74 @@ class SearchService {
   }
 
   /**
-   * Get GSP ID from page (e.g., GSP344)
+   * Get GSP ID from page (e.g., GSP344, GSP1164)
    */
   static getGspId(): string {
+    // Attempt 1: Check h2 element
     const h2Element = document.querySelector("h2");
     if (h2Element) {
       const text = h2Element.textContent?.trim() || "";
-      // Extract GSP ID pattern (GSP followed by numbers)
       const match = text.match(/GSP\d+/);
       if (match) {
         if (import.meta.env.MODE === "development") {
-          console.info("[LabService] Extracted GSP ID:", match[0]);
+          console.info("[LabService] ✓ Extracted GSP ID from h2:", match[0]);
         }
         return match[0];
       }
     }
+
+    // Attempt 2: Check URL for GSP ID pattern
+    const urlMatch = window.location.href.match(/GSP\d+/);
+    if (urlMatch) {
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] ✓ Extracted GSP ID from URL:", urlMatch[0]);
+      }
+      return urlMatch[0];
+    }
+
+    // Attempt 3: Broad search through visible page text (including shadow DOM)
+    const allText = this.getPageText();
+    const pageMatch = allText.match(/GSP\d+/);
+    if (pageMatch) {
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] ✓ Extracted GSP ID from page text:", pageMatch[0]);
+      }
+      return pageMatch[0];
+    }
+
     if (import.meta.env.MODE === "development") {
-      console.info("[LabService] No GSP ID found");
+      console.info("[LabService] ✗ No GSP ID found in h2, URL, or page text");
     }
     return "";
+  }
+
+  /**
+   * Get all text from page including shadow DOM
+   */
+  private static getPageText(): string {
+    const texts: string[] = [];
+
+    // Get document text
+    texts.push(document.body.textContent || "");
+
+    // Search through shadow roots
+    try {
+      const nodes = Array.from(document.querySelectorAll("*"));
+      for (const el of nodes) {
+        try {
+          const sr = (el as Element).shadowRoot;
+          if (sr) {
+            texts.push(sr.textContent || "");
+          }
+        } catch {
+          // ignore errors from accessing shadow roots
+        }
+      }
+    } catch {
+      // ignore
+    }
+
+    return texts.join(" ");
   }
 
   /**
@@ -806,10 +855,17 @@ class SearchService {
     const gspId = this.getGspId();
     const queryText = this.extractQueryText();
 
-    // Build query with title first, then GSP ID (preferred format: "title - id")
-    const parts = [labTitle, gspId, queryText].filter(Boolean);
+    // Use queryText as fallback for lab title if title is empty
+    const primaryTitle = labTitle || (queryText && queryText !== "Overview" ? queryText : "");
+
+    // Build query with title first, then GSP ID and query text
+    // Include queryText even if we have a title, as it provides additional context
+    const parts = [primaryTitle, gspId, queryText].filter(Boolean);
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
+      console.info("[LabService] Lab title:", labTitle);
+      console.info("[LabService] GSP ID:", gspId);
+      console.info("[LabService] Query text:", queryText);
       console.info("[LabService] Combined query for search:", combinedQuery);
     }
     return combinedQuery;
