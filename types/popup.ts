@@ -78,6 +78,7 @@ export interface AccountsData {
     enableEplusSearch?: boolean;
     preferredSearchEngine?: string;
     showBadge?: boolean;
+    enableNotifications?: boolean;
   };
 }
 
