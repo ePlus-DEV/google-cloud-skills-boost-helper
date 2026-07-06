@@ -4,6 +4,7 @@ import { initMarkdownToggle } from "./markdownToggle";
 import { initDataManagementToggle } from "./dataManagementToggle";
 import { initUIToggles } from "./uiToggles";
 import { initNicknamePreview } from "./nicknamePreview";
+import { initNotificationSettings } from "./notificationSettings";
 
 // Set document title
 document.title =
@@ -52,4 +53,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initDataManagementToggle();
   initUIToggles();
   initNicknamePreview();
+  initNotificationSettings();
 });
