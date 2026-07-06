@@ -807,7 +807,10 @@ class SearchService {
     const pageMatch = allText.match(/GSP\d+/);
     if (pageMatch) {
       if (import.meta.env.MODE === "development") {
-        console.info("[LabService] ✓ Extracted GSP ID from page text:", pageMatch[0]);
+        console.info(
+          "[LabService] ✓ Extracted GSP ID from page text:",
+          pageMatch[0],
+        );
       }
       return pageMatch[0];
     }
@@ -856,7 +859,8 @@ class SearchService {
     const queryText = this.extractQueryText();
 
     // Use queryText as fallback for lab title if title is empty
-    const primaryTitle = labTitle || (queryText && queryText !== "Overview" ? queryText : "");
+    const primaryTitle =
+      labTitle || (queryText && queryText !== "Overview" ? queryText : "");
 
     // Build query with title first, then GSP ID and query text
     // Include queryText even if we have a title, as it provides additional context
