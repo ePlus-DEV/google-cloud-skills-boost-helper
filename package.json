@@ -21,11 +21,11 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@wxt-dev/storage": "^1.1.1",
     "axios": "^1.18.1",
     "firebase": "^12.16.0",
-    "fuse.js": "^7.4.2",
+    "fuse.js": "^7.5.0",
     "intro.js": "^8.3.2",
     "marked": "^18.0.6",
     "react": "^19.2.7",
