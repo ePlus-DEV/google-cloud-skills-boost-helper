@@ -43,7 +43,21 @@ jobs:
         run: yarn compile
 
       - name: Unit tests with coverage
-        run: yarn test:coverage
+        id: coverage
+        shell: bash
+        run: |
+          set +e
+          yarn test:coverage 2>&1 | tee test-coverage.log
+          status=${PIPESTATUS[0]}
+          exit "$status"
+
+      - name: Upload test diagnostics
+        if: failure() && steps.coverage.conclusion == 'failure'
+        uses: actions/upload-artifact@v7
+        with:
+          name: coderabbit-test-errors
+          path: test-coverage.log
+          retention-days: 1
 
       - name: Production build
         run: yarn build
