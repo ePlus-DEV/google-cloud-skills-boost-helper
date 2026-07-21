@@ -1,0 +1,530 @@
+name: Apply CodeRabbit fixes
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-coderabbit-fixes-176
+  cancel-in-progress: false
+
+jobs:
+  apply-fixes:
+    if: github.head_ref == 'fix/v1.2.15-dev-main-conflict'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: fix/v1.2.15-dev-main-conflict
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: yarn
+
+      - name: Apply reviewed fixes
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              file_path = Path(path)
+              text = file_path.read_text()
+              if old in text:
+                  file_path.write_text(text.replace(old, new, 1))
+              elif new not in text:
+                  raise RuntimeError(f"Expected block not found in {path}")
+
+          replace_once(
+              "services/markdownService.ts",
+              'import { marked } from "marked";\n',
+              'import DOMPurify from "dompurify";\nimport { marked } from "marked";\n',
+          )
+
+          old_sanitizer = '''/** Strips dangerous tags and attributes from rendered markdown HTML. */
+          function sanitizeMarkdownHtml(html: string): string {
+            const div = document.createElement("div");
+            div.innerHTML = html;
+            div
+              .querySelectorAll("script,iframe,object,embed,form,base")
+              .forEach((el) => el.remove());
+            div.querySelectorAll("*").forEach((el) => {
+              for (const attr of Array.from(el.attributes)) {
+                if (
+                  attr.name.startsWith("on") ||
+                  /^(?:javascript|data|vbscript):/i.test(attr.value.trimStart())
+                ) {
+                  el.removeAttribute(attr.name);
+                }
+              }
+            });
+            return div.innerHTML;
+          }
+          '''
+          new_sanitizer = '''const MARKDOWN_ALLOWED_TAGS = [
+            "a",
+            "blockquote",
+            "br",
+            "code",
+            "del",
+            "details",
+            "em",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "hr",
+            "img",
+            "li",
+            "ol",
+            "p",
+            "pre",
+            "strong",
+            "summary",
+            "table",
+            "tbody",
+            "td",
+            "th",
+            "thead",
+            "tr",
+            "ul",
+          ];
+
+          const MARKDOWN_ALLOWED_ATTRIBUTES = [
+            "alt",
+            "class",
+            "height",
+            "href",
+            "rel",
+            "src",
+            "target",
+            "title",
+            "width",
+          ];
+
+          const URL_CONTROL_OR_WHITESPACE = /[\\u0000-\\u0020\\u007f-\\u009f]/g;
+
+          function hasAllowedUrlScheme(
+            value: string,
+            allowedSchemes: ReadonlySet<string>,
+          ): boolean {
+            const normalized = value.replace(URL_CONTROL_OR_WHITESPACE, "").trim();
+            const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/i)?.[1];
+            return !scheme || allowedSchemes.has(scheme.toLowerCase());
+          }
+
+          /** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */
+          function sanitizeMarkdownHtml(html: string): string {
+            const sanitized = DOMPurify.sanitize(html, {
+              ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,
+              ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
+              ALLOW_ARIA_ATTR: true,
+              ALLOW_DATA_ATTR: false,
+              ALLOW_UNKNOWN_PROTOCOLS: false,
+            });
+
+            const template = document.createElement("template");
+            template.innerHTML = sanitized;
+
+            const linkSchemes = new Set(["http", "https", "mailto"]);
+            template.content.querySelectorAll("a[href]").forEach((element) => {
+              const href = element.getAttribute("href") || "";
+              if (!hasAllowedUrlScheme(href, linkSchemes)) {
+                element.removeAttribute("href");
+              }
+            });
+
+            const imageSchemes = new Set(["http", "https"]);
+            template.content.querySelectorAll("img[src]").forEach((element) => {
+              const src = element.getAttribute("src") || "";
+              if (!hasAllowedUrlScheme(src, imageSchemes)) {
+                element.removeAttribute("src");
+              }
+            });
+
+            return template.innerHTML;
+          }
+          '''
+          replace_once("services/markdownService.ts", old_sanitizer, new_sanitizer)
+
+          replace_once(
+              "services/optionsService.ts",
+              '''      await Promise.all([
+                this.loadAccounts(),
+                this.switchAccount(newAccount.id),
+              ]);
+          ''',
+              '''      await this.switchAccount(newAccount.id);
+              await this.loadAccounts();
+          ''',
+          )
+
+          old_deep_query = '''  /**
+           * Query selector that searches into shadow roots recursively.
+           * Returns the first matching Element or null.
+           */
+          private static querySelectorDeep(selector: string): Element | null {
+            try {
+              // Quick check on document
+              const direct = document.querySelector(selector);
+              if (direct) return direct;
+
+              // BFS through all elements to look into shadowRoots
+              const nodes = Array.from(document.querySelectorAll("*"));
+              for (const el of nodes) {
+                try {
+                  const sr = (el as Element).shadowRoot;
+                  if (sr) {
+                    const found = sr.querySelector(selector);
+                    if (found) return found;
+
+                    // also search one level deeper inside nested shadow roots
+                    const nested = Array.from(sr.querySelectorAll("*"));
+                    for (const nestedElement of nested) {
+                      try {
+                        const nestedShadowRoot = (nestedElement as Element).shadowRoot;
+                        if (nestedShadowRoot) {
+                          const foundElement = nestedShadowRoot.querySelector(selector);
+                          if (foundElement) return foundElement;
+                        }
+                      } catch {
+                        // ignore errors from accessing shadow roots
+                      }
+                    }
+                  }
+                } catch {
+                  // ignore errors from accessing shadow roots
+                }
+              }
+            } catch (e) {
+              // ignore
+            }
+            return null;
+          }
+          '''
+          new_deep_query = '''  /** Collect all accessible shadow roots, including nested roots. */
+          private static collectOpenShadowRoots(
+            root: Document | ShadowRoot = document,
+          ): ShadowRoot[] {
+            const shadowRoots: ShadowRoot[] = [];
+            const visited = new Set<ShadowRoot>();
+
+            const visit = (searchRoot: Document | ShadowRoot): void => {
+              for (const element of Array.from(searchRoot.querySelectorAll("*"))) {
+                try {
+                  const shadowRoot = element.shadowRoot;
+                  if (!shadowRoot || visited.has(shadowRoot)) continue;
+
+                  visited.add(shadowRoot);
+                  shadowRoots.push(shadowRoot);
+                  visit(shadowRoot);
+                } catch {
+                  // Ignore inaccessible or browser-managed shadow roots.
+                }
+              }
+            };
+
+            visit(root);
+            return shadowRoots;
+          }
+
+          /**
+           * Query selector that searches into shadow roots recursively.
+           * Returns the first matching Element or null.
+           */
+          private static querySelectorDeep(selector: string): Element | null {
+            try {
+              const direct = document.querySelector(selector);
+              if (direct) return direct;
+
+              for (const shadowRoot of this.collectOpenShadowRoots()) {
+                const found = shadowRoot.querySelector(selector);
+                if (found) return found;
+              }
+            } catch {
+              // Ignore malformed selectors and inaccessible roots.
+            }
+            return null;
+          }
+          '''
+          replace_once("services/searchService.ts", old_deep_query, new_deep_query)
+
+          old_page_text = '''  /**
+           * Get all text from page including shadow DOM
+           */
+          private static getPageText(): string {
+            const texts: string[] = [];
+
+            // Get document text
+            texts.push(document.body.textContent || "");
+
+            // Search through shadow roots
+            try {
+              const nodes = Array.from(document.querySelectorAll("*"));
+              for (const el of nodes) {
+                try {
+                  const sr = (el as Element).shadowRoot;
+                  if (sr) {
+                    texts.push(sr.textContent || "");
+                  }
+                } catch {
+                  // ignore errors from accessing shadow roots
+                }
+              }
+            } catch {
+              // ignore
+            }
+
+            return texts.join(" ");
+          }
+          '''
+          new_page_text = '''  /**
+           * Get all text from page including nested shadow DOM
+           */
+          private static getPageText(): string {
+            const texts = [document.body.textContent || ""];
+
+            try {
+              for (const shadowRoot of this.collectOpenShadowRoots()) {
+                texts.push(shadowRoot.textContent || "");
+              }
+            } catch {
+              // Ignore inaccessible roots and return the text collected so far.
+            }
+
+            return texts.join(" ");
+          }
+          '''
+          replace_once("services/searchService.ts", old_page_text, new_page_text)
+
+          replace_once(
+              "services/searchService.ts",
+              '''    const parts = [primaryTitle, gspId, queryText].filter(Boolean);
+              const combinedQuery = parts.join(" - ").trim();
+          ''',
+              '''    const parts = [primaryTitle, gspId].filter(Boolean);
+              if (queryText && queryText !== primaryTitle) {
+                parts.push(queryText);
+              }
+              const combinedQuery = parts.join(" - ").trim();
+          ''',
+          )
+
+          search_test = '''import { beforeEach, afterEach, describe, it, expect, vi } from "vitest";
+          import SearchService from "../../services/searchService";
+
+          describe("SearchService.getLabTitle (shadow DOM)", () => {
+            beforeEach(() => {
+              document.body.innerHTML = "";
+            });
+
+            afterEach(() => {
+              document.body.innerHTML = "";
+              vi.restoreAllMocks();
+            });
+
+            it("extracts title from nested ql-lab-header -> ql-header shadow roots", () => {
+              const labInstructions = document.createElement("div");
+              labInstructions.id = "lab-instructions";
+              const wrapper = document.createElement("div");
+              const renderable = document.createElement("div");
+              renderable.className =
+                "lab-content__renderable-instructions js-lab-content";
+              const qlLabHeader = document.createElement("ql-lab-header");
+              renderable.appendChild(qlLabHeader);
+              wrapper.appendChild(renderable);
+              labInstructions.appendChild(wrapper);
+              document.body.appendChild(labInstructions);
+
+              const sr1 = qlLabHeader.attachShadow({ mode: "open" });
+              const qlHeader = document.createElement("ql-header");
+              sr1.appendChild(qlHeader);
+
+              const sr2 = qlHeader.attachShadow({ mode: "open" });
+              const outerDiv = document.createElement("div");
+              const innerDiv = document.createElement("div");
+              innerDiv.className = "main-container";
+              const container = document.createElement("div");
+              const h1 = document.createElement("h1");
+              h1.textContent = "Deep Shadow Title";
+              container.appendChild(h1);
+              innerDiv.appendChild(container);
+              outerDiv.appendChild(innerDiv);
+              sr2.appendChild(outerDiv);
+
+              const title = SearchService.getLabTitle();
+              expect(title).toBe("Deep Shadow Title");
+            });
+
+            it("prefers h1.ql-title-large when present", () => {
+              const headingElement = document.createElement("h1");
+              headingElement.className = "ql-title-large";
+              headingElement.textContent = "Title Large";
+              document.body.appendChild(headingElement);
+
+              const title = SearchService.getLabTitle();
+              expect(title).toBe("Title Large");
+            });
+
+            it("falls back to first h1 when no special selectors exist", () => {
+              const headingElement = document.createElement("h1");
+              headingElement.textContent = "Simple H1";
+              document.body.appendChild(headingElement);
+
+              const title = SearchService.getLabTitle();
+              expect(title).toBe("Simple H1");
+            });
+
+            it("finds a GSP ID inside deeply nested shadow roots", () => {
+              const outerHost = document.createElement("div");
+              document.body.appendChild(outerHost);
+              const outerRoot = outerHost.attachShadow({ mode: "open" });
+
+              const innerHost = document.createElement("section");
+              outerRoot.appendChild(innerHost);
+              const innerRoot = innerHost.attachShadow({ mode: "open" });
+
+              const idText = document.createElement("span");
+              idText.textContent = "Lab identifier: GSP9999";
+              innerRoot.appendChild(idText);
+
+              expect(SearchService.getGspId()).toBe("GSP9999");
+            });
+
+            it("does not duplicate query text used as the fallback title", () => {
+              vi.spyOn(SearchService, "getLabTitle").mockReturnValue("");
+              vi.spyOn(SearchService, "getGspId").mockReturnValue("GSP123");
+              vi.spyOn(SearchService, "extractQueryText").mockReturnValue(
+                "Configure a Cloud Lab",
+              );
+
+              expect(SearchService.createCombinedQuery()).toBe(
+                "Configure a Cloud Lab - GSP123",
+              );
+            });
+          });
+          '''
+          Path("tests/services/searchService.shadow.test.ts").write_text(search_test)
+
+          markdown_test = '''import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+          import MarkdownService from "../../services/markdownService";
+
+          describe("MarkdownService sanitization", () => {
+            beforeEach(() => {
+              document.body.innerHTML = `
+                <div id="markdown-container">
+                  <div class="markdown-content"></div>
+                </div>
+              `;
+            });
+
+            afterEach(() => {
+              document.body.innerHTML = "";
+              vi.unstubAllGlobals();
+              vi.restoreAllMocks();
+            });
+
+            it("removes obfuscated schemes, event handlers, and non-allowlisted URL elements", async () => {
+              const markdown = `
+                <a id="unsafe-link" href="java&#10;script:alert(1)">Unsafe</a>
+                <map><area id="unsafe-area" href="javascript:alert(1)"></map>
+                <img id="safe-image" src="https://example.com/image.png" onerror="alert(1)">
+                <a id="safe-link" href="https://example.com/docs">Safe</a>
+              `;
+
+              vi.stubGlobal(
+                "fetch",
+                vi.fn().mockResolvedValue({
+                  ok: true,
+                  status: 200,
+                  text: async () => markdown,
+                }),
+              );
+
+              const rendered = await MarkdownService.renderUrlToContainer(
+                "https://example.com/readme.md",
+                "markdown-container",
+              );
+
+              expect(rendered).toBe(true);
+              expect(document.querySelector("#unsafe-area")).toBeNull();
+              expect(
+                document.querySelector("#unsafe-link")?.hasAttribute("href"),
+              ).toBe(false);
+              expect(
+                document.querySelector("#safe-image")?.hasAttribute("onerror"),
+              ).toBe(false);
+              expect(
+                document.querySelector("#safe-image")?.getAttribute("src"),
+              ).toBe("https://example.com/image.png");
+              expect(
+                document.querySelector("#safe-link")?.getAttribute("href"),
+              ).toBe("https://example.com/docs");
+            });
+          });
+          '''
+          Path("tests/services/markdownService.test.ts").write_text(markdown_test)
+
+          package_path = Path("package.json")
+          package_data = json.loads(package_path.read_text())
+          dependencies = package_data["dependencies"]
+          reordered_dependencies = {}
+          for name, version in dependencies.items():
+              reordered_dependencies[name] = version
+              if name == "axios":
+                  reordered_dependencies["dompurify"] = "^3.4.12"
+          if "dompurify" not in reordered_dependencies:
+              reordered_dependencies["dompurify"] = "^3.4.12"
+          package_data["dependencies"] = reordered_dependencies
+          package_path.write_text(json.dumps(package_data, indent=2) + "\n")
+          PY
+
+      - name: Install dependencies and refresh lockfile
+        run: yarn install --ignore-scripts --ignore-engines
+
+      - name: Prepare WXT types
+        run: yarn wxt prepare
+
+      - name: TypeScript compile
+        run: yarn compile
+
+      - name: Unit tests with coverage
+        run: yarn test:coverage
+
+      - name: Production build
+        run: yarn build
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name "ePlus Bot"
+          git config user.email "dev@eplus.dev"
+
+          git add \
+            package.json \
+            yarn.lock \
+            services/markdownService.ts \
+            services/optionsService.ts \
+            services/searchService.ts \
+            tests/services/markdownService.test.ts \
+            tests/services/searchService.shadow.test.ts
+
+          if git diff --cached --quiet; then
+            echo "CodeRabbit fixes are already applied."
+            exit 0
+          fi
+
+          git commit -m "fix: address CodeRabbit review findings"
+          git push origin HEAD:fix/v1.2.15-dev-main-conflict
