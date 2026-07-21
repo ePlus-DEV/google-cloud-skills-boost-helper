@@ -2,98 +2,77 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+Google Cloud Skills Boost Helper is a WXT browser extension for Chrome and Firefox. It enhances Google Cloud Skills Boost with Arcade point tracking, multi-account management, leaderboard data, and lab solution search.
+
 ## Commands
 
 ```bash
-# Development
-yarn dev                 # Chrome dev server
-yarn dev:firefox         # Firefox dev server
-
-# Build
-yarn build               # Production build (Chrome)
-yarn build:firefox       # Production build (Firefox)
-yarn zip                 # Package for distribution
-
-# Type check
-yarn compile             # TypeScript check, no emit
-
-# Tests
-yarn test                # Run once
-yarn test:watch          # Watch mode
-yarn test:coverage       # With coverage report
+yarn install          # Install dependencies
+yarn dev              # Start Chrome development build with hot reload
+yarn dev:firefox      # Start Firefox development build with hot reload
+yarn build            # Production Chrome build
+yarn build:firefox    # Production Firefox build
+yarn zip              # Package Chrome build
+yarn zip:firefox      # Package Firefox build
+yarn compile          # TypeScript type check
+yarn test             # Run Vitest tests
+yarn test:watch       # Watch mode
+yarn test:coverage    # Coverage report (60% minimum)
 ```
 
 ## Architecture
 
-**Browser extension** for Google Cloud Skills Boost platform, built with WXT Framework + React + TypeScript.
-
 ### Entrypoints
 
-| File                        | Role                                                           |
-| --------------------------- | -------------------------------------------------------------- |
-| `entrypoints/background.ts` | Service worker — lifecycle, badge updates, message routing     |
-| `entrypoints/content.ts`    | Content script injected into Skills Boost pages                |
-| `entrypoints/popup/`        | React popup — dashboard, arcade points, accounts, leaderboards |
-| `entrypoints/options/`      | React options page — settings, data management                 |
+WXT entrypoints live under `entrypoints/`:
 
-### Service Layer (`services/`)
+- `background.ts` — service worker, runtime messages, badge updates, remote config
+- `content.ts` — injects UI into Cloud Skills Boost pages
+- `popup/` — extension popup
+- `options/` — options and account management
+- `changelog/` — release notes page
+- `theme-studio/` — theme editor
 
-All business logic lives here. Key services:
+### Services
 
-- **ArcadeApiService** — fetches arcade points from external API
-- **SearchService** — Fuse.js fuzzy search to match solutions to lab names
-- **StorageService** — multi-account storage abstraction over WXT storage
-- **AccountService** — multi-account CRUD and switching
-- **FirebaseService** — Firebase Remote Config for dynamic countdown configuration
-- **LabService** — processes lab pages, fetches solutions, injects UI
-- **PopupService / PopupUIService** — popup initialization and UI refresh
-- **BadgeService** — badge rendering
-- **BrowserService** — cross-browser API abstractions
+Business logic lives under `services/`. Keep DOM/UI creation out of services where possible.
 
-### Data Flow
+Key services:
 
-**Content script (lab pages):**
+- `accountService.ts` — account CRUD, active-account state, migration
+- `storageService.ts` — storage helpers and badge refresh
+- `searchService.ts` — lab title/GSP extraction and solution search
+- `markdownService.ts` — remote markdown loading and rendering
+- `popupService.ts`, `optionsService.ts` — page orchestration
+- `arcadeApiService.ts`, `firebaseService.ts` — remote data
 
-1. `content.ts` → `LabService.isLabPage()` check
-2. `SearchService.extractQueryText()` pulls lab name from DOM
-3. `ApiClient.fetchPostsOfPublication()` hits external solutions API
-4. `SearchService.findBestMatch()` finds closest solution
-5. `UIComponents.createSolutionElement()` injects button into page (Shadow DOM)
+### Components and Utilities
 
-**Popup:**
+- `components/` contains DOM element factories.
+- `utils/` contains reusable pure helpers.
+- `types/` contains shared TypeScript models.
+- `tests/` mirrors services and utilities.
 
-1. `PopupService.initialize()` loads active account from `StorageService`
-2. `ArcadeApiService.fetchArcadeData()` hits arcade points API
-3. `PopupUIService.updateMainUI()` renders badges, milestones, leaderboards
+## Browser APIs
 
-**Background:**
+Use WXT's global `browser` polyfill instead of importing Chrome-specific APIs. Keep Firefox compatibility in mind when changing manifests, content-script match patterns, and extension storage behavior.
 
-- Handles `runtime.onInstalled` / `onStartup`
-- Routes messages between popup and content scripts
-- Updates extension badge with arcade point count
+## Multi-account Rules
 
-### Multi-Account System
+- Account-specific data must be keyed by account ID.
+- Never store one account's history under a global key.
+- Switching accounts must update active-account state before rendering dependent UI.
+- Migrations must preserve existing account data and avoid duplicate accounts.
 
-- Accounts stored in `local:accountsData` via WXT storage
-- Active account tracked via `activeAccountId`
-- Backward-compatible with legacy single-account storage shape
-- Each account carries its own `arcadeData` snapshot
+## Security
 
-### Firebase Remote Config
-
-- Countdown deadlines configurable remotely (no extension update needed)
-- Gracefully falls back to `.env` values if Firebase unreachable
-- `WXT_FORCE_REMOTE_CONFIG=true` forces remote fetch (dev/testing)
-
-### Profile URL Canonicalization
-
-Three accepted hosts all canonicalize to `www.skills.google`:
-
-- `www.skills.google`
-- `www.cloudskillsboost.google`
-- `www.qwiklabs.com`
-
-See `utils/profileUrl.ts` for extraction/canonicalization logic.
+- Treat remote markdown and API content as untrusted.
+- Sanitize HTML before assigning to `innerHTML`.
+- Use `textContent` for account/profile values.
+- Only open validated `http:` and `https:` links.
+- Do not log secrets or full API tokens.
 
 ## Environment Variables
 
@@ -110,7 +89,7 @@ WXT_FIREBASE_PROJECT_ID=
 # ... other firebase vars
 
 # Countdown config (overridden by Firebase Remote Config at runtime)
-WXT_COUNTDOWN_DEADLINE_ARCADE=2026-06-30T23:59:59+05:30
+WXT_COUNTDOWN_DEADLINE_ARCADE=YYYY-MM-DDTHH:mm:ss+05:30 # Replace with active season deadline
 WXT_COUNTDOWN_ENABLED_ARCADE=true
 ```
 
@@ -124,4 +103,11 @@ WXT_COUNTDOWN_ENABLED_ARCADE=true
 
 ## Localization
 
-13 languages in `public/_locales/*/messages.json`. Use `browser.i18n.getMessage()` — never hardcode user-visible strings.
+UI strings belong in `public/_locales/<locale>/messages.json`. English is the source locale. Keep placeholders and message keys consistent across translations.
+
+## Pull Requests
+
+- Target `dev` for normal feature and bug-fix PRs.
+- Keep changes focused.
+- Run `yarn compile`, `yarn test:coverage`, and the relevant production build before pushing.
+- Do not edit `CHANGELOG.md` manually; release automation updates it.
