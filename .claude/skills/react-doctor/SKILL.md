@@ -40,11 +40,11 @@ When the user wants to understand a rule, disagrees with one, or wants to disabl
 npx react-doctor@0.3.0 . --verbose --diff
 ```
 
-| Flag            | Purpose                                                          |
-| --------------- | ---------------------------------------------------------------- |
-| `.`             | Scan the current project directory                               |
-| `--verbose`     | Show affected files and line numbers per rule                    |
-| `--diff [base]` | Scan only files changed against the selected or detected base    |
-| `--diff false`  | Disable diff mode and scan the full project                      |
-| `--staged`      | Scan only staged files                                           |
-| `--score`       | Output only the numeric score                                    |
+| Flag            | Purpose                                                       |
+| --------------- | ------------------------------------------------------------- |
+| `.`             | Scan the current project directory                            |
+| `--verbose`     | Show affected files and line numbers per rule                 |
+| `--diff [base]` | Scan only files changed against the selected or detected base |
+| `--diff false`  | Disable diff mode and scan the full project                   |
+| `--staged`      | Scan only staged files                                        |
+| `--score`       | Output only the numeric score                                 |
