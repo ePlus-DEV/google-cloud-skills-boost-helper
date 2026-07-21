@@ -3,6 +3,9 @@ name: Resolve conflicted PR
 on:
   issue_comment:
     types: [created]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -13,9 +16,12 @@ jobs:
   resolve:
     name: Resolve PR 176
     if: >-
-      github.event.issue.pull_request &&
-      github.event.issue.number == 176 &&
-      github.event.comment.body == '/resolve-dev-main'
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       github.event.issue.number == 176 &&
+       github.event.comment.body == '/resolve-dev-main') ||
+      (github.event_name == 'pull_request' &&
+       github.head_ref == 'automation/trigger-resolve-176')
     runs-on: ubuntu-latest
 
     steps:
