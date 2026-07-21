@@ -65,6 +65,16 @@ jobs:
             git add -- "${conflicted_files[@]}"
           fi
 
+          # GitHub Actions cannot push workflow-file changes without workflows permission.
+          # Keep all workflow files exactly as they were on the fix branch; they are updated
+          # separately after this merge commit is pushed.
+          git checkout HEAD -- \
+            .github/workflows/ci.yml \
+            .github/workflows/release.yml \
+            .github/workflows/resolve-dev-main-conflict.yml
+          rm -f .github/workflows/resolve-conflicted-pr.yml
+          git add -A
+
       - name: Update active dependencies and lockfile
         shell: bash
         run: |
@@ -92,10 +102,6 @@ jobs:
           fs.writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
           NODE
 
-          sed -i 's#actions/setup-node@v6#actions/setup-node@v7#g' \
-            .github/workflows/ci.yml \
-            .github/workflows/release.yml
-
           corepack enable
           yarn install --ignore-scripts --ignore-engines
 
@@ -103,22 +109,7 @@ jobs:
         run: yarn wxt prepare
 
       - name: TypeScript compile
-        id: compile
-        shell: bash
-        run: |
-          set +e
-          yarn compile 2>&1 | tee compile.log
-          status=${PIPESTATUS[0]}
-          tail -n 250 compile.log > compile-errors.log
-          exit "$status"
-
-      - name: Upload TypeScript diagnostics
-        if: failure() && steps.compile.conclusion == 'failure'
-        uses: actions/upload-artifact@v7
-        with:
-          name: pr-176-typescript-errors
-          path: compile-errors.log
-          retention-days: 1
+        run: yarn compile
 
       - name: Unit tests
         run: yarn test
@@ -127,27 +118,10 @@ jobs:
         run: yarn build
 
       - name: Commit and push resolved merge
-        id: commit_push
         shell: bash
         run: |
-          rm -f .github/workflows/resolve-dev-main-conflict.yml
-          git add -A
-
-          set +e
-          (
-            set -e
-            git status --short
-            git diff --cached --stat
-            git commit --no-verify -m "chore: resolve dev-main conflict without restoring unused code"
-            git push origin HEAD:fix/v1.2.15-dev-main-conflict
-          ) 2>&1 | tee commit-push.log
-          status=${PIPESTATUS[0]}
-          exit "$status"
-
-      - name: Upload commit and push diagnostics
-        if: failure() && steps.commit_push.conclusion == 'failure'
-        uses: actions/upload-artifact@v7
-        with:
-          name: pr-176-commit-push-errors
-          path: commit-push.log
-          retention-days: 1
+          git add package.json yarn.lock
+          git status --short
+          git diff --cached --stat
+          git commit --no-verify -m "chore: resolve dev-main conflict without restoring unused code"
+          git push origin HEAD:fix/v1.2.15-dev-main-conflict
