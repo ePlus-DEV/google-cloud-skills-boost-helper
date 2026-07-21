@@ -42,7 +42,7 @@ jobs:
           git diff --name-only "$BASE_SHA" HEAD > changed-files.txt
 
           set +e
-          npm exec --yes --package react-doctor@0.2.16 -- \
+          npm exec --yes --package react-doctor@0.3.0 -- \
             react-doctor . \
             --json \
             --json-compact \
