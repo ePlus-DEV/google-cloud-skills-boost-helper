@@ -99,12 +99,14 @@ jobs:
           corepack enable
           yarn install --ignore-scripts --ignore-engines
 
-      - name: Validate
-        shell: bash
-        run: |
-          yarn compile
-          yarn test
-          yarn build
+      - name: TypeScript compile
+        run: yarn compile
+
+      - name: Unit tests
+        run: yarn test
+
+      - name: Production build
+        run: yarn build
 
       - name: Commit and push resolved merge
         shell: bash
