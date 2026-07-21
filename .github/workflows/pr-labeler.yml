@@ -42,11 +42,15 @@ jobs:
             core.setOutput('has_assignees', hasAssignees);
             core.setOutput('author', pr.user.login);
 
-            const { data: files } = await github.rest.pulls.listFiles({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
+            const files = await github.paginate(
+              github.rest.pulls.listFiles,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                per_page: 100
+              }
+            );
 
             const rules = [
               { label: 'area: services',  test: f => f.startsWith('services/') },
