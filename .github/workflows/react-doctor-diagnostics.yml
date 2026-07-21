@@ -39,32 +39,28 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          git diff --name-only "$BASE_SHA" HEAD > changed-files.txt
-
           set +e
-          npm exec --yes --package react-doctor@0.3.0 -- \
-            react-doctor . \
-            --json \
-            --json-compact \
-            --blocking error \
-            --project "*" \
-            --changed-files-from changed-files.txt \
-            > react-doctor-report.json \
+          npx --yes react-doctor@0.2.16 --version > react-doctor-version.txt 2>&1
+          npx --yes react-doctor@0.2.16 --help > react-doctor-help.txt 2>&1
+          npx --yes react-doctor@0.2.16 . --verbose --diff "$BASE_SHA" \
+            > react-doctor-report.txt \
             2> react-doctor-stderr.txt
           status=$?
           set -e
 
           echo "$status" > react-doctor-exit-code.txt
+          cat react-doctor-version.txt
           cat react-doctor-stderr.txt
-          cat react-doctor-report.json
+          cat react-doctor-report.txt
 
       - name: Upload diagnostic report
         uses: actions/upload-artifact@v7
         with:
           name: react-doctor-diagnostics
           path: |
-            changed-files.txt
-            react-doctor-report.json
+            react-doctor-version.txt
+            react-doctor-help.txt
+            react-doctor-report.txt
             react-doctor-stderr.txt
             react-doctor-exit-code.txt
           retention-days: 1
