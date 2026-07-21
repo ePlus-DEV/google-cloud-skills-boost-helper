@@ -1,14 +1,25 @@
-name: "Submit to Web Store"
+name: Submit to Web Store
+
 permissions:
   contents: write
+  pull-requests: write
+  actions: read
+  checks: read
+  statuses: read
 
 on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to build and publish
+        required: true
+        type: string
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -16,15 +27,71 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+      WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
+      WXT_API_URL: ${{ secrets.WXT_API_URL }}
+      WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
+      WXT_FIREBASE_API_KEY: ${{ secrets.WXT_FIREBASE_API_KEY }}
+      WXT_FIREBASE_AUTH_DOMAIN: ${{ secrets.WXT_FIREBASE_AUTH_DOMAIN }}
+      WXT_FIREBASE_PROJECT_ID: ${{ secrets.WXT_FIREBASE_PROJECT_ID }}
+      WXT_FIREBASE_STORAGE_BUCKET: ${{ secrets.WXT_FIREBASE_STORAGE_BUCKET }}
+      WXT_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WXT_FIREBASE_MESSAGING_SENDER_ID }}
+      WXT_FIREBASE_APP_ID: ${{ secrets.WXT_FIREBASE_APP_ID }}
+      WXT_FIREBASE_FETCH_INTERVAL_MS: ${{ secrets.WXT_FIREBASE_FETCH_INTERVAL_MS }}
+      WXT_FIREBASE_FETCH_TIMEOUT_MS: ${{ secrets.WXT_FIREBASE_FETCH_TIMEOUT_MS }}
+      FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+      FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+      FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
+      CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+      CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+      CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+      CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
 
-      - name: Setup Node.js with Yarn cache
+    steps:
+      - name: Verify release bot identity
+        env:
+          EPLUS_BOT_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${EPLUS_BOT_TOKEN:-}" ]; then
+            echo "::error::EPLUS_BOT_TOKEN is empty."
+            exit 1
+          fi
+
+          BOT_LOGIN="$(GH_TOKEN="$EPLUS_BOT_TOKEN" gh api user --jq .login)"
+
+          if [ "$BOT_LOGIN" != "eplus-bot" ]; then
+            echo "::error::EPLUS_BOT_TOKEN belongs to '$BOT_LOGIN', expected 'eplus-bot'."
+            exit 1
+          fi
+
+      - name: Checkout release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
+          token: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Validate release tag
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$RELEASE_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid release tag: $RELEASE_TAG"
+            exit 1
+          fi
+
+          git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}" >/dev/null
+
+      - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
-          cache: "yarn"
+
+      - name: Install Yarn
+        run: npm install --global yarn@1.22.22
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
@@ -32,19 +99,10 @@ jobs:
       - name: Prepare WXT types
         run: yarn wxt prepare
 
-      - name: Build the extension
-        env:
-          WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
-          WXT_API_URL: ${{ secrets.WXT_API_URL }}
-          WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
-          WXT_FIREBASE_API_KEY: ${{ secrets.WXT_FIREBASE_API_KEY }}
-          WXT_FIREBASE_AUTH_DOMAIN: ${{ secrets.WXT_FIREBASE_AUTH_DOMAIN }}
-          WXT_FIREBASE_PROJECT_ID: ${{ secrets.WXT_FIREBASE_PROJECT_ID }}
-          WXT_FIREBASE_STORAGE_BUCKET: ${{ secrets.WXT_FIREBASE_STORAGE_BUCKET }}
-          WXT_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WXT_FIREBASE_MESSAGING_SENDER_ID }}
-          WXT_FIREBASE_APP_ID: ${{ secrets.WXT_FIREBASE_APP_ID }}
-          WXT_FIREBASE_FETCH_INTERVAL_MS: ${{ secrets.WXT_FIREBASE_FETCH_INTERVAL_MS }}
-          WXT_FIREBASE_FETCH_TIMEOUT_MS: ${{ secrets.WXT_FIREBASE_FETCH_TIMEOUT_MS }}
+      - name: Run tests
+        run: yarn test
+
+      - name: Build browser packages
         run: |
           yarn zip
           yarn zip:firefox --mv3
@@ -52,42 +110,162 @@ jobs:
           yarn zip -b opera
 
       - name: Verify build outputs
-        run: ls -l .output/*.zip
+        run: |
+          set -euo pipefail
+          ls -lh .output/*.zip
 
-      - name: Update CHANGELOG
+          for browser in chrome firefox edge opera; do
+            if ! find .output -maxdepth 1 -type f -name "*-${browser}.zip" -print -quit | grep -q .; then
+              echo "::error::Missing ${browser} release package."
+              exit 1
+            fi
+          done
+
+      - name: Checkout latest main for changelog
+        run: |
+          set -euo pipefail
+          git reset --hard
+          git fetch origin main --tags
+          git checkout -B main origin/main
+
+      - name: Generate CHANGELOG.md and release notes
         id: changelog
         uses: requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ env.RELEASE_TAG }}
+          writeToFile: true
 
-      - name: Commit CHANGELOG.md
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: main
-          commit_message: "docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]"
-          file_pattern: CHANGELOG.md
+      - name: Generate GitHub release body
+        env:
+          CHANGELOG_NOTES: ${{ steps.changelog.outputs.changes }}
+        run: |
+          set -euo pipefail
+          sed "s/{version}/$RELEASE_TAG/g" INSTALL.md > RELEASE_NOTES.md
+          printf '\n\n---\n\n# Changelog\n\n%s\n' "$CHANGELOG_NOTES" >> RELEASE_NOTES.md
+
+      - name: Create changelog pull request as eplus-bot
+        id: changelog_pr
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- CHANGELOG.md; then
+            echo "No CHANGELOG.md update is required for $RELEASE_TAG."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BRANCH="chore/changelog-$RELEASE_TAG"
+
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add CHANGELOG.md
+          git commit -m "docs: update CHANGELOG.md for $RELEASE_TAG"
+          git push --force origin "HEAD:refs/heads/$BRANCH"
+
+          PR_NUMBER="$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open \
+            --head "$BRANCH" \
+            --json number \
+            --jq '.[0].number')"
+
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
+            PR_URL="$(gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head "$BRANCH" \
+              --title "docs: update changelog for $RELEASE_TAG" \
+              --body "Automated CHANGELOG.md update generated from release tag \`$RELEASE_TAG\`.\n\nCreated and merged by @eplus-bot after approval from github-actions[bot] and all required checks pass.")"
+            PR_NUMBER="${PR_URL##*/}"
+          fi
+
+          PR_AUTHOR="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json author --jq .author.login)"
+          if [ "$PR_AUTHOR" != "eplus-bot" ]; then
+            echo "::error::Changelog PR #$PR_NUMBER was created by '$PR_AUTHOR', expected 'eplus-bot'."
+            exit 1
+          fi
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for pull request checks
+        if: ${{ steps.changelog_pr.outputs.changed == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+          PR_NUMBER: ${{ steps.changelog_pr.outputs.number }}
+        run: |
+          set -euo pipefail
+
+          for attempt in {1..90}; do
+            CHECKS="$(gh pr checks "$PR_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --json bucket,name,workflow 2>/dev/null || echo '[]')"
+
+            CI_COUNT="$(jq '[.[] | select(.name == "Type Check, Test & Build")] | length' <<<"$CHECKS")"
+            FAILING_COUNT="$(jq '[.[] | select(.bucket == "fail" or .bucket == "cancel")] | length' <<<"$CHECKS")"
+            PENDING_COUNT="$(jq '[.[] | select(.bucket == "pending")] | length' <<<"$CHECKS")"
+
+            if [ "$FAILING_COUNT" -gt 0 ]; then
+              jq -r '.[] | select(.bucket == "fail" or .bucket == "cancel") | "::error::\(.workflow): \(.name) failed"' <<<"$CHECKS"
+              exit 1
+            fi
+
+            if [ "$CI_COUNT" -gt 0 ] && [ "$PENDING_COUNT" -eq 0 ]; then
+              exit 0
+            fi
+
+            echo "Waiting for changelog PR checks (attempt $attempt/90, CI found: $CI_COUNT, pending: $PENDING_COUNT)."
+            sleep 10
+          done
+
+          echo "::error::Timed out waiting for changelog checks."
+          exit 1
+
+      - name: Approve changelog pull request as github-actions[bot]
+        if: ${{ steps.changelog_pr.outputs.changed == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.changelog_pr.outputs.number }}
+        run: |
+          set -euo pipefail
+          gh pr review "$PR_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --approve \
+            --body "Automated approval after all required checks passed."
+
+      - name: Merge changelog pull request as eplus-bot
+        if: ${{ steps.changelog_pr.outputs.changed == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+          PR_NUMBER: ${{ steps.changelog_pr.outputs.number }}
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --squash \
+            --delete-branch
+
+      - name: Restore release tag workspace
+        run: |
+          set -euo pipefail
+          git reset --hard
+          git checkout --detach "$RELEASE_TAG"
 
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v3
         with:
-          name: "v.${{ github.ref_name }}"
-          draft: true
-          generate_release_notes: true
-          body_path: INSTALL.md
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: "v${{ env.RELEASE_TAG }}"
+          body_path: RELEASE_NOTES.md
+          draft: false
+          fail_on_unmatched_files: true
           files: .output/*.zip
 
       - name: Submit to stores
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
-          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
-          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
-          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
-          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
-          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
-          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
         run: |
           yarn wxt submit \
             --chrome-zip .output/*-chrome.zip \
