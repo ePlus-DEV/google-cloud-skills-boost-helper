@@ -47,7 +47,9 @@ describe("MarkdownService sanitization", () => {
     expect(document.querySelector(".unsafe-area")).toBeNull();
     const unsafeLink = document.querySelector(".unsafe-link");
     expect(unsafeLink === null || !unsafeLink.hasAttribute("href")).toBe(true);
-    expect(document.querySelector(".safe-image")?.hasAttribute("onerror")).toBe(false);
+    expect(document.querySelector(".safe-image")?.hasAttribute("onerror")).toBe(
+      false,
+    );
     expect(document.querySelector(".safe-image")?.getAttribute("src")).toBe(
       "https://example.com/image.png",
     );
@@ -57,15 +59,17 @@ describe("MarkdownService sanitization", () => {
     expect(
       document.querySelector(".blank-link")?.getAttribute("rel")?.split(" "),
     ).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
-    expect(document.querySelector(".mail-link")?.hasAttribute("href")).toBe(false);
+    expect(document.querySelector(".mail-link")?.hasAttribute("href")).toBe(
+      false,
+    );
     expect(document.querySelector(".data-image")?.getAttribute("src")).toBe(
       "data:image/png;base64,iVBORw0KGgo=",
     );
     expect(document.querySelector(".blob-image")?.getAttribute("src")).toBe(
       "blob:https://example.com/image-id",
     );
-    expect(
-      document.querySelector(".svg-data-image")?.hasAttribute("src"),
-    ).toBe(false);
+    expect(document.querySelector(".svg-data-image")?.hasAttribute("src")).toBe(
+      false,
+    );
   });
 });
