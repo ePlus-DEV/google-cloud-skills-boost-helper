@@ -15,16 +15,19 @@ jobs:
     name: Update PR
     runs-on: ubuntu-latest
     permissions:
+      issues: write
       pull-requests: write
 
     steps:
       - name: Gather Info
         id: check
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          DISPATCH_PR_NUMBER: ${{ inputs.pr_number }}
         with:
           script: |
             const prNumber = context.eventName === 'workflow_dispatch'
-              ? Number('${{ inputs.pr_number }}')
+              ? Number(process.env.DISPATCH_PR_NUMBER)
               : context.payload.pull_request.number;
 
             core.setOutput('pr_number', prNumber);
@@ -77,26 +80,45 @@ jobs:
       - name: Sync Author
         if: steps.check.outputs.has_assignees == 'false'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PR_NUMBER: ${{ steps.check.outputs.pr_number }}
+          PR_AUTHOR: ${{ steps.check.outputs.author }}
         with:
           script: |
             try {
+              const prNumber = Number(process.env.PR_NUMBER);
+              const author = process.env.PR_AUTHOR;
+
+              if (!Number.isInteger(prNumber) || !author) {
+                throw new Error('Invalid PR number or author output');
+              }
+
               await github.rest.issues.addAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: ${{ steps.check.outputs.pr_number }},
-                assignees: ['${{ steps.check.outputs.author }}']
+                issue_number: prNumber,
+                assignees: [author]
               });
-              console.log('Assigned PR author: ${{ steps.check.outputs.author }}');
+              console.log('Assigned PR author:', author);
             } catch (err) {
               console.warn('Error assigning author:', err.message);
             }
 
       - name: Sync Labels
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PR_NUMBER: ${{ steps.check.outputs.pr_number }}
+          NEW_LABELS: ${{ steps.check.outputs.labels }}
+          CURRENT_AREA_LABELS: ${{ steps.check.outputs.current_area_labels }}
         with:
           script: |
-            const newLabels = ${{ steps.check.outputs.labels }};
-            const currentLabels = ${{ steps.check.outputs.current_area_labels }};
+            const prNumber = Number(process.env.PR_NUMBER);
+            const newLabels = JSON.parse(process.env.NEW_LABELS || '[]');
+            const currentLabels = JSON.parse(process.env.CURRENT_AREA_LABELS || '[]');
+
+            if (!Number.isInteger(prNumber)) {
+              throw new Error('Invalid PR number output');
+            }
 
             const toAdd = newLabels.filter(l => !currentLabels.includes(l));
             const toRemove = currentLabels.filter(l => !newLabels.includes(l));
@@ -105,7 +127,7 @@ jobs:
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: ${{ steps.check.outputs.pr_number }},
+                issue_number: prNumber,
                 labels: toAdd
               });
               console.log('Added:', toAdd);
@@ -115,7 +137,7 @@ jobs:
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: ${{ steps.check.outputs.pr_number }},
+                issue_number: prNumber,
                 name: label
               });
               console.log('Removed:', label);
