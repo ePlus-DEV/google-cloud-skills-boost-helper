@@ -1923,7 +1923,6 @@ const OptionsService = {
       });
 
       await this.switchAccount(newAccount.id);
-      await this.loadAccounts();
 
       this.hideAddAccountModal();
       this.showMessage(

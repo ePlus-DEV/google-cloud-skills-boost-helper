@@ -45,15 +45,14 @@ const MARKDOWN_ALLOWED_ATTRIBUTES = [
   "width",
 ];
 
-/**
- * Checks whether a URL uses one of the explicitly allowed schemes.
- * ASCII control characters and whitespace are ignored before parsing.
- */
-function hasAllowedUrlScheme(
-  value: string,
-  allowedSchemes: ReadonlySet<string>,
-): boolean {
-  const normalized = Array.from(value)
+const LINK_SCHEMES = new Set(["http", "https"]);
+const IMAGE_SCHEMES = new Set(["http", "https", "blob"]);
+const SAFE_DATA_IMAGE_SOURCE =
+  /^data:image\/(?:avif|gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/iu;
+
+/** Removes ASCII control characters and whitespace before URL parsing. */
+function normalizeUrlForSchemeCheck(value: string): string {
+  return Array.from(value)
     .filter((character) => {
       const codePoint = character.codePointAt(0);
       return (
@@ -64,8 +63,25 @@ function hasAllowedUrlScheme(
     })
     .join("")
     .trim();
-  const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/i)?.[1];
+}
+
+/** Checks whether a URL uses one of the explicitly allowed schemes. */
+function hasAllowedUrlScheme(
+  value: string,
+  allowedSchemes: ReadonlySet<string>,
+): boolean {
+  const normalized = normalizeUrlForSchemeCheck(value);
+  const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/iu)?.[1];
   return !scheme || allowedSchemes.has(scheme.toLowerCase());
+}
+
+/** Allows relative, HTTP(S), blob, and safe raster data-image sources. */
+function hasAllowedImageSource(value: string): boolean {
+  const normalized = normalizeUrlForSchemeCheck(value);
+  return (
+    SAFE_DATA_IMAGE_SOURCE.test(normalized) ||
+    hasAllowedUrlScheme(value, IMAGE_SCHEMES)
+  );
 }
 
 /** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */
@@ -75,24 +91,26 @@ function sanitizeMarkdownHtml(html: string): string {
     ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
     ALLOW_ARIA_ATTR: true,
     ALLOW_DATA_ATTR: false,
-    ALLOW_UNKNOWN_PROTOCOLS: false,
+    // Candidate schemes remain only until the strict checks below run.
+    ALLOW_UNKNOWN_PROTOCOLS: true,
   });
 
   const template = document.createElement("template");
   template.innerHTML = sanitized;
 
-  const linkSchemes = new Set(["http", "https"]);
-  template.content.querySelectorAll("a[href]").forEach((element) => {
-    const href = element.getAttribute("href") || "";
-    if (!hasAllowedUrlScheme(href, linkSchemes)) {
+  template.content.querySelectorAll("a").forEach((element) => {
+    if (element.getAttribute("target") === "_blank") {
+      element.setAttribute("rel", "noopener noreferrer");
+    }
+    const href = element.getAttribute("href");
+    if (href && !hasAllowedUrlScheme(href, LINK_SCHEMES)) {
       element.removeAttribute("href");
     }
   });
 
-  const imageSchemes = new Set(["http", "https"]);
   template.content.querySelectorAll("img[src]").forEach((element) => {
     const src = element.getAttribute("src") || "";
-    if (!hasAllowedUrlScheme(src, imageSchemes)) {
+    if (!hasAllowedImageSource(src)) {
       element.removeAttribute("src");
     }
   });
@@ -206,10 +224,12 @@ const MarkdownService = {
           imgs.forEach((img) => {
             const src = img.getAttribute("src") || "";
             if (!src) return;
+            const normalizedSrc = src.trim().toLowerCase();
             if (
-              /^https?:\/\//i.test(src) ||
-              /^data:\//i.test(src) ||
-              /^blob:\//i.test(src)
+              normalizedSrc.startsWith("http://") ||
+              normalizedSrc.startsWith("https://") ||
+              normalizedSrc.startsWith("data:") ||
+              normalizedSrc.startsWith("blob:")
             )
               return;
             try {
@@ -319,10 +339,12 @@ const MarkdownService = {
         imgs.forEach((img) => {
           const src = img.getAttribute("src") || "";
           if (!src) return;
+          const normalizedSrc = src.trim().toLowerCase();
           if (
-            /^https?:\/\//i.test(src) ||
-            /^data:\//i.test(src) ||
-            /^blob:\//i.test(src)
+            normalizedSrc.startsWith("http://") ||
+            normalizedSrc.startsWith("https://") ||
+            normalizedSrc.startsWith("data:") ||
+            normalizedSrc.startsWith("blob:")
           )
             return;
           try {
