@@ -1,31 +1,143 @@
 name: dependabot-auto-merge
-on: pull_request_target
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
 
 permissions:
   pull-requests: write
   contents: write
+  actions: read
+  checks: read
+  statuses: read
 
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: >-
+      ${{
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'pull_request' &&
+        startsWith(github.event.workflow_run.head_branch, 'dependabot/')
+      }}
+
     steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v3.1.0
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Auto-merge Dependabot PRs for semver-minor updates
-        if: ${{steps.metadata.outputs.update-type == 'version-update:semver-minor'}}
-        run: gh pr merge --auto --merge "$PR_URL"
+      - name: Verify bot token
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::EPLUS_BOT_TOKEN is empty. Add it to repository Actions secrets."
+            exit 1
+          fi
         env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
 
-      - name: Auto-merge Dependabot PRs for semver-patch updates
-        if: ${{steps.metadata.outputs.update-type == 'version-update:semver-patch'}}
-        run: gh pr merge --auto --merge "$PR_URL"
+      - name: Verify bot identity
+        run: |
+          BOT_LOGIN="$(gh api user --jq .login)"
+          test "$BOT_LOGIN" = "eplus-bot"
         env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Resolve pull request
+        id: pr
+        run: |
+          PR_NUMBER="${{ github.event.workflow_run.pull_requests[0].number }}"
+
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
+            PR_NUMBER="$(gh pr list \
+              --repo "$GITHUB_REPOSITORY" \
+              --state open \
+              --head "$HEAD_BRANCH" \
+              --json number \
+              --jq '.[0].number')"
+          fi
+
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
+            echo "::notice::No pull request found for head branch $HEAD_BRANCH."
+            echo "should_merge=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PR_JSON="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+          PR_AUTHOR="$(jq -r '.user.login' <<<"$PR_JSON")"
+          PR_STATE="$(jq -r '.state' <<<"$PR_JSON")"
+          PR_DRAFT="$(jq -r '.draft' <<<"$PR_JSON")"
+          PR_HEAD_REF="$(jq -r '.head.ref' <<<"$PR_JSON")"
+          PR_BASE_REF="$(jq -r '.base.ref' <<<"$PR_JSON")"
+          PR_HEAD_REPO="$(jq -r '.head.repo.full_name' <<<"$PR_JSON")"
+
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+          if [ "$PR_AUTHOR" != "dependabot[bot]" ]; then
+            echo "::notice::Skip PR #$PR_NUMBER because it is not a Dependabot PR."
+            echo "should_merge=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "$PR_HEAD_REF" in
+            dependabot/*) ;;
+            *)
+              echo "::notice::Skip PR #$PR_NUMBER because head branch is not dependabot/*."
+              echo "should_merge=false" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
+          if [ "$PR_HEAD_REPO" != "$GITHUB_REPOSITORY" ]; then
+            echo "::notice::Skip PR #$PR_NUMBER because the head repository is different."
+            echo "should_merge=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$PR_STATE" != "open" ] || [ "$PR_DRAFT" = "true" ] || [ "$PR_HEAD_REF" = "$PR_BASE_REF" ]; then
+            echo "::notice::Skip PR #$PR_NUMBER because it is not ready to merge."
+            echo "should_merge=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "should_merge=true" >> "$GITHUB_OUTPUT"
+        env:
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Wait for pull request checks
+        if: ${{ steps.pr.outputs.should_merge == 'true' }}
+        run: |
+          for attempt in {1..60}; do
+            CHECKS="$(gh pr checks "$PR_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --json bucket,name,workflow)"
+
+            FAILING_COUNT="$(jq '[.[] | select(.workflow != env.MERGE_WORKFLOW and (.bucket == "fail" or .bucket == "cancel"))] | length' <<<"$CHECKS")"
+            if [ "$FAILING_COUNT" -gt 0 ]; then
+              jq -r '.[] | select(.workflow != env.MERGE_WORKFLOW and (.bucket == "fail" or .bucket == "cancel")) | "::error::\(.workflow): \(.name) failed"' <<<"$CHECKS"
+              exit 1
+            fi
+
+            PENDING_COUNT="$(jq '[.[] | select(.workflow != env.MERGE_WORKFLOW and .bucket == "pending")] | length' <<<"$CHECKS")"
+            if [ "$PENDING_COUNT" -eq 0 ]; then
+              exit 0
+            fi
+
+            echo "Waiting for $PENDING_COUNT pull request check(s) before merging (attempt $attempt/60)."
+            sleep 10
+          done
+
+          echo "::error::Timed out waiting for pull request checks to finish."
+          exit 1
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          MERGE_WORKFLOW: ${{ github.workflow }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Merge Dependabot pull request and delete branch
+        if: ${{ steps.pr.outputs.should_merge == 'true' }}
+        run: gh pr merge --merge --delete-branch "$PR_NUMBER" --repo "$GITHUB_REPOSITORY"
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
