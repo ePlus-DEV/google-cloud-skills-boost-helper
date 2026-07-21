@@ -1,0 +1,36 @@
+name: Sync main history into dev for PR 178
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-main-to-dev-pr178
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.event.pull_request.number == 178 && github.head_ref == 'dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Merge main history into dev
+        shell: bash
+        run: |
+          git config user.name "ePlus Bot"
+          git config user.email "dev@eplus.dev"
+          git fetch origin main dev
+          git rm -f .github/.sync-pr178-main-history
+          git commit -m "ci: remove PR 178 history sync trigger"
+          git merge --no-ff origin/main -m "chore: sync main history into dev"
+          git push origin HEAD:dev
