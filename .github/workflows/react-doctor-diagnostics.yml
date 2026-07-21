@@ -36,16 +36,35 @@ jobs:
       - name: Run React Doctor diagnostics
         id: doctor
         shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
+          git diff --name-only "$BASE_SHA" HEAD > changed-files.txt
+
           set +e
-          npx --yes react-doctor@0.2.16 --verbose --scope changed 2>&1 | tee react-doctor-report.txt
-          status=${PIPESTATUS[0]}
-          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
-          exit 0
+          npm exec --yes --package react-doctor@0.2.16 -- \
+            react-doctor . \
+            --json \
+            --json-compact \
+            --blocking error \
+            --project "*" \
+            --changed-files-from changed-files.txt \
+            > react-doctor-report.json \
+            2> react-doctor-stderr.txt
+          status=$?
+          set -e
+
+          echo "$status" > react-doctor-exit-code.txt
+          cat react-doctor-stderr.txt
+          cat react-doctor-report.json
 
       - name: Upload diagnostic report
         uses: actions/upload-artifact@v7
         with:
           name: react-doctor-diagnostics
-          path: react-doctor-report.txt
+          path: |
+            changed-files.txt
+            react-doctor-report.json
+            react-doctor-stderr.txt
+            react-doctor-exit-code.txt
           retention-days: 1
