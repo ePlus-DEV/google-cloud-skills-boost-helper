@@ -45,13 +45,25 @@ const MARKDOWN_ALLOWED_ATTRIBUTES = [
   "width",
 ];
 
-const URL_CONTROL_OR_WHITESPACE = /[\u0000-\u0020\u007f-\u009f]/g;
-
+/**
+ * Checks whether a URL uses one of the explicitly allowed schemes.
+ * ASCII control characters and whitespace are ignored before parsing.
+ */
 function hasAllowedUrlScheme(
   value: string,
   allowedSchemes: ReadonlySet<string>,
 ): boolean {
-  const normalized = value.replace(URL_CONTROL_OR_WHITESPACE, "").trim();
+  const normalized = Array.from(value)
+    .filter((character) => {
+      const codePoint = character.codePointAt(0);
+      return (
+        codePoint !== undefined &&
+        codePoint > 0x20 &&
+        (codePoint < 0x7f || codePoint > 0x9f)
+      );
+    })
+    .join("")
+    .trim();
   const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/i)?.[1];
   return !scheme || allowedSchemes.has(scheme.toLowerCase());
 }

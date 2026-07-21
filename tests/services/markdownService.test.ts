@@ -30,7 +30,7 @@ describe("MarkdownService sanitization", () => {
       vi.fn().mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => markdown,
+        text: vi.fn().mockResolvedValue(markdown),
       }),
     );
 

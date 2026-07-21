@@ -740,6 +740,7 @@ class SearchService {
     const shadowRoots: ShadowRoot[] = [];
     const visited = new Set<ShadowRoot>();
 
+    /** Recursively visits a document or shadow root to collect nested roots. */
     const visit = (searchRoot: Document | ShadowRoot): void => {
       for (const element of Array.from(searchRoot.querySelectorAll("*"))) {
         try {
