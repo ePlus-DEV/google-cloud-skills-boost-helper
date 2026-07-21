@@ -99,6 +99,9 @@ jobs:
           corepack enable
           yarn install --ignore-scripts --ignore-engines
 
+      - name: Prepare WXT types
+        run: yarn wxt prepare
+
       - name: TypeScript compile
         id: compile
         shell: bash
