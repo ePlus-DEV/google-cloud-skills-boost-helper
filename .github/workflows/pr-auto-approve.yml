@@ -1,0 +1,181 @@
+name: pr-auto-approve
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+
+    steps:
+      - name: Verify bot token
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::EPLUS_BOT_TOKEN is empty. Add it to repository Actions secrets."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Verify bot identity
+        run: |
+          BOT_LOGIN="$(gh api user --jq .login)"
+          test "$BOT_LOGIN" = "eplus-bot"
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Resolve pull request
+        id: pr
+        run: |
+          PR_NUMBER="${{ github.event.workflow_run.pull_requests[0].number }}"
+
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
+            PR_NUMBER="$(gh pr list \
+              --repo "$GITHUB_REPOSITORY" \
+              --state open \
+              --head "$HEAD_BRANCH" \
+              --json number \
+              --jq '.[0].number')"
+          fi
+
+          if [ -z "$PR_NUMBER" ] || [ "$PR_NUMBER" = "null" ]; then
+            echo "::notice::No pull request found for head branch $HEAD_BRANCH."
+            echo "should_approve=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PR_JSON="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+          PR_AUTHOR="$(jq -r '.user.login' <<<"$PR_JSON")"
+          PR_STATE="$(jq -r '.state' <<<"$PR_JSON")"
+          PR_DRAFT="$(jq -r '.draft' <<<"$PR_JSON")"
+          BOT_LOGIN="$(gh api user --jq .login)"
+
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+          if [ "$PR_AUTHOR" = "$BOT_LOGIN" ]; then
+            echo "::notice::Skipping PR #$PR_NUMBER because '$BOT_LOGIN' cannot approve its own pull request."
+            echo "should_approve=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$PR_STATE" != "open" ]; then
+            echo "::notice::Skipping PR #$PR_NUMBER because it is not open."
+            echo "should_approve=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$PR_DRAFT" = "true" ]; then
+            echo "::notice::Skipping PR #$PR_NUMBER because it is a draft."
+            echo "should_approve=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "should_approve=true" >> "$GITHUB_OUTPUT"
+        env:
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Wait for pull request checks
+        if: ${{ steps.pr.outputs.should_approve == 'true' }}
+        run: |
+          for attempt in {1..60}; do
+            CHECKS="$(gh pr checks "$PR_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --json bucket,name,workflow)"
+
+            FAILING_COUNT="$(jq '[.[] | select(.workflow != env.APPROVAL_WORKFLOW and (.bucket == "fail" or .bucket == "cancel"))] | length' <<<"$CHECKS")"
+            if [ "$FAILING_COUNT" -gt 0 ]; then
+              jq -r '.[] | select(.workflow != env.APPROVAL_WORKFLOW and (.bucket == "fail" or .bucket == "cancel")) | "::error::\(.workflow): \(.name) failed"' <<<"$CHECKS"
+              exit 1
+            fi
+
+            PENDING_COUNT="$(jq '[.[] | select(.workflow != env.APPROVAL_WORKFLOW and .bucket == "pending")] | length' <<<"$CHECKS")"
+            if [ "$PENDING_COUNT" -eq 0 ]; then
+              exit 0
+            fi
+
+            echo "Waiting for $PENDING_COUNT pull request check(s) before approving (attempt $attempt/60)."
+            sleep 10
+          done
+
+          echo "::error::Timed out waiting for pull request checks to finish."
+          exit 1
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          APPROVAL_WORKFLOW: ${{ github.workflow }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Approve pull request
+        if: ${{ steps.pr.outputs.should_approve == 'true' }}
+        run: |
+          APPROVED_FOR_HEAD="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews" \
+            --paginate \
+            --jq ".[] | select(.user.login == \"eplus-bot\" and .state == \"APPROVED\" and .commit_id == \"$HEAD_SHA\") | .id" \
+            | tail -n 1)"
+
+          if [ -z "$APPROVED_FOR_HEAD" ]; then
+            gh pr review --approve "$PR_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --body "$APPROVAL_REVIEW_BODY"
+          fi
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          APPROVAL_REVIEW_BODY: |
+            Approved by @eplus-bot after all pull request checks passed.
+
+            CI run: ${{ github.event.workflow_run.html_url }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Upsert CI approval comment
+        if: ${{ steps.pr.outputs.should_approve == 'true' }}
+        run: |
+          COMMENT_ID="$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            --paginate \
+            --jq ".[] | select(.user.login == \"eplus-bot\" and (.body | contains(\"$COMMENT_MARKER\"))) | .id" \
+            | tail -n 1)"
+
+          APPROVAL_COMMENT="$(printf '%s\n' \
+            "$COMMENT_MARKER" \
+            "" \
+            "![CI passed](https://img.shields.io/badge/CI-passed-brightgreen)" \
+            "" \
+            "Approved by @eplus-bot after all pull request checks passed." \
+            "" \
+            "CI updated: $CI_UPDATED_AT" \
+            "CI attempt: #$CI_RUN_ATTEMPT" \
+            "Approval workflow: #$APPROVAL_RUN_NUMBER.$APPROVAL_RUN_ATTEMPT" \
+            "" \
+            "CI run: $CI_RUN_URL")"
+
+          if [ -n "$COMMENT_ID" ]; then
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID" \
+              -f body="$APPROVAL_COMMENT"
+          else
+            gh api \
+              --method POST \
+              "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+              -f body="$APPROVAL_COMMENT"
+          fi
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          COMMENT_MARKER: "<!-- eplus-bot-ci-approval -->"
+          CI_UPDATED_AT: ${{ github.event.workflow_run.updated_at }}
+          CI_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          CI_RUN_URL: ${{ github.event.workflow_run.html_url }}
+          APPROVAL_RUN_NUMBER: ${{ github.run_number }}
+          APPROVAL_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
