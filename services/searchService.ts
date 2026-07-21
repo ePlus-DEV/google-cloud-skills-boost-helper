@@ -733,45 +733,48 @@ class SearchService {
     return fallbackTitle;
   }
 
+  /** Collect all accessible shadow roots, including nested roots. */
+  private static collectOpenShadowRoots(
+    root: Document | ShadowRoot = document,
+  ): ShadowRoot[] {
+    const shadowRoots: ShadowRoot[] = [];
+    const visited = new Set<ShadowRoot>();
+
+    /** Recursively visits a document or shadow root to collect nested roots. */
+    const visit = (searchRoot: Document | ShadowRoot): void => {
+      for (const element of Array.from(searchRoot.querySelectorAll("*"))) {
+        try {
+          const shadowRoot = element.shadowRoot;
+          if (!shadowRoot || visited.has(shadowRoot)) continue;
+
+          visited.add(shadowRoot);
+          shadowRoots.push(shadowRoot);
+          visit(shadowRoot);
+        } catch {
+          // Ignore inaccessible or browser-managed shadow roots.
+        }
+      }
+    };
+
+    visit(root);
+    return shadowRoots;
+  }
+
   /**
    * Query selector that searches into shadow roots recursively.
    * Returns the first matching Element or null.
    */
   private static querySelectorDeep(selector: string): Element | null {
     try {
-      // Quick check on document
       const direct = document.querySelector(selector);
       if (direct) return direct;
 
-      // BFS through all elements to look into shadowRoots
-      const nodes = Array.from(document.querySelectorAll("*"));
-      for (const el of nodes) {
-        try {
-          const sr = (el as Element).shadowRoot;
-          if (sr) {
-            const found = sr.querySelector(selector);
-            if (found) return found;
-
-            // also search one level deeper inside nested shadow roots
-            const nested = Array.from(sr.querySelectorAll("*"));
-            for (const nestedElement of nested) {
-              try {
-                const nestedShadowRoot = (nestedElement as Element).shadowRoot;
-                if (nestedShadowRoot) {
-                  const foundElement = nestedShadowRoot.querySelector(selector);
-                  if (foundElement) return foundElement;
-                }
-              } catch {
-                // ignore errors from accessing shadow roots
-              }
-            }
-          }
-        } catch {
-          // ignore errors from accessing shadow roots
-        }
+      for (const shadowRoot of this.collectOpenShadowRoots()) {
+        const found = shadowRoot.querySelector(selector);
+        if (found) return found;
       }
-    } catch (e) {
-      // ignore
+    } catch {
+      // Ignore malformed selectors and inaccessible roots.
     }
     return null;
   }
@@ -822,29 +825,17 @@ class SearchService {
   }
 
   /**
-   * Get all text from page including shadow DOM
+   * Get all text from page including nested shadow DOM
    */
   private static getPageText(): string {
-    const texts: string[] = [];
+    const texts = [document.body.textContent || ""];
 
-    // Get document text
-    texts.push(document.body.textContent || "");
-
-    // Search through shadow roots
     try {
-      const nodes = Array.from(document.querySelectorAll("*"));
-      for (const el of nodes) {
-        try {
-          const sr = (el as Element).shadowRoot;
-          if (sr) {
-            texts.push(sr.textContent || "");
-          }
-        } catch {
-          // ignore errors from accessing shadow roots
-        }
+      for (const shadowRoot of this.collectOpenShadowRoots()) {
+        texts.push(shadowRoot.textContent || "");
       }
     } catch {
-      // ignore
+      // Ignore inaccessible roots and return the text collected so far.
     }
 
     return texts.join(" ");
@@ -864,7 +855,10 @@ class SearchService {
 
     // Build query with title first, then GSP ID and query text
     // Include queryText even if we have a title, as it provides additional context
-    const parts = [primaryTitle, gspId, queryText].filter(Boolean);
+    const parts = [primaryTitle, gspId].filter(Boolean);
+    if (queryText && queryText !== primaryTitle) {
+      parts.push(queryText);
+    }
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
       console.info("[LabService] Lab title:", labTitle);

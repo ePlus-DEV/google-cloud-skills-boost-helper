@@ -110,7 +110,7 @@ WXT_FIREBASE_PROJECT_ID=
 # ... other firebase vars
 
 # Countdown config (overridden by Firebase Remote Config at runtime)
-WXT_COUNTDOWN_DEADLINE_ARCADE=2026-06-30T23:59:59+05:30
+WXT_COUNTDOWN_DEADLINE_ARCADE=YYYY-MM-DDTHH:mm:ss+05:30 # Replace with the active season deadline
 WXT_COUNTDOWN_ENABLED_ARCADE=true
 ```
 

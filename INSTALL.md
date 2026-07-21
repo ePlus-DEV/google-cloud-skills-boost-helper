@@ -30,10 +30,10 @@ Replace the **contents** of the existing folder with the contents of the new rel
 
 ---
 
-## Available Stores
+## Available Stores and Packages
 
-Store installs receive automatic updates and are recommended for most users.
+Official-store installs receive automatic updates. Edge and Opera currently use the Chromium package from GitHub Releases and must be updated manually.
 
-[![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github)
+[![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) [![Microsoft Edge Manual Install](https://img.shields.io/badge/Microsoft%20Edge-Manual%20Install-0078D7?logo=microsoftedge&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) [![Opera Manual Install](https://img.shields.io/badge/Opera-Manual%20Install-FF1B2D?logo=opera&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github)
 
 > For browsers not listed above, follow the manual installation steps earlier in this document.
