@@ -1,96 +1,73 @@
-# Contributing
+# Contributions
 
-Thank you for your interest in contributing. Please read this guide before submitting issues or pull requests.
+Please refer to the sections below to find the appropriate destination for your contributions. Thank you for your support!
 
 ---
 
 ## Reporting Issues
 
-Use the [GitHub issue tracker](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues) to report bugs or request features.
+The issue tracker in this repository is deprecated. Use the links below to report your issues.
 
-When filing a bug report, include:
-
-- Browser name and version
-- Extension version
-- Steps to reproduce
-- Expected vs. actual behavior
+[![DeepSource](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper.svg/?label=resolved+issues&show_trend=true&token=AHAf1IA_VVViJ2ZUj08CNAdX)](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper/) [![DeepSource](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper.svg/?label=active+issues&show_trend=true&token=AHAf1IA_VVViJ2ZUj08CNAdX)](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper/)
 
 ---
 
 ## Contributing Code
 
-### Requirements
+We welcome contributions to the project! Please follow these steps to contribute:
 
-- **Node.js** ≥ 24
-- **Yarn** (the project uses Yarn — do not use npm or pnpm)
-- macOS, Windows, or Linux
+1. **Fork the Repository**
 
-### Setup
+   Create a fork of this repository to your GitHub account.
 
-```bash
-git clone https://github.com/ePlus-DEV/google-cloud-skills-boost-helper.git
-cd google-cloud-skills-boost-helper
-yarn install
-```
+2. **Clone Your Fork**
 
-### Development
+   Clone your forked repository to your local machine:
 
-```bash
-yarn dev            # Chrome (hot-reload)
-yarn dev:firefox    # Firefox (hot-reload)
-```
+   ```bash
+   git clone https://github.com/your-username/google-cloud-skills-boost-helper.git
+   cd google-cloud-skills-boost-helper
+   ```
 
-The extension is output to `.output/chrome-mv3/` and reloads automatically on file changes.
+3. **Install Dependencies**
 
-### Before Submitting a PR
+   Ensure you meet the following system requirements:
+   - Node.js 16.14.x or later
+   - macOS, Windows, or Linux
+   - (Strongly Recommended) [pnpm](https://pnpm.io/)
 
-All of the following must pass:
+   Install the required dependencies using your preferred package manager:
 
-```bash
-yarn compile          # TypeScript type check
-yarn test:coverage    # CI-equivalent tests and 60% coverage gate
-yarn build            # Production Chrome build
-```
+   ```bash
+   pnpm install
 
-### Pull Request Guidelines
+   # OR
 
-- Keep PRs focused — one feature or fix per PR.
-- Target the `dev` branch, not `main`.
-- Write or update tests for any changed logic in `services/` or `utils/`.
-- Commit messages should follow [Conventional Commits](https://www.conventionalcommits.org/):
+   yarn install
 
-  ```text
-  feat: add arcade milestone badge
-  fix: correct profile URL canonicalization for qwiklabs.com
-  chore: bump wxt to 0.21.0
-  ```
+   # OR
 
-- PRs that fail `yarn compile`, `yarn test:coverage`, or `yarn build` will not be reviewed.
+   npm install
+   ```
 
-### Project Structure
+4. **Development Server**
 
-| Path           | Purpose                                                      |
-| -------------- | ------------------------------------------------------------ |
-| `entrypoints/` | WXT entrypoints (background, content script, popup, options) |
-| `services/`    | All business logic — keep UI-free                            |
-| `components/`  | DOM element factories for content script UI                  |
-| `utils/`       | Pure utility functions                                       |
-| `types/`       | Shared TypeScript types                                      |
-| `tests/`       | Vitest unit tests mirroring `services/` and `utils/`         |
+   Start the development server for live-reloading and HMR:
 
----
+   ```bash
+   pnpm dev
+   ```
 
-## Building for Release
+   This command will watch for file changes, regenerate a bundle of your extension in `.output\chrome-mv3`, and automatically reload your extension in the browser.
 
-```bash
-yarn build          # Chrome production build
-yarn build:firefox  # Firefox production build
-yarn zip            # Package Chrome build → .zip
-yarn zip:firefox    # Package Firefox build → .zip
-```
+5. **Production Build**
 
-Output artifacts are placed in `.output/`.
+   To create a production build, run:
 
----
+   ```bash
+   pnpm zip
+   ```
 
-This project is not affiliated with or endorsed by Google.
+   This will generate a production version of the extension in `.output\google-cloud-skills-boost-helper-{version}-chrome.zip`.
+
+For more details, refer to the [WXT Framework Documentation](https://wxt.dev/guide/installation.html).

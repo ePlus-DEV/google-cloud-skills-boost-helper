@@ -1,122 +1,5 @@
-import DOMPurify from "dompurify";
 import { marked } from "marked";
 import type { MarkdownLoadOptions, MarkdownConfig } from "../types";
-
-const MARKDOWN_ALLOWED_TAGS = [
-  "a",
-  "blockquote",
-  "br",
-  "code",
-  "del",
-  "details",
-  "em",
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "hr",
-  "img",
-  "li",
-  "ol",
-  "p",
-  "pre",
-  "strong",
-  "summary",
-  "table",
-  "tbody",
-  "td",
-  "th",
-  "thead",
-  "tr",
-  "ul",
-];
-
-const MARKDOWN_ALLOWED_ATTRIBUTES = [
-  "alt",
-  "class",
-  "height",
-  "href",
-  "rel",
-  "src",
-  "target",
-  "title",
-  "width",
-];
-
-const LINK_SCHEMES = new Set(["http", "https"]);
-const IMAGE_SCHEMES = new Set(["http", "https", "blob"]);
-const SAFE_DATA_IMAGE_SOURCE =
-  /^data:image\/(?:avif|gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/iu;
-
-/** Removes ASCII control characters and whitespace before URL parsing. */
-function normalizeUrlForSchemeCheck(value: string): string {
-  return Array.from(value)
-    .filter((character) => {
-      const codePoint = character.codePointAt(0);
-      return (
-        codePoint !== undefined &&
-        codePoint > 0x20 &&
-        (codePoint < 0x7f || codePoint > 0x9f)
-      );
-    })
-    .join("")
-    .trim();
-}
-
-/** Checks whether a URL uses one of the explicitly allowed schemes. */
-function hasAllowedUrlScheme(
-  value: string,
-  allowedSchemes: ReadonlySet<string>,
-): boolean {
-  const normalized = normalizeUrlForSchemeCheck(value);
-  const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/iu)?.[1];
-  return !scheme || allowedSchemes.has(scheme.toLowerCase());
-}
-
-/** Allows relative, HTTP(S), blob, and safe raster data-image sources. */
-function hasAllowedImageSource(value: string): boolean {
-  const normalized = normalizeUrlForSchemeCheck(value);
-  return (
-    SAFE_DATA_IMAGE_SOURCE.test(normalized) ||
-    hasAllowedUrlScheme(value, IMAGE_SCHEMES)
-  );
-}
-
-/** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */
-function sanitizeMarkdownHtml(html: string): string {
-  const sanitized = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,
-    ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
-    ALLOW_ARIA_ATTR: true,
-    ALLOW_DATA_ATTR: false,
-    // Candidate schemes remain only until the strict checks below run.
-    ALLOW_UNKNOWN_PROTOCOLS: true,
-  });
-
-  const template = document.createElement("template");
-  template.innerHTML = sanitized;
-
-  template.content.querySelectorAll("a").forEach((element) => {
-    if (element.getAttribute("target") === "_blank") {
-      element.setAttribute("rel", "noopener noreferrer");
-    }
-    const href = element.getAttribute("href");
-    if (href && !hasAllowedUrlScheme(href, LINK_SCHEMES)) {
-      element.removeAttribute("href");
-    }
-  });
-
-  template.content.querySelectorAll("img[src]").forEach((element) => {
-    const src = element.getAttribute("src") || "";
-    if (!hasAllowedImageSource(src)) {
-      element.removeAttribute("src");
-    }
-  });
-
-  return template.innerHTML;
-}
 
 /**
  * Service to handle markdown content loading and rendering
@@ -212,10 +95,9 @@ const MarkdownService = {
         const markdownHtml = await marked.parse(markdownText);
 
         if (options.append) {
-          contentArea.innerHTML =
-            contentArea.innerHTML + sanitizeMarkdownHtml(markdownHtml);
+          contentArea.innerHTML = contentArea.innerHTML + markdownHtml;
         } else {
-          contentArea.innerHTML = sanitizeMarkdownHtml(markdownHtml);
+          contentArea.innerHTML = markdownHtml;
         }
 
         // Rewrite relative image srcs to absolute URLs based on source URL
@@ -224,12 +106,10 @@ const MarkdownService = {
           imgs.forEach((img) => {
             const src = img.getAttribute("src") || "";
             if (!src) return;
-            const normalizedSrc = src.trim().toLowerCase();
             if (
-              normalizedSrc.startsWith("http://") ||
-              normalizedSrc.startsWith("https://") ||
-              normalizedSrc.startsWith("data:") ||
-              normalizedSrc.startsWith("blob:")
+              /^https?:\/\//i.test(src) ||
+              /^data:\//i.test(src) ||
+              /^blob:\//i.test(src)
             )
               return;
             try {
@@ -329,8 +209,7 @@ const MarkdownService = {
       const contentArea = container.querySelector(contentSelector);
       if (!contentArea) return false;
 
-      (contentArea as HTMLElement).innerHTML =
-        sanitizeMarkdownHtml(markdownHtml);
+      (contentArea as HTMLElement).innerHTML = markdownHtml;
 
       // Rewrite relative image srcs based on the source URL
       try {
@@ -339,12 +218,10 @@ const MarkdownService = {
         imgs.forEach((img) => {
           const src = img.getAttribute("src") || "";
           if (!src) return;
-          const normalizedSrc = src.trim().toLowerCase();
           if (
-            normalizedSrc.startsWith("http://") ||
-            normalizedSrc.startsWith("https://") ||
-            normalizedSrc.startsWith("data:") ||
-            normalizedSrc.startsWith("blob:")
+            /^https?:\/\//i.test(src) ||
+            /^data:\//i.test(src) ||
+            /^blob:\//i.test(src)
           )
             return;
           try {
@@ -404,7 +281,7 @@ const MarkdownService = {
    */
   async openLink(url: string): Promise<void> {
     try {
-      // First attempt: Use browser.tabs.create (WXT polyfill covers Chrome + Firefox)
+      // First attempt: Use browser.tabs.create if available (most reliable in extensions)
       if (typeof browser !== "undefined" && browser.tabs?.create) {
         await browser.tabs.create({ url });
         return;
@@ -414,7 +291,17 @@ const MarkdownService = {
     }
 
     try {
-      // Second attempt: Use window.open (may not work in all extension contexts)
+      // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
+      if (typeof chrome !== "undefined" && chrome.tabs?.create) {
+        chrome.tabs.create({ url });
+        return;
+      }
+    } catch (error) {
+      console.warn("Failed to open link via chrome.tabs:", error);
+    }
+
+    try {
+      // Third attempt: Use window.open (may not work in all extension contexts)
       const newWindow = window.open(url, "_blank", "noopener,noreferrer");
       if (newWindow) {
         return;

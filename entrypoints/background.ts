@@ -306,20 +306,18 @@ export default defineBackground(() => {
             const engine = message.engine || "google";
             // Broadcast to all tabs so content scripts can update UI in-place
             const tabs = await browser.tabs.query({});
-            await Promise.all(
-              tabs.map(async (t) => {
-                try {
-                  if (typeof t.id === "number") {
-                    await browser.tabs.sendMessage(t.id, {
-                      type: "preferredSearchEngineChanged",
-                      engine,
-                    });
-                  }
-                } catch (err) {
-                  // ignore send errors for tabs that don't have the content script
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "preferredSearchEngineChanged",
+                    engine,
+                  });
                 }
-              }),
-            );
+              } catch (err) {
+                // ignore send errors for tabs that don't have the content script
+              }
+            }
           } catch (err) {
             console.debug(
               "Failed to broadcast preferredSearchEngineChanged:",
@@ -331,20 +329,18 @@ export default defineBackground(() => {
           try {
             const enabled = Boolean(message.enabled);
             const tabs = await browser.tabs.query({});
-            await Promise.all(
-              tabs.map(async (t) => {
-                try {
-                  if (typeof t.id === "number") {
-                    await browser.tabs.sendMessage(t.id, {
-                      type: "searchFeatureChanged",
-                      enabled,
-                    });
-                  }
-                } catch (err) {
-                  // ignore
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "searchFeatureChanged",
+                    enabled,
+                  });
                 }
-              }),
-            );
+              } catch (err) {
+                // ignore
+              }
+            }
           } catch (err) {
             console.debug("Failed to broadcast searchFeatureChanged:", err);
           }
@@ -353,20 +349,18 @@ export default defineBackground(() => {
           try {
             const enabled = Boolean(message.enabled);
             const tabs = await browser.tabs.query({});
-            await Promise.all(
-              tabs.map(async (t) => {
-                try {
-                  if (typeof t.id === "number") {
-                    await browser.tabs.sendMessage(t.id, {
-                      type: "enableEplusSearchChanged",
-                      enabled,
-                    });
-                  }
-                } catch (err) {
-                  // ignore
+            for (const t of tabs) {
+              try {
+                if (typeof t.id === "number") {
+                  await browser.tabs.sendMessage(t.id, {
+                    type: "enableEplusSearchChanged",
+                    enabled,
+                  });
                 }
-              }),
-            );
+              } catch (err) {
+                // ignore
+              }
+            }
           } catch (err) {
             console.debug("Failed to broadcast enableEplusSearchChanged:", err);
           }

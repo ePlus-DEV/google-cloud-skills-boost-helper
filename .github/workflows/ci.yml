@@ -2,13 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
   pull_request:
-    branches: [main, dev]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+    branches: [main]
 
 permissions:
   contents: read
@@ -22,25 +18,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Validate GitHub Actions workflows
-        env:
-          ACTIONLINT_VERSION: 1.7.12
-          ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
-        run: |
-          set -euo pipefail
-          curl -fsSL \
-            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
-            -o actionlint.tar.gz
-          echo "${ACTIONLINT_SHA256}  actionlint.tar.gz" | sha256sum --check
-          tar -xzf actionlint.tar.gz actionlint
-          ./actionlint -shellcheck= -pyflakes= -color
-
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
-          cache: yarn
-          cache-dependency-path: yarn.lock
+          cache: "yarn"
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
@@ -48,32 +30,15 @@ jobs:
       - name: Prepare WXT types
         run: yarn wxt prepare
 
-      - name: Compile TypeScript
-        id: compile
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          yarn compile --pretty false 2>&1 | tee compile.log
-
-      - name: Upload TypeScript diagnostics
-        if: steps.compile.outcome == 'failure'
-        uses: actions/upload-artifact@v7
-        with:
-          name: typescript-diagnostics
-          path: compile.log
-          if-no-files-found: error
-
-      - name: Fail on TypeScript errors
-        if: steps.compile.outcome == 'failure'
-        run: exit 1
+      - name: Type check
+        run: yarn compile
 
       - name: Run tests with coverage
         run: yarn test:coverage
 
       - name: Upload coverage report
-        if: success()
         uses: actions/upload-artifact@v7
+        if: success()
         with:
           name: coverage-report
           path: coverage/
