@@ -1,0 +1,51 @@
+name: React Doctor diagnostics
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: react-doctor-diagnostics-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    if: github.head_ref == 'fix/v1.2.15-dev-main-conflict'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
+
+      - name: Run React Doctor diagnostics
+        id: doctor
+        shell: bash
+        run: |
+          set +e
+          npx --yes react-doctor@0.2.16 --verbose --scope changed 2>&1 | tee react-doctor-report.txt
+          status=${PIPESTATUS[0]}
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload diagnostic report
+        uses: actions/upload-artifact@v7
+        with:
+          name: react-doctor-diagnostics
+          path: react-doctor-report.txt
+          retention-days: 1
