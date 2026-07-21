@@ -1,0 +1,74 @@
+name: Apply CodeRabbit fixes
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-coderabbit-fixes-176
+  cancel-in-progress: false
+
+jobs:
+  apply-fixes:
+    if: github.head_ref == 'fix/v1.2.15-dev-main-conflict'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: fix/v1.2.15-dev-main-conflict
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: yarn
+
+      - name: Apply reviewed fixes
+        run: python3 .github/scripts/apply-coderabbit-fixes.py
+
+      - name: Install dependencies and refresh lockfile
+        run: yarn install --ignore-scripts --ignore-engines
+
+      - name: Prepare WXT types
+        run: yarn wxt prepare
+
+      - name: TypeScript compile
+        run: yarn compile
+
+      - name: Unit tests with coverage
+        run: yarn test:coverage
+
+      - name: Production build
+        run: yarn build
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name "ePlus Bot"
+          git config user.email "dev@eplus.dev"
+          rm -f .github/scripts/apply-coderabbit-fixes.py
+
+          git add \
+            .github/scripts/apply-coderabbit-fixes.py \
+            package.json \
+            yarn.lock \
+            services/markdownService.ts \
+            services/optionsService.ts \
+            services/searchService.ts \
+            tests/services/markdownService.test.ts \
+            tests/services/searchService.shadow.test.ts
+
+          if git diff --cached --quiet; then
+            echo "CodeRabbit fixes are already applied."
+            exit 0
+          fi
+
+          git commit -m "fix: address CodeRabbit review findings"
+          git push origin HEAD:fix/v1.2.15-dev-main-conflict
