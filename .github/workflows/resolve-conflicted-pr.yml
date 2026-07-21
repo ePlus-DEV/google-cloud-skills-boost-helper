@@ -100,7 +100,22 @@ jobs:
           yarn install --ignore-scripts --ignore-engines
 
       - name: TypeScript compile
-        run: yarn compile
+        id: compile
+        shell: bash
+        run: |
+          set +e
+          yarn compile 2>&1 | tee compile.log
+          status=${PIPESTATUS[0]}
+          tail -n 250 compile.log > compile-errors.log
+          exit "$status"
+
+      - name: Upload TypeScript diagnostics
+        if: failure() && steps.compile.conclusion == 'failure'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-176-typescript-errors
+          path: compile-errors.log
+          retention-days: 1
 
       - name: Unit tests
         run: yarn test
