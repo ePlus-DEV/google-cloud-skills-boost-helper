@@ -1,0 +1,302 @@
+name: Fix PR 178 CodeRabbit findings
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-pr178-coderabbit
+  cancel-in-progress: false
+
+jobs:
+  apply-fixes:
+    if: github.event.pull_request.number == 178 && github.head_ref == 'dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.x
+          cache: yarn
+
+      - name: Apply review fixes
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          labeler = Path('.github/workflows/pr-labeler.yml')
+          text = labeler.read_text()
+          text, count = re.subn(
+              r'''            const \{ data: files \} = await github\.rest\.pulls\.listFiles\(\{\n                owner: context\.repo\.owner,\n                repo: context\.repo\.repo,\n                pull_number: prNumber\n              \}\);''',
+              '''            const files = await github.paginate(
+                github.rest.pulls.listFiles,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  per_page: 100
+                }
+              );''',
+              text,
+              count=1,
+          )
+          if count != 1:
+              raise RuntimeError('Unable to patch PR file pagination')
+          labeler.write_text(text)
+
+          stale = Path('.github/workflows/stale.yml')
+          text = stale.read_text()
+          old = '      - uses: actions/stale@v9\n'
+          if old not in text:
+              raise RuntimeError('Unable to find actions/stale reference')
+          stale.write_text(text.replace(
+              old,
+              '      - uses: actions/stale@28ca1036281a5e5922ead5184a1bbf96e5fc984e # v9.0.0\n',
+              1,
+          ))
+
+          readme = Path('README.md')
+          text = readme.read_text()
+          privacy = '[Privacy Policy]: https://eplus.dev/privacy-policy'
+          if privacy not in text:
+              marker = '[Manual Installation]: INSTALL.md\n'
+              if marker not in text:
+                  raise RuntimeError('Unable to find README reference block')
+              text = text.replace(marker, marker + privacy + '\n', 1)
+              readme.write_text(text)
+
+          markdown = Path('services/markdownService.ts')
+          text = markdown.read_text()
+          helper_start = text.index('/**\n * Checks whether a URL uses one of the explicitly allowed schemes.')
+          sanitizer_marker = '/** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */'
+          helper_end = text.index(sanitizer_marker, helper_start)
+          helpers = '''const LINK_SCHEMES = new Set(["http", "https"]);
+          const IMAGE_SCHEMES = new Set(["http", "https", "blob"]);
+          const SAFE_DATA_IMAGE_SOURCE =
+            /^data:image\\/(?:avif|gif|jpe?g|png|webp);base64,[a-z0-9+/=\\s]+$/iu;
+
+          /** Removes ASCII control characters and whitespace before URL parsing. */
+          function normalizeUrlForSchemeCheck(value: string): string {
+            return Array.from(value)
+              .filter((character) => {
+                const codePoint = character.codePointAt(0);
+                return (
+                  codePoint !== undefined &&
+                  codePoint > 0x20 &&
+                  (codePoint < 0x7f || codePoint > 0x9f)
+                );
+              })
+              .join("")
+              .trim();
+          }
+
+          /** Checks whether a URL uses one of the explicitly allowed schemes. */
+          function hasAllowedUrlScheme(
+            value: string,
+            allowedSchemes: ReadonlySet<string>,
+          ): boolean {
+            const normalized = normalizeUrlForSchemeCheck(value);
+            const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/iu)?.[1];
+            return !scheme || allowedSchemes.has(scheme.toLowerCase());
+          }
+
+          /** Allows relative, HTTP(S), blob, and safe raster data-image sources. */
+          function hasAllowedImageSource(value: string): boolean {
+            const normalized = normalizeUrlForSchemeCheck(value);
+            return (
+              SAFE_DATA_IMAGE_SOURCE.test(normalized) ||
+              hasAllowedUrlScheme(value, IMAGE_SCHEMES)
+            );
+          }
+
+          '''
+          text = text[:helper_start] + helpers + text[helper_end:]
+
+          sanitizer_start = text.index(sanitizer_marker)
+          service_marker = '/**\n * Service to handle markdown content loading and rendering'
+          sanitizer_end = text.index(service_marker, sanitizer_start)
+          sanitizer = '''/** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */
+          function sanitizeMarkdownHtml(html: string): string {
+            const sanitized = DOMPurify.sanitize(html, {
+              ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,
+              ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
+              ALLOW_ARIA_ATTR: true,
+              ALLOW_DATA_ATTR: false,
+              // Candidate schemes remain only until the strict checks below run.
+              ALLOW_UNKNOWN_PROTOCOLS: true,
+            });
+
+            const template = document.createElement("template");
+            template.innerHTML = sanitized;
+
+            template.content.querySelectorAll("a").forEach((element) => {
+              if (element.getAttribute("target") === "_blank") {
+                element.setAttribute("rel", "noopener noreferrer");
+              }
+
+              const href = element.getAttribute("href");
+              if (href && !hasAllowedUrlScheme(href, LINK_SCHEMES)) {
+                element.removeAttribute("href");
+              }
+            });
+
+            template.content.querySelectorAll("img[src]").forEach((element) => {
+              const src = element.getAttribute("src") || "";
+              if (!hasAllowedImageSource(src)) {
+                element.removeAttribute("src");
+              }
+            });
+
+            return template.innerHTML;
+          }
+
+          '''
+          text = text[:sanitizer_start] + sanitizer + text[sanitizer_end:]
+
+          old_rewrite = '''          if (
+                    /^https?:\\/\\//i.test(src) ||
+                    /^data:\\//i.test(src) ||
+                    /^blob:\\//i.test(src)
+                  )
+                    return;'''
+          new_rewrite = '''          const normalizedSrc = src.trim().toLowerCase();
+                  if (
+                    normalizedSrc.startsWith("http://") ||
+                    normalizedSrc.startsWith("https://") ||
+                    normalizedSrc.startsWith("data:") ||
+                    normalizedSrc.startsWith("blob:")
+                  )
+                    return;'''
+          if text.count(old_rewrite) != 2:
+              raise RuntimeError('Unable to locate both image rewrite blocks')
+          markdown.write_text(text.replace(old_rewrite, new_rewrite))
+
+          options = Path('services/optionsService.ts')
+          text = options.read_text()
+          old = '      await this.switchAccount(newAccount.id);\n      await this.loadAccounts();\n'
+          if old not in text:
+              raise RuntimeError('Unable to find redundant account reload')
+          options.write_text(text.replace(
+              old,
+              '      await this.switchAccount(newAccount.id);\n',
+              1,
+          ))
+
+          tests = Path('tests/services/markdownService.test.ts')
+          tests.write_text('''import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+          import MarkdownService from "../../services/markdownService";
+
+          describe("MarkdownService sanitization", () => {
+            beforeEach(() => {
+              document.body.innerHTML = `
+                <div id="markdown-container">
+                  <div class="markdown-content"></div>
+                </div>
+              `;
+            });
+
+            afterEach(() => {
+              document.body.innerHTML = "";
+              vi.unstubAllGlobals();
+              vi.restoreAllMocks();
+            });
+
+            it("sanitizes links and preserves only supported image sources", async () => {
+              const markdown = [
+                '<a class="unsafe-link" href="java&#10;script:alert(1)">Unsafe</a>',
+                '<map><area class="unsafe-area" href="javascript:alert(1)"></map>',
+                '<img class="safe-image" src="https://example.com/image.png" onerror="alert(1)">',
+                '<a class="safe-link" href="https://example.com/docs">Safe</a>',
+                '<a class="blank-link" href="https://example.com/new" target="_blank">Blank</a>',
+                '<a class="mail-link" href="mailto:dev@example.com">Mail</a>',
+                '<img class="data-image" src="data:image/png;base64,iVBORw0KGgo=">',
+                '<img class="blob-image" src="blob:https://example.com/image-id">',
+                '<img class="svg-data-image" src="data:image/svg+xml;base64,PHN2Zz4=">',
+              ].join("\\n");
+
+              vi.stubGlobal(
+                "fetch",
+                vi.fn().mockResolvedValue({
+                  ok: true,
+                  status: 200,
+                  text: vi.fn().mockResolvedValue(markdown),
+                }),
+              );
+
+              const rendered = await MarkdownService.renderUrlToContainer(
+                "https://example.com/readme.md",
+                "markdown-container",
+              );
+
+              expect(rendered).toBe(true);
+              expect(document.querySelector(".unsafe-area")).toBeNull();
+              const unsafeLink = document.querySelector(".unsafe-link");
+              expect(unsafeLink === null || !unsafeLink.hasAttribute("href")).toBe(true);
+              expect(document.querySelector(".safe-image")?.hasAttribute("onerror")).toBe(false);
+              expect(document.querySelector(".safe-image")?.getAttribute("src")).toBe(
+                "https://example.com/image.png",
+              );
+              expect(document.querySelector(".safe-link")?.getAttribute("href")).toBe(
+                "https://example.com/docs",
+              );
+              expect(
+                document.querySelector(".blank-link")?.getAttribute("rel")?.split(" "),
+              ).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
+              expect(document.querySelector(".mail-link")?.hasAttribute("href")).toBe(false);
+              expect(document.querySelector(".data-image")?.getAttribute("src")).toBe(
+                "data:image/png;base64,iVBORw0KGgo=",
+              );
+              expect(document.querySelector(".blob-image")?.getAttribute("src")).toBe(
+                "blob:https://example.com/image-id",
+              );
+              expect(
+                document.querySelector(".svg-data-image")?.hasAttribute("src"),
+              ).toBe(false);
+            });
+          });
+          ''')
+          PY
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
+
+      - name: Prepare WXT types
+        run: yarn wxt prepare
+
+      - name: TypeScript compile
+        run: yarn compile
+
+      - name: Unit tests with coverage
+        run: yarn test:coverage
+
+      - name: Production build
+        run: yarn build
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name "ePlus Bot"
+          git config user.email "dev@eplus.dev"
+          git add \
+            .github/workflows/pr-labeler.yml \
+            .github/workflows/stale.yml \
+            README.md \
+            services/markdownService.ts \
+            services/optionsService.ts \
+            tests/services/markdownService.test.ts
+          git rm -f .github/workflows/apply-coderabbit-178.yml || true
+          git commit -m "fix: address CodeRabbit review findings"
+          git push origin HEAD:dev
