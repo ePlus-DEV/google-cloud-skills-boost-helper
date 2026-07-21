@@ -69,7 +69,7 @@ function sanitizeMarkdownHtml(html: string): string {
   const template = document.createElement("template");
   template.innerHTML = sanitized;
 
-  const linkSchemes = new Set(["http", "https", "mailto"]);
+  const linkSchemes = new Set(["http", "https"]);
   template.content.querySelectorAll("a[href]").forEach((element) => {
     const href = element.getAttribute("href") || "";
     if (!hasAllowedUrlScheme(href, linkSchemes)) {

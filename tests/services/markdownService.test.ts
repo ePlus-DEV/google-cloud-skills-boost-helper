@@ -22,6 +22,7 @@ describe("MarkdownService sanitization", () => {
       '<map><area class="unsafe-area" href="javascript:alert(1)"></map>',
       '<img class="safe-image" src="https://example.com/image.png" onerror="alert(1)">',
       '<a class="safe-link" href="https://example.com/docs">Safe</a>',
+      '<a class="mail-link" href="mailto:dev@example.com">Mail</a>',
     ].join("\n");
 
     vi.stubGlobal(
@@ -51,5 +52,8 @@ describe("MarkdownService sanitization", () => {
     expect(document.querySelector(".safe-link")?.getAttribute("href")).toBe(
       "https://example.com/docs",
     );
+    expect(document.querySelector(".mail-link")?.hasAttribute("href")).toBe(
+    false,
+  );
   });
 });

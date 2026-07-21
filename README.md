@@ -97,5 +97,6 @@ This project is not affiliated with or endorsed by Google. All trademarks and lo
 [Opera]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 [Edge]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 [License]: LICENSE.md
+[Manual Installation]: INSTALL.md
 
 <!---------------------------------[ Internal ]-------------------------------->
