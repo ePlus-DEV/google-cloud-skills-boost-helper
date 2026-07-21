@@ -72,11 +72,11 @@ const OptionsService = {
   /**
    * Load and display accounts as cards
    */
-  async loadAccounts(): Promise<void> {
+  async loadAccounts(): Promise<Account | null> {
     const accountsList = document.getElementById("accounts-list");
     const noAccountsMessage = document.getElementById("no-accounts-message");
 
-    if (!accountsList) return;
+    if (!accountsList) return null;
 
     const [accounts, activeAccount] = await Promise.all([
       AccountService.getAllAccounts(),
@@ -107,6 +107,8 @@ const OptionsService = {
         accountsList.appendChild(accountCard);
       }
     }
+
+    return activeAccount;
   },
 
   /**
@@ -554,11 +556,8 @@ const OptionsService = {
         facilitatorProgram: enabled,
       });
 
-      // loadAccounts and getActiveAccount are independent after the update
-      const [, activeAccount] = await Promise.all([
-        this.loadAccounts(),
-        AccountService.getActiveAccount(),
-      ]);
+      // Reuse the active-account snapshot loaded for the final account-list render.
+      const activeAccount = await this.loadAccounts();
       if (activeAccount && activeAccount.id === accountId) {
         // Import PopupUIService to update milestone section
         const PopupUIService = (await import("./popupUIService")).default;
