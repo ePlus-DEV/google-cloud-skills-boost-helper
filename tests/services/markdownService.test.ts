@@ -53,7 +53,7 @@ describe("MarkdownService sanitization", () => {
       "https://example.com/docs",
     );
     expect(document.querySelector(".mail-link")?.hasAttribute("href")).toBe(
-    false,
-  );
+      false,
+    );
   });
 });
