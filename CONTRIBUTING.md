@@ -28,7 +28,7 @@ When filing a bug report, include:
 ### Setup
 
 ```bash
-git clone https://github.com/your-username/google-cloud-skills-boost-helper.git
+git clone https://github.com/ePlus-DEV/google-cloud-skills-boost-helper.git
 cd google-cloud-skills-boost-helper
 yarn install
 ```
@@ -47,8 +47,9 @@ The extension is output to `.output/chrome-mv3/` and reloads automatically on fi
 All of the following must pass:
 
 ```bash
-yarn compile    # TypeScript type check
-yarn test       # Unit tests (coverage minimum: 60%)
+yarn compile          # TypeScript type check
+yarn test:coverage    # CI-equivalent tests and 60% coverage gate
+yarn build            # Production Chrome build
 ```
 
 ### Pull Request Guidelines
@@ -64,7 +65,7 @@ yarn test       # Unit tests (coverage minimum: 60%)
   chore: bump wxt to 0.21.0
   ```
 
-- PRs that fail `yarn compile` or `yarn test` will not be reviewed.
+- PRs that fail `yarn compile`, `yarn test:coverage`, or `yarn build` will not be reviewed.
 
 ### Project Structure
 
