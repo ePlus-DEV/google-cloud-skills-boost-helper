@@ -34,6 +34,7 @@ jobs:
         run: |
           python3 .github/scripts/apply-coderabbit-fixes.py
           python3 .github/scripts/adjust-coderabbit-test.py
+          python3 .github/scripts/fix-markdown-test-fixture.py
 
       - name: Install dependencies and refresh lockfile
         run: yarn install --ignore-scripts --ignore-engines
@@ -71,11 +72,13 @@ jobs:
           git config user.email "dev@eplus.dev"
           rm -f \
             .github/scripts/apply-coderabbit-fixes.py \
-            .github/scripts/adjust-coderabbit-test.py
+            .github/scripts/adjust-coderabbit-test.py \
+            .github/scripts/fix-markdown-test-fixture.py
 
           git add \
             .github/scripts/apply-coderabbit-fixes.py \
             .github/scripts/adjust-coderabbit-test.py \
+            .github/scripts/fix-markdown-test-fixture.py \
             package.json \
             yarn.lock \
             services/markdownService.ts \
