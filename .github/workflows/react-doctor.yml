@@ -8,9 +8,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
-  issues: write
-  statuses: write
 
 concurrency:
   group: react-doctor-${{ github.event.pull_request.number || github.ref }}
@@ -20,10 +17,27 @@ jobs:
   react-doctor:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: millionco/react-doctor@75932719d11ef50e110eac01ce04acdc05fde074 # v2.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          version: "0.3.0"
+          node-version: 24.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
+
+      - name: Scan React changes
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: npx --yes react-doctor@0.2.16 . --verbose --diff "$BASE_SHA"
+
+      - name: Scan full React project
+        if: github.event_name != 'pull_request'
+        run: npx --yes react-doctor@0.2.16 . --verbose
