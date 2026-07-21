@@ -23,6 +23,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "axios": "^1.18.1",
+    "dompurify": "^3.4.12",
     "firebase": "^12.16.0",
     "fuse.js": "^7.5.0",
     "marked": "^18.0.6",

@@ -1,24 +1,91 @@
+import DOMPurify from "dompurify";
 import { marked } from "marked";
 import type { MarkdownLoadOptions, MarkdownConfig } from "../types";
 
-/** Strips dangerous tags and attributes from rendered markdown HTML. */
+const MARKDOWN_ALLOWED_TAGS = [
+  "a",
+  "blockquote",
+  "br",
+  "code",
+  "del",
+  "details",
+  "em",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "hr",
+  "img",
+  "li",
+  "ol",
+  "p",
+  "pre",
+  "strong",
+  "summary",
+  "table",
+  "tbody",
+  "td",
+  "th",
+  "thead",
+  "tr",
+  "ul",
+];
+
+const MARKDOWN_ALLOWED_ATTRIBUTES = [
+  "alt",
+  "class",
+  "height",
+  "href",
+  "rel",
+  "src",
+  "target",
+  "title",
+  "width",
+];
+
+const URL_CONTROL_OR_WHITESPACE = /[\u0000-\u0020\u007f-\u009f]/g;
+
+function hasAllowedUrlScheme(
+  value: string,
+  allowedSchemes: ReadonlySet<string>,
+): boolean {
+  const normalized = value.replace(URL_CONTROL_OR_WHITESPACE, "").trim();
+  const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/i)?.[1];
+  return !scheme || allowedSchemes.has(scheme.toLowerCase());
+}
+
+/** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */
 function sanitizeMarkdownHtml(html: string): string {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  div
-    .querySelectorAll("script,iframe,object,embed,form,base")
-    .forEach((el) => el.remove());
-  div.querySelectorAll("*").forEach((el) => {
-    for (const attr of Array.from(el.attributes)) {
-      if (
-        attr.name.startsWith("on") ||
-        /^(?:javascript|data|vbscript):/i.test(attr.value.trimStart())
-      ) {
-        el.removeAttribute(attr.name);
-      }
+  const sanitized = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,
+    ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
+    ALLOW_ARIA_ATTR: true,
+    ALLOW_DATA_ATTR: false,
+    ALLOW_UNKNOWN_PROTOCOLS: false,
+  });
+
+  const template = document.createElement("template");
+  template.innerHTML = sanitized;
+
+  const linkSchemes = new Set(["http", "https", "mailto"]);
+  template.content.querySelectorAll("a[href]").forEach((element) => {
+    const href = element.getAttribute("href") || "";
+    if (!hasAllowedUrlScheme(href, linkSchemes)) {
+      element.removeAttribute("href");
     }
   });
-  return div.innerHTML;
+
+  const imageSchemes = new Set(["http", "https"]);
+  template.content.querySelectorAll("img[src]").forEach((element) => {
+    const src = element.getAttribute("src") || "";
+    if (!hasAllowedUrlScheme(src, imageSchemes)) {
+      element.removeAttribute("src");
+    }
+  });
+
+  return template.innerHTML;
 }
 
 /**

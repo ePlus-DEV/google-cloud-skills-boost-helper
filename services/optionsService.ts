@@ -1923,10 +1923,8 @@ const OptionsService = {
         arcadeData: arcadeData || undefined,
       });
 
-      await Promise.all([
-        this.loadAccounts(),
-        this.switchAccount(newAccount.id),
-      ]);
+      await this.switchAccount(newAccount.id);
+      await this.loadAccounts();
 
       this.hideAddAccountModal();
       this.showMessage(
