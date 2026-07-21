@@ -25,3 +25,5 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - uses: millionco/react-doctor@75932719d11ef50e110eac01ce04acdc05fde074 # v2.0.1
+        with:
+          version: "0.3.0"
