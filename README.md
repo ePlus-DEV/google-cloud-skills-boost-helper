@@ -16,8 +16,8 @@
 
 ---
 
-| [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) | [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) | [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) | [![Microsoft Edge Manual Install](https://img.shields.io/badge/Microsoft%20Edge-Manual%20Install-0078D7?logo=microsoftedge&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) | [![Opera Manual Install](https://img.shields.io/badge/Opera-Manual%20Install-FF1B2D?logo=opera&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ---
 
@@ -29,74 +29,62 @@
 - [Key Features](#key-features)
 - [Installation](#installation)
 - [Development](#development)
-- [About](#about)
 - [Contributing](#contributing)
-- [Support](#support)
+- [About](#about)
 - [Disclaimer](#disclaimer)
 
 ## Introduction
 
-Google Cloud Skills Boost - Helper is a browser extension that makes it easier to track progress, calculate Arcade points, and manage leaderboards on [Google Cloud Skills Boost](https://www.cloudskillsboost.google).
+Google Cloud Skills Boost Helper is a browser extension that enhances your experience on [Google Cloud Skills Boost](https://www.cloudskillsboost.google). It tracks Arcade points, manages multiple accounts, surfaces leaderboard data, and helps you find lab solutions — all without leaving the platform.
 
 ## Key Features
 
-🎯 **Arcade Points Calculator** – Automatically calculates and displays your Arcade points.
+**🎯 Arcade Points Calculator** — Automatically fetches and calculates your total Arcade points, including Facilitator Program bonuses, with a live countdown to the current season deadline.
 
-📊 **Scoreboard with Quick Actions** – Easily track your scores and take quick actions.
+**👥 Multi-Account Management** — Switch between multiple profiles without logging out. Each account maintains its own snapshot of arcade data.
 
-👁 **Toggle Leaderboard Visibility** – Customize the display of the leaderboard as needed.
+**📊 Leaderboard & Scoreboard** — View your ranking at a glance and toggle leaderboard visibility on demand.
 
-🔍 **Search** – Quickly find labs, courses, and quests.
+**🔍 Lab Solution Search** — Fuzzy-matches the current lab name against a solutions database and surfaces a direct link, with fallback search via Google or YouTube.
+
+**🌐 13 Languages Supported** — Interface localized for English, Vietnamese, Japanese, Korean, Chinese (Simplified), French, German, Spanish, Portuguese (BR), Italian, Russian, Arabic, and Hindi.
 
 ## Installation
 
-Install from your browser's official store:
+Install from an official store where available:
 
 - [Chrome Web Store][Chrome]
 - [Firefox Add-ons][Mozilla]
-- [Microsoft Edge Add-ons][Edge]
-- [Opera Add-ons][Opera]
+- [Manual installation for Microsoft Edge][Edge]
+- [Manual installation for Opera][Opera]
 - [Manual Installation][Manual Installation] (any Chromium-based browser)
 
 ## Development
 
-**Requirements:** Node.js >= 24, Yarn
+**Requirements:** Node.js ≥ 24, Yarn
 
 ```bash
-# Install dependencies
-yarn install
-
-# Start dev server (Chrome)
-yarn dev
-
-# Run tests
-yarn test
-
-# Type check
-yarn compile
-
-# Production build
-yarn build
-
-# Package for distribution
-yarn zip
+yarn install          # Install dependencies
+yarn dev              # Start dev server (Chrome)
+yarn dev:firefox      # Start dev server (Firefox)
+yarn compile          # TypeScript type check
+yarn test             # Run unit tests without coverage
+yarn test:coverage    # Run the CI-equivalent test suite and coverage gate
+yarn build            # Production build
+yarn zip              # Package for distribution
 ```
 
 Built with [WXT Framework](https://wxt.dev). See [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guidelines.
+
+## Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request — it covers setup, branching, commit conventions, and PR requirements.
 
 ## About
 
 [Privacy Policy][Privacy Policy] · [MIT License][License]
 
-Free. Open-source. For users by users. No donations are sought.
-
-## Contributing
-
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Make sure your code includes appropriate tests and passes `yarn compile` and `yarn test` before submitting a PR.
-
-## Support
-
-Open an issue in the [GitHub repository](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues) if you encounter any problems.
+Free and open-source. No donations are sought.
 
 ## Disclaimer
 
@@ -109,8 +97,7 @@ This project is not affiliated with or endorsed by Google. All trademarks and lo
 [Opera]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 [Edge]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github
 [License]: LICENSE.md
-
-<!---------------------------------[ Internal ]-------------------------------->
-
 [Manual Installation]: INSTALL.md
 [Privacy Policy]: https://eplus.dev/privacy-policy
+
+<!---------------------------------[ Internal ]-------------------------------->

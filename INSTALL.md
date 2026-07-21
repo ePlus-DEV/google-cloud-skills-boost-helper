@@ -1,29 +1,39 @@
-# How to Install
+# Manual Installation
 
-## Chromium
+For browsers not listed in the official stores, or if you prefer to manage updates yourself, follow the steps below.
 
-1. Download and unzip the `google-cloud-skills-boost-helper-{version}-chrome.zip` ([latest release desirable](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases)).
-2. Rename the unzipped directory to `google-cloud-helper`.
-   - When you update manually, replace the **content** of the `google-cloud-helper` folder with the **content** of the latest zipped version. This ensures all extension settings are preserved.
-   - As long as the extension loads from the same folder path as it was originally installed, your settings will be kept.
-3. Open Chromium/Chrome and go to _Extensions_.
-4. Click to enable _Developer mode_.
-5. Click _Load unpacked extension..._.
-6. In the file selector dialog:
-   - Select the `google-cloud-helper` directory you created.
-   - Click _Open_.
+## Chromium-based Browsers
 
-The extension will now be available in your Chromium/Chromium-based browser.
+> Applies to: Chrome, Edge, Opera, Brave, Vivaldi, and any Chromium-based browser.
 
-**Note:** You must update manually. For some users, manual updates are beneficial because:
+1. Download the latest `google-cloud-skills-boost-helper-{version}-chrome.zip` from the [Releases page](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases).
+2. Extract the archive to a permanent location (e.g. `~/extensions/google-cloud-helper`). **Do not delete this folder** — the browser loads the extension from it on every launch.
+3. Open your browser and navigate to `chrome://extensions` (or `edge://extensions`, `opera://extensions`).
+4. Enable **Developer mode** (toggle in the top-right corner).
+5. Click **Load unpacked** and select the extracted folder.
 
-- You can update when **you** want.
-- If a new version is unsatisfactory, you can easily reinstall the previous one.
+The extension appears in your toolbar immediately.
 
-## Available Stores
+### Updating (Chromium)
 
-You can download the extension from the following official stores:
+Replace the **contents** of the existing folder with the contents of the new release archive — do not change the folder path. Your extension settings are preserved as long as the folder path stays the same. After replacing files, click the **↺ Reload** button on the extensions page.
 
-[![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github)
+---
 
-**Note:** For browsers not listed above, you can manually install the extension by following the installation instructions provided earlier.
+## Firefox
+
+1. Download the latest `google-cloud-skills-boost-helper-{version}-firefox.zip` from the [Releases page](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases).
+2. Open Firefox and navigate to `about:debugging#/runtime/this-firefox`.
+3. Click **Load Temporary Add-on…** and select the `.zip` file directly.
+
+> **Note:** Temporary add-ons are removed when Firefox restarts. For a persistent installation, the extension must be signed — install from [Firefox Add-ons](https://addons.mozilla.org/addon/cloud-skills-boost-helper) instead.
+
+---
+
+## Available Stores and Packages
+
+Official-store installs receive automatic updates. Edge and Opera currently use the Chromium package from GitHub Releases and must be updated manually.
+
+[![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) [![Microsoft Edge Manual Install](https://img.shields.io/badge/Microsoft%20Edge-Manual%20Install-0078D7?logo=microsoftedge&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) [![Opera Manual Install](https://img.shields.io/badge/Opera-Manual%20Install-FF1B2D?logo=opera&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github)
+
+> For browsers not listed above, follow the manual installation steps earlier in this document.

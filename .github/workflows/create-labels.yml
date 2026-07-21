@@ -1,0 +1,32 @@
+name: Create Labels
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  create-labels:
+    name: Create repo labels
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create area labels
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          create() {
+            gh label create "$1" --color "$2" --description "$3" --repo "$REPO" --force
+          }
+
+          create "area: services"  "0075ca" "Business logic in services/"
+          create "area: ui"        "e4e669" "UI — entrypoints/ and components/"
+          create "area: tests"     "d93f0b" "Tests in tests/"
+          create "area: i18n"      "c5def5" "Localization in public/_locales/"
+          create "area: config"    "f9d0c4" "Config files, package.json, workflows"
+          create "area: docs"      "bfd4f2" "Documentation and markdown files"
+          create "area: release"   "0e8a16" "Release workflow changes"
+          create "area: other"     "ededed" "Does not match any defined area"
+          create "stale"           "b4a0a0" "Inactive for 30+ days"

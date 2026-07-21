@@ -102,14 +102,18 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-      .filter(Boolean);
+      .flatMap((word) => {
+        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+        return cleaned ? [cleaned] : [];
+      });
     const titleWordsSet = new Set(
       normalizedTitle
         .toLowerCase()
         .split(/[\s-]+/)
-        .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-        .filter(Boolean),
+        .flatMap((word) => {
+          const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+          return cleaned ? [cleaned] : [];
+        }),
     );
 
     if (queryWords.length === 0) return 0;
@@ -189,13 +193,17 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-      .filter(Boolean);
+      .flatMap((word) => {
+        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+        return cleaned ? [cleaned] : [];
+      });
     const titleWords = normalizedTitle
       .toLowerCase()
       .split(/[\s-]+/)
-      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
-      .filter(Boolean);
+      .flatMap((word) => {
+        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
+        return cleaned ? [cleaned] : [];
+      });
     const titleWordsSet = new Set(titleWords);
 
     let totalScore = 0;
@@ -725,69 +733,112 @@ class SearchService {
     return fallbackTitle;
   }
 
+  /** Collect all accessible shadow roots, including nested roots. */
+  private static collectOpenShadowRoots(
+    root: Document | ShadowRoot = document,
+  ): ShadowRoot[] {
+    const shadowRoots: ShadowRoot[] = [];
+    const visited = new Set<ShadowRoot>();
+
+    /** Recursively visits a document or shadow root to collect nested roots. */
+    const visit = (searchRoot: Document | ShadowRoot): void => {
+      for (const element of Array.from(searchRoot.querySelectorAll("*"))) {
+        try {
+          const shadowRoot = element.shadowRoot;
+          if (!shadowRoot || visited.has(shadowRoot)) continue;
+
+          visited.add(shadowRoot);
+          shadowRoots.push(shadowRoot);
+          visit(shadowRoot);
+        } catch {
+          // Ignore inaccessible or browser-managed shadow roots.
+        }
+      }
+    };
+
+    visit(root);
+    return shadowRoots;
+  }
+
   /**
    * Query selector that searches into shadow roots recursively.
    * Returns the first matching Element or null.
    */
   private static querySelectorDeep(selector: string): Element | null {
     try {
-      // Quick check on document
       const direct = document.querySelector(selector);
       if (direct) return direct;
 
-      // BFS through all elements to look into shadowRoots
-      const nodes = Array.from(document.querySelectorAll("*"));
-      for (const el of nodes) {
-        try {
-          const sr = (el as Element).shadowRoot;
-          if (sr) {
-            const found = sr.querySelector(selector);
-            if (found) return found;
-
-            // also search one level deeper inside nested shadow roots
-            const nested = Array.from(sr.querySelectorAll("*"));
-            for (const nestedElement of nested) {
-              try {
-                const nestedShadowRoot = (nestedElement as Element).shadowRoot;
-                if (nestedShadowRoot) {
-                  const foundElement = nestedShadowRoot.querySelector(selector);
-                  if (foundElement) return foundElement;
-                }
-              } catch {
-                // ignore errors from accessing shadow roots
-              }
-            }
-          }
-        } catch {
-          // ignore errors from accessing shadow roots
-        }
+      for (const shadowRoot of this.collectOpenShadowRoots()) {
+        const found = shadowRoot.querySelector(selector);
+        if (found) return found;
       }
-    } catch (e) {
-      // ignore
+    } catch {
+      // Ignore malformed selectors and inaccessible roots.
     }
     return null;
   }
 
   /**
-   * Get GSP ID from page (e.g., GSP344)
+   * Get GSP ID from page (e.g., GSP344, GSP1164)
    */
   static getGspId(): string {
+    // Attempt 1: Check h2 element
     const h2Element = document.querySelector("h2");
     if (h2Element) {
       const text = h2Element.textContent?.trim() || "";
-      // Extract GSP ID pattern (GSP followed by numbers)
       const match = text.match(/GSP\d+/);
       if (match) {
         if (import.meta.env.MODE === "development") {
-          console.info("[LabService] Extracted GSP ID:", match[0]);
+          console.info("[LabService] ✓ Extracted GSP ID from h2:", match[0]);
         }
         return match[0];
       }
     }
+
+    // Attempt 2: Check URL for GSP ID pattern
+    const urlMatch = window.location.href.match(/GSP\d+/);
+    if (urlMatch) {
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] ✓ Extracted GSP ID from URL:", urlMatch[0]);
+      }
+      return urlMatch[0];
+    }
+
+    // Attempt 3: Broad search through visible page text (including shadow DOM)
+    const allText = this.getPageText();
+    const pageMatch = allText.match(/GSP\d+/);
+    if (pageMatch) {
+      if (import.meta.env.MODE === "development") {
+        console.info(
+          "[LabService] ✓ Extracted GSP ID from page text:",
+          pageMatch[0],
+        );
+      }
+      return pageMatch[0];
+    }
+
     if (import.meta.env.MODE === "development") {
-      console.info("[LabService] No GSP ID found");
+      console.info("[LabService] ✗ No GSP ID found in h2, URL, or page text");
     }
     return "";
+  }
+
+  /**
+   * Get all text from page including nested shadow DOM
+   */
+  private static getPageText(): string {
+    const texts = [document.body.textContent || ""];
+
+    try {
+      for (const shadowRoot of this.collectOpenShadowRoots()) {
+        texts.push(shadowRoot.textContent || "");
+      }
+    } catch {
+      // Ignore inaccessible roots and return the text collected so far.
+    }
+
+    return texts.join(" ");
   }
 
   /**
@@ -798,10 +849,21 @@ class SearchService {
     const gspId = this.getGspId();
     const queryText = this.extractQueryText();
 
-    // Build query with title first, then GSP ID (preferred format: "title - id")
-    const parts = [labTitle, gspId, queryText].filter(Boolean);
+    // Use queryText as fallback for lab title if title is empty
+    const primaryTitle =
+      labTitle || (queryText && queryText !== "Overview" ? queryText : "");
+
+    // Build query with title first, then GSP ID and query text
+    // Include queryText even if we have a title, as it provides additional context
+    const parts = [primaryTitle, gspId].filter(Boolean);
+    if (queryText && queryText !== primaryTitle) {
+      parts.push(queryText);
+    }
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
+      console.info("[LabService] Lab title:", labTitle);
+      console.info("[LabService] GSP ID:", gspId);
+      console.info("[LabService] Query text:", queryText);
       console.info("[LabService] Combined query for search:", combinedQuery);
     }
     return combinedQuery;
