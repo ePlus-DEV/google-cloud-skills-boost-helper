@@ -42,9 +42,9 @@ describe("MarkdownService sanitization", () => {
     expect(document.querySelector(".unsafe-area")).toBeNull();
     const unsafeLink = document.querySelector(".unsafe-link");
     expect(unsafeLink === null || !unsafeLink.hasAttribute("href")).toBe(true);
-    expect(
-      document.querySelector(".safe-image")?.hasAttribute("onerror"),
-    ).toBe(false);
+    expect(document.querySelector(".safe-image")?.hasAttribute("onerror")).toBe(
+      false,
+    );
     expect(document.querySelector(".safe-image")?.getAttribute("src")).toBe(
       "https://example.com/image.png",
     );
