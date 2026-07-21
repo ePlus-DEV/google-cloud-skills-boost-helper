@@ -16,8 +16,8 @@
 
 ---
 
-| [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) | [![Microsoft Edge Add-ons](https://github.com/user-attachments/assets/29994e96-2de9-4136-8f0e-b98c65c0cb28)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) | [![Opera Add-ons](https://github.com/user-attachments/assets/56481763-2d91-408d-8c45-eba77e2dc4c4)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [![Chrome Web Store](https://github.com/user-attachments/assets/4d8fd051-4c28-4290-afb8-9c182bb2b5d3)](https://chromewebstore.google.com/detail/google-cloud-skills-boost/lmbhjioadhcoebhgapaidogodllonbgg?utm_source=github) | [![Firefox Add-ons](https://github.com/user-attachments/assets/20177a18-81db-45ed-8838-64c29df48d34)](https://addons.mozilla.org/addon/cloud-skills-boost-helper) | [![Microsoft Edge Manual Install](https://img.shields.io/badge/Microsoft%20Edge-Manual%20Install-0078D7?logo=microsoftedge&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) | [![Opera Manual Install](https://img.shields.io/badge/Opera-Manual%20Install-FF1B2D?logo=opera&logoColor=white)](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/releases/?utm_source=github) |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ---
 
@@ -51,12 +51,12 @@ Google Cloud Skills Boost Helper is a browser extension that enhances your exper
 
 ## Installation
 
-Install from your browser's official store:
+Install from an official store where available:
 
 - [Chrome Web Store][Chrome]
 - [Firefox Add-ons][Mozilla]
-- [Microsoft Edge Add-ons][Edge]
-- [Opera Add-ons][Opera]
+- [Manual installation for Microsoft Edge][Edge]
+- [Manual installation for Opera][Opera]
 - [Manual Installation][Manual Installation] (any Chromium-based browser)
 
 ## Development
@@ -64,13 +64,14 @@ Install from your browser's official store:
 **Requirements:** Node.js ≥ 24, Yarn
 
 ```bash
-yarn install        # Install dependencies
-yarn dev            # Start dev server (Chrome)
-yarn dev:firefox    # Start dev server (Firefox)
-yarn compile        # TypeScript type check
-yarn test           # Run tests
-yarn build          # Production build
-yarn zip            # Package for distribution
+yarn install          # Install dependencies
+yarn dev              # Start dev server (Chrome)
+yarn dev:firefox      # Start dev server (Firefox)
+yarn compile          # TypeScript type check
+yarn test             # Run unit tests without coverage
+yarn test:coverage    # Run the CI-equivalent test suite and coverage gate
+yarn build            # Production build
+yarn zip              # Package for distribution
 ```
 
 Built with [WXT Framework](https://wxt.dev). See [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guidelines.
@@ -98,6 +99,3 @@ This project is not affiliated with or endorsed by Google. All trademarks and lo
 [License]: LICENSE.md
 
 <!---------------------------------[ Internal ]-------------------------------->
-
-[Manual Installation]: INSTALL.md
-[Privacy Policy]: https://eplus.dev/privacy-policy
