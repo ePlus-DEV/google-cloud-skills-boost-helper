@@ -1,0 +1,139 @@
+name: pr-auto-assign
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
+
+    steps:
+      - name: Verify bot token
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::EPLUS_BOT_TOKEN is empty. Add it to repository Actions secrets."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Verify bot identity
+        run: |
+          BOT_LOGIN="$(gh api user --jq .login)"
+          test "$BOT_LOGIN" = "eplus-bot"
+        env:
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Upsert welcome comment
+        run: |
+          COMMENT_ID="$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            --paginate \
+            --jq ".[] | select(.user.login == \"eplus-bot\" and (.body | contains(\"$COMMENT_MARKER\"))) | .id" \
+            | tail -n 1)"
+
+          if [ -n "$COMMENT_ID" ]; then
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID" \
+              -f body="$WELCOME_COMMENT"
+          else
+            gh api \
+              --method POST \
+              "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+              -f body="$WELCOME_COMMENT"
+          fi
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          COMMENT_MARKER: "<!-- eplus-bot-pr-welcome -->"
+          WELCOME_COMMENT: |
+            <!-- eplus-bot-pr-welcome -->
+
+            Thank you for creating this pull request and helping make the project better.
+
+            We will review or merge it after the required checks pass.
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Add pull request labels
+        run: |
+          add_label() {
+            local name="$1"
+            local color="$2"
+            local description="$3"
+
+            gh api \
+              --method POST \
+              "repos/$GITHUB_REPOSITORY/labels" \
+              -f name="$name" \
+              -f color="$color" \
+              -f description="$description" >/dev/null 2>&1 || true
+
+            gh api \
+              --method POST \
+              "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/labels" \
+              -f labels[]="$name" >/dev/null
+          }
+
+          add_label "needs-review" "fbca04" "Pull request is ready for maintainer review"
+
+          CHANGED_FILES="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename')"
+
+          if echo "$CHANGED_FILES" | grep -Eq '^(entrypoints|src|utils|services|models|constants)/'; then
+            add_label "app" "1d76db" "Application or extension source code"
+          fi
+
+          if echo "$CHANGED_FILES" | grep -Eq '^(entrypoints/(popup|options)|src/components|assets|public)/'; then
+            add_label "ui" "c5def5" "User interface or visual changes"
+          fi
+
+          if echo "$CHANGED_FILES" | grep -Eq '^(_locales|public/_locales|src/lib/i18n|.*messages\.json)'; then
+            add_label "i18n" "bfdadc" "Translation or localization changes"
+          fi
+
+          if echo "$CHANGED_FILES" | grep -Eq '(\.test\.|\.spec\.|^tests?/|^vitest\.|testing-library)'; then
+            add_label "tests" "0e8a16" "Test coverage or test tooling changes"
+          fi
+
+          if echo "$CHANGED_FILES" | grep -Eq '^(\.github/|package\.json|yarn\.lock|wxt\.config\.ts|tsconfig|vite\.config|tailwind|postcss)'; then
+            add_label "build-ci" "5319e7" "Build, CI, release, or project configuration"
+          fi
+
+          if echo "$CHANGED_FILES" | grep -Eq '(^README|^CHANGELOG|^INSTALL|^CONTRIBUTING|^docs/|\.md$)'; then
+            add_label "documentation" "0075ca" "Documentation changes"
+          fi
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Assign PR author
+        run: |
+          gh api \
+            --method POST \
+            "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/assignees" \
+            -f assignees[]="$PR_AUTHOR" >/dev/null || \
+            echo "::notice::Cannot assign $PR_AUTHOR. The user may not be assignable in this repository."
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Request eplus-bot review
+        run: |
+          gh api \
+            --method POST \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/requested_reviewers" \
+            -f reviewers[]="eplus-bot" >/dev/null || \
+            echo "::notice::Cannot request eplus-bot review. It may already be requested or unavailable."
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.EPLUS_BOT_TOKEN }}
