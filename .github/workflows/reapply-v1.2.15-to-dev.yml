@@ -1,0 +1,74 @@
+name: Reapply v1.2.15 to dev
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - .github/.trigger-reapply-v1.2.15
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reapply-v1-2-15-to-dev
+  cancel-in-progress: false
+
+jobs:
+  reapply:
+    if: github.repository == 'ePlus-DEV/google-cloud-skills-boost-helper'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+          token: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Wait for workflow cleanup on main
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in {1..30}; do
+            git fetch origin main
+            if ! git cat-file -e origin/main:.github/workflows/reapply-v1.2.15-to-dev.yml 2>/dev/null; then
+              exit 0
+            fi
+            echo "Waiting for temporary workflow cleanup on main ($attempt/30)..."
+            sleep 2
+          done
+          echo "::error::Temporary workflow was not removed from main."
+          exit 1
+
+      - name: Sync main and restore v1.2.15
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git merge --no-edit origin/main
+          git revert -m 1 b73d7e95af539bebe6a6e14420fd30842e3ec85e --no-commit
+          rm -f .github/.trigger-reapply-v1.2.15
+
+      - name: Validate restored dev branch
+        run: |
+          yarn install --frozen-lockfile --ignore-scripts
+          yarn wxt prepare
+          yarn compile
+          yarn test:coverage
+          yarn build
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A
+          git commit -m "feat: restore v1.2.15 changes on dev"
+          git push origin HEAD:dev
