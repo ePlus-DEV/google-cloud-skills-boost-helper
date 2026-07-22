@@ -1,4 +1,5 @@
-import { OptionsService, BrowserService } from "../../services";
+import OptionsService from "../../services/optionsService";
+import { isFirefox } from "../../services/browserService";
 import { initMarkdownToggle } from "./markdownToggle";
 import { initDataManagementToggle } from "./dataManagementToggle";
 import { initUIToggles } from "./uiToggles";
@@ -25,7 +26,7 @@ function localizeElements() {
 
 // Show appropriate store badge based on browser
 async function showBrowserStoreBadge() {
-  const isFirefoxBrowser = await BrowserService.isFirefox();
+  const isFirefoxBrowser = await isFirefox();
   const chromeStoreBadge = document.getElementById("chrome-web-store-badge");
   const firefoxAddonStore = document.getElementById("firefox-addon-store");
 

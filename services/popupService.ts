@@ -8,35 +8,14 @@ import { MARKDOWN_CONFIG } from "../utils/config";
 import type { Account, ArcadeData } from "../types";
 import sendRuntimeMessage from "./runtimeMessage";
 
-/**
- * Escape text before interpolating it into popup HTML markup.
- */
-function escapeHtml(value: string): string {
-  return value
+/** Escapes HTML special characters to prevent XSS when interpolating untrusted strings. */
+function escapeHtml(str: string): string {
+  return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
-}
-
-/**
- * Return a profile image URL only when it uses an approved image scheme.
- */
-function sanitizeProfileImageUrl(value?: string | null): string {
-  if (!value) return "";
-  const normalized = value.trim();
-  if (/^data:image\/(?:avif|gif|jpe?g|png|webp);base64,/iu.test(normalized)) {
-    return normalized;
-  }
-  try {
-    const parsed = new URL(normalized);
-    return ["http:", "https:", "blob:"].includes(parsed.protocol)
-      ? normalized
-      : "";
-  } catch {
-    return "";
-  }
 }
 
 const PopupService = {
@@ -48,11 +27,10 @@ const PopupService = {
     // Initialize migration first
     await StorageService.initializeMigration();
 
-    // Initialize markdown service
-    await this.initializeMarkdown();
-
-    // Initialize account management
-    await this.initializeAccountManagement();
+    await Promise.all([
+      this.initializeMarkdown(),
+      this.initializeAccountManagement(),
+    ]);
 
     // Load current account and data
     this.currentAccount = await AccountService.getActiveAccount();
@@ -103,8 +81,10 @@ const PopupService = {
     // Clear existing options
     accountList.innerHTML = "";
 
-    const accounts = await AccountService.getAllAccounts();
-    const activeAccount = await AccountService.getActiveAccount();
+    const [accounts, activeAccount] = await Promise.all([
+      AccountService.getAllAccounts(),
+      AccountService.getActiveAccount(),
+    ]);
 
     // Update account count if present
     if (accountCount) {
@@ -166,20 +146,16 @@ const PopupService = {
    * Create avatar HTML string given display text and optional profile image
    */
   createAvatarHTML(displayText: string, profileImage?: string | null): string {
-    const safeDisplayText = escapeHtml(displayText);
-    const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
-    const safeProfileImage = sanitizeProfileImageUrl(profileImage);
-
-    if (safeProfileImage) {
-      return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
- <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
-   ${safeInitial}
- </div>`;
+    if (profileImage) {
+      return `<img src="${escapeHtml(profileImage)}" alt="${escapeHtml(displayText)}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+             ${escapeHtml(displayText.charAt(0).toUpperCase())}
+           </div>`;
     }
 
     return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-   ${safeInitial}
- </div>`;
+             ${escapeHtml(displayText.charAt(0).toUpperCase())}
+           </div>`;
   },
 
   /**

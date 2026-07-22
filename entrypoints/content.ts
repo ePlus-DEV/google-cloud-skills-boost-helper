@@ -1,4 +1,5 @@
-import { LabService, ProfileService } from "../services";
+import LabService from "../services/labService";
+import ProfileService from "../services/profileService";
 import UIComponents from "../components/uiComponents";
 // Import styles for content script so wxt emits content-scripts/content.css
 import "../assets/tailwind.css";

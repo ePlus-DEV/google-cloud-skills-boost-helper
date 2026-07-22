@@ -1,4 +1,5 @@
-import { PopupService, AccountService } from "../../services";
+import PopupService from "../../services/popupService";
+import AccountService from "../../services/accountService";
 import PopupUIService from "../../services/popupUIService";
 
 // Theme management
