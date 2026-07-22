@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/apply-pr180.py", line 167, in <module>
+    raise RuntimeError("Expected two Markdown image URL checks")
+RuntimeError: Expected two Markdown image URL checks
+exit_status=1
