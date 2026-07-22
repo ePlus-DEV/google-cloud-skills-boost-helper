@@ -1,0 +1,99 @@
+name: Fix PR 181 avatar URL from main
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-pr181-avatar-url-main
+  cancel-in-progress: true
+
+jobs:
+  fix:
+    if: github.event.pull_request.number == 181
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+          token: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Apply fix and clean temporary files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path("services/popupService.ts")
+          text = path.read_text()
+
+          if "function sanitizeProfileImageUrl" not in text:
+              marker = "\nconst PopupService = {"
+              if marker not in text:
+                  raise RuntimeError("Could not locate PopupService declaration")
+              helper = r'''
+
+          /**
+           * Return a profile image URL only when it uses an approved image scheme.
+           */
+          function sanitizeProfileImageUrl(value?: string | null): string {
+            if (!value) return "";
+            const normalized = value.trim();
+            if (/^data:image\/(?:avif|gif|jpe?g|png|webp);base64,/iu.test(normalized)) {
+              return normalized;
+            }
+            try {
+              const parsed = new URL(normalized);
+              return ["http:", "https:", "blob:"].includes(parsed.protocol)
+                ? normalized
+                : "";
+            } catch {
+              return "";
+            }
+          }
+          '''
+              text = text.replace(marker, helper + marker, 1)
+
+          start_marker = "  createAvatarHTML(displayText: string, profileImage?: string | null): string {"
+          end_marker = "\n  },\n\n  /**\n   * Create account item element"
+          start = text.find(start_marker)
+          end = text.find(end_marker, start)
+          if start < 0 or end < 0:
+              raise RuntimeError("Could not locate createAvatarHTML method")
+
+          replacement = r'''  createAvatarHTML(displayText: string, profileImage?: string | null): string {
+            const safeDisplayText = escapeHtml(displayText);
+            const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
+            const safeProfileImage = sanitizeProfileImageUrl(profileImage);
+
+            if (safeProfileImage) {
+              return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                   <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+                     ${safeInitial}
+                   </div>`;
+            }
+
+            return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+                     ${safeInitial}
+                   </div>`;
+          }'''
+
+          text = text[:start] + replacement + text[end:]
+          path.write_text(text)
+          PY
+
+          rm -f .github/.trigger-pr181-avatar-url
+          rm -f .github/workflows/fix-pr181-avatar-url.yml
+
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "fix: validate popup profile image URLs"
+          git push origin HEAD:dev
