@@ -1,0 +1,142 @@
+name: Fix PR 181 avatar URL validation
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - .github/.trigger-pr181-avatar-url
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-pr181-avatar-url
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    if: github.repository == 'ePlus-DEV/google-cloud-skills-boost-helper'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+          token: ${{ secrets.EPLUS_BOT_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Apply CodeRabbit fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path("services/popupService.ts")
+          text = path.read_text()
+
+          helper = '''
+
+          /**
+           * Return a profile image URL only when it uses an approved image scheme.
+           */
+          function sanitizeProfileImageUrl(value?: string | null): string {
+            if (!value) return "";
+            const normalized = value.trim();
+            if (/^data:image\\/(?:avif|gif|jpe?g|png|webp);base64,/iu.test(normalized)) {
+              return normalized;
+            }
+            try {
+              const parsed = new URL(normalized);
+              return ["http:", "https:", "blob:"].includes(parsed.protocol)
+                ? normalized
+                : "";
+            } catch {
+              return "";
+            }
+          }
+          '''
+
+          escape_end = '''function escapeHtml(str: string): string {
+            return str
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#39;");
+          }'''
+
+          if "function sanitizeProfileImageUrl" not in text:
+            if escape_end not in text:
+              raise RuntimeError("Could not locate escapeHtml helper")
+            text = text.replace(escape_end, escape_end + helper, 1)
+
+          old = '''  createAvatarHTML(displayText: string, profileImage?: string | null): string {
+            if (profileImage) {
+              return `<img src="${escapeHtml(profileImage)}" alt="${escapeHtml(displayText)}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                   <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+                     ${escapeHtml(displayText.charAt(0).toUpperCase())}
+                   </div>`;
+            }
+
+            return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+                     ${escapeHtml(displayText.charAt(0).toUpperCase())}
+                   </div>`;
+          },'''
+
+          new = '''  createAvatarHTML(displayText: string, profileImage?: string | null): string {
+            const safeDisplayText = escapeHtml(displayText);
+            const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
+            const safeProfileImage = sanitizeProfileImageUrl(profileImage);
+
+            if (safeProfileImage) {
+              return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                   <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+                     ${safeInitial}
+                   </div>`;
+            }
+
+            return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+                     ${safeInitial}
+                   </div>`;
+          },'''
+
+          if old in text:
+            text = text.replace(old, new, 1)
+          elif "const safeProfileImage = sanitizeProfileImageUrl(profileImage);" not in text:
+            raise RuntimeError("Could not locate createAvatarHTML implementation")
+
+          path.write_text(text)
+          PY
+
+          rm -f .github/.trigger-pr181-avatar-url
+          rm -f .github/workflows/fix-pr181-avatar-url.yml
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
+
+      - name: Prepare WXT types
+        run: yarn wxt prepare
+
+      - name: Validate
+        run: |
+          yarn compile
+          yarn test:coverage
+          yarn build
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "fix: validate popup profile image URLs"
+          git push origin HEAD:dev
