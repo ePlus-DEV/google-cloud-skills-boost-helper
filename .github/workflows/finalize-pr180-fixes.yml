@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   finalize:
-    if: github.event.pull_request.head.ref == 'revert-178-dev' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.sha == '607e17e99ebca044962e5654c7e916fc8ad50bdc'
+    if: github.event.pull_request.head.ref == 'revert-178-dev' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -18,13 +18,25 @@ jobs:
           ref: revert-178-dev
           fetch-depth: 0
 
+      - name: Check whether fixes are pending
+        id: gate
+        shell: bash
+        run: |
+          if [ -f .github/workflows/apply-pr180-critical-fixes.yml ]; then
+            echo "apply=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "apply=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-node@v7
+        if: steps.gate.outputs.apply == 'true'
         with:
           node-version: 24.x
           cache: yarn
           cache-dependency-path: yarn.lock
 
       - name: Sync latest main history
+        if: steps.gate.outputs.apply == 'true'
         run: |
           git config user.name "eplus-bot"
           git config user.email "157664013+eplus-bot@users.noreply.github.com"
@@ -32,6 +44,7 @@ jobs:
           git merge --no-commit --no-ff origin/main
 
       - name: Apply targeted fixes
+        if: steps.gate.outputs.apply == 'true'
         shell: bash
         run: |
           python <<'PY'
@@ -55,6 +68,7 @@ jobs:
           python /tmp/apply-pr180.py
 
       - name: Install and validate
+        if: steps.gate.outputs.apply == 'true'
         run: |
           yarn add dompurify@^3.4.12 --ignore-scripts --ignore-engines
           yarn wxt prepare
@@ -63,6 +77,7 @@ jobs:
           yarn build
 
       - name: Clean temporary files and push
+        if: steps.gate.outputs.apply == 'true'
         run: |
           rm -f .github/workflows/apply-pr180-critical-fixes.yml
           rm -f .github/.trigger-pr180-*
