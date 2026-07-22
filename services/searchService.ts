@@ -729,43 +729,34 @@ class SearchService {
    * Query selector that searches into shadow roots recursively.
    * Returns the first matching Element or null.
    */
+  private static searchInRoot(
+    root: Document | ShadowRoot,
+    selector: string,
+  ): Element | null {
+    const direct = root.querySelector(selector);
+    if (direct) return direct;
+
+    for (const element of Array.from(root.querySelectorAll("*"))) {
+      try {
+        const shadowRoot = (element as Element).shadowRoot;
+        if (!shadowRoot) continue;
+
+        const found = this.searchInRoot(shadowRoot, selector);
+        if (found) return found;
+      } catch {
+        // Ignore inaccessible shadow roots and continue searching.
+      }
+    }
+
+    return null;
+  }
+
   private static querySelectorDeep(selector: string): Element | null {
     try {
-      // Quick check on document
-      const direct = document.querySelector(selector);
-      if (direct) return direct;
-
-      // BFS through all elements to look into shadowRoots
-      const nodes = Array.from(document.querySelectorAll("*"));
-      for (const el of nodes) {
-        try {
-          const sr = (el as Element).shadowRoot;
-          if (sr) {
-            const found = sr.querySelector(selector);
-            if (found) return found;
-
-            // also search one level deeper inside nested shadow roots
-            const nested = Array.from(sr.querySelectorAll("*"));
-            for (const nestedElement of nested) {
-              try {
-                const nestedShadowRoot = (nestedElement as Element).shadowRoot;
-                if (nestedShadowRoot) {
-                  const foundElement = nestedShadowRoot.querySelector(selector);
-                  if (foundElement) return foundElement;
-                }
-              } catch {
-                // ignore errors from accessing shadow roots
-              }
-            }
-          }
-        } catch {
-          // ignore errors from accessing shadow roots
-        }
-      }
-    } catch (e) {
-      // ignore
+      return this.searchInRoot(document, selector);
+    } catch {
+      return null;
     }
-    return null;
   }
 
   /**
@@ -810,7 +801,10 @@ class SearchService {
     const queryText = this.extractQueryText();
 
     // Build query with title first, then GSP ID (preferred format: "title - id")
-    const parts = [labTitle, gspId, queryText].filter(Boolean);
+    const parts = [labTitle, gspId].filter(Boolean);
+    if (queryText && queryText !== labTitle) {
+      parts.push(queryText);
+    }
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
       console.info("[LabService] Combined query for search:", combinedQuery);
