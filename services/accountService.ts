@@ -306,14 +306,14 @@ const AccountService = {
       return; // Already migrated
     }
 
-    // Get old format data (all reads are independent)
-    const [oldProfileUrl, oldArcadeData, oldSearchFeature, oldShowBadge] =
-      await Promise.all([
-        storage.getItem<string>("local:urlProfile"),
-        storage.getItem<ArcadeData>("local:arcadeData"),
-        storage.getItem<boolean>("local:enableSearchFeature"),
-        storage.getItem<boolean>("local:showBadge"),
-      ]);
+    // Get old format data
+    const oldProfileUrl = await storage.getItem<string>("local:urlProfile");
+    const oldArcadeData = await storage.getItem<ArcadeData>("local:arcadeData");
+    const oldSearchFeature = await storage.getItem<boolean>(
+      "local:enableSearchFeature",
+    );
+    // legacy badge setting (was stored directly in local storage)
+    const oldShowBadge = await storage.getItem<boolean>("local:showBadge");
 
     // Create new accounts data structure
     const accountsData: AccountsData = {
@@ -400,6 +400,7 @@ const AccountService = {
   async normalizeAccountsAndDeduplicate(): Promise<void> {
     const data = await this.getAccountsData();
     const accounts = data.accounts;
+    const duplicateAccountIds = new Set<string>();
 
     // First, canonicalize profileUrl for each account if possible
     for (const id of Object.keys(accounts)) {
@@ -453,14 +454,20 @@ const AccountService = {
         if (!keeper.nickname && other.nickname) {
           keeper.nickname = other.nickname;
         }
-        // Remove the duplicate account
-        Reflect.deleteProperty(accounts, otherId);
+        // Mark the duplicate account for removal after merging completes.
+        duplicateAccountIds.add(otherId);
         // If deleted account was active, set keeper as active
         if (data.activeAccountId === otherId) {
           data.activeAccountId = keeperId;
         }
       }
     }
+
+    data.accounts = Object.fromEntries(
+      Object.entries(accounts).filter(
+        ([accountId]) => !duplicateAccountIds.has(accountId),
+      ),
+    ) as typeof accounts;
 
     // Persist changes
     await this.saveAccountsData(data);

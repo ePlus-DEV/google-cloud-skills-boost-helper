@@ -102,18 +102,14 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .flatMap((word) => {
-        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
-        return cleaned ? [cleaned] : [];
-      });
+      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+      .filter(Boolean);
     const titleWordsSet = new Set(
       normalizedTitle
         .toLowerCase()
         .split(/[\s-]+/)
-        .flatMap((word) => {
-          const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
-          return cleaned ? [cleaned] : [];
-        }),
+        .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+        .filter(Boolean),
     );
 
     if (queryWords.length === 0) return 0;
@@ -193,17 +189,13 @@ class SearchService {
     const queryWords = normalizedQuery
       .toLowerCase()
       .split(/[\s-]+/)
-      .flatMap((word) => {
-        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
-        return cleaned ? [cleaned] : [];
-      });
+      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+      .filter(Boolean);
     const titleWords = normalizedTitle
       .toLowerCase()
       .split(/[\s-]+/)
-      .flatMap((word) => {
-        const cleaned = word.replaceAll(/[^a-z0-9]/g, "");
-        return cleaned ? [cleaned] : [];
-      });
+      .map((w) => w.replaceAll(/[^a-z0-9]/g, ""))
+      .filter(Boolean);
     const titleWordsSet = new Set(titleWords);
 
     let totalScore = 0;
@@ -733,112 +725,74 @@ class SearchService {
     return fallbackTitle;
   }
 
-  /** Collect all accessible shadow roots, including nested roots. */
-  private static collectOpenShadowRoots(
-    root: Document | ShadowRoot = document,
-  ): ShadowRoot[] {
-    const shadowRoots: ShadowRoot[] = [];
-    const visited = new Set<ShadowRoot>();
-
-    /** Recursively visits a document or shadow root to collect nested roots. */
-    const visit = (searchRoot: Document | ShadowRoot): void => {
-      for (const element of Array.from(searchRoot.querySelectorAll("*"))) {
-        try {
-          const shadowRoot = element.shadowRoot;
-          if (!shadowRoot || visited.has(shadowRoot)) continue;
-
-          visited.add(shadowRoot);
-          shadowRoots.push(shadowRoot);
-          visit(shadowRoot);
-        } catch {
-          // Ignore inaccessible or browser-managed shadow roots.
-        }
-      }
-    };
-
-    visit(root);
-    return shadowRoots;
-  }
-
   /**
    * Query selector that searches into shadow roots recursively.
    * Returns the first matching Element or null.
    */
-  private static querySelectorDeep(selector: string): Element | null {
-    try {
-      const direct = document.querySelector(selector);
-      if (direct) return direct;
+  private static searchInRoot(
+    root: Document | ShadowRoot,
+    selector: string,
+  ): Element | null {
+    const direct = root.querySelector(selector);
+    if (direct) return direct;
 
-      for (const shadowRoot of this.collectOpenShadowRoots()) {
-        const found = shadowRoot.querySelector(selector);
+    for (const element of Array.from(root.querySelectorAll("*"))) {
+      try {
+        const shadowRoot = (element as Element).shadowRoot;
+        if (!shadowRoot) continue;
+
+        const found = this.searchInRoot(shadowRoot, selector);
         if (found) return found;
+      } catch {
+        // Ignore inaccessible shadow roots and continue searching.
       }
-    } catch {
-      // Ignore malformed selectors and inaccessible roots.
     }
+
     return null;
   }
 
   /**
-   * Get GSP ID from page (e.g., GSP344, GSP1164)
+   * Search the document and all accessible nested shadow roots.
    */
-  static getGspId(): string {
-    // Attempt 1: Check h2 element
-    const h2Element = document.querySelector("h2");
-    if (h2Element) {
-      const text = h2Element.textContent?.trim() || "";
-      const match = text.match(/GSP\d+/);
-      if (match) {
-        if (import.meta.env.MODE === "development") {
-          console.info("[LabService] ✓ Extracted GSP ID from h2:", match[0]);
-        }
-        return match[0];
-      }
+  private static querySelectorDeep(selector: string): Element | null {
+    try {
+      return this.searchInRoot(document, selector);
+    } catch {
+      return null;
     }
-
-    // Attempt 2: Check URL for GSP ID pattern
-    const urlMatch = window.location.href.match(/GSP\d+/);
-    if (urlMatch) {
-      if (import.meta.env.MODE === "development") {
-        console.info("[LabService] ✓ Extracted GSP ID from URL:", urlMatch[0]);
-      }
-      return urlMatch[0];
-    }
-
-    // Attempt 3: Broad search through visible page text (including shadow DOM)
-    const allText = this.getPageText();
-    const pageMatch = allText.match(/GSP\d+/);
-    if (pageMatch) {
-      if (import.meta.env.MODE === "development") {
-        console.info(
-          "[LabService] ✓ Extracted GSP ID from page text:",
-          pageMatch[0],
-        );
-      }
-      return pageMatch[0];
-    }
-
-    if (import.meta.env.MODE === "development") {
-      console.info("[LabService] ✗ No GSP ID found in h2, URL, or page text");
-    }
-    return "";
   }
 
   /**
-   * Get all text from page including nested shadow DOM
+   * Get GSP ID from page (e.g., GSP344)
    */
-  private static getPageText(): string {
-    const texts = [document.body.textContent || ""];
-
-    try {
-      for (const shadowRoot of this.collectOpenShadowRoots()) {
-        texts.push(shadowRoot.textContent || "");
+  static getGspId(): string {
+    const h2Element =
+      this.querySelectorDeep("h2") || document.querySelector("h2");
+    if (h2Element) {
+      const text = h2Element.textContent?.trim() || "";
+      const match = text.match(/GSP\d+/i);
+      if (match) {
+        const gspId = match[0].toUpperCase();
+        if (import.meta.env.MODE === "development") {
+          console.info("[LabService] Extracted GSP ID:", gspId);
+        }
+        return gspId;
       }
-    } catch {
-      // Ignore inaccessible roots and return the text collected so far.
     }
 
-    return texts.join(" ");
+    const urlMatch = window.location.href.match(/GSP\d+/i);
+    if (urlMatch) {
+      const gspId = urlMatch[0].toUpperCase();
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] Extracted GSP ID from URL:", gspId);
+      }
+      return gspId;
+    }
+
+    if (import.meta.env.MODE === "development") {
+      console.info("[LabService] No GSP ID found");
+    }
+    return "";
   }
 
   /**
@@ -849,21 +803,13 @@ class SearchService {
     const gspId = this.getGspId();
     const queryText = this.extractQueryText();
 
-    // Use queryText as fallback for lab title if title is empty
-    const primaryTitle =
-      labTitle || (queryText && queryText !== "Overview" ? queryText : "");
-
-    // Build query with title first, then GSP ID and query text
-    // Include queryText even if we have a title, as it provides additional context
-    const parts = [primaryTitle, gspId].filter(Boolean);
-    if (queryText && queryText !== primaryTitle) {
+    // Build query with title first, then GSP ID (preferred format: "title - id")
+    const parts = [labTitle, gspId].filter(Boolean);
+    if (queryText && queryText !== labTitle) {
       parts.push(queryText);
     }
     const combinedQuery = parts.join(" - ").trim();
     if (import.meta.env.MODE === "development") {
-      console.info("[LabService] Lab title:", labTitle);
-      console.info("[LabService] GSP ID:", gspId);
-      console.info("[LabService] Query text:", queryText);
       console.info("[LabService] Combined query for search:", combinedQuery);
     }
     return combinedQuery;
