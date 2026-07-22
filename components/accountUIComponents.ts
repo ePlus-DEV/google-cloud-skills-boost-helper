@@ -5,6 +5,9 @@ import { AccountService, ArcadeApiService } from "../services";
 import { ModalUtils, DOMUtils } from "../utils";
 import type { Account, CreateAccountOptions } from "../types";
 
+/**
+ * Escape text before interpolating it into HTML markup.
+ */
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -368,6 +371,7 @@ const AccountUIService = {
       "import-json-textarea",
     ) as HTMLTextAreaElement;
 
+    /** Hide the import modal. */
     const hideModal = () => this.hideImportModal();
 
     // Wire up basic hide/close handlers and outside-click behavior via helper

@@ -400,6 +400,7 @@ const AccountService = {
   async normalizeAccountsAndDeduplicate(): Promise<void> {
     const data = await this.getAccountsData();
     const accounts = data.accounts;
+    const duplicateAccountIds = new Set<string>();
 
     // First, canonicalize profileUrl for each account if possible
     for (const id of Object.keys(accounts)) {
@@ -453,14 +454,20 @@ const AccountService = {
         if (!keeper.nickname && other.nickname) {
           keeper.nickname = other.nickname;
         }
-        // Remove the duplicate account
-        delete accounts[otherId];
+        // Mark the duplicate account for removal after merging completes.
+        duplicateAccountIds.add(otherId);
         // If deleted account was active, set keeper as active
         if (data.activeAccountId === otherId) {
           data.activeAccountId = keeperId;
         }
       }
     }
+
+    data.accounts = Object.fromEntries(
+      Object.entries(accounts).filter(
+        ([accountId]) => !duplicateAccountIds.has(accountId),
+      ),
+    ) as typeof accounts;
 
     // Persist changes
     await this.saveAccountsData(data);

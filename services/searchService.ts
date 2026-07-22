@@ -751,6 +751,9 @@ class SearchService {
     return null;
   }
 
+  /**
+   * Search the document and all accessible nested shadow roots.
+   */
   private static querySelectorDeep(selector: string): Element | null {
     try {
       return this.searchInRoot(document, selector);

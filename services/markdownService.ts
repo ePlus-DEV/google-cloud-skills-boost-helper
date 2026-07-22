@@ -50,6 +50,9 @@ const IMAGE_SCHEMES = new Set(["http", "https", "blob"]);
 const SAFE_DATA_IMAGE_SOURCE =
   /^data:image\/(?:avif|gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/iu;
 
+/**
+ * Normalize a URL-like value before checking its scheme.
+ */
 function normalizeUrlForSchemeCheck(value: string): string {
   return Array.from(value)
     .filter((character) => {
@@ -64,6 +67,9 @@ function normalizeUrlForSchemeCheck(value: string): string {
     .trim();
 }
 
+/**
+ * Check whether a URL uses an allowed scheme or is relative.
+ */
 function hasAllowedUrlScheme(
   value: string,
   allowedSchemes: ReadonlySet<string>,
@@ -73,6 +79,9 @@ function hasAllowedUrlScheme(
   return !scheme || allowedSchemes.has(scheme.toLowerCase());
 }
 
+/**
+ * Check whether an image source is safe to render.
+ */
 function hasAllowedImageSource(value: string): boolean {
   const normalized = normalizeUrlForSchemeCheck(value);
   return (
@@ -81,6 +90,9 @@ function hasAllowedImageSource(value: string): boolean {
   );
 }
 
+/**
+ * Sanitize rendered Markdown and enforce safe link and image attributes.
+ */
 function sanitizeMarkdownHtml(html: string): string {
   const sanitized = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,

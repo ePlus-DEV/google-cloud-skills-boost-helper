@@ -8,6 +8,9 @@ import { MARKDOWN_CONFIG } from "../utils/config";
 import type { Account, ArcadeData } from "../types";
 import sendRuntimeMessage from "./runtimeMessage";
 
+/**
+ * Escape text before interpolating it into popup HTML markup.
+ */
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -17,6 +20,9 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
+/**
+ * Return a profile image URL only when it uses an approved image scheme.
+ */
 function sanitizeProfileImageUrl(value?: string | null): string {
   if (!value) return "";
   const normalized = value.trim();
