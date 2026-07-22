@@ -1,0 +1,69 @@
+name: Trigger PR 180 targeted fixer v2
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-fixes:
+    if: github.event.pull_request.head.ref == 'revert-178-dev' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: revert-178-dev
+          fetch-depth: 0
+
+      - name: Extract and correct patch script
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          workflow = Path('.github/workflows/apply-pr180-critical-fixes.yml').read_text()
+          marker = "          python <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          lines = workflow[start:end].splitlines()
+          script = "\n".join(line[10:] if line.startswith("          ") else line for line in lines) + "\n"
+          script = script.replace(r'/^data:\\/\\//i.test(src)', r'/^data:\\//i.test(src)')
+          script = script.replace(r'/^blob:\\/\\//i.test(src)', r'/^blob:\\//i.test(src)')
+          Path('/tmp/apply-pr180.py').write_text(script)
+          PY
+          python /tmp/apply-pr180.py
+
+      - name: Install and validate
+        run: |
+          yarn add dompurify@^3.4.12 --ignore-scripts --ignore-engines
+          yarn wxt prepare
+          yarn compile
+          yarn test:coverage
+          yarn build
+
+      - name: Commit fixes to PR branch
+        run: |
+          rm -f .github/workflows/apply-pr180-critical-fixes.yml
+          rm -f .github/.trigger-pr180-fix .github/.trigger-pr180-diagnose .github/.trigger-pr180-diagnose-v2
+          rm -f .github/pr180-fix.txt .github/pr180-fix.log
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "fix: retain critical security and compatibility fixes"
+          git push origin HEAD:revert-178-dev
+
+      - name: Remove temporary workflows from main
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull --ff-only origin main
+          rm -f .github/workflows/apply-pr180-from-main.yml
+          rm -f .github/workflows/trigger-pr180-fixer.yml
+          rm -f .github/workflows/trigger-pr180-fixer-v2.yml
+          rm -f .github/workflows/diagnose-pr180-fixer.yml
+          rm -f .github/workflows/diagnose-pr180-fixer-v2.yml
+          git add -A
+          git commit -m "chore: remove temporary PR 180 workflows"
+          git push origin main
