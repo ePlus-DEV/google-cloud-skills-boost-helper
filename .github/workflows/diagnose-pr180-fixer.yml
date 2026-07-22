@@ -1,0 +1,42 @@
+name: Diagnose PR 180 fixer
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.head.ref == 'revert-178-dev' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: revert-178-dev
+          fetch-depth: 0
+
+      - name: Capture patch failure
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          workflow = Path('.github/workflows/apply-pr180-critical-fixes.yml').read_text()
+          marker = "          python <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          lines = workflow[start:end].splitlines()
+          script = "\n".join(line[10:] if line.startswith("          ") else line for line in lines) + "\n"
+          Path('/tmp/apply-pr180.py').write_text(script)
+          PY
+          set +e
+          python /tmp/apply-pr180.py > .github/pr180-fix.log 2>&1
+          status=$?
+          echo "exit_status=$status" >> .github/pr180-fix.log
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add .github/pr180-fix.log
+          git commit -m "chore: capture PR 180 fixer diagnostics"
+          git push origin HEAD:revert-178-dev
