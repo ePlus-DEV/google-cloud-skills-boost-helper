@@ -14,7 +14,6 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
-
 const AccountUIService = {
   /**
    * Create account switcher UI component

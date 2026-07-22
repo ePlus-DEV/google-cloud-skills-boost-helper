@@ -2,7 +2,6 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 import type { MarkdownLoadOptions, MarkdownConfig } from "../types";
 
-
 const MARKDOWN_ALLOWED_TAGS = [
   "a",
   "blockquote",

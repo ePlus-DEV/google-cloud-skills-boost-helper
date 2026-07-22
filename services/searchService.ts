@@ -780,7 +780,7 @@ class SearchService {
       if (match) {
         const gspId = match[0].toUpperCase();
         if (import.meta.env.MODE === "development") {
-console.info("[LabService] Extracted GSP ID:", gspId);
+          console.info("[LabService] Extracted GSP ID:", gspId);
         }
         return gspId;
       }
