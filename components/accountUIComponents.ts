@@ -5,6 +5,16 @@ import { AccountService, ArcadeApiService } from "../services";
 import { ModalUtils, DOMUtils } from "../utils";
 import type { Account, CreateAccountOptions } from "../types";
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+
 const AccountUIService = {
   /**
    * Create account switcher UI component
@@ -12,14 +22,14 @@ const AccountUIService = {
   createAccountSwitcher(): HTMLElement {
     const switcher = document.createElement("div");
     switcher.className =
-      "account-switcher bg-gradient-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-4 border border-indigo-300 mb-4";
+      "account-switcher bg-linear-to-r from-purple-100 to-indigo-200 shadow-md rounded-lg p-4 border border-indigo-300 mb-4";
     switcher.innerHTML = `
       <div class="flex justify-between items-center mb-3">
         <h4 class="text-lg font-bold text-gray-800">
           <i class="fa-solid fa-user-group mr-2 text-indigo-600"></i>
           Quản lý tài khoản
         </h4>
-        <button id="add-account-btn" class="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-medium px-3 py-1 rounded-lg shadow-md transition duration-200 text-sm">
+        <button id="add-account-btn" class="bg-linear-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-medium px-3 py-1 rounded-lg shadow-md transition duration-200 text-sm">
           <i class="fa-solid fa-plus mr-1"></i>
           Thêm tài khoản
         </button>
@@ -56,11 +66,11 @@ const AccountUIService = {
       </div>
 
       <div class="mt-3 flex space-x-2">
-        <button id="export-accounts-btn" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
+        <button id="export-accounts-btn" class="flex-1 bg-linear-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
           <i class="fa-solid fa-download mr-1"></i>
           Xuất
         </button>
-        <button id="import-accounts-btn" class="flex-1 bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
+        <button id="import-accounts-btn" class="flex-1 bg-linear-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 text-white font-medium px-3 py-2 rounded-lg shadow-md transition duration-200 text-sm">
           <i class="fa-solid fa-upload mr-1"></i>
           Nhập
         </button>
@@ -77,7 +87,7 @@ const AccountUIService = {
     const modal = document.createElement("div");
     modal.id = "add-account-modal";
     modal.className =
-      "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden";
+      "fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden";
     modal.innerHTML = `
       <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
         <div class="flex justify-between items-center mb-4">
@@ -108,7 +118,7 @@ const AccountUIService = {
           <button id="cancel-add-account-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-2 rounded-lg transition duration-200">
             Hủy
           </button>
-          <button id="confirm-add-account-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
+          <button id="confirm-add-account-btn" class="flex-1 bg-linear-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
             Thêm tài khoản
           </button>
         </div>
@@ -125,7 +135,7 @@ const AccountUIService = {
     const modal = document.createElement("div");
     modal.id = "import-accounts-modal";
     modal.className =
-      "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden";
+      "fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden";
     modal.innerHTML = `
       <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4 shadow-xl">
         <div class="flex justify-between items-center mb-4">
@@ -151,7 +161,7 @@ const AccountUIService = {
           <button id="cancel-import-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-2 rounded-lg transition duration-200">
             Hủy
           </button>
-          <button id="confirm-import-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
+          <button id="confirm-import-btn" class="flex-1 bg-linear-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
             Nhập dữ liệu
           </button>
         </div>
@@ -588,7 +598,7 @@ const AccountUIService = {
     ) as HTMLTextAreaElement;
     const confirmBtn = document.getElementById("confirm-import-btn");
 
-    if (!textArea.value.trim()) {
+    if (!textArea?.value.trim()) {
       this.showMessage("Vui lòng chọn file hoặc dán nội dung JSON!", "error");
       return;
     }
@@ -652,7 +662,7 @@ const AccountUIService = {
     const modal = document.createElement("div");
     modal.id = "edit-account-modal";
     modal.className =
-      "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden";
+      "fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden";
     modal.innerHTML = `
       <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
         <div class="flex justify-between items-center mb-4">
@@ -665,16 +675,12 @@ const AccountUIService = {
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Tên hiển thị:</label>
-            <input type="text" id="edit-account-name-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="${
-              account.name
-            }">
+            <input type="text" id="edit-account-name-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="${escapeHtml(account.name)}">
           </div>
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Biệt danh:</label>
-            <input type="text" id="edit-account-nickname-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="${
-              account.nickname || ""
-            }">
+            <input type="text" id="edit-account-nickname-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="${escapeHtml(account.nickname || "")}">
           </div>
         </div>
         
@@ -682,7 +688,7 @@ const AccountUIService = {
           <button id="cancel-edit-account-btn" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium px-4 py-2 rounded-lg transition duration-200">
             Hủy
           </button>
-          <button id="confirm-edit-account-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
+          <button id="confirm-edit-account-btn" class="flex-1 bg-linear-to-r from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 text-white font-medium px-4 py-2 rounded-lg transition duration-200">
             Lưu thay đổi
           </button>
         </div>
@@ -777,7 +783,7 @@ const AccountUIService = {
     const modal = document.createElement("div");
     modal.id = "delete-confirm-modal";
     modal.className =
-      "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden";
+      "fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden";
     modal.innerHTML = `
       <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
         <div class="flex items-center mb-4">
@@ -787,7 +793,7 @@ const AccountUIService = {
         
         <div class="mb-6">
           <p class="text-gray-600">Bạn có chắc chắn muốn xóa tài khoản:</p>
-          <p class="font-semibold text-gray-900 mt-2">"${account.name}"</p>
+          <p class="font-semibold text-gray-900 mt-2">"${escapeHtml(account.name)}"</p>
           <p class="text-sm text-red-600 mt-2">Hành động này không thể hoàn tác!</p>
         </div>
         

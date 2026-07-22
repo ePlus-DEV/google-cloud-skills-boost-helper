@@ -14,13 +14,11 @@ export async function setupNewSeasonConfig(
 ): Promise<void> {
   await firebaseService.initialize();
 
+  firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "false");
   firebaseService.setLocalConfigValue(
-    "countdown_deadline_facilitator",
-    arcadeDeadline,
+    "countdown_enabled_facilitator",
+    "true",
   );
-
-  firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "true");
-  firebaseService.setLocalConfigValue("countdown_enabled_arcade", "false");
   firebaseService.setLocalConfigValue(
     "countdown_deadline_arcade",
     arcadeDeadline,
@@ -32,7 +30,10 @@ export async function setupNewSeasonConfig(
  */
 export async function disableFacilitator(): Promise<void> {
   await firebaseService.initialize();
-  firebaseService.setLocalConfigValue("countdown_enabled_arcade", "false");
+  firebaseService.setLocalConfigValue(
+    "countdown_enabled_facilitator",
+    "false",
+  );
 }
 
 /**
@@ -46,7 +47,7 @@ export async function enableFacilitator(
   await firebaseService.initialize();
   firebaseService.setLocalConfigValue("countdown_enabled_arcade", "true");
   firebaseService.setLocalConfigValue(
-    "countdown_deadline_arcade",
+    "countdown_deadline_facilitator",
     facilitatorDeadline,
   );
 }

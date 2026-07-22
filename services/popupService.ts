@@ -7,6 +7,32 @@ import MarkdownService from "./markdownService";
 import { MARKDOWN_CONFIG } from "../utils/config";
 import type { Account, ArcadeData } from "../types";
 import sendRuntimeMessage from "./runtimeMessage";
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function sanitizeProfileImageUrl(value?: string | null): string {
+  if (!value) return "";
+  const normalized = value.trim();
+  if (/^data:image\/(?:avif|gif|jpe?g|png|webp);base64,/iu.test(normalized)) {
+    return normalized;
+  }
+  try {
+    const parsed = new URL(normalized);
+    return ["http:", "https:", "blob:"].includes(parsed.protocol)
+      ? normalized
+      : "";
+  } catch {
+    return "";
+  }
+}
+
 const PopupService = {
   profileUrl: "",
   currentAccount: null as Account | null,
@@ -134,16 +160,20 @@ const PopupService = {
    * Create avatar HTML string given display text and optional profile image
    */
   createAvatarHTML(displayText: string, profileImage?: string | null): string {
-    if (profileImage) {
-      return `<img src="${profileImage}" alt="${displayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
-             ${displayText.charAt(0).toUpperCase()}
-           </div>`;
+    const safeDisplayText = escapeHtml(displayText);
+    const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
+    const safeProfileImage = sanitizeProfileImageUrl(profileImage);
+
+    if (safeProfileImage) {
+      return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+ <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
+   ${safeInitial}
+ </div>`;
     }
 
     return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
-             ${displayText.charAt(0).toUpperCase()}
-           </div>`;
+   ${safeInitial}
+ </div>`;
   },
 
   /**
@@ -166,10 +196,10 @@ const PopupService = {
       <div class="flex items-center flex-1 min-w-0">
         ${avatarHTML}
         <div class="min-w-0 flex-1">
-          <div class="text-white/95 text-sm font-medium truncate">${displayText}</div>
+          <div class="text-white/95 text-sm font-medium truncate">${escapeHtml(displayText)}</div>
           ${
             account.name !== displayText
-              ? `<div class="text-white/70 text-xs truncate">${account.name}</div>`
+              ? `<div class="text-white/70 text-xs truncate">${escapeHtml(account.name)}</div>`
               : ""
           }
         </div>

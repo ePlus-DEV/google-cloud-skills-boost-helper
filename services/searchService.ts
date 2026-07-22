@@ -772,18 +772,29 @@ class SearchService {
    * Get GSP ID from page (e.g., GSP344)
    */
   static getGspId(): string {
-    const h2Element = document.querySelector("h2");
+    const h2Element =
+      this.querySelectorDeep("h2") || document.querySelector("h2");
     if (h2Element) {
       const text = h2Element.textContent?.trim() || "";
-      // Extract GSP ID pattern (GSP followed by numbers)
-      const match = text.match(/GSP\d+/);
+      const match = text.match(/GSP\d+/i);
       if (match) {
+        const gspId = match[0].toUpperCase();
         if (import.meta.env.MODE === "development") {
-          console.info("[LabService] Extracted GSP ID:", match[0]);
+console.info("[LabService] Extracted GSP ID:", gspId);
         }
-        return match[0];
+        return gspId;
       }
     }
+
+    const urlMatch = window.location.href.match(/GSP\d+/i);
+    if (urlMatch) {
+      const gspId = urlMatch[0].toUpperCase();
+      if (import.meta.env.MODE === "development") {
+        console.info("[LabService] Extracted GSP ID from URL:", gspId);
+      }
+      return gspId;
+    }
+
     if (import.meta.env.MODE === "development") {
       console.info("[LabService] No GSP ID found");
     }
