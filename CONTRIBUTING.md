@@ -30,7 +30,6 @@ We welcome contributions to the project! Please follow these steps to contribute
 3. **Install Dependencies**
 
    Ensure you meet the following system requirements:
-
    - Node.js 24 or later
    - Yarn
    - macOS, Windows, or Linux
