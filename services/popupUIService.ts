@@ -6,6 +6,8 @@ import {
   calculateMilestoneBonusBreakdown,
 } from "./facilitatorService";
 
+const _numberFormat = new Intl.NumberFormat(navigator.language);
+
 /**
  * Service to handle UI operations for popup and options
  */
@@ -417,18 +419,14 @@ const PopupUIService = {
     if (!hasPrizePoolData || prizeTier.spotsLeft === undefined) {
       if (prizeTier.slots !== undefined) {
         const slotsLabel = this.getI18nMessage("textTotalSlots", "total slots");
-        const formattedSlots = new Intl.NumberFormat(navigator.language).format(
-          prizeTier.slots,
-        );
+        const formattedSlots = _numberFormat.format(prizeTier.slots);
         return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSlots} ${slotsLabel})`;
       }
       return `${poolLabel}: ${prizeTier.league}${waterfall}`;
     }
 
     const spotsLabel = this.getI18nMessage("textSpotsLeft", "spots left");
-    const formattedSpots = new Intl.NumberFormat(navigator.language).format(
-      prizeTier.spotsLeft,
-    );
+    const formattedSpots = _numberFormat.format(prizeTier.spotsLeft);
     return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSpots} ${spotsLabel})`;
   },
 
@@ -968,19 +966,15 @@ const PopupUIService = {
       const AccountService = (await import("./accountService")).default;
       const firebaseService = (await import("./firebaseService")).default;
 
-      const currentAccount = await AccountService.getActiveAccount();
-
-      // Check Firebase config - is Facilitator program globally enabled?
-      const facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
-        "countdown_enabled_facilitator",
-        false,
-      );
-
-      // Check if Arcade is enabled
-      const arcadeEnabled = await firebaseService.getBooleanParam(
-        "countdown_enabled_arcade",
-        false,
-      );
+      const [currentAccount, facilitatorGloballyEnabled, arcadeEnabled] =
+        await Promise.all([
+          AccountService.getActiveAccount(),
+          firebaseService.getBooleanParam(
+            "countdown_enabled_facilitator",
+            false,
+          ),
+          firebaseService.getBooleanParam("countdown_enabled_arcade", false),
+        ]);
 
       // Show milestone section ONLY if:
       // 1. Account has facilitatorProgram enabled AND Facilitator is globally enabled
@@ -1526,11 +1520,11 @@ Details:
 
       let configSource: string | undefined;
       try {
-        const deadlineStr = await firebaseService.getStringParam(
-          rcKey,
-          fallbackDeadline,
-        );
-        enabled = await firebaseService.getBooleanParam(rcToggleKey, true);
+        const [deadlineStr, enabledValue] = await Promise.all([
+          firebaseService.getStringParam(rcKey, fallbackDeadline),
+          firebaseService.getBooleanParam(rcToggleKey, true),
+        ]);
+        enabled = enabledValue;
 
         // Get configuration source for display
         const params = firebaseService.getAllParams();

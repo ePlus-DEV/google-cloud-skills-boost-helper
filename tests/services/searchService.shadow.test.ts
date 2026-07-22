@@ -1,4 +1,4 @@
-import { beforeEach, afterEach, describe, it, expect } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import SearchService from "../../services/searchService";
 
 describe("SearchService.getLabTitle (shadow DOM)", () => {
@@ -8,6 +8,7 @@ describe("SearchService.getLabTitle (shadow DOM)", () => {
 
   afterEach(() => {
     document.body.innerHTML = "";
+    vi.restoreAllMocks();
   });
 
   it("extracts title from nested ql-lab-header -> ql-header shadow roots", () => {
@@ -39,8 +40,7 @@ describe("SearchService.getLabTitle (shadow DOM)", () => {
     outerDiv.appendChild(innerDiv);
     sr2.appendChild(outerDiv);
 
-    const title = SearchService.getLabTitle();
-    expect(title).toBe("Deep Shadow Title");
+    expect(SearchService.getLabTitle()).toBe("Deep Shadow Title");
   });
 
   it("prefers h1.ql-title-large when present", () => {
@@ -49,8 +49,7 @@ describe("SearchService.getLabTitle (shadow DOM)", () => {
     headingElement.textContent = "Title Large";
     document.body.appendChild(headingElement);
 
-    const title = SearchService.getLabTitle();
-    expect(title).toBe("Title Large");
+    expect(SearchService.getLabTitle()).toBe("Title Large");
   });
 
   it("falls back to first h1 when no special selectors exist", () => {
@@ -58,7 +57,34 @@ describe("SearchService.getLabTitle (shadow DOM)", () => {
     headingElement.textContent = "Simple H1";
     document.body.appendChild(headingElement);
 
-    const title = SearchService.getLabTitle();
-    expect(title).toBe("Simple H1");
+    expect(SearchService.getLabTitle()).toBe("Simple H1");
+  });
+
+  it("finds a GSP ID inside deeply nested shadow roots", () => {
+    const outerHost = document.createElement("div");
+    document.body.appendChild(outerHost);
+    const outerRoot = outerHost.attachShadow({ mode: "open" });
+
+    const innerHost = document.createElement("section");
+    outerRoot.appendChild(innerHost);
+    const innerRoot = innerHost.attachShadow({ mode: "open" });
+
+    const idText = document.createElement("span");
+    idText.textContent = "Lab identifier: GSP9999";
+    innerRoot.appendChild(idText);
+
+    expect(SearchService.getGspId()).toBe("GSP9999");
+  });
+
+  it("does not duplicate query text used as the fallback title", () => {
+    vi.spyOn(SearchService, "getLabTitle").mockReturnValue("");
+    vi.spyOn(SearchService, "getGspId").mockReturnValue("GSP123");
+    vi.spyOn(SearchService, "extractQueryText").mockReturnValue(
+      "Configure a Cloud Lab",
+    );
+
+    expect(SearchService.createCombinedQuery()).toBe(
+      "Configure a Cloud Lab - GSP123",
+    );
   });
 });

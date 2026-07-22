@@ -50,9 +50,7 @@ const IMAGE_SCHEMES = new Set(["http", "https", "blob"]);
 const SAFE_DATA_IMAGE_SOURCE =
   /^data:image\/(?:avif|gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/iu;
 
-/**
- * Normalize a URL-like value before checking its scheme.
- */
+/** Removes ASCII control characters and whitespace before URL parsing. */
 function normalizeUrlForSchemeCheck(value: string): string {
   return Array.from(value)
     .filter((character) => {
@@ -67,9 +65,7 @@ function normalizeUrlForSchemeCheck(value: string): string {
     .trim();
 }
 
-/**
- * Check whether a URL uses an allowed scheme or is relative.
- */
+/** Checks whether a URL uses one of the explicitly allowed schemes. */
 function hasAllowedUrlScheme(
   value: string,
   allowedSchemes: ReadonlySet<string>,
@@ -79,9 +75,7 @@ function hasAllowedUrlScheme(
   return !scheme || allowedSchemes.has(scheme.toLowerCase());
 }
 
-/**
- * Check whether an image source is safe to render.
- */
+/** Allows relative, HTTP(S), blob, and safe raster data-image sources. */
 function hasAllowedImageSource(value: string): boolean {
   const normalized = normalizeUrlForSchemeCheck(value);
   return (
@@ -90,15 +84,14 @@ function hasAllowedImageSource(value: string): boolean {
   );
 }
 
-/**
- * Sanitize rendered Markdown and enforce safe link and image attributes.
- */
+/** Sanitizes rendered markdown with an explicit tag and attribute allowlist. */
 function sanitizeMarkdownHtml(html: string): string {
   const sanitized = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,
     ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
     ALLOW_ARIA_ATTR: true,
     ALLOW_DATA_ATTR: false,
+    // Candidate schemes remain only until the strict checks below run.
     ALLOW_UNKNOWN_PROTOCOLS: true,
   });
 
@@ -231,10 +224,12 @@ const MarkdownService = {
           imgs.forEach((img) => {
             const src = img.getAttribute("src") || "";
             if (!src) return;
+            const normalizedSrc = src.trim().toLowerCase();
             if (
-              /^https?:\/\//i.test(src) ||
-              /^data:\//i.test(src) ||
-              /^blob:\//i.test(src)
+              normalizedSrc.startsWith("http://") ||
+              normalizedSrc.startsWith("https://") ||
+              normalizedSrc.startsWith("data:") ||
+              normalizedSrc.startsWith("blob:")
             )
               return;
             try {
@@ -344,10 +339,12 @@ const MarkdownService = {
         imgs.forEach((img) => {
           const src = img.getAttribute("src") || "";
           if (!src) return;
+          const normalizedSrc = src.trim().toLowerCase();
           if (
-            /^https?:\/\//i.test(src) ||
-            /^data:\//i.test(src) ||
-            /^blob:\//i.test(src)
+            normalizedSrc.startsWith("http://") ||
+            normalizedSrc.startsWith("https://") ||
+            normalizedSrc.startsWith("data:") ||
+            normalizedSrc.startsWith("blob:")
           )
             return;
           try {
@@ -407,7 +404,7 @@ const MarkdownService = {
    */
   async openLink(url: string): Promise<void> {
     try {
-      // First attempt: Use browser.tabs.create if available (most reliable in extensions)
+      // First attempt: Use browser.tabs.create (WXT polyfill covers Chrome + Firefox)
       if (typeof browser !== "undefined" && browser.tabs?.create) {
         await browser.tabs.create({ url });
         return;
@@ -417,17 +414,7 @@ const MarkdownService = {
     }
 
     try {
-      // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
-      if (typeof chrome !== "undefined" && chrome.tabs?.create) {
-        await chrome.tabs.create({ url });
-        return;
-      }
-    } catch (error) {
-      console.warn("Failed to open link via chrome.tabs:", error);
-    }
-
-    try {
-      // Third attempt: Use window.open (may not work in all extension contexts)
+      // Second attempt: Use window.open (may not work in all extension contexts)
       const newWindow = window.open(url, "_blank", "noopener,noreferrer");
       if (newWindow) {
         return;
