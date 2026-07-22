@@ -407,7 +407,7 @@ const MarkdownService = {
     try {
       // Second attempt: Use chrome.tabs.create if available (Chromium browsers)
       if (typeof chrome !== "undefined" && chrome.tabs?.create) {
-        chrome.tabs.create({ url });
+        await chrome.tabs.create({ url });
         return;
       }
     } catch (error) {
