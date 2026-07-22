@@ -1,0 +1,222 @@
+name: Apply targeted PR 180 fixes
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-fixes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v7
+        with:
+          ref: revert-178-dev
+          fetch-depth: 0
+
+      - name: Apply targeted fixes
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          def replace_once(text: str, old: str, new: str, path: str) -> str:
+              if old not in text:
+                  raise RuntimeError(f"Expected text not found in {path}: {old[:80]!r}")
+              return text.replace(old, new, 1)
+
+          path = Path("services/markdownService.ts")
+          text = path.read_text()
+          text = replace_once(text, 'import { marked } from "marked";', 'import DOMPurify from "dompurify";\nimport { marked } from "marked";', str(path))
+          sanitizer = r'''
+const MARKDOWN_ALLOWED_TAGS = [
+  "a", "blockquote", "br", "code", "del", "details", "em",
+  "h1", "h2", "h3", "h4", "h5", "h6", "hr", "img", "li",
+  "ol", "p", "pre", "strong", "summary", "table", "tbody", "td",
+  "th", "thead", "tr", "ul",
+];
+const MARKDOWN_ALLOWED_ATTRIBUTES = [
+  "alt", "class", "height", "href", "rel", "src", "target", "title", "width",
+];
+const LINK_SCHEMES = new Set(["http", "https"]);
+const IMAGE_SCHEMES = new Set(["http", "https", "blob"]);
+const SAFE_DATA_IMAGE_SOURCE = /^data:image\/(?:avif|gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/iu;
+function normalizeUrlForSchemeCheck(value: string): string {
+  return Array.from(value).filter((character) => {
+    const codePoint = character.codePointAt(0);
+    return codePoint !== undefined && codePoint > 0x20 && (codePoint < 0x7f || codePoint > 0x9f);
+  }).join("").trim();
+}
+function hasAllowedUrlScheme(value: string, allowedSchemes: ReadonlySet<string>): boolean {
+  const normalized = normalizeUrlForSchemeCheck(value);
+  const scheme = normalized.match(/^([a-z][a-z0-9+.-]*):/iu)?.[1];
+  return !scheme || allowedSchemes.has(scheme.toLowerCase());
+}
+function hasAllowedImageSource(value: string): boolean {
+  const normalized = normalizeUrlForSchemeCheck(value);
+  return SAFE_DATA_IMAGE_SOURCE.test(normalized) || hasAllowedUrlScheme(value, IMAGE_SCHEMES);
+}
+function sanitizeMarkdownHtml(html: string): string {
+  const sanitized = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: MARKDOWN_ALLOWED_TAGS,
+    ALLOWED_ATTR: MARKDOWN_ALLOWED_ATTRIBUTES,
+    ALLOW_ARIA_ATTR: true,
+    ALLOW_DATA_ATTR: false,
+    ALLOW_UNKNOWN_PROTOCOLS: true,
+  });
+  const template = document.createElement("template");
+  template.innerHTML = sanitized;
+  template.content.querySelectorAll("a").forEach((element) => {
+    if (element.getAttribute("target") === "_blank") element.setAttribute("rel", "noopener noreferrer");
+    const href = element.getAttribute("href");
+    if (href && !hasAllowedUrlScheme(href, LINK_SCHEMES)) element.removeAttribute("href");
+  });
+  template.content.querySelectorAll("img[src]").forEach((element) => {
+    const src = element.getAttribute("src") || "";
+    if (!hasAllowedImageSource(src)) element.removeAttribute("src");
+  });
+  return template.innerHTML;
+}
+
+'''
+          marker = "/**\n * Service to handle markdown content loading and rendering"
+          text = replace_once(text, marker, sanitizer + marker, str(path))
+          text = replace_once(text, "contentArea.innerHTML = contentArea.innerHTML + markdownHtml;", "contentArea.innerHTML =\n            contentArea.innerHTML + sanitizeMarkdownHtml(markdownHtml);", str(path))
+          text = replace_once(text, "contentArea.innerHTML = markdownHtml;", "contentArea.innerHTML = sanitizeMarkdownHtml(markdownHtml);", str(path))
+          text = replace_once(text, "(contentArea as HTMLElement).innerHTML = markdownHtml;", "(contentArea as HTMLElement).innerHTML =\n        sanitizeMarkdownHtml(markdownHtml);", str(path))
+          old_check = '''if (
+              /^https?:\\/\\//i.test(src) ||
+              /^data:\\/\\//i.test(src) ||
+              /^blob:\\/\\//i.test(src)
+            )
+              return;'''
+          new_check = '''const normalizedSrc = src.trim().toLowerCase();
+            if (
+              normalizedSrc.startsWith("http://") ||
+              normalizedSrc.startsWith("https://") ||
+              normalizedSrc.startsWith("data:") ||
+              normalizedSrc.startsWith("blob:")
+            )
+              return;'''
+          if text.count(old_check) != 2:
+              raise RuntimeError("Expected two Markdown image URL checks")
+          path.write_text(text.replace(old_check, new_check))
+
+          path = Path("services/popupService.ts")
+          text = path.read_text()
+          helper = r'''
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function sanitizeProfileImageUrl(value?: string | null): string {
+  if (!value) return "";
+  const normalized = value.trim();
+  if (/^data:image\/(?:avif|gif|jpe?g|png|webp);base64,/iu.test(normalized)) return normalized;
+  try {
+    const parsed = new URL(normalized);
+    return ["http:", "https:", "blob:"].includes(parsed.protocol) ? normalized : "";
+  } catch {
+    return "";
+  }
+}
+
+'''
+          text = replace_once(text, 'import sendRuntimeMessage from "./runtimeMessage";\n', 'import sendRuntimeMessage from "./runtimeMessage";\n' + helper, str(path))
+          pattern = re.compile(r'  createAvatarHTML\(displayText: string, profileImage\?: string \| null\): string \{.*?\n  \},', re.S)
+          replacement = '''  createAvatarHTML(displayText: string, profileImage?: string | null): string {
+    const safeDisplayText = escapeHtml(displayText);
+    const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
+    const safeProfileImage = sanitizeProfileImageUrl(profileImage);
+    if (safeProfileImage) {
+      return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">${safeInitial}</div>`;
+    }
+    return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">${safeInitial}</div>`;
+  },'''
+          text, count = pattern.subn(replacement, text, count=1)
+          if count != 1: raise RuntimeError("Unable to replace createAvatarHTML")
+          text = replace_once(text, '<div class="text-white/95 text-sm font-medium truncate">${displayText}</div>', '<div class="text-white/95 text-sm font-medium truncate">${escapeHtml(displayText)}</div>', str(path))
+          text = replace_once(text, '? `<div class="text-white/70 text-xs truncate">${account.name}</div>`', '? `<div class="text-white/70 text-xs truncate">${escapeHtml(account.name)}</div>`', str(path))
+          path.write_text(text)
+
+          path = Path("components/accountUIComponents.ts")
+          text = path.read_text().replace("bg-gradient-to-r", "bg-linear-to-r").replace("bg-black bg-opacity-50", "bg-black/50").replace("if (!textArea.value.trim())", "if (!textArea?.value.trim())")
+          helper = r'''
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+'''
+          text = replace_once(text, 'import type { Account, CreateAccountOptions } from "../types";\n', 'import type { Account, CreateAccountOptions } from "../types";\n' + helper, str(path))
+          text = replace_once(text, '${\n              account.name\n            }', '${escapeHtml(account.name)}', str(path))
+          text = replace_once(text, '${\n              account.nickname || ""\n            }', '${escapeHtml(account.nickname || "")}', str(path))
+          text = replace_once(text, '<p class="font-semibold text-gray-900 mt-2">"${account.name}"</p>', '<p class="font-semibold text-gray-900 mt-2">"${escapeHtml(account.name)}"</p>', str(path))
+          path.write_text(text)
+
+          path = Path("services/searchService.ts")
+          text = path.read_text()
+          pattern = re.compile(r'  static getGspId\(\): string \{.*?\n  \}\n\n  /\*\*\n   \* Create combined query text', re.S)
+          replacement = '''  static getGspId(): string {
+    const h2Element = this.querySelectorDeep("h2") || document.querySelector("h2");
+    if (h2Element) {
+      const match = (h2Element.textContent?.trim() || "").match(/GSP\\d+/i);
+      if (match) return match[0].toUpperCase();
+    }
+    const urlMatch = window.location.href.match(/GSP\\d+/i);
+    if (urlMatch) return urlMatch[0].toUpperCase();
+    if (import.meta.env.MODE === "development") console.info("[LabService] No GSP ID found");
+    return "";
+  }
+
+  /**
+   * Create combined query text'''
+          text, count = pattern.subn(replacement, text, count=1)
+          if count != 1: raise RuntimeError("Unable to replace getGspId")
+          path.write_text(text)
+
+          path = Path("utils/seasonConfigHelper.ts")
+          text = path.read_text()
+          text = replace_once(text, '''  firebaseService.setLocalConfigValue(
+    "countdown_deadline_facilitator",
+    arcadeDeadline,
+  );
+
+  firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "true");
+  firebaseService.setLocalConfigValue("countdown_enabled_arcade", "false");''', '''  firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "false");
+  firebaseService.setLocalConfigValue("countdown_enabled_arcade", "true");''', str(path))
+          text = replace_once(text, 'firebaseService.setLocalConfigValue("countdown_enabled_arcade", "false");', 'firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "false");', str(path))
+          text = replace_once(text, 'firebaseService.setLocalConfigValue("countdown_enabled_arcade", "true");', 'firebaseService.setLocalConfigValue("countdown_enabled_facilitator", "true");', str(path))
+          text = replace_once(text, '"countdown_deadline_arcade",\n    facilitatorDeadline,', '"countdown_deadline_facilitator",\n    facilitatorDeadline,', str(path))
+          path.write_text(text)
+          PY
+
+      - name: Install and validate
+        run: |
+          yarn add dompurify@^3.4.12 --ignore-scripts --ignore-engines
+          yarn wxt prepare
+          yarn compile
+          yarn test:coverage
+          yarn build
+
+      - name: Commit PR fixes
+        run: |
+          rm -f .github/workflows/apply-pr180-critical-fixes.yml
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "fix: retain critical security and compatibility fixes"
+          git push origin HEAD:revert-178-dev
+
+      - name: Remove temporary main workflow
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull --ff-only origin main
+          rm -f .github/workflows/apply-pr180-from-main.yml
+          git add .github/workflows/apply-pr180-from-main.yml
+          git commit -m "chore: remove temporary PR 180 workflow"
+          git push origin main
