@@ -6,9 +6,7 @@ Please refer to the sections below to find the appropriate destination for your 
 
 ## Reporting Issues
 
-The issue tracker in this repository is deprecated. Use the links below to report your issues.
-
-[![DeepSource](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper.svg/?label=resolved+issues&show_trend=true&token=AHAf1IA_VVViJ2ZUj08CNAdX)](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper/) [![DeepSource](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper.svg/?label=active+issues&show_trend=true&token=AHAf1IA_VVViJ2ZUj08CNAdX)](https://app.deepsource.com/gh/ePlus-DEV/google-cloud-skills-boost-helper/)
+Open an issue in the [GitHub issue tracker](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues) when you find a bug or want to request an improvement.
 
 ---
 
@@ -18,7 +16,7 @@ We welcome contributions to the project! Please follow these steps to contribute
 
 1. **Fork the Repository**
 
-   Create a fork of this repository to your GitHub account.
+   Create a fork of this repository in your GitHub account.
 
 2. **Clone Your Fork**
 
@@ -32,42 +30,44 @@ We welcome contributions to the project! Please follow these steps to contribute
 3. **Install Dependencies**
 
    Ensure you meet the following system requirements:
-   - Node.js 16.14.x or later
-   - macOS, Windows, or Linux
-   - (Strongly Recommended) [pnpm](https://pnpm.io/)
 
-   Install the required dependencies using your preferred package manager:
+   - Node.js 24 or later
+   - Yarn
+   - macOS, Windows, or Linux
+
+   Install the required dependencies:
 
    ```bash
-   pnpm install
-
-   # OR
-
    yarn install
-
-   # OR
-
-   npm install
    ```
 
 4. **Development Server**
 
-   Start the development server for live-reloading and HMR:
+   Start the development server for live reloading and HMR:
 
    ```bash
-   pnpm dev
+   yarn dev
    ```
 
-   This command will watch for file changes, regenerate a bundle of your extension in `.output\chrome-mv3`, and automatically reload your extension in the browser.
+   This command watches for file changes, regenerates the extension bundle in `.output/chrome-mv3`, and reloads the extension in the browser.
 
-5. **Production Build**
+5. **Validate Your Changes**
 
-   To create a production build, run:
+   Run the type checker and tests before submitting a pull request:
 
    ```bash
-   pnpm zip
+   yarn compile
+   yarn test
    ```
 
-   This will generate a production version of the extension in `.output\google-cloud-skills-boost-helper-{version}-chrome.zip`.
+6. **Production Package**
+
+   Create the distributable package:
+
+   ```bash
+   yarn zip
+   ```
+
+   The generated archive is available at `.output/google-cloud-skills-boost-helper-{version}-chrome.zip`.
 
 For more details, refer to the [WXT Framework Documentation](https://wxt.dev/guide/installation.html).
