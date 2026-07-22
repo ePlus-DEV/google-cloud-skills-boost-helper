@@ -165,21 +165,21 @@ const PopupService = {
    * Create avatar HTML string given display text and optional profile image
    */
   createAvatarHTML(displayText: string, profileImage?: string | null): string {
-  const safeDisplayText = escapeHtml(displayText);
-  const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
-  const safeProfileImage = sanitizeProfileImageUrl(profileImage);
+    const safeDisplayText = escapeHtml(displayText);
+    const safeInitial = escapeHtml(displayText.charAt(0).toUpperCase());
+    const safeProfileImage = sanitizeProfileImageUrl(profileImage);
 
-  if (safeProfileImage) {
-    return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    if (safeProfileImage) {
+      return `<img src="${escapeHtml(safeProfileImage)}" alt="${safeDisplayText}" class="w-6 h-6 rounded-full object-cover mr-2 flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
          <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0" style="display: none;">
            ${safeInitial}
          </div>`;
-  }
+    }
 
-  return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
+    return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
            ${safeInitial}
          </div>`;
-},
+  },
 
   /**
    * Create account item element for the dropdown
