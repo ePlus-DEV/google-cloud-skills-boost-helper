@@ -18,7 +18,6 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#39;");
 }
 
-
 /**
  * Return a profile image URL only when it uses an approved image scheme.
  */
@@ -180,8 +179,7 @@ const PopupService = {
   return `<div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold mr-2 flex-shrink-0">
            ${safeInitial}
          </div>`;
-}
-  },
+},
 
   /**
    * Create account item element for the dropdown
