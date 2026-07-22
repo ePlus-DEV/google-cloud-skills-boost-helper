@@ -1,0 +1,65 @@
+name: Capture PR 180 validation failure
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.head.ref == 'revert-178-dev' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: revert-178-dev
+          fetch-depth: 0
+
+      - name: Apply patch and capture validation
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          workflow = Path('.github/workflows/apply-pr180-critical-fixes.yml').read_text()
+          marker = "          python <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          lines = workflow[start:end].splitlines()
+          script = "\n".join(line[10:] if line.startswith("          ") else line for line in lines) + "\n"
+          block_start = script.index("old_image_check = '''")
+          block_end_marker = "text = text.replace(old_image_check, new_image_check)\n"
+          block_end = script.index(block_end_marker, block_start) + len(block_end_marker)
+          script = script[:block_start] + script[block_end:]
+          script = script.replace(
+              "gsp_pattern.subn(gsp_replacement, text, count=1)",
+              "gsp_pattern.subn(lambda _match: gsp_replacement, text, count=1)",
+          )
+          Path('/tmp/apply-pr180.py').write_text(script)
+          PY
+          python /tmp/apply-pr180.py
+          set +e
+          {
+            echo '=== yarn add ==='
+            yarn add dompurify@^3.4.12 --ignore-scripts --ignore-engines
+            echo "status=$?"
+            echo '=== wxt prepare ==='
+            yarn wxt prepare
+            echo "status=$?"
+            echo '=== compile ==='
+            yarn compile
+            echo "status=$?"
+            echo '=== test coverage ==='
+            yarn test:coverage
+            echo "status=$?"
+            echo '=== build ==='
+            yarn build
+            echo "status=$?"
+          } > .github/pr180-validation.txt 2>&1
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add -f .github/pr180-validation.txt
+          git commit -m "chore: capture PR 180 validation failure"
+          git push origin HEAD:revert-178-dev
