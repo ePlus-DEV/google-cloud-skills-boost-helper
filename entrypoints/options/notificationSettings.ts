@@ -3,7 +3,10 @@ import NotificationService from "../../services/notificationService";
 
 function getMessage(key: string, fallback: string): string {
   try {
-    return browser.i18n.getMessage(key) || fallback;
+    const lookupMessage = browser.i18n.getMessage as unknown as (
+      messageName: string,
+    ) => string;
+    return lookupMessage(key) || fallback;
   } catch {
     return fallback;
   }
