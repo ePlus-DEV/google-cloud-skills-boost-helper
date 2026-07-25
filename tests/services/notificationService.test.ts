@@ -1,36 +1,15 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-
-const requestPermissionMock = vi.fn<(permissions: unknown) => Promise<boolean>>();
-const containsPermissionMock = vi.fn<(permissions: unknown) => Promise<boolean>>();
-const createNotificationMock = vi.fn();
-const getUrlMock = vi.fn((path: string) => `extension://${path}`);
-
-let NotificationService: typeof import("../../services/notificationService").default;
-
-beforeAll(async () => {
-  vi.stubGlobal("browser", {
-    permissions: {
-      request: requestPermissionMock,
-      contains: containsPermissionMock,
-    },
-    notifications: {
-      create: createNotificationMock,
-    },
-    runtime: {
-      getURL: getUrlMock,
-    },
-  });
-
-  NotificationService = (await import("../../services/notificationService")).default;
-});
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import NotificationService from "../../services/notificationService";
 
 describe("NotificationService", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("requests the optional notifications permission", async () => {
-    requestPermissionMock.mockResolvedValue(true);
+    const requestPermissionMock = vi
+      .spyOn(browser.permissions, "request")
+      .mockImplementation(async () => true as never);
 
     await expect(NotificationService.requestPermission()).resolves.toBe(true);
     expect(requestPermissionMock).toHaveBeenCalledWith({
@@ -39,7 +18,10 @@ describe("NotificationService", () => {
   });
 
   it("does not create a notification without permission", async () => {
-    containsPermissionMock.mockResolvedValue(false);
+    vi.spyOn(browser.permissions, "contains").mockImplementation(
+      async () => false as never,
+    );
+    const createNotificationMock = vi.spyOn(browser.notifications, "create");
 
     await NotificationService.create("test", "Title", "Message");
 
@@ -47,7 +29,12 @@ describe("NotificationService", () => {
   });
 
   it("creates a notification when permission is granted", async () => {
-    containsPermissionMock.mockResolvedValue(true);
+    vi.spyOn(browser.permissions, "contains").mockImplementation(
+      async () => true as never,
+    );
+    const createNotificationMock = vi
+      .spyOn(browser.notifications, "create")
+      .mockImplementation(async () => "test" as never);
 
     await NotificationService.create("test", "Title", "Message");
 
