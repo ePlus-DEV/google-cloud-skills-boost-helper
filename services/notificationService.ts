@@ -1,10 +1,15 @@
 const NOTIFICATION_PERMISSION = {
   permissions: ["notifications"],
-};
+} as const;
+
+type PermissionMethod = (
+  permissions: typeof NOTIFICATION_PERMISSION,
+) => Promise<boolean>;
 
 async function hasPermission(): Promise<boolean> {
   try {
-    return await browser.permissions.contains(NOTIFICATION_PERMISSION);
+    const contains = browser.permissions.contains as unknown as PermissionMethod;
+    return await contains(NOTIFICATION_PERMISSION);
   } catch (error) {
     console.debug("Failed to check notification permission:", error);
     return false;
@@ -13,7 +18,8 @@ async function hasPermission(): Promise<boolean> {
 
 async function requestPermission(): Promise<boolean> {
   try {
-    return await browser.permissions.request(NOTIFICATION_PERMISSION);
+    const request = browser.permissions.request as unknown as PermissionMethod;
+    return await request(NOTIFICATION_PERMISSION);
   } catch (error) {
     console.debug("Failed to request notification permission:", error);
     return false;
