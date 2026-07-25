@@ -1,16 +1,28 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import NotificationService from "../../services/notificationService";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-type PermissionMethod = (permissions: {
-  permissions: readonly ["notifications"];
-}) => Promise<boolean>;
+const requestPermissionMock = vi.fn<(permissions: unknown) => Promise<boolean>>();
+const containsPermissionMock = vi.fn<(permissions: unknown) => Promise<boolean>>();
+const createNotificationMock = vi.fn();
+const getUrlMock = vi.fn((path: string) => `extension://${path}`);
 
-const requestPermissionMock = vi.mocked(
-  browser.permissions.request as unknown as PermissionMethod,
-);
-const containsPermissionMock = vi.mocked(
-  browser.permissions.contains as unknown as PermissionMethod,
-);
+let NotificationService: typeof import("../../services/notificationService").default;
+
+beforeAll(async () => {
+  vi.stubGlobal("browser", {
+    permissions: {
+      request: requestPermissionMock,
+      contains: containsPermissionMock,
+    },
+    notifications: {
+      create: createNotificationMock,
+    },
+    runtime: {
+      getURL: getUrlMock,
+    },
+  });
+
+  NotificationService = (await import("../../services/notificationService")).default;
+});
 
 describe("NotificationService", () => {
   beforeEach(() => {
@@ -21,7 +33,7 @@ describe("NotificationService", () => {
     requestPermissionMock.mockResolvedValue(true);
 
     await expect(NotificationService.requestPermission()).resolves.toBe(true);
-    expect(browser.permissions.request).toHaveBeenCalledWith({
+    expect(requestPermissionMock).toHaveBeenCalledWith({
       permissions: ["notifications"],
     });
   });
@@ -31,7 +43,7 @@ describe("NotificationService", () => {
 
     await NotificationService.create("test", "Title", "Message");
 
-    expect(browser.notifications.create).not.toHaveBeenCalled();
+    expect(createNotificationMock).not.toHaveBeenCalled();
   });
 
   it("creates a notification when permission is granted", async () => {
@@ -39,7 +51,7 @@ describe("NotificationService", () => {
 
     await NotificationService.create("test", "Title", "Message");
 
-    expect(browser.notifications.create).toHaveBeenCalledWith(
+    expect(createNotificationMock).toHaveBeenCalledWith(
       "test",
       expect.objectContaining({
         type: "basic",
