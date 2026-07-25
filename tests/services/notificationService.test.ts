@@ -1,13 +1,24 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import NotificationService from "../../services/notificationService";
 
+type PermissionMethod = (permissions: {
+  permissions: readonly ["notifications"];
+}) => Promise<boolean>;
+
+const requestPermissionMock = vi.mocked(
+  browser.permissions.request as unknown as PermissionMethod,
+);
+const containsPermissionMock = vi.mocked(
+  browser.permissions.contains as unknown as PermissionMethod,
+);
+
 describe("NotificationService", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("requests the optional notifications permission", async () => {
-    vi.mocked(browser.permissions.request).mockResolvedValue(true);
+    requestPermissionMock.mockResolvedValue(true);
 
     await expect(NotificationService.requestPermission()).resolves.toBe(true);
     expect(browser.permissions.request).toHaveBeenCalledWith({
@@ -16,7 +27,7 @@ describe("NotificationService", () => {
   });
 
   it("does not create a notification without permission", async () => {
-    vi.mocked(browser.permissions.contains).mockResolvedValue(false);
+    containsPermissionMock.mockResolvedValue(false);
 
     await NotificationService.create("test", "Title", "Message");
 
@@ -24,7 +35,7 @@ describe("NotificationService", () => {
   });
 
   it("creates a notification when permission is granted", async () => {
-    vi.mocked(browser.permissions.contains).mockResolvedValue(true);
+    containsPermissionMock.mockResolvedValue(true);
 
     await NotificationService.create("test", "Title", "Message");
 
