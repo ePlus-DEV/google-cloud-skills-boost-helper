@@ -893,5 +893,23 @@
   "textViaWaterfall": { "message": "mediante cascada" },
   "textWaterfallTooltipApplied": { "message": "Esta es una estimación basada en tus puntos y las últimas plazas disponibles en la bolsa. Parece que tu nivel de puntos está lleno, por lo que la estimación baja al nivel disponible que se muestra aquí. La elegibilidad final la decide la asignación de premios de Google." },
   "textWaterfallTooltipEligible": { "message": "Esta es una estimación basada en tus puntos y las últimas plazas disponibles en la bolsa. La elegibilidad final la decide la asignación de premios de Google por orden de llegada." },
-  "textWaterfallTooltipNext": { "message": "Aún no has alcanzado el siguiente nivel de premios. Esto muestra la siguiente bolsa estimada y cuántos puntos más necesitas." }
+  "textWaterfallTooltipNext": { "message": "Aún no has alcanzado el siguiente nivel de premios. Esto muestra la siguiente bolsa estimada y cuántos puntos más necesitas." },
+  "labelEnableNotifications": {
+    "message": "Activar notificaciones push"
+  },
+  "descriptionEnableNotifications": {
+    "message": "Mostrar notificaciones del navegador solo cuando actives esta función."
+  },
+  "notificationPermissionNote": {
+    "message": "El permiso se solicitará solo después de que actives esta opción."
+  },
+  "messageNotificationPermissionDenied": {
+    "message": "Se denegó el permiso de notificaciones. La función permanece desactivada."
+  },
+  "messageNotificationsEnabled": {
+    "message": "Notificaciones push activadas"
+  },
+  "messageNotificationsDisabled": {
+    "message": "Notificaciones push desactivadas"
+  }
 }

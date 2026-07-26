@@ -913,5 +913,23 @@
   },
   "textWaterfallTooltipNext": {
     "message": "You have not reached the next prize tier yet. This shows the next estimated pool and how many more points you need."
+  },
+  "labelEnableNotifications": {
+    "message": "Enable push notifications"
+  },
+  "descriptionEnableNotifications": {
+    "message": "Show browser notifications only when you enable this feature."
+  },
+  "notificationPermissionNote": {
+    "message": "Permission will be requested only after you turn this on."
+  },
+  "messageNotificationPermissionDenied": {
+    "message": "Notification permission was denied. The feature remains disabled."
+  },
+  "messageNotificationsEnabled": {
+    "message": "Push notifications enabled"
+  },
+  "messageNotificationsDisabled": {
+    "message": "Push notifications disabled"
   }
 }
