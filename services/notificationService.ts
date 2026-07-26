@@ -1,3 +1,5 @@
+import AccountService from "./accountService";
+
 const NOTIFICATION_PERMISSION = {
   permissions: ["notifications"],
 } as const;
@@ -26,25 +28,48 @@ async function requestPermission(): Promise<boolean> {
   }
 }
 
+async function isEnabled(): Promise<boolean> {
+  try {
+    const settings = await AccountService.getSettings();
+    return Boolean(settings.enableNotifications);
+  } catch (error) {
+    console.debug("Failed to read notification setting:", error);
+    return false;
+  }
+}
+
+async function canNotify(): Promise<boolean> {
+  const [enabled, allowed] = await Promise.all([isEnabled(), hasPermission()]);
+  return enabled && allowed;
+}
+
 async function create(
   id: string,
   title: string,
   message: string,
-): Promise<void> {
-  const allowed = await hasPermission();
-  if (!allowed) return;
+): Promise<boolean> {
+  const allowed = await canNotify();
+  if (!allowed) return false;
 
-  await browser.notifications.create(id, {
-    type: "basic",
-    iconUrl: browser.runtime.getURL("/icon/128.png"),
-    title,
-    message,
-  });
+  try {
+    await browser.notifications.create(id, {
+      type: "basic",
+      iconUrl: browser.runtime.getURL("/icon/128.png"),
+      title,
+      message,
+    });
+    return true;
+  } catch (error) {
+    console.debug("Failed to create notification:", error);
+    return false;
+  }
 }
 
 const NotificationService = {
   hasPermission,
   requestPermission,
+  isEnabled,
+  canNotify,
   create,
 };
 

@@ -893,5 +893,23 @@
   "textViaWaterfall": { "message": "वॉटरफॉल के माध्यम से" },
   "textWaterfallTooltipApplied": { "message": "यह आपके पॉइंट्स और नवीनतम उपलब्ध पूल स्लॉट्स के आधार पर एक अनुमान है. आपका पॉइंट टियर भरा हुआ लगता है, इसलिए अनुमान यहाँ दिखाए गए उपलब्ध टियर तक नीचे चला जाता है. अंतिम पात्रता Google के पुरस्कार आवंटन द्वारा तय की जाती है." },
   "textWaterfallTooltipEligible": { "message": "यह आपके पॉइंट्स और नवीनतम उपलब्ध पूल स्लॉट्स के आधार पर एक अनुमान है. अंतिम पात्रता Google के पहले आओ, पहले पाओ पुरस्कार आवंटन द्वारा तय की जाती है." },
-  "textWaterfallTooltipNext": { "message": "आप अभी अगले पुरस्कार टियर तक नहीं पहुँचे हैं. यह अगला अनुमानित पूल और आपको कितने और पॉइंट्स चाहिए, यह दिखाता है." }
+  "textWaterfallTooltipNext": { "message": "आप अभी अगले पुरस्कार टियर तक नहीं पहुँचे हैं. यह अगला अनुमानित पूल और आपको कितने और पॉइंट्स चाहिए, यह दिखाता है." },
+  "labelEnableNotifications": {
+    "message": "पुश सूचनाएँ सक्षम करें"
+  },
+  "descriptionEnableNotifications": {
+    "message": "ब्राउज़र सूचनाएँ केवल तभी दिखाएँ जब आप यह सुविधा सक्षम करें।"
+  },
+  "notificationPermissionNote": {
+    "message": "अनुमति केवल इसे चालू करने के बाद ही मांगी जाएगी।"
+  },
+  "messageNotificationPermissionDenied": {
+    "message": "सूचना अनुमति अस्वीकार कर दी गई। यह सुविधा अक्षम रहेगी।"
+  },
+  "messageNotificationsEnabled": {
+    "message": "पुश सूचनाएँ सक्षम की गईं"
+  },
+  "messageNotificationsDisabled": {
+    "message": "पुश सूचनाएँ अक्षम की गईं"
+  }
 }

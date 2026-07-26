@@ -1,14 +1,14 @@
 import AccountService from "../../services/accountService";
 import NotificationService from "../../services/notificationService";
 
-function getMessage(key: string, fallback: string): string {
+function getMessage(key: string): string {
   try {
     const lookupMessage = browser.i18n.getMessage as unknown as (
       messageName: string,
     ) => string;
-    return lookupMessage(key) || fallback;
+    return lookupMessage(key) || key;
   } catch {
-    return fallback;
+    return key;
   }
 }
 
@@ -48,19 +48,13 @@ function createNotificationCard(): HTMLElement {
         </div>
         <div>
           <h4 class="text-lg font-bold text-gray-800 mb-2" data-i18n="labelEnableNotifications">
-            ${getMessage("labelEnableNotifications", "Enable push notifications")}
+            ${getMessage("labelEnableNotifications")}
           </h4>
           <p class="text-gray-600 text-sm leading-relaxed" data-i18n="descriptionEnableNotifications">
-            ${getMessage(
-              "descriptionEnableNotifications",
-              "Show browser notifications only when you enable this feature.",
-            )}
+            ${getMessage("descriptionEnableNotifications")}
           </p>
           <p class="text-xs text-gray-500 mt-2" data-i18n="notificationPermissionNote">
-            ${getMessage(
-              "notificationPermissionNote",
-              "Permission will be requested only after you turn this on.",
-            )}
+            ${getMessage("notificationPermissionNote")}
           </p>
         </div>
       </div>
@@ -72,7 +66,7 @@ function createNotificationCard(): HTMLElement {
           <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6"></div>
         </label>
         <span id="notification-status" class="text-sm font-medium text-gray-700">
-          ${getMessage("labelDisabled", "disabled")}
+          ${getMessage("labelDisabled")}
         </span>
       </div>
     </div>
@@ -97,12 +91,16 @@ async function syncNotificationToggle() {
   toggle.checked = active;
   if (status) {
     status.textContent = active
-      ? getMessage("labelEnabled", "enabled")
-      : getMessage("labelDisabled", "disabled");
+      ? getMessage("labelEnabled")
+      : getMessage("labelDisabled");
   }
 
   if (enabled && !allowed) {
-    await saveNotificationEnabled(false);
+    try {
+      await saveNotificationEnabled(false);
+    } catch (error) {
+      console.debug("Failed to auto-disable notification setting:", error);
+    }
   }
 }
 
@@ -117,15 +115,9 @@ async function handleNotificationToggle(enabled: boolean) {
       const granted = await NotificationService.requestPermission();
       if (!granted) {
         if (toggle) toggle.checked = false;
-        if (status) status.textContent = getMessage("labelDisabled", "disabled");
+        if (status) status.textContent = getMessage("labelDisabled");
         await saveNotificationEnabled(false);
-        showToast(
-          getMessage(
-            "messageNotificationPermissionDenied",
-            "Notification permission was denied. The feature remains disabled.",
-          ),
-          "error",
-        );
+        showToast(getMessage("messageNotificationPermissionDenied"), "error");
         return;
       }
     }
@@ -133,22 +125,29 @@ async function handleNotificationToggle(enabled: boolean) {
     await saveNotificationEnabled(enabled);
     if (status) {
       status.textContent = enabled
-        ? getMessage("labelEnabled", "enabled")
-        : getMessage("labelDisabled", "disabled");
+        ? getMessage("labelEnabled")
+        : getMessage("labelDisabled");
     }
 
     showToast(
       enabled
-        ? getMessage("messageNotificationsEnabled", "Push notifications enabled")
-        : getMessage("messageNotificationsDisabled", "Push notifications disabled"),
+        ? getMessage("messageNotificationsEnabled")
+        : getMessage("messageNotificationsDisabled"),
       "success",
     );
   } catch (error) {
     console.debug("Failed to update notification setting:", error);
     if (toggle) toggle.checked = false;
-    if (status) status.textContent = getMessage("labelDisabled", "disabled");
-    await saveNotificationEnabled(false);
-    showToast(getMessage("errorSaveSetting", "Failed to save setting"), "error");
+    if (status) status.textContent = getMessage("labelDisabled");
+    try {
+      await saveNotificationEnabled(false);
+    } catch (fallbackError) {
+      console.debug(
+        "Failed to persist disabled notification setting:",
+        fallbackError,
+      );
+    }
+    showToast(getMessage("errorSaveSetting"), "error");
   }
 }
 
@@ -170,8 +169,12 @@ export function initNotificationSettings() {
     "notification-toggle",
   ) as HTMLInputElement | null;
   toggle?.addEventListener("change", () => {
-    handleNotificationToggle(Boolean(toggle.checked));
+    handleNotificationToggle(Boolean(toggle.checked)).catch((error) => {
+      console.debug("Failed to handle notification toggle:", error);
+    });
   });
 
-  syncNotificationToggle();
+  syncNotificationToggle().catch((error) => {
+    console.debug("Failed to sync notification toggle:", error);
+  });
 }

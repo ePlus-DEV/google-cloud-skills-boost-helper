@@ -893,5 +893,23 @@
   "textViaWaterfall": { "message": "per Waterfall" },
   "textWaterfallTooltipApplied": { "message": "Dies ist eine Schätzung basierend auf deinen Punkten und den neuesten verfügbaren Pool-Plätzen. Deine Punktestufe scheint voll zu sein, daher wird die Schätzung auf die hier angezeigte verfügbare Stufe übertragen. Die endgültige Berechtigung wird durch Googles Preisvergabe entschieden." },
   "textWaterfallTooltipEligible": { "message": "Dies ist eine Schätzung basierend auf deinen Punkten und den neuesten verfügbaren Pool-Plätzen. Die endgültige Berechtigung wird durch Googles Preisvergabe nach dem Prinzip „Wer zuerst kommt, mahlt zuerst“ entschieden." },
-  "textWaterfallTooltipNext": { "message": "Du hast die nächste Preisstufe noch nicht erreicht. Dies zeigt den nächsten geschätzten Pool und wie viele Punkte du noch benötigst." }
+  "textWaterfallTooltipNext": { "message": "Du hast die nächste Preisstufe noch nicht erreicht. Dies zeigt den nächsten geschätzten Pool und wie viele Punkte du noch benötigst." },
+  "labelEnableNotifications": {
+    "message": "Push-Benachrichtigungen aktivieren"
+  },
+  "descriptionEnableNotifications": {
+    "message": "Browser-Benachrichtigungen nur anzeigen, wenn Sie diese Funktion aktivieren."
+  },
+  "notificationPermissionNote": {
+    "message": "Die Berechtigung wird erst angefordert, nachdem Sie diese Option aktiviert haben."
+  },
+  "messageNotificationPermissionDenied": {
+    "message": "Die Benachrichtigungsberechtigung wurde verweigert. Die Funktion bleibt deaktiviert."
+  },
+  "messageNotificationsEnabled": {
+    "message": "Push-Benachrichtigungen aktiviert"
+  },
+  "messageNotificationsDisabled": {
+    "message": "Push-Benachrichtigungen deaktiviert"
+  }
 }
