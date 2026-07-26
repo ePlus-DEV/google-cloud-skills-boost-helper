@@ -725,7 +725,7 @@ const PopupUIService = {
     try {
       const firebaseService = (await import("./firebaseService")).default;
       facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
-        "countdown_enabled_arcade",
+        "countdown_enabled_facilitator",
         false,
       );
     } catch (error) {
