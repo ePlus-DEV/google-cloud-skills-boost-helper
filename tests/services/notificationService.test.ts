@@ -1,5 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import AccountService from "../../services/accountService";
 import NotificationService from "../../services/notificationService";
+
+function mockNotificationSetting(enableNotifications: boolean) {
+  return vi.spyOn(AccountService, "getSettings").mockResolvedValue({
+    enableSearchFeature: true,
+    enableNotifications,
+  });
+}
 
 describe("NotificationService", () => {
   beforeEach(() => {
@@ -18,17 +26,35 @@ describe("NotificationService", () => {
   });
 
   it("does not create a notification without permission", async () => {
+    mockNotificationSetting(true);
     vi.spyOn(browser.permissions, "contains").mockImplementation(
       async () => false as never,
     );
     const createNotificationMock = vi.spyOn(browser.notifications, "create");
 
-    await NotificationService.create("test", "Title", "Message");
+    await expect(
+      NotificationService.create("test", "Title", "Message"),
+    ).resolves.toBe(false);
 
     expect(createNotificationMock).not.toHaveBeenCalled();
   });
 
-  it("creates a notification when permission is granted", async () => {
+  it("does not create a notification when the setting is disabled", async () => {
+    mockNotificationSetting(false);
+    vi.spyOn(browser.permissions, "contains").mockImplementation(
+      async () => true as never,
+    );
+    const createNotificationMock = vi.spyOn(browser.notifications, "create");
+
+    await expect(
+      NotificationService.create("test", "Title", "Message"),
+    ).resolves.toBe(false);
+
+    expect(createNotificationMock).not.toHaveBeenCalled();
+  });
+
+  it("creates a notification when enabled and permission is granted", async () => {
+    mockNotificationSetting(true);
     vi.spyOn(browser.permissions, "contains").mockImplementation(
       async () => true as never,
     );
@@ -36,7 +62,9 @@ describe("NotificationService", () => {
       .spyOn(browser.notifications, "create")
       .mockImplementation(async () => "test" as never);
 
-    await NotificationService.create("test", "Title", "Message");
+    await expect(
+      NotificationService.create("test", "Title", "Message"),
+    ).resolves.toBe(true);
 
     expect(createNotificationMock).toHaveBeenCalledWith(
       "test",
@@ -46,5 +74,19 @@ describe("NotificationService", () => {
         message: "Message",
       }),
     );
+  });
+
+  it("returns false instead of rejecting when notification creation fails", async () => {
+    mockNotificationSetting(true);
+    vi.spyOn(browser.permissions, "contains").mockImplementation(
+      async () => true as never,
+    );
+    vi.spyOn(browser.notifications, "create").mockImplementation(async () => {
+      throw new Error("creation failed");
+    });
+
+    await expect(
+      NotificationService.create("test", "Title", "Message"),
+    ).resolves.toBe(false);
   });
 });

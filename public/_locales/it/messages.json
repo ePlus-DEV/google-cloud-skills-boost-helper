@@ -893,5 +893,23 @@
   "textViaWaterfall": { "message": "tramite waterfall" },
   "textWaterfallTooltipApplied": { "message": "Questa è una stima basata sui tuoi punti e sugli ultimi slot disponibili nel pool. Il tuo livello di punti sembra pieno, quindi la stima scende al livello disponibile mostrato qui. L’idoneità finale è decisa dall’assegnazione dei premi di Google." },
   "textWaterfallTooltipEligible": { "message": "Questa è una stima basata sui tuoi punti e sugli ultimi slot disponibili nel pool. L’idoneità finale è decisa dall’assegnazione dei premi di Google in ordine di arrivo." },
-  "textWaterfallTooltipNext": { "message": "Non hai ancora raggiunto il livello premio successivo. Questo mostra il prossimo pool stimato e quanti punti ti servono ancora." }
+  "textWaterfallTooltipNext": { "message": "Non hai ancora raggiunto il livello premio successivo. Questo mostra il prossimo pool stimato e quanti punti ti servono ancora." },
+  "labelEnableNotifications": {
+    "message": "Attiva le notifiche push"
+  },
+  "descriptionEnableNotifications": {
+    "message": "Mostra le notifiche del browser solo quando attivi questa funzione."
+  },
+  "notificationPermissionNote": {
+    "message": "L'autorizzazione verrà richiesta solo dopo l'attivazione di questa opzione."
+  },
+  "messageNotificationPermissionDenied": {
+    "message": "L'autorizzazione alle notifiche è stata negata. La funzione rimane disattivata."
+  },
+  "messageNotificationsEnabled": {
+    "message": "Notifiche push attivate"
+  },
+  "messageNotificationsDisabled": {
+    "message": "Notifiche push disattivate"
+  }
 }
