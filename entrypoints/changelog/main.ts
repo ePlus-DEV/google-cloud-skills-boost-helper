@@ -42,13 +42,21 @@ function addHeadingIds() {
   // Get all h2 and h3 headings
   const headings = markdownContent.querySelectorAll("h2, h3");
 
+  // Repeated section names ("Fixed", "Added", …) appear under every version —
+  // suffix duplicates so anchors resolve to the right occurrence.
+  const usedIds = new Map<string, number>();
+
   headings.forEach((heading) => {
     // Create ID from heading text
     const text = heading.textContent || "";
-    const id = text
+    const baseId = text
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
+
+    const seen = usedIds.get(baseId) ?? 0;
+    usedIds.set(baseId, seen + 1);
+    const id = seen === 0 ? baseId : `${baseId}-${seen + 1}`;
 
     // Extract version number from heading (e.g., "Version 1.2.5" -> "1.2.5")
     const versionMatch = text.match(/version\s+([\d.]+)/i);

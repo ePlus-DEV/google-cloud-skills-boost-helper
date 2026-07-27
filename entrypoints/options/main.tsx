@@ -17,9 +17,30 @@ function localizeElements() {
   for (const element of elements) {
     const key = element.getAttribute("data-i18n");
     if (key && chrome.i18n) {
-      const message = chrome.i18n.getMessage(key);
-      if (message) {
+      // Support the "[attr]key" form, e.g. data-i18n="[placeholder]nicknamePlaceholder"
+      const attrMatch = key.match(/^\[([^\]]+)\](.+)$/);
+      const lookupKey = attrMatch ? attrMatch[2] : key;
+      const message = chrome.i18n.getMessage(lookupKey);
+      if (!message) continue;
+
+      if (attrMatch) {
+        element.setAttribute(attrMatch[1], message);
+      } else if (element.childElementCount === 0) {
         element.textContent = message;
+      } else {
+        // Preserve child elements (icons, badges) — replace only the text node
+        const textNode = Array.from(element.childNodes).find(
+          (node) =>
+            node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        );
+        if (textNode) {
+          textNode.textContent = message;
+        } else {
+          element.insertBefore(
+            document.createTextNode(message),
+            element.firstChild,
+          );
+        }
       }
     }
   }

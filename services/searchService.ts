@@ -599,7 +599,9 @@ class SearchService {
           "[SearchService] Attempting fallback: direct course ID match",
         );
       }
-      const courseIdMatch = posts.find((p) => p.title.includes(queryCourseId));
+      const courseIdMatch = posts.find((p) =>
+        p.title.toUpperCase().includes(queryCourseId),
+      );
       if (courseIdMatch?.url) {
         if (import.meta.env.DEV) {
           console.info(

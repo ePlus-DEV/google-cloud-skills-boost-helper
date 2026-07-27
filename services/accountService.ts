@@ -258,7 +258,7 @@ const AccountService = {
       return false;
     }
 
-    data.accounts[accountId] = undefined as unknown as Account;
+    Reflect.deleteProperty(data.accounts, accountId);
 
     // If deleted account was active, set new active account
     if (data.activeAccountId === accountId) {
@@ -502,6 +502,13 @@ const AccountService = {
           id: newId,
           createdAt: new Date().toISOString(),
         };
+      }
+
+      // Ensure an active account exists after import (e.g. fresh install restore)
+      if (!mergedData.activeAccountId) {
+        const accountIds = Object.keys(mergedData.accounts);
+        mergedData.activeAccountId =
+          accountIds.length > 0 ? accountIds[0] : null;
       }
 
       await this.saveAccountsData(mergedData);

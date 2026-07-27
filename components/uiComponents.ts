@@ -156,62 +156,66 @@ const UIComponents = {
         }, 210);
       };
 
-      const scrollTargets: Array<Element | Window> = [];
+      const getScrollPos = (target: Element | Window): number =>
+        target === window
+          ? window.scrollY || window.pageYOffset || 0
+          : (target as Element).scrollTop || 0;
 
-      // prefer the lab drawer content if present
-      const labInstructions = document.getElementById("lab-instructions");
-      if (labInstructions) scrollTargets.push(labInstructions);
-      // always include window as a fallback
-      scrollTargets.push(window);
+      /**
+       * Resolve scroll candidates fresh on every check so containers rendered
+       * or replaced after injection (e.g. #lab-instructions appearing when the
+       * lab starts) are always picked up without rebinding.
+       */
+      const getScrollCandidates = (): Array<Element | Window> => {
+        const candidates: Array<Element | Window> = [];
+        const labInstructions = document.getElementById("lab-instructions");
+        if (labInstructions) candidates.push(labInstructions);
+        candidates.push(window);
+        return candidates;
+      };
 
       let lastActiveTarget: Element | Window = window;
 
-      /**
-       * Handle scroll events for a given target and toggle visibility.
-       * @param {Element|Window} target Element or Window to inspect scroll position on
-       */
-      function onScrollFor(target: Element | Window) {
+      /** Show/hide based on whether any scroll candidate is past the threshold. */
+      const updateVisibility = () => {
         try {
-          const pos =
-            target === window
-              ? window.scrollY || window.pageYOffset || 0
-              : (target as Element).scrollTop || 0;
-          if (pos > THRESHOLD) {
-            lastActiveTarget = target;
+          const active = getScrollCandidates().find(
+            (target) => getScrollPos(target) > THRESHOLD,
+          );
+          if (active) {
+            lastActiveTarget = active;
             show();
-          } else if (lastActiveTarget === target) {
-            // only hide if this was the active target and it's now above threshold
+          } else {
             hide();
           }
         } catch (err) {
           // ignore
         }
-      }
+      };
 
-      // attach listeners to each target, avoid duplicate handlers
-      scrollTargets.forEach((t) => {
-        if (t === window) {
-          window.addEventListener("scroll", () => onScrollFor(window), {
-            passive: true,
-          });
-        } else {
-          (t as Element).addEventListener(
-            "scroll",
-            () => onScrollFor(t as Element),
-            { passive: true },
-          );
-        }
+      // Scroll events do not bubble, but they do pass through the document in
+      // the capture phase — one listener covers every current and future
+      // scroll container, including window/document scrolls.
+      document.addEventListener("scroll", updateVisibility, {
+        capture: true,
+        passive: true,
       });
 
       container.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         try {
-          if (lastActiveTarget && lastActiveTarget !== window) {
-            (lastActiveTarget as Element).scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          // The remembered target may have been detached by a page re-render;
+          // fall back to whichever candidate is currently scrolled.
+          let target: Element | Window = lastActiveTarget;
+          if (target !== window && !(target as Element).isConnected) {
+            target =
+              getScrollCandidates().find(
+                (candidate) => getScrollPos(candidate) > 0,
+              ) || window;
+          }
+          if (target !== window) {
+            (target as Element).scrollTo({ top: 0, behavior: "smooth" });
           } else {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }
@@ -224,10 +228,8 @@ const UIComponents = {
         }
       });
 
-      // run initial check for all targets
-      setTimeout(() => {
-        scrollTargets.forEach((t) => onScrollFor(t));
-      }, 50);
+      // run initial visibility check
+      setTimeout(updateVisibility, 50);
 
       document.body.appendChild(container);
     } catch (err) {
@@ -456,6 +458,7 @@ const UIComponents = {
           const telegramBtn = solutionElement.querySelector(
             "#telegram-support-btn",
           );
+          normalizeQlButtonStyle(telegramBtn);
           if (telegramBtn) {
             telegramBtn.addEventListener("click", (e) => {
               e.preventDefault();
@@ -662,9 +665,15 @@ try {
 
         if (msg.type === "searchFeatureChanged") {
           const enabled = Boolean(msg.enabled);
-          // Disable/enable ePlus button(s) when main search feature toggles
+          // The search feature gates the whole search button row, not just
+          // ePlus — disable/enable every search button when it toggles.
+          const searchButtonIds = [
+            "#eplus-search-btn",
+            "#configured-search-btn",
+            "#youtube-search-btn",
+          ];
           document
-            .querySelectorAll<HTMLElement>("#eplus-search-btn")
+            .querySelectorAll<HTMLElement>(searchButtonIds.join(", "))
             .forEach((btn) => {
               try {
                 if (!enabled) {
@@ -683,6 +692,11 @@ try {
                     cursor: "pointer",
                     filter: "",
                   });
+                  // The ePlus button keeps its own visibility (it may be
+                  // legitimately hidden by the enableEplusSearch setting).
+                  if (btn.id !== "eplus-search-btn") {
+                    btn.style.display = "inline-flex";
+                  }
                 }
               } catch (e) {
                 // Ignore errors if style assignment fails

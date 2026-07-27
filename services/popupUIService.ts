@@ -269,12 +269,15 @@ const PopupUIService = {
   },
 
   /**
-   * Format points into thousands with 3 decimal places (38969 -> "38.969")
+   * Format points with dot thousands separators (38969 -> "38.969").
+   * Values below 1000 are shown as-is (120 -> "120", not "0.120").
    */
   formatPointsThousands(value: unknown): string {
     const num = this.parseNumericPoints(value);
-    if (!Number.isFinite(num)) return "0.000";
-    return (num / 1000).toFixed(3);
+    if (!Number.isFinite(num)) return "0";
+    return Math.trunc(num)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   },
 
   /**
@@ -724,6 +727,12 @@ const PopupUIService = {
     let facilitatorGloballyEnabled = false;
     try {
       const firebaseService = (await import("./firebaseService")).default;
+      // getBooleanParam returns the fallback when Firebase is not initialized,
+      // so initialize first — otherwise the flag is always read as false on
+      // the initial popup paint.
+      if (!firebaseService.isInitialized()) {
+        await firebaseService.initialize();
+      }
       facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
         "countdown_enabled_facilitator",
         false,
@@ -966,6 +975,12 @@ const PopupUIService = {
       const AccountService = (await import("./accountService")).default;
       const firebaseService = (await import("./firebaseService")).default;
 
+      // Initialize Firebase first — getBooleanParam returns the fallback
+      // (false) when it is not initialized, hiding the section incorrectly.
+      if (!firebaseService.isInitialized()) {
+        await firebaseService.initialize();
+      }
+
       const [currentAccount, facilitatorGloballyEnabled, arcadeEnabled] =
         await Promise.all([
           AccountService.getActiveAccount(),
@@ -1116,6 +1131,11 @@ const PopupUIService = {
     const toggleIcon = this.querySelector("#breakdown-toggle");
 
     if (breakdownCard && breakdownDetails && toggleIcon) {
+      // Guard against re-binding on every updateMilestoneData call —
+      // duplicate handlers would toggle the card open and shut in one click.
+      if ((breakdownCard as HTMLElement).dataset.toggleBound === "true") return;
+      (breakdownCard as HTMLElement).dataset.toggleBound = "true";
+
       breakdownCard.addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -1387,6 +1407,8 @@ Details:
       `${currentYear}-12-31T23:59:59+05:30`;
 
     const getArcadeDefaultDeadline = () => {
+      const envDeadline = import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE;
+      if (envDeadline) return envDeadline;
       const now = new Date();
       const year = now.getFullYear();
       return `${year}-12-31T23:59:59+00:00`;
@@ -1423,11 +1445,14 @@ Details:
           year: "numeric",
         });
 
-        // Get timezone offset in GMT format
+        // Get timezone offset in GMT format (keep fractional offsets, e.g. +5:30)
         const offset = -date.getTimezoneOffset();
         const offsetHours = Math.floor(Math.abs(offset) / 60);
+        const offsetMinutes = Math.abs(offset) % 60;
         const offsetSign = offset >= 0 ? "+" : "-";
-        const timezone = `GMT${offsetSign}${offsetHours}`;
+        const timezone = `GMT${offsetSign}${offsetHours}${
+          offsetMinutes > 0 ? `:${String(offsetMinutes).padStart(2, "0")}` : ""
+        }`;
 
         return `${timeStr} ${dateStr} (${timezone})`;
       } catch (e) {

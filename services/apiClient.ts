@@ -19,7 +19,11 @@ const ApiClient = (() => {
     try {
       const baseUrl = import.meta.env.WXT_API_URL;
       const separator = baseUrl.includes("?") ? "&" : "?";
-      const response = await fetch(`${baseUrl}${separator}time=${Date.now()}`);
+      // Bound the request so a stalled API cannot leave the injected
+      // "Thinking…" spinner on the lab page forever.
+      const response = await fetch(`${baseUrl}${separator}time=${Date.now()}`, {
+        signal: AbortSignal.timeout(30_000),
+      });
       if (!response.ok) {
         if (import.meta.env.MODE === "development") {
           console.error("[ApiClient] API response not OK:", response.status);

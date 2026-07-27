@@ -626,11 +626,32 @@ const OptionsService = {
       const messageKey = element.getAttribute("data-i18n");
       if (messageKey) {
         try {
+          // Support the "[attr]key" form, e.g. data-i18n="[placeholder]nicknamePlaceholder"
+          const attrMatch = messageKey.match(/^\[([^\]]+)\](.+)$/);
+          const lookupKey = attrMatch ? attrMatch[2] : messageKey;
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
+            lookupKey as Parameters<typeof browser.i18n.getMessage>[0],
           );
-          if (translatedText) {
+          if (!translatedText) continue;
+
+          if (attrMatch) {
+            element.setAttribute(attrMatch[1], translatedText);
+          } else if (element.childElementCount === 0) {
             element.textContent = translatedText;
+          } else {
+            // Preserve child elements (icons, badges) — replace only the text node
+            const textNode = Array.from(element.childNodes).find(
+              (node) =>
+                node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+            );
+            if (textNode) {
+              textNode.textContent = translatedText;
+            } else {
+              element.insertBefore(
+                document.createTextNode(translatedText),
+                element.firstChild,
+              );
+            }
           }
         } catch (error: unknown) {
           console.error("Error applying i18n translation:", error);
@@ -806,8 +827,21 @@ const OptionsService = {
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
+      this.updateToggleStatusLabel("search-feature-status", isEnabled);
       await this.syncSearchChildControlState(isEnabled);
     }
+  },
+
+  /**
+   * Sync a toggle's status label after setting `checked` programmatically
+   * (assignment does not fire the `change` listener that updates the label).
+   */
+  updateToggleStatusLabel(statusElementId: string, enabled: boolean): void {
+    const statusElement = document.getElementById(statusElementId);
+    if (!statusElement) return;
+    statusElement.textContent = enabled
+      ? browser.i18n.getMessage("labelEnabled")
+      : browser.i18n.getMessage("labelDisabled");
   },
 
   /**
@@ -935,14 +969,8 @@ const OptionsService = {
           warnEl.textContent = warn;
           document.body.appendChild(warnEl);
           setTimeout(() => warnEl.remove(), 3500);
-          try {
-            await sendRuntimeMessage({
-              type: "enableEplusSearchChanged",
-              enabled: false,
-            });
-          } catch (err) {
-            console.debug("Failed to broadcast enableEplusSearchChanged:", err);
-          }
+          // Stored state was not changed, so do not broadcast a state change
+          // to open tabs here.
           return;
         }
 
@@ -979,6 +1007,7 @@ const OptionsService = {
     try {
       const enabled = await StorageService.isBadgeDisplayEnabled();
       badgeToggle.checked = Boolean(enabled);
+      this.updateToggleStatusLabel("badge-display-status", Boolean(enabled));
     } catch (e) {
       console.error("Failed to load badge display setting:", e);
     }
@@ -1400,6 +1429,7 @@ const OptionsService = {
           true,
           existingAccount,
         );
+        this.isCreateAccountInFlight = false;
         return;
       }
     } catch (error) {
@@ -1433,7 +1463,7 @@ const OptionsService = {
         name: userDetail.userName,
         profileUrl: trimmedUrl,
         arcadeData,
-        facilitatorProgram: facilitatorToggle?.checked || true,
+        facilitatorProgram: facilitatorToggle?.checked ?? true,
       });
 
       // Hide loading, show success and nickname step
@@ -2099,7 +2129,9 @@ const OptionsService = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      // Revoking synchronously can race the download start (notably on
+      // Firefox) and silently truncate it — defer the cleanup.
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
 
       this.showMessage(
         browser.i18n.getMessage("successDataExported"),
