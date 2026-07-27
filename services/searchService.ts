@@ -39,7 +39,7 @@ class SearchService {
   private static readonly MONTH_YEAR_PATTERN = /([A-Za-z]+)\s+(\d{4})/;
   private static readonly MONTH_YEAR_ID_PATTERN = /^[a-z]+\d{4}$/;
   private static readonly ALPHANUMERIC_PATTERN = /^[a-zA-Z0-9]+$/;
-  private static readonly COURSE_ID_PATTERN = /GSP\d+/;
+  private static readonly COURSE_ID_PATTERN = /GSP\d+/i;
 
   // Common words to filter out (cached as Set)
   private static readonly COMMON_WORDS = new Set([
@@ -80,7 +80,7 @@ class SearchService {
    */
   private static extractCourseId(text: string): string | null {
     const match = text.match(this.COURSE_ID_PATTERN);
-    return match ? match[0] : null;
+    return match ? match[0].toUpperCase() : null;
   }
 
   /**
@@ -787,35 +787,38 @@ class SearchService {
     const h2Element = document.querySelector("h2");
     if (h2Element) {
       const text = h2Element.textContent?.trim() || "";
-      const match = text.match(/GSP\d+/);
+      const match = text.match(/GSP\d+/i);
       if (match) {
+        const gspId = match[0].toUpperCase();
         if (import.meta.env.MODE === "development") {
-          console.info("[LabService] ✓ Extracted GSP ID from h2:", match[0]);
+          console.info("[LabService] ✓ Extracted GSP ID from h2:", gspId);
         }
-        return match[0];
+        return gspId;
       }
     }
 
     // Attempt 2: Check URL for GSP ID pattern
-    const urlMatch = window.location.href.match(/GSP\d+/);
+    const urlMatch = window.location.href.match(/GSP\d+/i);
     if (urlMatch) {
+      const gspId = urlMatch[0].toUpperCase();
       if (import.meta.env.MODE === "development") {
-        console.info("[LabService] ✓ Extracted GSP ID from URL:", urlMatch[0]);
+        console.info("[LabService] ✓ Extracted GSP ID from URL:", gspId);
       }
-      return urlMatch[0];
+      return gspId;
     }
 
     // Attempt 3: Broad search through visible page text (including shadow DOM)
     const allText = this.getPageText();
-    const pageMatch = allText.match(/GSP\d+/);
+    const pageMatch = allText.match(/GSP\d+/i);
     if (pageMatch) {
+      const gspId = pageMatch[0].toUpperCase();
       if (import.meta.env.MODE === "development") {
         console.info(
           "[LabService] ✓ Extracted GSP ID from page text:",
-          pageMatch[0],
+          gspId,
         );
       }
-      return pageMatch[0];
+      return gspId;
     }
 
     if (import.meta.env.MODE === "development") {

@@ -35,6 +35,23 @@ function getEngineLabel(engine: string): string {
   return `${name} ${searchWord}`;
 }
 
+/**
+ * Normalize the visuals of a ql-button created via innerHTML.
+ * Assigns properties individually so repeated calls stay idempotent.
+ */
+function normalizeQlButtonStyle(el: Element | null): void {
+  const style = (el as HTMLElement | null)?.style;
+  if (!style) return;
+  Object.assign(style, {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
+    padding: "3px 3px",
+    borderRadius: "999px",
+    boxSizing: "border-box",
+  });
+}
+
 const UIComponents = {
   /**
    * Create a loading button element shown while searching
@@ -257,10 +274,7 @@ const UIComponents = {
           );
 
           [solBtn, telegramBtn].forEach((el) => {
-            if ((el as HTMLElement)?.style) {
-              (el as HTMLElement).style.cssText +=
-                ";display:inline-flex;align-items:center;gap:6px;padding:3px 3px;border-radius:999px;box-sizing:border-box";
-            }
+            normalizeQlButtonStyle(el);
           });
 
           if (solBtn) {
@@ -361,10 +375,7 @@ const UIComponents = {
 
           // Normalize ql-button visuals created via innerHTML
           [eplusBtn, configuredBtn, youtubeBtn, telegramBtn].forEach((el) => {
-            if ((el as HTMLElement)?.style) {
-              (el as HTMLElement).style.cssText +=
-                ";display:inline-flex;align-items:center;gap:6px;padding:3px 3px;border-radius:999px;box-sizing:border-box";
-            }
+            normalizeQlButtonStyle(el);
           });
 
           // ensure a floating back-to-top icon exists on the page

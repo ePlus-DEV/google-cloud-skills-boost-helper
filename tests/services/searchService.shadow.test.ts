@@ -76,6 +76,14 @@ describe("SearchService.getLabTitle (shadow DOM)", () => {
     expect(SearchService.getGspId()).toBe("GSP9999");
   });
 
+  it("normalizes lowercase GSP IDs to uppercase", () => {
+    const headingElement = document.createElement("h2");
+    headingElement.textContent = "Networking 101 - gsp016";
+    document.body.appendChild(headingElement);
+
+    expect(SearchService.getGspId()).toBe("GSP016");
+  });
+
   it("does not duplicate query text used as the fallback title", () => {
     vi.spyOn(SearchService, "getLabTitle").mockReturnValue("");
     vi.spyOn(SearchService, "getGspId").mockReturnValue("GSP123");
