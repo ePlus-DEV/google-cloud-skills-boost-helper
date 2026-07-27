@@ -1,12 +1,15 @@
 const BACK_TO_TOP_ID = "eplus-back-to-top-float";
 const SCROLL_THRESHOLD = 300;
 const HIDE_DELAY_MS = 210;
+const RESCAN_DELAY_MS = 250;
 
 interface BackToTopState {
   activeTarget: Element | Window;
   targets: Set<Element | Window>;
-  observedElements: WeakSet<Element>;
+  listeners: Map<Element, EventListener>;
   frameRequested: boolean;
+  rescanTimer: number | null;
+  pendingRoots: Set<Document | ShadowRoot | Element>;
 }
 
 function getScrollTop(target: Element | Window): number {
@@ -29,33 +32,40 @@ function isScrollable(element: Element): boolean {
   return ["auto", "scroll", "overlay"].includes(overflowY);
 }
 
-function collectShadowRoots(root: Document | ShadowRoot, roots: ShadowRoot[]): void {
+function inspectElement(
+  element: Element,
+  targets: Set<Element | Window>,
+): void {
+  if (element.id === "lab-instructions" || isScrollable(element)) {
+    targets.add(element);
+  }
+
+  if (element.shadowRoot) {
+    inspectRoot(element.shadowRoot, targets);
+  }
+}
+
+function inspectRoot(
+  root: Document | ShadowRoot | Element,
+  targets: Set<Element | Window>,
+): void {
+  if (root instanceof Element) {
+    inspectElement(root, targets);
+  }
+
   root.querySelectorAll("*").forEach((element) => {
-    if (element.shadowRoot) {
-      roots.push(element.shadowRoot);
-      collectShadowRoots(element.shadowRoot, roots);
-    }
+    inspectElement(element, targets);
   });
 }
 
-function findScrollableTargets(): Set<Element | Window> {
+function findInitialTargets(): Set<Element | Window> {
   const targets = new Set<Element | Window>([window]);
-  const roots: Array<Document | ShadowRoot> = [document];
-  const shadowRoots: ShadowRoot[] = [];
 
-  collectShadowRoots(document, shadowRoots);
-  roots.push(...shadowRoots);
+  if (document.scrollingElement) {
+    targets.add(document.scrollingElement);
+  }
 
-  roots.forEach((root) => {
-    const labInstructions = root.querySelector("#lab-instructions");
-    if (labInstructions) targets.add(labInstructions);
-
-    root.querySelectorAll("*").forEach((element) => {
-      if (isScrollable(element)) targets.add(element);
-    });
-  });
-
-  if (document.scrollingElement) targets.add(document.scrollingElement);
+  inspectRoot(document, targets);
   return targets;
 }
 
@@ -75,14 +85,26 @@ function scrollTargetToTop(target: Element | Window): void {
 
 const BackToTopService = {
   initialize(): void {
-    if (typeof document === "undefined" || !document.body) return;
+    if (typeof document === "undefined") return;
+
+    if (!document.body) {
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => BackToTopService.initialize(),
+        { once: true },
+      );
+      return;
+    }
+
     if (document.getElementById(BACK_TO_TOP_ID)) return;
 
     const state: BackToTopState = {
       activeTarget: window,
       targets: new Set([window]),
-      observedElements: new WeakSet(),
+      listeners: new Map(),
       frameRequested: false,
+      rescanTimer: null,
+      pendingRoots: new Set(),
     };
 
     const container = document.createElement("div");
@@ -102,7 +124,7 @@ const BackToTopService = {
       visibility: "hidden",
     });
 
-    const label = browser.i18n.getMessage("backToTop") || "Back to top";
+    const label = browser.i18n.getMessage("backToTop");
     const button = document.createElement("button");
     button.type = "button";
     button.title = label;
@@ -172,16 +194,58 @@ const BackToTopService = {
       window.requestAnimationFrame(updateVisibility);
     };
 
-    const registerTargets = () => {
-      state.targets = findScrollableTargets();
+    const syncListeners = () => {
+      state.listeners.forEach((listener, element) => {
+        if (!element.isConnected || !state.targets.has(element)) {
+          element.removeEventListener("scroll", listener);
+          state.listeners.delete(element);
+        }
+      });
+
       state.targets.forEach((target) => {
         if (target === window) return;
+
         const element = target as Element;
-        if (state.observedElements.has(element)) return;
-        state.observedElements.add(element);
-        element.addEventListener("scroll", scheduleUpdate, { passive: true });
+        if (state.listeners.has(element)) return;
+
+        const listener: EventListener = scheduleUpdate;
+        element.addEventListener("scroll", listener, { passive: true });
+        state.listeners.set(element, listener);
       });
+    };
+
+    const scanPendingRoots = () => {
+      state.rescanTimer = null;
+
+      const nextTargets = new Set<Element | Window>(state.targets);
+      nextTargets.add(window);
+
+      if (document.scrollingElement) {
+        nextTargets.add(document.scrollingElement);
+      }
+
+      state.pendingRoots.forEach((root) => inspectRoot(root, nextTargets));
+      state.pendingRoots.clear();
+
+      nextTargets.forEach((target) => {
+        if (target !== window && !(target as Element).isConnected) {
+          nextTargets.delete(target);
+        }
+      });
+
+      state.targets = nextTargets;
+      syncListeners();
       scheduleUpdate();
+    };
+
+    const scheduleRescan = (root: Document | ShadowRoot | Element) => {
+      state.pendingRoots.add(root);
+      if (state.rescanTimer !== null) return;
+
+      state.rescanTimer = window.setTimeout(
+        scanPendingRoots,
+        RESCAN_DELAY_MS,
+      );
     };
 
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
@@ -203,9 +267,20 @@ const BackToTopService = {
     });
 
     document.body.appendChild(container);
-    registerTargets();
+    state.targets = findInitialTargets();
+    syncListeners();
+    scheduleUpdate();
 
-    const observer = new MutationObserver(() => registerTargets());
+    const observer = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((node) => {
+          if (node instanceof Element) {
+            scheduleRescan(node);
+          }
+        });
+      });
+    });
+
     observer.observe(document.documentElement, {
       childList: true,
       subtree: true,
