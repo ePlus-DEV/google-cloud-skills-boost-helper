@@ -1,29 +1,13 @@
 import UpdateNotificationService from "../../services/updateNotificationService";
 
-const FALLBACK_MESSAGES: Record<string, string> = {
-  notificationsSectionTitle: "Notifications",
-  changelogNotificationsTitle: "Update notifications",
-  changelogNotificationsDescription:
-    "Automatically open the changelog after the extension is updated.",
-  browserNotificationsTitle: "Notifications",
-  browserNotificationsDescription:
-    "Browser notifications for important updates and reminders.",
-  labelComingSoon: "Coming soon",
-  labelEnabled: "Enabled",
-  labelDisabled: "Disabled",
-  messageChangelogNotificationsEnabled: "Update notifications enabled",
-  messageChangelogNotificationsDisabled: "Update notifications disabled",
-  errorSaveSetting: "Unable to save setting",
-};
-
 function getMessage(key: string): string {
   try {
     const lookupMessage = browser.i18n.getMessage as unknown as (
       messageName: string,
     ) => string;
-    return lookupMessage(key) || FALLBACK_MESSAGES[key] || key;
+    return lookupMessage(key) || key;
   } catch {
-    return FALLBACK_MESSAGES[key] || key;
+    return key;
   }
 }
 
@@ -63,9 +47,7 @@ function createNotificationSection(): HTMLElement {
       <div class="bg-blue-100 p-2.5 rounded-lg">
         <i class="fa-solid fa-bell text-blue-600" aria-hidden="true"></i>
       </div>
-      <div>
-        <h3 class="text-xl font-bold text-gray-900">${getMessage("notificationsSectionTitle")}</h3>
-      </div>
+      <h3 class="text-xl font-bold text-gray-900">${getMessage("labelEnableNotifications")}</h3>
     </div>
 
     <div class="bg-gradient-to-br from-white to-blue-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
@@ -76,10 +58,10 @@ function createNotificationSection(): HTMLElement {
           </div>
           <div>
             <h4 id="changelog-notification-heading" class="text-lg font-bold text-gray-800 mb-2">
-              ${getMessage("changelogNotificationsTitle")}
+              ${getMessage("changelogWhatsNew")}
             </h4>
             <p class="text-gray-600 text-sm leading-relaxed">
-              ${getMessage("changelogNotificationsDescription")}
+              ${getMessage("changelogLatestUpdates")}
             </p>
           </div>
         </div>
@@ -101,14 +83,14 @@ function createNotificationSection(): HTMLElement {
           <div>
             <div class="flex items-center gap-2 mb-2">
               <h4 id="browser-notification-heading" class="text-lg font-bold text-gray-800">
-                ${getMessage("browserNotificationsTitle")}
+                ${getMessage("labelEnableNotifications")}
               </h4>
               <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
-                ${getMessage("labelComingSoon")}
+                ${getMessage("statusNotStarted")}
               </span>
             </div>
             <p class="text-gray-600 text-sm leading-relaxed">
-              ${getMessage("browserNotificationsDescription")}
+              ${getMessage("notificationPermissionNote")}
             </p>
           </div>
         </div>
@@ -146,8 +128,8 @@ async function handleUpdateNotificationToggle(enabled: boolean): Promise<void> {
     renderUpdateNotificationState(enabled);
     showToast(
       enabled
-        ? getMessage("messageChangelogNotificationsEnabled")
-        : getMessage("messageChangelogNotificationsDisabled"),
+        ? getMessage("messageNotificationsEnabled")
+        : getMessage("messageNotificationsDisabled"),
     );
   } catch (error) {
     console.debug("Failed to update changelog notification setting:", error);
