@@ -56,169 +56,6 @@ const UIComponents = {
   },
 
   /**
-   * Ensure a floating back-to-top icon exists at the bottom-right corner
-   */
-  createFloatingBackToTop(): void {
-    try {
-      if (typeof document === "undefined") return;
-
-      if (document.getElementById("eplus-back-to-top-float")) return;
-
-      const container = document.createElement("div");
-      container.id = "eplus-back-to-top-float";
-      Object.assign(container.style, {
-        position: "fixed",
-        right: "16px",
-        bottom: "24px",
-        zIndex: "2147483647",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        pointerEvents: "none",
-        opacity: "0",
-        transform: "scale(0.9)",
-        transition: "opacity 200ms ease, transform 200ms ease",
-        visibility: "hidden",
-      } as Partial<CSSStyleDeclaration>);
-
-      const backToTopLabel =
-        browser.i18n.getMessage("backToTop") || "Back to top";
-      container.innerHTML = `
-        <ql-button
-          icon="arrow_upward"
-          type="button"
-          title="${backToTopLabel}"
-          data-aria-label="${backToTopLabel}"
-        ></ql-button>
-      `;
-
-      const qbtn = container.querySelector("ql-button") as HTMLElement | null;
-      if (qbtn?.style) {
-        Object.assign(qbtn.style, {
-          width: "44px",
-          height: "44px",
-          minWidth: "44px",
-          minHeight: "44px",
-          borderRadius: "50%",
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxSizing: "border-box",
-          padding: "0",
-          cursor: "pointer",
-          backgroundColor: "#ffffff",
-          border: "1px solid rgba(0,0,0,0.12)",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
-          color: "#111",
-        } as Partial<CSSStyleDeclaration>);
-      }
-
-      const THRESHOLD = 300; // px scrolled before showing button
-
-      /**
-       * Show the back-to-top floating button.
-       */
-      const show = () => {
-        container.style.visibility = "visible";
-        container.style.pointerEvents = "auto";
-        container.style.opacity = "1";
-        container.style.transform = "scale(1)";
-      };
-
-      /**
-       * Hide the back-to-top floating button.
-       */
-      const hide = () => {
-        container.style.pointerEvents = "none";
-        container.style.opacity = "0";
-        container.style.transform = "scale(0.9)";
-        // keep visibility hidden after transition to avoid tab stops
-        setTimeout(() => {
-          if (container.style.opacity === "0")
-            container.style.visibility = "hidden";
-        }, 210);
-      };
-
-      const scrollTargets: Array<Element | Window> = [];
-
-      // prefer the lab drawer content if present
-      const labInstructions = document.getElementById("lab-instructions");
-      if (labInstructions) scrollTargets.push(labInstructions);
-      // always include window as a fallback
-      scrollTargets.push(window);
-
-      let lastActiveTarget: Element | Window = window;
-
-      /**
-       * Handle scroll events for a given target and toggle visibility.
-       * @param {Element|Window} target Element or Window to inspect scroll position on
-       */
-      function onScrollFor(target: Element | Window) {
-        try {
-          const pos =
-            target === window
-              ? window.scrollY || window.pageYOffset || 0
-              : (target as Element).scrollTop || 0;
-          if (pos > THRESHOLD) {
-            lastActiveTarget = target;
-            show();
-          } else if (lastActiveTarget === target) {
-            // only hide if this was the active target and it's now above threshold
-            hide();
-          }
-        } catch (err) {
-          // ignore
-        }
-      }
-
-      // attach listeners to each target, avoid duplicate handlers
-      scrollTargets.forEach((t) => {
-        if (t === window) {
-          window.addEventListener("scroll", () => onScrollFor(window), {
-            passive: true,
-          });
-        } else {
-          (t as Element).addEventListener(
-            "scroll",
-            () => onScrollFor(t as Element),
-            { passive: true },
-          );
-        }
-      });
-
-      container.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        try {
-          if (lastActiveTarget && lastActiveTarget !== window) {
-            (lastActiveTarget as Element).scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-          } else {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-        } catch (err) {
-          try {
-            window.scrollTo(0, 0);
-          } catch {
-            // Intentionally ignore fallback scroll errors.
-          }
-        }
-      });
-
-      // run initial check for all targets
-      setTimeout(() => {
-        scrollTargets.forEach((t) => onScrollFor(t));
-      }, 50);
-
-      document.body.appendChild(container);
-    } catch (err) {
-      // ignore failures in exotic environments
-    }
-  },
-
-  /**
    * Create a solution button element
    */
   async createSolutionElement(url: string | null): Promise<HTMLDivElement> {
@@ -278,9 +115,6 @@ const UIComponents = {
               window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
-
-          // ensure a floating back-to-top icon exists on the page
-          UIComponents.createFloatingBackToTop();
         }, 50);
       } else {
         // If URL is invalid, show nothing or fallback UI
@@ -367,9 +201,6 @@ const UIComponents = {
             }
           });
 
-          // ensure a floating back-to-top icon exists on the page
-          UIComponents.createFloatingBackToTop();
-
           if (eplusBtn) {
             eplusBtn.addEventListener("click", (e) => {
               e.preventDefault();
@@ -452,8 +283,6 @@ const UIComponents = {
               window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
-          // ensure floating back-to-top exists
-          UIComponents.createFloatingBackToTop();
         }, 100);
       }
     }
