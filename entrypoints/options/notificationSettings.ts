@@ -1,4 +1,3 @@
-import AccountService from "../../services/accountService";
 import NotificationService from "../../services/notificationService";
 
 function getMessage(key: string): string {
@@ -20,19 +19,6 @@ function showToast(message: string, type: "success" | "error" = "success") {
   toast.textContent = message;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
-}
-
-async function isNotificationEnabled(): Promise<boolean> {
-  try {
-    const settings = await AccountService.getSettings();
-    return Boolean(settings.enableNotifications);
-  } catch {
-    return false;
-  }
-}
-
-async function saveNotificationEnabled(enabled: boolean): Promise<void> {
-  await AccountService.updateSettings({ enableNotifications: Boolean(enabled) });
 }
 
 function createNotificationCard(): HTMLElement {
@@ -75,78 +61,62 @@ function createNotificationCard(): HTMLElement {
   return wrapper;
 }
 
-async function syncNotificationToggle() {
+function renderNotificationState(active: boolean): void {
   const toggle = document.getElementById(
     "notification-toggle",
   ) as HTMLInputElement | null;
   const status = document.getElementById("notification-status");
-  if (!toggle) return;
 
-  const [enabled, allowed] = await Promise.all([
-    isNotificationEnabled(),
-    NotificationService.hasPermission(),
-  ]);
-
-  const active = enabled && allowed;
-  toggle.checked = active;
+  if (toggle) toggle.checked = active;
   if (status) {
     status.textContent = active
       ? getMessage("labelEnabled")
       : getMessage("labelDisabled");
   }
+}
 
-  if (enabled && !allowed) {
-    try {
-      await saveNotificationEnabled(false);
-    } catch (error) {
-      console.debug("Failed to auto-disable notification setting:", error);
-    }
-  }
+async function syncNotificationToggle() {
+  const state = await NotificationService.reconcileState();
+  renderNotificationState(state.active);
 }
 
 async function handleNotificationToggle(enabled: boolean) {
-  const toggle = document.getElementById(
-    "notification-toggle",
-  ) as HTMLInputElement | null;
-  const status = document.getElementById("notification-status");
-
   try {
-    if (enabled) {
-      const granted = await NotificationService.requestPermission();
-      if (!granted) {
-        if (toggle) toggle.checked = false;
-        if (status) status.textContent = getMessage("labelDisabled");
-        await saveNotificationEnabled(false);
-        showToast(getMessage("messageNotificationPermissionDenied"), "error");
-        return;
-      }
+    const active = await NotificationService.setEnabled(enabled);
+    renderNotificationState(active);
+
+    if (enabled && !active) {
+      showToast(getMessage("messageNotificationPermissionDenied"), "error");
+      return;
     }
 
-    await saveNotificationEnabled(enabled);
-    if (status) {
-      status.textContent = enabled
-        ? getMessage("labelEnabled")
-        : getMessage("labelDisabled");
+    if (active) {
+      await NotificationService.create(
+        "notifications-enabled",
+        getMessage("labelEnableNotifications"),
+        getMessage("messageNotificationsEnabled"),
+      );
     }
 
     showToast(
-      enabled
+      active
         ? getMessage("messageNotificationsEnabled")
         : getMessage("messageNotificationsDisabled"),
       "success",
     );
   } catch (error) {
     console.debug("Failed to update notification setting:", error);
-    if (toggle) toggle.checked = false;
-    if (status) status.textContent = getMessage("labelDisabled");
+    renderNotificationState(false);
+
     try {
-      await saveNotificationEnabled(false);
+      await NotificationService.setEnabled(false);
     } catch (fallbackError) {
       console.debug(
         "Failed to persist disabled notification setting:",
         fallbackError,
       );
     }
+
     showToast(getMessage("errorSaveSetting"), "error");
   }
 }
