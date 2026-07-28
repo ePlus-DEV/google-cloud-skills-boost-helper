@@ -35,23 +35,6 @@ function getEngineLabel(engine: string): string {
   return `${name} ${searchWord}`;
 }
 
-/**
- * Normalize the visuals of a ql-button created via innerHTML.
- * Assigns properties individually so repeated calls stay idempotent.
- */
-function normalizeQlButtonStyle(el: Element | null): void {
-  const style = (el as HTMLElement | null)?.style;
-  if (!style) return;
-  Object.assign(style, {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "6px",
-    padding: "3px 3px",
-    borderRadius: "999px",
-    boxSizing: "border-box",
-  });
-}
-
 const UIComponents = {
   /**
    * Create a loading button element shown while searching
@@ -70,171 +53,6 @@ const UIComponents = {
       </ql-infobox>
     `;
     return el;
-  },
-
-  /**
-   * Ensure a floating back-to-top icon exists at the bottom-right corner
-   */
-  createFloatingBackToTop(): void {
-    try {
-      if (typeof document === "undefined") return;
-
-      if (document.getElementById("eplus-back-to-top-float")) return;
-
-      const container = document.createElement("div");
-      container.id = "eplus-back-to-top-float";
-      Object.assign(container.style, {
-        position: "fixed",
-        right: "16px",
-        bottom: "24px",
-        zIndex: "2147483647",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        pointerEvents: "none",
-        opacity: "0",
-        transform: "scale(0.9)",
-        transition: "opacity 200ms ease, transform 200ms ease",
-        visibility: "hidden",
-      } as Partial<CSSStyleDeclaration>);
-
-      const backToTopLabel =
-        browser.i18n.getMessage("backToTop") || "Back to top";
-      container.innerHTML = `
-        <ql-button
-          icon="arrow_upward"
-          type="button"
-          title="${backToTopLabel}"
-          data-aria-label="${backToTopLabel}"
-        ></ql-button>
-      `;
-
-      const qbtn = container.querySelector("ql-button") as HTMLElement | null;
-      if (qbtn?.style) {
-        Object.assign(qbtn.style, {
-          width: "44px",
-          height: "44px",
-          minWidth: "44px",
-          minHeight: "44px",
-          borderRadius: "50%",
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxSizing: "border-box",
-          padding: "0",
-          cursor: "pointer",
-          backgroundColor: "#ffffff",
-          border: "1px solid rgba(0,0,0,0.12)",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
-          color: "#111",
-        } as Partial<CSSStyleDeclaration>);
-      }
-
-      const THRESHOLD = 300; // px scrolled before showing button
-
-      /**
-       * Show the back-to-top floating button.
-       */
-      const show = () => {
-        container.style.visibility = "visible";
-        container.style.pointerEvents = "auto";
-        container.style.opacity = "1";
-        container.style.transform = "scale(1)";
-      };
-
-      /**
-       * Hide the back-to-top floating button.
-       */
-      const hide = () => {
-        container.style.pointerEvents = "none";
-        container.style.opacity = "0";
-        container.style.transform = "scale(0.9)";
-        // keep visibility hidden after transition to avoid tab stops
-        setTimeout(() => {
-          if (container.style.opacity === "0")
-            container.style.visibility = "hidden";
-        }, 210);
-      };
-
-      const getScrollPos = (target: Element | Window): number =>
-        target === window
-          ? window.scrollY || window.pageYOffset || 0
-          : (target as Element).scrollTop || 0;
-
-      /**
-       * Resolve scroll candidates fresh on every check so containers rendered
-       * or replaced after injection (e.g. #lab-instructions appearing when the
-       * lab starts) are always picked up without rebinding.
-       */
-      const getScrollCandidates = (): Array<Element | Window> => {
-        const candidates: Array<Element | Window> = [];
-        const labInstructions = document.getElementById("lab-instructions");
-        if (labInstructions) candidates.push(labInstructions);
-        candidates.push(window);
-        return candidates;
-      };
-
-      let lastActiveTarget: Element | Window = window;
-
-      /** Show/hide based on whether any scroll candidate is past the threshold. */
-      const updateVisibility = () => {
-        try {
-          const active = getScrollCandidates().find(
-            (target) => getScrollPos(target) > THRESHOLD,
-          );
-          if (active) {
-            lastActiveTarget = active;
-            show();
-          } else {
-            hide();
-          }
-        } catch (err) {
-          // ignore
-        }
-      };
-
-      // Scroll events do not bubble, but they do pass through the document in
-      // the capture phase — one listener covers every current and future
-      // scroll container, including window/document scrolls.
-      document.addEventListener("scroll", updateVisibility, {
-        capture: true,
-        passive: true,
-      });
-
-      container.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        try {
-          // The remembered target may have been detached by a page re-render;
-          // fall back to whichever candidate is currently scrolled.
-          let target: Element | Window = lastActiveTarget;
-          if (target !== window && !(target as Element).isConnected) {
-            target =
-              getScrollCandidates().find(
-                (candidate) => getScrollPos(candidate) > 0,
-              ) || window;
-          }
-          if (target !== window) {
-            (target as Element).scrollTo({ top: 0, behavior: "smooth" });
-          } else {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-        } catch (err) {
-          try {
-            window.scrollTo(0, 0);
-          } catch {
-            // Intentionally ignore fallback scroll errors.
-          }
-        }
-      });
-
-      // run initial visibility check
-      setTimeout(updateVisibility, 50);
-
-      document.body.appendChild(container);
-    } catch (err) {
-      // ignore failures in exotic environments
-    }
   },
 
   /**
@@ -276,7 +94,10 @@ const UIComponents = {
           );
 
           [solBtn, telegramBtn].forEach((el) => {
-            normalizeQlButtonStyle(el);
+            if ((el as HTMLElement)?.style) {
+              (el as HTMLElement).style.cssText +=
+                ";display:inline-flex;align-items:center;gap:6px;padding:3px 3px;border-radius:999px;box-sizing:border-box";
+            }
           });
 
           if (solBtn) {
@@ -294,9 +115,6 @@ const UIComponents = {
               window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
-
-          // ensure a floating back-to-top icon exists on the page
-          UIComponents.createFloatingBackToTop();
         }, 50);
       } else {
         // If URL is invalid, show nothing or fallback UI
@@ -377,11 +195,11 @@ const UIComponents = {
 
           // Normalize ql-button visuals created via innerHTML
           [eplusBtn, configuredBtn, youtubeBtn, telegramBtn].forEach((el) => {
-            normalizeQlButtonStyle(el);
+            if ((el as HTMLElement)?.style) {
+              (el as HTMLElement).style.cssText +=
+                ";display:inline-flex;align-items:center;gap:6px;padding:3px 3px;border-radius:999px;box-sizing:border-box";
+            }
           });
-
-          // ensure a floating back-to-top icon exists on the page
-          UIComponents.createFloatingBackToTop();
 
           if (eplusBtn) {
             eplusBtn.addEventListener("click", (e) => {
@@ -458,7 +276,6 @@ const UIComponents = {
           const telegramBtn = solutionElement.querySelector(
             "#telegram-support-btn",
           );
-          normalizeQlButtonStyle(telegramBtn);
           if (telegramBtn) {
             telegramBtn.addEventListener("click", (e) => {
               e.preventDefault();
@@ -466,8 +283,6 @@ const UIComponents = {
               window.open(TELEGRAM_SUPPORT_URL, "_blank");
             });
           }
-          // ensure floating back-to-top exists
-          UIComponents.createFloatingBackToTop();
         }, 100);
       }
     }
@@ -665,15 +480,9 @@ try {
 
         if (msg.type === "searchFeatureChanged") {
           const enabled = Boolean(msg.enabled);
-          // The search feature gates the whole search button row, not just
-          // ePlus — disable/enable every search button when it toggles.
-          const searchButtonIds = [
-            "#eplus-search-btn",
-            "#configured-search-btn",
-            "#youtube-search-btn",
-          ];
+          // Disable/enable ePlus button(s) when main search feature toggles
           document
-            .querySelectorAll<HTMLElement>(searchButtonIds.join(", "))
+            .querySelectorAll<HTMLElement>("#eplus-search-btn")
             .forEach((btn) => {
               try {
                 if (!enabled) {
@@ -692,11 +501,6 @@ try {
                     cursor: "pointer",
                     filter: "",
                   });
-                  // The ePlus button keeps its own visibility (it may be
-                  // legitimately hidden by the enableEplusSearch setting).
-                  if (btn.id !== "eplus-search-btn") {
-                    btn.style.display = "inline-flex";
-                  }
                 }
               } catch (e) {
                 // Ignore errors if style assignment fails
