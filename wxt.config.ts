@@ -22,6 +22,8 @@ function popupSizeBootstrapPlugin(): Plugin {
                   min-height: 0 !important;
                 }
                 html[data-popup-compact="true"] #section-announcement,
+                html[data-popup-compact="true"] #section-badges,
+                html[data-popup-compact="true"] #milestones-section,
                 html[data-popup-compact="true"] #countdown-container,
                 html[data-popup-compact="true"] #section-activity,
                 html[data-popup-compact="true"] #keyboard-hint {
@@ -34,6 +36,14 @@ function popupSizeBootstrapPlugin(): Plugin {
               injectTo: "head-prepend",
               attrs: {
                 src: "/popup-size-bootstrap.js",
+              },
+            },
+            {
+              tag: "script",
+              injectTo: "head",
+              attrs: {
+                type: "module",
+                src: "/entrypoints/popup/compactModeSync.ts",
               },
             },
           ],
