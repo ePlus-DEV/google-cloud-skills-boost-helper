@@ -112,8 +112,8 @@ const BackToTopService = {
     Object.assign(container.style, {
       position: "fixed",
       right: "16px",
-      bottom: "24px",
-      zIndex: "2147483647",
+      bottom: "60px",
+      zIndex: "10",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -242,10 +242,7 @@ const BackToTopService = {
       state.pendingRoots.add(root);
       if (state.rescanTimer !== null) return;
 
-      state.rescanTimer = window.setTimeout(
-        scanPendingRoots,
-        RESCAN_DELAY_MS,
-      );
+      state.rescanTimer = window.setTimeout(scanPendingRoots, RESCAN_DELAY_MS);
     };
 
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
