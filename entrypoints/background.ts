@@ -157,8 +157,9 @@ export default defineBackground(() => {
           .default;
         const { calculateFacilitatorBonus } =
           await import("../services/facilitatorService");
-        const arcadeData = await StorageService.getArcadeData();
-        if (arcadeData) {
+        const enabled = await StorageService.isBadgeDisplayEnabled();
+        const arcadeData = enabled ? await StorageService.getArcadeData() : null;
+        if (enabled && arcadeData) {
           const base =
             arcadeData.arcadePoints?.totalPoints ||
             arcadeData.totalArcadePoints ||
@@ -184,8 +185,9 @@ export default defineBackground(() => {
         .default;
       const { calculateFacilitatorBonus } =
         await import("../services/facilitatorService");
-      const arcadeData = await StorageService.getArcadeData();
-      if (arcadeData) {
+      const enabled = await StorageService.isBadgeDisplayEnabled();
+      const arcadeData = enabled ? await StorageService.getArcadeData() : null;
+      if (enabled && arcadeData) {
         const base =
           arcadeData.arcadePoints?.totalPoints ||
           arcadeData.totalArcadePoints ||
@@ -274,7 +276,11 @@ export default defineBackground(() => {
       }
 
       const arcadeData = await StorageService.getArcadeData();
-      if (!arcadeData) return;
+      if (!arcadeData) {
+        // No data for the active account — clear any stale badge
+        handleClearBadge();
+        return;
+      }
       const base =
         arcadeData.arcadePoints?.totalPoints ||
         arcadeData.totalArcadePoints ||
