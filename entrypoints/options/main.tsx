@@ -6,6 +6,8 @@ import { initUIToggles } from "./uiToggles";
 import { initNicknamePreview } from "./nicknamePreview";
 import { initNotificationSettings } from "./notificationSettings";
 
+type MessageKey = Parameters<typeof browser.i18n.getMessage>[0];
+
 // Set document title
 document.title =
   browser.i18n.getMessage("optionsPageTitle") ||
@@ -20,7 +22,7 @@ function localizeElements() {
       // Support the "[attr]key" form, e.g. data-i18n="[placeholder]nicknamePlaceholder"
       const attrMatch = key.match(/^\[([^\]]+)\](.+)$/);
       const lookupKey = attrMatch ? attrMatch[2] : key;
-      const message = browser.i18n.getMessage(lookupKey);
+      const message = browser.i18n.getMessage(lookupKey as MessageKey);
       if (!message) continue;
 
       if (attrMatch) {
