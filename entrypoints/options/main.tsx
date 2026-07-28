@@ -5,6 +5,7 @@ import { initDataManagementToggle } from "./dataManagementToggle";
 import { initUIToggles } from "./uiToggles";
 import { initNicknamePreview } from "./nicknamePreview";
 import { initNotificationSettings } from "./notificationSettings";
+import { initAccountCreationUX } from "./accountCreationUX";
 
 // Set document title
 document.title =
@@ -69,6 +70,7 @@ async function initializeOptionsPage() {
   initUIToggles();
   initNicknamePreview();
   initNotificationSettings();
+  initAccountCreationUX();
 }
 
 initializeOptionsPage().catch((error) => {
