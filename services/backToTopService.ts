@@ -270,6 +270,16 @@ const BackToTopService = {
 
     const observer = new MutationObserver((records) => {
       records.forEach((record) => {
+        if (record.target instanceof Element) {
+          scheduleRescan(record.target);
+
+          let ancestor = record.target.parentElement;
+          while (ancestor) {
+            scheduleRescan(ancestor);
+            ancestor = ancestor.parentElement;
+          }
+        }
+
         record.addedNodes.forEach((node) => {
           if (node instanceof Element) {
             scheduleRescan(node);
