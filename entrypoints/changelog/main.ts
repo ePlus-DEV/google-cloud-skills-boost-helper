@@ -3,21 +3,14 @@ import UpdateNotificationService from "../../services/updateNotificationService"
 import { MARKDOWN_CONFIG } from "../../utils/config";
 import { isFirefox } from "../../services/browserService";
 
-const FALLBACK_MESSAGES: Record<string, string> = {
-  changelogPageTitle: "Changelog - Google Cloud Skills Boost Helper",
-  labelBack: "Back",
-  changelogDisableFutureTitle: "Open changelog after updates",
-  changelogDisableFutureDescription:
-    "Turn this off if you do not want this page to open automatically after future updates.",
-  labelEnabled: "Enabled",
-  labelDisabled: "Disabled",
-};
-
 function getMessage(key: string): string {
   try {
-    return browser.i18n.getMessage(key) || FALLBACK_MESSAGES[key] || key;
+    const lookupMessage = browser.i18n.getMessage as unknown as (
+      messageName: string,
+    ) => string;
+    return lookupMessage(key) || key;
   } catch {
-    return FALLBACK_MESSAGES[key] || key;
+    return key;
   }
 }
 
@@ -81,15 +74,19 @@ function addHeadingIds(): void {
 
   const scrollParam = getQueryParam("scroll");
   const versionParam = getQueryParam("version");
-  const requested = scrollParam || versionParam;
+  const hashParam = window.location.hash
+    ? decodeURIComponent(window.location.hash.slice(1))
+    : null;
+  const requested = scrollParam || versionParam || hashParam;
   if (!requested) return;
 
   window.setTimeout(() => {
     let target = document.getElementById(requested);
     if (!target && versionParam) {
-      target = Array.from(headings).find((heading) =>
-        heading.textContent?.includes(versionParam),
-      ) ?? null;
+      target =
+        Array.from(headings).find((heading) =>
+          heading.textContent?.includes(versionParam),
+        ) ?? null;
     }
     target?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, 400);
@@ -108,10 +105,10 @@ function createUpdatePreferenceCard(): HTMLElement {
         </div>
         <div>
           <h2 id="changelog-preference-heading" class="font-semibold text-gray-900">
-            ${getMessage("changelogDisableFutureTitle")}
+            ${getMessage("labelEnableNotifications")}
           </h2>
           <p class="mt-1 text-sm text-gray-600">
-            ${getMessage("changelogDisableFutureDescription")}
+            ${getMessage("changelogLatestUpdates")}
           </p>
         </div>
       </div>
@@ -142,9 +139,15 @@ function renderPreference(enabled: boolean): void {
 }
 
 async function initializeUpdatePreference(): Promise<void> {
-  const container = document.getElementById("changelog-content");
+  const configuredContainer = document.getElementById(
+    MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+  );
+  const container =
+    configuredContainer ?? document.getElementById("changelog-content");
   const parent = container?.parentElement;
-  if (!parent || document.getElementById("changelog-update-preference")) return;
+  if (!parent || !container || document.getElementById("changelog-update-preference")) {
+    return;
+  }
 
   const card = createUpdatePreferenceCard();
   parent.insertBefore(card, container);
@@ -182,8 +185,8 @@ async function loadChangelog(): Promise<void> {
   if (!success) {
     const container = document.getElementById(containerId);
     if (container) {
-      container.innerHTML =
-        '<p class="text-sm text-red-600">Unable to load changelog.</p>';
+      container.textContent = getMessage("errorLoadingData");
+      container.classList.add("text-sm", "text-red-600");
     }
     return;
   }
@@ -203,7 +206,7 @@ function initializeNavigation(): void {
   const version = getQueryParam("version");
   const versionBadge = document.getElementById("version-number");
   if (versionBadge) versionBadge.textContent = version ? `v${version}` : "";
-  if (version) document.title = `Changelog - v${version}`;
+  if (version) document.title = `${getMessage("changelogWhatsNew")} - v${version}`;
 }
 
 async function showBrowserStoreBadge(): Promise<void> {
