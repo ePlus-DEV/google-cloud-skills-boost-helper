@@ -8,6 +8,12 @@ type PermissionMethod = (
   permissions: typeof NOTIFICATION_PERMISSION,
 ) => Promise<boolean>;
 
+export interface NotificationState {
+  enabled: boolean;
+  allowed: boolean;
+  active: boolean;
+}
+
 async function hasPermission(): Promise<boolean> {
   try {
     const contains = browser.permissions.contains as unknown as PermissionMethod;
@@ -38,9 +44,35 @@ async function isEnabled(): Promise<boolean> {
   }
 }
 
-async function canNotify(): Promise<boolean> {
+async function setEnabled(enabled: boolean): Promise<boolean> {
+  if (!enabled) {
+    await AccountService.updateSettings({ enableNotifications: false });
+    return false;
+  }
+
+  const allowed = (await hasPermission()) || (await requestPermission());
+  await AccountService.updateSettings({ enableNotifications: allowed });
+  return allowed;
+}
+
+async function reconcileState(): Promise<NotificationState> {
   const [enabled, allowed] = await Promise.all([isEnabled(), hasPermission()]);
-  return enabled && allowed;
+
+  if (enabled && !allowed) {
+    await AccountService.updateSettings({ enableNotifications: false });
+    return { enabled: false, allowed: false, active: false };
+  }
+
+  return {
+    enabled,
+    allowed,
+    active: enabled && allowed,
+  };
+}
+
+async function canNotify(): Promise<boolean> {
+  const state = await reconcileState();
+  return state.active;
 }
 
 async function create(
@@ -69,6 +101,8 @@ const NotificationService = {
   hasPermission,
   requestPermission,
   isEnabled,
+  setEnabled,
+  reconcileState,
   canNotify,
   create,
 };
