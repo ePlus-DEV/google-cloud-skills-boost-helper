@@ -33,7 +33,7 @@ function createNotificationCard(): HTMLElement {
           <i class="fa-solid fa-bell text-blue-600 text-lg"></i>
         </div>
         <div>
-          <h4 class="text-lg font-bold text-gray-800 mb-2" data-i18n="labelEnableNotifications">
+          <h4 id="notification-heading" class="text-lg font-bold text-gray-800 mb-2" data-i18n="labelEnableNotifications">
             ${getMessage("labelEnableNotifications")}
           </h4>
           <p class="text-gray-600 text-sm leading-relaxed" data-i18n="descriptionEnableNotifications">
@@ -47,11 +47,11 @@ function createNotificationCard(): HTMLElement {
 
       <div class="flex items-center space-x-3">
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" id="notification-toggle" class="sr-only peer" />
+          <input type="checkbox" id="notification-toggle" aria-labelledby="notification-heading" class="sr-only peer" />
           <div class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 transition-colors duration-200 peer-checked:bg-blue-600"></div>
           <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6"></div>
         </label>
-        <span id="notification-status" class="text-sm font-medium text-gray-700">
+        <span id="notification-status" aria-live="polite" class="text-sm font-medium text-gray-700">
           ${getMessage("labelDisabled")}
         </span>
       </div>
