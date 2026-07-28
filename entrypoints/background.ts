@@ -17,28 +17,6 @@ export default defineBackground(() => {
     return root.browser?.action ?? root.chrome?.action ?? null;
   }
 
-  async function setBadge(totalPoints: number): Promise<void> {
-    const action = getAction();
-    if (!action) return;
-
-    const value = Math.floor(Number(totalPoints) || 0);
-    const text =
-      value <= 999
-        ? String(value)
-        : value <= 9999
-          ? `${Math.floor(value / 1000)}k`
-          : "999+";
-
-    try {
-      await action.setBadgeText({ text });
-      await action.setBadgeBackgroundColor?.({
-        color: UI_COLORS?.BADGE || "#155dfc",
-      });
-    } catch (error) {
-      console.debug("Failed to set extension badge:", error);
-    }
-  }
-
   async function clearBadge(): Promise<void> {
     try {
       await getAction()?.setBadgeText({ text: "" });
@@ -50,29 +28,7 @@ export default defineBackground(() => {
   async function refreshBadge(): Promise<void> {
     try {
       const StorageService = (await import("../services/storageService")).default;
-      const { calculateFacilitatorBonus } =
-        await import("../services/facilitatorService");
-      const enabled = await StorageService.isBadgeDisplayEnabled();
-
-      if (!enabled) {
-        await clearBadge();
-        return;
-      }
-
-      const arcadeData = await StorageService.getArcadeData();
-      if (!arcadeData) {
-        await clearBadge();
-        return;
-      }
-
-      const base =
-        arcadeData.arcadePoints?.totalPoints ||
-        arcadeData.totalArcadePoints ||
-        0;
-      const bonus = arcadeData.faciCounts
-        ? calculateFacilitatorBonus(arcadeData.faciCounts)
-        : 0;
-      await setBadge(base + bonus);
+      await StorageService.refreshBadgeForActiveAccount();
     } catch (error) {
       console.debug("Failed to refresh badge:", error);
     }
