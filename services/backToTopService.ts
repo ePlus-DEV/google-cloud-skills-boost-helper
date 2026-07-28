@@ -111,7 +111,7 @@ const BackToTopService = {
     container.id = BACK_TO_TOP_ID;
     Object.assign(container.style, {
       position: "fixed",
-      right: "16px",
+      right: "24px",
       bottom: "60px",
       zIndex: "10",
       display: "flex",
@@ -142,7 +142,7 @@ const BackToTopService = {
       boxSizing: "border-box",
       padding: "0",
       cursor: "pointer",
-      backgroundColor: "#ffffff",
+      backgroundColor: "rgba(0, 0, 0, 0.12)",
       border: "1px solid rgba(0,0,0,0.12)",
       boxShadow: "0 4px 10px rgba(0,0,0,0.12)",
       color: "#111",
