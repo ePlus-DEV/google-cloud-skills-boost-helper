@@ -9,6 +9,9 @@ type TourStep = {
   contentHtml?: (message: (key: string) => string) => string;
 };
 
+type IntroTour = ReturnType<typeof introJs.tour>;
+type MessageKey = Parameters<typeof browser.i18n.getMessage>[0];
+
 const ACCOUNT_TOUR_STEPS: TourStep[] = [
   {
     selector: "#add-account-btn",
@@ -49,9 +52,15 @@ const MODAL_TOUR_STEPS: TourStep[] = [
   },
 ];
 
+let activeTour: IntroTour | null = null;
+let modalTourTimer: number | null = null;
+let tourGeneration = 0;
+
 function getMessage(key: string, substitutions?: string[]): string {
   try {
-    return browser.i18n.getMessage(key, substitutions) || key;
+    return (
+      browser.i18n.getMessage(key as MessageKey, substitutions) || key
+    );
   } catch {
     return key;
   }
@@ -104,7 +113,8 @@ function showCompletionMessage(): void {
 
   const close = document.createElement("button");
   close.type = "button";
-  close.className = "ml-auto rounded p-1 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white";
+  close.className =
+    "ml-auto rounded p-1 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white";
   close.setAttribute("aria-label", getMessage("tourCloseButton"));
   close.innerHTML = '<i class="fa-solid fa-times" aria-hidden="true"></i>';
   close.addEventListener("click", () => messageElement.remove());
@@ -125,12 +135,41 @@ async function markTourCompleted(): Promise<void> {
   }
 }
 
+function clearModalTourTimer(): void {
+  if (modalTourTimer === null) return;
+  window.clearTimeout(modalTourTimer);
+  modalTourTimer = null;
+}
+
+function stopActiveTour(): void {
+  clearModalTourTimer();
+  tourGeneration += 1;
+
+  const tour = activeTour;
+  activeTour = null;
+  if (!tour) return;
+
+  try {
+    void tour.exit(true);
+  } catch (error) {
+    console.debug("Failed to exit active guided tour:", error);
+  }
+}
+
 function startTour(steps: TourStep[], markCompleted: boolean): void {
+  stopActiveTour();
+
   const availableSteps = getAvailableSteps(steps);
   if (availableSteps.length === 0) return;
 
+  const generation = tourGeneration;
   const tour = introJs.tour();
   let completed = false;
+  activeTour = tour;
+
+  const clearIfCurrent = () => {
+    if (activeTour === tour) activeTour = null;
+  };
 
   tour.setOptions({
     steps: availableSteps,
@@ -153,15 +192,20 @@ function startTour(steps: TourStep[], markCompleted: boolean): void {
 
   tour.onbeforechange((targetElement) => {
     targetElement?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return true;
   });
 
   tour.oncomplete(() => {
+    if (generation !== tourGeneration) return;
     completed = true;
+    clearIfCurrent();
     showCompletionMessage();
     if (markCompleted) void markTourCompleted();
   });
 
   tour.onexit(() => {
+    clearIfCurrent();
+    if (generation !== tourGeneration) return;
     if (!completed && markCompleted) void markTourCompleted();
   });
 
@@ -176,7 +220,18 @@ const TourService = {
   },
 
   startModalTour(): void {
-    window.setTimeout(() => startTour(MODAL_TOUR_STEPS, false), 300);
+    stopActiveTour();
+    const generation = tourGeneration;
+
+    modalTourTimer = window.setTimeout(() => {
+      modalTourTimer = null;
+      if (generation !== tourGeneration) return;
+      startTour(MODAL_TOUR_STEPS, false);
+    }, 300);
+  },
+
+  stop(): void {
+    stopActiveTour();
   },
 
   async shouldShowTour(): Promise<boolean> {
@@ -192,6 +247,7 @@ const TourService = {
   markTourCompleted,
 
   async resetTourStatus(): Promise<void> {
+    stopActiveTour();
     try {
       await browser.storage.local.remove(["tourCompleted"]);
     } catch (error) {
