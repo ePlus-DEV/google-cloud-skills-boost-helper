@@ -1,18 +1,36 @@
-import NotificationService from "../../services/notificationService";
+import UpdateNotificationService from "../../services/updateNotificationService";
+
+const FALLBACK_MESSAGES: Record<string, string> = {
+  notificationsSectionTitle: "Notifications",
+  changelogNotificationsTitle: "Update notifications",
+  changelogNotificationsDescription:
+    "Automatically open the changelog after the extension is updated.",
+  browserNotificationsTitle: "Notifications",
+  browserNotificationsDescription:
+    "Browser notifications for important updates and reminders.",
+  labelComingSoon: "Coming soon",
+  labelEnabled: "Enabled",
+  labelDisabled: "Disabled",
+  messageChangelogNotificationsEnabled: "Update notifications enabled",
+  messageChangelogNotificationsDisabled: "Update notifications disabled",
+  errorSaveSetting: "Unable to save setting",
+};
 
 function getMessage(key: string): string {
   try {
     const lookupMessage = browser.i18n.getMessage as unknown as (
       messageName: string,
     ) => string;
-    return lookupMessage(key) || key;
+    return lookupMessage(key) || FALLBACK_MESSAGES[key] || key;
   } catch {
-    return key;
+    return FALLBACK_MESSAGES[key] || key;
   }
 }
 
 function showToast(message: string, type: "success" | "error" = "success") {
   const toast = document.createElement("div");
+  toast.setAttribute("role", "status");
+  toast.setAttribute("aria-live", "polite");
   toast.className = `fixed top-4 right-4 ${
     type === "success" ? "bg-green-500" : "bg-red-500"
   } text-white px-4 py-2 rounded-lg shadow-lg z-50`;
@@ -21,130 +39,143 @@ function showToast(message: string, type: "success" | "error" = "success") {
   setTimeout(() => toast.remove(), 3000);
 }
 
-function createNotificationCard(): HTMLElement {
-  const wrapper = document.createElement("div");
-  wrapper.className =
-    "bg-gradient-to-br from-white to-blue-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200";
+function createToggle(
+  id: string,
+  headingId: string,
+  disabled = false,
+): string {
+  return `
+    <label class="relative inline-flex items-center ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}">
+      <input type="checkbox" id="${id}" aria-labelledby="${headingId}" class="sr-only peer" ${disabled ? "disabled" : ""} />
+      <div class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 transition-colors duration-200 peer-checked:bg-blue-600"></div>
+      <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6"></div>
+    </label>
+  `;
+}
 
-  wrapper.innerHTML = `
-    <div class="flex items-center justify-between">
-      <div class="flex items-start space-x-4">
-        <div class="bg-blue-100 p-3 rounded-lg shadow-sm">
-          <i class="fa-solid fa-bell text-blue-600 text-lg"></i>
+function createNotificationSection(): HTMLElement {
+  const section = document.createElement("section");
+  section.id = "notification-preferences-section";
+  section.className = "space-y-4";
+
+  section.innerHTML = `
+    <div class="flex items-center gap-3 px-1">
+      <div class="bg-blue-100 p-2.5 rounded-lg">
+        <i class="fa-solid fa-bell text-blue-600" aria-hidden="true"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-gray-900">${getMessage("notificationsSectionTitle")}</h3>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-white to-blue-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
+      <div class="flex items-center justify-between gap-6">
+        <div class="flex items-start space-x-4 min-w-0">
+          <div class="bg-blue-100 p-3 rounded-lg shadow-sm shrink-0">
+            <i class="fa-solid fa-rectangle-list text-blue-600 text-lg" aria-hidden="true"></i>
+          </div>
+          <div>
+            <h4 id="changelog-notification-heading" class="text-lg font-bold text-gray-800 mb-2">
+              ${getMessage("changelogNotificationsTitle")}
+            </h4>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              ${getMessage("changelogNotificationsDescription")}
+            </p>
+          </div>
         </div>
-        <div>
-          <h4 id="notification-heading" class="text-lg font-bold text-gray-800 mb-2" data-i18n="labelEnableNotifications">
-            ${getMessage("labelEnableNotifications")}
-          </h4>
-          <p class="text-gray-600 text-sm leading-relaxed" data-i18n="descriptionEnableNotifications">
-            ${getMessage("descriptionEnableNotifications")}
-          </p>
-          <p class="text-xs text-gray-500 mt-2" data-i18n="notificationPermissionNote">
-            ${getMessage("notificationPermissionNote")}
-          </p>
+        <div class="flex items-center space-x-3 shrink-0">
+          ${createToggle("changelog-notification-toggle", "changelog-notification-heading")}
+          <span id="changelog-notification-status" aria-live="polite" class="text-sm font-medium text-gray-700">
+            ${getMessage("labelEnabled")}
+          </span>
         </div>
       </div>
+    </div>
 
-      <div class="flex items-center space-x-3">
-        <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" id="notification-toggle" aria-labelledby="notification-heading" class="sr-only peer" />
-          <div class="w-14 h-8 bg-gray-200 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 transition-colors duration-200 peer-checked:bg-blue-600"></div>
-          <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-6"></div>
-        </label>
-        <span id="notification-status" aria-live="polite" class="text-sm font-medium text-gray-700">
-          ${getMessage("labelDisabled")}
-        </span>
+    <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm opacity-80">
+      <div class="flex items-center justify-between gap-6">
+        <div class="flex items-start space-x-4 min-w-0">
+          <div class="bg-gray-100 p-3 rounded-lg shadow-sm shrink-0">
+            <i class="fa-solid fa-bell text-gray-500 text-lg" aria-hidden="true"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <h4 id="browser-notification-heading" class="text-lg font-bold text-gray-800">
+                ${getMessage("browserNotificationsTitle")}
+              </h4>
+              <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
+                ${getMessage("labelComingSoon")}
+              </span>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              ${getMessage("browserNotificationsDescription")}
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-3 shrink-0">
+          ${createToggle("browser-notification-toggle", "browser-notification-heading", true)}
+        </div>
       </div>
     </div>
   `;
 
-  return wrapper;
+  return section;
 }
 
-function renderNotificationState(active: boolean): void {
+function renderUpdateNotificationState(enabled: boolean): void {
   const toggle = document.getElementById(
-    "notification-toggle",
+    "changelog-notification-toggle",
   ) as HTMLInputElement | null;
-  const status = document.getElementById("notification-status");
+  const status = document.getElementById("changelog-notification-status");
 
-  if (toggle) toggle.checked = active;
+  if (toggle) toggle.checked = enabled;
   if (status) {
-    status.textContent = active
+    status.textContent = enabled
       ? getMessage("labelEnabled")
       : getMessage("labelDisabled");
   }
 }
 
-async function syncNotificationToggle() {
-  const state = await NotificationService.reconcileState();
-  renderNotificationState(state.active);
+async function syncUpdateNotificationToggle(): Promise<void> {
+  renderUpdateNotificationState(await UpdateNotificationService.isEnabled());
 }
 
-async function handleNotificationToggle(enabled: boolean) {
+async function handleUpdateNotificationToggle(enabled: boolean): Promise<void> {
   try {
-    const active = await NotificationService.setEnabled(enabled);
-    renderNotificationState(active);
-
-    if (enabled && !active) {
-      showToast(getMessage("messageNotificationPermissionDenied"), "error");
-      return;
-    }
-
-    if (active) {
-      await NotificationService.create(
-        "notifications-enabled",
-        getMessage("labelEnableNotifications"),
-        getMessage("messageNotificationsEnabled"),
-      );
-    }
-
+    await UpdateNotificationService.setEnabled(enabled);
+    renderUpdateNotificationState(enabled);
     showToast(
-      active
-        ? getMessage("messageNotificationsEnabled")
-        : getMessage("messageNotificationsDisabled"),
-      "success",
+      enabled
+        ? getMessage("messageChangelogNotificationsEnabled")
+        : getMessage("messageChangelogNotificationsDisabled"),
     );
   } catch (error) {
-    console.debug("Failed to update notification setting:", error);
-    renderNotificationState(false);
-
-    try {
-      await NotificationService.setEnabled(false);
-    } catch (fallbackError) {
-      console.debug(
-        "Failed to persist disabled notification setting:",
-        fallbackError,
-      );
-    }
-
+    console.debug("Failed to update changelog notification setting:", error);
+    await syncUpdateNotificationToggle();
     showToast(getMessage("errorSaveSetting"), "error");
   }
 }
 
 export function initNotificationSettings() {
-  if (document.getElementById("notification-toggle")) return;
+  if (document.getElementById("notification-preferences-section")) return;
 
   const sections = document.getElementById("options-sections");
   const badgeToggle = document.getElementById("badge-display-toggle");
   const badgeCard = badgeToggle?.closest(".rounded-lg");
-  const card = createNotificationCard();
+  const section = createNotificationSection();
 
   if (badgeCard?.parentElement) {
-    badgeCard.insertAdjacentElement("afterend", card);
+    badgeCard.insertAdjacentElement("afterend", section);
   } else {
-    sections?.appendChild(card);
+    sections?.appendChild(section);
   }
 
   const toggle = document.getElementById(
-    "notification-toggle",
+    "changelog-notification-toggle",
   ) as HTMLInputElement | null;
   toggle?.addEventListener("change", () => {
-    handleNotificationToggle(Boolean(toggle.checked)).catch((error) => {
-      console.debug("Failed to handle notification toggle:", error);
-    });
+    void handleUpdateNotificationToggle(Boolean(toggle.checked));
   });
 
-  syncNotificationToggle().catch((error) => {
-    console.debug("Failed to sync notification toggle:", error);
-  });
+  void syncUpdateNotificationToggle();
 }
