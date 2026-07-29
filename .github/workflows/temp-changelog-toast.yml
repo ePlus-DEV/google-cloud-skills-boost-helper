@@ -1,0 +1,105 @@
+name: Apply changelog preference toast
+
+on:
+  push:
+    branches:
+      - feat/changelog-notification-preferences
+    paths:
+      - .github/workflows/temp-changelog-toast.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/changelog-notification-preferences
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update changelog preference feedback
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path('entrypoints/changelog/main.ts')
+          text = path.read_text(encoding='utf-8')
+
+          anchor = '''function getQueryParam(name: string): string | null {
+            return new URLSearchParams(window.location.search).get(name);
+          }
+          '''
+
+          toast = '''function showToast(message: string, type: "success" | "error" = "success"): void {
+            document.getElementById("changelog-preference-toast")?.remove();
+
+            const toast = document.createElement("div");
+            toast.id = "changelog-preference-toast";
+            toast.setAttribute("role", type === "error" ? "alert" : "status");
+            toast.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
+            toast.className = `fixed right-4 top-4 z-50 flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg ${
+              type === "success" ? "bg-emerald-600" : "bg-red-600"
+            }`;
+
+            const icon = document.createElement("i");
+            icon.className = type === "success" ? "fa-solid fa-circle-check" : "fa-solid fa-circle-exclamation";
+            icon.setAttribute("aria-hidden", "true");
+
+            const label = document.createElement("span");
+            label.textContent = message;
+            toast.append(icon, label);
+            document.body.appendChild(toast);
+
+            window.setTimeout(() => toast.remove(), 3000);
+          }
+
+          function getQueryParam(name: string): string | null {
+            return new URLSearchParams(window.location.search).get(name);
+          }
+          '''
+
+          if 'function showToast(' not in text:
+              if anchor not in text:
+                  raise SystemExit('getQueryParam anchor not found')
+              text = text.replace(anchor, toast, 1)
+
+          success_old = '''      await UpdateNotificationService.setEnabled(toggle.checked);
+                renderPreference(toggle.checked);
+          '''
+          success_new = '''      await UpdateNotificationService.setEnabled(toggle.checked);
+                renderPreference(toggle.checked);
+                showToast(
+                  toggle.checked
+                    ? getMessage("messageNotificationsEnabled")
+                    : getMessage("messageNotificationsDisabled"),
+                );
+          '''
+          if success_old in text:
+              text = text.replace(success_old, success_new, 1)
+          elif 'messageNotificationsEnabled' not in text[text.find('toggle?.addEventListener'):]:
+              raise SystemExit('success handler anchor not found')
+
+          error_old = '''      console.debug("Failed to save changelog preference:", error);
+                renderPreference(await UpdateNotificationService.isEnabled());
+          '''
+          error_new = '''      console.debug("Failed to save changelog preference:", error);
+                renderPreference(await UpdateNotificationService.isEnabled());
+                showToast(getMessage("errorSaveSetting"), "error");
+          '''
+          if error_old in text:
+              text = text.replace(error_old, error_new, 1)
+          elif 'showToast(getMessage("errorSaveSetting")' not in text:
+              raise SystemExit('error handler anchor not found')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          rm .github/workflows/temp-changelog-toast.yml
+
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add entrypoints/changelog/main.ts .github/workflows/temp-changelog-toast.yml
+          git commit -m "fix: show feedback for changelog notification toggle"
+          git push origin HEAD:feat/changelog-notification-preferences
