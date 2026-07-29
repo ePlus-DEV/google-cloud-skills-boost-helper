@@ -3,7 +3,9 @@ import ArcadeApiService from "../../services/arcadeApiService";
 const PROFILE_URL_EXAMPLE =
   "https://www.skills.google/public_profiles/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
-function getMessage(key: string, fallback: string): string {
+type MessageKey = Parameters<typeof browser.i18n.getMessage>[0];
+
+function getMessage(key: MessageKey, fallback: string): string {
   try {
     return browser.i18n.getMessage(key) || fallback;
   } catch {
@@ -53,19 +55,19 @@ function updateInputState(
 
   if (isEmpty) {
     helper.textContent = getMessage(
-      "accountCreationPasteHint",
+      "accountCreationPasteHint" as MessageKey,
       `Paste your public profile URL, for example: ${PROFILE_URL_EXAMPLE}`,
     );
     helper.className = "mt-2 text-xs text-gray-500";
   } else if (isValid) {
     helper.textContent = getMessage(
-      "accountCreationUrlReady",
+      "accountCreationUrlReady" as MessageKey,
       "Profile URL looks valid. Press Enter or select Create account.",
     );
     helper.className = "mt-2 text-xs text-emerald-700";
   } else {
     helper.textContent = getMessage(
-      "errorInvalidProfileUrl",
+      "errorInvalidProfileUrl" as MessageKey,
       "Enter a valid Google Cloud Skills Boost public profile URL.",
     );
     helper.className = "mt-2 text-xs text-red-600";
@@ -120,7 +122,7 @@ function enhanceModal(): void {
     setButtonState(button, true, true);
     button.setAttribute("aria-busy", "true");
     helper.textContent = getMessage(
-      "accountCreationCheckingProfile",
+      "accountCreationCheckingProfile" as MessageKey,
       "Checking profile and creating account…",
     );
     helper.className = "mt-2 text-xs text-indigo-700";
@@ -133,7 +135,10 @@ function enhanceModal(): void {
       updateInputState(input, button, helper);
     }
 
-    if (nickname && !nickname.closest("#step-add-nickname")?.classList.contains("hidden")) {
+    if (
+      nickname &&
+      !nickname.closest("#step-add-nickname")?.classList.contains("hidden")
+    ) {
       (nickname as HTMLInputElement).focus();
     }
   });
