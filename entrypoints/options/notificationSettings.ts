@@ -11,11 +11,6 @@ function getMessage(key: string): string {
   }
 }
 
-function getMessageOrFallback(key: string, fallback: string): string {
-  const message = getMessage(key);
-  return message === key ? fallback : message;
-}
-
 function showToast(message: string, type: "success" | "error" = "success") {
   const toast = document.createElement("div");
   toast.setAttribute("role", "status");
@@ -46,6 +41,13 @@ function createNotificationSection(): HTMLElement {
   const section = document.createElement("section");
   section.id = "notification-preferences-section";
 
+  const sectionTitle = `${getMessage("changelogWhatsNew")} & ${getMessage(
+    "labelEnableNotifications",
+  )}`;
+  const sectionDescription = `${getMessage(
+    "changelogLatestUpdates",
+  )}. ${getMessage("notificationPermissionNote")}`;
+
   section.innerHTML = `
     <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
       <div class="flex items-start gap-4">
@@ -56,13 +58,10 @@ function createNotificationSection(): HTMLElement {
         <div class="min-w-0 flex-1">
           <div class="mb-5">
             <h3 class="text-lg font-bold text-gray-800 mb-1">
-              ${getMessageOrFallback("notificationsSectionTitle", "Notifications")}
+              ${sectionTitle}
             </h3>
             <p class="text-gray-600 text-sm leading-relaxed">
-              ${getMessageOrFallback(
-                "notificationsSectionDescription",
-                "Control update notices and browser notifications.",
-              )}
+              ${sectionDescription}
             </p>
           </div>
 
