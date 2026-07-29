@@ -1,5 +1,7 @@
-import { LabService, ProfileService } from "../services";
+import LabService from "../services/labService";
+import ProfileService from "../services/profileService";
 import UIComponents from "../components/uiComponents";
+import BackToTopService from "../services/backToTopService";
 // Import styles for content script so wxt emits content-scripts/content.css
 import "../assets/tailwind.css";
 
@@ -28,7 +30,7 @@ export default defineContentScript({
   async main(ctx) {
     const { pathname } = window.location;
 
-    UIComponents.createFloatingBackToTop();
+    BackToTopService.initialize();
 
     // Handle lab pages
     if (LabService.isLabPage()) {

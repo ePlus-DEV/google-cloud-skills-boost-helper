@@ -83,7 +83,9 @@ const ExportService = {
     anchor.href = url;
     anchor.download = filename;
     anchor.click();
-    URL.revokeObjectURL(url);
+    // Revoking synchronously can race the download start (notably on
+    // Firefox) and silently truncate it — defer the cleanup.
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
   },
 };
 

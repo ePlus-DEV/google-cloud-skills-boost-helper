@@ -8,7 +8,9 @@ import TourService from "./tourService";
 import ExportService from "./exportService";
 import { calculateFacilitatorBonus } from "./facilitatorService";
 import { MARKDOWN_CONFIG } from "../utils/config";
-import { ModalUtils, DOMUtils, PreviewUtils } from "../utils";
+import { ModalUtils } from "../utils/modalUtils";
+import { DOMUtils } from "../utils/domUtils";
+import { PreviewUtils } from "../utils/previewUtils";
 import type { ArcadeData, Account, UserDetail } from "../types";
 
 /**
@@ -28,24 +30,26 @@ const OptionsService = {
     OptionsService.setupEventListeners();
     OptionsService.setupVersion();
     OptionsService.setupI18n();
-    await OptionsService.initializeAccountManagement();
-    await OptionsService.loadExistingData();
-    await OptionsService.loadSearchFeatureSetting();
-    await OptionsService.loadEplusSearchSetting();
-    await OptionsService.loadPreferredSearchEngineSetting();
-    await OptionsService.loadBadgeDisplaySetting();
-    await OptionsService.initializeMarkdown();
-
-    // Check if we should show the tour for first-time users
-    await OptionsService.initializeTour();
+    await Promise.all([
+      OptionsService.initializeAccountManagement(),
+      OptionsService.loadExistingData(),
+      OptionsService.loadSearchFeatureSetting(),
+      OptionsService.loadEplusSearchSetting(),
+      OptionsService.loadPreferredSearchEngineSetting(),
+      OptionsService.loadBadgeDisplaySetting(),
+      OptionsService.initializeMarkdown(),
+      OptionsService.initializeTour(),
+    ]);
   },
 
   /**
    * Initialize tour functionality
    */
   async initializeTour(): Promise<void> {
-    const shouldShowTour = await TourService.shouldShowTour();
-    const accounts = await AccountService.getAllAccounts();
+    const [shouldShowTour, accounts] = await Promise.all([
+      TourService.shouldShowTour(),
+      AccountService.getAllAccounts(),
+    ]);
 
     // If no accounts exist and user hasn't seen tour, show it automatically
     if (accounts.length === 0 && shouldShowTour) {
@@ -68,15 +72,16 @@ const OptionsService = {
   /**
    * Load and display accounts as cards
    */
-  async loadAccounts(): Promise<void> {
+  async loadAccounts(): Promise<Account | null> {
     const accountsList = document.getElementById("accounts-list");
     const noAccountsMessage = document.getElementById("no-accounts-message");
 
-    if (!accountsList) return;
+    if (!accountsList) return null;
 
-    // Load accounts
-    const accounts = await AccountService.getAllAccounts();
-    const activeAccount = await AccountService.getActiveAccount();
+    const [accounts, activeAccount] = await Promise.all([
+      AccountService.getAllAccounts(),
+      AccountService.getActiveAccount(),
+    ]);
 
     // Clear existing account cards (keep no-accounts message)
     const existingCards = accountsList.querySelectorAll(".account-card");
@@ -102,6 +107,8 @@ const OptionsService = {
         accountsList.appendChild(accountCard);
       }
     }
+
+    return activeAccount;
   },
 
   /**
@@ -549,10 +556,8 @@ const OptionsService = {
         facilitatorProgram: enabled,
       });
 
-      await this.loadAccounts(); // Reload to update badges and buttons
-
-      // Update milestone section visibility if this is the active account
-      const activeAccount = await AccountService.getActiveAccount();
+      // Reuse the active-account snapshot loaded for the final account-list render.
+      const activeAccount = await this.loadAccounts();
       if (activeAccount && activeAccount.id === accountId) {
         // Import PopupUIService to update milestone section
         const PopupUIService = (await import("./popupUIService")).default;
@@ -621,11 +626,32 @@ const OptionsService = {
       const messageKey = element.getAttribute("data-i18n");
       if (messageKey) {
         try {
+          // Support the "[attr]key" form, e.g. data-i18n="[placeholder]nicknamePlaceholder"
+          const attrMatch = messageKey.match(/^\[([^\]]+)\](.+)$/);
+          const lookupKey = attrMatch ? attrMatch[2] : messageKey;
           const translatedText = browser.i18n.getMessage(
-            messageKey as Parameters<typeof browser.i18n.getMessage>[0],
+            lookupKey as Parameters<typeof browser.i18n.getMessage>[0],
           );
-          if (translatedText) {
+          if (!translatedText) continue;
+
+          if (attrMatch) {
+            element.setAttribute(attrMatch[1], translatedText);
+          } else if (element.childElementCount === 0) {
             element.textContent = translatedText;
+          } else {
+            // Preserve child elements (icons, badges) — replace only the text node
+            const textNode = Array.from(element.childNodes).find(
+              (node) =>
+                node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+            );
+            if (textNode) {
+              textNode.textContent = translatedText;
+            } else {
+              element.insertBefore(
+                document.createTextNode(translatedText),
+                element.firstChild,
+              );
+            }
           }
         } catch (error: unknown) {
           console.error("Error applying i18n translation:", error);
@@ -801,8 +827,21 @@ const OptionsService = {
     if (searchFeatureToggle) {
       const isEnabled = await StorageService.isSearchFeatureEnabled();
       searchFeatureToggle.checked = isEnabled;
+      this.updateToggleStatusLabel("search-feature-status", isEnabled);
       await this.syncSearchChildControlState(isEnabled);
     }
+  },
+
+  /**
+   * Sync a toggle's status label after setting `checked` programmatically
+   * (assignment does not fire the `change` listener that updates the label).
+   */
+  updateToggleStatusLabel(statusElementId: string, enabled: boolean): void {
+    const statusElement = document.getElementById(statusElementId);
+    if (!statusElement) return;
+    statusElement.textContent = enabled
+      ? browser.i18n.getMessage("labelEnabled")
+      : browser.i18n.getMessage("labelDisabled");
   },
 
   /**
@@ -930,14 +969,8 @@ const OptionsService = {
           warnEl.textContent = warn;
           document.body.appendChild(warnEl);
           setTimeout(() => warnEl.remove(), 3500);
-          try {
-            await sendRuntimeMessage({
-              type: "enableEplusSearchChanged",
-              enabled: false,
-            });
-          } catch (err) {
-            console.debug("Failed to broadcast enableEplusSearchChanged:", err);
-          }
+          // Stored state was not changed, so do not broadcast a state change
+          // to open tabs here.
           return;
         }
 
@@ -974,6 +1007,7 @@ const OptionsService = {
     try {
       const enabled = await StorageService.isBadgeDisplayEnabled();
       badgeToggle.checked = Boolean(enabled);
+      this.updateToggleStatusLabel("badge-display-status", Boolean(enabled));
     } catch (e) {
       console.error("Failed to load badge display setting:", e);
     }
@@ -1395,6 +1429,7 @@ const OptionsService = {
           true,
           existingAccount,
         );
+        this.isCreateAccountInFlight = false;
         return;
       }
     } catch (error) {
@@ -1428,7 +1463,7 @@ const OptionsService = {
         name: userDetail.userName,
         profileUrl: trimmedUrl,
         arcadeData,
-        facilitatorProgram: facilitatorToggle?.checked || true,
+        facilitatorProgram: facilitatorToggle?.checked ?? true,
       });
 
       // Hide loading, show success and nickname step
@@ -1917,9 +1952,6 @@ const OptionsService = {
         arcadeData: arcadeData || undefined,
       });
 
-      await this.loadAccounts();
-
-      // Switch to new account
       await this.switchAccount(newAccount.id);
 
       this.hideAddAccountModal();
@@ -2097,7 +2129,9 @@ const OptionsService = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      // Revoking synchronously can race the download start (notably on
+      // Firefox) and silently truncate it — defer the cleanup.
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
 
       this.showMessage(
         browser.i18n.getMessage("successDataExported"),

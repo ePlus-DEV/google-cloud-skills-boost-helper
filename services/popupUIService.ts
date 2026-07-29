@@ -6,6 +6,8 @@ import {
   calculateMilestoneBonusBreakdown,
 } from "./facilitatorService";
 
+const _numberFormat = new Intl.NumberFormat(navigator.language);
+
 /**
  * Service to handle UI operations for popup and options
  */
@@ -267,12 +269,15 @@ const PopupUIService = {
   },
 
   /**
-   * Format points into thousands with 3 decimal places (38969 -> "38.969")
+   * Format points with dot thousands separators (38969 -> "38.969").
+   * Values below 1000 are shown as-is (120 -> "120", not "0.120").
    */
   formatPointsThousands(value: unknown): string {
     const num = this.parseNumericPoints(value);
-    if (!Number.isFinite(num)) return "0.000";
-    return (num / 1000).toFixed(3);
+    if (!Number.isFinite(num)) return "0";
+    return Math.trunc(num)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   },
 
   /**
@@ -417,18 +422,14 @@ const PopupUIService = {
     if (!hasPrizePoolData || prizeTier.spotsLeft === undefined) {
       if (prizeTier.slots !== undefined) {
         const slotsLabel = this.getI18nMessage("textTotalSlots", "total slots");
-        const formattedSlots = new Intl.NumberFormat(navigator.language).format(
-          prizeTier.slots,
-        );
+        const formattedSlots = _numberFormat.format(prizeTier.slots);
         return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSlots} ${slotsLabel})`;
       }
       return `${poolLabel}: ${prizeTier.league}${waterfall}`;
     }
 
     const spotsLabel = this.getI18nMessage("textSpotsLeft", "spots left");
-    const formattedSpots = new Intl.NumberFormat(navigator.language).format(
-      prizeTier.spotsLeft,
-    );
+    const formattedSpots = _numberFormat.format(prizeTier.spotsLeft);
     return `${poolLabel}: ${prizeTier.league}${waterfall} (${formattedSpots} ${spotsLabel})`;
   },
 
@@ -484,7 +485,6 @@ const PopupUIService = {
           );
 
       help.setAttribute("data-tooltip", tooltip);
-      help.setAttribute("title", tooltip);
     }
   },
 
@@ -726,8 +726,14 @@ const PopupUIService = {
     let facilitatorGloballyEnabled = false;
     try {
       const firebaseService = (await import("./firebaseService")).default;
+      // getBooleanParam returns the fallback when Firebase is not initialized,
+      // so initialize first — otherwise the flag is always read as false on
+      // the initial popup paint.
+      if (!firebaseService.isInitialized()) {
+        await firebaseService.initialize();
+      }
       facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
-        "countdown_enabled_arcade",
+        "countdown_enabled_facilitator",
         false,
       );
     } catch (error) {
@@ -968,19 +974,21 @@ const PopupUIService = {
       const AccountService = (await import("./accountService")).default;
       const firebaseService = (await import("./firebaseService")).default;
 
-      const currentAccount = await AccountService.getActiveAccount();
+      // Initialize Firebase first — getBooleanParam returns the fallback
+      // (false) when it is not initialized, hiding the section incorrectly.
+      if (!firebaseService.isInitialized()) {
+        await firebaseService.initialize();
+      }
 
-      // Check Firebase config - is Facilitator program globally enabled?
-      const facilitatorGloballyEnabled = await firebaseService.getBooleanParam(
-        "countdown_enabled_facilitator",
-        false,
-      );
-
-      // Check if Arcade is enabled
-      const arcadeEnabled = await firebaseService.getBooleanParam(
-        "countdown_enabled_arcade",
-        false,
-      );
+      const [currentAccount, facilitatorGloballyEnabled, arcadeEnabled] =
+        await Promise.all([
+          AccountService.getActiveAccount(),
+          firebaseService.getBooleanParam(
+            "countdown_enabled_facilitator",
+            false,
+          ),
+          firebaseService.getBooleanParam("countdown_enabled_arcade", false),
+        ]);
 
       // Show milestone section ONLY if:
       // 1. Account has facilitatorProgram enabled AND Facilitator is globally enabled
@@ -1122,6 +1130,11 @@ const PopupUIService = {
     const toggleIcon = this.querySelector("#breakdown-toggle");
 
     if (breakdownCard && breakdownDetails && toggleIcon) {
+      // Guard against re-binding on every updateMilestoneData call —
+      // duplicate handlers would toggle the card open and shut in one click.
+      if ((breakdownCard as HTMLElement).dataset.toggleBound === "true") return;
+      (breakdownCard as HTMLElement).dataset.toggleBound = "true";
+
       breakdownCard.addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -1393,6 +1406,8 @@ Details:
       `${currentYear}-12-31T23:59:59+05:30`;
 
     const getArcadeDefaultDeadline = () => {
+      const envDeadline = import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE;
+      if (envDeadline) return envDeadline;
       const now = new Date();
       const year = now.getFullYear();
       return `${year}-12-31T23:59:59+00:00`;
@@ -1429,11 +1444,14 @@ Details:
           year: "numeric",
         });
 
-        // Get timezone offset in GMT format
+        // Get timezone offset in GMT format (keep fractional offsets, e.g. +5:30)
         const offset = -date.getTimezoneOffset();
         const offsetHours = Math.floor(Math.abs(offset) / 60);
+        const offsetMinutes = Math.abs(offset) % 60;
         const offsetSign = offset >= 0 ? "+" : "-";
-        const timezone = `GMT${offsetSign}${offsetHours}`;
+        const timezone = `GMT${offsetSign}${offsetHours}${
+          offsetMinutes > 0 ? `:${String(offsetMinutes).padStart(2, "0")}` : ""
+        }`;
 
         return `${timeStr} ${dateStr} (${timezone})`;
       } catch (e) {
@@ -1526,11 +1544,11 @@ Details:
 
       let configSource: string | undefined;
       try {
-        const deadlineStr = await firebaseService.getStringParam(
-          rcKey,
-          fallbackDeadline,
-        );
-        enabled = await firebaseService.getBooleanParam(rcToggleKey, true);
+        const [deadlineStr, enabledValue] = await Promise.all([
+          firebaseService.getStringParam(rcKey, fallbackDeadline),
+          firebaseService.getBooleanParam(rcToggleKey, true),
+        ]);
+        enabled = enabledValue;
 
         // Get configuration source for display
         const params = firebaseService.getAllParams();

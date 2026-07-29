@@ -1,72 +1,96 @@
-# Contributions
+# Contributing
 
-Please refer to the sections below to find the appropriate destination for your contributions. Thank you for your support!
+Thank you for your interest in contributing. Please read this guide before submitting issues or pull requests.
 
 ---
 
 ## Reporting Issues
 
-Open an issue in the [GitHub issue tracker](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues) when you find a bug or want to request an improvement.
+Use the [GitHub issue tracker](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues) to report bugs or request features.
+
+When filing a bug report, include:
+
+- Browser name and version
+- Extension version
+- Steps to reproduce
+- Expected vs. actual behavior
 
 ---
 
 ## Contributing Code
 
-We welcome contributions to the project! Please follow these steps to contribute:
+### Requirements
 
-1. **Fork the Repository**
+- **Node.js** ≥ 24
+- **Yarn** (the project uses Yarn — do not use npm or pnpm)
+- macOS, Windows, or Linux
 
-   Create a fork of this repository in your GitHub account.
+### Setup
 
-2. **Clone Your Fork**
+```bash
+git clone https://github.com/ePlus-DEV/google-cloud-skills-boost-helper.git
+cd google-cloud-skills-boost-helper
+yarn install
+```
 
-   Clone your forked repository to your local machine:
+### Development
 
-   ```bash
-   git clone https://github.com/your-username/google-cloud-skills-boost-helper.git
-   cd google-cloud-skills-boost-helper
-   ```
+```bash
+yarn dev            # Chrome (hot-reload)
+yarn dev:firefox    # Firefox (hot-reload)
+```
 
-3. **Install Dependencies**
+The extension is output to `.output/chrome-mv3/` and reloads automatically on file changes.
 
-   Ensure you meet the following system requirements:
-   - Node.js 24 or later
-   - Yarn
-   - macOS, Windows, or Linux
+### Before Submitting a PR
 
-   Install the required dependencies:
+All of the following must pass:
 
-   ```bash
-   yarn install
-   ```
+```bash
+yarn compile          # TypeScript type check
+yarn test:coverage    # CI-equivalent tests and 60% coverage gate
+yarn build            # Production Chrome build
+```
 
-4. **Development Server**
+### Pull Request Guidelines
 
-   Start the development server for live reloading and HMR:
+- Keep PRs focused — one feature or fix per PR.
+- Target the `dev` branch, not `main`.
+- Write or update tests for any changed logic in `services/` or `utils/`.
+- Commit messages should follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-   ```bash
-   yarn dev
-   ```
+  ```text
+  feat: add arcade milestone badge
+  fix: correct profile URL canonicalization for qwiklabs.com
+  chore: bump wxt to 0.21.0
+  ```
 
-   This command watches for file changes, regenerates the extension bundle in `.output/chrome-mv3`, and reloads the extension in the browser.
+- PRs that fail `yarn compile`, `yarn test:coverage`, or `yarn build` will not be reviewed.
 
-5. **Validate Your Changes**
+### Project Structure
 
-   Run the type checker and tests before submitting a pull request:
+| Path           | Purpose                                                      |
+| -------------- | ------------------------------------------------------------ |
+| `entrypoints/` | WXT entrypoints (background, content script, popup, options) |
+| `services/`    | All business logic — keep UI-free                            |
+| `components/`  | DOM element factories for content script UI                  |
+| `utils/`       | Pure utility functions                                       |
+| `types/`       | Shared TypeScript types                                      |
+| `tests/`       | Vitest unit tests mirroring `services/` and `utils/`         |
 
-   ```bash
-   yarn compile
-   yarn test
-   ```
+---
 
-6. **Production Package**
+## Building for Release
 
-   Create the distributable package:
+```bash
+yarn build          # Chrome production build
+yarn build:firefox  # Firefox production build
+yarn zip            # Package Chrome build → .zip
+yarn zip:firefox    # Package Firefox build → .zip
+```
 
-   ```bash
-   yarn zip
-   ```
+Output artifacts are placed in `.output/`.
 
-   The generated archive is available at `.output/google-cloud-skills-boost-helper-{version}-chrome.zip`.
+---
 
-For more details, refer to the [WXT Framework Documentation](https://wxt.dev/guide/installation.html).
+This project is not affiliated with or endorsed by Google.

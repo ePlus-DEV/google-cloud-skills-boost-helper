@@ -1,399 +1,185 @@
 import { UI_COLORS } from "../utils/config";
+import UpdateNotificationService from "../services/updateNotificationService";
 
 export default defineBackground(() => {
-  // Set uninstall URL to open Google Form when extension is uninstalled
-  try {
-    if (browser.runtime.setUninstallURL) {
-      const manifest = browser.runtime.getManifest();
-      const version = manifest?.version || "unknown";
-
-      // Google Forms pre-fill format: entry.ENTRY_ID=value
-      // To get entry ID:
-      // 1. Open your Google Form in preview mode
-      // 2. Open Developer Tools (F12)
-      // 3. Inspect the version field and find name="entry.XXXXXXXX"
-      // 4. Replace ENTRY_ID below with that number
-
-      const FORM_ID =
-        "1FAIpQLSc_IYKM_q4_WW0S-t-sQgsHdeRwLYbDMxD-BrR68tkdjx8aqg"; // Replace with your form ID
-      const VERSION_ENTRY_ID = "1223799012"; // Replace with actual entry ID for version field
-
-      // Full Google Form URL with pre-filled version
-      const UNINSTALL_SURVEY_URL = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?entry.${VERSION_ENTRY_ID}=v${encodeURIComponent(
-        version,
-      )}`;
-
-      browser.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
-      console.debug("Uninstall survey URL set with version:", version);
-    }
-  } catch (e) {
-    console.debug("Failed to set uninstall URL:", e);
-  }
-
-  // Lightweight typed accessors for extension action APIs (avoid `as any` cast)
   type BadgeAction = {
-    setBadgeText: (details: { text: string }) => void;
-    setBadgeBackgroundColor?: (details: { color: string }) => void;
+    setBadgeText: (details: { text: string }) => void | Promise<void>;
+    setBadgeBackgroundColor?: (details: {
+      color: string;
+    }) => void | Promise<void>;
   };
 
-  function getBrowserAction(): BadgeAction | null {
-    const globalObj = globalThis as unknown as Record<string, unknown>;
-    try {
-      const maybeBrowser = globalObj.browser;
-      if (maybeBrowser && typeof maybeBrowser === "object") {
-        const mb = maybeBrowser as Record<string, unknown>;
-        if ("action" in mb && typeof mb.action === "object") {
-          return mb.action as unknown as BadgeAction;
-        }
-      }
-    } catch {
-      // ignore
-    }
-    return null;
+  function getAction(): BadgeAction | null {
+    const root = globalThis as unknown as {
+      browser?: { action?: BadgeAction };
+      chrome?: { action?: BadgeAction };
+    };
+    return root.browser?.action ?? root.chrome?.action ?? null;
   }
 
-  function getChromeAction(): BadgeAction | null {
-    const globalObj = globalThis as unknown as Record<string, unknown>;
+  async function clearBadge(): Promise<void> {
     try {
-      const maybeChrome = globalObj.chrome;
-      if (maybeChrome && typeof maybeChrome === "object") {
-        const mc = maybeChrome as Record<string, unknown>;
-        if ("action" in mc && typeof mc.action === "object") {
-          return mc.action as unknown as BadgeAction;
-        }
-      }
-    } catch {
-      // ignore
+      await getAction()?.setBadgeText({ text: "" });
+    } catch (error) {
+      console.debug("Failed to clear extension badge:", error);
     }
-    return null;
   }
 
-  // Helper to set badge text/color in a robust way
-  function setBadge(totalPoints: number) {
-    const num = Math.floor(Number(totalPoints) || 0);
-    let text: string;
-    if (num <= 999) text = String(num);
-    else if (num <= 9999) text = `${Math.floor(num / 1000)}k`;
-    else text = "999+";
-    // use shared badge color from config
-    const color = UI_COLORS?.BADGE || "#155dfc";
-
+  async function refreshBadge(): Promise<void> {
     try {
-      const browserAction = getBrowserAction();
-      if (browserAction) {
-        try {
-          browserAction.setBadgeText({ text });
-          if (browserAction.setBadgeBackgroundColor)
-            browserAction.setBadgeBackgroundColor({ color });
-          return;
-        } catch (e) {
-          console.debug("browser.action.setBadgeText failed:", e);
-        }
-      }
+      const StorageService = (await import("../services/storageService")).default;
+      await StorageService.refreshBadgeForActiveAccount();
+    } catch (error) {
+      console.debug("Failed to refresh badge:", error);
+    }
+  }
 
-      const chromeAction = getChromeAction();
-      if (chromeAction) {
-        try {
-          chromeAction.setBadgeText({ text });
-          if (chromeAction.setBadgeBackgroundColor)
-            chromeAction.setBadgeBackgroundColor({ color });
-          return;
-        } catch (e) {
-          console.debug("chrome.action.setBadgeText failed:", e);
-        }
-      }
-
-      console.debug(
-        "No action API available to set badge. Desired text:",
-        text,
+  async function broadcast(message: Record<string, unknown>): Promise<void> {
+    try {
+      const tabs = await browser.tabs.query({});
+      await Promise.all(
+        tabs.map(async (tab) => {
+          if (typeof tab.id !== "number") return;
+          try {
+            await browser.tabs.sendMessage(tab.id, message);
+          } catch {
+            // Tabs without the content script are expected to reject the message.
+          }
+        }),
       );
-    } catch (e) {
-      console.debug("Unexpected error setting badge:", e);
+    } catch (error) {
+      console.debug("Failed to broadcast runtime message:", error);
     }
   }
 
-  // On install/update, open options or changelog and update badge
+  try {
+    if (browser.runtime.setUninstallURL) {
+      const version = browser.runtime.getManifest()?.version || "unknown";
+      const formId =
+        "1FAIpQLSc_IYKM_q4_WW0S-t-sQgsHdeRwLYbDMxD-BrR68tkdjx8aqg";
+      const versionEntryId = "1223799012";
+      const uninstallUrl = `https://docs.google.com/forms/d/e/${formId}/viewform?entry.${versionEntryId}=v${encodeURIComponent(version)}`;
+      browser.runtime.setUninstallURL(uninstallUrl);
+    }
+  } catch (error) {
+    console.debug("Failed to set uninstall URL:", error);
+  }
+
   browser.runtime.onInstalled.addListener(
     async (details: { reason: string; previousVersion?: string }) => {
       const { reason, previousVersion } = details;
+
       if (reason === "install") {
         try {
           await browser.tabs.create({
             url: browser.runtime.getURL("/options.html"),
             active: true,
           });
-        } catch (e) {
-          console.debug("Failed to open options tab on install:", e);
+        } catch (error) {
+          console.debug("Failed to open options tab on install:", error);
         }
       }
 
       if (reason === "update") {
         try {
-          const manifest = browser.runtime.getManifest();
-          const currentVersion = manifest?.version || "";
-          if (previousVersion && previousVersion !== currentVersion) {
-            // build the path as a string and assert `any` to avoid narrow typing on getURL
+          const currentVersion = browser.runtime.getManifest()?.version || "";
+          const shouldOpenChangelog =
+            await UpdateNotificationService.isEnabled();
+
+          if (!shouldOpenChangelog) {
+            console.debug(
+              "Skipped changelog after update because update notifications are disabled.",
+            );
+          } else if (previousVersion && previousVersion === currentVersion) {
+            console.debug(
+              "Skipped changelog because the reported previous version matches the current version.",
+              { previousVersion, currentVersion },
+            );
+          } else {
             const path = `/changelog.html?version=${encodeURIComponent(
               currentVersion,
-            )}&from=${encodeURIComponent(previousVersion)}`;
-            const url = browser.runtime.getURL(path as any);
-            await browser.tabs.create({ url, active: true });
-          } else {
-            // fallback to options page
+            )}&from=${encodeURIComponent(previousVersion || "")}`;
             await browser.tabs.create({
-              url: browser.runtime.getURL("/options.html"),
+              url: browser.runtime.getURL(path as any),
               active: true,
             });
+            console.debug("Opened changelog after extension update.", {
+              previousVersion: previousVersion || "unknown",
+              currentVersion,
+            });
           }
-        } catch (e) {
-          console.debug("Failed to open changelog/options tab on update:", e);
+        } catch (error) {
+          console.debug("Failed to handle extension update:", error);
         }
       }
 
-      // Try to set badge from stored data on install
-      try {
-        // dynamic import to avoid bundling issues
-        const StorageService = (await import("../services/storageService"))
-          .default;
-        const { calculateFacilitatorBonus } =
-          await import("../services/facilitatorService");
-        const arcadeData = await StorageService.getArcadeData();
-        if (arcadeData) {
-          const base =
-            arcadeData.arcadePoints?.totalPoints ||
-            arcadeData.totalArcadePoints ||
-            0;
-          const bonus = arcadeData.faciCounts
-            ? calculateFacilitatorBonus(arcadeData.faciCounts)
-            : 0;
-          setBadge(base + bonus);
-        }
-      } catch (e) {
-        console.debug("Failed to set badge on install/start:", e);
-      }
+      await refreshBadge();
     },
   );
 
-  // On startup, update the badge as well
-  browser.runtime.onStartup.addListener(async () => {
-    // No runtime remote config for profile hosts: accepted hosts are read
-    // from PROFILE_CONFIG via profileConfigService and both cloudskillsboost
-    // and skills.google are accepted by default.
-    try {
-      const StorageService = (await import("../services/storageService"))
-        .default;
-      const { calculateFacilitatorBonus } =
-        await import("../services/facilitatorService");
-      const arcadeData = await StorageService.getArcadeData();
-      if (arcadeData) {
-        const base =
-          arcadeData.arcadePoints?.totalPoints ||
-          arcadeData.totalArcadePoints ||
-          0;
-        const bonus = arcadeData.faciCounts
-          ? calculateFacilitatorBonus(arcadeData.faciCounts)
-          : 0;
-        setBadge(base + bonus);
-      }
-    } catch (e) {
-      console.debug("Failed to set badge on startup:", e);
-    }
+  browser.runtime.onStartup.addListener(() => {
+    void refreshBadge();
   });
 
-  // Listen for messages (from popup/options) requesting badge updates
-  function handleSetBadge(message: Record<string, any>) {
-    const text = message.text || "0";
-    const color = message.color || UI_COLORS?.BADGE || "#155dfc";
-
-    try {
-      const browserAction = getBrowserAction();
-      if (browserAction) {
-        browserAction.setBadgeText({ text });
-        if (browserAction.setBadgeBackgroundColor)
-          browserAction.setBadgeBackgroundColor({ color });
-        return;
-      }
-    } catch (err) {
-      console.debug("browser.action set via message failed:", err);
-    }
-
-    try {
-      const chromeAction = getChromeAction();
-      if (chromeAction) {
-        chromeAction.setBadgeText({ text });
-        if (chromeAction.setBadgeBackgroundColor)
-          chromeAction.setBadgeBackgroundColor({ color });
-      }
-    } catch (err) {
-      console.debug("chrome.action set via message failed:", err);
-    }
-  }
-
-  // Clear the badge text from the extension icon
-  function handleClearBadge() {
-    try {
-      const browserAction = getBrowserAction();
-      if (browserAction) {
-        browserAction.setBadgeText({ text: "" });
-        return;
-      }
-    } catch (err) {
-      console.debug("browser.action clear failed:", err);
-    }
-
-    try {
-      const chromeAction = getChromeAction();
-      if (chromeAction) {
-        chromeAction.setBadgeText({ text: "" });
-      }
-    } catch (err) {
-      console.debug("chrome.action clear failed:", err);
-    }
-  }
-
-  async function handleRefreshBadge() {
-    try {
-      const StorageService = (await import("../services/storageService"))
-        .default;
-      const { calculateFacilitatorBonus } =
-        await import("../services/facilitatorService");
-      const enabled = await StorageService.isBadgeDisplayEnabled();
-      if (!enabled) {
-        // clear
-        const browserAction = getBrowserAction();
-        if (browserAction) {
-          browserAction.setBadgeText({ text: "" });
-          return;
-        }
-        const chromeAction = getChromeAction();
-        if (chromeAction) {
-          chromeAction.setBadgeText({ text: "" });
-          return;
-        }
-        return;
-      }
-
-      const arcadeData = await StorageService.getArcadeData();
-      if (!arcadeData) return;
-      const base =
-        arcadeData.arcadePoints?.totalPoints ||
-        arcadeData.totalArcadePoints ||
-        0;
-      const bonus = arcadeData.faciCounts
-        ? calculateFacilitatorBonus(arcadeData.faciCounts)
-        : 0;
-      setBadge(base + bonus);
-    } catch (err) {
-      console.debug("Failed to refresh badge:", err);
-    }
-  }
-
-  // Listen for messages (from popup/options) requesting badge updates
   browser.runtime.onMessage.addListener(async (message) => {
     try {
       if (!message?.type) return;
 
       switch (message.type) {
-        case "setBadge":
-          handleSetBadge(message);
+        case "setBadge": {
+          const action = getAction();
+          if (!action) return;
+          await action.setBadgeText({ text: message.text || "0" });
+          await action.setBadgeBackgroundColor?.({
+            color: message.color || UI_COLORS?.BADGE || "#155dfc",
+          });
           break;
-
+        }
         case "clearBadge":
-          handleClearBadge();
-          break;
-        case "preferredSearchEngineChanged":
-          try {
-            const engine = message.engine || "google";
-            // Broadcast to all tabs so content scripts can update UI in-place
-            const tabs = await browser.tabs.query({});
-            for (const t of tabs) {
-              try {
-                if (typeof t.id === "number") {
-                  await browser.tabs.sendMessage(t.id, {
-                    type: "preferredSearchEngineChanged",
-                    engine,
-                  });
-                }
-              } catch (err) {
-                // ignore send errors for tabs that don't have the content script
-              }
-            }
-          } catch (err) {
-            console.debug(
-              "Failed to broadcast preferredSearchEngineChanged:",
-              err,
-            );
-          }
-          break;
-        case "searchFeatureChanged":
-          try {
-            const enabled = Boolean(message.enabled);
-            const tabs = await browser.tabs.query({});
-            for (const t of tabs) {
-              try {
-                if (typeof t.id === "number") {
-                  await browser.tabs.sendMessage(t.id, {
-                    type: "searchFeatureChanged",
-                    enabled,
-                  });
-                }
-              } catch (err) {
-                // ignore
-              }
-            }
-          } catch (err) {
-            console.debug("Failed to broadcast searchFeatureChanged:", err);
-          }
-          break;
-        case "enableEplusSearchChanged":
-          try {
-            const enabled = Boolean(message.enabled);
-            const tabs = await browser.tabs.query({});
-            for (const t of tabs) {
-              try {
-                if (typeof t.id === "number") {
-                  await browser.tabs.sendMessage(t.id, {
-                    type: "enableEplusSearchChanged",
-                    enabled,
-                  });
-                }
-              } catch (err) {
-                // ignore
-              }
-            }
-          } catch (err) {
-            console.debug("Failed to broadcast enableEplusSearchChanged:", err);
-          }
+          await clearBadge();
           break;
         case "refreshBadge":
-          await handleRefreshBadge();
+          await refreshBadge();
+          break;
+        case "preferredSearchEngineChanged":
+          await broadcast({
+            type: "preferredSearchEngineChanged",
+            engine: message.engine || "google",
+          });
+          break;
+        case "searchFeatureChanged":
+          await broadcast({
+            type: "searchFeatureChanged",
+            enabled: Boolean(message.enabled),
+          });
+          break;
+        case "enableEplusSearchChanged":
+          await broadcast({
+            type: "enableEplusSearchChanged",
+            enabled: Boolean(message.enabled),
+          });
           break;
         default:
           return;
       }
-    } catch (e) {
-      console.debug("Error handling runtime message in background:", e);
+    } catch (error) {
+      console.debug("Error handling runtime message in background:", error);
     }
   });
 
-  // Dev/test: respond to explicit test message to open changelog
-  browser.runtime.onMessage.addListener(async (msg: Record<string, any>) => {
+  browser.runtime.onMessage.addListener(async (message) => {
+    if (!message?._openChangelogTest) return;
+
     try {
-      if (msg?._openChangelogTest) {
-        const from = msg.from || "";
-        const version = msg.version || "";
-        const path = `/changelog.html?version=${encodeURIComponent(
-          version,
-        )}&from=${encodeURIComponent(from)}`;
-        const url = browser.runtime.getURL(path as any);
-        try {
-          await browser.tabs.create({ url, active: true });
-        } catch (e) {
-          console.debug("Failed to open changelog test tab:", e);
-        }
-      }
-    } catch (e) {
-      console.debug("Error in test message handler:", e);
+      const path = `/changelog.html?version=${encodeURIComponent(
+        message.version || "",
+      )}&from=${encodeURIComponent(message.from || "")}`;
+      await browser.tabs.create({
+        url: browser.runtime.getURL(path as any),
+        active: true,
+      });
+    } catch (error) {
+      console.debug("Failed to open changelog test tab:", error);
     }
   });
 });
