@@ -40,62 +40,73 @@ function createToggle(
 function createNotificationSection(): HTMLElement {
   const section = document.createElement("section");
   section.id = "notification-preferences-section";
-  section.className = "space-y-4";
 
   section.innerHTML = `
-    <div class="flex items-center gap-3 px-1">
-      <div class="bg-blue-100 p-2.5 rounded-lg">
-        <i class="fa-solid fa-bell text-blue-600" aria-hidden="true"></i>
-      </div>
-      <h3 class="text-xl font-bold text-gray-900">${getMessage("labelEnableNotifications")}</h3>
-    </div>
+    <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
+      <div class="flex items-start gap-4">
+        <div class="bg-blue-500 p-3 rounded-lg shadow-sm shrink-0">
+          <i class="fa-solid fa-bell text-white text-lg" aria-hidden="true"></i>
+        </div>
 
-    <div class="bg-gradient-to-br from-white to-blue-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
-      <div class="flex items-center justify-between gap-6">
-        <div class="flex items-start space-x-4 min-w-0">
-          <div class="bg-blue-100 p-3 rounded-lg shadow-sm shrink-0">
-            <i class="fa-solid fa-rectangle-list text-blue-600 text-lg" aria-hidden="true"></i>
-          </div>
-          <div>
-            <h4 id="changelog-notification-heading" class="text-lg font-bold text-gray-800 mb-2">
-              ${getMessage("changelogWhatsNew")}
-            </h4>
+        <div class="min-w-0 flex-1">
+          <div class="mb-5">
+            <h3 class="text-lg font-bold text-gray-800 mb-1">
+              ${getMessage("notificationsSectionTitle") || "Notifications"}
+            </h3>
             <p class="text-gray-600 text-sm leading-relaxed">
-              ${getMessage("changelogLatestUpdates")}
+              ${getMessage("notificationsSectionDescription") || "Control update notices and browser notifications."}
             </p>
           </div>
-        </div>
-        <div class="flex items-center space-x-3 shrink-0">
-          ${createToggle("changelog-notification-toggle", "changelog-notification-heading")}
-          <span id="changelog-notification-status" aria-live="polite" class="text-sm font-medium text-gray-700">
-            ${getMessage("labelEnabled")}
-          </span>
-        </div>
-      </div>
-    </div>
 
-    <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm opacity-80">
-      <div class="flex items-center justify-between gap-6">
-        <div class="flex items-start space-x-4 min-w-0">
-          <div class="bg-gray-100 p-3 rounded-lg shadow-sm shrink-0">
-            <i class="fa-solid fa-bell text-gray-500 text-lg" aria-hidden="true"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-2">
-              <h4 id="browser-notification-heading" class="text-lg font-bold text-gray-800">
-                ${getMessage("labelEnableNotifications")}
-              </h4>
-              <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
-                ${getMessage("statusNotStarted")}
-              </span>
+          <div class="divide-y divide-blue-100 rounded-lg border border-blue-100 bg-white/70">
+            <div class="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div class="flex items-start gap-3 min-w-0">
+                <div class="bg-blue-100 p-2.5 rounded-lg shrink-0">
+                  <i class="fa-solid fa-rectangle-list text-blue-600" aria-hidden="true"></i>
+                </div>
+                <div class="min-w-0">
+                  <h4 id="changelog-notification-heading" class="font-semibold text-gray-800">
+                    ${getMessage("changelogWhatsNew")}
+                  </h4>
+                  <p class="mt-1 text-sm text-gray-600 leading-relaxed">
+                    ${getMessage("changelogLatestUpdates")}
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 self-end shrink-0 sm:self-auto">
+                ${createToggle("changelog-notification-toggle", "changelog-notification-heading")}
+                <span id="changelog-notification-status" aria-live="polite" class="min-w-16 text-sm font-medium text-gray-700">
+                  ${getMessage("labelEnabled")}
+                </span>
+              </div>
             </div>
-            <p class="text-gray-600 text-sm leading-relaxed">
-              ${getMessage("notificationPermissionNote")}
-            </p>
+
+            <div class="flex flex-col gap-4 p-4 opacity-75 sm:flex-row sm:items-center sm:justify-between">
+              <div class="flex items-start gap-3 min-w-0">
+                <div class="bg-gray-100 p-2.5 rounded-lg shrink-0">
+                  <i class="fa-solid fa-bell text-gray-500" aria-hidden="true"></i>
+                </div>
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h4 id="browser-notification-heading" class="font-semibold text-gray-800">
+                      ${getMessage("labelEnableNotifications")}
+                    </h4>
+                    <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
+                      ${getMessage("statusNotStarted")}
+                    </span>
+                  </div>
+                  <p class="mt-1 text-sm text-gray-600 leading-relaxed">
+                    ${getMessage("notificationPermissionNote")}
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center self-end shrink-0 sm:self-auto">
+                ${createToggle("browser-notification-toggle", "browser-notification-heading", true)}
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center space-x-3 shrink-0">
-          ${createToggle("browser-notification-toggle", "browser-notification-heading", true)}
         </div>
       </div>
     </div>
