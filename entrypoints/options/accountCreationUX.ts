@@ -5,12 +5,8 @@ const PROFILE_URL_EXAMPLE =
 
 type MessageKey = Parameters<typeof browser.i18n.getMessage>[0];
 
-function getMessage(key: MessageKey, fallback: string): string {
-  try {
-    return browser.i18n.getMessage(key) || fallback;
-  } catch {
-    return fallback;
-  }
+function getMessage(key: MessageKey): string {
+  return browser.i18n.getMessage(key);
 }
 
 function ensureHelper(input: HTMLInputElement): HTMLElement {
@@ -37,6 +33,12 @@ function setButtonState(
   button.classList.toggle("opacity-60", !enabled || busy);
   button.classList.toggle("cursor-not-allowed", !enabled || busy);
   button.classList.toggle("cursor-pointer", enabled && !busy);
+
+  if (busy) {
+    button.setAttribute("aria-busy", "true");
+  } else {
+    button.removeAttribute("aria-busy");
+  }
 }
 
 function updateInputState(
@@ -54,26 +56,26 @@ function updateInputState(
   input.setAttribute("aria-invalid", String(!isEmpty && !isValid));
 
   if (isEmpty) {
-    helper.textContent = getMessage(
-      "accountCreationPasteHint" as MessageKey,
-      `Paste your public profile URL, for example: ${PROFILE_URL_EXAMPLE}`,
-    );
+    helper.textContent = "";
     helper.className = "mt-2 text-xs text-gray-500";
   } else if (isValid) {
-    helper.textContent = getMessage(
-      "accountCreationUrlReady" as MessageKey,
-      "Profile URL looks valid. Press Enter or select Create account.",
-    );
+    helper.textContent = getMessage("labelAddAccount");
     helper.className = "mt-2 text-xs text-emerald-700";
   } else {
-    helper.textContent = getMessage(
-      "errorInvalidProfileUrl" as MessageKey,
-      "Enter a valid Google Cloud Skills Boost public profile URL.",
-    );
+    helper.textContent = getMessage("errorInvalidProfileUrl");
     helper.className = "mt-2 text-xs text-red-600";
   }
 
   setButtonState(button, isValid);
+}
+
+function setBusyState(
+  button: HTMLButtonElement,
+  helper: HTMLElement,
+): void {
+  setButtonState(button, true, true);
+  helper.textContent = getMessage("labelAdding");
+  helper.className = "mt-2 text-xs text-indigo-700";
 }
 
 function enhanceModal(): void {
@@ -85,6 +87,7 @@ function enhanceModal(): void {
     "create-account-btn",
   ) as HTMLButtonElement | null;
   const loading = document.getElementById("loading-profile");
+  const errorProfile = document.getElementById("error-profile");
   const nickname = document.getElementById("account-nickname-input");
 
   if (!modal || !input || !button || input.dataset.uxEnhanced === "true") {
@@ -111,29 +114,35 @@ function enhanceModal(): void {
     }, 0);
   });
 
-  input.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter" || button.disabled) return;
-    event.preventDefault();
-    button.click();
-  });
+  input.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key !== "Enter") return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (!button.disabled) {
+        button.click();
+      }
+    },
+    true,
+  );
 
   button.addEventListener("click", () => {
     if (button.disabled) return;
-    setButtonState(button, true, true);
-    button.setAttribute("aria-busy", "true");
-    helper.textContent = getMessage(
-      "accountCreationCheckingProfile" as MessageKey,
-      "Checking profile and creating account…",
-    );
-    helper.className = "mt-2 text-xs text-indigo-700";
+    setBusyState(button, helper);
   });
 
-  const stateObserver = new MutationObserver(() => {
+  const syncAsyncState = (): void => {
     const isLoading = Boolean(loading && !loading.classList.contains("hidden"));
-    if (!isLoading) {
-      button.removeAttribute("aria-busy");
-      updateInputState(input, button, helper);
+
+    if (isLoading) {
+      setBusyState(button, helper);
+      return;
     }
+
+    updateInputState(input, button, helper);
 
     if (
       nickname &&
@@ -141,13 +150,17 @@ function enhanceModal(): void {
     ) {
       (nickname as HTMLInputElement).focus();
     }
-  });
+  };
 
-  if (loading) {
-    stateObserver.observe(loading, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+  const stateObserver = new MutationObserver(syncAsyncState);
+
+  for (const element of [loading, errorProfile]) {
+    if (element) {
+      stateObserver.observe(element, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
   }
 
   const nicknameStep = document.getElementById("step-add-nickname");
@@ -160,6 +173,7 @@ function enhanceModal(): void {
 
   const modalObserver = new MutationObserver(() => {
     if (!modal.classList.contains("hidden")) {
+      updateInputState(input, button, helper);
       window.setTimeout(() => input.focus(), 50);
     }
   });
