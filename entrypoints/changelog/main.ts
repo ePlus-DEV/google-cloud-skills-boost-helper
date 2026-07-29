@@ -1,310 +1,255 @@
 import MarkdownService from "../../services/markdownService";
+import UpdateNotificationService from "../../services/updateNotificationService";
 import { MARKDOWN_CONFIG } from "../../utils/config";
 import { isFirefox } from "../../services/browserService";
 
-// Set document title
-document.title =
-  chrome.i18n.getMessage("changelogPageTitle") ||
-  "Changelog - Google Cloud Skills Boost Helper";
-
-// Function to localize elements with data-i18n attributes
-function localizeElements() {
-  const elements = document.querySelectorAll("[data-i18n]");
-  for (const element of elements) {
-    const key = element.getAttribute("data-i18n");
-    if (key && chrome.i18n) {
-      const message = chrome.i18n.getMessage(key);
-      if (message) {
-        element.textContent = message;
-      }
-    }
+function getMessage(key: string): string {
+  try {
+    const lookupMessage = browser.i18n.getMessage as unknown as (
+      messageName: string,
+    ) => string;
+    return lookupMessage(key) || key;
+  } catch {
+    return key;
   }
 }
 
-// Apply translations immediately
-localizeElements();
+document.title = getMessage("changelogPageTitle");
 
-// Use the single configured CHANGELOG_URL (remote gist). No local fallback.
-const CHANGELOG_URL = MARKDOWN_CONFIG.CHANGELOG_URL;
+function localizeElements(): void {
+  for (const element of document.querySelectorAll<HTMLElement>("[data-i18n]")) {
+    const key = element.dataset.i18n;
+    if (!key) continue;
+    const message = getMessage(key);
+    if (message) element.textContent = message;
+  }
+}
 
-// Determine which container ID actually exists on the page. Prefer configured ID
-const preferredId = MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID;
-const containerId =
-  preferredId && document.getElementById(preferredId)
-    ? preferredId
-    : "changelog-content";
+function showToast(message: string, type: "success" | "error" = "success"): void {
+  document.getElementById("changelog-preference-toast")?.remove();
 
-// Function to add IDs to headings and make them scrollable
-function addHeadingIds() {
+  const toast = document.createElement("div");
+  toast.id = "changelog-preference-toast";
+  toast.setAttribute("role", type === "error" ? "alert" : "status");
+  toast.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
+  toast.className = `fixed right-4 top-4 z-50 flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg ${
+    type === "success" ? "bg-emerald-600" : "bg-red-600"
+  }`;
+
+  const icon = document.createElement("i");
+  icon.className = type === "success" ? "fa-solid fa-circle-check" : "fa-solid fa-circle-exclamation";
+  icon.setAttribute("aria-hidden", "true");
+
+  const label = document.createElement("span");
+  label.textContent = message;
+  toast.append(icon, label);
+  document.body.appendChild(toast);
+
+  window.setTimeout(() => toast.remove(), 3000);
+}
+
+function getQueryParam(name: string): string | null {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function addHeadingIds(): void {
   const markdownContent = document.querySelector(".markdown-content");
   if (!markdownContent) return;
 
-  // Get all h2 and h3 headings
-  const headings = markdownContent.querySelectorAll("h2, h3");
-
-  // Repeated section names ("Fixed", "Added", …) appear under every version —
-  // suffix duplicates so anchors resolve to the right occurrence.
   const usedIds = new Map<string, number>();
+  const headings = markdownContent.querySelectorAll<HTMLElement>("h2, h3");
 
-  headings.forEach((heading) => {
-    // Create ID from heading text
+  for (const heading of headings) {
     const text = heading.textContent || "";
-    const baseId = text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
+    const baseId = slugify(text) || "section";
     const seen = usedIds.get(baseId) ?? 0;
     usedIds.set(baseId, seen + 1);
-    const id = seen === 0 ? baseId : `${baseId}-${seen + 1}`;
+    heading.id = seen === 0 ? baseId : `${baseId}-${seen + 1}`;
+    heading.style.cursor = "pointer";
+    heading.style.position = "relative";
+    heading.style.scrollMarginTop = "100px";
 
-    // Extract version number from heading (e.g., "Version 1.2.5" -> "1.2.5")
-    const versionMatch = text.match(/version\s+([\d.]+)/i);
-    const versionNumber = versionMatch ? versionMatch[1] : null;
-
-    // Set the ID
-    heading.id = id;
-
-    // Add anchor link icon
-    const headingElement = heading as HTMLElement;
-    Object.assign(headingElement.style, {
-      cursor: "pointer",
-      position: "relative",
-      scrollMarginTop: "100px",
-    });
-
-    // Add click handler for copying link
-    heading.addEventListener("click", () => {
+    heading.addEventListener("click", async () => {
       const url = new URL(window.location.href);
-
-      // If this is a version heading, update the version parameter
-      if (versionNumber) {
-        url.searchParams.set("version", versionNumber);
-        url.searchParams.set("scroll", versionNumber);
+      const versionMatch = text.match(/version\s+([\d.]+)/i);
+      if (versionMatch) {
+        url.searchParams.set("version", versionMatch[1]);
+        url.searchParams.set("scroll", versionMatch[1]);
       } else {
-        // For non-version headings, just set scroll
-        url.searchParams.set("scroll", id);
+        url.searchParams.set("scroll", heading.id);
       }
-
       window.history.pushState({}, "", url.toString());
-
-      // ScroElementll to element smoothly
       heading.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      // Optional: Copy link to clipboard
-      navigator.clipboard
-        .writeText(url.toString())
-        .then(() => {
-          // Show a brief tooltip/notification
-          const tooltip = document.createElement("span");
-          tooltip.textContent = "📋 Link copied!";
-          tooltip.style.cssText = `
-            position: absolute;
-            left: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #10b981;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-            z-index: 1000;
-            animation: fadeOut 2s ease-out forwards;
-          `;
-          heading.appendChild(tooltip);
-
-          setTimeout(() => {
-            tooltip.remove();
-          }, 2000);
-        })
-        .catch((err) => console.debug("Copy failed:", err));
+      try {
+        await navigator.clipboard.writeText(url.toString());
+      } catch (error) {
+        console.debug("Copy changelog link failed:", error);
+      }
     });
-
-    // Add hover effect to show it's clickable
-    heading.addEventListener("mouseenter", () => {
-      // Add a link icon on hover
-      const linkIcon = document.createElement("span");
-      linkIcon.className = "heading-link-icon";
-      linkIcon.innerHTML = ' <i class="fa-solid fa-link"></i>';
-      linkIcon.style.cssText = `
-        color: #6366f1;
-        font-size: 0.7em;
-        margin-left: 8px;
-        opacity: 0;
-        transition: opacity 0.2s;
-      `;
-      heading.appendChild(linkIcon);
-
-      setTimeout(() => {
-        linkIcon.style.opacity = "0.6";
-      }, 10);
-    });
-
-    heading.addEventListener("mouseleave", () => {
-      const icon = heading.querySelector(".heading-link-icon");
-      if (icon) icon.remove();
-    });
-  });
-
-  // Auto-scroll to the current version if specified in URL
-  const versionParam = getQueryParam("version");
-  const scrollParam = getQueryParam("scroll");
-
-  if (scrollParam) {
-    // If scroll parameter exists, scroll to that ID
-    setTimeout(() => {
-      const target = document.getElementById(scrollParam);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 500);
-  } else if (versionParam) {
-    // If version parameter exists (e.g., from update), scroll to that version
-    setTimeout(() => {
-      // Try to find heading with this version number
-      const versionId = `version-${versionParam.replace(/\./g, "-")}`;
-      let target = document.getElementById(versionId);
-
-      // If not found, try alternative formats
-      if (!target) {
-        const alternativeId = `version-${versionParam.replace(/\./g, "")}`;
-        target = document.getElementById(alternativeId);
-      }
-
-      // If still not found, search through all headings
-      if (!target) {
-        const allHeadings = markdownContent.querySelectorAll("h2, h3");
-        for (const h of allHeadings) {
-          const text = h.textContent || "";
-          if (text.includes(versionParam)) {
-            target = h as HTMLElement;
-            break;
-          }
-        }
-      }
-
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 500);
   }
 
-  // Also support hash for backward compatibility
-  if (!scrollParam && !versionParam && window.location.hash) {
-    setTimeout(() => {
-      const targetId = window.location.hash.substring(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 500);
+  const scrollParam = getQueryParam("scroll");
+  const versionParam = getQueryParam("version");
+  const hashParam = window.location.hash
+    ? decodeURIComponent(window.location.hash.slice(1))
+    : null;
+  const requested = scrollParam || versionParam || hashParam;
+  if (!requested) return;
+
+  window.setTimeout(() => {
+    let target = document.getElementById(requested);
+    if (!target && versionParam) {
+      target =
+        Array.from(headings).find((heading) =>
+          heading.textContent?.includes(versionParam),
+        ) ?? null;
+    }
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 400);
+}
+
+function createUpdatePreferenceCard(): HTMLElement {
+  const card = document.createElement("section");
+  card.id = "changelog-update-preference";
+  card.className =
+    "mb-6 rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-sm";
+  card.innerHTML = `
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-start gap-3 min-w-0">
+        <div class="rounded-lg bg-blue-100 p-2.5 shrink-0">
+          <i class="fa-solid fa-bell text-blue-600" aria-hidden="true"></i>
+        </div>
+        <div>
+          <h2 id="changelog-preference-heading" class="font-semibold text-gray-900">
+            ${getMessage("labelEnableNotifications")}
+          </h2>
+          <p class="mt-1 text-sm text-gray-600">
+            ${getMessage("changelogLatestUpdates")}
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <label class="relative inline-flex cursor-pointer items-center">
+          <input id="changelog-preference-toggle" type="checkbox" class="sr-only peer" aria-labelledby="changelog-preference-heading" />
+          <span class="h-7 w-12 rounded-full bg-gray-300 transition peer-checked:bg-blue-600"></span>
+          <span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span>
+        </label>
+        <span id="changelog-preference-status" class="text-sm font-medium text-gray-700" aria-live="polite"></span>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function renderPreference(enabled: boolean): void {
+  const toggle = document.getElementById(
+    "changelog-preference-toggle",
+  ) as HTMLInputElement | null;
+  const status = document.getElementById("changelog-preference-status");
+  if (toggle) toggle.checked = enabled;
+  if (status) {
+    status.textContent = enabled
+      ? getMessage("labelEnabled")
+      : getMessage("labelDisabled");
   }
 }
 
-async function loadChangelog() {
+async function initializeUpdatePreference(): Promise<void> {
+  const configuredContainer = document.getElementById(
+    MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID,
+  );
+  const container =
+    configuredContainer ?? document.getElementById("changelog-content");
+  const parent = container?.parentElement;
+  if (!parent || !container || document.getElementById("changelog-update-preference")) {
+    return;
+  }
+
+  const card = createUpdatePreferenceCard();
+  parent.insertBefore(card, container);
+  renderPreference(await UpdateNotificationService.isEnabled());
+
+  const toggle = document.getElementById(
+    "changelog-preference-toggle",
+  ) as HTMLInputElement | null;
+  toggle?.addEventListener("change", async () => {
+    toggle.disabled = true;
+    try {
+      await UpdateNotificationService.setEnabled(toggle.checked);
+      renderPreference(toggle.checked);
+      showToast(
+        toggle.checked
+          ? getMessage("messageNotificationsEnabled")
+          : getMessage("messageNotificationsDisabled"),
+      );
+    } catch (error) {
+      console.debug("Failed to save changelog preference:", error);
+      renderPreference(await UpdateNotificationService.isEnabled());
+      showToast(getMessage("errorSaveSetting"), "error");
+    } finally {
+      toggle.disabled = false;
+    }
+  });
+}
+
+async function loadChangelog(): Promise<void> {
+  const preferredId = MARKDOWN_CONFIG.DEFAULT_CONTAINER_ID;
+  const containerId =
+    preferredId && document.getElementById(preferredId)
+      ? preferredId
+      : "changelog-content";
   const success = await MarkdownService.renderUrlToContainer(
-    CHANGELOG_URL,
+    MARKDOWN_CONFIG.CHANGELOG_URL,
     containerId,
     ".markdown-content",
   );
 
   if (!success) {
     const container = document.getElementById(containerId);
-    if (container)
-      container.innerHTML =
-        '<p class="text-sm text-red-600">Unable to load changelog.</p>';
-  } else {
-    // Add IDs to headings after content is loaded
-    setTimeout(() => {
-      addHeadingIds();
-    }, 100);
-  }
-}
-
-// Wire up UI controls: back and settings
-function getQueryParam(name: string): string | null {
-  const params = new URLSearchParams(window.location.search);
-  return params.get(name);
-}
-
-const backButton = document.getElementById("back-button");
-const versionBadge = document.getElementById("version-number");
-
-// Get version from query param and update badge + title
-const versionParam = getQueryParam("version");
-if (versionParam) {
-  // Update version badge
-  if (versionBadge) {
-    versionBadge.textContent = `v${versionParam}`;
-  }
-
-  // Update page title
-  try {
-    document.title = `Changelog - v${versionParam}`;
-  } catch (err) {
-    console.debug("changelog: set title failed", err);
-  }
-} else {
-  // Clear version badge if no version param
-  if (versionBadge) {
-    versionBadge.textContent = "";
-  }
-}
-
-// Localize static UI texts if browser.i18n is available
-try {
-  if (typeof browser !== "undefined" && browser.i18n) {
-    const backEl = document.getElementById("back-button");
-
-    if (backEl) {
-      const backSpan = backEl.querySelector("span");
-      if (backSpan) {
-        backSpan.textContent =
-          browser.i18n.getMessage("labelBack") || backSpan.textContent;
-      }
+    if (container) {
+      container.textContent = getMessage("errorLoadingData");
+      container.classList.add("text-sm", "text-red-600");
     }
+    return;
   }
-} catch (err) {
-  console.debug("changelog: i18n load failed", err);
+
+  window.setTimeout(addHeadingIds, 100);
 }
 
-if (backButton) {
-  backButton.addEventListener("click", () => {
-    // Always open options in a new tab (user requested)
-    try {
-      const url =
-        typeof browser !== "undefined" &&
-        browser.runtime &&
-        browser.runtime.getURL
-          ? browser.runtime.getURL("/options.html")
-          : "/options.html";
-      window.open(url, "_blank");
-    } catch (err) {
-      console.debug("changelog: open options in new tab failed", err);
-      // Fallback: navigate in current tab
-      window.location.href = "/options.html";
-    }
+function initializeNavigation(): void {
+  const backButton = document.getElementById("back-button");
+  const backLabel = backButton?.querySelector("span");
+  if (backLabel) backLabel.textContent = getMessage("labelBack");
+
+  backButton?.addEventListener("click", () => {
+    window.location.href = browser.runtime.getURL("/options.html");
   });
+
+  const version = getQueryParam("version");
+  const versionBadge = document.getElementById("version-number");
+  if (versionBadge) versionBadge.textContent = version ? `v${version}` : "";
+  if (version) document.title = `${getMessage("changelogWhatsNew")} - v${version}`;
 }
 
-// Show browser-specific store badge
-async function showBrowserStoreBadge() {
-  const isFirefoxBrowser = await isFirefox();
-  const chromeStoreBadge = document.getElementById("chrome-web-store-badge");
-  const firefoxAddonStore = document.getElementById("firefox-addon-store");
-
-  if (isFirefoxBrowser) {
-    // Firefox browser - show Firefox badge
-    if (firefoxAddonStore) firefoxAddonStore.classList.remove("hidden");
-    if (chromeStoreBadge) chromeStoreBadge.classList.add("hidden");
-  } else {
-    // Chrome/Edge/Brave browser - show Chrome badge
-    if (chromeStoreBadge) chromeStoreBadge.classList.remove("hidden");
-    if (firefoxAddonStore) firefoxAddonStore.classList.add("hidden");
-  }
+async function showBrowserStoreBadge(): Promise<void> {
+  const firefox = await isFirefox();
+  document
+    .getElementById("chrome-web-store-badge")
+    ?.classList.toggle("hidden", firefox);
+  document
+    .getElementById("firefox-addon-store")
+    ?.classList.toggle("hidden", !firefox);
 }
 
-loadChangelog();
-showBrowserStoreBadge();
+localizeElements();
+initializeNavigation();
+void initializeUpdatePreference();
+void loadChangelog();
+void showBrowserStoreBadge();
