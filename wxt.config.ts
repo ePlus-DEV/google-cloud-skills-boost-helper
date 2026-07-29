@@ -1,6 +1,57 @@
 import { defineConfig } from "wxt";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
+import type { Plugin } from "vite";
+
+function popupSizeBootstrapPlugin(): Plugin {
+  return {
+    name: "eplus-popup-size-bootstrap",
+    transformIndexHtml: {
+      order: "pre",
+      handler(html) {
+        if (!html.includes('id="popup-content"')) return html;
+
+        return {
+          html,
+          tags: [
+            {
+              tag: "style",
+              injectTo: "head-prepend",
+              children: `
+                html[data-popup-compact="true"] #popup-content {
+                  min-height: 0 !important;
+                }
+                html[data-popup-compact="true"] #section-announcement,
+                html[data-popup-compact="true"] #section-badges,
+                html[data-popup-compact="true"] #milestones-section,
+                html[data-popup-compact="true"] #countdown-container,
+                html[data-popup-compact="true"] #section-activity,
+                html[data-popup-compact="true"] #keyboard-hint {
+                  display: none !important;
+                }
+              `,
+            },
+            {
+              tag: "script",
+              injectTo: "head-prepend",
+              attrs: {
+                src: "/popup-size-bootstrap.js",
+              },
+            },
+            {
+              tag: "script",
+              injectTo: "head",
+              attrs: {
+                type: "module",
+                src: "/entrypoints/popup/compactModeSync.ts",
+              },
+            },
+          ],
+        };
+      },
+    },
+  };
+}
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -17,6 +68,6 @@ export default defineConfig({
     },
   },
   vite: () => ({
-    plugins: [react(), tailwindcss()],
+    plugins: [popupSizeBootstrapPlugin(), react(), tailwindcss()],
   }),
 });
