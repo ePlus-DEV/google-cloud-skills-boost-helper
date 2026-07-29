@@ -11,6 +11,11 @@ function getMessage(key: string): string {
   }
 }
 
+function getMessageOrFallback(key: string, fallback: string): string {
+  const message = getMessage(key);
+  return message === key ? fallback : message;
+}
+
 function showToast(message: string, type: "success" | "error" = "success") {
   const toast = document.createElement("div");
   toast.setAttribute("role", "status");
@@ -51,10 +56,13 @@ function createNotificationSection(): HTMLElement {
         <div class="min-w-0 flex-1">
           <div class="mb-5">
             <h3 class="text-lg font-bold text-gray-800 mb-1">
-              ${getMessage("notificationsSectionTitle") || "Notifications"}
+              ${getMessageOrFallback("notificationsSectionTitle", "Notifications")}
             </h3>
             <p class="text-gray-600 text-sm leading-relaxed">
-              ${getMessage("notificationsSectionDescription") || "Control update notices and browser notifications."}
+              ${getMessageOrFallback(
+                "notificationsSectionDescription",
+                "Control update notices and browser notifications.",
+              )}
             </p>
           </div>
 
