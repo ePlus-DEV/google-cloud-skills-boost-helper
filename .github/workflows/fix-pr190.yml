@@ -1,0 +1,106 @@
+name: Fix PR 190 review issues
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/fix-pr190.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fix compact mode initialization race and pt-BR translations
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const servicePath = 'services/compactModePreferenceService.ts';
+          let service = fs.readFileSync(servicePath, 'utf8');
+          const oldBlock = `async function initializeMirrorSync(): Promise<boolean> {
+  const compact = await getValue();
+  persistMirror(compact);
+  applyDocumentState(compact);
+
+  compactModeStorage.watch((nextValue) => {
+    persistMirror(nextValue);
+    applyDocumentState(nextValue);
+  });
+
+  return compact;
+}`;
+          const newBlock = `async function initializeMirrorSync(): Promise<boolean> {
+  let initialized = false;
+  let pendingValue: boolean | undefined;
+
+  compactModeStorage.watch((nextValue) => {
+    if (!initialized) {
+      pendingValue = nextValue;
+      return;
+    }
+
+    persistMirror(nextValue);
+    applyDocumentState(nextValue);
+  });
+
+  const initialValue = await getValue();
+  const compact = pendingValue ?? initialValue;
+  persistMirror(compact);
+  applyDocumentState(compact);
+  initialized = true;
+
+  return compact;
+}`;
+          if (!service.includes(oldBlock)) {
+            throw new Error('compactModePreferenceService block not found');
+          }
+          service = service.replace(oldBlock, newBlock);
+          fs.writeFileSync(servicePath, service);
+
+          const localePath = 'public/_locales/pt_BR/messages.json';
+          const locale = JSON.parse(fs.readFileSync(localePath, 'utf8'));
+          const translations = {
+            textPrizePoolUnavailable: 'Pool estimado: não há vagas restantes',
+            textPrizePoolDataUnavailable: 'Pool estimado: os dados de vagas não estão disponíveis',
+            textPrizePool: 'Pool estimado',
+            textNextPool: 'Próximo pool estimado',
+            textSpotsLeft: 'vagas restantes',
+            textTotalSlots: 'total de vagas',
+            textViaWaterfall: 'por redistribuição',
+            textWaterfallTooltipApplied: 'Esta é uma estimativa baseada nos seus pontos e nas vagas mais recentes disponíveis no pool. Sua faixa de pontos parece estar lotada, então a estimativa é transferida para a faixa disponível exibida aqui. A elegibilidade final é definida pela distribuição de prêmios do Google.',
+            textWaterfallTooltipEligible: 'Esta é uma estimativa baseada nos seus pontos e nas vagas mais recentes disponíveis no pool. A elegibilidade final é definida pela distribuição de prêmios do Google por ordem de chegada.',
+            textWaterfallTooltipNext: 'Você ainda não alcançou a próxima faixa de premiação. Esta seção mostra o próximo pool estimado e quantos pontos adicionais você precisa.'
+          };
+          for (const [key, message] of Object.entries(translations)) {
+            if (!locale[key]) throw new Error(`Missing locale key: ${key}`);
+            locale[key].message = message;
+          }
+          fs.writeFileSync(localePath, JSON.stringify(locale, null, 2) + '\n');
+
+          JSON.parse(fs.readFileSync(localePath, 'utf8'));
+          NODE
+
+      - name: Validate
+        shell: bash
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('public/_locales/pt_BR/messages.json','utf8'))"
+          grep -q "compactModeStorage.watch" services/compactModePreferenceService.ts
+
+      - name: Commit changes and remove temporary workflow
+        shell: bash
+        run: |
+          rm .github/workflows/fix-pr190.yml
+          git config user.name "eplus-bot"
+          git config user.email "157664013+eplus-bot@users.noreply.github.com"
+          git add services/compactModePreferenceService.ts public/_locales/pt_BR/messages.json .github/workflows/fix-pr190.yml
+          git commit -m "fix: address remaining PR 190 review issues"
+          git push origin dev
