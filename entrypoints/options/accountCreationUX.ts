@@ -95,7 +95,7 @@ function enhanceModal(): void {
   }
 
   input.dataset.uxEnhanced = "true";
-  input.autocomplete = "url";
+  input.setAttribute("autocomplete", "url");
   input.inputMode = "url";
   input.spellcheck = false;
   input.placeholder = PROFILE_URL_EXAMPLE;
