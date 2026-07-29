@@ -25,6 +25,29 @@ function localizeElements(): void {
   }
 }
 
+function showToast(message: string, type: "success" | "error" = "success"): void {
+  document.getElementById("changelog-preference-toast")?.remove();
+
+  const toast = document.createElement("div");
+  toast.id = "changelog-preference-toast";
+  toast.setAttribute("role", type === "error" ? "alert" : "status");
+  toast.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
+  toast.className = `fixed right-4 top-4 z-50 flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg ${
+    type === "success" ? "bg-emerald-600" : "bg-red-600"
+  }`;
+
+  const icon = document.createElement("i");
+  icon.className = type === "success" ? "fa-solid fa-circle-check" : "fa-solid fa-circle-exclamation";
+  icon.setAttribute("aria-hidden", "true");
+
+  const label = document.createElement("span");
+  label.textContent = message;
+  toast.append(icon, label);
+  document.body.appendChild(toast);
+
+  window.setTimeout(() => toast.remove(), 3000);
+}
+
 function getQueryParam(name: string): string | null {
   return new URLSearchParams(window.location.search).get(name);
 }
@@ -161,9 +184,15 @@ async function initializeUpdatePreference(): Promise<void> {
     try {
       await UpdateNotificationService.setEnabled(toggle.checked);
       renderPreference(toggle.checked);
+      showToast(
+        toggle.checked
+          ? getMessage("messageNotificationsEnabled")
+          : getMessage("messageNotificationsDisabled"),
+      );
     } catch (error) {
       console.debug("Failed to save changelog preference:", error);
       renderPreference(await UpdateNotificationService.isEnabled());
+      showToast(getMessage("errorSaveSetting"), "error");
     } finally {
       toggle.disabled = false;
     }
