@@ -88,6 +88,7 @@ function enhanceModal(): void {
   ) as HTMLButtonElement | null;
   const loading = document.getElementById("loading-profile");
   const errorProfile = document.getElementById("error-profile");
+  const errorMessage = document.getElementById("profile-error-message");
   const nickname = document.getElementById("account-nickname-input");
 
   if (!modal || !input || !button || input.dataset.uxEnhanced === "true") {
@@ -136,6 +137,17 @@ function enhanceModal(): void {
 
   const syncAsyncState = (): void => {
     const isLoading = Boolean(loading && !loading.classList.contains("hidden"));
+    const isErrorVisible = Boolean(
+      errorProfile && !errorProfile.classList.contains("hidden"),
+    );
+
+    if (
+      isErrorVisible &&
+      errorMessage?.textContent?.trim() ===
+        getMessage("errorUnableGetUserName").trim()
+    ) {
+      errorMessage.textContent = getMessage("errorInvalidProfileUrl");
+    }
 
     if (isLoading) {
       setBusyState(button, helper);
