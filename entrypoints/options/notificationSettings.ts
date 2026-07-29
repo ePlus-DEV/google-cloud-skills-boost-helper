@@ -1,68 +1,5 @@
 import UpdateNotificationService from "../../services/updateNotificationService";
 
-const NOTIFICATION_SECTION_COPY: Record<
-  string,
-  { title: string; description: string }
-> = {
-  ar: {
-    title: "الإشعارات",
-    description: "تحكّم في إشعارات التحديث وإشعارات المتصفح.",
-  },
-  de: {
-    title: "Benachrichtigungen",
-    description: "Steuere Update-Hinweise und Browser-Benachrichtigungen.",
-  },
-  en: {
-    title: "Notifications",
-    description: "Control update notices and browser notifications.",
-  },
-  es: {
-    title: "Notificaciones",
-    description:
-      "Controla los avisos de actualización y las notificaciones del navegador.",
-  },
-  fr: {
-    title: "Notifications",
-    description:
-      "Gérez les avis de mise à jour et les notifications du navigateur.",
-  },
-  hi: {
-    title: "सूचनाएँ",
-    description: "अपडेट सूचनाओं और ब्राउज़र सूचनाओं को नियंत्रित करें।",
-  },
-  it: {
-    title: "Notifiche",
-    description:
-      "Gestisci gli avvisi di aggiornamento e le notifiche del browser.",
-  },
-  ja: {
-    title: "通知",
-    description: "更新のお知らせとブラウザ通知を管理します。",
-  },
-  ko: {
-    title: "알림",
-    description: "업데이트 안내와 브라우저 알림을 관리합니다.",
-  },
-  pt_BR: {
-    title: "Notificações",
-    description:
-      "Controle avisos de atualização e notificações do navegador.",
-  },
-  ru: {
-    title: "Уведомления",
-    description:
-      "Управляйте уведомлениями об обновлениях и уведомлениями браузера.",
-  },
-  vi: {
-    title: "Thông báo",
-    description: "Quản lý thông báo cập nhật và thông báo trình duyệt.",
-  },
-  zh_CN: {
-    title: "通知",
-    description: "管理更新提醒和浏览器通知。",
-  },
-};
-
 function getMessage(key: string): string {
   try {
     const lookupMessage = browser.i18n.getMessage as unknown as (
@@ -72,20 +9,6 @@ function getMessage(key: string): string {
   } catch {
     return key;
   }
-}
-
-function getNotificationSectionCopy(): {
-  title: string;
-  description: string;
-} {
-  const uiLanguage = browser.i18n.getUILanguage().replace("-", "_");
-  const languageCode = uiLanguage.split("_")[0];
-
-  return (
-    NOTIFICATION_SECTION_COPY[uiLanguage] ||
-    NOTIFICATION_SECTION_COPY[languageCode] ||
-    NOTIFICATION_SECTION_COPY.en
-  );
 }
 
 function showToast(message: string, type: "success" | "error" = "success") {
@@ -117,7 +40,6 @@ function createToggle(
 function createNotificationSection(): HTMLElement {
   const section = document.createElement("section");
   section.id = "notification-preferences-section";
-  const sectionCopy = getNotificationSectionCopy();
 
   section.innerHTML = `
     <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-200">
@@ -129,10 +51,10 @@ function createNotificationSection(): HTMLElement {
         <div class="min-w-0 flex-1">
           <div class="mb-5">
             <h3 class="text-lg font-bold text-gray-800 mb-1">
-              ${sectionCopy.title}
+              ${getMessage("notificationsSectionTitle")}
             </h3>
             <p class="text-gray-600 text-sm leading-relaxed">
-              ${sectionCopy.description}
+              ${getMessage("notificationsSectionDescription")}
             </p>
           </div>
 

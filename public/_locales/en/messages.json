@@ -931,5 +931,11 @@
   },
   "messageNotificationsDisabled": {
     "message": "Push notifications disabled"
+  },
+  "notificationsSectionTitle": {
+    "message": "Notifications"
+  },
+  "notificationsSectionDescription": {
+    "message": "Control update notices and browser notifications."
   }
 }
