@@ -86,17 +86,26 @@ export default defineBackground(() => {
           const shouldOpenChangelog =
             await UpdateNotificationService.isEnabled();
 
-          if (
-            shouldOpenChangelog &&
-            previousVersion &&
-            previousVersion !== currentVersion
-          ) {
+          if (!shouldOpenChangelog) {
+            console.debug(
+              "Skipped changelog after update because update notifications are disabled.",
+            );
+          } else if (previousVersion && previousVersion === currentVersion) {
+            console.debug(
+              "Skipped changelog because the reported previous version matches the current version.",
+              { previousVersion, currentVersion },
+            );
+          } else {
             const path = `/changelog.html?version=${encodeURIComponent(
               currentVersion,
-            )}&from=${encodeURIComponent(previousVersion)}`;
+            )}&from=${encodeURIComponent(previousVersion || "")}`;
             await browser.tabs.create({
               url: browser.runtime.getURL(path as any),
               active: true,
+            });
+            console.debug("Opened changelog after extension update.", {
+              previousVersion: previousVersion || "unknown",
+              currentVersion,
             });
           }
         } catch (error) {
