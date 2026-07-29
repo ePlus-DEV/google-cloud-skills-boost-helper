@@ -28,14 +28,24 @@ async function setValue(compact: boolean): Promise<void> {
 }
 
 async function initializeMirrorSync(): Promise<boolean> {
-  const compact = await getValue();
-  persistMirror(compact);
-  applyDocumentState(compact);
+  let initialized = false;
+  let pendingValue: boolean | undefined;
 
   compactModeStorage.watch((nextValue) => {
+    if (!initialized) {
+      pendingValue = nextValue;
+      return;
+    }
+
     persistMirror(nextValue);
     applyDocumentState(nextValue);
   });
+
+  const initialValue = await getValue();
+  const compact = pendingValue ?? initialValue;
+  persistMirror(compact);
+  applyDocumentState(compact);
+  initialized = true;
 
   return compact;
 }
