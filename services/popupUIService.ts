@@ -485,7 +485,6 @@ const PopupUIService = {
           );
 
       help.setAttribute("data-tooltip", tooltip);
-      help.setAttribute("title", tooltip);
     }
   },
 
