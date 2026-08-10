@@ -18,12 +18,6 @@ const FACILITATOR_BONUS_LABEL_KEYS: Record<string, string> = {
 const ARCADE_API_TIMEOUT_MS = 15_000;
 
 let facilitatorLabelObserver: MutationObserver | null = null;
-let latestFacilitatorCounts = {
-  games: 0,
-  trivia: 0,
-  skills: 0,
-  labfree: 0,
-};
 
 /**
  * Resolve the stable Arcade API v2 endpoint.
@@ -61,70 +55,115 @@ function replaceBonusValue(text: string, points: number): string {
     : `${formatted} Bonus Points`;
 }
 
-/** Convert optional API values to a safe non-negative badge count. */
+/** Convert optional values to a safe non-negative badge count. */
 function normalizeBadgeCount(value: unknown): number {
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? Math.trunc(parsed) : 0;
 }
 
 /**
- * Prefer the canonical v2 Facilitator counters and fall back to the compatibility
- * faciCounts shape when older cached data is loaded.
+ * Hide requirements that are not part of the active ruleset without modifying
+ * the current count rendered by PopupUIService. The popup owns count rendering;
+ * this synchronizer only controls which requirement rows are active.
  */
-function rememberFacilitatorCounts(data: ArcadeData): void {
-  latestFacilitatorCounts = {
-    games: normalizeBadgeCount(
-      data.facilitator?.gameBadges ?? data.faciCounts?.faciGame,
-    ),
-    trivia: normalizeBadgeCount(
-      data.facilitator?.triviaBadges ?? data.faciCounts?.faciTrivia,
-    ),
-    skills: normalizeBadgeCount(
-      data.facilitator?.skillBadges ?? data.faciCounts?.faciSkill,
-    ),
-    labfree: normalizeBadgeCount(data.faciCounts?.faciCompletion),
-  };
-}
-
-/**
- * Update one requirement row from the active API rule. Requirements set to zero
- * are not part of the 2026 program and are hidden instead of rendering 0/0.
- */
-function syncRequirementRow(
-  selector: string,
-  current: number,
-  required: number,
-): void {
+function syncRequirementRow(selector: string, required: number): void {
   const element = document.querySelector<HTMLElement>(selector);
   if (!element) return;
 
   const row = element.parentElement;
   const normalizedRequired = normalizeBadgeCount(required);
-  const normalizedCurrent = normalizeBadgeCount(current);
+  row?.classList.toggle("hidden", normalizedRequired === 0);
+}
 
-  if (normalizedRequired === 0) {
-    row?.classList.add("hidden");
-    element.dataset.remaining = "0";
-    return;
-  }
+/** Read the current badge count rendered by PopupUIService (for example 7/10). */
+function readDisplayedCount(selector: string): number | null {
+  const text = document.querySelector<HTMLElement>(selector)?.textContent ?? "";
+  const match = /^\s*(\d+)\s*\//u.exec(text);
+  if (!match) return null;
 
-  row?.classList.remove("hidden");
-  const remaining = Math.max(0, normalizedRequired - normalizedCurrent);
-  const completed = normalizedCurrent >= normalizedRequired;
-  const nextText = `${normalizedCurrent}/${normalizedRequired}${
-    completed ? " ✓" : ""
-  }`;
-
-  if (element.textContent !== nextText) {
-    element.textContent = nextText;
-  }
-  element.dataset.remaining = String(remaining);
+  const parsed = Number(match[1]);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 /**
- * Keep milestone badge requirements synchronized with facilitator.milestones.
- * Shared rules are hydrated from the API before this function runs, so the UI
- * never depends on the legacy counts embedded in popup HTML.
+ * Match the facilitator progress formula used by arcade.eplus.dev: completed
+ * badges across active requirements divided by the total badge requirement.
+ */
+function syncMilestoneProgress(
+  milestone: string,
+  requirements: {
+    games: number;
+    trivia: number;
+    skills: number;
+    labfree: number;
+  },
+): void {
+  const requirementEntries = [
+    {
+      label: "Games",
+      selector: `.milestone-${milestone}-games`,
+      required: normalizeBadgeCount(requirements.games),
+    },
+    {
+      label: "Trivia",
+      selector: `.milestone-${milestone}-trivia`,
+      required: normalizeBadgeCount(requirements.trivia),
+    },
+    {
+      label: "Skills",
+      selector: `.milestone-${milestone}-skills`,
+      required: normalizeBadgeCount(requirements.skills),
+    },
+    {
+      label: "Lab-free",
+      selector: `.milestone-${milestone}-labfree`,
+      required: normalizeBadgeCount(requirements.labfree),
+    },
+  ].filter((entry) => entry.required > 0);
+
+  if (requirementEntries.length === 0) return;
+
+  let completed = 0;
+  let total = 0;
+  const details: string[] = [];
+
+  for (const entry of requirementEntries) {
+    const current = readDisplayedCount(entry.selector);
+    if (current === null) return;
+
+    const cappedCurrent = Math.min(current, entry.required);
+    completed += cappedCurrent;
+    total += entry.required;
+    details.push(`${entry.label}: ${cappedCurrent}/${entry.required}`);
+  }
+
+  if (total <= 0) return;
+
+  const percent = Math.floor(
+    Math.min(100, Math.max(0, (completed / total) * 100)),
+  );
+  const progressElement = document.querySelector<HTMLElement>(
+    `.milestone-${milestone}-progress`,
+  );
+  if (!progressElement) return;
+
+  const nextText = `${percent}%`;
+  if (progressElement.textContent !== nextText) {
+    progressElement.textContent = nextText;
+  }
+
+  progressElement.dataset.completedBadges = String(completed);
+  progressElement.dataset.totalBadges = String(total);
+  progressElement.setAttribute(
+    "title",
+    `Progress: ${percent}% (${completed}/${total} badges completed)\n\n${details.join("\n")}`,
+  );
+}
+
+/**
+ * Keep milestone requirements synchronized with facilitator.milestones. Shared
+ * rules are hydrated from the API, while current counts remain owned by the
+ * popup so cached and freshly fetched data behave identically.
  */
 function syncFacilitatorRequirementLabels(): void {
   if (typeof document === "undefined") return;
@@ -134,24 +173,21 @@ function syncFacilitatorRequirementLabels(): void {
   )) {
     syncRequirementRow(
       `.milestone-${milestone}-games`,
-      latestFacilitatorCounts.games,
       requirements.games,
     );
     syncRequirementRow(
       `.milestone-${milestone}-trivia`,
-      latestFacilitatorCounts.trivia,
       requirements.trivia,
     );
     syncRequirementRow(
       `.milestone-${milestone}-skills`,
-      latestFacilitatorCounts.skills,
       requirements.skills,
     );
     syncRequirementRow(
       `.milestone-${milestone}-labfree`,
-      latestFacilitatorCounts.labfree,
       requirements.labfree,
     );
+    syncMilestoneProgress(milestone, requirements);
   }
 }
 
@@ -206,7 +242,8 @@ function syncFacilitatorRuleLabels(): void {
 }
 
 /**
- * Re-apply dynamic rule values after localization mutates the static HTML text.
+ * Re-apply dynamic rule values after localization or popup rendering mutates the
+ * milestone text. Positive current counts are never overwritten here.
  */
 function initializeFacilitatorRuleLabelSync(): void {
   if (
@@ -276,7 +313,6 @@ const ArcadeApiService = {
         if (!syncFacilitatorRulesFromApi(data.facilitator)) {
           resetFacilitatorRulesToFallback();
         }
-        rememberFacilitatorCounts(data);
         syncFacilitatorRuleLabels();
 
         data.lastUpdated = new Date().toISOString();
