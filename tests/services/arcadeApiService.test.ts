@@ -14,14 +14,12 @@ vi.mock("axios", () => ({
   },
 }));
 
-// Existing deployments can keep the old secret; the client derives /api/v2/arcade.
-vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/api/arcade");
-vi.stubEnv("WXT_ARCADE_POINT_V2_URL", "");
-
 import axios from "axios";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/api/arcade");
+  vi.stubEnv("WXT_ARCADE_POINT_V2_URL", "");
   resetFacilitatorRulesToFallback();
   document.body.innerHTML = "";
 });
@@ -89,6 +87,25 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     expect(axios.post).toHaveBeenCalledWith(
       "https://api.example.com/api/v2/arcade",
       expect.any(Object),
+      { timeout: 15_000 },
+    );
+  });
+
+  it("keeps a legacy setting that already points to /api/v2/arcade", async () => {
+    vi.stubEnv(
+      "WXT_ARCADE_POINT_URL",
+      "https://api.example.com/api/v2/arcade",
+    );
+    vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
+
+    await ArcadeApiService.fetchArcadeData(
+      "https://www.skills.google/public_profiles/abc123",
+    );
+
+    expect(axios.post).toHaveBeenCalledWith(
+      "https://api.example.com/api/v2/arcade",
+      expect.any(Object),
+      { timeout: 15_000 },
     );
   });
 
@@ -300,6 +317,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
       expect.objectContaining({
         url: expect.stringContaining("www.skills.google"),
       }),
+      { timeout: 15_000 },
     );
   });
 
@@ -313,6 +331,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     expect(axios.post).toHaveBeenCalledWith(
       "https://api.example.com/api/v2/arcade",
       expect.objectContaining({ profileId: "myprofile123" }),
+      { timeout: 15_000 },
     );
   });
 });
