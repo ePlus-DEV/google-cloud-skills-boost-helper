@@ -5,6 +5,8 @@ import {
   calculateMilestoneBonusBreakdown,
   FACILITATOR_MILESTONE_REQUIREMENTS,
   FACILITATOR_MILESTONE_POINTS,
+  getFacilitatorBonusFromApi,
+  syncFacilitatorRulesFromApi,
 } from "../../services/facilitatorService";
 
 describe("getMilestoneNumber", () => {
@@ -24,6 +26,30 @@ describe("getMilestoneNumber", () => {
   });
 });
 
+describe("Arcade Facilitators fallback rules", () => {
+  it("keeps the latest 2026 rules only as compatibility fallback", () => {
+    expect(FACILITATOR_MILESTONE_REQUIREMENTS).toEqual({
+      1: { games: 6, trivia: 0, skills: 18, labfree: 0, basePoints: 15 },
+      2: { games: 8, trivia: 0, skills: 34, labfree: 0, basePoints: 25 },
+      3: { games: 10, trivia: 0, skills: 50, labfree: 0, basePoints: 35 },
+      ultimate: {
+        games: 12,
+        trivia: 0,
+        skills: 66,
+        labfree: 0,
+        basePoints: 45,
+      },
+    });
+
+    expect(FACILITATOR_MILESTONE_POINTS).toEqual({
+      1: 5,
+      2: 15,
+      3: 25,
+      ultimate: 35,
+    });
+  });
+});
+
 describe("calculateFacilitatorBonus", () => {
   it("returns 0 for null/undefined faciCounts", () => {
     expect(calculateFacilitatorBonus(null)).toBe(0);
@@ -32,72 +58,78 @@ describe("calculateFacilitatorBonus", () => {
   it("returns 0 when no milestone is completed", () => {
     expect(
       calculateFacilitatorBonus({
-        faciGame: 1,
-        faciTrivia: 1,
-        faciSkill: 1,
-        faciCompletion: 1,
+        faciGame: 5,
+        faciTrivia: 99,
+        faciSkill: 17,
+        faciCompletion: 99,
       }),
     ).toBe(0);
   });
 
-  it("returns milestone 1 bonus (2 pts) when milestone 1 is met", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["1"];
+  it("does not require trivia or completion for 2026 milestone eligibility", () => {
     expect(
       calculateFacilitatorBonus({
-        faciGame: req.games,
-        faciTrivia: req.trivia,
-        faciSkill: req.skills,
-        faciCompletion: req.labfree,
+        faciGame: 6,
+        faciTrivia: 0,
+        faciSkill: 18,
+        faciCompletion: 0,
       }),
-    ).toBe(FACILITATOR_MILESTONE_POINTS["1"]);
+    ).toBe(5);
   });
 
-  it("returns milestone 2 bonus (8 pts) when milestone 2 is met", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["2"];
+  it("returns milestone 1 bonus for the real 6 game / 34 skill profile", () => {
     expect(
       calculateFacilitatorBonus({
-        faciGame: req.games,
-        faciTrivia: req.trivia,
-        faciSkill: req.skills,
-        faciCompletion: req.labfree,
+        faciGame: 6,
+        faciTrivia: 0,
+        faciSkill: 34,
+        faciCompletion: 0,
       }),
-    ).toBe(FACILITATOR_MILESTONE_POINTS["2"]);
+    ).toBe(5);
   });
 
-  it("returns milestone 3 bonus (15 pts) when milestone 3 is met", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["3"];
+  it("returns milestone 2 bonus when milestone 2 is met", () => {
     expect(
       calculateFacilitatorBonus({
-        faciGame: req.games,
-        faciTrivia: req.trivia,
-        faciSkill: req.skills,
-        faciCompletion: req.labfree,
+        faciGame: 8,
+        faciTrivia: 0,
+        faciSkill: 34,
+        faciCompletion: 0,
       }),
-    ).toBe(FACILITATOR_MILESTONE_POINTS["3"]);
+    ).toBe(15);
   });
 
-  it("returns ultimate bonus (25 pts) when ultimate milestone is met", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["ultimate"];
+  it("returns milestone 3 bonus when milestone 3 is met", () => {
     expect(
       calculateFacilitatorBonus({
-        faciGame: req.games,
-        faciTrivia: req.trivia,
-        faciSkill: req.skills,
-        faciCompletion: req.labfree,
+        faciGame: 10,
+        faciTrivia: 0,
+        faciSkill: 50,
+        faciCompletion: 0,
       }),
-    ).toBe(FACILITATOR_MILESTONE_POINTS["ultimate"]);
+    ).toBe(25);
+  });
+
+  it("returns ultimate bonus when ultimate is met", () => {
+    expect(
+      calculateFacilitatorBonus({
+        faciGame: 12,
+        faciTrivia: 0,
+        faciSkill: 66,
+        faciCompletion: 0,
+      }),
+    ).toBe(35);
   });
 
   it("returns highest completed milestone bonus only", () => {
-    // Meets milestone 2 but not 3
-    const req2 = FACILITATOR_MILESTONE_REQUIREMENTS["2"];
-    const result = calculateFacilitatorBonus({
-      faciGame: req2.games,
-      faciTrivia: req2.trivia,
-      faciSkill: req2.skills,
-      faciCompletion: req2.labfree,
-    });
-    expect(result).toBe(FACILITATOR_MILESTONE_POINTS["2"]);
+    expect(
+      calculateFacilitatorBonus({
+        faciGame: 8,
+        faciTrivia: 0,
+        faciSkill: 50,
+        faciCompletion: 0,
+      }),
+    ).toBe(15);
   });
 
   it("uses 0 as default for missing counts", () => {
@@ -113,47 +145,95 @@ describe("calculateMilestoneBonusBreakdown", () => {
     expect(result.milestones["1"]).toBe(0);
   });
 
-  it("returns correct breakdown for milestone 1", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["1"];
+  it("returns the real profile as milestone 1 with +5 points", () => {
     const result = calculateMilestoneBonusBreakdown({
-      faciGame: req.games,
-      faciTrivia: req.trivia,
-      faciSkill: req.skills,
-      faciCompletion: req.labfree,
+      faciGame: 6,
+      faciTrivia: 0,
+      faciSkill: 34,
+      faciCompletion: 0,
     });
+
     expect(result.highestCompleted).toBe(1);
-    expect(result.total).toBe(FACILITATOR_MILESTONE_POINTS["1"]);
-    expect(result.milestones["1"]).toBe(FACILITATOR_MILESTONE_POINTS["1"]);
-    // Other milestones should be 0
+    expect(result.total).toBe(5);
+    expect(result.milestones["1"]).toBe(5);
     expect(result.milestones["2"]).toBe(0);
+    expect(result.milestones["3"]).toBe(0);
+    expect(result.milestones.ultimate).toBe(0);
   });
 
   it("returns correct breakdown for ultimate milestone", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["ultimate"];
     const result = calculateMilestoneBonusBreakdown({
-      faciGame: req.games,
-      faciTrivia: req.trivia,
-      faciSkill: req.skills,
-      faciCompletion: req.labfree,
+      faciGame: 12,
+      faciTrivia: 0,
+      faciSkill: 66,
+      faciCompletion: 0,
     });
+
     expect(result.highestCompleted).toBe(4);
-    expect(result.total).toBe(FACILITATOR_MILESTONE_POINTS["ultimate"]);
-    expect(result.milestones["ultimate"]).toBe(
-      FACILITATOR_MILESTONE_POINTS["ultimate"],
-    );
+    expect(result.total).toBe(35);
+    expect(result.milestones.ultimate).toBe(35);
+  });
+});
+
+describe("API-provided Facilitator rules", () => {
+  it("reads the backend-calculated bonus directly when present", () => {
+    expect(getFacilitatorBonusFromApi({ estimatedBonusPoints: 5 })).toBe(5);
+    expect(
+      getFacilitatorBonusFromApi({
+        estimatedBonusPoints: 5,
+        milestoneBonusPoints: 15,
+      }),
+    ).toBe(15);
+    expect(getFacilitatorBonusFromApi()).toBeNull();
   });
 
-  it("only assigns bonus to highest completed milestone", () => {
-    const req = FACILITATOR_MILESTONE_REQUIREMENTS["2"];
-    const result = calculateMilestoneBonusBreakdown({
-      faciGame: req.games,
-      faciTrivia: req.trivia,
-      faciSkill: req.skills,
-      faciCompletion: req.labfree,
+  it("replaces shared requirements and bonus values from the API", () => {
+    const applied = syncFacilitatorRulesFromApi({
+      milestonePolicy: "highest_only",
+      milestones: [
+        {
+          id: "milestone_1",
+          games: 2,
+          skillBadges: 4,
+          basePoints: 4,
+          bonusPoints: 7,
+        },
+        {
+          id: "milestone_2",
+          games: 3,
+          skillBadges: 6,
+          basePoints: 6,
+          bonusPoints: 11,
+        },
+        {
+          id: "ultimate",
+          games: 4,
+          skillBadges: 8,
+          basePoints: 8,
+          bonusPoints: 19,
+        },
+      ],
     });
-    // Only milestone 2 should have points, others 0
-    expect(result.milestones["1"]).toBe(0);
-    expect(result.milestones["2"]).toBe(FACILITATOR_MILESTONE_POINTS["2"]);
-    expect(result.milestones["3"]).toBe(0);
+
+    expect(applied).toBe(true);
+    expect(FACILITATOR_MILESTONE_REQUIREMENTS["1"]).toEqual({
+      games: 2,
+      trivia: 0,
+      skills: 4,
+      labfree: 0,
+      basePoints: 4,
+    });
+    expect(FACILITATOR_MILESTONE_POINTS["1"]).toBe(7);
+    expect(FACILITATOR_MILESTONE_POINTS["2"]).toBe(11);
+    expect(FACILITATOR_MILESTONE_POINTS.ultimate).toBe(19);
+
+    expect(
+      calculateFacilitatorBonus({
+        faciGame: 2,
+        faciSkill: 4,
+        faciTrivia: 0,
+        faciCompletion: 0,
+      }),
+    ).toBe(7);
   });
 });

@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import ArcadeApiService from "../../services/arcadeApiService";
+import {
+  FACILITATOR_MILESTONE_POINTS,
+  FACILITATOR_MILESTONE_REQUIREMENTS,
+  resetFacilitatorRulesToFallback,
+  syncFacilitatorRulesFromApi,
+} from "../../services/facilitatorService";
 
 // Mock axios
 vi.mock("axios", () => ({
@@ -8,13 +14,15 @@ vi.mock("axios", () => ({
   },
 }));
 
-// Mock import.meta.env
-vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/arcade");
+// Existing deployments can keep the old secret; the client derives /api/v2/arcade.
+vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/api/arcade");
+vi.stubEnv("WXT_ARCADE_POINT_V2_URL", "");
 
 import axios from "axios";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  resetFacilitatorRulesToFallback();
 });
 
 describe("ArcadeApiService.isValidProfileUrl", () => {
@@ -70,6 +78,81 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     expect(result?.lastUpdated).toBeTruthy();
   });
 
+  it("calls /api/v2/arcade, not the legacy /api/arcade endpoint", async () => {
+    vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
+
+    await ArcadeApiService.fetchArcadeData(
+      "https://www.skills.google/public_profiles/abc123",
+    );
+
+    expect(axios.post).toHaveBeenCalledWith(
+      "https://api.example.com/api/v2/arcade",
+      expect.any(Object),
+    );
+  });
+
+  it("uses top-level facilitator rules from the v2 response", async () => {
+    vi.mocked(axios.post).mockResolvedValueOnce({
+      status: 200,
+      data: {
+        facilitator: {
+          milestones: [
+            {
+              id: "milestone_1",
+              games: 2,
+              skillBadges: 4,
+              basePoints: 4,
+              bonusPoints: 7,
+            },
+          ],
+        },
+      },
+    });
+
+    await ArcadeApiService.fetchArcadeData(
+      "https://www.skills.google/public_profiles/abc123",
+    );
+
+    expect(FACILITATOR_MILESTONE_REQUIREMENTS["1"]).toEqual({
+      games: 2,
+      trivia: 0,
+      skills: 4,
+      labfree: 0,
+      basePoints: 4,
+    });
+    expect(FACILITATOR_MILESTONE_POINTS["1"]).toBe(7);
+  });
+
+  it("restores fallback rules when v2 metadata is missing", async () => {
+    syncFacilitatorRulesFromApi({
+      milestones: [
+        {
+          id: "milestone_1",
+          games: 2,
+          skillBadges: 4,
+          basePoints: 4,
+          bonusPoints: 99,
+        },
+      ],
+    });
+    expect(FACILITATOR_MILESTONE_POINTS["1"]).toBe(99);
+
+    vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
+
+    await ArcadeApiService.fetchArcadeData(
+      "https://www.skills.google/public_profiles/abc123",
+    );
+
+    expect(FACILITATOR_MILESTONE_REQUIREMENTS["1"]).toEqual({
+      games: 6,
+      trivia: 0,
+      skills: 18,
+      labfree: 0,
+      basePoints: 15,
+    });
+    expect(FACILITATOR_MILESTONE_POINTS["1"]).toBe(5);
+  });
+
   it("adds lastUpdated timestamp to returned data", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
 
@@ -112,7 +195,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(axios.post).toHaveBeenCalledWith(
-      expect.any(String),
+      "https://api.example.com/api/v2/arcade",
       expect.objectContaining({
         url: expect.stringContaining("www.skills.google"),
       }),
@@ -127,7 +210,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(axios.post).toHaveBeenCalledWith(
-      expect.any(String),
+      "https://api.example.com/api/v2/arcade",
       expect.objectContaining({ profileId: "myprofile123" }),
     );
   });
