@@ -107,6 +107,7 @@ function initializeFacilitatorRuleLabelSync(): void {
     return;
   }
 
+  /** Start label synchronization once the popup DOM is ready. */
   const start = (): void => {
     syncFacilitatorRuleLabels();
     if (!document.body || facilitatorLabelObserver) return;
@@ -181,8 +182,8 @@ const ArcadeApiService = {
     if (!canonical) return false;
 
     try {
-      const u = new URL(canonical);
-      return /\/public_profiles\//.test(u.pathname);
+      const parsedUrl = new URL(canonical);
+      return /\/public_profiles\//.test(parsedUrl.pathname);
     } catch {
       return false;
     }
