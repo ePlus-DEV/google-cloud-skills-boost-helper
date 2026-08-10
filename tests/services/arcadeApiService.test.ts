@@ -187,15 +187,13 @@ describe("ArcadeApiService.fetchArcadeData", () => {
       "https://www.skills.google/public_profiles/abc123",
     );
 
-    const milestone1Games = document.querySelector<HTMLElement>(
-      ".milestone-1-games",
-    );
+    const milestone1Games =
+      document.querySelector<HTMLElement>(".milestone-1-games");
     const milestone1Skills = document.querySelector<HTMLElement>(
       ".milestone-1-skills",
     );
-    const milestone2Games = document.querySelector<HTMLElement>(
-      ".milestone-2-games",
-    );
+    const milestone2Games =
+      document.querySelector<HTMLElement>(".milestone-2-games");
     const milestone2Skills = document.querySelector<HTMLElement>(
       ".milestone-2-skills",
     );
