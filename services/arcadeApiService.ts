@@ -2,6 +2,7 @@ import axios from "axios";
 import type { ArcadeData } from "../types";
 import {
   FACILITATOR_MILESTONE_POINTS,
+  FACILITATOR_MILESTONE_REQUIREMENTS,
   resetFacilitatorRulesToFallback,
   syncFacilitatorRulesFromApi,
 } from "./facilitatorService";
@@ -17,6 +18,12 @@ const FACILITATOR_BONUS_LABEL_KEYS: Record<string, string> = {
 const ARCADE_API_TIMEOUT_MS = 15_000;
 
 let facilitatorLabelObserver: MutationObserver | null = null;
+let latestFacilitatorCounts = {
+  games: 0,
+  trivia: 0,
+  skills: 0,
+  labfree: 0,
+};
 
 /**
  * Resolve the stable Arcade API v2 endpoint.
@@ -54,9 +61,103 @@ function replaceBonusValue(text: string, points: number): string {
     : `${formatted} Bonus Points`;
 }
 
+/** Convert optional API values to a safe non-negative count. */
+function normalizeBadgeCount(value: unknown): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+}
+
 /**
- * Keep Facilitator card bonus labels synchronized with the active API rules.
- * The text after the numeric value stays localized; only the number is replaced.
+ * Prefer the canonical v2 Facilitator counters and fall back to the compatibility
+ * faciCounts shape when older cached data is loaded.
+ */
+function rememberFacilitatorCounts(data: ArcadeData): void {
+  latestFacilitatorCounts = {
+    games: normalizeBadgeCount(
+      data.facilitator?.gameBadges ?? data.faciCounts?.faciGame,
+    ),
+    trivia: normalizeBadgeCount(
+      data.facilitator?.triviaBadges ?? data.faciCounts?.faciTrivia,
+    ),
+    skills: normalizeBadgeCount(
+      data.facilitator?.skillBadges ?? data.faciCounts?.faciSkill,
+    ),
+    labfree: normalizeBadgeCount(data.faciCounts?.faciCompletion),
+  };
+}
+
+/**
+ * Update one requirement row from the active API rule. Requirements set to zero
+ * are not part of the 2026 program and are hidden instead of rendering 0/0.
+ */
+function syncRequirementRow(
+  selector: string,
+  current: number,
+  required: number,
+): void {
+  const element = document.querySelector<HTMLElement>(selector);
+  if (!element) return;
+
+  const row = element.parentElement;
+  const normalizedRequired = normalizeBadgeCount(required);
+  const normalizedCurrent = normalizeBadgeCount(current);
+
+  if (normalizedRequired === 0) {
+    row?.classList.add("hidden");
+    element.dataset.remaining = "0";
+    return;
+  }
+
+  row?.classList.remove("hidden");
+  const remaining = Math.max(0, normalizedRequired - normalizedCurrent);
+  const completed = normalizedCurrent >= normalizedRequired;
+
+  element.textContent = `${normalizedCurrent}/${normalizedRequired}${
+    completed ? " ✓" : ""
+  }`;
+  element.dataset.remaining = String(remaining);
+  element.title = completed
+    ? "Requirement completed"
+    : `${remaining} badge${remaining === 1 ? "" : "s"} remaining`;
+}
+
+/**
+ * Keep milestone badge requirements synchronized with facilitator.milestones.
+ * Shared rules are hydrated from the API before this function runs, so the UI
+ * never depends on the legacy counts embedded in popup HTML.
+ */
+function syncFacilitatorRequirementLabels(): void {
+  if (typeof document === "undefined") return;
+
+  for (const [milestone, requirements] of Object.entries(
+    FACILITATOR_MILESTONE_REQUIREMENTS,
+  )) {
+    syncRequirementRow(
+      `.milestone-${milestone}-games`,
+      latestFacilitatorCounts.games,
+      requirements.games,
+    );
+    syncRequirementRow(
+      `.milestone-${milestone}-trivia`,
+      latestFacilitatorCounts.trivia,
+      requirements.trivia,
+    );
+    syncRequirementRow(
+      `.milestone-${milestone}-skills`,
+      latestFacilitatorCounts.skills,
+      requirements.skills,
+    );
+    syncRequirementRow(
+      `.milestone-${milestone}-labfree`,
+      latestFacilitatorCounts.labfree,
+      requirements.labfree,
+    );
+  }
+}
+
+/**
+ * Keep Facilitator card labels synchronized with the active API rules.
+ * The text after the numeric bonus value stays localized; only the number is replaced.
  */
 function syncFacilitatorRuleLabels(): void {
   if (typeof document === "undefined") return;
@@ -81,22 +182,27 @@ function syncFacilitatorRuleLabels(): void {
   const maximumNote = document.querySelector<HTMLElement>(
     '[data-i18n="maxPossibleNote"]',
   );
-  if (!maximumNote) return;
+  if (maximumNote) {
+    const maximumPoints = Math.max(
+      0,
+      ...Object.values(FACILITATOR_MILESTONE_POINTS).map((value) =>
+        Number.isFinite(Number(value)) ? Number(value) : 0,
+      ),
+    );
+    const currentText = maximumNote.textContent?.trim() || "";
+    const nextText = /\d+(?:[.,]\d+)?/u.test(currentText)
+      ? currentText.replace(
+          /\d+(?:[.,]\d+)?/u,
+          formatBonusPoints(maximumPoints),
+        )
+      : `Maximum possible: ${formatBonusPoints(maximumPoints)} points (highest milestone only)`;
 
-  const maximumPoints = Math.max(
-    0,
-    ...Object.values(FACILITATOR_MILESTONE_POINTS).map((value) =>
-      Number.isFinite(Number(value)) ? Number(value) : 0,
-    ),
-  );
-  const currentText = maximumNote.textContent?.trim() || "";
-  const nextText = /\d+(?:[.,]\d+)?/u.test(currentText)
-    ? currentText.replace(/\d+(?:[.,]\d+)?/u, formatBonusPoints(maximumPoints))
-    : `Maximum possible: ${formatBonusPoints(maximumPoints)} points (highest milestone only)`;
-
-  if (currentText !== nextText) {
-    maximumNote.textContent = nextText;
+    if (currentText !== nextText) {
+      maximumNote.textContent = nextText;
+    }
   }
+
+  syncFacilitatorRequirementLabels();
 }
 
 /**
@@ -170,6 +276,7 @@ const ArcadeApiService = {
         if (!syncFacilitatorRulesFromApi(data.facilitator)) {
           resetFacilitatorRulesToFallback();
         }
+        rememberFacilitatorCounts(data);
         syncFacilitatorRuleLabels();
 
         data.lastUpdated = new Date().toISOString();
