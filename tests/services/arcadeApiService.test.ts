@@ -23,6 +23,7 @@ import axios from "axios";
 beforeEach(() => {
   vi.clearAllMocks();
   resetFacilitatorRulesToFallback();
+  document.body.innerHTML = "";
 });
 
 describe("ArcadeApiService.isValidProfileUrl", () => {
@@ -121,6 +122,106 @@ describe("ArcadeApiService.fetchArcadeData", () => {
       basePoints: 4,
     });
     expect(FACILITATOR_MILESTONE_POINTS["1"]).toBe(7);
+  });
+
+  it("updates rendered facilitator labels from API rule values", async () => {
+    document.body.innerHTML = `
+      <span data-i18n="milestone1Bonus">+2 Bonus Points</span>
+      <span data-i18n="milestone2Bonus">+8 Bonus Points</span>
+      <span data-i18n="milestone3Bonus">+15 Bonus Points</span>
+      <span data-i18n="milestoneUltimateBonus">+25 Bonus Points</span>
+      <span data-i18n="maxPossibleNote">Maximum possible: 25 points (highest milestone only)</span>
+    `;
+
+    vi.mocked(axios.post).mockResolvedValueOnce({
+      status: 200,
+      data: {
+        facilitator: {
+          milestones: [
+            {
+              id: "milestone_1",
+              games: 6,
+              skillBadges: 18,
+              basePoints: 15,
+              bonusPoints: 5,
+            },
+            {
+              id: "milestone_2",
+              games: 8,
+              skillBadges: 34,
+              basePoints: 25,
+              bonusPoints: 15,
+            },
+            {
+              id: "milestone_3",
+              games: 10,
+              skillBadges: 50,
+              basePoints: 35,
+              bonusPoints: 25,
+            },
+            {
+              id: "ultimate",
+              games: 12,
+              skillBadges: 66,
+              basePoints: 45,
+              bonusPoints: 35,
+            },
+          ],
+        },
+      },
+    });
+
+    await ArcadeApiService.fetchArcadeData(
+      "https://www.skills.google/public_profiles/abc123",
+    );
+
+    expect(
+      document.querySelector('[data-i18n="milestone1Bonus"]')?.textContent,
+    ).toBe("+5 Bonus Points");
+    expect(
+      document.querySelector('[data-i18n="milestone2Bonus"]')?.textContent,
+    ).toBe("+15 Bonus Points");
+    expect(
+      document.querySelector('[data-i18n="milestone3Bonus"]')?.textContent,
+    ).toBe("+25 Bonus Points");
+    expect(
+      document.querySelector('[data-i18n="milestoneUltimateBonus"]')
+        ?.textContent,
+    ).toBe("+35 Bonus Points");
+    expect(
+      document.querySelector('[data-i18n="maxPossibleNote"]')?.textContent,
+    ).toBe("Maximum possible: 35 points (highest milestone only)");
+  });
+
+  it("preserves localized label text while replacing the bonus number", async () => {
+    document.body.innerHTML = `
+      <span data-i18n="milestone1Bonus">+2 Điểm thưởng</span>
+    `;
+
+    vi.mocked(axios.post).mockResolvedValueOnce({
+      status: 200,
+      data: {
+        facilitator: {
+          milestones: [
+            {
+              id: "milestone_1",
+              games: 6,
+              skillBadges: 18,
+              basePoints: 15,
+              bonusPoints: 5,
+            },
+          ],
+        },
+      },
+    });
+
+    await ArcadeApiService.fetchArcadeData(
+      "https://www.skills.google/public_profiles/abc123",
+    );
+
+    expect(
+      document.querySelector('[data-i18n="milestone1Bonus"]')?.textContent,
+    ).toBe("+5 Điểm thưởng");
   });
 
   it("restores fallback rules when v2 metadata is missing", async () => {
