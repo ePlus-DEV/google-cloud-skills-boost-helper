@@ -61,10 +61,10 @@ function replaceBonusValue(text: string, points: number): string {
     : `${formatted} Bonus Points`;
 }
 
-/** Convert optional API values to a safe non-negative count. */
+/** Convert optional API values to a safe non-negative badge count. */
 function normalizeBadgeCount(value: unknown): number {
   const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+  return Number.isFinite(parsed) && parsed >= 0 ? Math.trunc(parsed) : 0;
 }
 
 /**
@@ -111,14 +111,14 @@ function syncRequirementRow(
   row?.classList.remove("hidden");
   const remaining = Math.max(0, normalizedRequired - normalizedCurrent);
   const completed = normalizedCurrent >= normalizedRequired;
-
-  element.textContent = `${normalizedCurrent}/${normalizedRequired}${
+  const nextText = `${normalizedCurrent}/${normalizedRequired}${
     completed ? " ✓" : ""
   }`;
+
+  if (element.textContent !== nextText) {
+    element.textContent = nextText;
+  }
   element.dataset.remaining = String(remaining);
-  element.title = completed
-    ? "Requirement completed"
-    : `${remaining} badge${remaining === 1 ? "" : "s"} remaining`;
 }
 
 /**
