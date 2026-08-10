@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-08-10
+### :sparkles: New Features
+- [`f02dd65`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f02dd655b2ff18a9315ddf36410b1d6d216f6aa1) - add Arcade v2 response types *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f8489b7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f8489b7090eba4d59dbc38fb2188e99cc368e41e) - use Arcade v2 API for scoring *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`983803b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/983803b015117ec5914a0a4c7150c152cee7bcbd) - sync Facilitator rules from API *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`65978cb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/65978cbf19a85b3a7e8724634ff23cb70deeda62) - sync facilitator bonus labels with API rules *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`20b5b12`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/20b5b1249b95e9b8328291f55c8cd5e383e68ddc) - address DeepSource findings in Arcade API service *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`018f247`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/018f247e6d043e49dd74b4f663debc1f9ca2da92) - harden Arcade v2 endpoint requests *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`43912fb`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/43912fbf34adda1b6dc5b5626f0f7e7c453a26ad) - sync facilitator badge requirements from v2 API *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f6a019d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f6a019d894ac7c79fa0b8a7ee695676a47579738) - stabilize facilitator requirement DOM sync *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c46a7e9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c46a7e9b01a6ba6c2257314a20b150f654132ce4) - match facilitator progress with web tracker *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :white_check_mark: Tests
+- [`117aaec`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/117aaec4e1150c064a8956525ffd0c76464a3411) - cover Arcade v2 API behavior *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`da2957b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/da2957b52ae9836c0c788e821440215b8d98e15f) - update Facilitator scoring coverage *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4bda01f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4bda01f6c36dac112bd109dc9134dfa1365011ae) - cover dynamic facilitator bonus labels *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6ec4e72`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6ec4e7263b462355653ac2b65ee710fd620d358a) - cover Arcade v2 endpoint hardening *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`de79995`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/de79995d63cd3e0ee569a90dc777f1cd62c34930) - cover facilitator badge requirement labels *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`df8c5fa`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/df8c5faa719e8ec64fcc20a767192a88a2dd5e14) - cover web-style facilitator progress *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`367535e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/367535e6afc7ef06810d69f2bb5e1cf2c290528a) - **deps**: bump actions/stale from 10.4.0 to 11.0.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`ecc3573`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ecc3573fc2352a2453f979bd21f8bed1c1753eac) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`6b662a0`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6b662a09981e9a4291be2a0878d23ef1a4209395) - **deps**: bump undici from 7.28.0 to 7.29.0 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`87f146b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/87f146b2c9c1ba76ff5d84b1bce55f1cd5b3a843) - **deps**: bump dompurify from 3.4.12 to 3.4.13 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`6f50301`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6f503010ee18d3b480534c34b500ca770a025a96) - **deps**: bump the production-dependencies group with 3 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c197a67`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c197a6799cd44a351247378723524d976ab91b4f) - configure Arcade v2 endpoint *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7d62aaa`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7d62aaa795d7d5f45925fddb8d1c367ae944bd24) - update version to 1.3.0 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.2.15] - 2026-07-29
 ### :sparkles: New Features
 - [`494ba63`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/494ba63915191698474d79224e1f6ed49245061e) - add React Doctor skill and related documentation for code diagnostics *(commit by [@hoangsvit](https://github.com/hoangsvit))*
@@ -1190,3 +1222,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.13]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.12...1.2.13
 [1.2.14]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.13...1.2.14
 [1.2.15]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.14...1.2.15
+[1.3.0]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.15...1.3.0
