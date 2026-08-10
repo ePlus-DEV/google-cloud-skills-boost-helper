@@ -171,22 +171,10 @@ function syncFacilitatorRequirementLabels(): void {
   for (const [milestone, requirements] of Object.entries(
     FACILITATOR_MILESTONE_REQUIREMENTS,
   )) {
-    syncRequirementRow(
-      `.milestone-${milestone}-games`,
-      requirements.games,
-    );
-    syncRequirementRow(
-      `.milestone-${milestone}-trivia`,
-      requirements.trivia,
-    );
-    syncRequirementRow(
-      `.milestone-${milestone}-skills`,
-      requirements.skills,
-    );
-    syncRequirementRow(
-      `.milestone-${milestone}-labfree`,
-      requirements.labfree,
-    );
+    syncRequirementRow(`.milestone-${milestone}-games`, requirements.games);
+    syncRequirementRow(`.milestone-${milestone}-trivia`, requirements.trivia);
+    syncRequirementRow(`.milestone-${milestone}-skills`, requirements.skills);
+    syncRequirementRow(`.milestone-${milestone}-labfree`, requirements.labfree);
     syncMilestoneProgress(milestone, requirements);
   }
 }
