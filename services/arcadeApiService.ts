@@ -87,10 +87,7 @@ function syncFacilitatorRuleLabels(): void {
   );
   const currentText = maximumNote.textContent?.trim() || "";
   const nextText = /\d+(?:[.,]\d+)?/u.test(currentText)
-    ? currentText.replace(
-        /\d+(?:[.,]\d+)?/u,
-        formatBonusPoints(maximumPoints),
-      )
+    ? currentText.replace(/\d+(?:[.,]\d+)?/u, formatBonusPoints(maximumPoints))
     : `Maximum possible: ${formatBonusPoints(maximumPoints)} points (highest milestone only)`;
 
   if (currentText !== nextText) {
