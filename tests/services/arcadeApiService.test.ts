@@ -92,10 +92,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
   });
 
   it("keeps a legacy setting that already points to /api/v2/arcade", async () => {
-    vi.stubEnv(
-      "WXT_ARCADE_POINT_URL",
-      "https://api.example.com/api/v2/arcade",
-    );
+    vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/api/v2/arcade");
     vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
 
     await ArcadeApiService.fetchArcadeData(
