@@ -14,8 +14,41 @@ export interface UserDetail {
   completedBadgeIds?: CompletedBadge[];
 }
 
+export interface FacilitatorMilestoneRule {
+  id: string;
+  games: number;
+  skillBadges: number;
+  basePoints: number;
+  bonusPoints: number;
+}
+
+export interface FacilitatorApiMetadata {
+  status?: string;
+  verification?: string;
+  startsAt?: string;
+  endsAt?: string;
+  skillBadges?: number;
+  gameBadges?: number;
+  triviaBadges?: number;
+  estimatedMilestone?: string | null;
+  estimatedBonusPoints?: number;
+  milestoneBonusPoints?: number;
+  bonusIncludedInTotal?: boolean;
+  gamePoints?: number;
+  skillPoints?: number;
+  triviaPoints?: number;
+  baseArcadePoints?: number;
+  pointsAlreadyIncludedInArcadeTotal?: number;
+  estimatedFacilitatorPoints?: number;
+  bonusMilestonePoints?: number | null;
+  bonusMilestoneStatus?: string;
+  milestonePolicy?: string;
+  milestones?: FacilitatorMilestoneRule[];
+}
+
 export interface ArcadeData {
   success?: boolean;
+  apiVersion?: number;
   userDetails?: UserDetail | UserDetail[]; // Support both single object and array
   arcadePoints?: {
     totalPoints?: number;
@@ -23,6 +56,7 @@ export interface ArcadeData {
     triviaPoints?: number;
     skillPoints?: number;
     specialPoints?: number;
+    completionPoints?: number;
   };
   faciCounts?: {
     faciGame?: number;
@@ -31,6 +65,14 @@ export interface ArcadeData {
     faciCompletion?: number;
     completedFaciCount?: number;
     completedFaciSkillCount?: number;
+  };
+  // Canonical Arcade v2 Facilitator contract.
+  facilitator?: FacilitatorApiMetadata;
+  // Deprecated legacy shape retained only so previously stored responses can
+  // still be read safely. Current network requests do not consume this field.
+  beta?: {
+    facilitator?: FacilitatorApiMetadata;
+    [key: string]: unknown;
   };
   totalArcadePoints?: number;
   badges?: BadgeData[];
