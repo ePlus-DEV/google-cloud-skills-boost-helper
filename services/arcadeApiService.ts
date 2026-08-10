@@ -14,6 +14,8 @@ const FACILITATOR_BONUS_LABEL_KEYS: Record<string, string> = {
   ultimate: "milestoneUltimateBonus",
 };
 
+const ARCADE_API_TIMEOUT_MS = 15_000;
+
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
@@ -30,6 +32,8 @@ function getArcadeV2Endpoint(): string {
 
   const legacy = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
   if (!legacy) return "";
+
+  if (/\/v2\/arcade\/?$/i.test(legacy)) return legacy;
 
   const derived = legacy.replace(/\/arcade(?:-public)?\/?$/i, "/v2/arcade");
   return derived !== legacy ? derived : "";
@@ -148,10 +152,14 @@ const ArcadeApiService = {
       // prefer canonical.
       const canonical = canonicalizeProfileUrl(url) || url;
       const profileId = extractProfileId(url);
-      const response = await axios.post(endpoint, {
-        url: canonical,
-        profileId,
-      });
+      const response = await axios.post(
+        endpoint,
+        {
+          url: canonical,
+          profileId,
+        },
+        { timeout: ARCADE_API_TIMEOUT_MS },
+      );
 
       if (response.status === 200) {
         const data = response.data as ArcadeData;
