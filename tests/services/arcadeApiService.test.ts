@@ -138,31 +138,46 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     expect(FACILITATOR_MILESTONE_POINTS["1"]).toBe(7);
   });
 
-  it("renders badge requirements and remaining counts from v2 facilitator metadata", async () => {
+  it("matches the web facilitator combined progress without overwriting popup counts", async () => {
     document.body.innerHTML = `
-      <div><span class="milestone-1-games">0/6</span></div>
+      <div><span class="milestone-1-games">6/6 ✓</span></div>
       <div><span class="milestone-1-trivia">0/5</span></div>
-      <div><span class="milestone-1-skills">0/14</span></div>
+      <div><span class="milestone-1-skills">18/18 ✓</span></div>
       <div><span class="milestone-1-labfree">0/6</span></div>
-      <div><span class="milestone-2-games">0/8</span></div>
+      <span class="milestone-1-progress">50%</span>
+
+      <div><span class="milestone-2-games">7/8</span></div>
       <div><span class="milestone-2-trivia">0/6</span></div>
-      <div><span class="milestone-2-skills">0/28</span></div>
+      <div><span class="milestone-2-skills">34/34 ✓</span></div>
       <div><span class="milestone-2-labfree">0/12</span></div>
+      <span class="milestone-2-progress">75%</span>
+
+      <div><span class="milestone-3-games">7/10</span></div>
+      <div><span class="milestone-3-trivia">0/7</span></div>
+      <div><span class="milestone-3-skills">35/50</span></div>
+      <div><span class="milestone-3-labfree">0/18</span></div>
+      <span class="milestone-3-progress">50%</span>
+
+      <div><span class="milestone-ultimate-games">7/12</span></div>
+      <div><span class="milestone-ultimate-trivia">0/8</span></div>
+      <div><span class="milestone-ultimate-skills">35/66</span></div>
+      <div><span class="milestone-ultimate-labfree">0/24</span></div>
+      <span class="milestone-ultimate-progress">50%</span>
     `;
 
     vi.mocked(axios.post).mockResolvedValueOnce({
       status: 200,
       data: {
         faciCounts: {
-          faciGame: 6,
+          faciGame: 7,
           faciTrivia: 0,
-          faciSkill: 34,
+          faciSkill: 35,
           faciCompletion: 0,
         },
         facilitator: {
-          gameBadges: 6,
+          gameBadges: 7,
           triviaBadges: 0,
-          skillBadges: 34,
+          skillBadges: 35,
           milestones: [
             {
               id: "milestone_1",
@@ -178,6 +193,20 @@ describe("ArcadeApiService.fetchArcadeData", () => {
               basePoints: 25,
               bonusPoints: 15,
             },
+            {
+              id: "milestone_3",
+              games: 10,
+              skillBadges: 50,
+              basePoints: 35,
+              bonusPoints: 25,
+            },
+            {
+              id: "ultimate",
+              games: 12,
+              skillBadges: 66,
+              basePoints: 45,
+              bonusPoints: 35,
+            },
           ],
         },
       },
@@ -187,35 +216,44 @@ describe("ArcadeApiService.fetchArcadeData", () => {
       "https://www.skills.google/public_profiles/abc123",
     );
 
-    const milestone1Games =
-      document.querySelector<HTMLElement>(".milestone-1-games");
-    const milestone1Skills = document.querySelector<HTMLElement>(
-      ".milestone-1-skills",
-    );
-    const milestone2Games =
-      document.querySelector<HTMLElement>(".milestone-2-games");
-    const milestone2Skills = document.querySelector<HTMLElement>(
-      ".milestone-2-skills",
-    );
-    const milestone1Trivia = document.querySelector<HTMLElement>(
-      ".milestone-1-trivia",
-    );
-    const milestone1Labfree = document.querySelector<HTMLElement>(
-      ".milestone-1-labfree",
-    );
+    expect(
+      document.querySelector<HTMLElement>(".milestone-1-progress")?.textContent,
+    ).toBe("100%");
+    expect(
+      document.querySelector<HTMLElement>(".milestone-2-progress")?.textContent,
+    ).toBe("97%");
+    expect(
+      document.querySelector<HTMLElement>(".milestone-3-progress")?.textContent,
+    ).toBe("70%");
+    expect(
+      document.querySelector<HTMLElement>(".milestone-ultimate-progress")
+        ?.textContent,
+    ).toBe("53%");
 
-    expect(milestone1Games?.textContent).toBe("6/6 ✓");
-    expect(milestone1Skills?.textContent).toBe("34/18 ✓");
-    expect(milestone2Games?.textContent).toBe("6/8");
-    expect(milestone2Games?.dataset.remaining).toBe("2");
-    expect(milestone2Skills?.textContent).toBe("34/34 ✓");
-    expect(milestone2Skills?.dataset.remaining).toBe("0");
-    expect(milestone1Trivia?.parentElement?.classList.contains("hidden")).toBe(
-      true,
+    expect(
+      document.querySelector<HTMLElement>(".milestone-3-games")?.textContent,
+    ).toBe("7/10");
+    expect(
+      document.querySelector<HTMLElement>(".milestone-3-skills")?.textContent,
+    ).toBe("35/50");
+
+    const milestone2Progress = document.querySelector<HTMLElement>(
+      ".milestone-2-progress",
     );
-    expect(milestone1Labfree?.parentElement?.classList.contains("hidden")).toBe(
-      true,
-    );
+    expect(milestone2Progress?.dataset.completedBadges).toBe("41");
+    expect(milestone2Progress?.dataset.totalBadges).toBe("42");
+    expect(milestone2Progress?.title).toContain("41/42 badges completed");
+
+    expect(
+      document
+        .querySelector<HTMLElement>(".milestone-1-trivia")
+        ?.parentElement?.classList.contains("hidden"),
+    ).toBe(true);
+    expect(
+      document
+        .querySelector<HTMLElement>(".milestone-1-labfree")
+        ?.parentElement?.classList.contains("hidden"),
+    ).toBe(true);
   });
 
   it("updates rendered facilitator labels from API rule values", async () => {
