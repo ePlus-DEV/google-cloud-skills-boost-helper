@@ -11,18 +11,18 @@ vi.mock("axios", () => ({
 
 vi.mock("../../utils/arcadeRequestSignature", () => ({
   buildArcadeSignatureHeaders: vi.fn(
-    async (_endpoint: string, body: unknown) => {
+    (_endpoint: string, body: unknown) => {
       if (body && typeof body === "object" && !Array.isArray(body)) {
         (body as Record<string, unknown>).extensionVersion = "1.3.1";
       }
 
-      return {
+      return Promise.resolve({
         "X-Arcade-Key": "release-client-key",
         "X-Arcade-Timestamp": "1786413245",
         "X-Arcade-Nonce": "0123456789abcdef0123456789abcdef",
         "X-Arcade-Signature": "a".repeat(64),
         "X-Arcade-Extension-Version": "1.3.1",
-      };
+      });
     },
   ),
 }));
