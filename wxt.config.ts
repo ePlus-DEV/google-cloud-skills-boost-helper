@@ -59,9 +59,7 @@ function popupSizeBootstrapPlugin(): Plugin {
  * source control, but the built extension receives permission to call it.
  */
 function getArcadeHostPermissions(): string[] {
-  const configured = String(
-    import.meta.env.WXT_ARCADE_POINT_URL || "",
-  ).trim();
+  const configured = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
   if (!configured) return [];
 
   try {
