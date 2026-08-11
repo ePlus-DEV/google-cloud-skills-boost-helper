@@ -31,7 +31,7 @@ describe("ArcadeApiService v3", () => {
     vi.clearAllMocks();
     vi.stubEnv(
       "WXT_ARCADE_POINT_URL",
-      "https://private-api.example.test/api/v3/arcade",
+      "https://private-api.example.test/api/arcade",
     );
     vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "release-client-key");
     vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "release-client-secret");
@@ -41,7 +41,7 @@ describe("ArcadeApiService v3", () => {
     vi.unstubAllEnvs();
   });
 
-  it("uses the exact signed v3 endpoint env and sends the extension version", async () => {
+  it("derives signed v3 from the existing Arcade endpoint env and sends the extension version", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({
       status: 200,
       data: { success: true },

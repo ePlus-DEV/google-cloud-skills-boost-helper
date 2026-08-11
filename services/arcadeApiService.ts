@@ -21,28 +21,19 @@ const ARCADE_API_TIMEOUT_MS = 15_000;
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
- * Read the signed Arcade v3 endpoint exactly from WXT_ARCADE_POINT_URL.
- * No endpoint fallback, rewriting, or version derivation is allowed.
+ * Resolve the signed Arcade v3 endpoint from the existing
+ * WXT_ARCADE_POINT_URL setting without introducing another endpoint env name.
  */
 function getArcadeEndpoint(): string {
   const configured = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
   if (!configured) return "";
 
-  try {
-    const endpoint = new URL(configured);
-    if (
-      endpoint.protocol !== "https:" ||
-      endpoint.pathname !== "/api/v3/arcade" ||
-      endpoint.search ||
-      endpoint.hash
-    ) {
-      return "";
-    }
-
-    return configured;
-  } catch {
-    return "";
+  if (/\/api\/v3\/arcade\/?$/i.test(configured)) {
+    return configured.replace(/\/$/u, "");
   }
+
+  const v3 = configured.replace(/\/api\/arcade\/?$/i, "/api/v3/arcade");
+  return v3 !== configured ? v3 : "";
 }
 
 /** Format a bonus value without unnecessary trailing decimals. */
@@ -371,7 +362,12 @@ const ArcadeApiService = {
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
       const endpoint = getArcadeEndpoint();
-      if (!endpoint) return null;
+      if (!endpoint) {
+        console.error(
+          "[ArcadeApiService] WXT_ARCADE_POINT_URL must target /api/arcade or /api/v3/arcade.",
+        );
+        return null;
+      }
 
       const canonical = canonicalizeProfileUrl(url) || url;
       const profileId = extractProfileId(url);
@@ -401,7 +397,14 @@ const ArcadeApiService = {
       }
 
       return null;
-    } catch {
+    } catch (error) {
+      const status = axios.isAxiosError(error)
+        ? error.response?.status
+        : undefined;
+      console.error(
+        "[ArcadeApiService] Signed v3 refresh failed.",
+        status ? `HTTP ${status}` : "Request/signing error",
+      );
       return null;
     }
   },

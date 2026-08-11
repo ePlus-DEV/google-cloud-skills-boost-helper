@@ -16,7 +16,7 @@ describe("Facilitator milestone popup parity", () => {
     vi.clearAllMocks();
     vi.stubEnv(
       "WXT_ARCADE_POINT_URL",
-      "https://private-api.example.test/api/v3/arcade",
+      "https://private-api.example.test/api/arcade",
     );
     vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "test-client-key");
     vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "test-client-secret");

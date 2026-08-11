@@ -99,8 +99,8 @@ jobs:
             fi
           done
 
-          if [[ "$WXT_ARCADE_POINT_URL" != */api/arcade && "$WXT_ARCADE_POINT_URL" != */api/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v2/arcade && "$WXT_ARCADE_POINT_URL" != */api/v2/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade/ ]]; then
-            echo "::error::WXT_ARCADE_POINT_URL must point to a supported Arcade endpoint."
+          if [[ "$WXT_ARCADE_POINT_URL" != */api/arcade && "$WXT_ARCADE_POINT_URL" != */api/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade/ ]]; then
+            echo "::error::WXT_ARCADE_POINT_URL must resolve to /api/v3/arcade."
             exit 1
           fi
 

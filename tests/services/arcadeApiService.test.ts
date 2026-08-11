@@ -21,7 +21,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.stubEnv(
     "WXT_ARCADE_POINT_URL",
-    "https://private-api.example.test/api/v3/arcade",
+    "https://private-api.example.test/api/arcade",
   );
   vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "test-client-key");
   vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "test-client-secret");
@@ -82,7 +82,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     expect(result?.lastUpdated).toBeTruthy();
   });
 
-  it("uses WXT_ARCADE_POINT_URL exactly for the signed v3 request", async () => {
+  it("derives and calls the signed /api/v3/arcade endpoint", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
 
     await ArcadeApiService.fetchArcadeData(
@@ -101,18 +101,27 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
   });
 
-  it("rejects a legacy Arcade endpoint instead of rewriting it", async () => {
+  it("keeps a setting that already points to /api/v3/arcade", async () => {
     vi.stubEnv(
       "WXT_ARCADE_POINT_URL",
-      "https://private-api.example.test/api/arcade",
+      "https://private-api.example.test/api/v3/arcade",
     );
+    vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
 
-    const result = await ArcadeApiService.fetchArcadeData(
+    await ArcadeApiService.fetchArcadeData(
       "https://www.skills.google/public_profiles/abc123",
     );
 
-    expect(result).toBeNull();
-    expect(axios.post).not.toHaveBeenCalled();
+    expect(axios.post).toHaveBeenCalledWith(
+      "https://private-api.example.test/api/v3/arcade",
+      expect.any(Object),
+      expect.objectContaining({
+        timeout: 15_000,
+        headers: expect.objectContaining({
+          "X-Arcade-Key": "test-client-key",
+        }),
+      }),
+    );
   });
 
   it("uses top-level facilitator rules from the v3 response", async () => {
