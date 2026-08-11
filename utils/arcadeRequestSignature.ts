@@ -68,7 +68,7 @@ function getExtensionVersion(): string {
   }
 }
 
-/** Return true when the endpoint is the signed Arcade v3 contract. */
+/** Return true only for the signed Arcade v3 contract. */
 function isArcadeV3Endpoint(endpoint: string): boolean {
   try {
     return /\/api\/v3\/arcade\/?$/i.test(new URL(endpoint).pathname);
@@ -78,30 +78,27 @@ function isArcadeV3Endpoint(endpoint: string): boolean {
 }
 
 /**
- * Build short-lived HMAC headers for Arcade requests.
- *
- * V3 always requires the release-injected client key and secret. The extension
- * version is written into the JSON body before hashing so it is authenticated by
- * the same HMAC, and is also sent as a header for backend access logs/telemetry.
- * V2 keeps the previous optional-signing behavior during the migration window.
+ * Build the mandatory HMAC headers for a signed Arcade v3 request.
+ * The extension version is written into the JSON body before hashing so it is
+ * authenticated by the same signature and is also exposed as a telemetry header.
  */
 export async function buildArcadeSignatureHeaders(
   endpoint: string,
   body: unknown,
-): Promise<Record<string, string> | null> {
+): Promise<Record<string, string>> {
+  if (!isArcadeV3Endpoint(endpoint)) {
+    throw new Error("Arcade signing requires the /api/v3/arcade endpoint.");
+  }
+
   const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
   const clientSecret = String(
     import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
   ).trim();
-  const requiresSignature = isArcadeV3Endpoint(endpoint);
 
   if (!clientKey || !clientSecret) {
-    if (requiresSignature) {
-      throw new Error(
-        "Arcade v3 requires WXT_ARCADE_CLIENT_KEY and WXT_ARCADE_CLIENT_SECRET.",
-      );
-    }
-    return null;
+    throw new Error(
+      "Arcade v3 requires WXT_ARCADE_CLIENT_KEY and WXT_ARCADE_CLIENT_SECRET.",
+    );
   }
 
   const extensionVersion = getExtensionVersion();
