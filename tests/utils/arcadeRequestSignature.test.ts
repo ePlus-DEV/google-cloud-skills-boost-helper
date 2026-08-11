@@ -19,7 +19,7 @@ describe("buildArcadeSignatureHeaders", () => {
     vi.unstubAllGlobals();
   });
 
-  it("requires key and secret for the v3 endpoint", async () => {
+  it("requires key and secret for Arcade v3", async () => {
     vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "");
 
     await expect(
@@ -30,6 +30,17 @@ describe("buildArcadeSignatureHeaders", () => {
         },
       ),
     ).rejects.toThrow(/requires WXT_ARCADE_CLIENT_KEY/i);
+  });
+
+  it("rejects endpoints outside the Arcade v3 contract", async () => {
+    await expect(
+      buildArcadeSignatureHeaders(
+        "https://private-api.example.test/api/arcade",
+        {
+          url: "https://www.skills.google/public_profiles/abc123",
+        },
+      ),
+    ).rejects.toThrow(/requires the \/api\/v3\/arcade endpoint/i);
   });
 
   it("signs the manifest version in the body and exposes it as a header", async () => {
@@ -53,19 +64,5 @@ describe("buildArcadeSignatureHeaders", () => {
         "X-Arcade-Signature": expect.stringMatching(/^[a-f0-9]{64}$/),
       }),
     );
-  });
-
-  it("keeps optional signing for v2 during the migration window", async () => {
-    vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "");
-    vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "");
-
-    await expect(
-      buildArcadeSignatureHeaders(
-        "https://private-api.example.test/api/v2/arcade",
-        {
-          url: "https://www.skills.google/public_profiles/abc123",
-        },
-      ),
-    ).resolves.toBeNull();
   });
 });
