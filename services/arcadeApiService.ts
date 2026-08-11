@@ -74,12 +74,12 @@ function normalizeBadgeCount(value: unknown): number {
   return Number.isFinite(parsed) && parsed >= 0 ? Math.trunc(parsed) : 0;
 }
 
-/** Return a localized UI label when available, otherwise use the fallback. */
-function getLocalizedLabel(key: string, fallback: string): string {
+/** Return a label directly from the extension locale data. */
+function getLocalizedLabel(key: string): string {
   try {
-    return browser.i18n.getMessage(key as never) || fallback;
+    return browser.i18n.getMessage(key as never) || "";
   } catch (_) {
-    return fallback;
+    return "";
   }
 }
 
@@ -179,13 +179,13 @@ function syncMilestoneMetadata(
   upsertMilestoneMetadataRow(
     details,
     `milestone-${milestone}-regular-points-row`,
-    `${getLocalizedLabel("arcadePointsTitle", "Regular Arcade")}:`,
+    getLocalizedLabel("arcadePointsTitle"),
     formatBonusPoints(regularPoints),
   );
   upsertMilestoneMetadataRow(
     details,
     `milestone-${milestone}-facilitator-bonus-row`,
-    getLocalizedLabel("facilitatorBonus", "Facilitator bonus:"),
+    getLocalizedLabel("facilitatorBonus"),
     `+${formatBonusPoints(safeBonusPoints)}`,
   );
 }
