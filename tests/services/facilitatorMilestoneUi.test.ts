@@ -13,8 +13,10 @@ import { resetFacilitatorRulesToFallback } from "../../services/facilitatorServi
 describe("Facilitator milestone popup parity", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.stubEnv("WXT_ARCADE_POINT_URL", "https://hub.eplus.dev/api/arcade");
-    vi.stubEnv("WXT_ARCADE_POINT_V2_URL", "");
+    vi.stubEnv(
+      "WXT_ARCADE_POINT_URL",
+      "https://private-api.example.test/api/arcade",
+    );
 
     document.body.innerHTML = `
       <div class="milestone-card" data-milestone="2">

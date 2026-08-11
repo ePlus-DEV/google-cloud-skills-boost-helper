@@ -3,8 +3,11 @@ import ApiClient from "../../services/apiClient";
 
 describe("ApiClient.fetchPostsOfPublication", () => {
   beforeEach(() => {
-    vi.stubEnv("WXT_API_URL", "https://solutions.example.com/posts");
-    vi.stubEnv("WXT_ARCADE_POINT_URL", "https://hub.eplus.dev/api/v2/arcade");
+    vi.stubEnv("WXT_API_URL", "https://private-solutions.example.test/posts");
+    vi.stubEnv(
+      "WXT_ARCADE_POINT_URL",
+      "https://private-api.example.test/api/v2/arcade",
+    );
     vi.spyOn(Date, "now").mockReturnValue(1786413245872);
   });
 
@@ -21,7 +24,7 @@ describe("ApiClient.fetchPostsOfPublication", () => {
         {
           _id: "post-1",
           title: "Example Lab",
-          slug: "https://eplus.dev/example-lab",
+          slug: "https://content.example.test/example-lab",
           datePublished: "2026-08-11T00:00:00.000Z",
         },
       ]),
@@ -35,16 +38,19 @@ describe("ApiClient.fetchPostsOfPublication", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://solutions.example.com/posts?time=1786413245872",
+      "https://private-solutions.example.test/posts?time=1786413245872",
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
     expect(fetchMock.mock.calls[0][0]).not.toContain("/api/v2/arcade");
     expect(result).toHaveLength(1);
-    expect(result[0]?.url).toBe("https://eplus.dev/example-lab");
+    expect(result[0]?.url).toBe("https://content.example.test/example-lab");
   });
 
   it("preserves an existing solution query string when adding the cache buster", async () => {
-    vi.stubEnv("WXT_API_URL", "https://solutions.example.com/posts?source=ext");
+    vi.stubEnv(
+      "WXT_API_URL",
+      "https://private-solutions.example.test/posts?source=ext",
+    );
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue([]),
@@ -57,7 +63,7 @@ describe("ApiClient.fetchPostsOfPublication", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://solutions.example.com/posts?source=ext&time=1786413245872",
+      "https://private-solutions.example.test/posts?source=ext&time=1786413245872",
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
   });

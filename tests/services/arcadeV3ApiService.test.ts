@@ -28,7 +28,10 @@ vi.mock("../../utils/arcadeRequestSignature", () => ({
 describe("ArcadeApiService v3", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.stubEnv("WXT_ARCADE_POINT_URL", "https://hub.eplus.dev/api/arcade");
+    vi.stubEnv(
+      "WXT_ARCADE_POINT_URL",
+      "https://private-api.example.test/api/arcade",
+    );
     vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "release-client-key");
     vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "release-client-secret");
   });
@@ -48,13 +51,13 @@ describe("ArcadeApiService v3", () => {
     );
 
     expect(buildArcadeSignatureHeaders).toHaveBeenCalledWith(
-      "https://hub.eplus.dev/api/v3/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       expect.objectContaining({
         profileId: "abc123",
       }),
     );
     expect(axios.post).toHaveBeenCalledWith(
-      "https://hub.eplus.dev/api/v3/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       expect.objectContaining({
         profileId: "abc123",
         extensionVersion: "1.3.1",

@@ -23,9 +23,12 @@ describe("buildArcadeSignatureHeaders", () => {
     vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "");
 
     await expect(
-      buildArcadeSignatureHeaders("https://hub.eplus.dev/api/v3/arcade", {
-        url: "https://www.skills.google/public_profiles/abc123",
-      }),
+      buildArcadeSignatureHeaders(
+        "https://private-api.example.test/api/v3/arcade",
+        {
+          url: "https://www.skills.google/public_profiles/abc123",
+        },
+      ),
     ).rejects.toThrow(/requires WXT_ARCADE_CLIENT_KEY/i);
   });
 
@@ -36,7 +39,7 @@ describe("buildArcadeSignatureHeaders", () => {
     };
 
     const headers = await buildArcadeSignatureHeaders(
-      "https://hub.eplus.dev/api/v3/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       payload,
     );
 
@@ -57,9 +60,12 @@ describe("buildArcadeSignatureHeaders", () => {
     vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "");
 
     await expect(
-      buildArcadeSignatureHeaders("https://hub.eplus.dev/api/v2/arcade", {
-        url: "https://www.skills.google/public_profiles/abc123",
-      }),
+      buildArcadeSignatureHeaders(
+        "https://private-api.example.test/api/v2/arcade",
+        {
+          url: "https://www.skills.google/public_profiles/abc123",
+        },
+      ),
     ).resolves.toBeNull();
   });
 });
