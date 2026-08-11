@@ -7,6 +7,7 @@ import {
   syncFacilitatorRulesFromApi,
 } from "./facilitatorService";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
+import { buildArcadeSignatureHeaders } from "../utils/arcadeRequestSignature";
 
 const FACILITATOR_BONUS_LABEL_KEYS: Record<string, string> = {
   1: "milestone1Bonus",
@@ -20,24 +21,36 @@ const ARCADE_API_TIMEOUT_MS = 15_000;
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
- * Resolve the stable Arcade API v2 endpoint.
+ * Resolve Arcade from the existing WXT_ARCADE_POINT_URL setting.
  *
- * WXT_ARCADE_POINT_V2_URL is preferred when configured. For existing release
- * environments we can derive `/api/v2/arcade` from the legacy `/api/arcade`
- * URL so a new secret is not required immediately. We never send a request to
- * the legacy endpoint from this client.
+ * Release builds provide signing credentials, so the current endpoint is
+ * transparently upgraded to /api/v3/arcade without adding another endpoint env.
+ * Unsigned local/older builds retain the temporary v2 compatibility behavior.
  */
-function getArcadeV2Endpoint(): string {
-  const explicit = String(import.meta.env.WXT_ARCADE_POINT_V2_URL || "").trim();
-  if (explicit) return explicit;
+function getArcadeEndpoint(): string {
+  const configured = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
+  if (!configured) return "";
 
-  const legacy = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
-  if (!legacy) return "";
+  if (/\/v3\/arcade\/?$/i.test(configured)) return configured;
 
-  if (/\/v2\/arcade\/?$/i.test(legacy)) return legacy;
+  const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
+  const clientSecret = String(
+    import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
+  ).trim();
+  const signingConfigured = Boolean(clientKey && clientSecret);
 
-  const derived = legacy.replace(/\/arcade(?:-public)?\/?$/i, "/v2/arcade");
-  return derived !== legacy ? derived : "";
+  if (signingConfigured) {
+    const v3 = configured.replace(
+      /\/(?:v2\/)?arcade(?:-public)?\/?$/i,
+      "/v3/arcade",
+    );
+    return v3 !== configured ? v3 : "";
+  }
+
+  if (/\/v2\/arcade\/?$/i.test(configured)) return configured;
+
+  const v2 = configured.replace(/\/arcade(?:-public)?\/?$/i, "/v2/arcade");
+  return v2 !== configured ? v2 : "";
 }
 
 /** Format a bonus value without unnecessary trailing decimals. */
@@ -59,6 +72,15 @@ function replaceBonusValue(text: string, points: number): string {
 function normalizeBadgeCount(value: unknown): number {
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? Math.trunc(parsed) : 0;
+}
+
+/** Return a label directly from the extension locale data. */
+function getLocalizedLabel(key: string): string {
+  try {
+    return browser.i18n.getMessage(key as never) || "";
+  } catch (_) {
+    return "";
+  }
 }
 
 /**
@@ -86,6 +108,89 @@ function readDisplayedCount(selector: string): number | null {
 }
 
 /**
+ * Add or update one compact metadata row inside a milestone card. This keeps the
+ * extension's existing 2-column layout while exposing the same scoring details
+ * as the web tracker.
+ */
+function upsertMilestoneMetadataRow(
+  details: HTMLElement,
+  rowClass: string,
+  label: string,
+  value: string,
+): void {
+  let row = details.querySelector<HTMLElement>(`.${rowClass}`);
+  if (!row) {
+    row = document.createElement("div");
+    row.className = `flex justify-between ${rowClass}`;
+
+    const labelElement = document.createElement("span");
+    labelElement.className = "text-white/60 facilitator-meta-label";
+    row.append(labelElement);
+
+    const valueElement = document.createElement("span");
+    valueElement.className = "text-white facilitator-meta-value";
+    row.append(valueElement);
+
+    details.append(row);
+  }
+
+  const labelElement = row.querySelector<HTMLElement>(
+    ".facilitator-meta-label",
+  );
+  const valueElement = row.querySelector<HTMLElement>(
+    ".facilitator-meta-value",
+  );
+
+  if (labelElement && labelElement.textContent !== label) {
+    labelElement.textContent = label;
+  }
+  if (valueElement && valueElement.textContent !== value) {
+    valueElement.textContent = value;
+  }
+}
+
+/**
+ * Mirror the web tracker's per-milestone scoring rows: regular Arcade points
+ * required by the milestone and the Facilitator bonus attached to that level.
+ */
+function syncMilestoneMetadata(
+  milestone: string,
+  requirements: {
+    games: number;
+    skills: number;
+    basePoints?: number;
+  },
+): void {
+  const details = document.querySelector<HTMLElement>(
+    `.milestone-card[data-milestone="${milestone}"] .milestone-details`,
+  );
+  if (!details) return;
+
+  const configuredBasePoints = Number(requirements.basePoints);
+  const regularPoints =
+    Number.isFinite(configuredBasePoints) && configuredBasePoints >= 0
+      ? configuredBasePoints
+      : normalizeBadgeCount(requirements.games) +
+        Math.floor(normalizeBadgeCount(requirements.skills) / 2);
+  const bonusPoints = Number(FACILITATOR_MILESTONE_POINTS[milestone] ?? 0);
+  const safeBonusPoints =
+    Number.isFinite(bonusPoints) && bonusPoints >= 0 ? bonusPoints : 0;
+
+  upsertMilestoneMetadataRow(
+    details,
+    `milestone-${milestone}-regular-points-row`,
+    getLocalizedLabel("arcadePointsTitle"),
+    formatBonusPoints(regularPoints),
+  );
+  upsertMilestoneMetadataRow(
+    details,
+    `milestone-${milestone}-facilitator-bonus-row`,
+    getLocalizedLabel("facilitatorBonus"),
+    `+${formatBonusPoints(safeBonusPoints)}`,
+  );
+}
+
+/**
  * Match the facilitator progress formula used by arcade.eplus.dev: completed
  * badges across active requirements divided by the total badge requirement.
  */
@@ -96,6 +201,7 @@ function syncMilestoneProgress(
     trivia: number;
     skills: number;
     labfree: number;
+    basePoints?: number;
   },
 ): void {
   const requirementEntries = [
@@ -147,7 +253,9 @@ function syncMilestoneProgress(
   );
   if (!progressElement) return;
 
-  const nextText = `${percent}%`;
+  // Keep the percentage first for the compact popup, then expose the same
+  // completed/required total shown by the web tracker (for example 41/42).
+  const nextText = `${percent}% · ${completed}/${total}`;
   if (progressElement.textContent !== nextText) {
     progressElement.textContent = nextText;
   }
@@ -158,6 +266,8 @@ function syncMilestoneProgress(
     "title",
     `Progress: ${percent}% (${completed}/${total} badges completed)\n\n${details.join("\n")}`,
   );
+
+  syncMilestoneMetadata(milestone, requirements);
 }
 
 /**
@@ -271,11 +381,12 @@ initializeFacilitatorRuleLabelSync();
  */
 const ArcadeApiService = {
   /**
-   * Fetch Arcade data from the stable API v2 endpoint.
+   * Fetch Arcade data from signed v3 for release builds. Unsigned local/older
+   * builds retain the temporary v2 compatibility path until v2 is removed.
    */
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
-      const endpoint = getArcadeV2Endpoint();
+      const endpoint = getArcadeEndpoint();
       if (!endpoint) return null;
 
       // Ensure we send the canonical host to the backend. If canonicalization
@@ -283,21 +394,24 @@ const ArcadeApiService = {
       // prefer canonical.
       const canonical = canonicalizeProfileUrl(url) || url;
       const profileId = extractProfileId(url);
-      const response = await axios.post(
+      const payload = {
+        url: canonical,
+        profileId,
+      };
+      const signatureHeaders = await buildArcadeSignatureHeaders(
         endpoint,
-        {
-          url: canonical,
-          profileId,
-        },
-        { timeout: ARCADE_API_TIMEOUT_MS },
+        payload,
       );
+      const requestConfig = signatureHeaders
+        ? { timeout: ARCADE_API_TIMEOUT_MS, headers: signatureHeaders }
+        : { timeout: ARCADE_API_TIMEOUT_MS };
+      const response = await axios.post(endpoint, payload, requestConfig);
 
       if (response.status === 200) {
         const data = response.data as ArcadeData;
 
-        // API v2 exposes Facilitator metadata only at the top level. The API is
-        // the source of truth; if metadata is absent or invalid, reset to the
-        // local compatibility fallback instead of keeping stale prior rules.
+        // The API exposes Facilitator metadata at the top level. It remains the
+        // source of truth for both v2 compatibility responses and signed v3.
         if (!syncFacilitatorRulesFromApi(data.facilitator)) {
           resetFacilitatorRulesToFallback();
         }
