@@ -46,7 +46,10 @@ async function hmacSha256Hex(secret: string, value: string): Promise<string> {
 /** Read the version from the installed extension manifest. */
 function getExtensionVersion(): string {
   try {
-    return String(browser.runtime.getManifest()?.version || "unknown").trim() || "unknown";
+    return (
+      String(browser.runtime.getManifest()?.version || "unknown").trim() ||
+      "unknown"
+    );
   } catch (_) {
     return "unknown";
   }
