@@ -30,22 +30,16 @@ vi.mock("../../utils/arcadeRequestSignature", () => ({
 describe("ArcadeApiService v3", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.stubEnv(
-      "WXT_ARCADE_POINT_V3_URL",
-      "https://hub.eplus.dev/api/v3/arcade",
-    );
-    vi.stubEnv(
-      "WXT_ARCADE_POINT_V2_URL",
-      "https://hub.eplus.dev/api/v2/arcade",
-    );
     vi.stubEnv("WXT_ARCADE_POINT_URL", "https://hub.eplus.dev/api/arcade");
+    vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "release-client-key");
+    vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "release-client-secret");
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  it("prefers signed v3 and sends the extension version", async () => {
+  it("derives signed v3 from the existing Arcade endpoint env and sends the extension version", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({
       status: 200,
       data: { success: true },
