@@ -218,17 +218,17 @@ describe("ArcadeApiService.fetchArcadeData", () => {
 
     expect(
       document.querySelector<HTMLElement>(".milestone-1-progress")?.textContent,
-    ).toBe("100%");
+    ).toBe("100% · 24/24");
     expect(
       document.querySelector<HTMLElement>(".milestone-2-progress")?.textContent,
-    ).toBe("97%");
+    ).toBe("97% · 41/42");
     expect(
       document.querySelector<HTMLElement>(".milestone-3-progress")?.textContent,
-    ).toBe("70%");
+    ).toBe("70% · 42/60");
     expect(
       document.querySelector<HTMLElement>(".milestone-ultimate-progress")
         ?.textContent,
-    ).toBe("53%");
+    ).toBe("53% · 42/78");
 
     expect(
       document.querySelector<HTMLElement>(".milestone-3-games")?.textContent,
