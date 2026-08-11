@@ -87,20 +87,18 @@ jobs:
 
           git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}" >/dev/null
 
-      - name: Validate Arcade v3 signing configuration
+      - name: Validate Arcade v3 endpoint configuration
         run: |
           set -euo pipefail
 
-          for name in WXT_ARCADE_POINT_URL WXT_ARCADE_CLIENT_KEY WXT_ARCADE_CLIENT_SECRET; do
-            normalized="${!name//[[:space:]]/}"
-            if [ -z "$normalized" ]; then
-              echo "::error::$name is required for signed Arcade v3 releases."
-              exit 1
-            fi
-          done
+          normalized="${WXT_ARCADE_POINT_URL//[[:space:]]/}"
+          if [ -z "$normalized" ]; then
+            echo "::error::WXT_ARCADE_POINT_URL is required for Arcade v3 releases."
+            exit 1
+          fi
 
-          if [[ "$WXT_ARCADE_POINT_URL" != */api/arcade && "$WXT_ARCADE_POINT_URL" != */api/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v2/arcade && "$WXT_ARCADE_POINT_URL" != */api/v2/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade/ ]]; then
-            echo "::error::WXT_ARCADE_POINT_URL must point to a supported Arcade endpoint."
+          if [[ "$WXT_ARCADE_POINT_URL" != */api/arcade && "$WXT_ARCADE_POINT_URL" != */api/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade/ ]]; then
+            echo "::error::WXT_ARCADE_POINT_URL must resolve to /api/v3/arcade."
             exit 1
           fi
 
