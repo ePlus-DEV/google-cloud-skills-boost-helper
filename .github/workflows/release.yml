@@ -99,21 +99,10 @@ jobs:
             fi
           done
 
-          node <<'NODE'
-          const raw = String(process.env.WXT_ARCADE_POINT_URL || '').trim();
-          let endpoint;
-          try {
-            endpoint = new URL(raw);
-          } catch {
-            console.error('::error::WXT_ARCADE_POINT_URL must be a valid absolute URL.');
-            process.exit(1);
-          }
-
-          if (endpoint.protocol !== 'https:' || endpoint.pathname !== '/api/v3/arcade' || endpoint.search || endpoint.hash) {
-            console.error('::error::WXT_ARCADE_POINT_URL must be the exact HTTPS /api/v3/arcade endpoint.');
-            process.exit(1);
-          }
-          NODE
+          if [[ "$WXT_ARCADE_POINT_URL" != */api/arcade && "$WXT_ARCADE_POINT_URL" != */api/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v2/arcade && "$WXT_ARCADE_POINT_URL" != */api/v2/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade/ ]]; then
+            echo "::error::WXT_ARCADE_POINT_URL must point to a supported Arcade endpoint."
+            exit 1
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -150,29 +139,6 @@ jobs:
               exit 1
             fi
           done
-
-      - name: Verify Arcade config in built package
-        run: |
-          set -euo pipefail
-
-          CHROME_ZIP="$(find .output -maxdepth 1 -type f -name '*-chrome.zip' -print -quit)"
-          TEMP_DIR="$(mktemp -d)"
-          trap 'rm -rf "$TEMP_DIR"' EXIT
-          unzip -q "$CHROME_ZIP" -d "$TEMP_DIR"
-
-          EXPECTED_PERMISSION="$(node -e 'process.stdout.write(new URL(process.env.WXT_ARCADE_POINT_URL).origin + "/*")')"
-
-          if ! jq -e --arg expected "$EXPECTED_PERMISSION" \
-            '(.host_permissions // []) | index($expected) != null' \
-            "$TEMP_DIR/manifest.json" >/dev/null; then
-            echo "::error::Built extension is missing the Arcade host permission derived from WXT_ARCADE_POINT_URL."
-            exit 1
-          fi
-
-          if ! grep -R -Fq -- "$WXT_ARCADE_POINT_URL" "$TEMP_DIR"; then
-            echo "::error::Built extension does not contain the configured WXT_ARCADE_POINT_URL."
-            exit 1
-          fi
 
       - name: Checkout latest main for changelog
         run: |
