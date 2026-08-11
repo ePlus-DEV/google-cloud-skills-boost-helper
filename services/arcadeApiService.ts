@@ -21,19 +21,28 @@ const ARCADE_API_TIMEOUT_MS = 15_000;
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
- * Resolve the signed Arcade v3 endpoint from the existing
- * WXT_ARCADE_POINT_URL setting without introducing another endpoint env name.
+ * Read the signed Arcade v3 endpoint exactly from WXT_ARCADE_POINT_URL.
+ * No endpoint fallback, rewriting, or version derivation is allowed.
  */
 function getArcadeEndpoint(): string {
   const configured = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
   if (!configured) return "";
 
-  if (/\/api\/v3\/arcade\/?$/i.test(configured)) {
-    return configured.replace(/\/$/u, "");
-  }
+  try {
+    const endpoint = new URL(configured);
+    if (
+      endpoint.protocol !== "https:" ||
+      endpoint.pathname !== "/api/v3/arcade" ||
+      endpoint.search ||
+      endpoint.hash
+    ) {
+      return "";
+    }
 
-  const v3 = configured.replace(/\/api\/arcade\/?$/i, "/api/v3/arcade");
-  return v3 !== configured ? v3 : "";
+    return configured;
+  } catch {
+    return "";
+  }
 }
 
 /** Format a bonus value without unnecessary trailing decimals. */
@@ -364,7 +373,7 @@ const ArcadeApiService = {
       const endpoint = getArcadeEndpoint();
       if (!endpoint) {
         console.error(
-          "[ArcadeApiService] WXT_ARCADE_POINT_URL must target /api/arcade or /api/v3/arcade.",
+          "[ArcadeApiService] WXT_ARCADE_POINT_URL must be the exact HTTPS /api/v3/arcade endpoint.",
         );
         return null;
       }
