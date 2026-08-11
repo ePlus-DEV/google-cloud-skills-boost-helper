@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 
 vi.mock("axios", () => ({
   default: {
@@ -17,16 +18,12 @@ describe("Facilitator milestone popup parity", () => {
       "WXT_ARCADE_POINT_URL",
       "https://private-api.example.test/api/arcade",
     );
-    vi.stubGlobal("browser", {
-      i18n: {
-        getMessage: vi.fn((key: string) => {
-          const messages: Record<string, string> = {
-            arcadePointsTitle: "Arcade localisé",
-            facilitatorBonus: "Bonus facilitateur",
-          };
-          return messages[key] || "";
-        }),
-      },
+    vi.spyOn(fakeBrowser.i18n, "getMessage").mockImplementation((key) => {
+      const messages: Record<string, string> = {
+        arcadePointsTitle: "Arcade localisé",
+        facilitatorBonus: "Bonus facilitateur",
+      };
+      return messages[String(key)] || "";
     });
 
     document.body.innerHTML = `
@@ -48,7 +45,6 @@ describe("Facilitator milestone popup parity", () => {
   afterEach(() => {
     resetFacilitatorRulesToFallback();
     vi.unstubAllEnvs();
-    vi.unstubAllGlobals();
     vi.clearAllMocks();
     document.body.innerHTML = "";
   });
