@@ -49,10 +49,7 @@ function getArcadeEndpoint(): string {
 
   if (/\/v2\/arcade\/?$/i.test(configured)) return configured;
 
-  const v2 = configured.replace(
-    /\/arcade(?:-public)?\/?$/i,
-    "/v2/arcade",
-  );
+  const v2 = configured.replace(/\/arcade(?:-public)?\/?$/i, "/v2/arcade");
   return v2 !== configured ? v2 : "";
 }
 
