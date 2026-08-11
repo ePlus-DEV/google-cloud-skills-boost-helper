@@ -59,7 +59,9 @@ function popupSizeBootstrapPlugin(): Plugin {
  * source control, but the built extension receives permission to call it.
  */
 function getArcadeHostPermissions(): string[] {
-  const configured = String(process.env.WXT_ARCADE_POINT_URL || "").trim();
+  const configured = String(
+    import.meta.env.WXT_ARCADE_POINT_URL || "",
+  ).trim();
   if (!configured) return [];
 
   try {
@@ -73,7 +75,7 @@ function getArcadeHostPermissions(): string[] {
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  manifest: {
+  manifest: () => ({
     name: "__MSG_extName__",
     description: "__MSG_extDescription__",
     default_locale: "en",
@@ -85,7 +87,7 @@ export default defineConfig({
         id: "{71243e5a-8ec2-41a5-8ef5-f2861ebd8fed}",
       },
     },
-  },
+  }),
   vite: () => ({
     plugins: [popupSizeBootstrapPlugin(), react(), tailwindcss()],
   }),
