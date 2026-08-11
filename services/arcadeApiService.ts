@@ -61,6 +61,15 @@ function normalizeBadgeCount(value: unknown): number {
   return Number.isFinite(parsed) && parsed >= 0 ? Math.trunc(parsed) : 0;
 }
 
+/** Return a localized UI label when available, otherwise use the fallback. */
+function getLocalizedLabel(key: string, fallback: string): string {
+  try {
+    return browser.i18n.getMessage(key as never) || fallback;
+  } catch (_) {
+    return fallback;
+  }
+}
+
 /**
  * Hide requirements that are not part of the active ruleset without modifying
  * the current count rendered by PopupUIService. The popup owns count rendering;
@@ -86,6 +95,85 @@ function readDisplayedCount(selector: string): number | null {
 }
 
 /**
+ * Add or update one compact metadata row inside a milestone card. This keeps the
+ * extension's existing 2-column layout while exposing the same scoring details
+ * as the web tracker.
+ */
+function upsertMilestoneMetadataRow(
+  details: HTMLElement,
+  rowClass: string,
+  label: string,
+  value: string,
+): void {
+  let row = details.querySelector<HTMLElement>(`.${rowClass}`);
+  if (!row) {
+    row = document.createElement("div");
+    row.className = `flex justify-between ${rowClass}`;
+
+    const labelElement = document.createElement("span");
+    labelElement.className = "text-white/60 facilitator-meta-label";
+    row.append(labelElement);
+
+    const valueElement = document.createElement("span");
+    valueElement.className = "text-white facilitator-meta-value";
+    row.append(valueElement);
+
+    details.append(row);
+  }
+
+  const labelElement = row.querySelector<HTMLElement>(".facilitator-meta-label");
+  const valueElement = row.querySelector<HTMLElement>(".facilitator-meta-value");
+
+  if (labelElement && labelElement.textContent !== label) {
+    labelElement.textContent = label;
+  }
+  if (valueElement && valueElement.textContent !== value) {
+    valueElement.textContent = value;
+  }
+}
+
+/**
+ * Mirror the web tracker's per-milestone scoring rows: regular Arcade points
+ * required by the milestone and the Facilitator bonus attached to that level.
+ */
+function syncMilestoneMetadata(
+  milestone: string,
+  requirements: {
+    games: number;
+    skills: number;
+    basePoints?: number;
+  },
+): void {
+  const details = document.querySelector<HTMLElement>(
+    `.milestone-card[data-milestone="${milestone}"] .milestone-details`,
+  );
+  if (!details) return;
+
+  const configuredBasePoints = Number(requirements.basePoints);
+  const regularPoints =
+    Number.isFinite(configuredBasePoints) && configuredBasePoints >= 0
+      ? configuredBasePoints
+      : normalizeBadgeCount(requirements.games) +
+        Math.floor(normalizeBadgeCount(requirements.skills) / 2);
+  const bonusPoints = Number(FACILITATOR_MILESTONE_POINTS[milestone] ?? 0);
+  const safeBonusPoints =
+    Number.isFinite(bonusPoints) && bonusPoints >= 0 ? bonusPoints : 0;
+
+  upsertMilestoneMetadataRow(
+    details,
+    `milestone-${milestone}-regular-points-row`,
+    `${getLocalizedLabel("arcadePointsTitle", "Regular Arcade")}:`,
+    formatBonusPoints(regularPoints),
+  );
+  upsertMilestoneMetadataRow(
+    details,
+    `milestone-${milestone}-facilitator-bonus-row`,
+    getLocalizedLabel("facilitatorBonus", "Facilitator bonus:"),
+    `+${formatBonusPoints(safeBonusPoints)}`,
+  );
+}
+
+/**
  * Match the facilitator progress formula used by arcade.eplus.dev: completed
  * badges across active requirements divided by the total badge requirement.
  */
@@ -96,6 +184,7 @@ function syncMilestoneProgress(
     trivia: number;
     skills: number;
     labfree: number;
+    basePoints?: number;
   },
 ): void {
   const requirementEntries = [
@@ -147,7 +236,9 @@ function syncMilestoneProgress(
   );
   if (!progressElement) return;
 
-  const nextText = `${percent}%`;
+  // Keep the percentage first for the compact popup, then expose the same
+  // completed/required total shown by the web tracker (for example 41/42).
+  const nextText = `${percent}% · ${completed}/${total}`;
   if (progressElement.textContent !== nextText) {
     progressElement.textContent = nextText;
   }
@@ -158,6 +249,8 @@ function syncMilestoneProgress(
     "title",
     `Progress: ${percent}% (${completed}/${total} badges completed)\n\n${details.join("\n")}`,
   );
+
+  syncMilestoneMetadata(milestone, requirements);
 }
 
 /**
