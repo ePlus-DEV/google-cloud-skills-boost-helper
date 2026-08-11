@@ -7,6 +7,7 @@ import {
   syncFacilitatorRulesFromApi,
 } from "./facilitatorService";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
+import { buildArcadeSignatureHeaders } from "../utils/arcadeRequestSignature";
 
 const FACILITATOR_BONUS_LABEL_KEYS: Record<string, string> = {
   1: "milestone1Bonus",
@@ -283,14 +284,15 @@ const ArcadeApiService = {
       // prefer canonical.
       const canonical = canonicalizeProfileUrl(url) || url;
       const profileId = extractProfileId(url);
-      const response = await axios.post(
-        endpoint,
-        {
-          url: canonical,
-          profileId,
-        },
-        { timeout: ARCADE_API_TIMEOUT_MS },
-      );
+      const payload = {
+        url: canonical,
+        profileId,
+      };
+      const signatureHeaders = await buildArcadeSignatureHeaders(endpoint, payload);
+      const requestConfig = signatureHeaders
+        ? { timeout: ARCADE_API_TIMEOUT_MS, headers: signatureHeaders }
+        : { timeout: ARCADE_API_TIMEOUT_MS };
+      const response = await axios.post(endpoint, payload, requestConfig);
 
       if (response.status === 200) {
         const data = response.data as ArcadeData;
