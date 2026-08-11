@@ -17,6 +17,7 @@ describe("buildArcadeSignatureHeaders", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it("requires key and secret for Arcade v3", async () => {
@@ -63,6 +64,31 @@ describe("buildArcadeSignatureHeaders", () => {
         "X-Arcade-Nonce": expect.stringMatching(/^[A-Za-z0-9_-]{16,128}$/),
         "X-Arcade-Signature": expect.stringMatching(/^[a-f0-9]{64}$/),
       }),
+    );
+  });
+
+  it("produces the same signature with or without a trailing endpoint slash", async () => {
+    vi.spyOn(Date, "now").mockReturnValue(1_786_420_000_000);
+    vi.spyOn(crypto, "randomUUID").mockReturnValue(
+      "01234567-89ab-cdef-0123-456789abcdef",
+    );
+
+    const payload = () => ({
+      url: "https://www.skills.google/public_profiles/abc123",
+      profileId: "abc123",
+    });
+
+    const withoutSlash = await buildArcadeSignatureHeaders(
+      "https://private-api.example.test/api/v3/arcade",
+      payload(),
+    );
+    const withSlash = await buildArcadeSignatureHeaders(
+      "https://private-api.example.test/api/v3/arcade/",
+      payload(),
+    );
+
+    expect(withSlash["X-Arcade-Signature"]).toBe(
+      withoutSlash["X-Arcade-Signature"],
     );
   });
 });
