@@ -68,7 +68,7 @@ function getExtensionVersion(): string {
   }
 }
 
-/** Return true only for the signed Arcade v3 contract. */
+/** Return true only for the Arcade v3 contract. */
 function isArcadeV3Endpoint(endpoint: string): boolean {
   try {
     return /\/api\/v3\/arcade\/?$/i.test(new URL(endpoint).pathname);
@@ -85,9 +85,9 @@ function getCanonicalPathname(endpoint: string): string {
 }
 
 /**
- * Build the mandatory HMAC headers for a signed Arcade v3 request.
- * The extension version is written into the JSON body before hashing so it is
- * authenticated by the same signature and is also exposed as a telemetry header.
+ * Add the extension version to the Arcade v3 body and sign the request when
+ * both client credentials are available. During rollout, missing credentials
+ * intentionally produce an unsigned v3 request instead of blocking the fetch.
  */
 export async function buildArcadeSignatureHeaders(
   endpoint: string,
@@ -97,20 +97,18 @@ export async function buildArcadeSignatureHeaders(
     throw new Error("Arcade signing requires the /api/v3/arcade endpoint.");
   }
 
+  const extensionVersion = getExtensionVersion();
+  if (body && typeof body === "object" && !Array.isArray(body)) {
+    (body as Record<string, unknown>).extensionVersion = extensionVersion;
+  }
+
   const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
   const clientSecret = String(
     import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
   ).trim();
 
   if (!clientKey || !clientSecret) {
-    throw new Error(
-      "Arcade v3 requires WXT_ARCADE_CLIENT_KEY and WXT_ARCADE_CLIENT_SECRET.",
-    );
-  }
-
-  const extensionVersion = getExtensionVersion();
-  if (body && typeof body === "object" && !Array.isArray(body)) {
-    (body as Record<string, unknown>).extensionVersion = extensionVersion;
+    return {};
   }
 
   const timestamp = Math.floor(Date.now() / 1000).toString();
