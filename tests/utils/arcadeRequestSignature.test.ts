@@ -20,8 +20,24 @@ describe("buildArcadeSignatureHeaders", () => {
     vi.restoreAllMocks();
   });
 
-  it("requires key and secret for Arcade v3", async () => {
+  it("allows unsigned Arcade v3 when signing credentials are missing", async () => {
     vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "");
+    vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "");
+    const payload: Record<string, unknown> = {
+      url: "https://www.skills.google/public_profiles/abc123",
+    };
+
+    await expect(
+      buildArcadeSignatureHeaders(
+        "https://private-api.example.test/api/v3/arcade",
+        payload,
+      ),
+    ).resolves.toEqual({});
+    expect(payload.extensionVersion).toBe("1.3.1");
+  });
+
+  it("does not block Arcade v3 when only one signing credential is present", async () => {
+    vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "");
 
     await expect(
       buildArcadeSignatureHeaders(
@@ -30,7 +46,7 @@ describe("buildArcadeSignatureHeaders", () => {
           url: "https://www.skills.google/public_profiles/abc123",
         },
       ),
-    ).rejects.toThrow(/requires WXT_ARCADE_CLIENT_KEY/i);
+    ).resolves.toEqual({});
   });
 
   it("rejects endpoints outside the Arcade v3 contract", async () => {
