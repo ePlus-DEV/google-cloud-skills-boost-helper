@@ -6,37 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.3.2] - 2026-08-11
+
 ### :bug: Bug Fixes
-- [`cbef1a3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cbef1a3b6c1f0166748eb4e215de6629e2dd908e) - make Arcade client v3-only *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`9e3aeb7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9e3aeb70dd316703c9abc80972cb6053875e6384) - require signing for Arcade v3 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`6db598c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6db598cb25b2eaad32638eb4f75d86d9e54ad8fd) - validate Arcade v3-only releases *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`2c54a9b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2c54a9ba86543980e9552bd059da6fd28e110bdc) - grant host permission from private Arcade endpoint *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`004133e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/004133e700e7bf2412cc78aadd4c81e95763c837) - require exact private Arcade v3 endpoint for releases *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`3a04971`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3a04971688b56ffd68504ba0bc90bbf80d1e1376) - use exact WXT_ARCADE_POINT_URL for Arcade v3 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`e677183`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e67718314aa07d952970e45bbbe883ac725c9f55) - avoid browser console logging in Arcade refresh *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`2e22b3a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2e22b3a036b9f697a32eed217ad8a0def52272a9) - load Arcade host permission through WXT manifest env *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`ae86a1a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ae86a1a927433385f94af2ee932a0020b3376034) - avoid new Arcade host permission *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`a97199c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a97199c92f6cd41327798db8bebaac0f894b4de8) - avoid Arcade host permission in release *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`f7e665a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f7e665a8a0480815daa25b109e264575826f3b1f) - restore V3-only flow without new host permissions *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`a9564bf`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a9564bf637f17a5221a8a985b730c25ff268e4a3) - update version to 1.3.2 in package.json *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`f691d1a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f691d1a9eda6840c0419f46dd216e741bec02e8a) - normalize Arcade v3 canonical path *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`b284cc9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b284cc99bd8146f6e81c9d8e5cdeb49e0c12a4a6) - keep Arcade refresh errors silent but actionable *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`de11615`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/de116159134da0395ef09839f70e3770f1448a3a) - allow unsigned Arcade v3 requests during rollout *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`f6b95ca`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f6b95cac80ace38bfa5a9d0c6a2bb1bc60a2e519) - document facilitator label sync callback *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+- [`cbef1a3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cbef1a3b6c1f0166748eb4e215de6629e2dd908e) - make Arcade client v3-only _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`9e3aeb7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9e3aeb70dd316703c9abc80972cb6053875e6384) - require signing for Arcade v3 _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`6db598c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6db598cb25b2eaad32638eb4f75d86d9e54ad8fd) - validate Arcade v3-only releases _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`2c54a9b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2c54a9ba86543980e9552bd059da6fd28e110bdc) - grant host permission from private Arcade endpoint _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`004133e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/004133e700e7bf2412cc78aadd4c81e95763c837) - require exact private Arcade v3 endpoint for releases _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`3a04971`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3a04971688b56ffd68504ba0bc90bbf80d1e1376) - use exact WXT*ARCADE_POINT_URL for Arcade v3 *(commit by [@hoangsvit](https://github.com/hoangsvit))\_
+- [`e677183`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e67718314aa07d952970e45bbbe883ac725c9f55) - avoid browser console logging in Arcade refresh _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`2e22b3a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2e22b3a036b9f697a32eed217ad8a0def52272a9) - load Arcade host permission through WXT manifest env _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`ae86a1a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ae86a1a927433385f94af2ee932a0020b3376034) - avoid new Arcade host permission _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`a97199c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a97199c92f6cd41327798db8bebaac0f894b4de8) - avoid Arcade host permission in release _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`f7e665a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f7e665a8a0480815daa25b109e264575826f3b1f) - restore V3-only flow without new host permissions _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`a9564bf`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a9564bf637f17a5221a8a985b730c25ff268e4a3) - update version to 1.3.2 in package.json _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`f691d1a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f691d1a9eda6840c0419f46dd216e741bec02e8a) - normalize Arcade v3 canonical path _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`b284cc9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b284cc99bd8146f6e81c9d8e5cdeb49e0c12a4a6) - keep Arcade refresh errors silent but actionable _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`de11615`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/de116159134da0395ef09839f70e3770f1448a3a) - allow unsigned Arcade v3 requests during rollout _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`f6b95ca`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f6b95cac80ace38bfa5a9d0c6a2bb1bc60a2e519) - document facilitator label sync callback _(commit by [@hoangsvit](https://github.com/hoangsvit))_
 
 ### :white_check_mark: Tests
-- [`10280b3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/10280b34889c56d779774f930865836ef1918628) - cover v3-only Arcade signing *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`8ab21e6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8ab21e61b566bff1e9edc7fd4cdd32e0b3411ee3) - run facilitator UI against Arcade v3 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`eb1b234`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/eb1b234c2be8c07516e38acb74d6ad6020541244) - remove Arcade v2 references *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`bf3b565`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/bf3b5650b852f065a79da59f160be9be50888934) - migrate Arcade service coverage to v3 only *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`d27c4d2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d27c4d2a58212b481d0cf1554742c231bd72e27d) - align Arcade v3 mock with error logging *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`d12b5f1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d12b5f1a3965668a4ec88d0dcaa36c923c60447e) - require exact Arcade v3 endpoint env *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`2ffc93b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2ffc93bce3af112ca77b5aedd8cac7a837836a95) - use exact Arcade v3 endpoint in Facilitator parity *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`e7e0b10`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e7e0b10856ce8f84c6e163b0f3c3d7360490872d) - use exact WXT_ARCADE_POINT_URL in v3 flow *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`ba538f9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ba538f9dbdecdb1f0e9fee826206ffdad870ed9d) - cover trailing slash HMAC normalization *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`e9e843b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e9e843b11a1e41ef5e6e31666a4be54f24d5b08f) - allow unsigned Arcade v3 during rollout *(commit by [@hoangsvit](https://github.com/hoangsvit))*
-- [`6829602`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/68296020a8d4d7c05a56df80a31eb3a6b455497e) - keep Arcade v3 fetch active without signing headers *(commit by [@hoangsvit](https://github.com/hoangsvit))*
 
+- [`10280b3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/10280b34889c56d779774f930865836ef1918628) - cover v3-only Arcade signing _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`8ab21e6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8ab21e61b566bff1e9edc7fd4cdd32e0b3411ee3) - run facilitator UI against Arcade v3 _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`eb1b234`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/eb1b234c2be8c07516e38acb74d6ad6020541244) - remove Arcade v2 references _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`bf3b565`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/bf3b5650b852f065a79da59f160be9be50888934) - migrate Arcade service coverage to v3 only _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`d27c4d2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d27c4d2a58212b481d0cf1554742c231bd72e27d) - align Arcade v3 mock with error logging _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`d12b5f1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d12b5f1a3965668a4ec88d0dcaa36c923c60447e) - require exact Arcade v3 endpoint env _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`2ffc93b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2ffc93bce3af112ca77b5aedd8cac7a837836a95) - use exact Arcade v3 endpoint in Facilitator parity _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`e7e0b10`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e7e0b10856ce8f84c6e163b0f3c3d7360490872d) - use exact WXT*ARCADE_POINT_URL in v3 flow *(commit by [@hoangsvit](https://github.com/hoangsvit))\_
+- [`ba538f9`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ba538f9dbdecdb1f0e9fee826206ffdad870ed9d) - cover trailing slash HMAC normalization _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`e9e843b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e9e843b11a1e41ef5e6e31666a4be54f24d5b08f) - allow unsigned Arcade v3 during rollout _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`6829602`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/68296020a8d4d7c05a56df80a31eb3a6b455497e) - keep Arcade v3 fetch active without signing headers _(commit by [@hoangsvit](https://github.com/hoangsvit))_
 
 ## [1.3.1] - 2026-08-11
 
