@@ -121,8 +121,12 @@ function upsertMilestoneMetadataRow(
     details.append(row);
   }
 
-  const labelElement = row.querySelector<HTMLElement>(".facilitator-meta-label");
-  const valueElement = row.querySelector<HTMLElement>(".facilitator-meta-value");
+  const labelElement = row.querySelector<HTMLElement>(
+    ".facilitator-meta-label",
+  );
+  const valueElement = row.querySelector<HTMLElement>(
+    ".facilitator-meta-value",
+  );
 
   if (labelElement && labelElement.textContent !== label) {
     labelElement.textContent = label;
