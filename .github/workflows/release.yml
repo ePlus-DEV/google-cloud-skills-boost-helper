@@ -151,6 +151,29 @@ jobs:
             fi
           done
 
+      - name: Verify Arcade config in built package
+        run: |
+          set -euo pipefail
+
+          CHROME_ZIP="$(find .output -maxdepth 1 -type f -name '*-chrome.zip' -print -quit)"
+          TEMP_DIR="$(mktemp -d)"
+          trap 'rm -rf "$TEMP_DIR"' EXIT
+          unzip -q "$CHROME_ZIP" -d "$TEMP_DIR"
+
+          EXPECTED_PERMISSION="$(node -e 'process.stdout.write(new URL(process.env.WXT_ARCADE_POINT_URL).origin + "/*")')"
+
+          if ! jq -e --arg expected "$EXPECTED_PERMISSION" \
+            '(.host_permissions // []) | index($expected) != null' \
+            "$TEMP_DIR/manifest.json" >/dev/null; then
+            echo "::error::Built extension is missing the Arcade host permission derived from WXT_ARCADE_POINT_URL."
+            exit 1
+          fi
+
+          if ! grep -R -Fq -- "$WXT_ARCADE_POINT_URL" "$TEMP_DIR"; then
+            echo "::error::Built extension does not contain the configured WXT_ARCADE_POINT_URL."
+            exit 1
+          fi
+
       - name: Checkout latest main for changelog
         run: |
           set -euo pipefail
