@@ -288,7 +288,10 @@ const ArcadeApiService = {
         url: canonical,
         profileId,
       };
-      const signatureHeaders = await buildArcadeSignatureHeaders(endpoint, payload);
+      const signatureHeaders = await buildArcadeSignatureHeaders(
+        endpoint,
+        payload,
+      );
       const requestConfig = signatureHeaders
         ? { timeout: ARCADE_API_TIMEOUT_MS, headers: signatureHeaders }
         : { timeout: ARCADE_API_TIMEOUT_MS };
