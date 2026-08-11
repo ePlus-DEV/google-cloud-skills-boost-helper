@@ -99,10 +99,21 @@ jobs:
             fi
           done
 
-          if [[ "$WXT_ARCADE_POINT_URL" != */api/arcade && "$WXT_ARCADE_POINT_URL" != */api/arcade/ && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade && "$WXT_ARCADE_POINT_URL" != */api/v3/arcade/ ]]; then
-            echo "::error::WXT_ARCADE_POINT_URL must resolve to /api/v3/arcade."
-            exit 1
-          fi
+          node <<'NODE'
+          const raw = String(process.env.WXT_ARCADE_POINT_URL || '').trim();
+          let endpoint;
+          try {
+            endpoint = new URL(raw);
+          } catch {
+            console.error('::error::WXT_ARCADE_POINT_URL must be a valid absolute URL.');
+            process.exit(1);
+          }
+
+          if (endpoint.protocol !== 'https:' || endpoint.pathname !== '/api/v3/arcade' || endpoint.search || endpoint.hash) {
+            console.error('::error::WXT_ARCADE_POINT_URL must be the exact HTTPS /api/v3/arcade endpoint.');
+            process.exit(1);
+          }
+          NODE
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
