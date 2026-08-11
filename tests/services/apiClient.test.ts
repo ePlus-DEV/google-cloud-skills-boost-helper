@@ -4,10 +4,7 @@ import ApiClient from "../../services/apiClient";
 describe("ApiClient.fetchPostsOfPublication", () => {
   beforeEach(() => {
     vi.stubEnv("WXT_API_URL", "https://solutions.example.com/posts");
-    vi.stubEnv(
-      "WXT_ARCADE_POINT_URL",
-      "https://hub.eplus.dev/api/v2/arcade",
-    );
+    vi.stubEnv("WXT_ARCADE_POINT_URL", "https://hub.eplus.dev/api/v2/arcade");
     vi.spyOn(Date, "now").mockReturnValue(1786413245872);
   });
 
