@@ -362,12 +362,7 @@ const ArcadeApiService = {
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
       const endpoint = getArcadeEndpoint();
-      if (!endpoint) {
-        console.error(
-          "[ArcadeApiService] WXT_ARCADE_POINT_URL must target /api/arcade or /api/v3/arcade.",
-        );
-        return null;
-      }
+      if (!endpoint) return null;
 
       const canonical = canonicalizeProfileUrl(url) || url;
       const profileId = extractProfileId(url);
@@ -397,14 +392,7 @@ const ArcadeApiService = {
       }
 
       return null;
-    } catch (error) {
-      const status = axios.isAxiosError(error)
-        ? error.response?.status
-        : undefined;
-      console.error(
-        "[ArcadeApiService] Signed v3 refresh failed.",
-        status ? `HTTP ${status}` : "Request/signing error",
-      );
+    } catch {
       return null;
     }
   },
