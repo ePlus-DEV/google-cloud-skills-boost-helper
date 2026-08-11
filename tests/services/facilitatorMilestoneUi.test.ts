@@ -18,6 +18,8 @@ describe("Facilitator milestone popup parity", () => {
       "WXT_ARCADE_POINT_URL",
       "https://private-api.example.test/api/arcade",
     );
+    vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "test-client-key");
+    vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "test-client-secret");
     vi.spyOn(fakeBrowser.i18n, "getMessage").mockImplementation(
       (key: string) => {
         const messages: Record<string, string> = {
