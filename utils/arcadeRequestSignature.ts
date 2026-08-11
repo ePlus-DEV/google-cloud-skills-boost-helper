@@ -1,11 +1,13 @@
 const encoder = new TextEncoder();
 
+/** Convert an ArrayBuffer into a lowercase hexadecimal string. */
 function toHex(bytes: ArrayBuffer): string {
   return Array.from(new Uint8Array(bytes))
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
 }
 
+/** Create a cryptographically random nonce for replay protection. */
 function createNonce(): string {
   if (typeof crypto.randomUUID === "function") {
     return crypto.randomUUID().replace(/-/g, "");
@@ -18,11 +20,13 @@ function createNonce(): string {
     .join("");
 }
 
+/** Return the SHA-256 digest of a string as lowercase hexadecimal. */
 async function sha256Hex(value: string): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", encoder.encode(value));
   return toHex(digest);
 }
 
+/** Sign a string with HMAC-SHA256 and return lowercase hexadecimal. */
 async function hmacSha256Hex(secret: string, value: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     "raw",
