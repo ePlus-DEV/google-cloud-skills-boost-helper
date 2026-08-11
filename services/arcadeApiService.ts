@@ -21,28 +21,39 @@ const ARCADE_API_TIMEOUT_MS = 15_000;
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
- * Resolve the Arcade API endpoint during the v2 -> v3 migration.
+ * Resolve Arcade from the existing WXT_ARCADE_POINT_URL setting.
  *
- * Signed releases must provide WXT_ARCADE_POINT_V3_URL and therefore use v3.
- * V2/legacy derivation remains only as a compatibility fallback for local or
- * older builds while the backend migration is in progress.
+ * Release builds provide signing credentials, so the current endpoint is
+ * transparently upgraded to /api/v3/arcade without adding another endpoint env.
+ * Unsigned local/older builds retain the temporary v2 compatibility behavior.
  */
 function getArcadeEndpoint(): string {
-  const v3 = String(import.meta.env.WXT_ARCADE_POINT_V3_URL || "").trim();
-  if (v3) return v3;
+  const configured = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
+  if (!configured) return "";
 
-  const explicitV2 = String(
-    import.meta.env.WXT_ARCADE_POINT_V2_URL || "",
+  if (/\/v3\/arcade\/?$/i.test(configured)) return configured;
+
+  const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
+  const clientSecret = String(
+    import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
   ).trim();
-  if (explicitV2) return explicitV2;
+  const signingConfigured = Boolean(clientKey && clientSecret);
 
-  const legacy = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
-  if (!legacy) return "";
+  if (signingConfigured) {
+    const v3 = configured.replace(
+      /\/(?:v2\/)?arcade(?:-public)?\/?$/i,
+      "/v3/arcade",
+    );
+    return v3 !== configured ? v3 : "";
+  }
 
-  if (/\/v2\/arcade\/?$/i.test(legacy)) return legacy;
+  if (/\/v2\/arcade\/?$/i.test(configured)) return configured;
 
-  const derived = legacy.replace(/\/arcade(?:-public)?\/?$/i, "/v2/arcade");
-  return derived !== legacy ? derived : "";
+  const v2 = configured.replace(
+    /\/arcade(?:-public)?\/?$/i,
+    "/v2/arcade",
+  );
+  return v2 !== configured ? v2 : "";
 }
 
 /** Format a bonus value without unnecessary trailing decimals. */
@@ -373,8 +384,8 @@ initializeFacilitatorRuleLabelSync();
  */
 const ArcadeApiService = {
   /**
-   * Fetch Arcade data from the preferred v3 endpoint, with v2 retained only as
-   * a migration fallback when no v3 URL is configured.
+   * Fetch Arcade data from signed v3 for release builds. Unsigned local/older
+   * builds retain the temporary v2 compatibility path until v2 is removed.
    */
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
