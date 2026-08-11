@@ -333,6 +333,7 @@ function initializeFacilitatorRuleLabelSync(): void {
     return;
   }
 
+  /** Start label synchronization and attach the DOM observer when available. */
   const start = (): void => {
     syncFacilitatorRuleLabels();
     if (!document.body || facilitatorLabelObserver) return;
