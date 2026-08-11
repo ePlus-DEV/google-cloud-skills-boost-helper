@@ -77,6 +77,13 @@ function isArcadeV3Endpoint(endpoint: string): boolean {
   }
 }
 
+/** Match Laravel Request::path(), which trims surrounding slashes. */
+function getCanonicalPathname(endpoint: string): string {
+  const pathname = new URL(endpoint).pathname;
+  const trimmed = pathname.replace(/^\/+|\/+$/gu, "");
+  return trimmed ? `/${trimmed}` : "/";
+}
+
 /**
  * Build the mandatory HMAC headers for a signed Arcade v3 request.
  * The extension version is written into the JSON body before hashing so it is
@@ -109,7 +116,7 @@ export async function buildArcadeSignatureHeaders(
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const nonce = createNonce();
   const rawBody = JSON.stringify(body);
-  const pathname = new URL(endpoint).pathname || "/";
+  const pathname = getCanonicalPathname(endpoint);
   const bodyHash = await sha256Hex(rawBody);
   const canonical = ["POST", pathname, timestamp, nonce, bodyHash].join("\n");
   const signature = await hmacSha256Hex(clientSecret, canonical);
