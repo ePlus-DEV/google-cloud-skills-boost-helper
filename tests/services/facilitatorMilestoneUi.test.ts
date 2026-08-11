@@ -18,13 +18,15 @@ describe("Facilitator milestone popup parity", () => {
       "WXT_ARCADE_POINT_URL",
       "https://private-api.example.test/api/arcade",
     );
-    vi.spyOn(fakeBrowser.i18n, "getMessage").mockImplementation((key: string) => {
-      const messages: Record<string, string> = {
-        arcadePointsTitle: "Arcade localisé",
-        facilitatorBonus: "Bonus facilitateur",
-      };
-      return messages[key] || "";
-    });
+    vi.spyOn(fakeBrowser.i18n, "getMessage").mockImplementation(
+      (key: string) => {
+        const messages: Record<string, string> = {
+          arcadePointsTitle: "Arcade localisé",
+          facilitatorBonus: "Bonus facilitateur",
+        };
+        return messages[key] || "";
+      },
+    );
 
     document.body.innerHTML = `
       <div class="milestone-card" data-milestone="2">
