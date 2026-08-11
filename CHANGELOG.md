@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-08-11
+
+### :bug: Bug Fixes
+
+- [`aed750c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/aed750cf8f2fce41d9bacc39d6f0fbbf2114d6d7) - align Facilitator milestone cards with web tracker _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`979d26d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/979d26d15396e74f58d578b5a2d0edfe63f1c8d2) - keep existing Arcade endpoint env _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`a95d2ba`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a95d2bad8f93bee117bce2087d4cedbdb0eb16fe) - reuse existing Arcade endpoint secret _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`c1de844`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c1de8443375e3fd49c2ffb25e9a1c5579eac2170) - derive Arcade v3 from existing endpoint env _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`da6f187`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/da6f187aab4e48f720585ef1fa3e53977425878f) - update Arcade API endpoint URL to correct domain _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
+### :white_check_mark: Tests
+
+- [`f315eca`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f315eca86c8d302b5f74fa62295c4d5c41ccfd03) - keep solution and Arcade endpoints separate _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`4a5557f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4a5557f65c53ecdbc5407b8d7ddc7f81aea36c65) - restore stubbed globals after ApiClient tests _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`db34c40`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/db34c40d2301c4ced8bbdf6fa8b79d671163ac83) - cover Facilitator milestone web parity _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`9feb528`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9feb528363c1a73eceeeb42cd2de031f5123bd19) - align Facilitator progress expectations with web parity _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`67e5633`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/67e563363483c5a8a94b3ca0c9cf9784dbb2ebc8) - reuse existing Arcade endpoint env for v3 _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`30dd6c2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/30dd6c2498c0b935c00471806466be37766c4289) - isolate Arcade signing env from regression suites _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
+### :wrench: Chores
+
+- [`5378224`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/5378224dad34ea8ea4394e895ffbf7084f0d197b) - bump version to 1.3.1 _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
 ## [1.3.0] - 2026-08-10
 
 ### :sparkles: New Features
@@ -1262,3 +1285,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.14]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.13...1.2.14
 [1.2.15]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.14...1.2.15
 [1.3.0]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.15...1.3.0
+[1.3.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.0...1.3.1
