@@ -6,6 +6,7 @@ import { buildArcadeSignatureHeaders } from "../../utils/arcadeRequestSignature"
 vi.mock("axios", () => ({
   default: {
     post: vi.fn(),
+    isAxiosError: vi.fn(() => false),
   },
 }));
 
