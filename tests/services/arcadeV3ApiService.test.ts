@@ -73,16 +73,25 @@ describe("ArcadeApiService v3", () => {
     );
   });
 
-  it("does not send the v3 request when signing cannot be built", async () => {
-    vi.mocked(buildArcadeSignatureHeaders).mockRejectedValueOnce(
-      new Error("Arcade v3 signing credentials are required."),
-    );
+  it("still sends the v3 request when signing headers are unavailable", async () => {
+    vi.mocked(buildArcadeSignatureHeaders).mockResolvedValueOnce({});
+    vi.mocked(axios.post).mockResolvedValueOnce({
+      status: 200,
+      data: { success: true },
+    });
 
     const result = await ArcadeApiService.fetchArcadeData(
       "https://www.skills.google/public_profiles/abc123",
     );
 
-    expect(result).toBeNull();
-    expect(axios.post).not.toHaveBeenCalled();
+    expect(result).not.toBeNull();
+    expect(axios.post).toHaveBeenCalledWith(
+      "https://private-api.example.test/api/v3/arcade",
+      expect.objectContaining({ profileId: "abc123" }),
+      expect.objectContaining({
+        timeout: 15_000,
+        headers: {},
+      }),
+    );
   });
 });
