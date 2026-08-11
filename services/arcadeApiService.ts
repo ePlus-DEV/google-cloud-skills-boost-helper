@@ -21,36 +21,19 @@ const ARCADE_API_TIMEOUT_MS = 15_000;
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
- * Resolve Arcade from the existing WXT_ARCADE_POINT_URL setting.
- *
- * Release builds provide signing credentials, so the current endpoint is
- * transparently upgraded to /api/v3/arcade without adding another endpoint env.
- * Unsigned local/older builds retain the temporary v2 compatibility behavior.
+ * Resolve the signed Arcade v3 endpoint from the existing
+ * WXT_ARCADE_POINT_URL setting without introducing another endpoint env name.
  */
 function getArcadeEndpoint(): string {
   const configured = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
   if (!configured) return "";
 
-  if (/\/v3\/arcade\/?$/i.test(configured)) return configured;
-
-  const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
-  const clientSecret = String(
-    import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
-  ).trim();
-  const signingConfigured = Boolean(clientKey && clientSecret);
-
-  if (signingConfigured) {
-    const v3 = configured.replace(
-      /\/(?:v2\/)?arcade(?:-public)?\/?$/i,
-      "/v3/arcade",
-    );
-    return v3 !== configured ? v3 : "";
+  if (/\/api\/v3\/arcade\/?$/i.test(configured)) {
+    return configured.replace(/\/$/u, "");
   }
 
-  if (/\/v2\/arcade\/?$/i.test(configured)) return configured;
-
-  const v2 = configured.replace(/\/arcade(?:-public)?\/?$/i, "/v2/arcade");
-  return v2 !== configured ? v2 : "";
+  const v3 = configured.replace(/\/api\/arcade\/?$/i, "/api/v3/arcade");
+  return v3 !== configured ? v3 : "";
 }
 
 /** Format a bonus value without unnecessary trailing decimals. */
@@ -253,8 +236,6 @@ function syncMilestoneProgress(
   );
   if (!progressElement) return;
 
-  // Keep the percentage first for the compact popup, then expose the same
-  // completed/required total shown by the web tracker (for example 41/42).
   const nextText = `${percent}% · ${completed}/${total}`;
   if (progressElement.textContent !== nextText) {
     progressElement.textContent = nextText;
@@ -352,7 +333,7 @@ function initializeFacilitatorRuleLabelSync(): void {
     return;
   }
 
-  /** Start label synchronization once the popup DOM is ready. */
+  /** Start label synchronization and attach the DOM observer when available. */
   const start = (): void => {
     syncFacilitatorRuleLabels();
     if (!document.body || facilitatorLabelObserver) return;
@@ -376,22 +357,14 @@ function initializeFacilitatorRuleLabelSync(): void {
 
 initializeFacilitatorRuleLabelSync();
 
-/**
- * Service to handle Arcade API operations.
- */
+/** Service to handle signed Arcade v3 API operations. */
 const ArcadeApiService = {
-  /**
-   * Fetch Arcade data from signed v3 for release builds. Unsigned local/older
-   * builds retain the temporary v2 compatibility path until v2 is removed.
-   */
+  /** Fetch Arcade data exclusively through the signed v3 contract. */
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
       const endpoint = getArcadeEndpoint();
       if (!endpoint) return null;
 
-      // Ensure we send the canonical host to the backend. If canonicalization
-      // fails, still send the original URL (backend may handle it), but we
-      // prefer canonical.
       const canonical = canonicalizeProfileUrl(url) || url;
       const profileId = extractProfileId(url);
       const payload = {
@@ -402,16 +375,14 @@ const ArcadeApiService = {
         endpoint,
         payload,
       );
-      const requestConfig = signatureHeaders
-        ? { timeout: ARCADE_API_TIMEOUT_MS, headers: signatureHeaders }
-        : { timeout: ARCADE_API_TIMEOUT_MS };
-      const response = await axios.post(endpoint, payload, requestConfig);
+      const response = await axios.post(endpoint, payload, {
+        timeout: ARCADE_API_TIMEOUT_MS,
+        headers: signatureHeaders,
+      });
 
       if (response.status === 200) {
         const data = response.data as ArcadeData;
 
-        // The API exposes Facilitator metadata at the top level. It remains the
-        // source of truth for both v2 compatibility responses and signed v3.
         if (!syncFacilitatorRulesFromApi(data.facilitator)) {
           resetFacilitatorRulesToFallback();
         }
@@ -422,14 +393,12 @@ const ArcadeApiService = {
       }
 
       return null;
-    } catch (error) {
+    } catch {
       return null;
     }
   },
 
-  /**
-   * Validate profile URL format.
-   */
+  /** Validate profile URL format. */
   isValidProfileUrl(url: string): boolean {
     const canonical = canonicalizeProfileUrl(url);
     if (!canonical) return false;

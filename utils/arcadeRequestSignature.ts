@@ -68,7 +68,7 @@ function getExtensionVersion(): string {
   }
 }
 
-/** Return true when the endpoint is the signed Arcade v3 contract. */
+/** Return true only for the Arcade v3 contract. */
 function isArcadeV3Endpoint(endpoint: string): boolean {
   try {
     return /\/api\/v3\/arcade\/?$/i.test(new URL(endpoint).pathname);
@@ -77,31 +77,24 @@ function isArcadeV3Endpoint(endpoint: string): boolean {
   }
 }
 
+/** Match Laravel Request::path(), which trims surrounding slashes. */
+function getCanonicalPathname(endpoint: string): string {
+  const pathname = new URL(endpoint).pathname;
+  const trimmed = pathname.replace(/^\/+|\/+$/gu, "");
+  return trimmed ? `/${trimmed}` : "/";
+}
+
 /**
- * Build short-lived HMAC headers for Arcade requests.
- *
- * V3 always requires the release-injected client key and secret. The extension
- * version is written into the JSON body before hashing so it is authenticated by
- * the same HMAC, and is also sent as a header for backend access logs/telemetry.
- * V2 keeps the previous optional-signing behavior during the migration window.
+ * Add the extension version to the Arcade v3 body and sign the request when
+ * both client credentials are available. During rollout, missing credentials
+ * intentionally produce an unsigned v3 request instead of blocking the fetch.
  */
 export async function buildArcadeSignatureHeaders(
   endpoint: string,
   body: unknown,
-): Promise<Record<string, string> | null> {
-  const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
-  const clientSecret = String(
-    import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
-  ).trim();
-  const requiresSignature = isArcadeV3Endpoint(endpoint);
-
-  if (!clientKey || !clientSecret) {
-    if (requiresSignature) {
-      throw new Error(
-        "Arcade v3 requires WXT_ARCADE_CLIENT_KEY and WXT_ARCADE_CLIENT_SECRET.",
-      );
-    }
-    return null;
+): Promise<Record<string, string>> {
+  if (!isArcadeV3Endpoint(endpoint)) {
+    throw new Error("Arcade signing requires the /api/v3/arcade endpoint.");
   }
 
   const extensionVersion = getExtensionVersion();
@@ -109,10 +102,19 @@ export async function buildArcadeSignatureHeaders(
     (body as Record<string, unknown>).extensionVersion = extensionVersion;
   }
 
+  const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();
+  const clientSecret = String(
+    import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
+  ).trim();
+
+  if (!clientKey || !clientSecret) {
+    return {};
+  }
+
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const nonce = createNonce();
   const rawBody = JSON.stringify(body);
-  const pathname = new URL(endpoint).pathname || "/";
+  const pathname = getCanonicalPathname(endpoint);
   const bodyHash = await sha256Hex(rawBody);
   const canonical = ["POST", pathname, timestamp, nonce, bodyHash].join("\n");
   const signature = await hmacSha256Hex(clientSecret, canonical);

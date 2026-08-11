@@ -11,6 +11,7 @@ import {
 vi.mock("axios", () => ({
   default: {
     post: vi.fn(),
+    isAxiosError: vi.fn(() => false),
   },
 }));
 
@@ -18,8 +19,12 @@ import axios from "axios";
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/api/arcade");
-  vi.stubEnv("WXT_ARCADE_POINT_V2_URL", "");
+  vi.stubEnv(
+    "WXT_ARCADE_POINT_URL",
+    "https://private-api.example.test/api/arcade",
+  );
+  vi.stubEnv("WXT_ARCADE_CLIENT_KEY", "test-client-key");
+  vi.stubEnv("WXT_ARCADE_CLIENT_SECRET", "test-client-secret");
   resetFacilitatorRulesToFallback();
   document.body.innerHTML = "";
 });
@@ -77,7 +82,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     expect(result?.lastUpdated).toBeTruthy();
   });
 
-  it("calls /api/v2/arcade, not the legacy /api/arcade endpoint", async () => {
+  it("derives and calls the signed /api/v3/arcade endpoint", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
 
     await ArcadeApiService.fetchArcadeData(
@@ -85,14 +90,22 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(axios.post).toHaveBeenCalledWith(
-      "https://api.example.com/api/v2/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       expect.any(Object),
-      { timeout: 15_000 },
+      expect.objectContaining({
+        timeout: 15_000,
+        headers: expect.objectContaining({
+          "X-Arcade-Key": "test-client-key",
+        }),
+      }),
     );
   });
 
-  it("keeps a legacy setting that already points to /api/v2/arcade", async () => {
-    vi.stubEnv("WXT_ARCADE_POINT_URL", "https://api.example.com/api/v2/arcade");
+  it("keeps a setting that already points to /api/v3/arcade", async () => {
+    vi.stubEnv(
+      "WXT_ARCADE_POINT_URL",
+      "https://private-api.example.test/api/v3/arcade",
+    );
     vi.mocked(axios.post).mockResolvedValueOnce({ status: 200, data: {} });
 
     await ArcadeApiService.fetchArcadeData(
@@ -100,13 +113,18 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(axios.post).toHaveBeenCalledWith(
-      "https://api.example.com/api/v2/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       expect.any(Object),
-      { timeout: 15_000 },
+      expect.objectContaining({
+        timeout: 15_000,
+        headers: expect.objectContaining({
+          "X-Arcade-Key": "test-client-key",
+        }),
+      }),
     );
   });
 
-  it("uses top-level facilitator rules from the v2 response", async () => {
+  it("uses top-level facilitator rules from the v3 response", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({
       status: 200,
       data: {
@@ -356,7 +374,7 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     ).toBe("+5 Điểm thưởng");
   });
 
-  it("restores fallback rules when v2 metadata is missing", async () => {
+  it("restores fallback rules when v3 metadata is missing", async () => {
     syncFacilitatorRulesFromApi({
       milestones: [
         {
@@ -428,11 +446,16 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(axios.post).toHaveBeenCalledWith(
-      "https://api.example.com/api/v2/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       expect.objectContaining({
         url: expect.stringContaining("www.skills.google"),
       }),
-      { timeout: 15_000 },
+      expect.objectContaining({
+        timeout: 15_000,
+        headers: expect.objectContaining({
+          "X-Arcade-Key": "test-client-key",
+        }),
+      }),
     );
   });
 
@@ -444,9 +467,14 @@ describe("ArcadeApiService.fetchArcadeData", () => {
     );
 
     expect(axios.post).toHaveBeenCalledWith(
-      "https://api.example.com/api/v2/arcade",
+      "https://private-api.example.test/api/v3/arcade",
       expect.objectContaining({ profileId: "myprofile123" }),
-      { timeout: 15_000 },
+      expect.objectContaining({
+        timeout: 15_000,
+        headers: expect.objectContaining({
+          "X-Arcade-Key": "test-client-key",
+        }),
+      }),
     );
   });
 });

@@ -6,7 +6,7 @@ describe("ApiClient.fetchPostsOfPublication", () => {
     vi.stubEnv("WXT_API_URL", "https://private-solutions.example.test/posts");
     vi.stubEnv(
       "WXT_ARCADE_POINT_URL",
-      "https://private-api.example.test/api/v2/arcade",
+      "https://private-api.example.test/api/v3/arcade",
     );
     vi.spyOn(Date, "now").mockReturnValue(1786413245872);
   });
@@ -41,7 +41,7 @@ describe("ApiClient.fetchPostsOfPublication", () => {
       "https://private-solutions.example.test/posts?time=1786413245872",
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
-    expect(fetchMock.mock.calls[0][0]).not.toContain("/api/v2/arcade");
+    expect(fetchMock.mock.calls[0][0]).not.toContain("/api/v3/arcade");
     expect(result).toHaveLength(1);
     expect(result[0]?.url).toBe("https://content.example.test/example-lab");
   });
