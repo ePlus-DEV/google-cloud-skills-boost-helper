@@ -21,16 +21,20 @@ const ARCADE_API_TIMEOUT_MS = 15_000;
 let facilitatorLabelObserver: MutationObserver | null = null;
 
 /**
- * Resolve the stable Arcade API v2 endpoint.
+ * Resolve the Arcade API endpoint during the v2 -> v3 migration.
  *
- * WXT_ARCADE_POINT_V2_URL is preferred when configured. For existing release
- * environments we can derive `/api/v2/arcade` from the legacy `/api/arcade`
- * URL so a new secret is not required immediately. We never send a request to
- * the legacy endpoint from this client.
+ * Signed releases must provide WXT_ARCADE_POINT_V3_URL and therefore use v3.
+ * V2/legacy derivation remains only as a compatibility fallback for local or
+ * older builds while the backend migration is in progress.
  */
-function getArcadeV2Endpoint(): string {
-  const explicit = String(import.meta.env.WXT_ARCADE_POINT_V2_URL || "").trim();
-  if (explicit) return explicit;
+function getArcadeEndpoint(): string {
+  const v3 = String(import.meta.env.WXT_ARCADE_POINT_V3_URL || "").trim();
+  if (v3) return v3;
+
+  const explicitV2 = String(
+    import.meta.env.WXT_ARCADE_POINT_V2_URL || "",
+  ).trim();
+  if (explicitV2) return explicitV2;
 
   const legacy = String(import.meta.env.WXT_ARCADE_POINT_URL || "").trim();
   if (!legacy) return "";
@@ -369,11 +373,12 @@ initializeFacilitatorRuleLabelSync();
  */
 const ArcadeApiService = {
   /**
-   * Fetch Arcade data from the stable API v2 endpoint.
+   * Fetch Arcade data from the preferred v3 endpoint, with v2 retained only as
+   * a migration fallback when no v3 URL is configured.
    */
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
     try {
-      const endpoint = getArcadeV2Endpoint();
+      const endpoint = getArcadeEndpoint();
       if (!endpoint) return null;
 
       // Ensure we send the canonical host to the backend. If canonicalization
@@ -397,9 +402,8 @@ const ArcadeApiService = {
       if (response.status === 200) {
         const data = response.data as ArcadeData;
 
-        // API v2 exposes Facilitator metadata only at the top level. The API is
-        // the source of truth; if metadata is absent or invalid, reset to the
-        // local compatibility fallback instead of keeping stale prior rules.
+        // The API exposes Facilitator metadata at the top level. It remains the
+        // source of truth for both v2 compatibility responses and signed v3.
         if (!syncFacilitatorRulesFromApi(data.facilitator)) {
           resetFacilitatorRulesToFallback();
         }

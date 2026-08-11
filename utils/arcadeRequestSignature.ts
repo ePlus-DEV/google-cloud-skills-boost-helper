@@ -43,12 +43,31 @@ async function hmacSha256Hex(secret: string, value: string): Promise<string> {
   return toHex(signature);
 }
 
+/** Read the version from the installed extension manifest. */
+function getExtensionVersion(): string {
+  try {
+    return String(browser.runtime.getManifest()?.version || "unknown").trim() || "unknown";
+  } catch (_) {
+    return "unknown";
+  }
+}
+
+/** Return true when the endpoint is the signed Arcade v3 contract. */
+function isArcadeV3Endpoint(endpoint: string): boolean {
+  try {
+    return /\/api\/v3\/arcade\/?$/i.test(new URL(endpoint).pathname);
+  } catch (_) {
+    return false;
+  }
+}
+
 /**
- * Build short-lived HMAC headers for the Arcade v2 request.
+ * Build short-lived HMAC headers for Arcade requests.
  *
- * The secret is injected only at release-build time. It is not committed to
- * source control. A timestamp and nonce make copied requests short-lived and
- * allow the backend to reject replay attempts.
+ * V3 always requires the release-injected client key and secret. The extension
+ * version is written into the JSON body before hashing so it is authenticated by
+ * the same HMAC, and is also sent as a header for backend access logs/telemetry.
+ * V2 keeps the previous optional-signing behavior during the migration window.
  */
 export async function buildArcadeSignatureHeaders(
   endpoint: string,
@@ -58,8 +77,21 @@ export async function buildArcadeSignatureHeaders(
   const clientSecret = String(
     import.meta.env.WXT_ARCADE_CLIENT_SECRET || "",
   ).trim();
+  const requiresSignature = isArcadeV3Endpoint(endpoint);
 
-  if (!clientKey || !clientSecret) return null;
+  if (!clientKey || !clientSecret) {
+    if (requiresSignature) {
+      throw new Error(
+        "Arcade v3 requires WXT_ARCADE_CLIENT_KEY and WXT_ARCADE_CLIENT_SECRET.",
+      );
+    }
+    return null;
+  }
+
+  const extensionVersion = getExtensionVersion();
+  if (body && typeof body === "object" && !Array.isArray(body)) {
+    (body as Record<string, unknown>).extensionVersion = extensionVersion;
+  }
 
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const nonce = createNonce();
@@ -74,5 +106,6 @@ export async function buildArcadeSignatureHeaders(
     "X-Arcade-Timestamp": timestamp,
     "X-Arcade-Nonce": nonce,
     "X-Arcade-Signature": signature,
+    "X-Arcade-Extension-Version": extensionVersion,
   };
 }
