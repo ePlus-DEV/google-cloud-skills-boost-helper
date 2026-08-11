@@ -43,13 +43,26 @@ async function hmacSha256Hex(secret: string, value: string): Promise<string> {
   return toHex(signature);
 }
 
-/** Read the version from the installed extension manifest. */
+type ManifestRuntime = {
+  runtime?: {
+    getManifest?: () => { version?: string };
+  };
+};
+
+/** Read the version from the installed extension manifest in Chrome/Firefox. */
 function getExtensionVersion(): string {
   try {
-    return (
-      String(browser.runtime.getManifest()?.version || "unknown").trim() ||
-      "unknown"
-    );
+    const root = globalThis as typeof globalThis & {
+      browser?: ManifestRuntime;
+      chrome?: ManifestRuntime;
+    };
+    const version =
+      root.browser?.runtime?.getManifest?.()?.version ||
+      root.chrome?.runtime?.getManifest?.()?.version ||
+      browser.runtime.getManifest()?.version ||
+      "unknown";
+
+    return String(version).trim() || "unknown";
   } catch (_) {
     return "unknown";
   }
