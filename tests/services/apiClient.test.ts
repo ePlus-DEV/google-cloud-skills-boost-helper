@@ -11,6 +11,7 @@ describe("ApiClient.fetchPostsOfPublication", () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
   it("uses WXT_API_URL for solution posts and never the Arcade endpoint", async () => {
