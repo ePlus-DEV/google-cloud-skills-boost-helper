@@ -398,7 +398,9 @@ const ArcadeApiService = {
 
       return null;
     } catch (error) {
-      const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+      const status = axios.isAxiosError(error)
+        ? error.response?.status
+        : undefined;
       console.error(
         "[ArcadeApiService] Signed v3 refresh failed.",
         status ? `HTTP ${status}` : "Request/signing error",
