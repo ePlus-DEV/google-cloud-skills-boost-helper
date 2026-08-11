@@ -80,11 +80,13 @@ describe("Facilitator milestone popup parity", () => {
     ).toBe("+15");
 
     expect(
-      document.querySelector<HTMLElement>(".milestone-2-trivia")
+      document
+        .querySelector<HTMLElement>(".milestone-2-trivia")
         ?.parentElement?.classList.contains("hidden"),
     ).toBe(true);
     expect(
-      document.querySelector<HTMLElement>(".milestone-2-labfree")
+      document
+        .querySelector<HTMLElement>(".milestone-2-labfree")
         ?.parentElement?.classList.contains("hidden"),
     ).toBe(true);
   });
