@@ -32,6 +32,9 @@ jobs:
       WXT_API_KEY: ${{ secrets.WXT_API_KEY }}
       WXT_API_URL: ${{ secrets.WXT_API_URL }}
       WXT_ARCADE_POINT_URL: ${{ secrets.WXT_ARCADE_POINT_URL }}
+      WXT_ARCADE_POINT_V2_URL: ${{ secrets.WXT_ARCADE_POINT_V2_URL }}
+      WXT_ARCADE_CLIENT_KEY: ${{ secrets.WXT_ARCADE_CLIENT_KEY }}
+      WXT_ARCADE_CLIENT_SECRET: ${{ secrets.WXT_ARCADE_CLIENT_SECRET }}
       WXT_FIREBASE_API_KEY: ${{ secrets.WXT_FIREBASE_API_KEY }}
       WXT_FIREBASE_AUTH_DOMAIN: ${{ secrets.WXT_FIREBASE_AUTH_DOMAIN }}
       WXT_FIREBASE_PROJECT_ID: ${{ secrets.WXT_FIREBASE_PROJECT_ID }}
@@ -84,6 +87,18 @@ jobs:
           fi
 
           git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}" >/dev/null
+
+      - name: Validate Arcade signing secrets
+        run: |
+          set -euo pipefail
+
+          for name in WXT_ARCADE_CLIENT_KEY WXT_ARCADE_CLIENT_SECRET; do
+            normalized="${!name//[[:space:]]/}"
+            if [ -z "$normalized" ]; then
+              echo "::error::$name is required for signed Arcade API releases."
+              exit 1
+            fi
+          done
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -178,7 +193,7 @@ jobs:
               --repo "$GITHUB_REPOSITORY" \
               --base main \
               --head "$BRANCH" \
-              --title "docs: update changelog for $RELEASE_TAG" \
+              --title "docs: update CHANGELOG.md for $RELEASE_TAG" \
               --body "Automated CHANGELOG.md update generated from release tag \`$RELEASE_TAG\`.\n\nCreated and merged by @eplus-bot after approval from github-actions[bot] and all required checks pass.")"
             PR_NUMBER="${PR_URL##*/}"
           fi
