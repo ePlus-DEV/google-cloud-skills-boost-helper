@@ -93,7 +93,8 @@ jobs:
           set -euo pipefail
 
           for name in WXT_ARCADE_CLIENT_KEY WXT_ARCADE_CLIENT_SECRET; do
-            if [ -z "${!name:-}" ]; then
+            normalized="${!name//[[:space:]]/}"
+            if [ -z "$normalized" ]; then
               echo "::error::$name is required for signed Arcade API releases."
               exit 1
             fi
