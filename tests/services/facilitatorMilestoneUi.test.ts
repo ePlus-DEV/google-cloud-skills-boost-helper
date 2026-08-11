@@ -17,6 +17,17 @@ describe("Facilitator milestone popup parity", () => {
       "WXT_ARCADE_POINT_URL",
       "https://private-api.example.test/api/arcade",
     );
+    vi.stubGlobal("browser", {
+      i18n: {
+        getMessage: vi.fn((key: string) => {
+          const messages: Record<string, string> = {
+            arcadePointsTitle: "Arcade localisé",
+            facilitatorBonus: "Bonus facilitateur",
+          };
+          return messages[key] || "";
+        }),
+      },
+    });
 
     document.body.innerHTML = `
       <div class="milestone-card" data-milestone="2">
@@ -37,11 +48,12 @@ describe("Facilitator milestone popup parity", () => {
   afterEach(() => {
     resetFacilitatorRulesToFallback();
     vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
     vi.clearAllMocks();
     document.body.innerHTML = "";
   });
 
-  it("shows the same combined progress and scoring metadata as the web tracker", async () => {
+  it("shows the same combined progress and localized scoring metadata as the web tracker", async () => {
     vi.mocked(axios.post).mockResolvedValueOnce({
       status: 200,
       data: {
@@ -72,9 +84,19 @@ describe("Facilitator milestone popup parity", () => {
 
     expect(
       document.querySelector<HTMLElement>(
+        ".milestone-2-regular-points-row .facilitator-meta-label",
+      )?.textContent,
+    ).toBe("Arcade localisé");
+    expect(
+      document.querySelector<HTMLElement>(
         ".milestone-2-regular-points-row .facilitator-meta-value",
       )?.textContent,
     ).toBe("25");
+    expect(
+      document.querySelector<HTMLElement>(
+        ".milestone-2-facilitator-bonus-row .facilitator-meta-label",
+      )?.textContent,
+    ).toBe("Bonus facilitateur");
     expect(
       document.querySelector<HTMLElement>(
         ".milestone-2-facilitator-bonus-row .facilitator-meta-value",
