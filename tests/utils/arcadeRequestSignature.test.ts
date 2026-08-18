@@ -1,9 +1,19 @@
 import { webcrypto } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const { isBonusMilestoneCompletedMock } = vi.hoisted(() => ({
+  isBonusMilestoneCompletedMock: vi.fn(),
+}));
+
+vi.mock("../../services/bonusMilestoneService", () => ({
+  isBonusMilestoneCompleted: isBonusMilestoneCompletedMock,
+}));
+
 import { buildArcadeSignatureHeaders } from "../../utils/arcadeRequestSignature";
 
 describe("buildArcadeSignatureHeaders", () => {
   beforeEach(() => {
+    isBonusMilestoneCompletedMock.mockResolvedValue(false);
     vi.stubGlobal("crypto", webcrypto as unknown as Crypto);
     vi.stubGlobal("browser", {
       runtime: {
@@ -87,10 +97,7 @@ describe("buildArcadeSignatureHeaders", () => {
   });
 
   it("sends true when the user has manually confirmed Bonus Milestone", async () => {
-    vi.stubGlobal("storage", {
-      getItem: vi.fn().mockResolvedValue(true),
-      setItem: vi.fn().mockResolvedValue(undefined),
-    });
+    isBonusMilestoneCompletedMock.mockResolvedValue(true);
     const payload: Record<string, unknown> = {
       url: "https://www.skills.google/public_profiles/abc123",
     };
