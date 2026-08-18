@@ -1,4 +1,4 @@
-import type { Account, ArcadeData } from "../types";
+import type { ArcadeData } from "../types";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
 import AccountService from "./accountService";
 
@@ -32,10 +32,7 @@ export async function setBonusMilestoneCompleted(
   await storage.setItem(storageKey(profileUrl), Boolean(completed));
 }
 
-/**
- * Read the API-advertised manual Bonus Milestone value. The API never decides
- * whether it is completed; that remains a per-profile local confirmation.
- */
+/** Read the API-owned Bonus Milestone amount, with +10 only for old responses. */
 export function getBonusMilestoneAvailablePoints(
   arcadeData?: ArcadeData | null,
 ): number {
@@ -45,32 +42,10 @@ export function getBonusMilestoneAvailablePoints(
     : DEFAULT_BONUS_MILESTONE_POINTS;
 }
 
-async function applyManualBonusToAccount(
-  account: Account | null,
-  participating: boolean,
-  completed: boolean,
-  points: number,
-): Promise<ArcadeData | null> {
-  if (!account?.arcadeData?.faciCounts) return null;
-
-  const desiredPoints = participating && completed ? points : 0;
-  if (
-    Number(account.arcadeData.faciCounts.manualBonusMilestonePoints ?? 0) ===
-    desiredPoints
-  ) {
-    return null;
-  }
-
-  const arcadeData: ArcadeData = {
-    ...account.arcadeData,
-    faciCounts: {
-      ...account.arcadeData.faciCounts,
-      manualBonusMilestonePoints: desiredPoints,
-    },
-  };
-
-  await AccountService.updateAccountArcadeData(account.id, arcadeData);
-  return arcadeData;
+/** Old API responses did not expose availability, so keep the current control visible. */
+export function isBonusMilestoneEnabled(arcadeData?: ArcadeData | null): boolean {
+  const value = arcadeData?.facilitator?.bonusMilestoneEnabled;
+  return typeof value === "boolean" ? value : true;
 }
 
 async function syncPopupControl(): Promise<void> {
@@ -110,7 +85,14 @@ async function syncPopupControl(): Promise<void> {
       if (!current?.profileUrl || !checkbox) return;
 
       await setBonusMilestoneCompleted(current.profileUrl, checkbox.checked);
-      await syncPopupControl();
+
+      // The API owns season availability and point values. Reuse the normal
+      // refresh flow so the next signed request sends only the self-report flag
+      // and all score surfaces consume the API-calculated Bonus Milestone amount.
+      const refreshButton =
+        document.querySelector<HTMLButtonElement>(".refresh-button");
+      if (refreshButton) refreshButton.click();
+      else await syncPopupControl();
     });
   }
 
@@ -119,6 +101,7 @@ async function syncPopupControl(): Promise<void> {
   );
   if (!checkbox) return;
 
+  const enabled = isBonusMilestoneEnabled(activeAccount?.arcadeData);
   const points = getBonusMilestoneAvailablePoints(activeAccount?.arcadeData);
   const pointsLabel = control.querySelector<HTMLElement>(
     ".bonus-milestone-points",
@@ -128,28 +111,18 @@ async function syncPopupControl(): Promise<void> {
 
   const participating = Boolean(activeAccount?.facilitatorProgram);
   const completed =
-    participating && Boolean(activeAccount?.profileUrl)
+    participating && enabled && Boolean(activeAccount?.profileUrl)
       ? await isBonusMilestoneCompleted(activeAccount?.profileUrl || "")
       : false;
 
-  checkbox.disabled = !participating;
+  control.hidden = !enabled;
+  checkbox.disabled = !participating || !enabled;
   checkbox.checked = completed;
   control.classList.toggle("opacity-50", !participating);
-  control.classList.toggle("cursor-not-allowed", !participating);
-
-  const updatedArcadeData = await applyManualBonusToAccount(
-    activeAccount,
-    participating,
-    completed,
-    points,
-  );
-  if (updatedArcadeData) {
-    const { default: PopupUIService } = await import("./popupUIService");
-    await PopupUIService.updateMainUI(updatedArcadeData, participating);
-  }
+  control.classList.toggle("cursor-not-allowed", !participating || !enabled);
 }
 
-/** Install the popup-only control without affecting the normal API request. */
+/** Install the popup-only self-confirmation control. */
 export function initializeBonusMilestoneControl(): void {
   if (typeof document === "undefined") return;
 
