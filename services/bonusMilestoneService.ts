@@ -1,4 +1,4 @@
-import type { Account, ArcadeData } from "../types";
+import type { ArcadeData } from "../types";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
 import AccountService from "./accountService";
 
@@ -50,40 +50,6 @@ export function isBonusMilestoneEnabled(
   return typeof value === "boolean" ? value : true;
 }
 
-/**
- * Copy the API-calculated self-reported Bonus Milestone amount into faciCounts,
- * which is the existing shared score input used by popup/options surfaces.
- */
-async function applyApiBonusToAccount(
-  account: Account | null,
-): Promise<ArcadeData | null> {
-  if (!account?.arcadeData?.faciCounts) return null;
-
-  const rawPoints = Number(
-    account.arcadeData.facilitator?.bonusMilestonePoints,
-  );
-  const apiPoints =
-    Number.isFinite(rawPoints) && rawPoints >= 0 ? rawPoints : 0;
-  const currentPoints = Number(
-    account.arcadeData.faciCounts.bonusMilestonePoints,
-  );
-
-  if (Number.isFinite(currentPoints) && currentPoints === apiPoints) {
-    return null;
-  }
-
-  const arcadeData: ArcadeData = {
-    ...account.arcadeData,
-    faciCounts: {
-      ...account.arcadeData.faciCounts,
-      bonusMilestonePoints: apiPoints,
-    },
-  };
-
-  await AccountService.updateAccountArcadeData(account.id, arcadeData);
-  return arcadeData;
-}
-
 async function syncPopupControl(): Promise<void> {
   if (typeof document === "undefined") return;
   const section = document.getElementById("milestones-section");
@@ -123,7 +89,8 @@ async function syncPopupControl(): Promise<void> {
       await setBonusMilestoneCompleted(current.profileUrl, checkbox.checked);
 
       // The API owns season availability and point values. Reuse the normal
-      // refresh flow so the signed request sends only the self-report flag.
+      // refresh flow so the signed request sends only the self-report flag and
+      // faciCounts.bonusMilestonePoints comes back from the API response.
       const refreshButton =
         document.querySelector<HTMLButtonElement>(".refresh-button");
       if (refreshButton) refreshButton.click();
@@ -155,12 +122,6 @@ async function syncPopupControl(): Promise<void> {
   checkbox.checked = completed;
   control.classList.toggle("opacity-50", !participating);
   control.classList.toggle("cursor-not-allowed", !participating || !enabled);
-
-  const updatedArcadeData = await applyApiBonusToAccount(activeAccount);
-  if (updatedArcadeData) {
-    const { default: PopupUIService } = await import("./popupUIService");
-    await PopupUIService.updateMainUI(updatedArcadeData, participating);
-  }
 }
 
 /** Install the popup-only self-confirmation control. */
