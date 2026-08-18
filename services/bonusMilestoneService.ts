@@ -43,7 +43,9 @@ export function getBonusMilestoneAvailablePoints(
 }
 
 /** Old API responses did not expose availability, so keep the current control visible. */
-export function isBonusMilestoneEnabled(arcadeData?: ArcadeData | null): boolean {
+export function isBonusMilestoneEnabled(
+  arcadeData?: ArcadeData | null,
+): boolean {
   const value = arcadeData?.facilitator?.bonusMilestoneEnabled;
   return typeof value === "boolean" ? value : true;
 }
@@ -57,9 +59,14 @@ async function applyApiBonusToAccount(
 ): Promise<ArcadeData | null> {
   if (!account?.arcadeData?.faciCounts) return null;
 
-  const rawPoints = Number(account.arcadeData.facilitator?.bonusMilestonePoints);
-  const apiPoints = Number.isFinite(rawPoints) && rawPoints >= 0 ? rawPoints : 0;
-  const currentPoints = Number(account.arcadeData.faciCounts.bonusMilestonePoints);
+  const rawPoints = Number(
+    account.arcadeData.facilitator?.bonusMilestonePoints,
+  );
+  const apiPoints =
+    Number.isFinite(rawPoints) && rawPoints >= 0 ? rawPoints : 0;
+  const currentPoints = Number(
+    account.arcadeData.faciCounts.bonusMilestonePoints,
+  );
 
   if (Number.isFinite(currentPoints) && currentPoints === apiPoints) {
     return null;
