@@ -1,3 +1,5 @@
+import "../services/bonusMilestoneService";
+
 const encoder = new TextEncoder();
 
 /** Convert an ArrayBuffer into a lowercase hexadecimal string. */
