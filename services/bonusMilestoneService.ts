@@ -1,13 +1,10 @@
-import AccountService from "./accountService";
+import type { ArcadeData } from "../types";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
+import AccountService from "./accountService";
 
 const STORAGE_PREFIX = "local:facilitatorBonusMilestone";
 const CONTROL_ID = "facilitator-bonus-milestone-control";
-
-type FacilitatorScoringContext = {
-  participating: boolean;
-  bonusMilestoneCompleted: boolean;
-};
+export const DEFAULT_BONUS_MILESTONE_POINTS = 10;
 
 function storageKey(profileUrl: string): `local:${string}` {
   const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl.trim();
@@ -36,26 +33,16 @@ export async function setBonusMilestoneCompleted(
 }
 
 /**
- * Resolve the score context for the account matching a requested profile URL.
- * This works for active-account refreshes and for updating a non-active account
- * from the options page. Tests/background startup may not expose WXT storage yet,
- * so unavailable account state safely falls back to no Facilitator bonus.
+ * Read the API-advertised manual Bonus Milestone value. The API never decides
+ * whether it is completed; that remains a per-profile local confirmation.
  */
-export async function getFacilitatorScoringContext(
-  profileUrl: string,
-): Promise<FacilitatorScoringContext> {
-  try {
-    const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl;
-    const account = await AccountService.isAccountExists(canonical);
-    const participating = Boolean(account?.facilitatorProgram);
-    const bonusMilestoneCompleted = participating
-      ? await isBonusMilestoneCompleted(canonical)
-      : false;
-
-    return { participating, bonusMilestoneCompleted };
-  } catch {
-    return { participating: false, bonusMilestoneCompleted: false };
-  }
+export function getBonusMilestoneAvailablePoints(
+  arcadeData?: ArcadeData | null,
+): number {
+  const value = Number(arcadeData?.facilitator?.bonusMilestoneAvailablePoints);
+  return Number.isFinite(value) && value >= 0
+    ? value
+    : DEFAULT_BONUS_MILESTONE_POINTS;
 }
 
 async function syncPopupControl(): Promise<void> {
@@ -76,7 +63,7 @@ async function syncPopupControl(): Promise<void> {
         <i class="fa-solid fa-circle-check text-emerald-400 text-lg mr-2"></i>
         <span class="min-w-0">
           <strong class="block text-white text-sm">Bonus Milestone</strong>
-          <small class="block text-emerald-300/70 text-xs">+10</small>
+          <small class="block text-emerald-300/70 text-xs bonus-milestone-points">+10</small>
         </span>
       </span>
       <input type="checkbox" class="h-5 w-5 accent-emerald-500" aria-label="Bonus Milestone +10" />
@@ -96,8 +83,8 @@ async function syncPopupControl(): Promise<void> {
 
       await setBonusMilestoneCompleted(current.profileUrl, checkbox.checked);
 
-      // Reuse the existing refresh flow so the signed API recalculates the total
-      // immediately instead of maintaining a second scoring implementation here.
+      // Use the normal refresh path. The request body stays unchanged; after the
+      // response arrives ArcadeApiService re-attaches this local manual +10 state.
       const refreshButton =
         document.querySelector<HTMLButtonElement>(".refresh-button");
       refreshButton?.click();
@@ -108,6 +95,13 @@ async function syncPopupControl(): Promise<void> {
     'input[type="checkbox"]',
   );
   if (!checkbox) return;
+
+  const points = getBonusMilestoneAvailablePoints(activeAccount?.arcadeData);
+  const pointsLabel = control.querySelector<HTMLElement>(
+    ".bonus-milestone-points",
+  );
+  if (pointsLabel) pointsLabel.textContent = `+${points}`;
+  checkbox.setAttribute("aria-label", `Bonus Milestone +${points}`);
 
   const participating = Boolean(activeAccount?.facilitatorProgram);
   checkbox.disabled = !participating;
