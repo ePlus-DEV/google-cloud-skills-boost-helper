@@ -82,11 +82,14 @@ async function syncPopupControl(): Promise<void> {
       <input type="checkbox" class="h-5 w-5 accent-emerald-500" aria-label="Bonus Milestone +10" />
     `;
 
-    const milestoneGrid = section.querySelector(".milestone-card")?.parentElement;
+    const milestoneGrid =
+      section.querySelector(".milestone-card")?.parentElement;
     if (milestoneGrid) milestoneGrid.before(control);
     else section.appendChild(control);
 
-    const checkbox = control.querySelector<HTMLInputElement>('input[type="checkbox"]');
+    const checkbox = control.querySelector<HTMLInputElement>(
+      'input[type="checkbox"]',
+    );
     checkbox?.addEventListener("change", async () => {
       const current = await AccountService.getActiveAccount();
       if (!current?.profileUrl || !checkbox) return;
@@ -95,12 +98,15 @@ async function syncPopupControl(): Promise<void> {
 
       // Reuse the existing refresh flow so the signed API recalculates the total
       // immediately instead of maintaining a second scoring implementation here.
-      const refreshButton = document.querySelector<HTMLButtonElement>(".refresh-button");
+      const refreshButton =
+        document.querySelector<HTMLButtonElement>(".refresh-button");
       refreshButton?.click();
     });
   }
 
-  const checkbox = control.querySelector<HTMLInputElement>('input[type="checkbox"]');
+  const checkbox = control.querySelector<HTMLInputElement>(
+    'input[type="checkbox"]',
+  );
   if (!checkbox) return;
 
   const participating = Boolean(activeAccount?.facilitatorProgram);
