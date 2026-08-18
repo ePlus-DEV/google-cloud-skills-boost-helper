@@ -55,6 +55,17 @@ describe("calculateFacilitatorBonus", () => {
     expect(calculateFacilitatorBonus(null)).toBe(0);
   });
 
+  it("returns the exact API-applied standard + Bonus Milestone amount when present", () => {
+    expect(
+      calculateFacilitatorBonus({
+        faciGame: 6,
+        faciSkill: 18,
+        appliedBonusPoints: 15,
+        baseTotalPoints: 15,
+      }),
+    ).toBe(15);
+  });
+
   it("returns 0 when no milestone is completed", () => {
     expect(
       calculateFacilitatorBonus({
@@ -182,6 +193,13 @@ describe("API-provided Facilitator rules", () => {
       getFacilitatorBonusFromApi({
         estimatedBonusPoints: 5,
         milestoneBonusPoints: 15,
+      }),
+    ).toBe(15);
+    expect(
+      getFacilitatorBonusFromApi({
+        estimatedBonusPoints: 5,
+        milestoneBonusPoints: 5,
+        totalAppliedBonusPoints: 15,
       }),
     ).toBe(15);
     expect(getFacilitatorBonusFromApi()).toBeNull();
