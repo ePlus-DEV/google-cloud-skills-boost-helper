@@ -10,6 +10,9 @@ export type FacilitatorCounts = {
   faciTrivia?: number;
   faciSkill?: number;
   faciCompletion?: number;
+  bonusIncludedInTotal?: boolean;
+  appliedBonusPoints?: number;
+  baseTotalPoints?: number;
 };
 
 export type FacilitatorMilestoneRule = {
@@ -25,6 +28,11 @@ export type FacilitatorApiMetadata = {
   milestoneBonusPoints?: number;
   estimatedMilestone?: string | null;
   milestonePolicy?: string;
+  bonusMilestonePoints?: number | null;
+  bonusMilestoneCompleted?: boolean;
+  totalAppliedBonusPoints?: number;
+  adjustedArcadeTotalPoints?: number;
+  bonusIncludedInTotal?: boolean;
   milestones?: FacilitatorMilestoneRule[];
 };
 
@@ -158,7 +166,9 @@ export function getFacilitatorBonusFromApi(
   facilitator?: FacilitatorApiMetadata | null,
 ): number | null {
   const value =
-    facilitator?.milestoneBonusPoints ?? facilitator?.estimatedBonusPoints;
+    facilitator?.totalAppliedBonusPoints ??
+    facilitator?.milestoneBonusPoints ??
+    facilitator?.estimatedBonusPoints;
   const parsed = Number(value);
 
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
@@ -166,11 +176,21 @@ export function getFacilitatorBonusFromApi(
 
 /**
  * Return the bonus for the highest completed Facilitator milestone.
+ *
+ * New API v3 responses put the exact applied standard + Bonus Milestone amount
+ * into faciCounts.appliedBonusPoints. Prefer that value so every extension
+ * surface uses the backend result. Older cached responses fall back to the
+ * milestone rules below.
  */
 export function calculateFacilitatorBonus(
   faciCounts: FacilitatorCounts | null | undefined,
 ): number {
   if (!faciCounts) return 0;
+
+  const apiAppliedBonus = Number(faciCounts.appliedBonusPoints);
+  if (Number.isFinite(apiAppliedBonus) && apiAppliedBonus >= 0) {
+    return apiAppliedBonus;
+  }
 
   const current = normalizeCounts(faciCounts);
   let highestCompletedMilestone = 0;
