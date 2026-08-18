@@ -38,19 +38,24 @@ export async function setBonusMilestoneCompleted(
 /**
  * Resolve the score context for the account matching a requested profile URL.
  * This works for active-account refreshes and for updating a non-active account
- * from the options page.
+ * from the options page. Tests/background startup may not expose WXT storage yet,
+ * so unavailable account state safely falls back to no Facilitator bonus.
  */
 export async function getFacilitatorScoringContext(
   profileUrl: string,
 ): Promise<FacilitatorScoringContext> {
-  const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl;
-  const account = await AccountService.isAccountExists(canonical);
-  const participating = Boolean(account?.facilitatorProgram);
-  const bonusMilestoneCompleted = participating
-    ? await isBonusMilestoneCompleted(canonical)
-    : false;
+  try {
+    const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl;
+    const account = await AccountService.isAccountExists(canonical);
+    const participating = Boolean(account?.facilitatorProgram);
+    const bonusMilestoneCompleted = participating
+      ? await isBonusMilestoneCompleted(canonical)
+      : false;
 
-  return { participating, bonusMilestoneCompleted };
+    return { participating, bonusMilestoneCompleted };
+  } catch {
+    return { participating: false, bonusMilestoneCompleted: false };
+  }
 }
 
 async function syncPopupControl(): Promise<void> {
