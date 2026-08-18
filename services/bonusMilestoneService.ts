@@ -1,4 +1,4 @@
-import type { ArcadeData } from "../types";
+import type { Account, ArcadeData } from "../types";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
 import AccountService from "./accountService";
 
@@ -45,6 +45,34 @@ export function getBonusMilestoneAvailablePoints(
     : DEFAULT_BONUS_MILESTONE_POINTS;
 }
 
+async function applyManualBonusToAccount(
+  account: Account | null,
+  participating: boolean,
+  completed: boolean,
+  points: number,
+): Promise<ArcadeData | null> {
+  if (!account?.arcadeData?.faciCounts) return null;
+
+  const desiredPoints = participating && completed ? points : 0;
+  if (
+    Number(account.arcadeData.faciCounts.manualBonusMilestonePoints ?? 0) ===
+    desiredPoints
+  ) {
+    return null;
+  }
+
+  const arcadeData: ArcadeData = {
+    ...account.arcadeData,
+    faciCounts: {
+      ...account.arcadeData.faciCounts,
+      manualBonusMilestonePoints: desiredPoints,
+    },
+  };
+
+  await AccountService.updateAccountArcadeData(account.id, arcadeData);
+  return arcadeData;
+}
+
 async function syncPopupControl(): Promise<void> {
   if (typeof document === "undefined") return;
   const section = document.getElementById("milestones-section");
@@ -82,12 +110,7 @@ async function syncPopupControl(): Promise<void> {
       if (!current?.profileUrl || !checkbox) return;
 
       await setBonusMilestoneCompleted(current.profileUrl, checkbox.checked);
-
-      // Use the normal refresh path. The request body stays unchanged; after the
-      // response arrives ArcadeApiService re-attaches this local manual +10 state.
-      const refreshButton =
-        document.querySelector<HTMLButtonElement>(".refresh-button");
-      refreshButton?.click();
+      await syncPopupControl();
     });
   }
 
@@ -104,17 +127,29 @@ async function syncPopupControl(): Promise<void> {
   checkbox.setAttribute("aria-label", `Bonus Milestone +${points}`);
 
   const participating = Boolean(activeAccount?.facilitatorProgram);
-  checkbox.disabled = !participating;
-  control.classList.toggle("opacity-50", !participating);
-  control.classList.toggle("cursor-not-allowed", !participating);
-
-  checkbox.checked =
+  const completed =
     participating && Boolean(activeAccount?.profileUrl)
       ? await isBonusMilestoneCompleted(activeAccount?.profileUrl || "")
       : false;
+
+  checkbox.disabled = !participating;
+  checkbox.checked = completed;
+  control.classList.toggle("opacity-50", !participating);
+  control.classList.toggle("cursor-not-allowed", !participating);
+
+  const updatedArcadeData = await applyManualBonusToAccount(
+    activeAccount,
+    participating,
+    completed,
+    points,
+  );
+  if (updatedArcadeData) {
+    const { default: PopupUIService } = await import("./popupUIService");
+    await PopupUIService.updateMainUI(updatedArcadeData, participating);
+  }
 }
 
-/** Install the popup-only control without affecting background/options pages. */
+/** Install the popup-only control without affecting the normal API request. */
 export function initializeBonusMilestoneControl(): void {
   if (typeof document === "undefined") return;
 
