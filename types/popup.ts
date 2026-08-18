@@ -33,6 +33,7 @@ export interface FacilitatorApiMetadata {
   estimatedMilestone?: string | null;
   estimatedBonusPoints?: number;
   milestoneBonusPoints?: number;
+  appliedMilestoneBonusPoints?: number;
   bonusIncludedInTotal?: boolean;
   gamePoints?: number;
   skillPoints?: number;
@@ -40,8 +41,13 @@ export interface FacilitatorApiMetadata {
   baseArcadePoints?: number;
   pointsAlreadyIncludedInArcadeTotal?: number;
   estimatedFacilitatorPoints?: number;
+  participating?: boolean;
+  bonusMilestoneCompleted?: boolean;
+  bonusMilestoneAvailablePoints?: number;
   bonusMilestonePoints?: number | null;
   bonusMilestoneStatus?: string;
+  totalAppliedBonusPoints?: number;
+  adjustedArcadeTotalPoints?: number;
   milestonePolicy?: string;
   milestones?: FacilitatorMilestoneRule[];
 }
@@ -52,6 +58,11 @@ export interface ArcadeData {
   userDetails?: UserDetail | UserDetail[]; // Support both single object and array
   arcadePoints?: {
     totalPoints?: number;
+    baseTotalPoints?: number;
+    adjustedTotalPoints?: number;
+    facilitatorBonusPoints?: number;
+    milestoneBonusPoints?: number;
+    bonusMilestonePoints?: number;
     gamePoints?: number;
     triviaPoints?: number;
     skillPoints?: number;
@@ -65,8 +76,11 @@ export interface ArcadeData {
     faciCompletion?: number;
     completedFaciCount?: number;
     completedFaciSkillCount?: number;
+    bonusIncludedInTotal?: boolean;
+    appliedBonusPoints?: number;
+    baseTotalPoints?: number;
   };
-  // Canonical Arcade v2 Facilitator contract.
+  // Canonical Arcade v2/v3 Facilitator contract.
   facilitator?: FacilitatorApiMetadata;
   // Deprecated legacy shape retained only so previously stored responses can
   // still be read safely. Current network requests do not consume this field.
