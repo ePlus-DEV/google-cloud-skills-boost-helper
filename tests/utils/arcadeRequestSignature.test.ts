@@ -34,6 +34,7 @@ describe("buildArcadeSignatureHeaders", () => {
       ),
     ).resolves.toEqual({});
     expect(payload.extensionVersion).toBe("1.3.1");
+    expect(payload.facilitator).toEqual({ bonusMilestoneCompleted: false });
   });
 
   it("does not block Arcade v3 when only one signing credential is present", async () => {
@@ -60,7 +61,7 @@ describe("buildArcadeSignatureHeaders", () => {
     ).rejects.toThrow(/requires the \/api\/v3\/arcade endpoint/i);
   });
 
-  it("signs the manifest version in the body and exposes it as a header", async () => {
+  it("signs only the Bonus Milestone self-report flag with the manifest version", async () => {
     const payload: Record<string, unknown> = {
       url: "https://www.skills.google/public_profiles/abc123",
       profileId: "abc123",
@@ -72,6 +73,8 @@ describe("buildArcadeSignatureHeaders", () => {
     );
 
     expect(payload.extensionVersion).toBe("1.3.1");
+    expect(payload.facilitator).toEqual({ bonusMilestoneCompleted: false });
+    expect(payload.facilitator).not.toHaveProperty("participating");
     expect(headers).toEqual(
       expect.objectContaining({
         "X-Arcade-Key": "release-client-key",
