@@ -86,6 +86,23 @@ describe("buildArcadeSignatureHeaders", () => {
     );
   });
 
+  it("sends true when the user has manually confirmed Bonus Milestone", async () => {
+    vi.stubGlobal("storage", {
+      getItem: vi.fn().mockResolvedValue(true),
+      setItem: vi.fn().mockResolvedValue(undefined),
+    });
+    const payload: Record<string, unknown> = {
+      url: "https://www.skills.google/public_profiles/abc123",
+    };
+
+    await buildArcadeSignatureHeaders(
+      "https://private-api.example.test/api/v3/arcade",
+      payload,
+    );
+
+    expect(payload.facilitator).toEqual({ bonusMilestoneCompleted: true });
+  });
+
   it("produces the same signature with or without a trailing endpoint slash", async () => {
     vi.spyOn(Date, "now").mockReturnValue(1_786_420_000_000);
     vi.spyOn(crypto, "randomUUID").mockReturnValue(
