@@ -47,10 +47,10 @@ function BonusMilestoneControl() {
   useEffect(
     /** Load the initial state and subscribe to active-account changes. */
     function subscribeToBonusMilestoneState() {
-      void reload();
+      reload().catch(() => null);
       return watchBonusMilestoneControlState(
         function reloadAfterAccountChange() {
-          void reload();
+          reload().catch(() => null);
         },
       );
     },
@@ -78,7 +78,7 @@ function BonusMilestoneControl() {
   const handleCheckboxChange = useCallback(
     /** Forward the checkbox state to the async persistence handler. */
     function handleCheckboxEvent(event: ChangeEvent<HTMLInputElement>) {
-      void handleChange(event.currentTarget.checked);
+      handleChange(event.currentTarget.checked).catch(() => null);
     },
     [handleChange],
   );
