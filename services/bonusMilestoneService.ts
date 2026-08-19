@@ -104,9 +104,8 @@ export function watchBonusMilestoneControlState(
 async function mountPopupControl(): Promise<void> {
   if (!document.getElementById("popup-content")) return;
 
-  const { mountBonusMilestoneControl } = await import(
-    "../components/BonusMilestoneControl"
-  );
+  const { mountBonusMilestoneControl } =
+    await import("../components/BonusMilestoneControl");
   mountBonusMilestoneControl();
 }
 
