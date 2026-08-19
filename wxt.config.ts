@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import type { Plugin } from "vite";
 
+/** Inject popup-only bootstrap scripts and compact-mode CSS before app startup. */
 function popupSizeBootstrapPlugin(): Plugin {
   return {
     name: "eplus-popup-size-bootstrap",
@@ -44,6 +45,14 @@ function popupSizeBootstrapPlugin(): Plugin {
               attrs: {
                 type: "module",
                 src: "/entrypoints/popup/compactModeSync.ts",
+              },
+            },
+            {
+              tag: "script",
+              injectTo: "head",
+              attrs: {
+                type: "module",
+                src: "/entrypoints/popup/bonusMilestoneControl.tsx",
               },
             },
           ],

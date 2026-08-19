@@ -55,6 +55,26 @@ describe("calculateFacilitatorBonus", () => {
     expect(calculateFacilitatorBonus(null)).toBe(0);
   });
 
+  it("adds the API-calculated Bonus Milestone separately", () => {
+    expect(
+      calculateFacilitatorBonus({
+        faciGame: 6,
+        faciSkill: 18,
+        bonusMilestonePoints: 10,
+      }),
+    ).toBe(15);
+  });
+
+  it("uses whatever Bonus Milestone amount the API returns", () => {
+    expect(
+      calculateFacilitatorBonus({
+        faciGame: 6,
+        faciSkill: 18,
+        bonusMilestonePoints: 20,
+      }),
+    ).toBe(25);
+  });
+
   it("returns 0 when no milestone is completed", () => {
     expect(
       calculateFacilitatorBonus({
@@ -141,6 +161,7 @@ describe("calculateMilestoneBonusBreakdown", () => {
   it("returns zero breakdown for null/undefined", () => {
     const result = calculateMilestoneBonusBreakdown(null);
     expect(result.total).toBe(0);
+    expect(result.bonusMilestone).toBe(0);
     expect(result.highestCompleted).toBe(0);
     expect(result.milestones["1"]).toBe(0);
   });
@@ -155,10 +176,26 @@ describe("calculateMilestoneBonusBreakdown", () => {
 
     expect(result.highestCompleted).toBe(1);
     expect(result.total).toBe(5);
+    expect(result.bonusMilestone).toBe(0);
     expect(result.milestones["1"]).toBe(5);
     expect(result.milestones["2"]).toBe(0);
     expect(result.milestones["3"]).toBe(0);
     expect(result.milestones.ultimate).toBe(0);
+  });
+
+  it("keeps the API Bonus Milestone outside the standard milestone map", () => {
+    const result = calculateMilestoneBonusBreakdown({
+      faciGame: 6,
+      faciTrivia: 0,
+      faciSkill: 18,
+      faciCompletion: 0,
+      bonusMilestonePoints: 10,
+    });
+
+    expect(result.highestCompleted).toBe(1);
+    expect(result.milestones["1"]).toBe(5);
+    expect(result.bonusMilestone).toBe(10);
+    expect(result.total).toBe(15);
   });
 
   it("returns correct breakdown for ultimate milestone", () => {
@@ -176,12 +213,14 @@ describe("calculateMilestoneBonusBreakdown", () => {
 });
 
 describe("API-provided Facilitator rules", () => {
-  it("reads the backend-calculated bonus directly when present", () => {
+  it("reads only the standard milestone bonus from API metadata", () => {
     expect(getFacilitatorBonusFromApi({ estimatedBonusPoints: 5 })).toBe(5);
     expect(
       getFacilitatorBonusFromApi({
         estimatedBonusPoints: 5,
         milestoneBonusPoints: 15,
+        bonusMilestoneAvailablePoints: 10,
+        bonusMilestonePoints: 10,
       }),
     ).toBe(15);
     expect(getFacilitatorBonusFromApi()).toBeNull();
