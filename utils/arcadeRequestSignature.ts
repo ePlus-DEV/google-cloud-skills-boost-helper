@@ -1,3 +1,5 @@
+import { isBonusMilestoneCompleted } from "../services/bonusMilestoneService";
+
 const encoder = new TextEncoder();
 
 /** Convert an ArrayBuffer into a lowercase hexadecimal string. */
@@ -85,9 +87,9 @@ function getCanonicalPathname(endpoint: string): string {
 }
 
 /**
- * Add the extension version to the Arcade v3 body and sign the request when
- * both client credentials are available. During rollout, missing credentials
- * intentionally produce an unsigned v3 request instead of blocking the fetch.
+ * Add the extension version and self-reported Bonus Milestone completion flag
+ * before signing. The API owns season availability and point values; the client
+ * sends only whether the user manually confirmed completion.
  */
 export async function buildArcadeSignatureHeaders(
   endpoint: string,
@@ -99,7 +101,14 @@ export async function buildArcadeSignatureHeaders(
 
   const extensionVersion = getExtensionVersion();
   if (body && typeof body === "object" && !Array.isArray(body)) {
-    (body as Record<string, unknown>).extensionVersion = extensionVersion;
+    const record = body as Record<string, unknown>;
+    const profileUrl = typeof record.url === "string" ? record.url : "";
+    if (profileUrl) {
+      record.facilitator = {
+        bonusMilestoneCompleted: await isBonusMilestoneCompleted(profileUrl),
+      };
+    }
+    record.extensionVersion = extensionVersion;
   }
 
   const clientKey = String(import.meta.env.WXT_ARCADE_CLIENT_KEY || "").trim();

@@ -361,41 +361,65 @@ initializeFacilitatorRuleLabelSync();
 const ArcadeApiService = {
   /** Fetch Arcade data exclusively through the signed v3 contract. */
   async fetchArcadeData(url: string): Promise<ArcadeData | null> {
-    try {
-      const endpoint = getArcadeEndpoint();
-      if (!endpoint) return null;
+    const endpoint = getArcadeEndpoint();
+    if (!endpoint) return null;
 
-      const canonical = canonicalizeProfileUrl(url) || url;
-      const profileId = extractProfileId(url);
-      const payload = {
-        url: canonical,
-        profileId,
-      };
+    const canonical = canonicalizeProfileUrl(url) || url;
+    const profileId = extractProfileId(url);
+    const payload = {
+      url: canonical,
+      profileId,
+    };
+
+    let response;
+    try {
       const signatureHeaders = await buildArcadeSignatureHeaders(
         endpoint,
         payload,
       );
-      const response = await axios.post(endpoint, payload, {
+      response = await axios.post(endpoint, payload, {
         timeout: ARCADE_API_TIMEOUT_MS,
         headers: signatureHeaders,
       });
-
-      if (response.status === 200) {
-        const data = response.data as ArcadeData;
-
-        if (!syncFacilitatorRulesFromApi(data.facilitator)) {
-          resetFacilitatorRulesToFallback();
-        }
-        syncFacilitatorRuleLabels();
-
-        data.lastUpdated = new Date().toISOString();
-        return data;
-      }
-
-      return null;
-    } catch {
+    } catch (error) {
+      const details = axios.isAxiosError(error)
+        ? `HTTP ${error.response?.status ?? "network"} (${error.code ?? "unknown"})`
+        : error instanceof Error
+          ? error.message
+          : "Unknown request error";
+      console.debug("[ArcadeApiService] Arcade v3 request failed:", details);
       return null;
     }
+
+    if (
+      response.status !== 200 ||
+      !response.data ||
+      typeof response.data !== "object" ||
+      Array.isArray(response.data) ||
+      response.data.success === false
+    ) {
+      return null;
+    }
+
+    const data: ArcadeData = {
+      ...(response.data as ArcadeData),
+      lastUpdated: new Date().toISOString(),
+    };
+
+    try {
+      if (!syncFacilitatorRulesFromApi(data.facilitator)) {
+        resetFacilitatorRulesToFallback();
+      }
+    } catch (error) {
+      const details =
+        error instanceof Error ? error.message : "Unknown sync error";
+      console.debug(
+        "[ArcadeApiService] Facilitator metadata sync failed:",
+        details,
+      );
+    }
+
+    return data;
   },
 
   /** Validate profile URL format. */
