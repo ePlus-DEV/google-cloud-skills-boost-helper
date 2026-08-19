@@ -1,4 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type ChangeEvent,
+} from "react";
 import { createRoot, type Root } from "react-dom/client";
 import {
   getBonusMilestoneControlState,
@@ -17,6 +22,7 @@ const EMPTY_STATE: BonusMilestoneControlState = {
   profileUrl: "",
 };
 
+/** Return a localized message while preserving a safe English fallback. */
 function getMessage(key: string, fallback: string): string {
   try {
     return (
@@ -29,6 +35,7 @@ function getMessage(key: string, fallback: string): string {
   }
 }
 
+/** Render the profile-scoped Bonus Milestone self-confirmation control. */
 function BonusMilestoneControl() {
   const [state, setState] = useState<BonusMilestoneControlState>(EMPTY_STATE);
   const [saving, setSaving] = useState(false);
@@ -60,7 +67,7 @@ function BonusMilestoneControl() {
   }, []);
 
   const handleCheckboxChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       void handleChange(event.currentTarget.checked);
     },
     [handleChange],
