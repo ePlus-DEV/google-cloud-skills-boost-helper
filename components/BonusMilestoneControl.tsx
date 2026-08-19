@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { createRoot, type Root } from "react-dom/client";
+import { browser } from "wxt/browser";
 import {
   getBonusMilestoneControlState,
   setActiveBonusMilestoneCompleted,
@@ -35,34 +36,46 @@ function BonusMilestoneControl() {
   const [state, setState] = useState<BonusMilestoneControlState>(EMPTY_STATE);
   const [saving, setSaving] = useState(false);
 
-  const reload = useCallback(async () => {
-    setState(await getBonusMilestoneControlState());
-  }, []);
+  const reload = useCallback(
+    /** Reload the control state from the active profile and API snapshot. */
+    async function reloadControlState() {
+      setState(await getBonusMilestoneControlState());
+    },
+    [],
+  );
 
-  useEffect(() => {
-    void reload();
-    return watchBonusMilestoneControlState(() => {
+  useEffect(
+    /** Load the initial state and subscribe to active-account changes. */
+    function subscribeToBonusMilestoneState() {
       void reload();
-    });
-  }, [reload]);
+      return watchBonusMilestoneControlState(function reloadAfterAccountChange() {
+        void reload();
+      });
+    },
+    [reload],
+  );
 
-  const handleChange = useCallback(async (completed: boolean) => {
-    setState((current) => ({ ...current, completed }));
-    setSaving(true);
+  const handleChange = useCallback(
+    /** Persist one checkbox change and then refresh the signed Arcade request. */
+    async function persistBonusMilestoneChange(completed: boolean) {
+      setSaving(true);
 
-    try {
-      setState(await setActiveBonusMilestoneCompleted(completed));
+      try {
+        setState(await setActiveBonusMilestoneCompleted(completed));
 
-      // Reuse the existing refresh flow so the signed v3 request sends the
-      // self-report and the API returns the season-owned applied bonus points.
-      document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
-    } finally {
-      setSaving(false);
-    }
-  }, []);
+        // Reuse the existing refresh flow so the signed v3 request sends the
+        // self-report and the API returns the season-owned applied bonus points.
+        document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
+      } finally {
+        setSaving(false);
+      }
+    },
+    [],
+  );
 
   const handleCheckboxChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    /** Forward the checkbox state to the async persistence handler. */
+    function handleCheckboxEvent(event: ChangeEvent<HTMLInputElement>) {
       void handleChange(event.currentTarget.checked);
     },
     [handleChange],
