@@ -99,35 +99,3 @@ export function watchBonusMilestoneControlState(
 ): () => void {
   return storage.watch<AccountsData>("local:accountsData", listener);
 }
-
-/** Dynamically load and mount the React control only inside the popup document. */
-async function mountPopupControl(): Promise<void> {
-  if (!document.getElementById("popup-content")) return;
-
-  const { mountBonusMilestoneControl } =
-    await import("../components/BonusMilestoneControl");
-  mountBonusMilestoneControl();
-}
-
-/** Start the asynchronous popup mount without leaking a floating promise. */
-function startPopupControlMount(): void {
-  void mountPopupControl();
-}
-
-/**
- * Mount the popup-only React control when this module is used from the popup.
- * Rendering and state lifecycle stay inside the React component.
- */
-function initializePopupControlMount(): void {
-  if (typeof document === "undefined") return;
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", startPopupControlMount, {
-      once: true,
-    });
-  } else {
-    startPopupControlMount();
-  }
-}
-
-initializePopupControlMount();
