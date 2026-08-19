@@ -171,6 +171,7 @@ export function getFacilitatorBonusFromApi(
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 
+/** Read the separate Bonus Milestone amount already calculated by the API. */
 function getApiBonusMilestonePoints(
   faciCounts: FacilitatorCounts | null | undefined,
 ): number {
