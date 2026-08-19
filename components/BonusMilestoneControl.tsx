@@ -44,7 +44,7 @@ function BonusMilestoneControl() {
     });
   }, [reload]);
 
-  const handleChange = async (completed: boolean) => {
+  const handleChange = useCallback(async (completed: boolean) => {
     setState((current) => ({ ...current, completed }));
     setSaving(true);
 
@@ -57,7 +57,14 @@ function BonusMilestoneControl() {
     } finally {
       setSaving(false);
     }
-  };
+  }, []);
+
+  const handleCheckboxChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      void handleChange(event.currentTarget.checked);
+    },
+    [handleChange],
+  );
 
   if (!state.enabled) return null;
 
@@ -88,7 +95,7 @@ function BonusMilestoneControl() {
         aria-label={`${title}: ${reward}`}
         checked={state.completed}
         disabled={disabled}
-        onChange={(event) => void handleChange(event.currentTarget.checked)}
+        onChange={handleCheckboxChange}
       />
     </label>
   );
