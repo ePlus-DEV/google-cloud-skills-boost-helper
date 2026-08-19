@@ -1,9 +1,19 @@
 import { webcrypto } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const { isBonusMilestoneCompletedMock } = vi.hoisted(() => ({
+  isBonusMilestoneCompletedMock: vi.fn(),
+}));
+
+vi.mock("../../services/bonusMilestoneService", () => ({
+  isBonusMilestoneCompleted: isBonusMilestoneCompletedMock,
+}));
+
 import { buildArcadeSignatureHeaders } from "../../utils/arcadeRequestSignature";
 
 describe("buildArcadeSignatureHeaders", () => {
   beforeEach(() => {
+    isBonusMilestoneCompletedMock.mockResolvedValue(false);
     vi.stubGlobal("crypto", webcrypto as unknown as Crypto);
     vi.stubGlobal("browser", {
       runtime: {
@@ -34,6 +44,7 @@ describe("buildArcadeSignatureHeaders", () => {
       ),
     ).resolves.toEqual({});
     expect(payload.extensionVersion).toBe("1.3.1");
+    expect(payload.facilitator).toEqual({ bonusMilestoneCompleted: false });
   });
 
   it("does not block Arcade v3 when only one signing credential is present", async () => {
@@ -60,7 +71,7 @@ describe("buildArcadeSignatureHeaders", () => {
     ).rejects.toThrow(/requires the \/api\/v3\/arcade endpoint/i);
   });
 
-  it("signs the manifest version in the body and exposes it as a header", async () => {
+  it("signs only the Bonus Milestone self-report flag with the manifest version", async () => {
     const payload: Record<string, unknown> = {
       url: "https://www.skills.google/public_profiles/abc123",
       profileId: "abc123",
@@ -72,6 +83,8 @@ describe("buildArcadeSignatureHeaders", () => {
     );
 
     expect(payload.extensionVersion).toBe("1.3.1");
+    expect(payload.facilitator).toEqual({ bonusMilestoneCompleted: false });
+    expect(payload.facilitator).not.toHaveProperty("participating");
     expect(headers).toEqual(
       expect.objectContaining({
         "X-Arcade-Key": "release-client-key",
@@ -81,6 +94,20 @@ describe("buildArcadeSignatureHeaders", () => {
         "X-Arcade-Signature": expect.stringMatching(/^[a-f0-9]{64}$/),
       }),
     );
+  });
+
+  it("sends true when the user has manually confirmed Bonus Milestone", async () => {
+    isBonusMilestoneCompletedMock.mockResolvedValue(true);
+    const payload: Record<string, unknown> = {
+      url: "https://www.skills.google/public_profiles/abc123",
+    };
+
+    await buildArcadeSignatureHeaders(
+      "https://private-api.example.test/api/v3/arcade",
+      payload,
+    );
+
+    expect(payload.facilitator).toEqual({ bonusMilestoneCompleted: true });
   });
 
   it("produces the same signature with or without a trailing endpoint slash", async () => {
