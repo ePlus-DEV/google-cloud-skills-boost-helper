@@ -90,7 +90,7 @@ function BonusMilestoneControl() {
     "",
   );
   const pointsWord = getMessage("textPoints", "points");
-  const reward = `+${state.points} ${pointsWord}`;
+  const reward = `+${state.points.toString()} ${pointsWord}`;
   const disabled = !state.participating || saving;
 
   return (
