@@ -13,6 +13,7 @@ export type BonusMilestoneControlState = {
   profileUrl: string;
 };
 
+/** Build a stable WXT storage key for one Skills Boost public profile. */
 function storageKey(profileUrl: string): `local:${string}` {
   const canonical = canonicalizeProfileUrl(profileUrl) || profileUrl.trim();
   const profileId = extractProfileId(canonical);
@@ -20,6 +21,7 @@ function storageKey(profileUrl: string): `local:${string}` {
   return `${STORAGE_PREFIX}:${identity}` as `local:${string}`;
 }
 
+/** Read whether a profile manually confirmed the Bonus Milestone. */
 export async function isBonusMilestoneCompleted(
   profileUrl: string,
 ): Promise<boolean> {
@@ -31,6 +33,7 @@ export async function isBonusMilestoneCompleted(
   }
 }
 
+/** Persist a profile's manual Bonus Milestone confirmation. */
 export async function setBonusMilestoneCompleted(
   profileUrl: string,
   completed: boolean,
