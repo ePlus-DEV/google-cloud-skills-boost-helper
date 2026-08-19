@@ -1,3 +1,4 @@
+import { storage } from "wxt/utils/storage";
 import type { AccountsData, ArcadeData } from "../types";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
 import AccountService from "./accountService";
@@ -96,27 +97,37 @@ export async function setActiveBonusMilestoneCompleted(
 export function watchBonusMilestoneControlState(
   listener: () => void,
 ): () => void {
-  return storage.watch<AccountsData>("local:accountsData", () => listener());
+  return storage.watch<AccountsData>("local:accountsData", listener);
+}
+
+/** Dynamically load and mount the React control only inside the popup document. */
+async function mountPopupControl(): Promise<void> {
+  if (!document.getElementById("popup-content")) return;
+
+  const { mountBonusMilestoneControl } = await import(
+    "../components/BonusMilestoneControl"
+  );
+  mountBonusMilestoneControl();
+}
+
+/** Start the asynchronous popup mount without leaking a floating promise. */
+function startPopupControlMount(): void {
+  void mountPopupControl();
 }
 
 /**
  * Mount the popup-only React control when this module is used from the popup.
- * Rendering and lifecycle are intentionally kept out of this service module.
+ * Rendering and state lifecycle stay inside the React component.
  */
 function initializePopupControlMount(): void {
   if (typeof document === "undefined") return;
 
-  const mount = () => {
-    if (!document.getElementById("popup-content")) return;
-    void import("../components/BonusMilestoneControl").then(
-      ({ mountBonusMilestoneControl }) => mountBonusMilestoneControl(),
-    );
-  };
-
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mount, { once: true });
+    document.addEventListener("DOMContentLoaded", startPopupControlMount, {
+      once: true,
+    });
   } else {
-    mount();
+    startPopupControlMount();
   }
 }
 
