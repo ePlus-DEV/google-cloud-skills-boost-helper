@@ -109,7 +109,8 @@ export function mountBonusMilestoneControl(): void {
     host = document.createElement("div");
     host.id = ROOT_ID;
 
-    const milestoneGrid = section.querySelector(".milestone-card")?.parentElement;
+    const milestoneGrid =
+      section.querySelector(".milestone-card")?.parentElement;
     if (milestoneGrid) milestoneGrid.before(host);
     else section.appendChild(host);
 
