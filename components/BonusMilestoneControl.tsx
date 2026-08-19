@@ -48,9 +48,11 @@ function BonusMilestoneControl() {
     /** Load the initial state and subscribe to active-account changes. */
     function subscribeToBonusMilestoneState() {
       void reload();
-      return watchBonusMilestoneControlState(function reloadAfterAccountChange() {
-        void reload();
-      });
+      return watchBonusMilestoneControlState(
+        function reloadAfterAccountChange() {
+          void reload();
+        },
+      );
     },
     [reload],
   );
