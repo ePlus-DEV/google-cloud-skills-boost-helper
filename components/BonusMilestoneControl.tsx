@@ -1,9 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-  type ChangeEvent,
-} from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import {
   getBonusMilestoneControlState,
