@@ -57,14 +57,19 @@ function syncDisplayedTotal(state: BonusMilestoneControlState): void {
   }
 
   const currentTotal = parseDisplayedTotal(total.textContent);
-  const previousApplied = Number(total.dataset.bonusMilestoneApplied || "0") || 0;
-  const previousRendered = Number(total.dataset.bonusMilestoneRenderedTotal || "NaN");
+  const previousApplied =
+    Number(total.dataset.bonusMilestoneApplied || "0") || 0;
+  const previousRendered = Number(
+    total.dataset.bonusMilestoneRenderedTotal || "NaN",
+  );
   const stillContainsPreviousBonus =
     Number.isFinite(previousRendered) && currentTotal === previousRendered;
   const baseTotal = stillContainsPreviousBonus
     ? Math.max(0, currentTotal - previousApplied)
     : currentTotal;
-  const nextApplied = state.bonusIncludedInTotal ? 0 : renderedManualBonus(state);
+  const nextApplied = state.bonusIncludedInTotal
+    ? 0
+    : renderedManualBonus(state);
   const nextTotal = baseTotal + nextApplied;
 
   total.textContent = formatPoints(nextTotal);
@@ -87,9 +92,11 @@ function BonusMilestoneControl() {
   useEffect(
     function subscribeToBonusMilestoneState() {
       reload().catch(() => null);
-      return watchBonusMilestoneControlState(function reloadAfterAccountChange() {
-        reload().catch(() => null);
-      });
+      return watchBonusMilestoneControlState(
+        function reloadAfterAccountChange() {
+          reload().catch(() => null);
+        },
+      );
     },
     [reload],
   );
@@ -162,12 +169,11 @@ function BonusMilestoneControl() {
     [pointsLabel],
   );
 
-  const handleCheckboxChange = useCallback(
-    function handleCheckboxEvent(event: ChangeEvent<HTMLInputElement>) {
-      setConfirmedCheckbox(event.currentTarget.checked);
-    },
-    [],
-  );
+  const handleCheckboxChange = useCallback(function handleCheckboxEvent(
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    setConfirmedCheckbox(event.currentTarget.checked);
+  }, []);
 
   return (
     <>
@@ -179,9 +185,7 @@ function BonusMilestoneControl() {
         disabled={!canConfirm || saving}
         onClick={openDialog}
       >
-        {saving
-          ? getBonusMilestoneMessage("updating", pointsLabel)
-          : chipLabel}
+        {saving ? getBonusMilestoneMessage("updating", pointsLabel) : chipLabel}
       </button>
 
       {dialogOpen &&
