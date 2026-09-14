@@ -44,7 +44,9 @@ describe("Bonus Milestone claim UI", () => {
       profileUrl:
         "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111",
     });
-    serviceMocks.watchBonusMilestoneControlState.mockReturnValue(() => undefined);
+    serviceMocks.watchBonusMilestoneControlState.mockReturnValue(
+      () => undefined,
+    );
 
     document.body.innerHTML = `
       <span id="arcade-points">118</span>
