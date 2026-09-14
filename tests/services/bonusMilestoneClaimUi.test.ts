@@ -89,7 +89,9 @@ describe("Bonus Milestone claim UI", () => {
     expect(dialog?.textContent).toContain("confirmButton:10");
     expect(dialog?.textContent).not.toContain("confirmButton:35");
     expect(dialog?.textContent).toContain("Self-reported only.");
-    expect(dialog?.textContent).toContain("does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points");
+    expect(dialog?.textContent).toContain(
+      "does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points",
+    );
 
     // Simulate the refreshed Hub state after a successful confirmation.
     serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
