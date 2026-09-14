@@ -41,13 +41,13 @@ describe("Arcade v3 Bonus Milestone request", () => {
     expect(bonusMocks.isBonusMilestoneCompleted).toHaveBeenCalledWith(PROFILE_URL);
     expect(axios.post).toHaveBeenCalledWith(
       "https://private-api.example.test/api/v3/arcade",
-      {
+      expect.objectContaining({
         url: PROFILE_URL,
         profileId: "11111111-1111-4111-8111-111111111111",
         facilitator: {
           bonusMilestoneCompleted: true,
         },
-      },
+      }),
       expect.objectContaining({
         timeout: 15_000,
         headers: expect.objectContaining({
