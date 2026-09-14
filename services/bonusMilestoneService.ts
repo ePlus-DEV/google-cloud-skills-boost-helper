@@ -70,17 +70,22 @@ async function findAccount(profileUrl: string): Promise<Account | null> {
   }
 }
 
-/** Read one period-scoped confirmation flag without surfacing storage errors. */
+/**
+ * Read one period-scoped confirmation flag.
+ * `null` means no local decision exists yet; explicit `false` must be preserved
+ * so Undo can override stale API/cache metadata that still says completed.
+ */
 async function readScopedCompletion(
   profileUrl: string,
   arcadeData?: ArcadeData | null,
-): Promise<boolean> {
+): Promise<boolean | null> {
   const key = storageKey(profileUrl, arcadeData);
-  if (!key) return false;
+  if (!key) return null;
   try {
-    return Boolean(await storage.getItem<boolean>(key));
+    const stored = await storage.getItem<boolean>(key);
+    return typeof stored === "boolean" ? stored : null;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -137,7 +142,7 @@ export async function isBonusMilestoneCompleted(
 
   const stored = await readScopedCompletion(profileUrl, account.arcadeData);
   return (
-    stored || account.arcadeData.facilitator?.bonusMilestoneCompleted === true
+    stored ?? account.arcadeData.facilitator?.bonusMilestoneCompleted === true
   );
 }
 
@@ -196,13 +201,12 @@ export async function getBonusMilestoneControlState(): Promise<BonusMilestoneCon
   const storedCompleted =
     participating && enabled && points > 0 && profileUrl
       ? await readScopedCompletion(profileUrl, arcadeData)
-      : false;
+      : null;
   const completed =
     participating &&
     enabled &&
     points > 0 &&
-    (storedCompleted ||
-      arcadeData?.facilitator?.bonusMilestoneCompleted === true);
+    (storedCompleted ?? arcadeData?.facilitator?.bonusMilestoneCompleted === true);
 
   return {
     completed,
