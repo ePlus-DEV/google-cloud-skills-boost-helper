@@ -257,7 +257,7 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedTitle: "تم تأكيد Bonus Milestone",
     confirmedMessage: "يتم حاليًا احتساب +{points} نقطة.",
     removeButton: "إلغاء التأكيد",
-    appliedTooltip: "Bonus Milestone 확인됨: +{points}포인트 적용됨.",
+    appliedTooltip: "تم تأكيد Bonus Milestone: تم احتساب +{points} نقطة.",
     disclaimer:
       "تأكيد ذاتي فقط. يظهر هذا التأكيد داخل الإضافة ولا يعني أن Google Cloud Skills Boost / Arcade قد تحقّق من الإكمال أو منح هذه النقاط رسميًا.",
     officialPage: "فتح صفحة Bonus Milestone الرسمية",
