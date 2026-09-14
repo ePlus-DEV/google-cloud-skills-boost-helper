@@ -123,7 +123,14 @@ function BonusMilestoneControl() {
       return `✓ +${formatPoints(manualBonus)}`;
     }
     return getBonusMilestoneMessage("claim", pointsLabel);
-  }, [manualBonus, pointsLabel, state.completed, state.enabled, state.participating, state.points]);
+  }, [
+    manualBonus,
+    pointsLabel,
+    state.completed,
+    state.enabled,
+    state.participating,
+    state.points,
+  ]);
 
   const chipTitle = state.completed
     ? getBonusMilestoneMessage("appliedTooltip", formatPoints(manualBonus))
