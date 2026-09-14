@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "Управляйте уведомлениями об обновлениях и уведомлениями браузера."
+  },
+  "bonusMilestoneClaim": {
+    "message": "Получить +10"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone: подтвердите выполнение, чтобы добавить +10 очков."
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "Подтвердить Bonus Milestone"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "Этот бонус подтверждается пользователем самостоятельно. Подтверждайте только после выполнения Bonus Milestone."
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "Я подтверждаю, что выполнил(а) Bonus Milestone."
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "Подтвердить +10"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "Bonus Milestone подтвержден"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "Сейчас начислено +10 очков."
+  },
+  "bonusMilestoneUndo": {
+    "message": "Отменить подтверждение"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "Bonus Milestone подтвержден: начислено +10 очков."
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "Только самоподтверждение. Это подтверждение отображается в расширении и не означает, что Google Cloud Skills Boost / Arcade проверил выполнение или официально начислил эти баллы."
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "Открыть официальную страницу Bonus Milestone"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "Обновление…"
+  },
+  "bonusMilestoneError": {
+    "message": "Не удалось обновить Bonus Milestone. Попробуйте еще раз."
   }
 }

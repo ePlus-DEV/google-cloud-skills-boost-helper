@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "Quản lý thông báo cập nhật và thông báo trình duyệt."
+  },
+  "bonusMilestoneClaim": {
+    "message": "Nhận +10"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone: xác nhận hoàn thành để cộng +10 điểm."
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "Xác nhận Bonus Milestone"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "Điểm thưởng này do bạn tự xác nhận. Chỉ xác nhận sau khi đã hoàn thành Bonus Milestone."
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "Tôi xác nhận đã hoàn thành Bonus Milestone."
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "Xác nhận +10"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "Đã xác nhận Bonus Milestone"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "+10 điểm đang được cộng."
+  },
+  "bonusMilestoneUndo": {
+    "message": "Hủy xác nhận"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "Đã xác nhận Bonus Milestone: đã cộng +10 điểm."
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "Chỉ là tự xác nhận. Xác nhận này chỉ được hiển thị trong extension và không có nghĩa Google Cloud Skills Boost / Arcade đã xác minh hoặc công nhận số điểm này."
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "Mở trang Bonus Milestone chính thức"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "Đang cập nhật…"
+  },
+  "bonusMilestoneError": {
+    "message": "Không thể cập nhật Bonus Milestone. Vui lòng thử lại."
   }
 }

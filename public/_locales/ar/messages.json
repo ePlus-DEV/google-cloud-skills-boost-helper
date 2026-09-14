@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "تحكّم في إشعارات التحديث وإشعارات المتصفح."
+  },
+  "bonusMilestoneClaim": {
+    "message": "احصل على +10"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone: أكّد الإكمال لإضافة +10 نقطة."
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "تأكيد Bonus Milestone"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "هذه المكافأة تعتمد على تأكيد المستخدم. أكّد فقط بعد إكمال Bonus Milestone."
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "أؤكد أنني أكملت Bonus Milestone."
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "تأكيد +10"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "تم تأكيد Bonus Milestone"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "يتم حاليًا احتساب +10 نقطة."
+  },
+  "bonusMilestoneUndo": {
+    "message": "إلغاء التأكيد"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "تم تأكيد Bonus Milestone: تم احتساب +10 نقطة."
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "تأكيد ذاتي فقط. يظهر هذا التأكيد داخل الإضافة ولا يعني أن Google Cloud Skills Boost / Arcade قد تحقّق من الإكمال أو منح هذه النقاط رسميًا."
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "فتح صفحة Bonus Milestone الرسمية"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "جارٍ التحديث…"
+  },
+  "bonusMilestoneError": {
+    "message": "تعذر تحديث Bonus Milestone. حاول مرة أخرى."
   }
 }

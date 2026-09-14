@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "管理更新提醒和浏览器通知。"
+  },
+  "bonusMilestoneClaim": {
+    "message": "领取 +10"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "确认已完成 Bonus Milestone 后可增加 +10 分。"
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "确认 Bonus Milestone"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "此奖励由用户自行确认。仅在完成 Bonus Milestone 后进行确认。"
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "我确认已完成 Bonus Milestone。"
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "确认 +10"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "已确认 Bonus Milestone"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "当前已计入 +10 分。"
+  },
+  "bonusMilestoneUndo": {
+    "message": "撤销确认"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "已确认 Bonus Milestone：已计入 +10 分。"
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "仅为用户自行确认。此确认仅显示在扩展程序中，并不表示 Google Cloud Skills Boost / Arcade 已验证完成情况或正式授予这些积分。"
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "打开官方 Bonus Milestone 页面"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "正在更新…"
+  },
+  "bonusMilestoneError": {
+    "message": "无法更新 Bonus Milestone，请重试。"
   }
 }
