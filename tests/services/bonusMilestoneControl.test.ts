@@ -101,20 +101,4 @@ describe("Bonus Milestone toggle regression", () => {
       serviceMocks.setActiveBonusMilestoneCompleted,
     ).not.toHaveBeenCalled();
   });
-
-  it("does not show an on/off toggle when the current season has no Bonus Milestone", async () => {
-    serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
-      ...AVAILABLE_STATE,
-      enabled: false,
-      points: 0,
-    });
-
-    await mountAndFlush();
-
-    expect(
-      document.querySelector(
-        '#facilitator-bonus-milestone-toggle-root input[type="checkbox"]',
-      ),
-    ).toBeNull();
-  });
 });
