@@ -33,6 +33,10 @@ const EMPTY_STATE: BonusMilestoneControlState = {
   profileUrl: "",
 };
 
+type BonusMilestoneInfoProps = {
+  completed: boolean;
+};
+
 /** Format point values without unnecessary trailing decimals. */
 function formatPoints(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
@@ -82,6 +86,35 @@ function syncDisplayedTotal(state: BonusMilestoneControlState): void {
   total.textContent = formatPoints(nextTotal);
   total.dataset.bonusMilestoneApplied = String(nextApplied);
   total.dataset.bonusMilestoneRenderedTotal = String(nextTotal);
+}
+
+/** Render the self-report disclaimer and the official task link before confirmation. */
+function BonusMilestoneInfo({ completed }: BonusMilestoneInfoProps) {
+  return (
+    <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-300/20 bg-amber-400/10 px-3 py-2 text-[11px] leading-4 text-amber-100/90">
+      <i
+        className="fa-solid fa-circle-info mt-0.5 shrink-0"
+        aria-hidden="true"
+      />
+      <div className="min-w-0">
+        <p>{getBonusMilestoneMessage("disclaimer")}</p>
+        {!completed && (
+          <a
+            href={OFFICIAL_BONUS_MILESTONE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex items-center gap-1 font-semibold text-amber-200 underline decoration-amber-300/50 underline-offset-2 transition-colors hover:text-white"
+          >
+            <span>{getBonusMilestoneMessage("officialPage")}</span>
+            <i
+              className="fa-solid fa-arrow-up-right-from-square text-[10px]"
+              aria-hidden="true"
+            />
+          </a>
+        )}
+      </div>
+    </div>
+  );
 }
 
 /** Render the profile/period-scoped Bonus Milestone confirmation from the top bonus chip. */
@@ -244,29 +277,7 @@ function BonusMilestoneControl() {
                 )}
               </p>
 
-              <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-300/20 bg-amber-400/10 px-3 py-2 text-[11px] leading-4 text-amber-100/90">
-                <i
-                  className="fa-solid fa-circle-info mt-0.5 shrink-0"
-                  aria-hidden="true"
-                />
-                <div className="min-w-0">
-                  <p>{getBonusMilestoneMessage("disclaimer")}</p>
-                  {!state.completed && (
-                    <a
-                      href={OFFICIAL_BONUS_MILESTONE_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center gap-1 font-semibold text-amber-200 underline decoration-amber-300/50 underline-offset-2 transition-colors hover:text-white"
-                    >
-                      <span>{getBonusMilestoneMessage("officialPage")}</span>
-                      <i
-                        className="fa-solid fa-arrow-up-right-from-square text-[10px]"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  )}
-                </div>
-              </div>
+              <BonusMilestoneInfo completed={state.completed} />
 
               {!state.completed && (
                 <label className="mt-4 flex cursor-pointer items-start gap-2 rounded-xl border border-yellow-300/20 bg-yellow-400/10 p-3 text-xs leading-5 text-white/85">
