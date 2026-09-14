@@ -38,6 +38,7 @@ const PROFILE_URL =
 
 type FacilitatorOverrides = Partial<NonNullable<ArcadeData["facilitator"]>>;
 
+/** Build Arcade metadata for a test Facilitator period with optional overrides. */
 function makeArcadeData(
   facilitatorOverrides: FacilitatorOverrides = {},
 ): ArcadeData {
@@ -55,6 +56,7 @@ function makeArcadeData(
   };
 }
 
+/** Build one active account around the supplied Arcade response. */
 function makeAccount(
   arcadeData: ArcadeData,
   facilitatorProgram = true,
@@ -70,6 +72,7 @@ function makeAccount(
   };
 }
 
+/** Point the mocked account service at the supplied account. */
 function useAccount(account: Account): void {
   mocks.getActiveAccount.mockImplementation(async () => account);
   mocks.getAllAccounts.mockImplementation(async () => [account]);
