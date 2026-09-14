@@ -223,7 +223,7 @@ function BonusMilestoneControl() {
     <>
       <button
         type="button"
-        className="appearance-none border-0 bg-transparent p-0 text-inherit font-inherit font-bold whitespace-nowrap disabled:cursor-default"
+        className="appearance-none cursor-pointer border-0 bg-transparent p-0 text-inherit font-inherit font-bold whitespace-nowrap disabled:cursor-default"
         title={canConfirm ? chipTitle : undefined}
         aria-label={canConfirm ? chipTitle : chipLabel}
         disabled={!canConfirm || saving}

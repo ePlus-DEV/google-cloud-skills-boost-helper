@@ -95,6 +95,7 @@ describe("Bonus Milestone claim UI", () => {
     expect(host?.textContent).not.toContain("+25");
     expect(host?.textContent).not.toContain("+35");
     expect(claimButton?.disabled).toBe(false);
+    expect(claimButton?.className).toContain("cursor-pointer");
 
     await act(async () => {
       claimButton?.click();
