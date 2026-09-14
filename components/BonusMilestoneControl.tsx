@@ -127,30 +127,29 @@ function BonusMilestoneControl() {
     [state],
   );
 
-  const handleChange = useCallback(
-    async function persistBonusMilestoneChange(completed: boolean) {
-      setSaving(true);
+  const handleChange = useCallback(async function persistBonusMilestoneChange(
+    completed: boolean,
+  ) {
+    setSaving(true);
 
-      try {
-        const nextState = await setActiveBonusMilestoneCompleted(completed);
-        setState({
-          ...nextState,
-          completed,
-          appliedPoints:
-            completed && nextState.appliedPoints <= 0
-              ? nextState.points
-              : nextState.appliedPoints,
-        });
+    try {
+      const nextState = await setActiveBonusMilestoneCompleted(completed);
+      setState({
+        ...nextState,
+        completed,
+        appliedPoints:
+          completed && nextState.appliedPoints <= 0
+            ? nextState.points
+            : nextState.appliedPoints,
+      });
 
-        // Reuse the existing refresh flow so Hub receives the self-report and
-        // returns the season-owned applied Bonus Milestone amount.
-        document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
-      } finally {
-        setSaving(false);
-      }
-    },
-    [],
-  );
+      // Reuse the existing refresh flow so Hub receives the self-report and
+      // returns the season-owned applied Bonus Milestone amount.
+      document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
+    } finally {
+      setSaving(false);
+    }
+  }, []);
 
   const handleCheckboxChange = useCallback(
     function handleCheckboxEvent(event: ChangeEvent<HTMLInputElement>) {

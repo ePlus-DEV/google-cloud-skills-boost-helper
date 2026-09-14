@@ -86,9 +86,9 @@ describe("Bonus Milestone UI regression", () => {
     expect(toggle).not.toBeNull();
     expect(toggle?.checked).toBe(false);
     expect(toggle?.disabled).toBe(false);
-    expect(document.getElementById("arcade-facilitator-points")?.textContent).toBe(
-      "+0",
-    );
+    expect(
+      document.getElementById("arcade-facilitator-points")?.textContent,
+    ).toBe("+0");
 
     await act(async () => {
       toggle?.click();
@@ -100,9 +100,9 @@ describe("Bonus Milestone UI regression", () => {
       true,
     );
     expect(document.querySelector('[role="dialog"]')).toBeNull();
-    expect(document.getElementById("arcade-facilitator-points")?.textContent).toBe(
-      "+10",
-    );
+    expect(
+      document.getElementById("arcade-facilitator-points")?.textContent,
+    ).toBe("+10");
     expect(document.getElementById("arcade-points")?.textContent).toBe("110");
   });
 });
