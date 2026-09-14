@@ -74,8 +74,8 @@ function makeAccount(
 
 /** Point the mocked account service at the supplied account. */
 function useAccount(account: Account): void {
-  mocks.getActiveAccount.mockImplementation(async () => account);
-  mocks.getAllAccounts.mockImplementation(async () => [account]);
+  mocks.getActiveAccount.mockImplementation(() => Promise.resolve(account));
+  mocks.getAllAccounts.mockImplementation(() => Promise.resolve([account]));
 }
 
 beforeEach(() => {
@@ -86,11 +86,12 @@ beforeEach(() => {
   mocks.setItem.mockReset();
   mocks.watch.mockReset();
 
-  mocks.getItem.mockImplementation(async (key: string) =>
-    mocks.memory.get(key),
+  mocks.getItem.mockImplementation((key: string) =>
+    Promise.resolve(mocks.memory.get(key)),
   );
-  mocks.setItem.mockImplementation(async (key: string, value: unknown) => {
+  mocks.setItem.mockImplementation((key: string, value: unknown) => {
     mocks.memory.set(key, value);
+    return Promise.resolve();
   });
   mocks.watch.mockReturnValue(() => undefined);
 });
