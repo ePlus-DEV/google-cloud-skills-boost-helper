@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "업데이트 안내와 브라우저 알림을 관리합니다."
+  },
+  "bonusMilestoneClaim": {
+    "message": "+10 받기"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone 완료를 확인하면 +10포인트가 추가됩니다."
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "Bonus Milestone 확인"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "이 보너스는 사용자 직접 확인 방식입니다. Bonus Milestone을 완료한 뒤에만 확인해 주세요."
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "Bonus Milestone을 완료했음을 확인합니다."
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "+10 확인"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "Bonus Milestone 확인됨"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "현재 +10포인트가 적용되어 있습니다."
+  },
+  "bonusMilestoneUndo": {
+    "message": "확인 취소"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "Bonus Milestone 확인됨: +10포인트 적용됨."
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "사용자 자체 확인만을 위한 기능입니다. 이 확인은 확장 프로그램에 표시되는 것이며 Google Cloud Skills Boost / Arcade가 완료를 검증했거나 해당 포인트를 공식적으로 부여했다는 의미가 아닙니다."
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "공식 Bonus Milestone 페이지 열기"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "업데이트 중…"
+  },
+  "bonusMilestoneError": {
+    "message": "Bonus Milestone을 업데이트할 수 없습니다. 다시 시도해 주세요."
   }
 }

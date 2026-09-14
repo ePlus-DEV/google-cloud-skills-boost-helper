@@ -7,26 +7,44 @@ const serviceMocks = vi.hoisted(() => ({
   watchBonusMilestoneControlState: vi.fn(),
 }));
 
+const browserMessages = vi.hoisted(() => ({
+  bonusMilestoneClaim: "Claim +10",
+  bonusMilestoneClaimTooltip:
+    "Bonus Milestone: confirm completion to add +10 points.",
+  bonusMilestoneConfirmTitle: "Confirm Bonus Milestone",
+  bonusMilestoneConfirmMessage:
+    "This bonus is self-reported. Confirm only after you have completed the Bonus Milestone.",
+  bonusMilestoneConfirmCheckbox:
+    "I confirm that I completed the Bonus Milestone.",
+  bonusMilestoneConfirmButton: "Confirm +10",
+  bonusMilestoneConfirmedTitle: "Bonus Milestone confirmed",
+  bonusMilestoneConfirmedMessage: "+10 points are currently applied.",
+  bonusMilestoneUndo: "Undo confirmation",
+  bonusMilestoneAppliedTooltip:
+    "Bonus Milestone confirmed: +10 points applied.",
+  bonusMilestoneDisclaimer:
+    "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.",
+  bonusMilestoneOfficialPage: "Open official Bonus Milestone page",
+  bonusMilestoneUpdating: "Updating…",
+  bonusMilestoneError:
+    "Could not update the Bonus Milestone. Please try again.",
+  cancelButton: "Cancel",
+}));
+
+vi.mock("wxt/browser", () => ({
+  browser: {
+    i18n: {
+      getMessage: (key: keyof typeof browserMessages) =>
+        browserMessages[key] || "",
+    },
+  },
+}));
+
 vi.mock("../../services/bonusMilestoneService", () => ({
   getBonusMilestoneControlState: serviceMocks.getBonusMilestoneControlState,
   setActiveBonusMilestoneCompleted:
     serviceMocks.setActiveBonusMilestoneCompleted,
   watchBonusMilestoneControlState: serviceMocks.watchBonusMilestoneControlState,
-}));
-
-vi.mock("../../services/bonusMilestoneI18n", () => ({
-  getBonusMilestoneCancelLabel: () => "Cancel",
-  getBonusMilestoneMessage: (key: string, points?: number | string) => {
-    if (key === "claim") return `Claim +${String(points ?? "")}`;
-    if (key === "claimTooltip") {
-      return `Bonus Milestone: confirm completion to add +${String(points ?? "")} points.`;
-    }
-    if (key === "disclaimer") {
-      return "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.";
-    }
-    if (key === "officialPage") return "Open official Bonus Milestone page";
-    return `${key}:${String(points ?? "")}`;
-  },
 }));
 
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
@@ -85,8 +103,8 @@ describe("Bonus Milestone claim UI", () => {
 
     const dialog = document.querySelector('[role="dialog"]');
     expect(dialog).not.toBeNull();
-    expect(dialog?.textContent).toContain("confirmButton:10");
-    expect(dialog?.textContent).not.toContain("confirmButton:35");
+    expect(dialog?.textContent).toContain("Confirm +10");
+    expect(dialog?.textContent).not.toContain("Confirm +35");
     expect(dialog?.textContent).toContain("Self-reported only.");
     expect(dialog?.textContent).toContain(
       "does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points",
@@ -125,7 +143,6 @@ describe("Bonus Milestone claim UI", () => {
     expect(host?.textContent).not.toContain("+35");
     expect(document.getElementById("arcade-points")?.textContent).toBe("128");
 
-    // The confirmation dialog is still open and now renders the Undo action.
     // Return a stale appliedPoints value on purpose: completed=false must be
     // authoritative, so the UI removes +10 immediately instead of keeping 128.
     serviceMocks.setActiveBonusMilestoneCompleted.mockResolvedValue({
@@ -141,7 +158,7 @@ describe("Bonus Milestone claim UI", () => {
 
     const removeButton = [
       ...document.querySelectorAll<HTMLButtonElement>("button"),
-    ].find((button) => button.textContent?.includes("removeButton:10"));
+    ].find((button) => button.textContent?.includes("Undo confirmation"));
     expect(removeButton).toBeDefined();
 
     await act(async () => {
