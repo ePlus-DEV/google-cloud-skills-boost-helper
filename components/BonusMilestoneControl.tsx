@@ -17,6 +17,7 @@ import {
   getBonusMilestoneCancelLabel,
   getBonusMilestoneMessage,
 } from "../services/bonusMilestoneI18n";
+import { getBonusMilestoneDisclaimer } from "../services/bonusMilestoneDisclaimerI18n";
 
 const CLAIM_BONUS_POINTS = 10;
 
@@ -241,6 +242,14 @@ function BonusMilestoneControl() {
                     : claimPointsLabel,
                 )}
               </p>
+
+              <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-300/20 bg-amber-400/10 px-3 py-2 text-[11px] leading-4 text-amber-100/90">
+                <i
+                  className="fa-solid fa-circle-info mt-0.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{getBonusMilestoneDisclaimer()}</span>
+              </div>
 
               {!state.completed && (
                 <label className="mt-4 flex cursor-pointer items-start gap-2 rounded-xl border border-yellow-300/20 bg-yellow-400/10 p-3 text-xs leading-5 text-white/85">
