@@ -28,12 +28,14 @@ vi.mock("../../services/bonusMilestoneI18n", () => ({
 vi.mock("../../services/bonusMilestoneDisclaimerI18n", () => ({
   getBonusMilestoneDisclaimer: () =>
     "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.",
+  getBonusMilestoneOfficialPageLabel: () =>
+    "Open official Bonus Milestone page",
 }));
 
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
 
 describe("Bonus Milestone claim UI", () => {
-  it("keeps +10 isolated, shows the self-reported disclaimer, and removes it after Undo", async () => {
+  it("keeps +10 isolated, links the official task, and removes it after Undo", async () => {
     (
       globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
     ).IS_REACT_ACT_ENVIRONMENT = true;
@@ -92,6 +94,17 @@ describe("Bonus Milestone claim UI", () => {
     expect(dialog?.textContent).toContain(
       "does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points",
     );
+
+    const officialLink = dialog?.querySelector<HTMLAnchorElement>(
+      'a[href="https://rsvp.withgoogle.com/events/arcade-facilitator/bonus-milestone"]',
+    );
+    expect(officialLink).not.toBeNull();
+    expect(officialLink?.textContent).toContain(
+      "Open official Bonus Milestone page",
+    );
+    expect(officialLink?.target).toBe("_blank");
+    expect(officialLink?.rel).toContain("noopener");
+    expect(officialLink?.rel).toContain("noreferrer");
 
     // Simulate the refreshed Hub state after a successful confirmation.
     serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
