@@ -18,6 +18,8 @@ import {
   getBonusMilestoneMessage,
 } from "../services/bonusMilestoneI18n";
 
+const CLAIM_BONUS_POINTS = 10;
+
 const EMPTY_STATE: BonusMilestoneControlState = {
   completed: false,
   enabled: true,
@@ -113,7 +115,7 @@ function BonusMilestoneControl() {
 
   const manualBonus = renderedManualBonus(state);
   const canConfirm = state.participating && state.enabled && state.points > 0;
-  const pointsLabel = formatPoints(state.points);
+  const claimPointsLabel = formatPoints(CLAIM_BONUS_POINTS);
 
   const chipLabel = useMemo(() => {
     if (!state.participating || !state.enabled || state.points <= 0) {
@@ -122,10 +124,10 @@ function BonusMilestoneControl() {
     if (state.completed) {
       return `✓ +${formatPoints(manualBonus)}`;
     }
-    return getBonusMilestoneMessage("claim", pointsLabel);
+    return getBonusMilestoneMessage("claim", claimPointsLabel);
   }, [
+    claimPointsLabel,
     manualBonus,
-    pointsLabel,
     state.completed,
     state.enabled,
     state.participating,
@@ -134,7 +136,7 @@ function BonusMilestoneControl() {
 
   const chipTitle = state.completed
     ? getBonusMilestoneMessage("appliedTooltip", formatPoints(manualBonus))
-    : getBonusMilestoneMessage("claimTooltip", pointsLabel);
+    : getBonusMilestoneMessage("claimTooltip", claimPointsLabel);
 
   const openDialog = useCallback(() => {
     if (!canConfirm || saving) return;
@@ -165,12 +167,14 @@ function BonusMilestoneControl() {
         // profile/period confirmation and lets Hub return the real point value.
         document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
       } catch {
-        setErrorMessage(getBonusMilestoneMessage("error", pointsLabel));
+        setErrorMessage(
+          getBonusMilestoneMessage("error", claimPointsLabel),
+        );
       } finally {
         setSaving(false);
       }
     },
-    [pointsLabel],
+    [claimPointsLabel],
   );
 
   const handleCheckboxChange = useCallback(function handleCheckboxEvent(
@@ -189,7 +193,9 @@ function BonusMilestoneControl() {
         disabled={!canConfirm || saving}
         onClick={openDialog}
       >
-        {saving ? getBonusMilestoneMessage("updating", pointsLabel) : chipLabel}
+        {saving
+          ? getBonusMilestoneMessage("updating", claimPointsLabel)
+          : chipLabel}
       </button>
 
       {dialogOpen &&
@@ -224,13 +230,13 @@ function BonusMilestoneControl() {
               >
                 {getBonusMilestoneMessage(
                   state.completed ? "confirmedTitle" : "confirmTitle",
-                  pointsLabel,
+                  state.completed ? formatPoints(manualBonus) : claimPointsLabel,
                 )}
               </h2>
               <p className="mt-2 text-center text-xs leading-5 text-white/70">
                 {getBonusMilestoneMessage(
                   state.completed ? "confirmedMessage" : "confirmMessage",
-                  state.completed ? formatPoints(manualBonus) : pointsLabel,
+                  state.completed ? formatPoints(manualBonus) : claimPointsLabel,
                 )}
               </p>
 
@@ -244,7 +250,10 @@ function BonusMilestoneControl() {
                     onChange={handleCheckboxChange}
                   />
                   <span>
-                    {getBonusMilestoneMessage("confirmCheckbox", pointsLabel)}
+                    {getBonusMilestoneMessage(
+                      "confirmCheckbox",
+                      claimPointsLabel,
+                    )}
                   </span>
                 </label>
               )}
@@ -275,8 +284,11 @@ function BonusMilestoneControl() {
                     }}
                   >
                     {saving
-                      ? getBonusMilestoneMessage("updating", pointsLabel)
-                      : getBonusMilestoneMessage("removeButton", pointsLabel)}
+                      ? getBonusMilestoneMessage("updating", claimPointsLabel)
+                      : getBonusMilestoneMessage(
+                          "removeButton",
+                          claimPointsLabel,
+                        )}
                   </button>
                 ) : (
                   <button
@@ -288,8 +300,11 @@ function BonusMilestoneControl() {
                     }}
                   >
                     {saving
-                      ? getBonusMilestoneMessage("updating", pointsLabel)
-                      : getBonusMilestoneMessage("confirmButton", pointsLabel)}
+                      ? getBonusMilestoneMessage("updating", claimPointsLabel)
+                      : getBonusMilestoneMessage(
+                          "confirmButton",
+                          claimPointsLabel,
+                        )}
                   </button>
                 )}
               </div>
