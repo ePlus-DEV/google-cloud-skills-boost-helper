@@ -18,6 +18,8 @@ import {
   getBonusMilestoneMessage,
 } from "../services/bonusMilestoneI18n";
 
+const TOGGLE_ROOT_ID = "facilitator-bonus-milestone-toggle-root";
+
 const EMPTY_STATE: BonusMilestoneControlState = {
   completed: false,
   enabled: true,
@@ -80,8 +82,12 @@ function syncDisplayedTotal(state: BonusMilestoneControlState): void {
   total.dataset.bonusMilestoneRenderedTotal = String(nextTotal);
 }
 
-/** Render the profile/period-scoped Bonus Milestone confirmation from the top bonus chip. */
-function BonusMilestoneControl() {
+type BonusMilestoneControlProps = {
+  toggleHost: HTMLElement | null;
+};
+
+/** Render the profile/period-scoped Bonus Milestone controls. */
+function BonusMilestoneControl({ toggleHost }: BonusMilestoneControlProps) {
   const [state, setState] = useState<BonusMilestoneControlState>(EMPTY_STATE);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmedCheckbox, setConfirmedCheckbox] = useState(false);
@@ -178,6 +184,22 @@ function BonusMilestoneControl() {
     setConfirmedCheckbox(event.currentTarget.checked);
   }, []);
 
+  const handleToggleChange = useCallback(
+    function handleToggleEvent(event: ChangeEvent<HTMLInputElement>) {
+      if (!canConfirm || saving) return;
+
+      if (event.currentTarget.checked) {
+        openDialog();
+        return;
+      }
+
+      persist(false).catch(() => null);
+    },
+    [canConfirm, openDialog, persist, saving],
+  );
+
+  const toggleDisabled = !canConfirm || saving;
+
   return (
     <>
       <button
@@ -190,6 +212,47 @@ function BonusMilestoneControl() {
       >
         {saving ? getBonusMilestoneMessage("updating", pointsLabel) : chipLabel}
       </button>
+
+      {toggleHost &&
+        state.enabled &&
+        state.points > 0 &&
+        createPortal(
+          <label
+            className={`flex items-center justify-between gap-3 bg-emerald-500/10 backdrop-blur-md rounded-lg p-3 mb-3 border border-emerald-400/30 ${
+              toggleDisabled
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer"
+            }`}
+          >
+            <span className="flex items-center min-w-0">
+              <i
+                className={`fa-solid ${
+                  state.completed ? "fa-circle-check" : "fa-gift"
+                } text-emerald-400 text-lg mr-2`}
+                aria-hidden="true"
+              />
+              <span className="min-w-0">
+                <strong className="block text-white text-sm">
+                  Bonus Milestone
+                </strong>
+                <small className="block text-emerald-300/70 text-xs">
+                  {state.completed
+                    ? getBonusMilestoneMessage("appliedTooltip", pointsLabel)
+                    : getBonusMilestoneMessage("claim", pointsLabel)}
+                </small>
+              </span>
+            </span>
+            <input
+              type="checkbox"
+              className="h-5 w-5 shrink-0 accent-emerald-500"
+              aria-label={chipTitle}
+              checked={state.completed}
+              disabled={toggleDisabled}
+              onChange={handleToggleChange}
+            />
+          </label>,
+          toggleHost,
+        )}
 
       {dialogOpen &&
         createPortal(
@@ -302,18 +365,41 @@ function BonusMilestoneControl() {
 
 let root: Root | null = null;
 let host: HTMLElement | null = null;
+let toggleHost: HTMLElement | null = null;
 
-/** Mount the control directly into the existing yellow bonus chip beside Arcade Points. */
+/** Ensure the legacy on/off control keeps its original place above the milestone grid. */
+function ensureToggleHost(): HTMLElement | null {
+  const section = document.getElementById("milestones-section");
+  if (!section) return null;
+
+  if (!toggleHost?.isConnected) {
+    document.getElementById(TOGGLE_ROOT_ID)?.remove();
+    toggleHost = document.createElement("div");
+    toggleHost.id = TOGGLE_ROOT_ID;
+
+    const milestoneGrid =
+      section.querySelector(".milestone-card")?.parentElement;
+    if (milestoneGrid) milestoneGrid.before(toggleHost);
+    else section.appendChild(toggleHost);
+  }
+
+  return toggleHost;
+}
+
+/** Mount the chip action while preserving the separate Bonus Milestone toggle. */
 export function mountBonusMilestoneControl(): void {
   const nextHost = document.getElementById("arcade-facilitator-points");
   if (!nextHost) return;
 
+  const nextToggleHost = ensureToggleHost();
+
   if (host !== nextHost) {
     root?.unmount();
     host = nextHost;
-    host.classList.add("cursor-pointer", "select-none", "transition-transform");
+    host.classList.remove("cursor-pointer");
+    host.classList.add("select-none", "transition-transform");
     root = createRoot(host);
   }
 
-  root?.render(<BonusMilestoneControl />);
+  root?.render(<BonusMilestoneControl toggleHost={nextToggleHost} />);
 }
