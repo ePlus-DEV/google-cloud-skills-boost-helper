@@ -225,7 +225,9 @@ function BonusMilestoneControl() {
         type="button"
         className="peer appearance-none cursor-pointer border-0 bg-transparent p-0 text-inherit font-inherit font-bold whitespace-nowrap disabled:cursor-default"
         aria-label={canConfirm ? chipTitle : chipLabel}
-        aria-describedby={canConfirm ? "bonus-milestone-claim-tooltip" : undefined}
+        aria-describedby={
+          canConfirm ? "bonus-milestone-claim-tooltip" : undefined
+        }
         disabled={!canConfirm || saving}
         onClick={openDialog}
       >
