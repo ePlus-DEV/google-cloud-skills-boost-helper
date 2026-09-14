@@ -19,7 +19,7 @@ export type BonusMilestoneControlState = {
   profileUrl: string;
 };
 
-/** Return a canonical profile identifier suitable for stable comparisons. */
+/** Normalize a profile URL before comparing or building a storage identity. */
 function canonicalProfile(profileUrl: string): string {
   return (
     canonicalizeProfileUrl(profileUrl) || profileUrl.trim().replace(/\/$/u, "")
@@ -34,7 +34,7 @@ function sameProfile(left: string, right: string): boolean {
   );
 }
 
-/** Build a stable identity for the Facilitator period represented by API data. */
+/** Build the identity of the current Facilitator period from API dates. */
 function periodIdentity(arcadeData?: ArcadeData | null): string | null {
   const startsAt = String(arcadeData?.facilitator?.startsAt || "").trim();
   const endsAt = String(arcadeData?.facilitator?.endsAt || "").trim();
@@ -56,7 +56,7 @@ function storageKey(
   return `${STORAGE_PREFIX}:${identity}:${encodeURIComponent(period)}` as `local:${string}`;
 }
 
-/** Find the stored account matching a profile URL. */
+/** Find the stored account that owns the supplied profile URL. */
 async function findAccount(profileUrl: string): Promise<Account | null> {
   if (!profileUrl) return null;
   try {
@@ -70,7 +70,7 @@ async function findAccount(profileUrl: string): Promise<Account | null> {
   }
 }
 
-/** Read the locally persisted completion flag for one profile and period. */
+/** Read one period-scoped confirmation flag without surfacing storage errors. */
 async function readScopedCompletion(
   profileUrl: string,
   arcadeData?: ArcadeData | null,
@@ -84,7 +84,7 @@ async function readScopedCompletion(
   }
 }
 
-/** Persist the completion flag for one profile and Facilitator period. */
+/** Persist one period-scoped confirmation flag. */
 async function writeScopedCompletion(
   profileUrl: string,
   arcadeData: ArcadeData | null | undefined,
@@ -95,13 +95,45 @@ async function writeScopedCompletion(
   await storage.setItem(key, Boolean(completed));
 }
 
+/** Read the API-owned Bonus Milestone amount, with +10 only for old responses. */
+export function getBonusMilestoneAvailablePoints(
+  arcadeData?: ArcadeData | null,
+): number {
+  const value = Number(arcadeData?.facilitator?.bonusMilestoneAvailablePoints);
+  return Number.isFinite(value) && value >= 0
+    ? value
+    : DEFAULT_BONUS_MILESTONE_POINTS;
+}
+
+/** Old API responses did not expose availability, so keep the current control visible. */
+export function isBonusMilestoneEnabled(
+  arcadeData?: ArcadeData | null,
+): boolean {
+  const value = arcadeData?.facilitator?.bonusMilestoneEnabled;
+  return typeof value === "boolean" ? value : true;
+}
+
+/** Return whether the selected period currently offers a claimable Bonus Milestone. */
+function hasAvailableBonusMilestone(arcadeData?: ArcadeData | null): boolean {
+  return (
+    isBonusMilestoneEnabled(arcadeData) &&
+    getBonusMilestoneAvailablePoints(arcadeData) > 0
+  );
+}
+
 /** Read whether a profile manually confirmed the Bonus Milestone for its current period. */
 export async function isBonusMilestoneCompleted(
   profileUrl: string,
 ): Promise<boolean> {
   if (!profileUrl) return false;
   const account = await findAccount(profileUrl);
-  if (!account?.arcadeData) return false;
+  if (
+    !account?.arcadeData ||
+    !account.facilitatorProgram ||
+    !hasAvailableBonusMilestone(account.arcadeData)
+  ) {
+    return false;
+  }
 
   const stored = await readScopedCompletion(profileUrl, account.arcadeData);
   return (
@@ -116,17 +148,14 @@ export async function setBonusMilestoneCompleted(
 ): Promise<void> {
   if (!profileUrl) return;
   const account = await findAccount(profileUrl);
-  await writeScopedCompletion(profileUrl, account?.arcadeData, completed);
-}
-
-/** Read the API-owned Bonus Milestone amount, with +10 only for old responses. */
-export function getBonusMilestoneAvailablePoints(
-  arcadeData?: ArcadeData | null,
-): number {
-  const value = Number(arcadeData?.facilitator?.bonusMilestoneAvailablePoints);
-  return Number.isFinite(value) && value >= 0
-    ? value
-    : DEFAULT_BONUS_MILESTONE_POINTS;
+  if (
+    !account?.arcadeData ||
+    !account.facilitatorProgram ||
+    !hasAvailableBonusMilestone(account.arcadeData)
+  ) {
+    return;
+  }
+  await writeScopedCompletion(profileUrl, account.arcadeData, completed);
 }
 
 /** Read the Bonus Milestone amount actually returned as applied by Hub. */
@@ -151,33 +180,27 @@ export function getFacilitatorMilestoneBonusPoints(
   return Number.isFinite(value) && value >= 0 ? value : 0;
 }
 
-/** Old API responses did not expose availability, so keep the current control visible. */
-export function isBonusMilestoneEnabled(
-  arcadeData?: ArcadeData | null,
-): boolean {
-  const value = arcadeData?.facilitator?.bonusMilestoneEnabled;
-  return typeof value === "boolean" ? value : true;
-}
-
 /** Resolve all state required by the popup control without rendering any UI. */
 export async function getBonusMilestoneControlState(): Promise<BonusMilestoneControlState> {
   const activeAccount = await AccountService.getActiveAccount();
   const profileUrl = activeAccount?.profileUrl || "";
   const arcadeData = activeAccount?.arcadeData;
-  const enabled = isBonusMilestoneEnabled(arcadeData);
   const participating = Boolean(activeAccount?.facilitatorProgram);
-  const points = getBonusMilestoneAvailablePoints(arcadeData);
-  const appliedPoints = getBonusMilestoneAppliedPoints(arcadeData);
+  const enabled = isBonusMilestoneEnabled(arcadeData);
+  const points = enabled ? getBonusMilestoneAvailablePoints(arcadeData) : 0;
+  const appliedPoints =
+    enabled && points > 0 ? getBonusMilestoneAppliedPoints(arcadeData) : 0;
   const milestoneBonusPoints = getFacilitatorMilestoneBonusPoints(arcadeData);
   const bonusIncludedInTotal =
     arcadeData?.facilitator?.bonusIncludedInTotal === true;
   const storedCompleted =
-    participating && enabled && profileUrl
+    participating && enabled && points > 0 && profileUrl
       ? await readScopedCompletion(profileUrl, arcadeData)
       : false;
   const completed =
     participating &&
     enabled &&
+    points > 0 &&
     (storedCompleted ||
       arcadeData?.facilitator?.bonusMilestoneCompleted === true);
 
@@ -198,7 +221,12 @@ export async function setActiveBonusMilestoneCompleted(
   completed: boolean,
 ): Promise<BonusMilestoneControlState> {
   const activeAccount = await AccountService.getActiveAccount();
-  if (activeAccount?.profileUrl) {
+  if (
+    activeAccount?.profileUrl &&
+    activeAccount.facilitatorProgram &&
+    activeAccount.arcadeData &&
+    hasAvailableBonusMilestone(activeAccount.arcadeData)
+  ) {
     await writeScopedCompletion(
       activeAccount.profileUrl,
       activeAccount.arcadeData,
