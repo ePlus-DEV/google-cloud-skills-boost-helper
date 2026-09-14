@@ -83,7 +83,9 @@ beforeEach(() => {
   mocks.setItem.mockReset();
   mocks.watch.mockReset();
 
-  mocks.getItem.mockImplementation(async (key: string) => mocks.memory.get(key));
+  mocks.getItem.mockImplementation(async (key: string) =>
+    mocks.memory.get(key),
+  );
   mocks.setItem.mockImplementation(async (key: string, value: unknown) => {
     mocks.memory.set(key, value);
   });
@@ -100,9 +102,9 @@ describe("Bonus Milestone season safety", () => {
   });
 
   it("keeps +10 only as a compatibility fallback when old metadata omits the amount", () => {
-    expect(
-      getBonusMilestoneAvailablePoints({ facilitator: {} }),
-    ).toBe(DEFAULT_BONUS_MILESTONE_POINTS);
+    expect(getBonusMilestoneAvailablePoints({ facilitator: {} })).toBe(
+      DEFAULT_BONUS_MILESTONE_POINTS,
+    );
   });
 
   it("does not reuse a confirmation when the same profile moves to a new period", async () => {
