@@ -28,10 +28,14 @@ vi.mock("../../services/bonusMilestoneI18n", () => ({
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
 
 describe("Bonus Milestone claim UI", () => {
-  it("renders Claim +10 before confirmation and opens the confirmation dialog", async () => {
+  it("shows only the self-reported bonus in the claim chip", async () => {
     (
       globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
     ).IS_REACT_ACT_ENVIRONMENT = true;
+
+    const profileUrl =
+      "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111";
+    let notifyAccountChange: (() => void) | undefined;
 
     serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
       completed: false,
@@ -39,13 +43,15 @@ describe("Bonus Milestone claim UI", () => {
       participating: true,
       points: 10,
       appliedPoints: 0,
-      milestoneBonusPoints: 0,
+      milestoneBonusPoints: 25,
       bonusIncludedInTotal: false,
-      profileUrl:
-        "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111",
+      profileUrl,
     });
-    serviceMocks.watchBonusMilestoneControlState.mockReturnValue(
-      () => undefined,
+    serviceMocks.watchBonusMilestoneControlState.mockImplementation(
+      (listener: () => void) => {
+        notifyAccountChange = listener;
+        return () => undefined;
+      },
     );
 
     document.body.innerHTML = `
@@ -63,6 +69,7 @@ describe("Bonus Milestone claim UI", () => {
     const claimButton = host?.querySelector<HTMLButtonElement>("button");
 
     expect(host?.textContent).toBe("Claim +10");
+    expect(host?.textContent).not.toContain("+25");
     expect(claimButton?.disabled).toBe(false);
 
     await act(async () => {
@@ -71,5 +78,26 @@ describe("Bonus Milestone claim UI", () => {
     });
 
     expect(document.querySelector('[role="dialog"]')).not.toBeNull();
+
+    serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
+      completed: true,
+      enabled: true,
+      participating: true,
+      points: 10,
+      appliedPoints: 10,
+      milestoneBonusPoints: 25,
+      bonusIncludedInTotal: false,
+      profileUrl,
+    });
+
+    await act(async () => {
+      notifyAccountChange?.();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(host?.textContent).toBe("✓ +10");
+    expect(host?.textContent).not.toContain("+35");
+    expect(document.getElementById("arcade-points")?.textContent).toBe("128");
   });
 });
