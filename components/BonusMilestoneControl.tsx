@@ -1,24 +1,14 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type ChangeEvent,
-} from "react";
-import { createPortal } from "react-dom";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { createRoot, type Root } from "react-dom/client";
+import { browser } from "wxt/browser";
 import {
   getBonusMilestoneControlState,
   setActiveBonusMilestoneCompleted,
   watchBonusMilestoneControlState,
   type BonusMilestoneControlState,
 } from "../services/bonusMilestoneService";
-import {
-  getBonusMilestoneCancelLabel,
-  getBonusMilestoneMessage,
-} from "../services/bonusMilestoneI18n";
 
-const TOGGLE_ROOT_ID = "facilitator-bonus-milestone-toggle-root";
+const ROOT_ID = "facilitator-bonus-milestone-root";
 
 const EMPTY_STATE: BonusMilestoneControlState = {
   completed: false,
@@ -30,6 +20,19 @@ const EMPTY_STATE: BonusMilestoneControlState = {
   bonusIncludedInTotal: false,
   profileUrl: "",
 };
+
+/** Return a localized message while preserving a safe English fallback. */
+function getMessage(key: string, fallback: string): string {
+  try {
+    return (
+      browser.i18n.getMessage(
+        key as Parameters<typeof browser.i18n.getMessage>[0],
+      ) || fallback
+    );
+  } catch {
+    return fallback;
+  }
+}
 
 /** Format point values without unnecessary trailing decimals. */
 function formatPoints(value: number): string {
@@ -48,6 +51,19 @@ function parseDisplayedTotal(value: string | null | undefined): number {
   const normalized = value.replace(/\s/gu, "").replace(/,/gu, "");
   const parsed = Number(normalized);
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/** Keep the existing yellow bonus badge numeric-only. */
+function syncBonusBadge(state: BonusMilestoneControlState): void {
+  const badge = document.getElementById("arcade-facilitator-points");
+  if (!badge) return;
+
+  const manualBonus = renderedManualBonus(state);
+  const totalBonus = state.participating
+    ? state.milestoneBonusPoints + manualBonus
+    : 0;
+
+  badge.textContent = `+${formatPoints(totalBonus)}`;
 }
 
 /** Add only the self-reported bonus to the main total, without double counting it. */
@@ -82,17 +98,10 @@ function syncDisplayedTotal(state: BonusMilestoneControlState): void {
   total.dataset.bonusMilestoneRenderedTotal = String(nextTotal);
 }
 
-type BonusMilestoneControlProps = {
-  toggleHost: HTMLElement | null;
-};
-
-/** Render the profile/period-scoped Bonus Milestone controls. */
-function BonusMilestoneControl({ toggleHost }: BonusMilestoneControlProps) {
+/** Render the existing Bonus Milestone self-confirmation control without changing its copy or layout. */
+function BonusMilestoneControl() {
   const [state, setState] = useState<BonusMilestoneControlState>(EMPTY_STATE);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [confirmedCheckbox, setConfirmedCheckbox] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
   const reload = useCallback(async function reloadControlState() {
     setState(await getBonusMilestoneControlState());
@@ -111,295 +120,98 @@ function BonusMilestoneControl({ toggleHost }: BonusMilestoneControlProps) {
   );
 
   useEffect(
-    function keepMainTotalInSync() {
+    function keepArcadeSummaryInSync() {
+      syncBonusBadge(state);
       syncDisplayedTotal(state);
     },
     [state],
   );
 
-  const manualBonus = renderedManualBonus(state);
-  const totalFacilitatorBonus = state.milestoneBonusPoints + manualBonus;
-  const canConfirm = state.participating && state.enabled && state.points > 0;
-  const pointsLabel = formatPoints(state.points);
-
-  const chipLabel = useMemo(() => {
-    if (!state.participating) return "+0";
-    if (!state.enabled || state.points <= 0) {
-      return `+${formatPoints(state.milestoneBonusPoints)}`;
-    }
-    if (state.completed) {
-      return `✓ +${formatPoints(totalFacilitatorBonus)}`;
-    }
-
-    const claim = getBonusMilestoneMessage("claim", pointsLabel);
-    return state.milestoneBonusPoints > 0
-      ? `+${formatPoints(state.milestoneBonusPoints)} · ${claim}`
-      : claim;
-  }, [pointsLabel, state, totalFacilitatorBonus]);
-
-  const chipTitle = state.completed
-    ? getBonusMilestoneMessage("appliedTooltip", formatPoints(manualBonus))
-    : getBonusMilestoneMessage("claimTooltip", pointsLabel);
-
-  const openDialog = useCallback(() => {
-    if (!canConfirm || saving) return;
-    setConfirmedCheckbox(false);
-    setErrorMessage("");
-    setDialogOpen(true);
-  }, [canConfirm, saving]);
-
-  const persist = useCallback(
-    async function persistBonusMilestoneChange(nextCompleted: boolean) {
+  const handleChange = useCallback(
+    async function persistBonusMilestoneChange(completed: boolean) {
       setSaving(true);
-      setErrorMessage("");
 
       try {
-        const nextState = await setActiveBonusMilestoneCompleted(nextCompleted);
+        const nextState = await setActiveBonusMilestoneCompleted(completed);
         setState({
           ...nextState,
-          completed: nextCompleted,
+          completed,
           appliedPoints:
-            nextCompleted && nextState.appliedPoints <= 0
+            completed && nextState.appliedPoints <= 0
               ? nextState.points
               : nextState.appliedPoints,
         });
-        setDialogOpen(false);
-        setConfirmedCheckbox(false);
 
-        // Existing refresh flow signs the v3 payload using the persisted
-        // profile/period confirmation and lets Hub return the real point value.
+        // Reuse the existing refresh flow so Hub receives the self-report and
+        // returns the season-owned applied Bonus Milestone amount.
         document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
-      } catch {
-        setErrorMessage(getBonusMilestoneMessage("error", pointsLabel));
       } finally {
         setSaving(false);
       }
     },
-    [pointsLabel],
+    [],
   );
 
-  const handleCheckboxChange = useCallback(function handleCheckboxEvent(
-    event: ChangeEvent<HTMLInputElement>,
-  ) {
-    setConfirmedCheckbox(event.currentTarget.checked);
-  }, []);
-
-  const handleToggleChange = useCallback(
-    function handleToggleEvent(event: ChangeEvent<HTMLInputElement>) {
-      if (!canConfirm || saving) return;
-
-      if (event.currentTarget.checked) {
-        openDialog();
-        return;
-      }
-
-      persist(false).catch(() => null);
+  const handleCheckboxChange = useCallback(
+    function handleCheckboxEvent(event: ChangeEvent<HTMLInputElement>) {
+      handleChange(event.currentTarget.checked).catch(() => null);
     },
-    [canConfirm, openDialog, persist, saving],
+    [handleChange],
   );
 
-  const toggleDisabled = !canConfirm || saving;
+  if (!state.enabled || state.points <= 0) return null;
+
+  const pointsWord = getMessage("textPoints", "points");
+  const reward = `+${formatPoints(state.points)} ${pointsWord}`;
+  const disabled = !state.participating || saving;
 
   return (
-    <>
-      <button
-        type="button"
-        className="appearance-none border-0 bg-transparent p-0 text-inherit font-inherit font-bold whitespace-nowrap disabled:cursor-default"
-        title={canConfirm ? chipTitle : undefined}
-        aria-label={canConfirm ? chipTitle : chipLabel}
-        disabled={!canConfirm || saving}
-        onClick={openDialog}
-      >
-        {saving ? getBonusMilestoneMessage("updating", pointsLabel) : chipLabel}
-      </button>
-
-      {toggleHost &&
-        state.enabled &&
-        state.points > 0 &&
-        createPortal(
-          <label
-            className={`flex items-center justify-between gap-3 bg-emerald-500/10 backdrop-blur-md rounded-lg p-3 mb-3 border border-emerald-400/30 ${
-              toggleDisabled
-                ? "opacity-50 cursor-not-allowed"
-                : "cursor-pointer"
-            }`}
-          >
-            <span className="flex items-center min-w-0">
-              <i
-                className={`fa-solid ${
-                  state.completed ? "fa-circle-check" : "fa-gift"
-                } text-emerald-400 text-lg mr-2`}
-                aria-hidden="true"
-              />
-              <span className="min-w-0">
-                <strong className="block text-white text-sm">
-                  Bonus Milestone
-                </strong>
-                <small className="block text-emerald-300/70 text-xs">
-                  {state.completed
-                    ? getBonusMilestoneMessage("appliedTooltip", pointsLabel)
-                    : getBonusMilestoneMessage("claim", pointsLabel)}
-                </small>
-              </span>
-            </span>
-            <input
-              type="checkbox"
-              className="h-5 w-5 shrink-0 accent-emerald-500"
-              aria-label={chipTitle}
-              checked={state.completed}
-              disabled={toggleDisabled}
-              onChange={handleToggleChange}
-            />
-          </label>,
-          toggleHost,
-        )}
-
-      {dialogOpen &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
-            role="presentation"
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget && !saving) {
-                setDialogOpen(false);
-              }
-            }}
-          >
-            <div
-              className="w-full max-w-[340px] rounded-2xl border border-white/15 bg-slate-900 p-4 text-white shadow-2xl"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="bonus-milestone-dialog-title"
-            >
-              <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-lg text-white shadow-lg">
-                <i
-                  className={`fa-solid ${
-                    state.completed ? "fa-circle-check" : "fa-gift"
-                  }`}
-                  aria-hidden="true"
-                />
-              </div>
-
-              <h2
-                id="bonus-milestone-dialog-title"
-                className="text-center text-base font-bold text-white"
-              >
-                {getBonusMilestoneMessage(
-                  state.completed ? "confirmedTitle" : "confirmTitle",
-                  pointsLabel,
-                )}
-              </h2>
-              <p className="mt-2 text-center text-xs leading-5 text-white/70">
-                {getBonusMilestoneMessage(
-                  state.completed ? "confirmedMessage" : "confirmMessage",
-                  state.completed ? formatPoints(manualBonus) : pointsLabel,
-                )}
-              </p>
-
-              {!state.completed && (
-                <label className="mt-4 flex cursor-pointer items-start gap-2 rounded-xl border border-yellow-300/20 bg-yellow-400/10 p-3 text-xs leading-5 text-white/85">
-                  <input
-                    type="checkbox"
-                    className="mt-1 h-4 w-4 shrink-0 accent-orange-500"
-                    checked={confirmedCheckbox}
-                    disabled={saving}
-                    onChange={handleCheckboxChange}
-                  />
-                  <span>
-                    {getBonusMilestoneMessage("confirmCheckbox", pointsLabel)}
-                  </span>
-                </label>
-              )}
-
-              {errorMessage && (
-                <p className="mt-3 text-center text-xs text-rose-300">
-                  {errorMessage}
-                </p>
-              )}
-
-              <div className="mt-4 flex gap-2">
-                <button
-                  type="button"
-                  className="flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold text-white/90 transition-colors hover:bg-white/15 disabled:opacity-50"
-                  disabled={saving}
-                  onClick={() => setDialogOpen(false)}
-                >
-                  {getBonusMilestoneCancelLabel()}
-                </button>
-
-                {state.completed ? (
-                  <button
-                    type="button"
-                    className="flex-1 rounded-lg bg-gradient-to-r from-rose-500 to-red-500 px-3 py-2 text-xs font-bold text-white transition-transform hover:scale-[1.02] disabled:opacity-50"
-                    disabled={saving}
-                    onClick={() => {
-                      persist(false).catch(() => null);
-                    }}
-                  >
-                    {saving
-                      ? getBonusMilestoneMessage("updating", pointsLabel)
-                      : getBonusMilestoneMessage("removeButton", pointsLabel)}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="flex-1 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-2 text-xs font-bold text-white transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
-                    disabled={!confirmedCheckbox || saving}
-                    onClick={() => {
-                      persist(true).catch(() => null);
-                    }}
-                  >
-                    {saving
-                      ? getBonusMilestoneMessage("updating", pointsLabel)
-                      : getBonusMilestoneMessage("confirmButton", pointsLabel)}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>,
-          document.body,
-        )}
-    </>
+    <label
+      className={`flex items-center justify-between gap-3 bg-emerald-500/10 backdrop-blur-md rounded-lg p-3 mb-3 border border-emerald-400/30 ${
+        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+      }`}
+    >
+      <span className="flex items-center min-w-0">
+        <i className="fa-solid fa-circle-check text-emerald-400 text-lg mr-2" />
+        <span className="min-w-0">
+          <strong className="block text-white text-sm">Bonus Milestone</strong>
+          <small className="block text-emerald-300/70 text-xs">{reward}</small>
+        </span>
+      </span>
+      <input
+        type="checkbox"
+        className="h-5 w-5 accent-emerald-500"
+        aria-label={`Bonus Milestone: ${reward}`}
+        checked={state.completed}
+        disabled={disabled}
+        onChange={handleCheckboxChange}
+      />
+    </label>
   );
 }
 
 let root: Root | null = null;
 let host: HTMLElement | null = null;
-let toggleHost: HTMLElement | null = null;
 
-/** Ensure the legacy on/off control keeps its original place above the milestone grid. */
-function ensureToggleHost(): HTMLElement | null {
+/** Mount exactly one React root into the existing popup milestone section. */
+export function mountBonusMilestoneControl(): void {
   const section = document.getElementById("milestones-section");
-  if (!section) return null;
+  if (!section) return;
 
-  if (!toggleHost?.isConnected) {
-    document.getElementById(TOGGLE_ROOT_ID)?.remove();
-    toggleHost = document.createElement("div");
-    toggleHost.id = TOGGLE_ROOT_ID;
+  if (!host?.isConnected) {
+    const existing = document.getElementById(ROOT_ID);
+    if (existing) existing.remove();
+
+    host = document.createElement("div");
+    host.id = ROOT_ID;
 
     const milestoneGrid =
       section.querySelector(".milestone-card")?.parentElement;
-    if (milestoneGrid) milestoneGrid.before(toggleHost);
-    else section.appendChild(toggleHost);
-  }
+    if (milestoneGrid) milestoneGrid.before(host);
+    else section.appendChild(host);
 
-  return toggleHost;
-}
-
-/** Mount the chip action while preserving the separate Bonus Milestone toggle. */
-export function mountBonusMilestoneControl(): void {
-  const nextHost = document.getElementById("arcade-facilitator-points");
-  if (!nextHost) return;
-
-  const nextToggleHost = ensureToggleHost();
-
-  if (host !== nextHost) {
-    root?.unmount();
-    host = nextHost;
-    host.classList.remove("cursor-pointer");
-    host.classList.add("select-none", "transition-transform");
     root = createRoot(host);
   }
 
-  root?.render(<BonusMilestoneControl toggleHost={nextToggleHost} />);
+  root?.render(<BonusMilestoneControl />);
 }
