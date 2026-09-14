@@ -17,10 +17,6 @@ import {
   getBonusMilestoneCancelLabel,
   getBonusMilestoneMessage,
 } from "../services/bonusMilestoneI18n";
-import {
-  getBonusMilestoneDisclaimer,
-  getBonusMilestoneOfficialPageLabel,
-} from "../services/bonusMilestoneDisclaimerI18n";
 
 const CLAIM_BONUS_POINTS = 10;
 const OFFICIAL_BONUS_MILESTONE_URL =
@@ -254,7 +250,7 @@ function BonusMilestoneControl() {
                   aria-hidden="true"
                 />
                 <div className="min-w-0">
-                  <p>{getBonusMilestoneDisclaimer()}</p>
+                  <p>{getBonusMilestoneMessage("disclaimer")}</p>
                   {!state.completed && (
                     <a
                       href={OFFICIAL_BONUS_MILESTONE_URL}
@@ -262,7 +258,7 @@ function BonusMilestoneControl() {
                       rel="noopener noreferrer"
                       className="mt-2 inline-flex items-center gap-1 font-semibold text-amber-200 underline decoration-amber-300/50 underline-offset-2 transition-colors hover:text-white"
                     >
-                      <span>{getBonusMilestoneOfficialPageLabel()}</span>
+                      <span>{getBonusMilestoneMessage("officialPage")}</span>
                       <i
                         className="fa-solid fa-arrow-up-right-from-square text-[10px]"
                         aria-hidden="true"
