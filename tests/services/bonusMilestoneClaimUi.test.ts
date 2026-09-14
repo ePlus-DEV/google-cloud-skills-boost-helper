@@ -28,7 +28,7 @@ vi.mock("../../services/bonusMilestoneI18n", () => ({
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
 
 describe("Bonus Milestone claim UI", () => {
-  it("shows only the self-reported bonus in the claim chip", async () => {
+  it("keeps the claim action fixed at +10 and never mixes in milestone bonus", async () => {
     (
       globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
     ).IS_REACT_ACT_ENVIRONMENT = true;
@@ -41,7 +41,8 @@ describe("Bonus Milestone claim UI", () => {
       completed: false,
       enabled: true,
       participating: true,
-      points: 10,
+      // Deliberately different from 10: claim copy must still stay +10.
+      points: 35,
       appliedPoints: 0,
       milestoneBonusPoints: 25,
       bonusIncludedInTotal: false,
@@ -70,6 +71,7 @@ describe("Bonus Milestone claim UI", () => {
 
     expect(host?.textContent).toBe("Claim +10");
     expect(host?.textContent).not.toContain("+25");
+    expect(host?.textContent).not.toContain("+35");
     expect(claimButton?.disabled).toBe(false);
 
     await act(async () => {
@@ -77,13 +79,16 @@ describe("Bonus Milestone claim UI", () => {
       await Promise.resolve();
     });
 
-    expect(document.querySelector('[role="dialog"]')).not.toBeNull();
+    const dialog = document.querySelector('[role="dialog"]');
+    expect(dialog).not.toBeNull();
+    expect(dialog?.textContent).toContain("confirmButton:10");
+    expect(dialog?.textContent).not.toContain("confirmButton:35");
 
     serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
       completed: true,
       enabled: true,
       participating: true,
-      points: 10,
+      points: 35,
       appliedPoints: 10,
       milestoneBonusPoints: 25,
       bonusIncludedInTotal: false,
