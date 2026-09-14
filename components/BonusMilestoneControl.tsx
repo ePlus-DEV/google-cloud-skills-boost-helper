@@ -184,35 +184,34 @@ function BonusMilestoneControl() {
     setDialogOpen(true);
   }, [canConfirm, saving]);
 
-  const persist = useCallback(
-    async function persistBonusMilestoneChange(nextCompleted: boolean) {
-      setSaving(true);
-      setErrorMessage("");
+  const persist = useCallback(async function persistBonusMilestoneChange(
+    nextCompleted: boolean,
+  ) {
+    setSaving(true);
+    setErrorMessage("");
 
-      try {
-        const nextState = await setActiveBonusMilestoneCompleted(nextCompleted);
-        setState({
-          ...nextState,
-          completed: nextCompleted,
-          appliedPoints:
-            nextCompleted && nextState.appliedPoints <= 0
-              ? CLAIM_BONUS_POINTS
-              : nextState.appliedPoints,
-        });
-        setDialogOpen(false);
-        setConfirmedCheckbox(false);
+    try {
+      const nextState = await setActiveBonusMilestoneCompleted(nextCompleted);
+      setState({
+        ...nextState,
+        completed: nextCompleted,
+        appliedPoints:
+          nextCompleted && nextState.appliedPoints <= 0
+            ? CLAIM_BONUS_POINTS
+            : nextState.appliedPoints,
+      });
+      setDialogOpen(false);
+      setConfirmedCheckbox(false);
 
-        // Existing refresh flow signs the v3 payload using the persisted
-        // profile/period confirmation and lets Hub return the real point value.
-        document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
-      } catch {
-        setErrorMessage(getMessage("bonusMilestoneError"));
-      } finally {
-        setSaving(false);
-      }
-    },
-    [],
-  );
+      // Existing refresh flow signs the v3 payload using the persisted
+      // profile/period confirmation and lets Hub return the real point value.
+      document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
+    } catch {
+      setErrorMessage(getMessage("bonusMilestoneError"));
+    } finally {
+      setSaving(false);
+    }
+  }, []);
 
   const handleCheckboxChange = useCallback(function handleCheckboxEvent(
     event: ChangeEvent<HTMLInputElement>,

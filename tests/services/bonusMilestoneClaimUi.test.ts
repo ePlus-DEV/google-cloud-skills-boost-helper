@@ -26,14 +26,16 @@ const browserMessages = vi.hoisted(() => ({
     "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.",
   bonusMilestoneOfficialPage: "Open official Bonus Milestone page",
   bonusMilestoneUpdating: "Updating…",
-  bonusMilestoneError: "Could not update the Bonus Milestone. Please try again.",
+  bonusMilestoneError:
+    "Could not update the Bonus Milestone. Please try again.",
   cancelButton: "Cancel",
 }));
 
 vi.mock("wxt/browser", () => ({
   browser: {
     i18n: {
-      getMessage: (key: keyof typeof browserMessages) => browserMessages[key] || "",
+      getMessage: (key: keyof typeof browserMessages) =>
+        browserMessages[key] || "",
     },
   },
 }));
