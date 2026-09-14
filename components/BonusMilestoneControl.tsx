@@ -29,15 +29,18 @@ const EMPTY_STATE: BonusMilestoneControlState = {
   profileUrl: "",
 };
 
+/** Format point values without unnecessary trailing decimals. */
 function formatPoints(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
+/** Return the self-reported Bonus Milestone amount currently applied. */
 function renderedManualBonus(state: BonusMilestoneControlState): number {
   if (!state.completed) return 0;
   return state.appliedPoints > 0 ? state.appliedPoints : state.points;
 }
 
+/** Parse a rendered point total into a safe numeric value. */
 function parseDisplayedTotal(value: string | null | undefined): number {
   if (!value) return 0;
   const normalized = value.replace(/\s/gu, "").replace(/,/gu, "");
@@ -266,7 +269,9 @@ function BonusMilestoneControl() {
                     type="button"
                     className="flex-1 rounded-lg bg-gradient-to-r from-rose-500 to-red-500 px-3 py-2 text-xs font-bold text-white transition-transform hover:scale-[1.02] disabled:opacity-50"
                     disabled={saving}
-                    onClick={() => void persist(false)}
+                    onClick={() => {
+                      persist(false).catch(() => null);
+                    }}
                   >
                     {saving
                       ? getBonusMilestoneMessage("updating", pointsLabel)
@@ -277,7 +282,9 @@ function BonusMilestoneControl() {
                     type="button"
                     className="flex-1 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-2 text-xs font-bold text-white transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={!confirmedCheckbox || saving}
-                    onClick={() => void persist(true)}
+                    onClick={() => {
+                      persist(true).catch(() => null);
+                    }}
                   >
                     {saving
                       ? getBonusMilestoneMessage("updating", pointsLabel)
