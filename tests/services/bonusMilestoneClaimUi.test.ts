@@ -104,6 +104,8 @@ describe("Bonus Milestone claim UI", () => {
     );
     expect(claimTooltip?.className).toContain("badge-name-tooltip");
     expect(claimTooltip?.className).toContain("peer-hover:opacity-100");
+    expect(claimTooltip?.className).toContain("top-full");
+    expect(claimTooltip?.className).not.toContain("bottom-full");
     expect(claimTooltip?.textContent).toBe(
       browserMessages.bonusMilestoneClaimTooltip,
     );
