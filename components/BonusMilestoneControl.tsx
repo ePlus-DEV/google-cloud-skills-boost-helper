@@ -167,9 +167,7 @@ function BonusMilestoneControl() {
         // profile/period confirmation and lets Hub return the real point value.
         document.querySelector<HTMLButtonElement>(".refresh-button")?.click();
       } catch {
-        setErrorMessage(
-          getBonusMilestoneMessage("error", claimPointsLabel),
-        );
+        setErrorMessage(getBonusMilestoneMessage("error", claimPointsLabel));
       } finally {
         setSaving(false);
       }
@@ -230,13 +228,17 @@ function BonusMilestoneControl() {
               >
                 {getBonusMilestoneMessage(
                   state.completed ? "confirmedTitle" : "confirmTitle",
-                  state.completed ? formatPoints(manualBonus) : claimPointsLabel,
+                  state.completed
+                    ? formatPoints(manualBonus)
+                    : claimPointsLabel,
                 )}
               </h2>
               <p className="mt-2 text-center text-xs leading-5 text-white/70">
                 {getBonusMilestoneMessage(
                   state.completed ? "confirmedMessage" : "confirmMessage",
-                  state.completed ? formatPoints(manualBonus) : claimPointsLabel,
+                  state.completed
+                    ? formatPoints(manualBonus)
+                    : claimPointsLabel,
                 )}
               </p>
 
