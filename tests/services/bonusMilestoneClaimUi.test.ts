@@ -90,12 +90,23 @@ describe("Bonus Milestone claim UI", () => {
 
     const host = document.getElementById("arcade-facilitator-points");
     const claimButton = host?.querySelector<HTMLButtonElement>("button");
+    const claimTooltip = host?.querySelector<HTMLElement>('[role="tooltip"]');
 
-    expect(host?.textContent).toBe("Claim +10");
-    expect(host?.textContent).not.toContain("+25");
-    expect(host?.textContent).not.toContain("+35");
+    expect(claimButton?.textContent).toBe("Claim +10");
+    expect(claimButton?.textContent).not.toContain("+25");
+    expect(claimButton?.textContent).not.toContain("+35");
     expect(claimButton?.disabled).toBe(false);
     expect(claimButton?.className).toContain("cursor-pointer");
+    expect(claimButton?.className).toContain("peer");
+    expect(claimButton?.getAttribute("title")).toBeNull();
+    expect(claimButton?.getAttribute("aria-describedby")).toBe(
+      "bonus-milestone-claim-tooltip",
+    );
+    expect(claimTooltip?.className).toContain("badge-name-tooltip");
+    expect(claimTooltip?.className).toContain("peer-hover:opacity-100");
+    expect(claimTooltip?.textContent).toBe(
+      browserMessages.bonusMilestoneClaimTooltip,
+    );
 
     await act(async () => {
       claimButton?.click();
@@ -140,8 +151,11 @@ describe("Bonus Milestone claim UI", () => {
       await Promise.resolve();
     });
 
-    expect(host?.textContent).toBe("✓ +10");
-    expect(host?.textContent).not.toContain("+35");
+    expect(claimButton?.textContent).toBe("✓ +10");
+    expect(claimButton?.textContent).not.toContain("+35");
+    expect(
+      host?.querySelector<HTMLElement>('[role="tooltip"]')?.textContent,
+    ).toBe(browserMessages.bonusMilestoneAppliedTooltip);
     expect(document.getElementById("arcade-points")?.textContent).toBe("128");
 
     // Return a stale appliedPoints value on purpose: completed=false must be
@@ -171,7 +185,7 @@ describe("Bonus Milestone claim UI", () => {
     expect(serviceMocks.setActiveBonusMilestoneCompleted).toHaveBeenCalledWith(
       false,
     );
-    expect(host?.textContent).toBe("Claim +10");
+    expect(claimButton?.textContent).toBe("Claim +10");
     expect(document.getElementById("arcade-points")?.textContent).toBe("118");
   });
 });

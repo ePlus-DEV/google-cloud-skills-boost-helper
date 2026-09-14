@@ -223,14 +223,26 @@ function BonusMilestoneControl() {
     <>
       <button
         type="button"
-        className="appearance-none cursor-pointer border-0 bg-transparent p-0 text-inherit font-inherit font-bold whitespace-nowrap disabled:cursor-default"
-        title={canConfirm ? chipTitle : undefined}
+        className="peer appearance-none cursor-pointer border-0 bg-transparent p-0 text-inherit font-inherit font-bold whitespace-nowrap disabled:cursor-default"
         aria-label={canConfirm ? chipTitle : chipLabel}
+        aria-describedby={
+          canConfirm ? "bonus-milestone-claim-tooltip" : undefined
+        }
         disabled={!canConfirm || saving}
         onClick={openDialog}
       >
         {saving ? getMessage("bonusMilestoneUpdating") : chipLabel}
       </button>
+
+      {canConfirm && (
+        <span
+          id="bonus-milestone-claim-tooltip"
+          role="tooltip"
+          className="badge-name-tooltip pointer-events-none absolute right-0 bottom-full mb-1 z-60 w-56 whitespace-normal rounded-md px-2 py-1 text-[10px] leading-snug opacity-0 transition-opacity duration-150 peer-hover:opacity-100 peer-focus-visible:opacity-100"
+        >
+          {chipTitle}
+        </span>
+      )}
 
       {dialogOpen &&
         createPortal(
