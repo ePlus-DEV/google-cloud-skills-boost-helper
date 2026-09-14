@@ -9,6 +9,8 @@ type BonusMilestoneCopy = {
   confirmedMessage: string;
   removeButton: string;
   appliedTooltip: string;
+  disclaimer: string;
+  officialPage: string;
   updating: string;
   error: string;
 };
@@ -27,6 +29,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "+{points} points are currently applied.",
     removeButton: "Undo confirmation",
     appliedTooltip: "Bonus Milestone confirmed: +{points} points applied.",
+    disclaimer:
+      "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.",
+    officialPage: "Open official Bonus Milestone page",
     updating: "Updating…",
     error: "Could not update the Bonus Milestone. Please try again.",
   },
@@ -43,6 +48,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "+{points} điểm đang được cộng.",
     removeButton: "Hủy xác nhận",
     appliedTooltip: "Đã xác nhận Bonus Milestone: đã cộng +{points} điểm.",
+    disclaimer:
+      "Chỉ là tự xác nhận. Xác nhận này chỉ được hiển thị trong extension và không có nghĩa Google Cloud Skills Boost / Arcade đã xác minh hoặc công nhận số điểm này.",
+    officialPage: "Mở trang Bonus Milestone chính thức",
     updating: "Đang cập nhật…",
     error: "Không thể cập nhật Bonus Milestone. Vui lòng thử lại.",
   },
@@ -59,6 +67,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "現在 +{points} ポイントが加算されています。",
     removeButton: "確認を取り消す",
     appliedTooltip: "Bonus Milestone 確認済み: +{points} ポイント適用中。",
+    disclaimer:
+      "自己申告のみです。この確認は拡張機能内で表示されるもので、Google Cloud Skills Boost / Arcade が完了を検証したり、このポイントを正式に付与したことを意味しません。",
+    officialPage: "公式 Bonus Milestone ページを開く",
     updating: "更新中…",
     error: "Bonus Milestone を更新できませんでした。もう一度お試しください。",
   },
@@ -75,6 +86,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "현재 +{points}포인트가 적용되어 있습니다.",
     removeButton: "확인 취소",
     appliedTooltip: "Bonus Milestone 확인됨: +{points}포인트 적용됨.",
+    disclaimer:
+      "사용자 자체 확인만을 위한 기능입니다. 이 확인은 확장 프로그램에 표시되는 것이며 Google Cloud Skills Boost / Arcade가 완료를 검증했거나 해당 포인트를 공식적으로 부여했다는 의미가 아닙니다.",
+    officialPage: "공식 Bonus Milestone 페이지 열기",
     updating: "업데이트 중…",
     error: "Bonus Milestone을 업데이트할 수 없습니다. 다시 시도해 주세요.",
   },
@@ -90,6 +104,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "当前已计入 +{points} 分。",
     removeButton: "撤销确认",
     appliedTooltip: "已确认 Bonus Milestone：已计入 +{points} 分。",
+    disclaimer:
+      "仅为用户自行确认。此确认仅显示在扩展程序中，并不表示 Google Cloud Skills Boost / Arcade 已验证完成情况或正式授予这些积分。",
+    officialPage: "打开官方 Bonus Milestone 页面",
     updating: "正在更新…",
     error: "无法更新 Bonus Milestone，请重试。",
   },
@@ -107,6 +124,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "+{points} Punkte werden derzeit angerechnet.",
     removeButton: "Bestätigung zurücknehmen",
     appliedTooltip: "Bonus Milestone bestätigt: +{points} Punkte angerechnet.",
+    disclaimer:
+      "Nur Selbstbestätigung. Diese Bestätigung wird nur in der Erweiterung angezeigt und bedeutet nicht, dass Google Cloud Skills Boost / Arcade den Abschluss geprüft oder diese Punkte offiziell vergeben hat.",
+    officialPage: "Offizielle Bonus-Milestone-Seite öffnen",
     updating: "Wird aktualisiert…",
     error:
       "Bonus Milestone konnte nicht aktualisiert werden. Bitte erneut versuchen.",
@@ -124,6 +144,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "Actualmente se aplican +{points} puntos.",
     removeButton: "Deshacer confirmación",
     appliedTooltip: "Bonus Milestone confirmado: +{points} puntos aplicados.",
+    disclaimer:
+      "Solo autodeclarado. Esta confirmación se muestra en la extensión y no significa que Google Cloud Skills Boost / Arcade haya verificado la finalización ni otorgado oficialmente estos puntos.",
+    officialPage: "Abrir la página oficial de Bonus Milestone",
     updating: "Actualizando…",
     error: "No se pudo actualizar el Bonus Milestone. Inténtalo de nuevo.",
   },
@@ -140,6 +163,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "+{points} points sont actuellement appliqués.",
     removeButton: "Annuler la confirmation",
     appliedTooltip: "Bonus Milestone confirmé : +{points} points appliqués.",
+    disclaimer:
+      "Auto-déclaration uniquement. Cette confirmation est affichée dans l’extension et ne signifie pas que Google Cloud Skills Boost / Arcade a vérifié la réussite ou attribué officiellement ces points.",
+    officialPage: "Ouvrir la page officielle du Bonus Milestone",
     updating: "Mise à jour…",
     error: "Impossible de mettre à jour le Bonus Milestone. Réessayez.",
   },
@@ -156,6 +182,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "Sono attualmente applicati +{points} punti.",
     removeButton: "Annulla conferma",
     appliedTooltip: "Bonus Milestone confermato: +{points} punti applicati.",
+    disclaimer:
+      "Solo autodichiarazione. Questa conferma viene mostrata nell’estensione e non significa che Google Cloud Skills Boost / Arcade abbia verificato il completamento o assegnato ufficialmente questi punti.",
+    officialPage: "Apri la pagina ufficiale del Bonus Milestone",
     updating: "Aggiornamento…",
     error: "Impossibile aggiornare il Bonus Milestone. Riprova.",
   },
@@ -172,6 +201,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "+{points} pontos estão sendo aplicados.",
     removeButton: "Desfazer confirmação",
     appliedTooltip: "Bonus Milestone confirmado: +{points} pontos aplicados.",
+    disclaimer:
+      "Somente autodeclaração. Esta confirmação é exibida na extensão e não significa que o Google Cloud Skills Boost / Arcade verificou a conclusão ou concedeu oficialmente esses pontos.",
+    officialPage: "Abrir a página oficial do Bonus Milestone",
     updating: "Atualizando…",
     error: "Não foi possível atualizar o Bonus Milestone. Tente novamente.",
   },
@@ -188,6 +220,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "Сейчас начислено +{points} очков.",
     removeButton: "Отменить подтверждение",
     appliedTooltip: "Bonus Milestone подтвержден: начислено +{points} очков.",
+    disclaimer:
+      "Только самоподтверждение. Это подтверждение отображается в расширении и не означает, что Google Cloud Skills Boost / Arcade проверил выполнение или официально начислил эти баллы.",
+    officialPage: "Открыть официальную страницу Bonus Milestone",
     updating: "Обновление…",
     error: "Не удалось обновить Bonus Milestone. Попробуйте еще раз.",
   },
@@ -205,6 +240,9 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedMessage: "अभी +{points} अंक लागू हैं।",
     removeButton: "पुष्टि हटाएँ",
     appliedTooltip: "Bonus Milestone की पुष्टि हो गई: +{points} अंक लागू हैं।",
+    disclaimer:
+      "केवल स्वयं की पुष्टि। यह पुष्टि एक्सटेंशन में दिखाई जाती है और इसका अर्थ यह नहीं है कि Google Cloud Skills Boost / Arcade ने पूर्णता सत्यापित की है या इन अंकों को आधिकारिक रूप से प्रदान किया है।",
+    officialPage: "आधिकारिक Bonus Milestone पेज खोलें",
     updating: "अपडेट हो रहा है…",
     error: "Bonus Milestone अपडेट नहीं हो सका। कृपया फिर से कोशिश करें।",
   },
@@ -219,7 +257,10 @@ const COPY: Record<string, BonusMilestoneCopy> = {
     confirmedTitle: "تم تأكيد Bonus Milestone",
     confirmedMessage: "يتم حاليًا احتساب +{points} نقطة.",
     removeButton: "إلغاء التأكيد",
-    appliedTooltip: "تم تأكيد Bonus Milestone: تم احتساب +{points} نقطة.",
+    appliedTooltip: "Bonus Milestone 확인됨: +{points}포인트 적용됨.",
+    disclaimer:
+      "تأكيد ذاتي فقط. يظهر هذا التأكيد داخل الإضافة ولا يعني أن Google Cloud Skills Boost / Arcade قد تحقّق من الإكمال أو منح هذه النقاط رسميًا.",
+    officialPage: "فتح صفحة Bonus Milestone الرسمية",
     updating: "جارٍ التحديث…",
     error: "تعذر تحديث Bonus Milestone. حاول مرة أخرى.",
   },
