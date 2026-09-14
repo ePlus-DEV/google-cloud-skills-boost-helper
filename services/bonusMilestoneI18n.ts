@@ -225,6 +225,7 @@ const COPY: Record<string, BonusMilestoneCopy> = {
   },
 };
 
+/** Resolve the best supported locale for Bonus Milestone copy. */
 function resolveLocale(): string {
   let raw = "en";
   try {
@@ -242,6 +243,7 @@ function resolveLocale(): string {
 
 export type BonusMilestoneCopyKey = keyof BonusMilestoneCopy;
 
+/** Return localized Bonus Milestone copy with an optional point placeholder. */
 export function getBonusMilestoneMessage(
   key: BonusMilestoneCopyKey,
   points?: number | string,
@@ -251,6 +253,7 @@ export function getBonusMilestoneMessage(
   return value.replaceAll("{points}", String(points ?? ""));
 }
 
+/** Return the localized cancel label, falling back to English. */
 export function getBonusMilestoneCancelLabel(): string {
   try {
     return browser.i18n.getMessage("cancelButton" as never) || "Cancel";
