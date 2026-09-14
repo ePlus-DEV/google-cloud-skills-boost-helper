@@ -17,9 +17,14 @@ import {
   getBonusMilestoneCancelLabel,
   getBonusMilestoneMessage,
 } from "../services/bonusMilestoneI18n";
-import { getBonusMilestoneDisclaimer } from "../services/bonusMilestoneDisclaimerI18n";
+import {
+  getBonusMilestoneDisclaimer,
+  getBonusMilestoneOfficialPageLabel,
+} from "../services/bonusMilestoneDisclaimerI18n";
 
 const CLAIM_BONUS_POINTS = 10;
+const OFFICIAL_BONUS_MILESTONE_URL =
+  "https://rsvp.withgoogle.com/events/arcade-facilitator/bonus-milestone";
 
 const EMPTY_STATE: BonusMilestoneControlState = {
   completed: false,
@@ -248,7 +253,23 @@ function BonusMilestoneControl() {
                   className="fa-solid fa-circle-info mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <span>{getBonusMilestoneDisclaimer()}</span>
+                <div className="min-w-0">
+                  <p>{getBonusMilestoneDisclaimer()}</p>
+                  {!state.completed && (
+                    <a
+                      href={OFFICIAL_BONUS_MILESTONE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 font-semibold text-amber-200 underline decoration-amber-300/50 underline-offset-2 transition-colors hover:text-white"
+                    >
+                      <span>{getBonusMilestoneOfficialPageLabel()}</span>
+                      <i
+                        className="fa-solid fa-arrow-up-right-from-square text-[10px]"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  )}
+                </div>
               </div>
 
               {!state.completed && (
