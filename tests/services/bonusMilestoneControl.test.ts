@@ -11,8 +11,7 @@ vi.mock("../../services/bonusMilestoneService", () => ({
   getBonusMilestoneControlState: serviceMocks.getBonusMilestoneControlState,
   setActiveBonusMilestoneCompleted:
     serviceMocks.setActiveBonusMilestoneCompleted,
-  watchBonusMilestoneControlState:
-    serviceMocks.watchBonusMilestoneControlState,
+  watchBonusMilestoneControlState: serviceMocks.watchBonusMilestoneControlState,
 }));
 
 vi.mock("../../services/bonusMilestoneI18n", () => ({
@@ -98,7 +97,9 @@ describe("Bonus Milestone toggle regression", () => {
     });
 
     expect(document.querySelector('[role="dialog"]')).not.toBeNull();
-    expect(serviceMocks.setActiveBonusMilestoneCompleted).not.toHaveBeenCalled();
+    expect(
+      serviceMocks.setActiveBonusMilestoneCompleted,
+    ).not.toHaveBeenCalled();
   });
 
   it("does not show an on/off toggle when the current season has no Bonus Milestone", async () => {
