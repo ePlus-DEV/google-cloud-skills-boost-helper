@@ -1,3 +1,4 @@
+import "./bonusMilestoneControl";
 import CompactModePreferenceService from "../../services/compactModePreferenceService";
 
 void CompactModePreferenceService.initializeMirrorSync().catch((error) => {
