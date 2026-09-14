@@ -8,6 +8,7 @@ import {
 } from "./facilitatorService";
 import { canonicalizeProfileUrl, extractProfileId } from "../utils/profileUrl";
 import { buildArcadeSignatureHeaders } from "../utils/arcadeRequestSignature";
+import { isBonusMilestoneCompleted } from "./bonusMilestoneService";
 
 const FACILITATOR_BONUS_LABEL_KEYS: Record<string, string> = {
   1: "milestone1Bonus",
@@ -366,9 +367,14 @@ const ArcadeApiService = {
 
     const canonical = canonicalizeProfileUrl(url) || url;
     const profileId = extractProfileId(url);
+    const bonusMilestoneCompleted =
+      await isBonusMilestoneCompleted(canonical);
     const payload = {
       url: canonical,
       profileId,
+      facilitator: {
+        bonusMilestoneCompleted,
+      },
     };
 
     let response;
