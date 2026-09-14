@@ -19,12 +19,14 @@ export type BonusMilestoneControlState = {
   profileUrl: string;
 };
 
+/** Return a canonical profile identifier suitable for stable comparisons. */
 function canonicalProfile(profileUrl: string): string {
   return (
     canonicalizeProfileUrl(profileUrl) || profileUrl.trim().replace(/\/$/u, "")
   );
 }
 
+/** Compare two profile URLs after canonicalization. */
 function sameProfile(left: string, right: string): boolean {
   return (
     canonicalProfile(left).toLowerCase() ===
@@ -32,6 +34,7 @@ function sameProfile(left: string, right: string): boolean {
   );
 }
 
+/** Build a stable identity for the Facilitator period represented by API data. */
 function periodIdentity(arcadeData?: ArcadeData | null): string | null {
   const startsAt = String(arcadeData?.facilitator?.startsAt || "").trim();
   const endsAt = String(arcadeData?.facilitator?.endsAt || "").trim();
@@ -53,6 +56,7 @@ function storageKey(
   return `${STORAGE_PREFIX}:${identity}:${encodeURIComponent(period)}` as `local:${string}`;
 }
 
+/** Find the stored account matching a profile URL. */
 async function findAccount(profileUrl: string): Promise<Account | null> {
   if (!profileUrl) return null;
   try {
@@ -66,6 +70,7 @@ async function findAccount(profileUrl: string): Promise<Account | null> {
   }
 }
 
+/** Read the locally persisted completion flag for one profile and period. */
 async function readScopedCompletion(
   profileUrl: string,
   arcadeData?: ArcadeData | null,
@@ -79,6 +84,7 @@ async function readScopedCompletion(
   }
 }
 
+/** Persist the completion flag for one profile and Facilitator period. */
 async function writeScopedCompletion(
   profileUrl: string,
   arcadeData: ArcadeData | null | undefined,
