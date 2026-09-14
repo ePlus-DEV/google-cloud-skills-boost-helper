@@ -112,24 +112,18 @@ function BonusMilestoneControl() {
   );
 
   const manualBonus = renderedManualBonus(state);
-  const totalFacilitatorBonus = state.milestoneBonusPoints + manualBonus;
   const canConfirm = state.participating && state.enabled && state.points > 0;
   const pointsLabel = formatPoints(state.points);
 
   const chipLabel = useMemo(() => {
-    if (!state.participating) return "+0";
-    if (!state.enabled || state.points <= 0) {
-      return `+${formatPoints(state.milestoneBonusPoints)}`;
+    if (!state.participating || !state.enabled || state.points <= 0) {
+      return "+0";
     }
     if (state.completed) {
-      return `✓ +${formatPoints(totalFacilitatorBonus)}`;
+      return `✓ +${formatPoints(manualBonus)}`;
     }
-
-    const claim = getBonusMilestoneMessage("claim", pointsLabel);
-    return state.milestoneBonusPoints > 0
-      ? `+${formatPoints(state.milestoneBonusPoints)} · ${claim}`
-      : claim;
-  }, [pointsLabel, state, totalFacilitatorBonus]);
+    return getBonusMilestoneMessage("claim", pointsLabel);
+  }, [manualBonus, pointsLabel, state.completed, state.enabled, state.participating, state.points]);
 
   const chipTitle = state.completed
     ? getBonusMilestoneMessage("appliedTooltip", formatPoints(manualBonus))
