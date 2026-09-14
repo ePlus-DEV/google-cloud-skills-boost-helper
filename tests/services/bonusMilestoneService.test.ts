@@ -129,6 +129,27 @@ describe("Bonus Milestone season safety", () => {
     expect(await isBonusMilestoneCompleted(PROFILE_URL)).toBe(false);
   });
 
+  it("keeps Undo false even while cached Hub metadata is still true", async () => {
+    const account = makeAccount(
+      makeArcadeData({
+        bonusMilestoneCompleted: true,
+        bonusMilestonePoints: 10,
+      }),
+    );
+    useAccount(account);
+
+    // No local decision yet, so existing Hub/cache metadata is accepted.
+    expect((await getBonusMilestoneControlState()).completed).toBe(true);
+    expect(await isBonusMilestoneCompleted(PROFILE_URL)).toBe(true);
+
+    // Undo writes an explicit false for this profile + period. That false must
+    // override stale cached API metadata until the refresh response catches up.
+    const afterUndo = await setActiveBonusMilestoneCompleted(false);
+    expect(afterUndo.completed).toBe(false);
+    expect(await isBonusMilestoneCompleted(PROFILE_URL)).toBe(false);
+    expect([...mocks.memory.values()]).toEqual([false]);
+  });
+
   it("disables claiming completely when a later season has no Bonus Milestone", async () => {
     const account = makeAccount(
       makeArcadeData({
