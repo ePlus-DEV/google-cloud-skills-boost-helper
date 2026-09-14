@@ -14,12 +14,6 @@ vi.mock("../../services/bonusMilestoneService", () => ({
   watchBonusMilestoneControlState: serviceMocks.watchBonusMilestoneControlState,
 }));
 
-vi.mock("../../services/bonusMilestoneI18n", () => ({
-  getBonusMilestoneCancelLabel: () => "Cancel",
-  getBonusMilestoneMessage: (key: string, points?: number | string) =>
-    `${key}:${String(points ?? "")}`,
-}));
-
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
 
 const AVAILABLE_STATE = {
@@ -28,7 +22,7 @@ const AVAILABLE_STATE = {
   participating: true,
   points: 10,
   appliedPoints: 0,
-  milestoneBonusPoints: 5,
+  milestoneBonusPoints: 0,
   bonusIncludedInTotal: false,
   profileUrl:
     "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111",
@@ -73,32 +67,42 @@ beforeEach(() => {
   `;
 });
 
-describe("Bonus Milestone toggle regression", () => {
-  it("keeps the on/off toggle above the milestone grid and requires confirmation when enabling", async () => {
+describe("Bonus Milestone UI regression", () => {
+  it("keeps the existing checkbox design and adds the confirmed amount to the yellow badge", async () => {
     await mountAndFlush();
 
-    const toggleRoot = document.getElementById(
-      "facilitator-bonus-milestone-toggle-root",
+    const controlRoot = document.getElementById(
+      "facilitator-bonus-milestone-root",
     );
     const milestoneGrid = document.querySelector("#milestones-section .grid");
-    const toggle = toggleRoot?.querySelector<HTMLInputElement>(
+    const toggle = controlRoot?.querySelector<HTMLInputElement>(
       'input[type="checkbox"]',
     );
 
-    expect(toggleRoot).not.toBeNull();
-    expect(toggleRoot?.nextElementSibling).toBe(milestoneGrid);
+    expect(controlRoot).not.toBeNull();
+    expect(controlRoot?.nextElementSibling).toBe(milestoneGrid);
+    expect(controlRoot?.textContent).toContain("Bonus Milestone");
+    expect(controlRoot?.textContent).toContain("+10 points");
     expect(toggle).not.toBeNull();
     expect(toggle?.checked).toBe(false);
     expect(toggle?.disabled).toBe(false);
+    expect(document.getElementById("arcade-facilitator-points")?.textContent).toBe(
+      "+0",
+    );
 
     await act(async () => {
       toggle?.click();
       await Promise.resolve();
+      await Promise.resolve();
     });
 
-    expect(document.querySelector('[role="dialog"]')).not.toBeNull();
-    expect(
-      serviceMocks.setActiveBonusMilestoneCompleted,
-    ).not.toHaveBeenCalled();
+    expect(serviceMocks.setActiveBonusMilestoneCompleted).toHaveBeenCalledWith(
+      true,
+    );
+    expect(document.querySelector('[role="dialog"]')).toBeNull();
+    expect(document.getElementById("arcade-facilitator-points")?.textContent).toBe(
+      "+10",
+    );
+    expect(document.getElementById("arcade-points")?.textContent).toBe("110");
   });
 });
