@@ -28,7 +28,7 @@ vi.mock("../../services/bonusMilestoneI18n", () => ({
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
 
 describe("Bonus Milestone claim UI", () => {
-  it("keeps the claim action fixed at +10 and never mixes in milestone bonus", async () => {
+  it("keeps +10 isolated and removes it immediately after Undo", async () => {
     (
       globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
     ).IS_REACT_ACT_ENVIRONMENT = true;
@@ -84,6 +84,7 @@ describe("Bonus Milestone claim UI", () => {
     expect(dialog?.textContent).toContain("confirmButton:10");
     expect(dialog?.textContent).not.toContain("confirmButton:35");
 
+    // Simulate the refreshed Hub state after a successful confirmation.
     serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
       completed: true,
       enabled: true,
@@ -104,5 +105,36 @@ describe("Bonus Milestone claim UI", () => {
     expect(host?.textContent).toBe("✓ +10");
     expect(host?.textContent).not.toContain("+35");
     expect(document.getElementById("arcade-points")?.textContent).toBe("128");
+
+    // The confirmation dialog is still open and now renders the Undo action.
+    // Return a stale appliedPoints value on purpose: completed=false must be
+    // authoritative, so the UI removes +10 immediately instead of keeping 128.
+    serviceMocks.setActiveBonusMilestoneCompleted.mockResolvedValue({
+      completed: false,
+      enabled: true,
+      participating: true,
+      points: 35,
+      appliedPoints: 10,
+      milestoneBonusPoints: 25,
+      bonusIncludedInTotal: false,
+      profileUrl,
+    });
+
+    const removeButton = [...document.querySelectorAll<HTMLButtonElement>("button")].find(
+      (button) => button.textContent?.includes("removeButton:10"),
+    );
+    expect(removeButton).toBeDefined();
+
+    await act(async () => {
+      removeButton?.click();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(serviceMocks.setActiveBonusMilestoneCompleted).toHaveBeenCalledWith(
+      false,
+    );
+    expect(host?.textContent).toBe("Claim +10");
+    expect(document.getElementById("arcade-points")?.textContent).toBe("118");
   });
 });
