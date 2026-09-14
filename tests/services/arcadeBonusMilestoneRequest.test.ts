@@ -38,7 +38,9 @@ describe("Arcade v3 Bonus Milestone request", () => {
 
     await ArcadeApiService.fetchArcadeData(PROFILE_URL);
 
-    expect(bonusMocks.isBonusMilestoneCompleted).toHaveBeenCalledWith(PROFILE_URL);
+    expect(bonusMocks.isBonusMilestoneCompleted).toHaveBeenCalledWith(
+      PROFILE_URL,
+    );
     expect(axios.post).toHaveBeenCalledWith(
       "https://private-api.example.test/api/v3/arcade",
       expect.objectContaining({
