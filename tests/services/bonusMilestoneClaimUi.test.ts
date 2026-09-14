@@ -120,9 +120,9 @@ describe("Bonus Milestone claim UI", () => {
       profileUrl,
     });
 
-    const removeButton = [...document.querySelectorAll<HTMLButtonElement>("button")].find(
-      (button) => button.textContent?.includes("removeButton:10"),
-    );
+    const removeButton = [
+      ...document.querySelectorAll<HTMLButtonElement>("button"),
+    ].find((button) => button.textContent?.includes("removeButton:10"));
     expect(removeButton).toBeDefined();
 
     await act(async () => {
