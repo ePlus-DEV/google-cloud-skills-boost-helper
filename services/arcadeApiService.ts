@@ -367,8 +367,7 @@ const ArcadeApiService = {
 
     const canonical = canonicalizeProfileUrl(url) || url;
     const profileId = extractProfileId(url);
-    const bonusMilestoneCompleted =
-      await isBonusMilestoneCompleted(canonical);
+    const bonusMilestoneCompleted = await isBonusMilestoneCompleted(canonical);
     const payload = {
       url: canonical,
       profileId,
