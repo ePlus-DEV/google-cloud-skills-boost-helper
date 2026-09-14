@@ -21,15 +21,12 @@ vi.mock("../../services/bonusMilestoneI18n", () => ({
     if (key === "claimTooltip") {
       return `Bonus Milestone: confirm completion to add +${String(points ?? "")} points.`;
     }
+    if (key === "disclaimer") {
+      return "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.";
+    }
+    if (key === "officialPage") return "Open official Bonus Milestone page";
     return `${key}:${String(points ?? "")}`;
   },
-}));
-
-vi.mock("../../services/bonusMilestoneDisclaimerI18n", () => ({
-  getBonusMilestoneDisclaimer: () =>
-    "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points.",
-  getBonusMilestoneOfficialPageLabel: () =>
-    "Open official Bonus Milestone page",
 }));
 
 import { mountBonusMilestoneControl } from "../../components/BonusMilestoneControl";
