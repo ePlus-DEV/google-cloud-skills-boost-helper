@@ -40,6 +40,10 @@ export interface FacilitatorApiMetadata {
   baseArcadePoints?: number;
   pointsAlreadyIncludedInArcadeTotal?: number;
   estimatedFacilitatorPoints?: number;
+  bonusMilestoneEnabled?: boolean;
+  bonusMilestoneConfirmation?: string;
+  bonusMilestoneAvailablePoints?: number;
+  bonusMilestoneCompleted?: boolean;
   bonusMilestonePoints?: number | null;
   bonusMilestoneStatus?: string;
   milestonePolicy?: string;
@@ -65,8 +69,9 @@ export interface ArcadeData {
     faciCompletion?: number;
     completedFaciCount?: number;
     completedFaciSkillCount?: number;
+    bonusMilestonePoints?: number;
   };
-  // Canonical Arcade v2 Facilitator contract.
+  // Canonical Arcade v2/v3 Facilitator contract.
   facilitator?: FacilitatorApiMetadata;
   // Deprecated legacy shape retained only so previously stored responses can
   // still be read safely. Current network requests do not consume this field.

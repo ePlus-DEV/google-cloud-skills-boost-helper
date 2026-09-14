@@ -10,6 +10,7 @@ export type FacilitatorCounts = {
   faciTrivia?: number;
   faciSkill?: number;
   faciCompletion?: number;
+  bonusMilestonePoints?: number;
 };
 
 export type FacilitatorMilestoneRule = {
@@ -25,6 +26,13 @@ export type FacilitatorApiMetadata = {
   milestoneBonusPoints?: number;
   estimatedMilestone?: string | null;
   milestonePolicy?: string;
+  bonusMilestoneEnabled?: boolean;
+  bonusMilestoneConfirmation?: string;
+  bonusMilestoneAvailablePoints?: number;
+  bonusMilestoneCompleted?: boolean;
+  bonusMilestonePoints?: number | null;
+  bonusMilestoneStatus?: string;
+  bonusIncludedInTotal?: boolean;
   milestones?: FacilitatorMilestoneRule[];
 };
 
@@ -150,9 +158,8 @@ export function syncFacilitatorRulesFromApi(
 }
 
 /**
- * Read the bonus directly from API metadata when available. This is useful for
- * callers that already have the complete Arcade response and should not
- * re-derive a value the backend has calculated.
+ * Read the standard milestone bonus directly from API metadata when available.
+ * Bonus Milestone points are applied separately from facilitator metadata.
  */
 export function getFacilitatorBonusFromApi(
   facilitator?: FacilitatorApiMetadata | null,
@@ -164,8 +171,17 @@ export function getFacilitatorBonusFromApi(
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 
+/** Read the separate Bonus Milestone amount already calculated by the API. */
+function getApiBonusMilestonePoints(
+  faciCounts: FacilitatorCounts | null | undefined,
+): number {
+  const value = Number(faciCounts?.bonusMilestonePoints);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
+}
+
 /**
- * Return the bonus for the highest completed Facilitator milestone.
+ * Return the highest standard Facilitator milestone plus the separate Bonus
+ * Milestone amount already calculated by the API for the self-reported flag.
  */
 export function calculateFacilitatorBonus(
   faciCounts: FacilitatorCounts | null | undefined,
@@ -189,11 +205,12 @@ export function calculateFacilitatorBonus(
     }
   }
 
-  return highestBonusPoints;
+  return highestBonusPoints + getApiBonusMilestonePoints(faciCounts);
 }
 
 /**
  * Return a per-milestone bonus breakdown while applying the highest-only rule.
+ * `bonusMilestone` remains separate from the standard milestone map.
  */
 export function calculateMilestoneBonusBreakdown(
   faciCounts: FacilitatorCounts | null | undefined,
@@ -201,6 +218,7 @@ export function calculateMilestoneBonusBreakdown(
   if (!faciCounts) {
     return {
       milestones: { 1: 0, 2: 0, 3: 0, ultimate: 0 },
+      bonusMilestone: 0,
       total: 0,
       highestCompleted: 0,
     };
@@ -234,9 +252,12 @@ export function calculateMilestoneBonusBreakdown(
     }
   }
 
+  const bonusMilestone = getApiBonusMilestonePoints(faciCounts);
+
   return {
     milestones: milestoneBonus,
-    total: highestBonusPoints,
+    bonusMilestone,
+    total: highestBonusPoints + bonusMilestone,
     highestCompleted: highestCompletedMilestone,
   };
 }

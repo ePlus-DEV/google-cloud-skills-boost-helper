@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "अपडेट सूचनाओं और ब्राउज़र सूचनाओं को नियंत्रित करें।"
+  },
+  "bonusMilestoneClaim": {
+    "message": "+10 प्राप्त करें"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone पूरा होने की पुष्टि करके +10 अंक जोड़ें।"
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "Bonus Milestone की पुष्टि करें"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "यह बोनस उपयोगकर्ता द्वारा स्वयं पुष्टि किया जाता है। Bonus Milestone पूरा करने के बाद ही पुष्टि करें।"
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "मैं पुष्टि करता/करती हूँ कि मैंने Bonus Milestone पूरा कर लिया है।"
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "+10 की पुष्टि करें"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "Bonus Milestone की पुष्टि हो गई"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "अभी +10 अंक लागू हैं।"
+  },
+  "bonusMilestoneUndo": {
+    "message": "पुष्टि हटाएँ"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "Bonus Milestone की पुष्टि हो गई: +10 अंक लागू हैं।"
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "केवल स्वयं की पुष्टि। यह पुष्टि एक्सटेंशन में दिखाई जाती है और इसका अर्थ यह नहीं है कि Google Cloud Skills Boost / Arcade ने पूर्णता सत्यापित की है या इन अंकों को आधिकारिक रूप से प्रदान किया है।"
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "आधिकारिक Bonus Milestone पेज खोलें"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "अपडेट हो रहा है…"
+  },
+  "bonusMilestoneError": {
+    "message": "Bonus Milestone अपडेट नहीं हो सका। कृपया फिर से कोशिश करें।"
   }
 }

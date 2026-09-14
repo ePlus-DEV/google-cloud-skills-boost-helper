@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "Control update notices and browser notifications."
+  },
+  "bonusMilestoneClaim": {
+    "message": "Claim +10"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone: confirm completion to add +10 points."
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "Confirm Bonus Milestone"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "This bonus is self-reported. Confirm only after you have completed the Bonus Milestone."
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "I confirm that I completed the Bonus Milestone."
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "Confirm +10"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "Bonus Milestone confirmed"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "+10 points are currently applied."
+  },
+  "bonusMilestoneUndo": {
+    "message": "Undo confirmation"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "Bonus Milestone confirmed: +10 points applied."
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "Self-reported only. This confirmation is shown by the extension and does not mean Google Cloud Skills Boost / Arcade has verified or awarded these points."
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "Open official Bonus Milestone page"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "Updating…"
+  },
+  "bonusMilestoneError": {
+    "message": "Could not update the Bonus Milestone. Please try again."
   }
 }

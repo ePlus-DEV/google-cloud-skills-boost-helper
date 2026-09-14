@@ -937,5 +937,47 @@
   },
   "notificationsSectionDescription": {
     "message": "更新のお知らせとブラウザ通知を管理します。"
+  },
+  "bonusMilestoneClaim": {
+    "message": "+10 を受け取る"
+  },
+  "bonusMilestoneClaimTooltip": {
+    "message": "Bonus Milestone の完了を確認すると +10 ポイントが加算されます。"
+  },
+  "bonusMilestoneConfirmTitle": {
+    "message": "Bonus Milestone を確認"
+  },
+  "bonusMilestoneConfirmMessage": {
+    "message": "このボーナスは自己申告です。Bonus Milestone を完了した後にのみ確認してください。"
+  },
+  "bonusMilestoneConfirmCheckbox": {
+    "message": "Bonus Milestone を完了したことを確認します。"
+  },
+  "bonusMilestoneConfirmButton": {
+    "message": "+10 を確定"
+  },
+  "bonusMilestoneConfirmedTitle": {
+    "message": "Bonus Milestone 確認済み"
+  },
+  "bonusMilestoneConfirmedMessage": {
+    "message": "現在 +10 ポイントが加算されています。"
+  },
+  "bonusMilestoneUndo": {
+    "message": "確認を取り消す"
+  },
+  "bonusMilestoneAppliedTooltip": {
+    "message": "Bonus Milestone 確認済み: +10 ポイント適用中。"
+  },
+  "bonusMilestoneDisclaimer": {
+    "message": "自己申告のみです。この確認は拡張機能内で表示されるもので、Google Cloud Skills Boost / Arcade が完了を検証したり、このポイントを正式に付与したことを意味しません。"
+  },
+  "bonusMilestoneOfficialPage": {
+    "message": "公式 Bonus Milestone ページを開く"
+  },
+  "bonusMilestoneUpdating": {
+    "message": "更新中…"
+  },
+  "bonusMilestoneError": {
+    "message": "Bonus Milestone を更新できませんでした。もう一度お試しください。"
   }
 }
