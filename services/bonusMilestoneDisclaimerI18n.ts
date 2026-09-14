@@ -16,7 +16,23 @@ const DISCLAIMER_COPY: Record<string, string> = {
   ar: "تأكيد ذاتي فقط. يظهر هذا التأكيد داخل الإضافة ولا يعني أن Google Cloud Skills Boost / Arcade قد تحقّق من الإكمال أو منح هذه النقاط رسميًا.",
 };
 
-/** Resolve the best supported locale for the Bonus Milestone disclaimer. */
+const OFFICIAL_PAGE_COPY: Record<string, string> = {
+  en: "Open official Bonus Milestone page",
+  vi: "Mở trang Bonus Milestone chính thức",
+  ja: "公式 Bonus Milestone ページを開く",
+  ko: "공식 Bonus Milestone 페이지 열기",
+  zh_CN: "打开官方 Bonus Milestone 页面",
+  de: "Offizielle Bonus-Milestone-Seite öffnen",
+  es: "Abrir la página oficial de Bonus Milestone",
+  fr: "Ouvrir la page officielle du Bonus Milestone",
+  it: "Apri la pagina ufficiale del Bonus Milestone",
+  pt_BR: "Abrir a página oficial do Bonus Milestone",
+  ru: "Открыть официальную страницу Bonus Milestone",
+  hi: "आधिकारिक Bonus Milestone पेज खोलें",
+  ar: "فتح صفحة Bonus Milestone الرسمية",
+};
+
+/** Resolve the best supported locale for Bonus Milestone auxiliary copy. */
 function resolveDisclaimerLocale(): string {
   let raw = "en";
   try {
@@ -35,4 +51,9 @@ function resolveDisclaimerLocale(): string {
 /** Return the localized self-reported / non-Google-verification disclaimer. */
 export function getBonusMilestoneDisclaimer(): string {
   return DISCLAIMER_COPY[resolveDisclaimerLocale()] || DISCLAIMER_COPY.en;
+}
+
+/** Return the localized label for the official Bonus Milestone page link. */
+export function getBonusMilestoneOfficialPageLabel(): string {
+  return OFFICIAL_PAGE_COPY[resolveDisclaimerLocale()] || OFFICIAL_PAGE_COPY.en;
 }
