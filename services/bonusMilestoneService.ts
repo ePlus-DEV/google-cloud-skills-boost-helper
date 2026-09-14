@@ -206,7 +206,8 @@ export async function getBonusMilestoneControlState(): Promise<BonusMilestoneCon
     participating &&
     enabled &&
     points > 0 &&
-    (storedCompleted ?? arcadeData?.facilitator?.bonusMilestoneCompleted === true);
+    (storedCompleted ??
+      arcadeData?.facilitator?.bonusMilestoneCompleted === true);
 
   return {
     completed,
