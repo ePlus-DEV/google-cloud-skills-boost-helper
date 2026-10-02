@@ -27,6 +27,8 @@
 
 - [Introduction](#introduction)
 - [Key Features](#key-features)
+- [Architecture](#architecture)
+- [Roadmap](#roadmap)
 - [Installation](#installation)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -48,6 +50,14 @@ Google Cloud Skills Boost Helper is a browser extension that enhances your exper
 **🔍 Lab Solution Search** — Fuzzy-matches the current lab name against a solutions database and surfaces a direct link, with fallback search via Google or YouTube.
 
 **🌐 13 Languages Supported** — Interface localized for English, Vietnamese, Japanese, Korean, Chinese (Simplified), French, German, Spanish, Portuguese (BR), Italian, Russian, Arabic, and Hindi.
+
+## Architecture
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the current implemented feature inventory, project structure, service ownership, storage model, and main runtime/data flows.
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for the planned direction of the extension, including Skills Boost UI resilience, multi-season Arcade scoring, an AI/Agent layer grounded in the Arcade Calculator, automatic score refresh, keyboard shortcuts, solution matching, and cross-browser quality work.
 
 ## Installation
 

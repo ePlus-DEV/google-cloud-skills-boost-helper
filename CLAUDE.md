@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> **Canonical project documentation:** read [ARCHITECTURE.md](ARCHITECTURE.md) for the current implemented features, ownership, structure, and data flows. Read [ROADMAP.md](ROADMAP.md) for future/planned work. This file contains Claude Code-specific working instructions and should not duplicate the full product architecture.\n\nThis file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Commands
 
