@@ -98,6 +98,214 @@ Required scenarios:
 
 ---
 
+## Next — AI / Agent for Arcade Calculator
+
+AI and Agent features should be built **on top of the existing Arcade Calculator**, not replace its scoring logic. The Calculator remains the deterministic source of truth for points, milestone rules, and API-derived status; AI is responsible for explanation and planning, while Agent actions orchestrate existing extension capabilities with explicit user intent.
+
+### Current Arcade Calculator foundation
+
+The extension already exposes the structured data needed for a useful AI/Agent layer:
+
+- Signed Arcade API v3 requests using the normalized public profile URL/profile ID.
+- Total Arcade points plus structured point fields such as Game, Trivia, Skill, Special, and Completion points when returned by the API.
+- Facilitator metadata, including current badge counts, milestone requirements, Regular Arcade/base points, and Facilitator bonus values.
+- Milestone progress displayed as both percentage and completed/required badge counts.
+- API-provided Facilitator rules as the primary source of truth, with local rules used only as compatibility fallback.
+- Bonus Milestone availability and self-reported completion state, kept separate from the standard Facilitator milestone bonus.
+- Per-account Arcade snapshots, active-account switching, and `lastUpdated` freshness metadata.
+- Extension badge display using the active account's calculated total.
+- Existing localization infrastructure for all 13 shipped locales.
+
+There is **no AI scoring engine today**. Current totals and milestone progress are calculated from deterministic API/rule data. The roadmap must preserve that behavior.
+
+### 1. AI Arcade Insights
+
+Add an optional AI explanation layer that consumes the normalized Calculator result.
+
+Example questions:
+
+- **Why do I have this many Arcade points?**
+- **What contributes to my current total?**
+- **How far am I from the next Facilitator milestone?**
+- **Which requirement is currently blocking the next milestone?**
+- **What changed since my previous score refresh?**
+- **Is this result stale or incomplete?**
+
+Planned work:
+
+- [ ] Define a typed, read-only `ArcadeInsightContext` derived from the Calculator result.
+- [ ] Include current total, point breakdown, badge counts, active Facilitator rules, milestone progress, Bonus Milestone state, selected period, and freshness metadata.
+- [ ] Generate natural-language explanations from those facts without recalculating the authoritative total in the model.
+- [ ] Calculate exact "remaining to milestone" values in deterministic code before passing them to AI.
+- [ ] Clearly distinguish **official/API data**, **self-reported Bonus Milestone state**, **local fallback rules**, and **AI explanation**.
+- [ ] Warn when data is stale, incomplete, using fallback rules, or missing fields required for a confident answer.
+- [ ] Support the same 13 locales as the rest of the extension.
+
+**Example:**
+
+```text
+User: How far am I from the next Facilitator milestone?
+
+Calculator:
+- Games: 7 / 8
+- Skill Badges: 31 / 34
+- Current milestone progress: 38 / 42
+
+AI:
+You need 1 more Game badge and 3 more Skill Badges to satisfy the next
+milestone requirements. This explanation is based on the active rules returned
+by the Arcade API.
+```
+
+The arithmetic in the example must come from deterministic Calculator helpers, not from free-form model math.
+
+### 2. Goal planner
+
+Allow users to choose a target such as a Facilitator milestone and receive a plan grounded in the Calculator state.
+
+- [ ] Select a target milestone from the active API rules.
+- [ ] Show exact remaining Games / Skill Badges / other active requirements.
+- [ ] Show the Regular Arcade/base points and Facilitator bonus associated with that milestone when provided by the API.
+- [ ] Build a simple ordered checklist from unmet requirements.
+- [ ] Re-plan automatically after a score refresh.
+- [ ] Keep recommendations descriptive; do not claim that future rewards or points are guaranteed until the authoritative data confirms them.
+
+Potential UI:
+
+```text
+AI Arcade Advisor
+
+Target: Milestone 3
+
+Current
+Games        8 / 10
+Skill Badges 41 / 50
+
+Remaining
+2 Games
+9 Skill Badges
+
+[Explain my score] [Refresh & re-plan]
+```
+
+### 3. Agent actions
+
+The Agent layer may orchestrate existing extension functions, but it should not bypass their validation, permissions, or confirmation flows.
+
+Initial actions:
+
+- [ ] **Refresh my Arcade score** — invoke the existing Calculator fetch flow for the active profile.
+- [ ] **Explain the refreshed result** — compare the previous and new snapshots, then summarize the change.
+- [ ] **Switch profile and inspect score** — use existing multi-account state.
+- [ ] **Switch Arcade period** — after multi-season/session support from #215 is available.
+- [ ] **Open the relevant Arcade/Facilitator information page** when the user asks for the official source.
+- [ ] **Open a matching lab/solution search** only when the user explicitly requests help finding relevant learning content.
+- [ ] Reuse existing loading/error/rate-limit behavior instead of creating a second network path.
+
+Agent actions that modify state must be explicit. In particular:
+
+- Never auto-confirm or auto-claim the self-reported Bonus Milestone.
+- Never change profile settings, selected period, or account state silently.
+- Never repeatedly force-refresh in the background to chase a target score.
+- Never present a locally predicted point total as an official Arcade result.
+
+### 4. Calculator tools for AI/Agent
+
+Expose a small internal tool layer instead of letting AI read or mutate popup DOM directly.
+
+Suggested read tools:
+
+```text
+get_active_arcade_snapshot()
+get_arcade_breakdown()
+get_facilitator_progress()
+get_next_milestone_gap()
+get_arcade_data_freshness()
+get_available_arcade_periods()
+```
+
+Suggested user-triggered actions:
+
+```text
+refresh_arcade_score()
+select_arcade_period(period_id)
+switch_active_profile(profile_id)
+open_arcade_source(resource)
+```
+
+Implementation principles:
+
+- [ ] Tool outputs use typed JSON, not rendered HTML.
+- [ ] Deterministic services perform all point/milestone arithmetic.
+- [ ] AI receives the resulting facts and explains them.
+- [ ] Read operations can be low-friction; state-changing operations require clear user intent/confirmation.
+- [ ] Every Agent action returns a structured success/error result that can be shown without guessing.
+- [ ] Keep tools reusable by popup UI, future side panel, and other approved assistant surfaces.
+
+### 5. Privacy and security
+
+AI/Agent integration must not expand the data boundary silently.
+
+- [ ] Make AI features opt-in until the data flow is clearly documented.
+- [ ] Send only the minimum normalized Calculator context required for the requested explanation.
+- [ ] Do not send browser cookies, Skills Boost session tokens, HMAC signing values, extension secrets, or unrelated account data to an AI provider.
+- [ ] Do not expose signed Arcade request headers or raw authentication material to the model.
+- [ ] Make it clear when an explanation is produced by AI versus returned by the Arcade API.
+- [ ] Preserve existing server validation, rate limiting, and replay protection for Agent-triggered refreshes.
+- [ ] Provide a non-AI Calculator experience with no feature loss for users who keep AI disabled.
+
+### 6. Acceptance scenarios
+
+#### Scenario A — Explain current total
+
+```text
+User asks: "Why is my score 118?"
+=> Agent reads the current Calculator snapshot.
+=> Deterministic breakdown is used as source data.
+=> AI explains the returned components.
+=> AI does not invent missing point categories.
+```
+
+#### Scenario B — Plan for the next milestone
+
+```text
+User asks: "What do I still need for the next milestone?"
+=> Calculator helper resolves the next milestone from active API rules.
+=> Deterministic code calculates remaining requirements.
+=> AI converts the result into a short actionable explanation.
+```
+
+#### Scenario C — Refresh and compare
+
+```text
+User asks: "Refresh my score and tell me what changed."
+=> Agent performs one user-requested refresh through the existing Arcade flow.
+=> Previous and new snapshots are compared deterministically.
+=> AI summarizes added/removed points, progress, and freshness.
+```
+
+#### Scenario D — Stale or incomplete data
+
+```text
+Calculator snapshot is old or required fields are missing.
+=> AI explicitly reports the limitation.
+=> Agent offers a refresh action.
+=> No estimated official score is fabricated.
+```
+
+#### Scenario E — Bonus Milestone
+
+```text
+Bonus Milestone is available but not confirmed.
+=> AI may explain what the control means.
+=> Agent may open the existing confirmation UI when requested.
+=> Agent never checks/confirms the self-reported completion box automatically.
+```
+
+**Done when:** a user can ask natural-language questions about their Arcade Calculator state, receive explanations fully grounded in deterministic Calculator data, and request safe Agent actions without creating a second scoring implementation.
+
+---
+
 ## Next — Safer automatic score refresh
 
 Tracked in [#38 — Auto check score](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/issues/38).
