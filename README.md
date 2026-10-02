@@ -27,6 +27,7 @@
 
 - [Introduction](#introduction)
 - [Key Features](#key-features)
+- [Architecture](#architecture)
 - [Roadmap](#roadmap)
 - [Installation](#installation)
 - [Development](#development)
@@ -49,6 +50,10 @@ Google Cloud Skills Boost Helper is a browser extension that enhances your exper
 **🔍 Lab Solution Search** — Fuzzy-matches the current lab name against a solutions database and surfaces a direct link, with fallback search via Google or YouTube.
 
 **🌐 13 Languages Supported** — Interface localized for English, Vietnamese, Japanese, Korean, Chinese (Simplified), French, German, Spanish, Portuguese (BR), Italian, Russian, Arabic, and Hindi.
+
+## Architecture
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the current implemented feature inventory, project structure, service ownership, storage model, and main runtime/data flows.
 
 ## Roadmap
 
