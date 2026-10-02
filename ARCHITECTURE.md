@@ -484,50 +484,50 @@ Rule:
 
 ### Core directories
 
-| Path | Responsibility |
-| --- | --- |
-| `entrypoints/` | WXT runtime entrypoints and extension pages |
-| `services/` | Business/domain logic |
-| `components/` | UI components and injected UI helpers |
-| `utils/` | Pure/shared utilities |
-| `types/` | Shared TypeScript contracts |
-| `assets/` | CSS and static styling assets |
-| `public/` | Public files and browser locale catalogs |
-| `tests/` | Vitest regression/unit tests |
-| `.github/` | CI/release/dependency automation |
-| `.claude/` | Claude-specific development skills/instructions |
+| Path           | Responsibility                                  |
+| -------------- | ----------------------------------------------- |
+| `entrypoints/` | WXT runtime entrypoints and extension pages     |
+| `services/`    | Business/domain logic                           |
+| `components/`  | UI components and injected UI helpers           |
+| `utils/`       | Pure/shared utilities                           |
+| `types/`       | Shared TypeScript contracts                     |
+| `assets/`      | CSS and static styling assets                   |
+| `public/`      | Public files and browser locale catalogs        |
+| `tests/`       | Vitest regression/unit tests                    |
+| `.github/`     | CI/release/dependency automation                |
+| `.claude/`     | Claude-specific development skills/instructions |
 
 ### Important entrypoints
 
-| Path | Role |
-| --- | --- |
+| Path                        | Role                                              |
+| --------------------------- | ------------------------------------------------- |
 | `entrypoints/background.ts` | service worker, lifecycle, badge/message handling |
-| `entrypoints/content.ts` | Skills Boost page integration |
-| `entrypoints/popup/` | main popup UI |
-| `entrypoints/options/` | settings/account/data management |
-| `entrypoints/theme-studio/` | custom popup-theme editor |
-| changelog entrypoint | update/release information |
+| `entrypoints/content.ts`    | Skills Boost page integration                     |
+| `entrypoints/popup/`        | main popup UI                                     |
+| `entrypoints/options/`      | settings/account/data management                  |
+| `entrypoints/theme-studio/` | custom popup-theme editor                         |
+| changelog entrypoint        | update/release information                        |
 
 ### Important services
 
-| Service | Responsibility |
-| --- | --- |
-| `arcadeApiService.ts` | Arcade v3 request and Arcade/Facilitator metadata sync |
-| `facilitatorService.ts` | Facilitator rules/progress/bonus helpers |
-| `bonusMilestoneService.ts` | self-reported Bonus Milestone state |
-| `accountService.ts` | account CRUD, switching, migration |
-| `storageService.ts` | account-aware storage compatibility layer and badge refresh |
-| `popupService.ts` | popup orchestration |
-| `popupUIService.ts` | popup rendering/update logic |
-| `searchService.ts` | lab solution matching |
-| `labService.ts` | lab-page workflow |
-| `apiClient.ts` | solution-content API client |
-| `profileService.ts` | Skills Boost profile-page helpers |
-| `firebaseService.ts` | Remote Config |
-| `exportService.ts` | JSON/CSV export |
-| `browserService.ts` | browser detection/compatibility helpers |
-| `backToTopService.ts` | page scroll helper |
-| `updateNotificationService.ts` | changelog/update notification preference |
+| Service                        | Responsibility                                              |
+| ------------------------------ | ----------------------------------------------------------- |
+| `arcadeApiService.ts`          | Arcade v3 request and Arcade/Facilitator metadata sync      |
+| `facilitatorService.ts`        | Facilitator rules/progress/bonus helpers                    |
+| `bonusMilestoneService.ts`     | self-reported Bonus Milestone state                         |
+| `accountService.ts`            | account CRUD, switching, migration                          |
+| `storageService.ts`            | account-aware storage compatibility layer and badge refresh |
+| `popupService.ts`              | popup orchestration                                         |
+| `popupUIService.ts`            | popup rendering/update logic                                |
+| `searchService.ts`             | lab solution matching                                       |
+| `labService.ts`                | lab-page workflow                                           |
+| `apiClient.ts`                 | solution-content API client                                 |
+| `profileService.ts`            | Skills Boost profile-page helpers                           |
+| `firebaseService.ts`           | Remote Config                                               |
+| `exportService.ts`             | JSON/CSV export                                             |
+| `browserService.ts`            | browser detection/compatibility helpers                     |
+| `backToTopService.ts`          | page scroll helper                                          |
+| `updateNotificationService.ts` | changelog/update notification preference                    |
 
 ---
 
@@ -741,14 +741,14 @@ Changes to scoring, Facilitator rules, Bonus Milestone, solution matching, stora
 
 Use these files for different purposes:
 
-| File | Purpose |
-| --- | --- |
-| `README.md` | public project introduction and installation |
+| File              | Purpose                                                       |
+| ----------------- | ------------------------------------------------------------- |
+| `README.md`       | public project introduction and installation                  |
 | `ARCHITECTURE.md` | **current features, structure, ownership, and runtime flows** |
-| `ROADMAP.md` | planned/future work |
-| `CONTRIBUTING.md` | contribution workflow and PR requirements |
-| `CLAUDE.md` | Claude Code-specific working instructions |
-| `CHANGELOG.md` | released changes by version |
+| `ROADMAP.md`      | planned/future work                                           |
+| `CONTRIBUTING.md` | contribution workflow and PR requirements                     |
+| `CLAUDE.md`       | Claude Code-specific working instructions                     |
+| `CHANGELOG.md`    | released changes by version                                   |
 
 When a feature becomes real:
 
