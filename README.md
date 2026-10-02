@@ -52,7 +52,7 @@ Google Cloud Skills Boost Helper is a browser extension that enhances your exper
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for the planned direction of the extension, including Skills Boost UI resilience, multi-season Arcade scoring, automatic score refresh, keyboard shortcuts, solution matching, and cross-browser quality work.
+See [ROADMAP.md](ROADMAP.md) for the planned direction of the extension, including Skills Boost UI resilience, multi-season Arcade scoring, an AI/Agent layer grounded in the Arcade Calculator, automatic score refresh, keyboard shortcuts, solution matching, and cross-browser quality work.
 
 ## Installation
 
