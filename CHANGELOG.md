@@ -5,6 +5,94 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - 2026-09-14
+### :sparkles: New Features
+- [`6e34f7b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6e34f7b034e5c682863d0e5ff12837988dfd3f9f) - add localized Bonus Milestone disclaimer *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`78063ab`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/78063abd8867eb1ac62660c59095a8110143d7a7) - show self-reported disclaimer in Bonus Milestone modal *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`83e2272`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/83e227236d5c182d77a93c4dccce6045ec94765a) - localize official Bonus Milestone link *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6e209f4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6e209f4592d3884766f56d78a5ffa9c2fea7889c) - link official Bonus Milestone page *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :bug: Bug Fixes
+- [`ce62481`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ce62481596c0636da7fca7cb9137c9109088f2ad) - preserve successful Arcade v3 responses *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a4bf101`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a4bf1015eff6df7bd20fcdbb685ec0bdb3622b88) - rebase Bonus Milestone UX onto dev *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f5fc978`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f5fc9782733d2790169dd8c4d6e08332f35d8629) - address DeepSource bonus milestone findings *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a716fa2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a716fa23c6e7f2eb7e57e9d379dde3bf7ae914c1) - document Bonus Milestone service helpers *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4f7f215`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4f7f21561f4f088f3efbd0860f78ce8c240f06fe) - document Bonus Milestone i18n helpers *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`290bfb4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/290bfb4177dc4989d3f4bf67db22d393f2f1a6cf) - guard bonus milestone across periods *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`5a51194`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/5a51194eac80a974c0fb1209917ac12523268203) - submit bonus milestone confirmation to hub *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`fa8f344`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/fa8f344daecdaf946159668f34efa5493a2fcd5b) - restore Bonus Milestone toggle control *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`32bc96e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/32bc96e4c902d0f5a844c78601e290a315e83d71) - preserve existing Bonus Milestone UI *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`639501f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/639501fd9af210f778482ed3765f980a94f78539) - restore approved Bonus Milestone UX *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7e7d70d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7e7d70df657d79bab50cac18e5645c9b5d8a957f) - restore Bonus Milestone localization helper *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f268059`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f268059b9cbadd9504c901ec3daece22df8b5489) - bootstrap bonus milestone control in popup *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`176756d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/176756dc83cd85b387029adc0f2c5232e2967341) - satisfy popup bootstrap static analysis *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b610a9e`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b610a9e11f757e44b8d37153b6ae624118772d20) - show only self-reported bonus in claim chip *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3fc7cea`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3fc7cea61d568a2c23dca489bbee8d41b61038c9) - keep Bonus Milestone claim at +10 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`550b906`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/550b90617a7b666f3c87293fc6368a40136b8070) - let undo override stale bonus confirmation *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`30d8d7c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/30d8d7c59e788917aba6d25c0c4cf3fb7063c761) - correct Arabic Bonus Milestone tooltip *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7734360`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/77343608661b428e19f844dda94425c86a6c5546) - show pointer cursor on Bonus Milestone claim *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`a347e41`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/a347e4100ed66fd68f5afdd38a813b0b6d88c6fc) - use extension tooltip for Bonus Milestone claim *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`33fe4f3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/33fe4f32576d7b5752e84cc19e62eb08e8e309f1) - move Bonus Milestone tooltip below claim *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :recycle: Refactors
+- [`dc8744f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/dc8744fc0b3b3e0e9819d5aa8879d5212cb48e3e) - consolidate Bonus Milestone i18n copy *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`2e54d85`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2e54d85e79f1d6541a50bd34616e01d85708d14a) - use unified Bonus Milestone i18n *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4e03d30`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4e03d302972813b7ef6360bbd99bdbf969c8287f) - test unified Bonus Milestone i18n *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d09fcf1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d09fcf11b939675c6c05218c96836991369a9ffd) - remove duplicate Bonus Milestone i18n helper *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`58e7442`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/58e74420b0c78c74fe6c2e48f7512286862ba2bb) - isolate Bonus Milestone info panel *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c5f807d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c5f807d40a6f8ac9db5fc9a59fe026f4bde0f77e) - move Bonus Milestone copy to browser i18n *(commit by [@github-actions[bot]](https://github.com/apps/github-actions))*
+- [`3b84f6f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3b84f6fa1e10a255e587c8afc6e7fa2faeff12f0) - use native browser i18n for Bonus Milestone *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`d8dd150`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d8dd15005c5dfb065cd495f8fe84713628b62278) - remove duplicate Bonus Milestone i18n service *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :white_check_mark: Tests
+- [`781037b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/781037b3a77cabb2fafe4e225cf9e835674d3927) - cover bonus milestone period safety *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`acd91a2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/acd91a28b289fb5b07fc604414abb2d1354ba474) - cover bonus milestone request payload *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3b4deb1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3b4deb1ce3e3bbcb7b19c0c8999a0e68e6e2dadf) - relax bonus request payload assertion *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`c28d309`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/c28d309c010791abf36d5c0ef91016ec1dd32364) - document bonus milestone test helpers *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3299c94`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/3299c94765807fb2a3dc59796a8ba43101e8d9a2) - avoid async mock warnings *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`9f9c583`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9f9c5834461e1836f08c9af767fc487794b3ad2b) - keep Bonus Milestone toggle visible *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e38a58b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e38a58bc62e9c677b1a8e5bf499742b6202a972c) - avoid stale React root between toggle cases *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`2424a28`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2424a28e14661df783a9a3efde4be702ec587f7b) - keep toggle regression coverage *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`47c490d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/47c490d9766a61c6eef867438e034f2ec6c44727) - document no-bonus toggle behavior *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`eb9bb6c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/eb9bb6c317da623b5e0939302af6017291d7e4ac) - preserve existing Bonus Milestone design *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4880bd2`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4880bd2ae622522fd06eaa0fd6f8f0ef464a4487) - remove unintended toggle UI regression test *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`5e9d2fc`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/5e9d2fc441d4fbb9e9724231317f0afae1fdd740) - cover bonus milestone popup bootstrap *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`bebfdf6`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/bebfdf618cca3c7ec04faed3dd4db12f18a7db1c) - keep claim action visible before confirmation *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`9ef8391`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9ef839106f9860fc70d639e10e1a8efdfb179589) - keep standard milestone bonus out of claim chip *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`12ea18b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/12ea18b41b2eb85d8d2ede4557e7d23339a98baf) - lock Bonus Milestone claim copy to +10 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`54445e3`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/54445e342805d194e4e20d33735c6b323eb8bcb0) - cover bonus milestone undo precedence *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`6d9a1c4`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/6d9a1c466d33e5116793a7bf4e715a35b14d5fdc) - ensure undo removes self-reported bonus *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b0d46b0`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b0d46b0d7c29813022b42c85f8ee8858feed462c) - require self-reported disclaimer in Bonus Milestone modal *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ed4c2ec`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ed4c2ecc96462533180f2b3d82d40332a663e19f) - cover official Bonus Milestone link *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`465d543`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/465d543b495a8d6b60e1d8fb1de402f5ed7c088b) - use browser locale messages for Bonus Milestone UI *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`58f982c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/58f982c6f5d6da78b1a2ec58dfd9532ddf857773) - require Bonus Milestone messages in every locale catalog *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f2dd60d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f2dd60d994ac4c6c661809771b0625b2f221f6c2) - require pointer cursor on claim action *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e088a88`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e088a8874238b3487ff109cddd41bdd9d103322d) - cover extension tooltip on Bonus Milestone claim *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`dc24935`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/dc24935eabb1bbe1e5a39eb5da2ee36e89c2d9a0) - keep Bonus Milestone tooltip below claim *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+### :wrench: Chores
+- [`920c49b`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/920c49bee2ed80f9fd9871b5762f5f3df89ac915) - **deps**: bump the production-dependencies group with 3 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`ac08f82`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ac08f82d4ff54626e333b6d5530acb1f278ffd56) - **deps**: bump the production-dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`d4411fe`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d4411fedacb1e0659f44ce4add95783671ce3bd6) - **deps-dev**: bump vitest from 4.1.5 to 4.1.11 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`21e1482`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/21e1482c775030a56eca35ad4315b2c70a6d4f9a) - remove unused Bonus Milestone copy overrides *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`4bfd0ea`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/4bfd0eab5e3598e8894f809f4cec3afb8c09221b) - remove accidental empty file *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`ce50e97`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/ce50e97ac8041bc115e2e6aeb91550fb5b86ea76) - no-op *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`cb1d140`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/cb1d14080ed4de00e0ce40d59510c5ac9957f61c) - remove accidental empty file *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`b124cdd`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/b124cdd75de6f83faa7f81e2f60bfe5f1c7f7f59) - keep localized official link copy *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`7dd642c`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/7dd642c22ae898c84007c1b20afbfe9402c3232a) - ensure no accidental file *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`f6d7e1f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f6d7e1feb03c42686b95d75b976a1b44b728a946) - remove accidental empty file *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`3206624`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/32066244cdf3fb0c230e48427d8b5836f5d74ca7) - no content change *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`0b1c3af`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/0b1c3afa238896bbf053c9e8c22bf13b8d58697b) - preserve current link copy *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`931c03a`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/931c03a79633919cde9d71a7e240aca8e0f86208) - retain localized Bonus Milestone link label *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`78b2de7`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/78b2de7b2332fd822d2c72acd2ad97fbe7b0c5cb) - **deps**: bump the production-dependencies group with 5 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`8c81e40`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/8c81e40b49d27373bec4dbca5116d44bacce57af) - bump version to 1.3.3 *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`9484b2f`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/9484b2fb99b649e0843ac49d38c334022b70ee52) - add one-time Bonus Milestone i18n migration *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`2995b3d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/2995b3d2fc5e8c3d13ec48c91b0c01686b1d7278) - run one-time Bonus Milestone i18n migration *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`e09fdd1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/e09fdd1376d6f6ccff6e42afa5101d94f1a8decd) - remove one-time i18n migration workflow *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`87178c5`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/87178c52bf2f94ab80465a1206290a5a62973b36) - remove one-time i18n migration script *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+- [`afaa946`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/afaa9467673c979c38d7d0c01af98fe21ab4c264) - remove accidental empty file *(commit by [@hoangsvit](https://github.com/hoangsvit))*
+
+
 ## [1.3.2] - 2026-08-11
 
 ### :bug: Bug Fixes
@@ -1322,3 +1410,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.0]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.2.15...1.3.0
 [1.3.1]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.0...1.3.1
 [1.3.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.1...1.3.2
+[1.3.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.2...1.3.3
