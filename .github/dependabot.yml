@@ -7,11 +7,23 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 10
+
+    # Keep routine version updates on dev, but do not bundle major
+    # toolchain migrations into the same PR. Dependabot security updates
+    # always target the default branch (main), regardless of target-branch.
     groups:
       dev-dependencies:
+        applies-to: version-updates
         dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
       production-dependencies:
+        applies-to: version-updates
         dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
