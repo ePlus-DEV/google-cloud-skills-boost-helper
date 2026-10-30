@@ -23,7 +23,9 @@ describe("PopupUIService countdown", () => {
     vi.setSystemTime(new Date("2026-10-30T00:00:00.000Z"));
     vi.clearAllMocks();
     remoteConfig.isInitialized.mockReturnValue(true);
-    remoteConfig.getStringParam.mockImplementation(async (_key, fallback) => fallback);
+    remoteConfig.getStringParam.mockImplementation(
+      async (_key, fallback) => fallback,
+    );
     remoteConfig.getBooleanParam.mockResolvedValue(true);
     (
       PopupUIService as typeof PopupUIService & {
@@ -40,12 +42,15 @@ describe("PopupUIService countdown", () => {
   });
 
   it("hides only the disabled countdown without creating a timer", async () => {
-    document.body.innerHTML = '<div id="disabled" class="countdown-instance" data-program="facilitator"></div>';
+    document.body.innerHTML =
+      '<div id="disabled" class="countdown-instance" data-program="facilitator"></div>';
     remoteConfig.getBooleanParam.mockResolvedValue(false);
 
     await PopupUIService.startFacilitatorCountdown();
 
-    expect(document.getElementById("disabled")?.classList.contains("hidden")).toBe(true);
+    expect(
+      document.getElementById("disabled")?.classList.contains("hidden"),
+    ).toBe(true);
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -65,7 +70,9 @@ describe("PopupUIService countdown", () => {
     await vi.advanceTimersByTimeAsync(1000);
     expect(counter?.textContent).toBe("02");
     await vi.advanceTimersByTimeAsync(2000);
-    expect(document.querySelector("#active")?.textContent).toContain("arcadeDeadlinePassed");
+    expect(document.querySelector("#active")?.textContent).toContain(
+      "arcadeDeadlinePassed",
+    );
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -78,16 +85,24 @@ describe("PopupUIService countdown", () => {
       "</div></div>",
     ].join("");
     remoteConfig.getStringParam.mockImplementation(async (key) =>
-      key.includes("arcade") ? "2026-12-31T00:00:00.000Z" : "2026-10-01T00:00:00.000Z",
+      key.includes("arcade")
+        ? "2026-12-31T00:00:00.000Z"
+        : "2026-10-01T00:00:00.000Z",
     );
 
     await PopupUIService.startFacilitatorCountdown();
     await vi.advanceTimersByTimeAsync(0);
 
-    expect(document.querySelector("#facilitator")?.textContent).toContain("facilitatorDeadlinePassed");
-    expect(document.querySelectorAll('.countdown-instance[data-program="arcade"]')).toHaveLength(1);
+    expect(document.querySelector("#facilitator")?.textContent).toContain(
+      "facilitatorDeadlinePassed",
+    );
+    expect(
+      document.querySelectorAll('.countdown-instance[data-program="arcade"]'),
+    ).toHaveLength(1);
 
     await PopupUIService.startFacilitatorCountdown();
-    expect(document.querySelectorAll('.countdown-instance[data-program="arcade"]')).toHaveLength(1);
+    expect(
+      document.querySelectorAll('.countdown-instance[data-program="arcade"]'),
+    ).toHaveLength(1);
   });
 });
