@@ -131,7 +131,7 @@ const OptionsService = {
     const nickname = account.nickname;
     const arcadePoints = account.arcadeData?.arcadePoints?.totalPoints || 0;
     // If facilitator program is enabled, compute facilitator bonus and add to total
-    const facilitatorBonus = account.facilitatorProgram
+    const facilitatorBonus = account.facilitatorProgram && account.arcadeData?.facilitator?.bonusIncludedInTotal !== true
       ? calculateFacilitatorBonus(account.arcadeData?.faciCounts)
       : 0;
     const finalPoints = (arcadePoints || 0) + (facilitatorBonus || 0);
