@@ -6,7 +6,7 @@ describe("sendRuntimeMessage", () => {
   it("sends message via browser.runtime and returns response", async () => {
     vi.spyOn(fakeBrowser.runtime, "sendMessage").mockResolvedValueOnce({
       ok: true,
-    });
+    } as never);
 
     const result = await sendRuntimeMessage({ type: "ping" });
     expect(result).toEqual({ ok: true });
