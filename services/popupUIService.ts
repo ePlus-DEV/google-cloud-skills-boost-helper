@@ -744,7 +744,9 @@ const PopupUIService = {
     // 1. Account has facilitatorProgram enabled (includeFacilitator = true) AND
     // 2. Firebase config allows it globally (facilitatorGloballyEnabled = true)
     const shouldCalculateBonus =
-      includeFacilitator && facilitatorGloballyEnabled;
+      includeFacilitator &&
+      facilitatorGloballyEnabled &&
+      data.facilitator?.bonusIncludedInTotal !== true;
     const facilitatorBonus =
       shouldCalculateBonus && faciCounts
         ? calculateFacilitatorBonus(faciCounts)
