@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2026-10-30
+
+### :bug: Bug Fixes
+
+- Prevent double counting of the self-reported `+10` Bonus Milestone in the Arcade popup headline.
+- Preserve raw Arcade API point totals in active-account and legacy storage instead of persisting locally adjusted totals.
+- Respect the API's `facilitator.bonusIncludedInTotal` flag when deriving Facilitator bonus for the popup, account cards, and extension badge.
+
+### :white_check_mark: Tests
+
+- Add regression coverage for the API-confirmed 130-point score remaining unchanged after Bonus Milestone confirmation.
+- Cover Facilitator/Arcade countdown Remote Config behavior, active timers, and single-card fallback after Facilitator expiry.
+
+### :wrench: Maintenance
+
+- Refactor countdown UI to reduce repeated code, remove empty exception handlers, and resolve DeepSource JavaScript findings.
+- Bump the extension version to 1.3.5 in preparation for the `dev → main` release. The release tag is created only after approval and merge.
+
 ## [1.3.4] - 2026-10-06
 
 ### :lock: Security
