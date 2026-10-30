@@ -17,7 +17,6 @@ for (const permission of ["tabs", "notifications"]) {
     `Chrome Web Store review risk: unused "${permission}" permission in ${path}`,
   );
 }
-
 assert.ok(
   requested.has("storage"),
   "The extension needs the storage permission for accounts and preferences",
