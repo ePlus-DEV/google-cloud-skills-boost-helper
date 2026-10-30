@@ -58,7 +58,9 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
       updatedData.totalArcadePoints ||
       0;
     const facilitatorBonus =
-      includeFaci && updatedData.facilitator?.bonusIncludedInTotal !== true && updatedData.faciCounts
+      includeFaci &&
+      updatedData.facilitator?.bonusIncludedInTotal !== true &&
+      updatedData.faciCounts
         ? calculateFacilitatorBonus(updatedData.faciCounts)
         : 0;
     const finalTotalPoints = basePoints + facilitatorBonus;
@@ -82,9 +84,10 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
   const legacyBasePoints =
     updatedData.arcadePoints?.totalPoints || updatedData.totalArcadePoints || 0;
   const legacyFaciBonus =
-    updatedData.facilitator?.bonusIncludedInTotal !== true && updatedData.faciCounts
+    updatedData.facilitator?.bonusIncludedInTotal !== true &&
+    updatedData.faciCounts
       ? calculateFacilitatorBonus(updatedData.faciCounts)
-    : 0;
+      : 0;
   const legacyFinalTotal = legacyBasePoints + legacyFaciBonus;
 
   // Keep the legacy snapshot as received so reopening the popup does not
@@ -219,9 +222,11 @@ async function refreshBadgeForActiveAccount(): Promise<void> {
     const arcade = active.arcadeData;
     const basePoints =
       arcade?.arcadePoints?.totalPoints || arcade?.totalArcadePoints || 0;
-    const faciBonus = active.facilitatorProgram && arcade?.facilitator?.bonusIncludedInTotal !== true
-      ? calculateFacilitatorBonus(arcade?.faciCounts)
-      : 0;
+    const faciBonus =
+      active.facilitatorProgram &&
+      arcade?.facilitator?.bonusIncludedInTotal !== true
+        ? calculateFacilitatorBonus(arcade?.faciCounts)
+        : 0;
     const finalPoints = (Number(basePoints) || 0) + (Number(faciBonus) || 0);
 
     await updateExtensionBadge(finalPoints);
