@@ -193,7 +193,8 @@ describe("Bonus Milestone claim UI", () => {
   });
 
   it("does not turn an API-confirmed 130 point snapshot into 140", async () => {
-    const profileUrl = "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111";
+    const profileUrl =
+      "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111";
     serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
       completed: true,
       enabled: true,
@@ -204,7 +205,9 @@ describe("Bonus Milestone claim UI", () => {
       bonusIncludedInTotal: true,
       profileUrl,
     });
-    serviceMocks.watchBonusMilestoneControlState.mockImplementation(() => () => undefined);
+    serviceMocks.watchBonusMilestoneControlState.mockImplementation(
+      () => () => undefined,
+    );
     document.body.innerHTML = `
       <span id="arcade-points">130</span>
       <span id="avatar-score-badge">130</span>
@@ -216,7 +219,11 @@ describe("Bonus Milestone claim UI", () => {
       await Promise.resolve();
     });
     expect(document.getElementById("arcade-points")?.textContent).toBe("130");
-    expect(document.getElementById("avatar-score-badge")?.textContent).toBe("130");
-    expect(document.getElementById("arcade-facilitator-points")?.textContent).toContain("✓ +10");
+    expect(document.getElementById("avatar-score-badge")?.textContent).toBe(
+      "130",
+    );
+    expect(
+      document.getElementById("arcade-facilitator-points")?.textContent,
+    ).toContain("✓ +10");
   });
 });
