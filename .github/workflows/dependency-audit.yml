@@ -69,3 +69,11 @@ jobs:
             process.exitCode = 1;
           }
           NODE
+      - name: Identify vulnerable dependency parents
+        shell: bash
+        run: |
+          for name in shell-quote esbuild @vitest/mocker nanoid follow-redirects vite zod undici re2js adm-zip @grpc/grpc-js node-forge; do
+            echo "::group::yarn why $name"
+            yarn why "$name" --json 2>&1 | tail -n 12 || true
+            echo "::endgroup::"
+          done
