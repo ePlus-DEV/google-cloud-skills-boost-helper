@@ -7,6 +7,10 @@ const remoteConfig = vi.hoisted(() => ({
   getBooleanParam: vi.fn(async () => true),
 }));
 
+vi.mock("wxt/browser", () => ({
+  browser: { i18n: { getMessage: (key: string) => key } },
+}));
+
 vi.mock("../../services/firebaseService", () => ({
   default: remoteConfig,
 }));
@@ -21,9 +25,6 @@ describe("PopupUIService countdown", () => {
     remoteConfig.isInitialized.mockReturnValue(true);
     remoteConfig.getStringParam.mockImplementation(async (_key, fallback) => fallback);
     remoteConfig.getBooleanParam.mockResolvedValue(true);
-    vi.stubGlobal("browser", {
-      i18n: { getMessage: (key: string) => key },
-    });
     (
       PopupUIService as typeof PopupUIService & {
         _countdownIntervals: Map<string, number>;
@@ -35,7 +36,6 @@ describe("PopupUIService countdown", () => {
   afterEach(() => {
     vi.clearAllTimers();
     vi.useRealTimers();
-    vi.unstubAllGlobals();
     document.body.innerHTML = "";
   });
 
