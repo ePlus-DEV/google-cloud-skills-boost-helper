@@ -2,9 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const remoteConfig = vi.hoisted(() => ({
   isInitialized: vi.fn(() => true),
-  initialize: vi.fn(async () => undefined),
-  getStringParam: vi.fn(async (_key: string, fallback: string) => fallback),
-  getBooleanParam: vi.fn(async () => true),
+  initialize: vi.fn(() => Promise.resolve(undefined)),
+  getStringParam: vi.fn((_key: string, fallback: string) => Promise.resolve(fallback)),
+  getBooleanParam: vi.fn(() => Promise.resolve(true)),
 }));
 
 vi.mock("wxt/browser", () => ({
@@ -24,7 +24,7 @@ describe("PopupUIService countdown", () => {
     vi.clearAllMocks();
     remoteConfig.isInitialized.mockReturnValue(true);
     remoteConfig.getStringParam.mockImplementation(
-      async (_key, fallback) => fallback,
+      (_key, fallback) => Promise.resolve(fallback),
     );
     remoteConfig.getBooleanParam.mockResolvedValue(true);
     (
@@ -84,10 +84,12 @@ describe("PopupUIService countdown", () => {
       '<span class="countdown-days"></span>',
       "</div></div>",
     ].join("");
-    remoteConfig.getStringParam.mockImplementation(async (key) =>
-      key.includes("arcade")
-        ? "2026-12-31T00:00:00.000Z"
-        : "2026-10-01T00:00:00.000Z",
+    remoteConfig.getStringParam.mockImplementation((key) =>
+      Promise.resolve(
+        key.includes("arcade")
+          ? "2026-12-31T00:00:00.000Z"
+          : "2026-10-01T00:00:00.000Z",
+      ),
     );
 
     await PopupUIService.startFacilitatorCountdown();
