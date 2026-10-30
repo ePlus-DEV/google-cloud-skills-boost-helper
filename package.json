@@ -48,7 +48,7 @@
     "typescript": "^5.6.3",
     "vite": "^8.3.5",
     "vitest": "^4.1.12",
-    "wxt": "^0.20.26"
+    "wxt": "^0.21.5"
   },
   "resolutions": {
     "uuid": "file:vendor/uuid",
