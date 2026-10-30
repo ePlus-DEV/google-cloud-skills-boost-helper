@@ -11,7 +11,7 @@ describe("sendRuntimeMessage - browser path", () => {
   it("returns response when sendMessage resolves", async () => {
     vi.spyOn(fakeBrowser.runtime, "sendMessage").mockResolvedValueOnce({
       pong: true,
-    });
+    } as never);
     const { sendRuntimeMessage } =
       await import("../../services/runtimeMessage");
     const result = await sendRuntimeMessage({ type: "ping" });
