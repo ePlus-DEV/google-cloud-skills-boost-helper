@@ -23,4 +23,3 @@ assert.ok(
   "The extension needs the storage permission for accounts and preferences",
 );
 
-console.log("Chrome permission audit passed:", [...requested].join(", "));
