@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2026-10-30
+
+### :bug: Bug Fixes
+
+- [`00ce4ce`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/00ce4ceab549127a0614d3155d7e742649790536) - remove unused Chrome Web Store permissions _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`d1f9282`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d1f92829de22ac508fb64c421d1be3e0ebc9127a) - remove console output flagged by DeepSource _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
+### :white_check_mark: Tests
+
+- [`28b833d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/28b833d15acc293ee09f92b3e9a630fc19365dd3) - check built Chrome manifest for rejected permissions _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
+### :wrench: Chores
+
+- [`f85f2b1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f85f2b1b610633a1382a676651f4225ffe92f7b9) - **release**: bump extension version to 1.3.5 _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
 ## [1.3.4] - 2026-10-30
 
 ### :bug: Bug Fixes
@@ -1450,3 +1465,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.2]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.1...1.3.2
 [1.3.3]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.2...1.3.3
 [1.3.4]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.3...1.3.4
+[1.3.5]: https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/compare/1.3.4...1.3.5
