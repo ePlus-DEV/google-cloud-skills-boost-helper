@@ -1,0 +1,72 @@
+name: Test WXT 0.21 security migration once
+
+on:
+  push:
+    branches:
+      - security/wxt-021-no-node-forge-20261030
+
+permissions:
+  contents: write
+
+jobs:
+  migration:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          ref: security/wxt-021-no-node-forge-20261030
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: yarn
+      - run: npm install --global yarn@1.22.22
+      - name: Update WXT and preserve existing TypeScript compatibility
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          const p=JSON.parse(readFileSync('package.json','utf8'));
+          p.devDependencies.wxt='^0.21.5';
+          writeFileSync('package.json',JSON.stringify(p,null,2)+'\n');
+          const src=readFileSync('wxt.config.ts','utf8');
+          const anchor='export default defineConfig({\n';
+          if (!src.includes(anchor)) throw new Error('wxt.config.ts anchor not found');
+          const compatible=`export default defineConfig({
+            hooks: {
+              // Temporary compatibility for WXT 0.21: resolve strict options in a separate PR.
+              "prepare:tsconfig": (_app, { tsconfig }) => {
+                delete tsconfig.verbatimModuleSyntax;
+                delete tsconfig.noUncheckedIndexedAccess;
+              },
+            },
+          `;
+          writeFileSync('wxt.config.ts',src.replace(anchor,compatible));
+          NODE
+      - name: Install upgraded WXT
+        run: yarn install --force --ignore-scripts --ignore-engines
+      - name: Prepare TypeScript
+        run: yarn wxt prepare
+      - name: Compile extension
+        run: yarn compile --pretty false
+      - name: Unit tests
+        run: yarn test:coverage
+      - name: Chrome and Firefox production builds
+        run: |
+          yarn build
+          yarn build:firefox
+          yarn zip
+          yarn zip:firefox
+      - name: Ensure node-forge dependency was eliminated
+        run: |
+          if grep -q '^node-forge@' yarn.lock; then
+            echo "::error::node-forge remains in the dependency graph"
+            exit 1
+          fi
+      - name: Commit validated WXT upgrade
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json yarn.lock wxt.config.ts
+          git commit -m "fix(security): remove vulnerable node-forge through WXT 0.21"
+          git push origin HEAD:refs/heads/security/wxt-021-no-node-forge-20261030
