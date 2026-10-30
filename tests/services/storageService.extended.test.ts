@@ -75,6 +75,36 @@ describe("StorageService.saveArcadeData - active account path", () => {
     );
   });
 
+  it("preserves the API's 130 points instead of persisting a doubled +10", async () => {
+    vi.mocked(AccountService.getActiveAccount).mockResolvedValue({
+      id: "acc1",
+      name: "Test",
+      profileUrl: "https://www.skills.google/public_profiles/abc",
+      createdAt: new Date().toISOString(),
+      lastUsed: new Date().toISOString(),
+      facilitatorProgram: true,
+    });
+    vi.mocked(AccountService.getSettings).mockResolvedValue({
+      enableSearchFeature: true,
+      showBadge: false,
+    });
+
+    await StorageService.saveArcadeData({
+      arcadePoints: { totalPoints: 130 },
+      totalArcadePoints: 130,
+      faciCounts: { bonusMilestonePoints: 10 },
+      facilitator: { bonusIncludedInTotal: true, bonusMilestonePoints: 10 },
+    });
+
+    expect(AccountService.updateAccountArcadeData).toHaveBeenCalledWith(
+      "acc1",
+      expect.objectContaining({
+        totalArcadePoints: 130,
+        arcadePoints: expect.objectContaining({ totalPoints: 130 }),
+      }),
+    );
+  });
+
   it("saves to legacy storage with facilitator bonus when no active account", async () => {
     vi.mocked(AccountService.getActiveAccount).mockResolvedValue(null);
     vi.mocked(AccountService.getSettings).mockResolvedValue({
@@ -88,9 +118,7 @@ describe("StorageService.saveArcadeData - active account path", () => {
     });
 
     const stored = await fakeBrowser.storage.local.get("arcadeData");
-    expect((stored.arcadeData as any).totalArcadePoints).toBeGreaterThanOrEqual(
-      50,
-    );
+    expect((stored.arcadeData as any).totalArcadePoints).toBe(50);
   });
 });
 
