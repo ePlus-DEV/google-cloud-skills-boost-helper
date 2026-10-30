@@ -22,4 +22,3 @@ assert.ok(
   requested.has("storage"),
   "The extension needs the storage permission for accounts and preferences",
 );
-
