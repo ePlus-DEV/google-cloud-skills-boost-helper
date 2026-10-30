@@ -134,6 +134,8 @@ Current behavior:
 - Requires explicit user confirmation.
 - Keeps Bonus Milestone separate from the normal Facilitator milestone bonus.
 - Avoids double counting when the API says the bonus is already included.
+- The claim chip is status-only: it triggers a signed API refresh and never adjusts the headline DOM total itself.
+- API point snapshots remain unmodified in extension storage; derived totals are only for presentation and toolbar badges.
 - Persists confirmation using a profile/period-scoped storage key.
 - Supports undo.
 - Ignores stale confirmation for periods where the bonus is unavailable.

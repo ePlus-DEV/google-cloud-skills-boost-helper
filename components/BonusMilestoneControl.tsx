@@ -54,46 +54,7 @@ function renderedManualBonus(state: BonusMilestoneControlState): number {
   return state.appliedPoints > 0 ? state.appliedPoints : CLAIM_BONUS_POINTS;
 }
 
-/** Parse a rendered point total into a safe numeric value. */
-function parseDisplayedTotal(value: string | null | undefined): number {
-  if (!value) return 0;
-  const normalized = value.replace(/\s/gu, "").replace(/,/gu, "");
-  const parsed = Number(normalized);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-/** Add only the self-reported bonus to the main total, without double counting it. */
-function syncDisplayedTotal(state: BonusMilestoneControlState): void {
-  const total = document.getElementById("arcade-points");
-  if (!total) return;
-
-  if (total.dataset.bonusMilestoneProfile !== state.profileUrl) {
-    delete total.dataset.bonusMilestoneApplied;
-    delete total.dataset.bonusMilestoneRenderedTotal;
-    total.dataset.bonusMilestoneProfile = state.profileUrl;
-  }
-
-  const currentTotal = parseDisplayedTotal(total.textContent);
-  const previousApplied =
-    Number(total.dataset.bonusMilestoneApplied || "0") || 0;
-  const previousRendered = Number(
-    total.dataset.bonusMilestoneRenderedTotal || "NaN",
-  );
-  const stillContainsPreviousBonus =
-    Number.isFinite(previousRendered) && currentTotal === previousRendered;
-  const baseTotal = stillContainsPreviousBonus
-    ? Math.max(0, currentTotal - previousApplied)
-    : currentTotal;
-  const nextApplied = state.bonusIncludedInTotal
-    ? 0
-    : renderedManualBonus(state);
-  const nextTotal = baseTotal + nextApplied;
-
-  total.textContent = formatPoints(nextTotal);
-  total.dataset.bonusMilestoneApplied = String(nextApplied);
-  total.dataset.bonusMilestoneRenderedTotal = String(nextTotal);
-}
-
+/** The signed Arcade refresh owns the total; the claim chip never edits score DOM. */
 /** Render the self-report disclaimer and the official task link before confirmation. */
 function BonusMilestoneInfo({ completed }: BonusMilestoneInfoProps) {
   return (
@@ -145,13 +106,6 @@ function BonusMilestoneControl() {
       );
     },
     [reload],
-  );
-
-  useEffect(
-    function keepMainTotalInSync() {
-      syncDisplayedTotal(state);
-    },
-    [state],
   );
 
   const manualBonus = renderedManualBonus(state);

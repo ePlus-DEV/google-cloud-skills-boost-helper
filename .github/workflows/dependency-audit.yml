@@ -1,0 +1,79 @@
+name: Dependency Security Audit
+
+on:
+  pull_request:
+    branches: [dev, main]
+    paths:
+      - package.json
+      - yarn.lock
+      - .github/workflows/dependency-audit.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "12 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  yarn-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: yarn
+      - name: Install Yarn 1
+        run: npm install --global yarn@1.22.22
+      - name: Install exact dependency graph
+        run: yarn install --frozen-lockfile --ignore-scripts --ignore-engines
+      - name: Audit exact Yarn 1 dependency graph
+        shell: bash
+        run: |
+          set -uo pipefail
+          yarn audit --json --level low > "${RUNNER_TEMP}/audit.jsonl" 2>&1 || true
+          node --input-type=module <<'NODE'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const rows = readFileSync(process.env.RUNNER_TEMP + '/audit.jsonl', 'utf8')
+            .split(/\r?\n/u).filter(Boolean).flatMap((line) => {
+              try { return [JSON.parse(line)]; }
+              catch { console.log(line.slice(0, 300)); return []; }
+            });
+          const advisories = rows.filter((x) => x.type === 'auditAdvisory')
+            .map((x) => x.data?.advisory).filter(Boolean);
+          const summary = rows.find((x) => x.type === 'auditSummary')?.data;
+          const messages = rows.filter((x) => x.type === 'error').map((x) => x.data);
+          const unique = [...new Map(advisories.map((a) =>
+            [String(a.id) + ':' + a.module_name, a])).values()];
+          const md = [
+            '## Yarn 1 dependency security audit',
+            '',
+            '| Dependency | Severity | Advisory | Vulnerable | Patched |',
+            '|---|---|---|---|---|',
+            ...unique.map((a) => '| ' +
+              [a.module_name, a.severity, a.github_advisory_id || a.id,
+               a.vulnerable_versions, a.patched_versions].map((s) =>
+                 String(s ?? '-').replaceAll('|', '/')).join(' | ') + ' |'),
+            '',
+            'Vulnerability summary: ' + JSON.stringify(summary?.vulnerabilities ?? {}),
+            'Audit errors: ' + JSON.stringify(messages)
+          ];
+          const report = md.join('\n');
+          console.log(report);
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, report + '\n');
+          if (!summary && unique.length === 0) {
+            console.error('Audit could not produce a report; do not interpret as clean.');
+            process.exitCode = 1;
+          }
+          NODE
+      - name: Identify vulnerable dependency parents
+        shell: bash
+        run: |
+          for name in shell-quote esbuild @vitest/mocker nanoid follow-redirects vite zod undici re2js adm-zip @grpc/grpc-js node-forge; do
+            echo "::group::yarn why $name"
+            yarn why "$name" --json 2>&1 | tail -n 12 || true
+            echo "::endgroup::"
+          done

@@ -42,6 +42,12 @@ yarn dev:firefox    # Firefox (hot-reload)
 
 The extension is output to `.output/chrome-mv3/` and reloads automatically on file changes.
 
+On Windows with NVM for Windows, select Node 24 with `nvm use 24` before
+running VS Code tasks. The tasks prioritize `NVM_SYMLINK` over other Node
+installations (including Laragon), invoke Yarn through Corepack so Laragon's
+Yarn shim cannot select its bundled Node, and stop chained commands if the first fails.
+Tasks follow the active NVM version; they do not switch the system-wide version.
+
 ### Before Submitting a PR
 
 All of the following must pass:

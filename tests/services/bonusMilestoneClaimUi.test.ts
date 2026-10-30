@@ -158,10 +158,11 @@ describe("Bonus Milestone claim UI", () => {
     expect(
       host?.querySelector<HTMLElement>('[role="tooltip"]')?.textContent,
     ).toBe(browserMessages.bonusMilestoneAppliedTooltip);
-    expect(document.getElementById("arcade-points")?.textContent).toBe("128");
+    // The chip cannot mutate the API-owned score independently of avatar/tier.
+    expect(document.getElementById("arcade-points")?.textContent).toBe("118");
 
     // Return a stale appliedPoints value on purpose: completed=false must be
-    // authoritative, so the UI removes +10 immediately instead of keeping 128.
+    // authoritative, without ever modifying the API-owned total.
     serviceMocks.setActiveBonusMilestoneCompleted.mockResolvedValue({
       completed: false,
       enabled: true,
@@ -189,5 +190,40 @@ describe("Bonus Milestone claim UI", () => {
     );
     expect(claimButton?.textContent).toBe("Claim +10");
     expect(document.getElementById("arcade-points")?.textContent).toBe("118");
+  });
+
+  it("does not turn an API-confirmed 130 point snapshot into 140", async () => {
+    const profileUrl =
+      "https://www.skills.google/public_profiles/11111111-1111-4111-8111-111111111111";
+    serviceMocks.getBonusMilestoneControlState.mockResolvedValue({
+      completed: true,
+      enabled: true,
+      participating: true,
+      points: 10,
+      appliedPoints: 10,
+      milestoneBonusPoints: 0,
+      bonusIncludedInTotal: true,
+      profileUrl,
+    });
+    serviceMocks.watchBonusMilestoneControlState.mockImplementation(
+      () => () => undefined,
+    );
+    document.body.innerHTML = `
+      <span id="arcade-points">130</span>
+      <span id="avatar-score-badge">130</span>
+      <div id="arcade-facilitator-points"></div>
+    `;
+    await act(async () => {
+      mountBonusMilestoneControl();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(document.getElementById("arcade-points")?.textContent).toBe("130");
+    expect(document.getElementById("avatar-score-badge")?.textContent).toBe(
+      "130",
+    );
+    expect(
+      document.getElementById("arcade-facilitator-points")?.textContent,
+    ).toContain("✓ +10");
   });
 });

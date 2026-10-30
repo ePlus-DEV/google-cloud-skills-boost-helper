@@ -5,17 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.4] - 2026-10-06
+## [1.3.4] - 2026-10-30
+
+### :bug: Bug Fixes
+
+- Prevent double counting of the self-reported `+10` Bonus Milestone in the Arcade popup headline.
+- Preserve raw Arcade API point totals in active-account and legacy storage instead of persisting locally adjusted totals.
+- Respect the API's `facilitator.bonusIncludedInTotal` flag when deriving Facilitator bonus for the popup, account cards, and extension badge.
+
+### :white_check_mark: Tests
+
+- Add regression coverage for the API-confirmed 130-point score remaining unchanged after Bonus Milestone confirmation.
+- Cover Facilitator/Arcade countdown Remote Config behavior, active timers, and single-card fallback after Facilitator expiry.
+
+### :wrench: Maintenance
+
+- Refactor countdown UI to reduce repeated code, remove empty exception handlers, and resolve DeepSource JavaScript findings.
 
 ### :lock: Security
 
-- Update transitive `undici` to 7.30.0, including the upstream security fixes shipped in 7.29.1.
+- Update transitive `undici` through 7.30.1, including the upstream security fixes shipped in 7.29.1.
 - Update transitive `brace-expansion` to 1.1.21.
 - Pin `actions/checkout` and `actions/setup-node` to immutable v7.0.0 commit SHAs in CI and release workflows.
 
 ### :wrench: Chores
 
-- Refresh production dependency patches already validated on `main` (`dompurify` 3.4.16, `intro.js` 8.6.0, `marked` 18.0.14).
+- Refresh production dependencies, including `dompurify` 3.4.17, `intro.js` 8.6.0 and `marked` 18.1.1.
 - Route Dependabot npm and GitHub Actions updates to `dev` so dependency/security changes follow the `dev → main` release flow.
 - Bump extension version to 1.3.4.
 

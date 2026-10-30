@@ -1,11 +1,25 @@
 {
-  // https://docs.plasmo.com/framework/workflows/build
   "version": "2.0.0",
+  "windows": {
+    "options": {
+      "env": {
+        // Prefer the active NVM Node over Laragon's bundled Node.
+        "PATH": "${env:NVM_SYMLINK};${env:PATH}"
+      },
+      "shell": {
+        "executable": "cmd.exe",
+        "args": ["/d", "/c"]
+      }
+    }
+  },
   "tasks": [
     {
       "label": "run dev",
       "type": "shell",
-      "command": "yarn install; yarn dev",
+      "command": "yarn install && yarn dev",
+      "windows": {
+        "command": "corepack yarn install && corepack yarn dev"
+      },
       "group": "build",
       "presentation": {
         "reveal": "always",
@@ -21,6 +35,9 @@
       "label": "run dev w/o install",
       "type": "shell",
       "command": "yarn dev",
+      "windows": {
+        "command": "corepack yarn dev"
+      },
       "group": "none",
       "presentation": {
         "reveal": "always",
@@ -33,6 +50,9 @@
       "label": "run build",
       "type": "shell",
       "command": "yarn build",
+      "windows": {
+        "command": "corepack yarn build"
+      },
       "group": "none",
       "presentation": {
         "reveal": "always",
@@ -44,7 +64,10 @@
     {
       "label": "run build zip",
       "type": "shell",
-      "command": "yarn build; yarn zip",
+      "command": "yarn build && yarn zip",
+      "windows": {
+        "command": "corepack yarn build && corepack yarn zip"
+      },
       "group": "none",
       "presentation": {
         "reveal": "always",
