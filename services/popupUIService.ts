@@ -1402,13 +1402,13 @@ Details:
     const currentYear = now.getFullYear();
     const defaultFacilitatorDeadline =
       import.meta.env.WXT_COUNTDOWN_DEADLINE_FACILITATOR ||
-      String(currentYear) + "-12-31T23:59:59+05:30";
+      `${currentYear}-12-31T23:59:59+05:30`;
 
     /** Return the Arcade deadline configured for this calendar year. */
     const getArcadeDefaultDeadline = (): string => {
       const envDeadline = import.meta.env.WXT_COUNTDOWN_DEADLINE_ARCADE;
       if (envDeadline) return envDeadline;
-      return String(new Date().getFullYear()) + "-12-31T23:59:59+00:00";
+      return `${new Date().getFullYear()}-12-31T23:59:59+00:00`;
     };
 
     /** Pick the fallback deadline from the countdown's program and remote key. */
@@ -1440,12 +1440,8 @@ Details:
         const hours = Math.floor(Math.abs(offset) / 60);
         const minutes = Math.abs(offset) % 60;
         const sign = offset >= 0 ? "+" : "-";
-        const timezone =
-          "GMT" +
-          sign +
-          hours +
-          (minutes > 0 ? ":" + String(minutes).padStart(2, "0") : "");
-        return time + " " + dateText + " (" + timezone + ")";
+        const timezone = `GMT${sign}${hours}${minutes > 0 ? `:${String(minutes).padStart(2, "0")}` : ""}`;
+        return `${time} ${dateText} (${timezone})`;
       } catch (error) {
         console.debug("Countdown date formatting fallback:", error);
         return date.toISOString();
@@ -1597,7 +1593,7 @@ Details:
       document.querySelectorAll<HTMLElement>(".countdown-instance"),
     );
     for (const [idx, el] of instances.entries()) {
-      const id = el.id || "countdown-" + idx;
+      const id = el.id || `countdown-${idx}`;
       const program = el.dataset.program;
       clearIntervalById(id);
 
