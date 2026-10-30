@@ -58,18 +58,13 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
       updatedData.totalArcadePoints ||
       0;
     const facilitatorBonus =
-      includeFaci && updatedData.faciCounts
+      includeFaci && updatedData.facilitator?.bonusIncludedInTotal !== true && updatedData.faciCounts
         ? calculateFacilitatorBonus(updatedData.faciCounts)
         : 0;
     const finalTotalPoints = basePoints + facilitatorBonus;
 
-    // Persist the computed final total into both shapes the app uses
-    updatedData.arcadePoints = {
-      ...(updatedData.arcadePoints || {}),
-      totalPoints: finalTotalPoints,
-    };
-    updatedData.totalArcadePoints = finalTotalPoints;
-
+    // Preserve the API snapshot. The derived toolbar score must not replace
+    // arcadePoints.totalPoints: popup rendering would add the bonus again.
     await AccountService.updateAccountArcadeData(activeAccount.id, updatedData);
     // Update extension badge to show total points for the active account
     try {
@@ -86,18 +81,14 @@ async function saveArcadeData(data: ArcadeData): Promise<void> {
   // For legacy storage we don't have account flags. Do a best-effort: include facilitator if faciCounts exists.
   const legacyBasePoints =
     updatedData.arcadePoints?.totalPoints || updatedData.totalArcadePoints || 0;
-  const legacyFaciBonus = updatedData.faciCounts
-    ? calculateFacilitatorBonus(updatedData.faciCounts)
+  const legacyFaciBonus =
+    updatedData.facilitator?.bonusIncludedInTotal !== true && updatedData.faciCounts
+      ? calculateFacilitatorBonus(updatedData.faciCounts)
     : 0;
   const legacyFinalTotal = legacyBasePoints + legacyFaciBonus;
 
-  // Persist final total into fields as well
-  updatedData.arcadePoints = {
-    ...(updatedData.arcadePoints || {}),
-    totalPoints: legacyFinalTotal,
-  };
-  updatedData.totalArcadePoints = legacyFinalTotal;
-
+  // Keep the legacy snapshot as received so reopening the popup does not
+  // compound previously applied Facilitator or Bonus Milestone points.
   await storage.setItem(STORAGE_KEYS.arcadeData, updatedData);
   // Also update extension badge for legacy storage
   try {
@@ -228,7 +219,7 @@ async function refreshBadgeForActiveAccount(): Promise<void> {
     const arcade = active.arcadeData;
     const basePoints =
       arcade?.arcadePoints?.totalPoints || arcade?.totalArcadePoints || 0;
-    const faciBonus = active.facilitatorProgram
+    const faciBonus = active.facilitatorProgram && arcade?.facilitator?.bonusIncludedInTotal !== true
       ? calculateFacilitatorBonus(arcade?.faciCounts)
       : 0;
     const finalPoints = (Number(basePoints) || 0) + (Number(faciBonus) || 0);
