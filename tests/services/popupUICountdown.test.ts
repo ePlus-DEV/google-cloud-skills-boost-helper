@@ -3,7 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const remoteConfig = vi.hoisted(() => ({
   isInitialized: vi.fn(() => true),
   initialize: vi.fn(() => Promise.resolve(undefined)),
-  getStringParam: vi.fn((_key: string, fallback: string) => Promise.resolve(fallback)),
+  getStringParam: vi.fn((_key: string, fallback: string) =>
+    Promise.resolve(fallback),
+  ),
   getBooleanParam: vi.fn(() => Promise.resolve(true)),
 }));
 
@@ -23,8 +25,8 @@ describe("PopupUIService countdown", () => {
     vi.setSystemTime(new Date("2026-10-30T00:00:00.000Z"));
     vi.clearAllMocks();
     remoteConfig.isInitialized.mockReturnValue(true);
-    remoteConfig.getStringParam.mockImplementation(
-      (_key, fallback) => Promise.resolve(fallback),
+    remoteConfig.getStringParam.mockImplementation((_key, fallback) =>
+      Promise.resolve(fallback),
     );
     remoteConfig.getBooleanParam.mockResolvedValue(true);
     (
