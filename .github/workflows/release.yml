@@ -126,6 +126,9 @@ jobs:
           yarn zip -b edge
           yarn zip -b opera
 
+      - name: Audit Chrome Web Store permissions
+        run: node scripts/audit-chrome-permissions.mjs
+
       - name: Verify build outputs
         run: |
           set -euo pipefail
