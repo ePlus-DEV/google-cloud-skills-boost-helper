@@ -205,11 +205,11 @@ describe("Bonus Milestone claim UI", () => {
       profileUrl,
     });
     serviceMocks.watchBonusMilestoneControlState.mockImplementation(() => () => undefined);
-    document.body.innerHTML = \`
+    document.body.innerHTML = `
       <span id="arcade-points">130</span>
       <span id="avatar-score-badge">130</span>
       <div id="arcade-facilitator-points"></div>
-    \`;
+    `;
     await act(async () => {
       mountBonusMilestoneControl();
       await Promise.resolve();
