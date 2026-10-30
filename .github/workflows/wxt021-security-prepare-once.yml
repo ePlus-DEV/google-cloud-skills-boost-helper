@@ -1,0 +1,87 @@
+name: Validate WXT security migration once
+
+on:
+  push:
+    branches: [security/remove-node-forge-main-20261030]
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-lock:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout security branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          ref: security/remove-node-forge-main-20261030
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: yarn
+      - name: Use Yarn 1
+        run: npm install -g yarn@1.22.22
+      - name: Regenerate WXT dependency lockfile
+        run: yarn install --force --ignore-scripts --ignore-engines
+      - name: Confirm vulnerable transitive dependency is absent
+        run: |
+          if grep -q '^node-forge@' yarn.lock; then
+            echo "::error::node-forge dependency still present in yarn.lock"
+            exit 1
+          fi
+          if grep -q '^web-ext-run@' yarn.lock; then
+            echo "::error::web-ext-run dependency still present in yarn.lock"
+            exit 1
+          fi
+          node -e 'const p=require("./package.json"); if(p.version!=="1.3.4") process.exit(1);'
+      - name: Prepare WXT generated types
+        run: yarn wxt prepare
+      - name: TypeScript compilation
+        run: yarn compile
+      - name: Run tests
+        run: yarn test:coverage
+      - name: Build Chrome and Firefox and package both
+        run: |
+          yarn build
+          yarn build:firefox
+          yarn zip
+          yarn zip:firefox
+      - name: Dependency vulnerability audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          yarn audit --json --level low > "${RUNNER_TEMP}/security-audit.jsonl" 2>&1 || true
+          node --input-type=module <<'NODE'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const lines=readFileSync(process.env.RUNNER_TEMP+'/security-audit.jsonl','utf8').split(/\r?\n/u).filter(Boolean);
+          const rows=lines.flatMap(line=>{ try { return [JSON.parse(line)] } catch { return [] } });
+          const summary=rows.find(r=>r.type==='auditSummary')?.data;
+          const errors=rows.filter(r=>r.type==='error');
+          const advisories=rows.filter(r=>r.type==='auditAdvisory').map(r=>r.data?.advisory).filter(Boolean);
+          const report=['## Security audit after removing WXT browser runner',
+            '', 'Vulnerabilities: '+JSON.stringify(summary?.vulnerabilities??null),
+            '', ...advisories.map(a=>'- '+a.module_name+': '+a.severity+' ('+(a.github_advisory_id||a.id)+')'),
+            '', 'Registry errors: '+errors.length].join('\n');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY,report+'\n');
+          console.log(report);
+          if(!summary||errors.length||advisories.length||Object.values(summary.vulnerabilities||{}).some(v=>v!==0)){
+            console.error('Security audit is not completely clear');
+            process.exit(1);
+          }
+          NODE
+      - name: Commit validated Yarn lockfile only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add yarn.lock
+          if git diff --cached --quiet; then
+            echo "No lockfile change — migration was not applied"
+            exit 1
+          fi
+          git commit -m "fix(security): lock WXT 0.21 graph without node-forge"
+          git push origin HEAD:refs/heads/security/remove-node-forge-main-20261030
