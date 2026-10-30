@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const remoteConfig = vi.hoisted(() => ({
   isInitialized: vi.fn(() => true),
-  initialize: vi.fn(() => Promise.resolve(undefined)),
+  initialize: vi.fn(() => Promise.resolve()),
   getStringParam: vi.fn((_key: string, fallback: string) =>
     Promise.resolve(fallback),
   ),
