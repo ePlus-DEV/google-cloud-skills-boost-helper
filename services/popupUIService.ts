@@ -1416,7 +1416,8 @@ Details:
       program: string | undefined,
       key: string,
     ): string => {
-      const isArcade = program?.toLowerCase() === "arcade" ||
+      const isArcade =
+        program?.toLowerCase() === "arcade" ||
         key.toLowerCase().includes("arcade");
       return isArcade ? getArcadeDefaultDeadline() : defaultFacilitatorDeadline;
     };
@@ -1439,7 +1440,10 @@ Details:
         const hours = Math.floor(Math.abs(offset) / 60);
         const minutes = Math.abs(offset) % 60;
         const sign = offset >= 0 ? "+" : "-";
-        const timezone = "GMT" + sign + hours +
+        const timezone =
+          "GMT" +
+          sign +
+          hours +
           (minutes > 0 ? ":" + String(minutes).padStart(2, "0") : "");
         return time + " " + dateText + " (" + timezone + ")";
       } catch (error) {
@@ -1464,11 +1468,21 @@ Details:
         ? "arcadeDeadlinePassed"
         : "facilitatorDeadlinePassed";
       return [
-        '<div class="text-center ', accent, '">',
-        '<i class="fa-solid ', icon, ' text-2xl mb-2"></i>',
-        '<div class="font-bold">', getMessage("programEnded"), '</div>',
-        '<div class="text-xs ', detail, '">', getMessage(messageKey), '</div>',
-        '</div>',
+        '<div class="text-center ',
+        accent,
+        '">',
+        '<i class="fa-solid ',
+        icon,
+        ' text-2xl mb-2"></i>',
+        '<div class="font-bold">',
+        getMessage("programEnded"),
+        "</div>",
+        '<div class="text-xs ',
+        detail,
+        '">',
+        getMessage(messageKey),
+        "</div>",
+        "</div>",
       ].join("");
     };
 
@@ -1493,14 +1507,19 @@ Details:
         '.countdown-instance[data-program="arcade"]',
       );
       if (existing) return existing;
-      const container = document.querySelector("#milestones-section") ||
-        document.querySelector("#countdown-container") || document.body;
+      const container =
+        document.querySelector("#milestones-section") ||
+        document.querySelector("#countdown-container") ||
+        document.body;
       const wrapper = document.createElement("div");
       wrapper.className =
         "countdown-card countdown-instance bg-gradient-to-r from-sky-500/20 to-indigo-500/20 backdrop-blur-md rounded-lg p-3 border border-sky-400/30";
       wrapper.setAttribute("data-program", "arcade");
       wrapper.setAttribute("data-countdown-key", "countdown_deadline_arcade");
-      wrapper.setAttribute("data-countdown-toggle-key", "countdown_enabled_arcade");
+      wrapper.setAttribute(
+        "data-countdown-toggle-key",
+        "countdown_enabled_arcade",
+      );
       wrapper.innerHTML = `
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center">
@@ -1545,7 +1564,10 @@ Details:
     };
 
     /** Stop an expired countdown and expose Arcade countdown when needed. */
-    const markExpired = (el: HTMLElement, program: string | undefined): void => {
+    const markExpired = (
+      el: HTMLElement,
+      program: string | undefined,
+    ): void => {
       renderCountdownDigits(el, 0);
       el.innerHTML = renderEndedState(program);
       if (program?.toLowerCase() !== "facilitator") return;
