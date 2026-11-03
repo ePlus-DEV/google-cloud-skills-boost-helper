@@ -784,9 +784,7 @@ This keeps **current state** and **future state** from drifting into the same do
 - Finds the visible `input[name="access_code"]` through nested open Shadow Roots,
   sets the native input value and dispatches composed input/change events.
   It never clicks Join, submits a form, or bypasses Google's code validation.
-- Provides a small translated (13 locale) ShadowRoot UI showing source, code and
-  manual fill action. Empty fields are prefilled at most once; existing typed data
-  is never overwritten automatically.
+- Provides a small translated (13 locale) ShadowRoot UI showing the suggested code, its crawler provenance, a manual fill action, and a **View Monthly Labs** link to `https://arcade.eplus.dev/#monthly-games` instead of the raw JSON file. Empty fields are prefilled at most once; existing typed data is never overwritten automatically.
 - No cookies, tokens, account records or profiles are sent to the crawler. The
   code itself is public data; the extension does not log it.
 
