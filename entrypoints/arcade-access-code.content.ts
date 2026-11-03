@@ -38,7 +38,6 @@ export default defineContentScript({
     let sourceLabel: HTMLElement | null = null;
     let statusLabel: HTMLElement | null = null;
     let fillButton: HTMLButtonElement | null = null;
-    let monthlyLabsLink: HTMLAnchorElement | null = null;
     let scanTimeout: number | undefined;
     const attempted = new WeakSet<HTMLInputElement>();
 
@@ -117,7 +116,6 @@ export default defineContentScript({
             : t("arcadeCodeFromCrawler");
       }
       if (fillButton) fillButton.disabled = false;
-      if (monthlyLabsLink) monthlyLabsLink.hidden = false;
 
       // Autofill empty fields only once. Never overwrite a user's typed code.
       if (!attempted.has(input)) {
@@ -181,12 +179,12 @@ export default defineContentScript({
           applyCode(input, active.code);
         });
 
-        monthlyLabsLink = document.createElement("a");
+        const monthlyLabsLink = document.createElement("a");
         monthlyLabsLink.className = "eplus-code-link";
         monthlyLabsLink.href = MONTHLY_LABS_URL;
         monthlyLabsLink.target = "_blank";
         monthlyLabsLink.rel = "noopener noreferrer";
-        monthlyLabsLink.textContent = t("arcadeCodeViewSource");
+        monthlyLabsLink.textContent = t("arcadeCodeViewMonthlyLabs");
 
         actions.append(fillButton, monthlyLabsLink);
         statusLabel = document.createElement("p");
