@@ -69,10 +69,12 @@ describe("public crawler access-code service", () => {
   });
 
   it("uses only previously cached active codes if the crawler is offline", async () => {
-    await fakeBrowser.storage.local.set({ arcadeAccessCodesCrawlerV1: {
-      fetchedAt: TIME - 60 * 60 * 1000,
-      games: [game],
-    } });
+    await fakeBrowser.storage.local.set({
+      arcadeAccessCodesCrawlerV1: {
+        fetchedAt: TIME - 60 * 60 * 1000,
+        games: [game],
+      },
+    });
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => {
