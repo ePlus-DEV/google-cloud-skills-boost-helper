@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "Bonus Milestone を更新できませんでした。もう一度お試しください。"
+  },
+  "arcadeCodeTitle": {
+    "message": "Arcade アクセスコード"
+  },
+  "arcadeCodeFill": {
+    "message": "コードを入力"
+  },
+  "arcadeCodeFilled": {
+    "message": "コードを入力しました。確認してから Join を押してください。"
+  },
+  "arcadeCodeReview": {
+    "message": "参加前にコードを確認してください。Google が検証します。"
+  },
+  "arcadeCodeFromLink": {
+    "message": "リンクから取得（未検証）"
+  },
+  "arcadeCodeFromCache": {
+    "message": "公開 Arcade クローラーのキャッシュ"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "公開 Arcade クローラーからの提案"
+  },
+  "arcadeCodeViewSource": {
+    "message": "データ元を見る"
   }
 }
