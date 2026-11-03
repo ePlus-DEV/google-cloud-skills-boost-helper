@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "Vorschlag des öffentlichen Arcade-Crawlers"
   },
-  "arcadeCodeViewSource": {
-    "message": "Quelle ansehen"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "Monatliche Labs ansehen"
   }
 }
