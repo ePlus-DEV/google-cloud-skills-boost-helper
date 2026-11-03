@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "公開 Arcade クローラーからの提案"
   },
-  "arcadeCodeViewSource": {
-    "message": "データ元を見る"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "今月のラボを見る"
   }
 }
