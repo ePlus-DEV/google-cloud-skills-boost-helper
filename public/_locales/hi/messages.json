@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "सार्वजनिक Arcade क्रॉलर से सुझाव"
   },
-  "arcadeCodeViewSource": {
-    "message": "स्रोत देखें"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "इस महीने की लैब देखें"
   }
 }
