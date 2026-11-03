@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "Không thể cập nhật Bonus Milestone. Vui lòng thử lại."
+  },
+  "arcadeCodeTitle": {
+    "message": "Mã tham gia Arcade"
+  },
+  "arcadeCodeFill": {
+    "message": "Điền mã"
+  },
+  "arcadeCodeFilled": {
+    "message": "Đã điền mã. Kiểm tra lại rồi bấm Join."
+  },
+  "arcadeCodeReview": {
+    "message": "Hãy kiểm tra mã trước khi tham gia; Google sẽ xác thực."
+  },
+  "arcadeCodeFromLink": {
+    "message": "Từ liên kết (chưa xác minh)"
+  },
+  "arcadeCodeFromCache": {
+    "message": "Dữ liệu bộ nhớ đệm của Arcade crawler"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "Gợi ý từ Arcade crawler công khai"
+  },
+  "arcadeCodeViewSource": {
+    "message": "Xem nguồn"
   }
 }
