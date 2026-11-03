@@ -105,8 +105,12 @@ export default defineContentScript({
     }
 
     const onClick = () => {
-      // The join modal is inserted asynchronously, including its open Shadow Root.
+      // Google may insert its dialog and nested fields across multiple render ticks.
+      // Two bounded checks avoid a permanent polling loop on every game page.
       scheduleScan(150);
+      window.setTimeout(() => {
+        if (!currentInput) scheduleScan(0);
+      }, 650);
     };
     const onHashChange = () => {
       urlCode = codeFromUrlFragment(window.location.hash);
