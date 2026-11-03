@@ -8,8 +8,7 @@ import {
   validArcadeAccessCode,
 } from "../utils/arcadeAccessCode";
 
-const CRAWLER_SOURCE =
-  "https://github.com/hoangsvit/arcade-crawler/blob/main/data/arcade_monthly_games.json";
+const MONTHLY_LABS_URL = "https://arcade.eplus.dev/#monthly-games";
 
 function t(key: string): string {
   return browser.i18n.getMessage(key) || key;
@@ -39,7 +38,7 @@ export default defineContentScript({
     let sourceLabel: HTMLElement | null = null;
     let statusLabel: HTMLElement | null = null;
     let fillButton: HTMLButtonElement | null = null;
-    let sourceLink: HTMLAnchorElement | null = null;
+    let monthlyLabsLink: HTMLAnchorElement | null = null;
     let scanTimeout: number | undefined;
     const attempted = new WeakSet<HTMLInputElement>();
 
@@ -118,7 +117,7 @@ export default defineContentScript({
             : t("arcadeCodeFromCrawler");
       }
       if (fillButton) fillButton.disabled = false;
-      if (sourceLink) sourceLink.hidden = active.fromLink;
+      if (monthlyLabsLink) monthlyLabsLink.hidden = false;
 
       // Autofill empty fields only once. Never overwrite a user's typed code.
       if (!attempted.has(input)) {
@@ -182,14 +181,14 @@ export default defineContentScript({
           applyCode(input, active.code);
         });
 
-        sourceLink = document.createElement("a");
-        sourceLink.className = "eplus-code-link";
-        sourceLink.href = CRAWLER_SOURCE;
-        sourceLink.target = "_blank";
-        sourceLink.rel = "noopener noreferrer";
-        sourceLink.textContent = t("arcadeCodeViewSource");
+        monthlyLabsLink = document.createElement("a");
+        monthlyLabsLink.className = "eplus-code-link";
+        monthlyLabsLink.href = MONTHLY_LABS_URL;
+        monthlyLabsLink.target = "_blank";
+        monthlyLabsLink.rel = "noopener noreferrer";
+        monthlyLabsLink.textContent = t("arcadeCodeViewSource");
 
-        actions.append(fillButton, sourceLink);
+        actions.append(fillButton, monthlyLabsLink);
         statusLabel = document.createElement("p");
         statusLabel.className = "eplus-code-status";
         statusLabel.setAttribute("aria-live", "polite");
@@ -245,7 +244,7 @@ export default defineContentScript({
                 : "",
             deadline: candidate.deadline,
             cached: candidate.cached === true,
-            sourceUrl: CRAWLER_SOURCE,
+            sourceUrl: candidate.sourceUrl || "https://github.com/hoangsvit/arcade-crawler/blob/main/data/arcade_monthly_games.json",
           };
         }
       }
