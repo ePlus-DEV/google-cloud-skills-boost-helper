@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prefill an empty Google Skills Join dialog code field (including open Shadow DOM), support optional `#access_code=...` links and provide a one-click Fill code action.
 - Keep Join confirmation manual. Do not suggest expired, reconstructed or conflicting game codes.
 - Localize the source-aware assistant across all 13 supported languages.
+- Open **View Monthly Labs** at `https://arcade.eplus.dev/#monthly-games` instead of the raw crawler JSON.
 
 ### :lock: Privacy & permissions
 
