@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "Bonus Milestone을 업데이트할 수 없습니다. 다시 시도해 주세요."
+  },
+  "arcadeCodeTitle": {
+    "message": "Arcade 액세스 코드"
+  },
+  "arcadeCodeFill": {
+    "message": "코드 입력"
+  },
+  "arcadeCodeFilled": {
+    "message": "코드가 입력되었습니다. 확인한 후 Join을 누르세요."
+  },
+  "arcadeCodeReview": {
+    "message": "참가 전 코드를 확인하세요. Google에서 검증합니다."
+  },
+  "arcadeCodeFromLink": {
+    "message": "링크에서 가져옴(미검증)"
+  },
+  "arcadeCodeFromCache": {
+    "message": "공개 Arcade 크롤러 캐시"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "공개 Arcade 크롤러 추천"
+  },
+  "arcadeCodeViewSource": {
+    "message": "출처 보기"
   }
 }
