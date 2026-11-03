@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "Gợi ý từ Arcade crawler công khai"
   },
-  "arcadeCodeViewSource": {
-    "message": "Xem nguồn"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "Xem hoạt động tháng này"
   }
 }
