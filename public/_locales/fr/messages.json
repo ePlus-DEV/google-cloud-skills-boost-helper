@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "Suggestion du crawler Arcade public"
   },
-  "arcadeCodeViewSource": {
-    "message": "Voir la source"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "Voir les labs du mois"
   }
 }
