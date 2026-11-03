@@ -39,6 +39,7 @@ export default defineContentScript({
     let sourceLabel: HTMLElement | null = null;
     let statusLabel: HTMLElement | null = null;
     let fillButton: HTMLButtonElement | null = null;
+    let sourceLink: HTMLAnchorElement | null = null;
     let scanTimeout: number | undefined;
     const attempted = new WeakSet<HTMLInputElement>();
 
@@ -117,6 +118,7 @@ export default defineContentScript({
             : t("arcadeCodeFromCrawler");
       }
       if (fillButton) fillButton.disabled = false;
+      if (sourceLink) sourceLink.hidden = active.fromLink;
 
       // Autofill empty fields only once. Never overwrite a user's typed code.
       if (!attempted.has(input)) {
@@ -180,7 +182,7 @@ export default defineContentScript({
           applyCode(input, active.code);
         });
 
-        const sourceLink = document.createElement("a");
+        sourceLink = document.createElement("a");
         sourceLink.className = "eplus-code-link";
         sourceLink.href = CRAWLER_SOURCE;
         sourceLink.target = "_blank";
