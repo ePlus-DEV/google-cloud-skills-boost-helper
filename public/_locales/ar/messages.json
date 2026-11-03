@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "اقتراح من زاحف Arcade العام"
   },
-  "arcadeCodeViewSource": {
-    "message": "عرض المصدر"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "عرض مختبرات هذا الشهر"
   }
 }
