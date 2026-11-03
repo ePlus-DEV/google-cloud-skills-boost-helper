@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "公开 Arcade 爬虫建议"
   },
-  "arcadeCodeViewSource": {
-    "message": "查看来源"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "查看本月实验"
   }
 }
