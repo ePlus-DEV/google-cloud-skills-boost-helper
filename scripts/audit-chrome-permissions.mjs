@@ -21,3 +21,13 @@ assert.ok(
   requested.has("storage"),
   "The extension needs the storage permission for accounts and preferences",
 );
+
+const hosts = new Set(manifest.host_permissions ?? []);
+assert.ok(
+  hosts.has("https://raw.githubusercontent.com/*"),
+  "Arcade code assistant requires access only to the public crawler host",
+);
+assert.ok(
+  [...hosts].every((host) => host === "https://raw.githubusercontent.com/*"),
+  "Do not add broad or unused host permissions for the crawler feature",
+);
