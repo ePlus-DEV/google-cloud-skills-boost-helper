@@ -46,14 +46,22 @@ export function findCrawlerGameCode(
   gameId: string,
   now = Date.now(),
 ): ArcadeAccessCodeMatch | null {
-  if (!/^[0-9]{1,12}$/.test(gameId) || !Array.isArray(snapshot) || snapshot.length > 500) {
+  if (
+    !/^[0-9]{1,12}$/.test(gameId) ||
+    !Array.isArray(snapshot) ||
+    snapshot.length > 500
+  ) {
     return null;
   }
 
   let match: ArcadeAccessCodeMatch | null = null;
   for (const candidate of snapshot as CrawlerGame[]) {
     if (!candidate || typeof candidate !== "object") continue;
-    if (typeof candidate.joinUrl !== "string" || arcadeGameIdFromUrl(candidate.joinUrl) !== gameId) continue;
+    if (
+      typeof candidate.joinUrl !== "string" ||
+      arcadeGameIdFromUrl(candidate.joinUrl) !== gameId
+    )
+      continue;
 
     // Never surface a partial, fabricated, expired, or ambiguous code.
     if (
@@ -67,7 +75,10 @@ export function findCrawlerGameCode(
       return null;
     }
 
-    const title = typeof candidate.title === "string" ? candidate.title.trim().slice(0, 160) : "";
+    const title =
+      typeof candidate.title === "string"
+        ? candidate.title.trim().slice(0, 160)
+        : "";
     const next = {
       gameId,
       title,
@@ -82,14 +93,20 @@ export function findCrawlerGameCode(
 
 /** Only read user-supplied codes from the fragment, never from query params. */
 export function codeFromUrlFragment(fragment: string): string | null {
-  const parsed = new URLSearchParams(fragment.startsWith("#") ? fragment.slice(1) : fragment);
+  const parsed = new URLSearchParams(
+    fragment.startsWith("#") ? fragment.slice(1) : fragment,
+  );
   const candidate = parsed.get("access_code");
   return validArcadeAccessCode(candidate) ? candidate : null;
 }
 
 /** The page can render the code field within multiple open Shadow Roots. */
-export function findAccessCodeInput(root: Document | ShadowRoot): HTMLInputElement | null {
-  const direct = root.querySelector<HTMLInputElement>('input[name="access_code"]');
+export function findAccessCodeInput(
+  root: Document | ShadowRoot,
+): HTMLInputElement | null {
+  const direct = root.querySelector<HTMLInputElement>(
+    'input[name="access_code"]',
+  );
   if (direct) return direct;
   for (const element of root.querySelectorAll("*")) {
     if (!element.shadowRoot) continue;
@@ -103,14 +120,26 @@ export function findAccessCodeInput(root: Document | ShadowRoot): HTMLInputEleme
  * Trigger native input/change events so custom elements and frameworks observe
  * the same change as a real user typing. Google alone validates submitted codes.
  */
-export function fillAccessCodeInput(field: HTMLInputElement, code: string): boolean {
-  if (!validArcadeAccessCode(code) || field.disabled || field.readOnly) return false;
-  const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+export function fillAccessCodeInput(
+  field: HTMLInputElement,
+  code: string,
+): boolean {
+  if (!validArcadeAccessCode(code) || field.disabled || field.readOnly)
+    return false;
+  const setter = Object.getOwnPropertyDescriptor(
+    HTMLInputElement.prototype,
+    "value",
+  )?.set;
   if (!setter) return false;
   field.focus();
   setter.call(field, code);
   field.dispatchEvent(
-    new InputEvent("input", { bubbles: true, composed: true, inputType: "insertText", data: code }),
+    new InputEvent("input", {
+      bubbles: true,
+      composed: true,
+      inputType: "insertText",
+      data: code,
+    }),
   );
   field.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
   return field.value === code;

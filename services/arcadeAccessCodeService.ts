@@ -33,7 +33,8 @@ function parseCache(raw: unknown, now: number): CachedGames | null {
     now - fetchedAt > FALLBACK_TTL_MS ||
     !Array.isArray(games) ||
     games.length > 500
-  ) return null;
+  )
+    return null;
   return { fetchedAt, games };
 }
 
@@ -63,11 +64,16 @@ async function refreshCrawler(now: number): Promise<CachedGames> {
       throw new Error("Arcade crawler response too large");
     }
     const text = await response.text();
-    if (text.length > MAX_PAYLOAD_SIZE) throw new Error("Arcade crawler response too large");
+    if (text.length > MAX_PAYLOAD_SIZE)
+      throw new Error("Arcade crawler response too large");
     const json: unknown = JSON.parse(text);
-    if (!Array.isArray(json) || json.length > 500) throw new Error("Invalid Arcade crawler snapshot");
+    if (!Array.isArray(json) || json.length > 500)
+      throw new Error("Invalid Arcade crawler snapshot");
     const games: CrawlerGame[] = json
-      .filter((item): item is Record<string, unknown> => item != null && typeof item === "object" && !Array.isArray(item))
+      .filter(
+        (item): item is Record<string, unknown> =>
+          item != null && typeof item === "object" && !Array.isArray(item),
+      )
       .map((item) => ({
         title: item.title,
         joinUrl: item.joinUrl,
@@ -98,7 +104,9 @@ function suggestion(
   return match ? { ...match, cached, sourceUrl: ARCADE_CRAWLER_SOURCE } : null;
 }
 
-export async function lookupArcadeAccessCode(gameId: string): Promise<ArcadeCodeSuggestion | null> {
+export async function lookupArcadeAccessCode(
+  gameId: string,
+): Promise<ArcadeCodeSuggestion | null> {
   if (!/^[0-9]{1,12}$/.test(gameId)) return null;
   const now = Date.now();
   const cache = await readCache(now);
@@ -109,7 +117,9 @@ export async function lookupArcadeAccessCode(gameId: string): Promise<ArcadeCode
 
   try {
     if (!inFlight) {
-      inFlight = refreshCrawler(now).finally(() => { inFlight = null; });
+      inFlight = refreshCrawler(now).finally(() => {
+        inFlight = null;
+      });
     }
     return suggestion(await inFlight, gameId, Date.now(), false);
   } catch {

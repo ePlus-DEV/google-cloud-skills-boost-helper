@@ -49,18 +49,26 @@ describe("public crawler access-code service", () => {
       code: "1q-basecamp-02108",
       cached: false,
     });
-    expect(fetcher).toHaveBeenCalledWith(ARCADE_CRAWLER_URL, expect.any(Object));
+    expect(fetcher).toHaveBeenCalledWith(
+      ARCADE_CRAWLER_URL,
+      expect.any(Object),
+    );
     expect(set).toHaveBeenCalledTimes(1);
-    expect(await lookupArcadeAccessCode("7564")).toMatchObject({ code: game.accessCode });
+    expect(await lookupArcadeAccessCode("7564")).toMatchObject({
+      code: game.accessCode,
+    });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it("does not leak an access code for unrelated or expired games", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => ({
-      ok: true,
-      headers: new Headers(),
-      text: async () => JSON.stringify([game]),
-    })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        headers: new Headers(),
+        text: async () => JSON.stringify([game]),
+      })),
+    );
     expect(await lookupArcadeAccessCode("9999")).toBeNull();
     expect(await lookupArcadeAccessCode("7564")).not.toBeNull();
     vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-11-25T00:00:00Z"));
@@ -72,7 +80,12 @@ describe("public crawler access-code service", () => {
       fetchedAt: TIME - 60 * 60 * 1000,
       games: [game],
     });
-    vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new Error("offline");
+      }),
+    );
     expect(await lookupArcadeAccessCode("7564")).toMatchObject({
       code: game.accessCode,
       cached: true,

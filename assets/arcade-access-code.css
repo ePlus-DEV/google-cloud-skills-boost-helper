@@ -12,10 +12,18 @@
   background: #ffffff;
   box-shadow: 0 15px 42px rgba(24, 35, 65, 0.18);
   color: #172033;
-  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font:
+    13px/1.4 system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
 }
-.eplus-arcade-code[hidden] { display: none !important; }
-.eplus-arcade-code * { box-sizing: border-box; }
+.eplus-arcade-code[hidden] {
+  display: none !important;
+}
+.eplus-arcade-code * {
+  box-sizing: border-box;
+}
 
 .eplus-code-eyebrow {
   color: #6d28d9;
@@ -38,7 +46,11 @@
   border-radius: 9px;
   background: #f5f3ff;
   color: #4c1d95;
-  font: 600 13px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+  font:
+    600 13px/1.4 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
   user-select: text;
   overflow-wrap: anywhere;
 }
@@ -65,18 +77,32 @@
   font-weight: 700;
   cursor: pointer;
 }
-.eplus-code-fill:hover:not(:disabled) { background: #5b21b6; }
-.eplus-code-fill:disabled { opacity: .6; cursor: not-allowed; }
+.eplus-code-fill:hover:not(:disabled) {
+  background: #5b21b6;
+}
+.eplus-code-fill:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .eplus-code-link {
   color: #0e7490;
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.eplus-code-link:hover { color: #155e75; }
+.eplus-code-link:hover {
+  color: #155e75;
+}
 .eplus-code-fill:focus-visible,
-.eplus-code-link:focus-visible { outline: 2px solid #7c3aed; outline-offset: 3px; }
-.eplus-code-status { margin: 8px 0 0; color: #475569; font-size: 11px; }
+.eplus-code-link:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 3px;
+}
+.eplus-code-status {
+  margin: 8px 0 0;
+  color: #475569;
+  font-size: 11px;
+}
 
 @media (max-width: 600px) {
   .eplus-arcade-code {
@@ -87,12 +113,29 @@
   }
 }
 @media (prefers-color-scheme: dark) {
-  .eplus-arcade-code { border-color: #34425f; background: #10192d; color: #f8fafc; }
-  .eplus-code-eyebrow { color: #c4b5fd; }
-  .eplus-code-value { border-color: #6346a5; background: #271c46; color: #ddd6fe; }
-  .eplus-code-source, .eplus-code-status { color: #aebbd2; }
-  .eplus-code-link { color: #67e8f9; }
+  .eplus-arcade-code {
+    border-color: #34425f;
+    background: #10192d;
+    color: #f8fafc;
+  }
+  .eplus-code-eyebrow {
+    color: #c4b5fd;
+  }
+  .eplus-code-value {
+    border-color: #6346a5;
+    background: #271c46;
+    color: #ddd6fe;
+  }
+  .eplus-code-source,
+  .eplus-code-status {
+    color: #aebbd2;
+  }
+  .eplus-code-link {
+    color: #67e8f9;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .eplus-code-fill { transition: none; }
+  .eplus-code-fill {
+    transition: none;
+  }
 }

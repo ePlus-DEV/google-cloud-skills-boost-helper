@@ -42,17 +42,39 @@ export default defineContentScript({
     let scanTimeout: number | undefined;
     const attempted = new WeakSet<HTMLInputElement>();
 
-    function activeCode(): { code: string; title: string; fromLink: boolean; cached: boolean } | null {
-      if (urlCode) return { code: urlCode, title: "", fromLink: true, cached: false };
-      if (!crawler || crawler.gameId !== gameId || !validArcadeAccessCode(crawler.code)) return null;
+    function activeCode(): {
+      code: string;
+      title: string;
+      fromLink: boolean;
+      cached: boolean;
+    } | null {
+      if (urlCode)
+        return { code: urlCode, title: "", fromLink: true, cached: false };
+      if (
+        !crawler ||
+        crawler.gameId !== gameId ||
+        !validArcadeAccessCode(crawler.code)
+      )
+        return null;
       if (Date.parse(crawler.deadline) <= Date.now()) return null;
-      return { code: crawler.code, title: crawler.title, fromLink: false, cached: crawler.cached };
+      return {
+        code: crawler.code,
+        title: crawler.title,
+        fromLink: false,
+        cached: crawler.cached,
+      };
     }
 
     function codeField(): HTMLInputElement | null {
       if (arcadeGameIdFromUrl(location.href) !== gameId) return null;
       const field = findAccessCodeInput(document);
-      if (!field || !field.isConnected || field.disabled || field.getClientRects().length === 0) return null;
+      if (
+        !field ||
+        !field.isConnected ||
+        field.disabled ||
+        field.getClientRects().length === 0
+      )
+        return null;
       return field;
     }
 
@@ -61,7 +83,11 @@ export default defineContentScript({
       attempted.add(input);
       if (urlCode) {
         // Do not leave a shared access code visible in the address bar.
-        window.history.replaceState(history.state, "", location.pathname + location.search);
+        window.history.replaceState(
+          history.state,
+          "",
+          location.pathname + location.search,
+        );
       }
       if (statusLabel) statusLabel.textContent = t("arcadeCodeFilled");
     }
@@ -167,7 +193,14 @@ export default defineContentScript({
         statusLabel.setAttribute("aria-live", "polite");
         statusLabel.textContent = t("arcadeCodeReview");
 
-        box.append(eyebrow, titleLabel, codeLabel, sourceLabel, actions, statusLabel);
+        box.append(
+          eyebrow,
+          titleLabel,
+          codeLabel,
+          sourceLabel,
+          actions,
+          statusLabel,
+        );
         container.append(box);
         card = box;
       },
@@ -204,7 +237,10 @@ export default defineContentScript({
           crawler = {
             gameId,
             code: candidate.code,
-            title: typeof candidate.title === "string" ? candidate.title.slice(0, 160) : "",
+            title:
+              typeof candidate.title === "string"
+                ? candidate.title.slice(0, 160)
+                : "",
             deadline: candidate.deadline,
             cached: candidate.cached === true,
             sourceUrl: CRAWLER_SOURCE,

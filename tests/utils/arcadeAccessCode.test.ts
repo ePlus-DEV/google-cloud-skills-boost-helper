@@ -29,26 +29,56 @@ describe("exact Arcade game crawler mapping", () => {
   it("never matches a different ID, a partial ID, lab URLs, or spoofed hosts", () => {
     expect(findCrawlerGameCode([game], "756", NOW)).toBeNull();
     expect(findCrawlerGameCode([game], "7565", NOW)).toBeNull();
-    expect(arcadeGameIdFromUrl("https://www.skills.google/games/7564/labs/123")).toBeNull();
-    expect(arcadeGameIdFromUrl("https://www.skills.google.evil.test/games/7564")).toBeNull();
-    expect(arcadeGameIdFromUrl("http://www.skills.google/games/7564")).toBeNull();
+    expect(
+      arcadeGameIdFromUrl("https://www.skills.google/games/7564/labs/123"),
+    ).toBeNull();
+    expect(
+      arcadeGameIdFromUrl("https://www.skills.google.evil.test/games/7564"),
+    ).toBeNull();
+    expect(
+      arcadeGameIdFromUrl("http://www.skills.google/games/7564"),
+    ).toBeNull();
     expect(arcadeGameIdFromUrl(game.joinUrl)).toBe("7564");
-    expect(arcadeGameIdFromUrl("https://skills.google/games/7564/")).toBe("7564");
+    expect(arcadeGameIdFromUrl("https://skills.google/games/7564/")).toBe(
+      "7564",
+    );
   });
 
   it("rejects expired, inactive, reconstructed, missing, and conflicting codes", () => {
-    expect(findCrawlerGameCode([game], "7564", Date.parse("2026-11-25T00:00:00Z"))).toBeNull();
-    expect(findCrawlerGameCode([{ ...game, status: "expired" }], "7564", NOW)).toBeNull();
-    expect(findCrawlerGameCode([{ ...game, reconstructed: true }], "7564", NOW)).toBeNull();
-    expect(findCrawlerGameCode([{ ...game, accessCode: "" }], "7564", NOW)).toBeNull();
-    expect(findCrawlerGameCode([{ ...game, accessCode: "bad code <script>" }], "7564", NOW)).toBeNull();
-    expect(findCrawlerGameCode([game, { ...game, accessCode: "different-code-2" }], "7564", NOW)).toBeNull();
+    expect(
+      findCrawlerGameCode([game], "7564", Date.parse("2026-11-25T00:00:00Z")),
+    ).toBeNull();
+    expect(
+      findCrawlerGameCode([{ ...game, status: "expired" }], "7564", NOW),
+    ).toBeNull();
+    expect(
+      findCrawlerGameCode([{ ...game, reconstructed: true }], "7564", NOW),
+    ).toBeNull();
+    expect(
+      findCrawlerGameCode([{ ...game, accessCode: "" }], "7564", NOW),
+    ).toBeNull();
+    expect(
+      findCrawlerGameCode(
+        [{ ...game, accessCode: "bad code <script>" }],
+        "7564",
+        NOW,
+      ),
+    ).toBeNull();
+    expect(
+      findCrawlerGameCode(
+        [game, { ...game, accessCode: "different-code-2" }],
+        "7564",
+        NOW,
+      ),
+    ).toBeNull();
   });
 });
 
 describe("explicit code fragments", () => {
   it("accepts safe user-provided hashes but never assumes standard query support", () => {
-    expect(codeFromUrlFragment("#access_code=1q-basecamp-02108")).toBe("1q-basecamp-02108");
+    expect(codeFromUrlFragment("#access_code=1q-basecamp-02108")).toBe(
+      "1q-basecamp-02108",
+    );
     expect(codeFromUrlFragment("#access_code=unsafe%20value")).toBeNull();
     expect(codeFromUrlFragment("#other=x")).toBeNull();
   });

@@ -773,7 +773,7 @@ This keeps **current state** and **future state** from drifting into the same do
 - Runs only on Google Skills `/games/{numericId}` pages, not lab routes.
 - Requests an exact game-ID match via extension messaging. The background fetches
   `https://raw.githubusercontent.com/hoangsvit/arcade-crawler/refs/heads/main/data/arcade_monthly_games.json`
-  with omitted credentials. The manifest grants this *single* public crawler host.
+  with omitted credentials. The manifest grants this _single_ public crawler host.
 - Stores a public snapshot in extension-local storage for 30 minutes; when offline,
   a prior snapshot is only eligible for up to 12 hours and before the game's deadline.
 - Requires an `active`, non-reconstructed record with a well-formed Access Code and
