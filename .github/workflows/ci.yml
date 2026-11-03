@@ -82,5 +82,8 @@ jobs:
       - name: Build extension
         run: yarn build
 
+      - name: Build Firefox extension
+        run: yarn build:firefox
+
       - name: Audit Chrome Web Store permissions
         run: node scripts/audit-chrome-permissions.mjs

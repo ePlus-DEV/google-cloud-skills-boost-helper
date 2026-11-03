@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "Не удалось обновить Bonus Milestone. Попробуйте еще раз."
+  },
+  "arcadeCodeTitle": {
+    "message": "Код доступа Arcade"
+  },
+  "arcadeCodeFill": {
+    "message": "Подставить код"
+  },
+  "arcadeCodeFilled": {
+    "message": "Код подставлен. Проверьте его и нажмите Join."
+  },
+  "arcadeCodeReview": {
+    "message": "Проверьте код перед вступлением. Его проверяет Google."
+  },
+  "arcadeCodeFromLink": {
+    "message": "Из ссылки (не проверено)"
+  },
+  "arcadeCodeFromCache": {
+    "message": "Кэш общедоступного Arcade-краулера"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "Предложено общедоступным Arcade-краулером"
+  },
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "Посмотреть лабы месяца"
   }
 }

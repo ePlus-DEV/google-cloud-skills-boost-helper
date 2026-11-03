@@ -1,5 +1,6 @@
 import { UI_COLORS } from "../utils/config";
 import UpdateNotificationService from "../services/updateNotificationService";
+import { lookupArcadeAccessCode } from "../services/arcadeAccessCodeService";
 
 export default defineBackground(() => {
   type BadgeAction = {
@@ -27,7 +28,8 @@ export default defineBackground(() => {
 
   async function refreshBadge(): Promise<void> {
     try {
-      const StorageService = (await import("../services/storageService")).default;
+      const StorageService = (await import("../services/storageService"))
+        .default;
       await StorageService.refreshBadgeForActiveAccount();
     } catch (error) {
       console.debug("Failed to refresh badge:", error);
@@ -55,8 +57,7 @@ export default defineBackground(() => {
   try {
     if (browser.runtime.setUninstallURL) {
       const version = browser.runtime.getManifest()?.version || "unknown";
-      const formId =
-        "1FAIpQLSc_IYKM_q4_WW0S-t-sQgsHdeRwLYbDMxD-BrR68tkdjx8aqg";
+      const formId = "1FAIpQLSc_IYKM_q4_WW0S-t-sQgsHdeRwLYbDMxD-BrR68tkdjx8aqg";
       const versionEntryId = "1223799012";
       const uninstallUrl = `https://docs.google.com/forms/d/e/${formId}/viewform?entry.${versionEntryId}=v${encodeURIComponent(version)}`;
       browser.runtime.setUninstallURL(uninstallUrl);
@@ -126,6 +127,12 @@ export default defineBackground(() => {
       if (!message?.type) return;
 
       switch (message.type) {
+        case "arcadeAccessCodeLookup": {
+          const gameId = message.gameId;
+          if (typeof gameId !== "string" || !/^[0-9]{1,12}$/.test(gameId))
+            return null;
+          return await lookupArcadeAccessCode(gameId);
+        }
         case "setBadge": {
           const action = getAction();
           if (!action) return;
@@ -167,19 +174,21 @@ export default defineBackground(() => {
     }
   });
 
-  browser.runtime.onMessage.addListener(async (message) => {
+  browser.runtime.onMessage.addListener((message) => {
+    // Do not claim unrelated messages: the other listener handles Arcade code lookup.
     if (!message?._openChangelogTest) return;
-
-    try {
-      const path = `/changelog.html?version=${encodeURIComponent(
-        message.version || "",
-      )}&from=${encodeURIComponent(message.from || "")}`;
-      await browser.tabs.create({
-        url: browser.runtime.getURL(path as any),
-        active: true,
-      });
-    } catch (error) {
-      console.debug("Failed to open changelog test tab:", error);
-    }
+    return (async () => {
+      try {
+        const path = `/changelog.html?version=${encodeURIComponent(
+          message.version || "",
+        )}&from=${encodeURIComponent(message.from || "")}`;
+        await browser.tabs.create({
+          url: browser.runtime.getURL(path as any),
+          active: true,
+        });
+      } catch (error) {
+        console.debug("Failed to open changelog test tab:", error);
+      }
+    })();
   });
 });

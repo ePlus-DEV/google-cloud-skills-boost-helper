@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "No se pudo actualizar el Bonus Milestone. Inténtalo de nuevo."
+  },
+  "arcadeCodeTitle": {
+    "message": "Código de acceso de Arcade"
+  },
+  "arcadeCodeFill": {
+    "message": "Rellenar código"
+  },
+  "arcadeCodeFilled": {
+    "message": "Código rellenado. Revísalo y pulsa Join."
+  },
+  "arcadeCodeReview": {
+    "message": "Revisa el código antes de unirte. Google lo valida."
+  },
+  "arcadeCodeFromLink": {
+    "message": "Desde un enlace (sin verificar)"
+  },
+  "arcadeCodeFromCache": {
+    "message": "Datos en caché del rastreador público de Arcade"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "Sugerido por el rastreador público de Arcade"
+  },
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "Ver labs del mes"
   }
 }
