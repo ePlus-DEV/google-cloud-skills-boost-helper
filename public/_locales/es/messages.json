@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "Sugerido por el rastreador público de Arcade"
   },
-  "arcadeCodeViewSource": {
-    "message": "Ver fuente"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "Ver labs del mes"
   }
 }
