@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 import {
   ARCADE_CRAWLER_URL,
   lookupArcadeAccessCode,
@@ -13,18 +14,9 @@ const game = {
   deadline: "2026-11-24T18:29:50.000Z",
 };
 
-const memory = new Map<string, unknown>();
-const get = vi.fn(async (key: string) => ({ [key]: memory.get(key) }));
-const set = vi.fn(async (payload: Record<string, unknown>) => {
-  for (const [key, value] of Object.entries(payload)) memory.set(key, value);
-});
-
 beforeEach(() => {
-  memory.clear();
-  get.mockClear();
-  set.mockClear();
+  fakeBrowser.reset();
   vi.spyOn(Date, "now").mockReturnValue(TIME);
-  vi.stubGlobal("browser", { storage: { local: { get, set } } });
 });
 
 afterEach(() => {
@@ -44,6 +36,7 @@ describe("public crawler access-code service", () => {
       };
     });
     vi.stubGlobal("fetch", fetcher);
+    const setSpy = vi.spyOn(fakeBrowser.storage.local, "set");
     expect(await lookupArcadeAccessCode("7564")).toMatchObject({
       gameId: "7564",
       code: "1q-basecamp-02108",
@@ -53,7 +46,7 @@ describe("public crawler access-code service", () => {
       ARCADE_CRAWLER_URL,
       expect.any(Object),
     );
-    expect(set).toHaveBeenCalledTimes(1);
+    expect(setSpy).toHaveBeenCalledTimes(1);
     expect(await lookupArcadeAccessCode("7564")).toMatchObject({
       code: game.accessCode,
     });
@@ -76,10 +69,10 @@ describe("public crawler access-code service", () => {
   });
 
   it("uses only previously cached active codes if the crawler is offline", async () => {
-    memory.set("arcadeAccessCodesCrawlerV1", {
+    await fakeBrowser.storage.local.set({ arcadeAccessCodesCrawlerV1: {
       fetchedAt: TIME - 60 * 60 * 1000,
       games: [game],
-    });
+    } });
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => {
