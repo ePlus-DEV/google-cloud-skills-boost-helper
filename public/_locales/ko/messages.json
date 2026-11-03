@@ -1001,7 +1001,7 @@
   "arcadeCodeFromCrawler": {
     "message": "공개 Arcade 크롤러 추천"
   },
-  "arcadeCodeViewSource": {
-    "message": "출처 보기"
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "이번 달 실습 보기"
   }
 }
