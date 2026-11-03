@@ -121,3 +121,16 @@ When a planned item becomes implemented:
 - include user-visible behavior in changelog/release notes.
 
 Do not document planned behavior as current behavior.
+
+## Arcade access-code helper invariants
+
+- Game suggestions are sourced solely from the public Arcade crawler or an
+  explicit user-supplied `#access_code` fragment. Exact numeric game-ID match
+  is required; never invent or fuzzy-match access codes.
+- Check active status, deadline, valid code format and duplicate records.
+- Prefill only empty fields by default. **Never automatically Join, submit, or
+  bypass Google's validation.** Users retain the final action.
+- Keep crawler requests in the background with `credentials: omit`, and
+  the raw GitHub host permission limited to the public snapshot.
+- Do not request `tabs`, `notifications`, account cookies or unrelated permissions.
+- Localize across all 13 languages and regression-test Google open Shadow DOM.
