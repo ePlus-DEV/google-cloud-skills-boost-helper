@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "Bonus Milestone अपडेट नहीं हो सका। कृपया फिर से कोशिश करें।"
+  },
+  "arcadeCodeTitle": {
+    "message": "Arcade एक्सेस कोड"
+  },
+  "arcadeCodeFill": {
+    "message": "कोड भरें"
+  },
+  "arcadeCodeFilled": {
+    "message": "कोड भर दिया गया है। जाँचें, फिर Join दबाएँ।"
+  },
+  "arcadeCodeReview": {
+    "message": "शामिल होने से पहले कोड जाँचें। Google इसे सत्यापित करता है।"
+  },
+  "arcadeCodeFromLink": {
+    "message": "लिंक से (असत्यापित)"
+  },
+  "arcadeCodeFromCache": {
+    "message": "सार्वजनिक Arcade क्रॉलर का कैश डेटा"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "सार्वजनिक Arcade क्रॉलर से सुझाव"
+  },
+  "arcadeCodeViewSource": {
+    "message": "स्रोत देखें"
   }
 }
