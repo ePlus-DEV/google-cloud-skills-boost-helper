@@ -1,5 +1,6 @@
 import { UI_COLORS } from "../utils/config";
 import UpdateNotificationService from "../services/updateNotificationService";
+import { lookupArcadeAccessCode } from "../services/arcadeAccessCodeService";
 
 export default defineBackground(() => {
   type BadgeAction = {
@@ -126,6 +127,11 @@ export default defineBackground(() => {
       if (!message?.type) return;
 
       switch (message.type) {
+        case "arcadeAccessCodeLookup": {
+          const gameId = message.gameId;
+          if (typeof gameId !== "string" || !/^[0-9]{1,12}$/.test(gameId)) return null;
+          return await lookupArcadeAccessCode(gameId);
+        }
         case "setBadge": {
           const action = getAction();
           if (!action) return;
@@ -167,9 +173,10 @@ export default defineBackground(() => {
     }
   });
 
-  browser.runtime.onMessage.addListener(async (message) => {
+  browser.runtime.onMessage.addListener((message) => {
+    // Do not claim unrelated messages: the other listener handles Arcade code lookup.
     if (!message?._openChangelogTest) return;
-
+    return (async () => {
     try {
       const path = `/changelog.html?version=${encodeURIComponent(
         message.version || "",
@@ -181,5 +188,6 @@ export default defineBackground(() => {
     } catch (error) {
       console.debug("Failed to open changelog test tab:", error);
     }
+    })();
   });
 });
