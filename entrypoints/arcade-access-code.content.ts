@@ -244,7 +244,9 @@ export default defineContentScript({
                 : "",
             deadline: candidate.deadline,
             cached: candidate.cached === true,
-            sourceUrl: candidate.sourceUrl || "https://github.com/hoangsvit/arcade-crawler/blob/main/data/arcade_monthly_games.json",
+            sourceUrl:
+              candidate.sourceUrl ||
+              "https://github.com/hoangsvit/arcade-crawler/blob/main/data/arcade_monthly_games.json",
           };
         }
       }
