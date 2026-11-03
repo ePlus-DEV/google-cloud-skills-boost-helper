@@ -1,0 +1,98 @@
+/* Isolated WXT ShadowRoot UI: no styles leak into Google Skills. */
+.eplus-arcade-code {
+  box-sizing: border-box;
+  position: fixed;
+  top: 88px;
+  right: 20px;
+  z-index: 2147483647;
+  width: min(340px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border: 1px solid #d4d9ea;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 15px 42px rgba(24, 35, 65, 0.18);
+  color: #172033;
+  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.eplus-arcade-code[hidden] { display: none !important; }
+.eplus-arcade-code * { box-sizing: border-box; }
+
+.eplus-code-eyebrow {
+  color: #6d28d9;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.eplus-code-title {
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  font-weight: 700;
+}
+.eplus-code-value {
+  display: block;
+  padding: 7px 10px;
+  margin-top: 9px;
+  border: 1px solid #e4ddfa;
+  border-radius: 9px;
+  background: #f5f3ff;
+  color: #4c1d95;
+  font: 600 13px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+  user-select: text;
+  overflow-wrap: anywhere;
+}
+.eplus-code-source {
+  margin-top: 7px;
+  color: #52637c;
+  font-size: 11px;
+}
+.eplus-code-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.eplus-code-fill {
+  min-height: 35px;
+  padding: 7px 14px;
+  border: 1px solid #6d28d9;
+  border-radius: 9px;
+  background: #6d28d9;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.eplus-code-fill:hover:not(:disabled) { background: #5b21b6; }
+.eplus-code-fill:disabled { opacity: .6; cursor: not-allowed; }
+.eplus-code-link {
+  color: #0e7490;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.eplus-code-link:hover { color: #155e75; }
+.eplus-code-fill:focus-visible,
+.eplus-code-link:focus-visible { outline: 2px solid #7c3aed; outline-offset: 3px; }
+.eplus-code-status { margin: 8px 0 0; color: #475569; font-size: 11px; }
+
+@media (max-width: 600px) {
+  .eplus-arcade-code {
+    top: 65px;
+    right: 12px;
+    width: min(320px, calc(100vw - 24px));
+    padding: 11px 13px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .eplus-arcade-code { border-color: #34425f; background: #10192d; color: #f8fafc; }
+  .eplus-code-eyebrow { color: #c4b5fd; }
+  .eplus-code-value { border-color: #6346a5; background: #271c46; color: #ddd6fe; }
+  .eplus-code-source, .eplus-code-status { color: #aebbd2; }
+  .eplus-code-link { color: #67e8f9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eplus-code-fill { transition: none; }
+}
