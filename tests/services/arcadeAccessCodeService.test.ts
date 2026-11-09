@@ -87,6 +87,43 @@ describe("public crawler access-code service", () => {
     });
   });
 
+  it("parses chunked crawler responses without exceeding the byte budget", async () => {
+    const bytes = new TextEncoder().encode(JSON.stringify([game]));
+    const middle = Math.floor(bytes.length / 2);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        const body = new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.enqueue(bytes.slice(0, middle));
+            controller.enqueue(bytes.slice(middle));
+            controller.close();
+          },
+        });
+        return new Response(body, { status: 200 });
+      }),
+    );
+    expect(await lookupArcadeAccessCode("7564")).toMatchObject({
+      code: game.accessCode,
+    });
+  });
+
+  it("rejects oversized streamed payloads before consuming the whole body", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        const body = new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.enqueue(new Uint8Array(200_001));
+            controller.close();
+          },
+        });
+        return new Response(body, { status: 200 });
+      }),
+    );
+    expect(await lookupArcadeAccessCode("7564")).toBeNull();
+  });
+
   it("refuses unsupported IDs and responses that exceed the size limit", async () => {
     const fetcher = vi.fn(async () => ({
       ok: true,
