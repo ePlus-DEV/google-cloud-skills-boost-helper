@@ -18,6 +18,17 @@ Before making a non-trivial change, read:
 - Use Conventional Commits.
 - Do not mix dependency churn or unrelated cleanup into a feature PR.
 
+## Function documentation and naming (mandatory)
+
+Apply these rules to every new or changed function, method, and exported callback in TypeScript/JavaScript code:
+
+- **A JSDoc documentation comment is required before each function declaration and named function expression/method**, including private helpers, async functions, and arrow functions assigned to named variables. Document what it does and any important side effects or constraints.
+- For functions with parameters, document each parameter using `@param`. Use `@returns` when a value is returned and `@throws` when errors are intentionally propagated. Documentation must match the actual implementation; generic filler comments do not count.
+- **Function names must contain complete, descriptive words.** Never abbreviate or shorten words (for example, avoid `calcPts`, `getUsr`, `updCfg`, `fn`, `cb`, or `t`). Prefer `calculateArcadePoints`, `getUserProfile`, `updateConfiguration`, and `translateArcadeMessage`.
+- **Do not introduce function names shorter than 5 characters**, or generic single-word names that hide their intent (for example `scan`, `run`, `exec`, `doIt`, `temp`). Prefer action + domain/object names such as `scanForAccessCodeField`.
+- Use camelCase for functions and methods (unless a public API/framework contract requires a particular spelling). Existing library/framework-mandated names such as WXT `main` are exceptions; do not break public APIs solely to meet the length rule.
+- Review any newly added or modified function for both JSDoc coverage and descriptive naming before submitting a PR. Do not silence documentation or naming warnings by disabling analyzers.
+
 ## Required validation
 
 For code changes, run:
