@@ -96,21 +96,28 @@ export function codeFromUrlFragment(fragment: string): string | null {
   const parsed = new URLSearchParams(
     fragment.startsWith("#") ? fragment.slice(1) : fragment,
   );
-  const candidate = parsed.get("access_code");
-  return validArcadeAccessCode(candidate) ? candidate : null;
+  const codes = parsed.getAll("access_code");
+  // Ambiguous fragments must not choose an arbitrary code.
+  return codes.length === 1 && validArcadeAccessCode(codes[0])
+    ? codes[0]
+    : null;
 }
 
 /** The page can render the code field within multiple open Shadow Roots. */
 export function findAccessCodeInput(
   root: Document | ShadowRoot,
+  isEligible: (input: HTMLInputElement) => boolean = () => true,
 ): HTMLInputElement | null {
-  const direct = root.querySelector<HTMLInputElement>(
+  // The page can leave hidden, stale dialogs in the DOM. Do not stop at
+  // the first matching field if the caller needs a visible, enabled one.
+  for (const field of root.querySelectorAll<HTMLInputElement>(
     'input[name="access_code"]',
-  );
-  if (direct) return direct;
+  )) {
+    if (isEligible(field)) return field;
+  }
   for (const element of root.querySelectorAll("*")) {
     if (!element.shadowRoot) continue;
-    const nested = findAccessCodeInput(element.shadowRoot);
+    const nested = findAccessCodeInput(element.shadowRoot, isEligible);
     if (nested) return nested;
   }
   return null;
