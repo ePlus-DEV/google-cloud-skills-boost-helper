@@ -135,14 +135,14 @@ export function codeFromUrlFragment(fragment: string): string | null {
  */
 export function findAccessCodeInput(
   root: Document | ShadowRoot,
-  isEligible: (input: HTMLInputElement) => boolean = () => true,
+  isEligible?: (input: HTMLInputElement) => boolean,
 ): HTMLInputElement | null {
   // The page can leave hidden, stale dialogs in the DOM. Do not stop at
   // the first matching field if the caller needs a visible, enabled one.
   for (const field of root.querySelectorAll<HTMLInputElement>(
     'input[name="access_code"]',
   )) {
-    if (isEligible(field)) return field;
+    if (!isEligible || isEligible(field)) return field;
   }
   for (const element of root.querySelectorAll("*")) {
     if (!element.shadowRoot) continue;
