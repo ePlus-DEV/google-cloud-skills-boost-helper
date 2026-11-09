@@ -23,6 +23,13 @@ export type ArcadeCodeSuggestion = ArcadeAccessCodeMatch & {
 
 let inFlight: Promise<CachedGames> | null = null;
 
+/**
+ * Validate a saved public snapshot and its offline freshness window.
+ *
+ * @param raw - Untrusted storage payload.
+ * @param now - Current epoch time in milliseconds.
+ * @returns A usable snapshot, or null when absent, malformed or stale.
+ */
 function parseCache(raw: unknown, now: number): CachedGames | null {
   if (!raw || typeof raw !== "object") return null;
   const { fetchedAt, games } = raw as Partial<CachedGames>;
@@ -38,6 +45,12 @@ function parseCache(raw: unknown, now: number): CachedGames | null {
   return { fetchedAt, games };
 }
 
+/**
+ * Read the previously cached crawler snapshot without throwing on storage errors.
+ *
+ * @param now - Timestamp for the maximum cache-age check.
+ * @returns A validated snapshot, or null if unavailable.
+ */
 async function readCache(now: number): Promise<CachedGames | null> {
   try {
     const stored = await browser.storage.local.get(CACHE_KEY);
@@ -50,6 +63,13 @@ async function readCache(now: number): Promise<CachedGames | null> {
 /**
  * Stream with an explicit byte budget. Calling response.text() before checking
  * the size would permit an unexpectedly large remote response into memory.
+ */
+/**
+ * Decode a crawler response while enforcing the maximum byte budget.
+ *
+ * @param response - Successful crawler HTTP response.
+ * @returns UTF-8 JSON text that fits within the configured limit.
+ * @throws If streamed data is oversized or cannot be decoded.
  */
 async function readBoundedCrawlerBody(response: Response): Promise<string> {
   if (!response.body) {
@@ -90,6 +110,13 @@ async function readBoundedCrawlerBody(response: Response): Promise<string> {
 }
 
 /** Public crawler data only; never forward Google cookies or auth tokens. */
+/**
+ * Fetch and cache a fresh public game snapshot without sending credentials.
+ *
+ * @param now - Fetch timestamp stored alongside the snapshot.
+ * @returns Fetched snapshot, even when saving to storage fails.
+ * @throws If the network, payload bounds or response format is invalid.
+ */
 async function refreshCrawler(now: number): Promise<CachedGames> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -134,6 +161,15 @@ async function refreshCrawler(now: number): Promise<CachedGames> {
   }
 }
 
+/**
+ * Convert one exact crawler match to a source-aware UI suggestion.
+ *
+ * @param snapshot - Validated crawler snapshot.
+ * @param gameId - Requested Google Skills game ID.
+ * @param now - Millisecond timestamp for deadline checks.
+ * @param cached - Whether an offline fallback snapshot was used.
+ * @returns Valid suggestion metadata, or null when there is no match.
+ */
 function suggestion(
   snapshot: CachedGames,
   gameId: string,
@@ -144,6 +180,13 @@ function suggestion(
   return match ? { ...match, cached, sourceUrl: ARCADE_CRAWLER_SOURCE } : null;
 }
 
+/**
+ * Resolve an Arcade Access Code using fresh data or bounded offline fallback.
+ * Concurrent network requests share one in-flight refresh.
+ *
+ * @param gameId - Exact numeric game ID from the Google Skills page.
+ * @returns A matching active code or null when none can be trusted.
+ */
 export async function lookupArcadeAccessCode(
   gameId: string,
 ): Promise<ArcadeCodeSuggestion | null> {
