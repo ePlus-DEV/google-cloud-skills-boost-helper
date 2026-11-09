@@ -10,6 +10,11 @@ export default defineBackground(() => {
     }) => void | Promise<void>;
   };
 
+  /**
+   * Access the extension badge API across supported browser runtimes.
+   *
+   * @returns Browser action interface or null when unavailable.
+   */
   function getAction(): BadgeAction | null {
     const root = globalThis as unknown as {
       browser?: { action?: BadgeAction };
@@ -18,6 +23,7 @@ export default defineBackground(() => {
     return root.browser?.action ?? root.chrome?.action ?? null;
   }
 
+  /** Clear the current extension badge without interrupting background tasks. */
   async function clearBadge(): Promise<void> {
     try {
       await getAction()?.setBadgeText({ text: "" });
@@ -26,6 +32,7 @@ export default defineBackground(() => {
     }
   }
 
+  /** Refresh the badge using stored activity for the active account. */
   async function refreshBadge(): Promise<void> {
     try {
       const StorageService = (await import("../services/storageService"))
@@ -36,6 +43,11 @@ export default defineBackground(() => {
     }
   }
 
+  /**
+   * Relay an extension event to tabs that can receive content-script messages.
+   *
+   * @param message - Serializable message to broadcast.
+   */
   async function broadcast(message: Record<string, unknown>): Promise<void> {
     try {
       const tabs = await browser.tabs.query({});
