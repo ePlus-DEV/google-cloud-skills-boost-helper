@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "无法更新 Bonus Milestone，请重试。"
+  },
+  "arcadeCodeTitle": {
+    "message": "Arcade 访问代码"
+  },
+  "arcadeCodeFill": {
+    "message": "填入代码"
+  },
+  "arcadeCodeFilled": {
+    "message": "已填入代码。请检查后点击 Join。"
+  },
+  "arcadeCodeReview": {
+    "message": "加入前请核对代码，Google 将进行验证。"
+  },
+  "arcadeCodeFromLink": {
+    "message": "来自链接（未经验证）"
+  },
+  "arcadeCodeFromCache": {
+    "message": "公开 Arcade 爬虫缓存数据"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "公开 Arcade 爬虫建议"
+  },
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "查看本月实验"
   }
 }

@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.6] - 2026-11-03
+
+### :sparkles: Features
+
+- Suggest Arcade game Access Codes from the public `hoangsvit/arcade-crawler` feed using exact game-ID matching.
+- Prefill an empty Google Skills Join dialog code field (including open Shadow DOM), support optional `#access_code=...` links and provide a one-click Fill code action.
+- Keep Join confirmation manual. Do not suggest expired, reconstructed or conflicting game codes.
+- Localize the source-aware assistant across all 13 supported languages.
+- Open **View Monthly Labs** at `https://arcade.eplus.dev/#monthly-games` instead of the raw crawler JSON.
+
+### :lock: Privacy & permissions
+
+- Access only the public `raw.githubusercontent.com` crawler host, fetch without Google credentials and cache public game data for 30 minutes.
+- Keep `tabs` and `notifications` permissions removed.
+
+### :white_check_mark: Tests
+
+- Cover game-ID matching, code validation, cache/expiry, open Shadow DOM and the Chrome Web Store permission audit.
+
+## [1.3.5] - 2026-10-30
+
+### :bug: Bug Fixes
+
+- [`00ce4ce`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/00ce4ceab549127a0614d3155d7e742649790536) - remove unused Chrome Web Store permissions _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+- [`d1f9282`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/d1f92829de22ac508fb64c421d1be3e0ebc9127a) - remove console output flagged by DeepSource _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
+### :white_check_mark: Tests
+
+- [`28b833d`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/28b833d15acc293ee09f92b3e9a630fc19365dd3) - check built Chrome manifest for rejected permissions _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
+### :wrench: Chores
+
+- [`f85f2b1`](https://github.com/ePlus-DEV/google-cloud-skills-boost-helper/commit/f85f2b1b610633a1382a676651f4225ffe92f7b9) - **release**: bump extension version to 1.3.5 _(commit by [@hoangsvit](https://github.com/hoangsvit))_
+
 ## [1.3.4] - 2026-10-30
 
 ### :bug: Bug Fixes

@@ -18,6 +18,29 @@ Before making a non-trivial change, read:
 - Use Conventional Commits.
 - Do not mix dependency churn or unrelated cleanup into a feature PR.
 
+## Function documentation and naming (mandatory)
+
+Apply these rules to every new or changed function, method, and exported callback in TypeScript/JavaScript code:
+
+- **A JSDoc documentation comment is required before each function declaration and named function expression/method**, including private helpers, async functions, and arrow functions assigned to named variables. Document what it does and any important side effects or constraints.
+- For functions with parameters, document each parameter using `@param`. Use `@returns` when a value is returned and `@throws` when errors are intentionally propagated. Documentation must match the actual implementation; generic filler comments do not count.
+- **Function names must contain complete, descriptive words.** Never abbreviate or shorten words (for example, avoid `calcPts`, `getUsr`, `updCfg`, `fn`, `cb`, or `t`). Prefer `calculateArcadePoints`, `getUserProfile`, `updateConfiguration`, and `translateArcadeMessage`.
+- **Do not introduce function names shorter than 5 characters**, or generic single-word names that hide their intent (for example `scan`, `run`, `exec`, `doIt`, `temp`). Prefer action + domain/object names such as `scanForAccessCodeField`.
+- Use camelCase for functions and methods (unless a public API/framework contract requires a particular spelling). Existing library/framework-mandated names such as WXT `main` are exceptions; do not break public APIs solely to meet the length rule.
+- Review any newly added or modified function for both JSDoc coverage and descriptive naming before submitting a PR. Do not silence documentation or naming warnings by disabling analyzers.
+
+## Static-analysis regression prevention (mandatory)
+
+Prevent recurring DeepSource and CI findings before pushing changes:
+
+- **Async correctness:** Do not mark functions, callbacks or mocks `async` unless they contain an actual `await` or async iteration. For asynchronous mock results without awaiting, explicitly return `Promise.resolve(value)` or `Promise.reject(error)`.
+- **Return contracts:** Keep `return` values consistent across branches. Side-effect-only browser listeners must not return response values. For request/reply messages, use a dedicated handler with a declared return type and avoid mixing it with notification handling.
+- **Promise handling:** Do not discard Promises using the `void` operator. Either `await` or handle rejection using `.catch()` where awaiting is not permitted.
+- **Callback signatures:** Ensure arguments passed to callbacks match their declared parameters. In particular, do not use a default zero-argument predicate `() => true` and later call it as `predicate(value)`; make the predicate optional or declare its parameter.
+- **Mock and test coverage:** Inspect new `vi.fn` mocks and `fetch` stubs for missing awaits. Update source-text assertions when renaming a function and rerun existing tests.
+- **No bypass:** Do not disable analyzers, blanket-suppress warnings, insert artificial `await` or change the PR base branch to hide failures.
+- **Release gate:** Require TypeScript compilation, coverage tests, both browser builds, and the current-commit DeepSource analysis to pass before declaring the PR ready.
+
 ## Required validation
 
 For code changes, run:
@@ -121,3 +144,16 @@ When a planned item becomes implemented:
 - include user-visible behavior in changelog/release notes.
 
 Do not document planned behavior as current behavior.
+
+## Arcade access-code helper invariants
+
+- Game suggestions are sourced solely from the public Arcade crawler or an
+  explicit user-supplied `#access_code` fragment. Exact numeric game-ID match
+  is required; never invent or fuzzy-match access codes.
+- Check active status, deadline, valid code format and duplicate records.
+- Prefill only empty fields by default. **Never automatically Join, submit, or
+  bypass Google's validation.** Users retain the final action.
+- Keep crawler requests in the background with `credentials: omit`, and
+  the raw GitHub host permission limited to the public snapshot.
+- Do not request `tabs`, `notifications`, account cookies or unrelated permissions.
+- Localize across all 13 languages and regression-test Google open Shadow DOM.
