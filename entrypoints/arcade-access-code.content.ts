@@ -115,7 +115,8 @@ export default defineContentScript({
         );
         urlCode = null;
       }
-      if (statusLabel) statusLabel.textContent = translateArcadeMessage("arcadeCodeFilled");
+      if (statusLabel)
+        statusLabel.textContent = translateArcadeMessage("arcadeCodeFilled");
     }
 
     /**
@@ -136,7 +137,8 @@ export default defineContentScript({
       card.hidden = false;
       if (codeLabel) codeLabel.textContent = active.code;
       if (titleLabel) {
-        titleLabel.textContent = active.title || translateArcadeMessage("arcadeCodeTitle");
+        titleLabel.textContent =
+          active.title || translateArcadeMessage("arcadeCodeTitle");
       }
       if (sourceLabel) {
         sourceLabel.textContent = active.fromLink
@@ -208,7 +210,10 @@ export default defineContentScript({
         const box = document.createElement("aside");
         box.className = "eplus-arcade-code";
         box.hidden = true;
-        box.setAttribute("aria-label", translateArcadeMessage("arcadeCodeTitle"));
+        box.setAttribute(
+          "aria-label",
+          translateArcadeMessage("arcadeCodeTitle"),
+        );
 
         const eyebrow = document.createElement("div");
         eyebrow.className = "eplus-code-eyebrow";
@@ -242,7 +247,9 @@ export default defineContentScript({
         monthlyLabsLink.href = MONTHLY_LABS_URL;
         monthlyLabsLink.target = "_blank";
         monthlyLabsLink.rel = "noopener noreferrer";
-        monthlyLabsLink.textContent = translateArcadeMessage("arcadeCodeViewMonthlyLabs");
+        monthlyLabsLink.textContent = translateArcadeMessage(
+          "arcadeCodeViewMonthlyLabs",
+        );
 
         actions.append(fillButton, monthlyLabsLink);
         statusLabel = document.createElement("p");
