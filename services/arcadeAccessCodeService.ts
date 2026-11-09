@@ -47,6 +47,48 @@ async function readCache(now: number): Promise<CachedGames | null> {
   }
 }
 
+/**
+ * Stream with an explicit byte budget. Calling response.text() before checking
+ * the size would permit an unexpectedly large remote response into memory.
+ */
+async function readBoundedCrawlerBody(response: Response): Promise<string> {
+  if (!response.body) {
+    const text = await response.text();
+    if (new TextEncoder().encode(text).byteLength > MAX_PAYLOAD_SIZE) {
+      throw new Error("Arcade crawler response too large");
+    }
+    return text;
+  }
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let byteCount = 0;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      byteCount += value.byteLength;
+      if (byteCount > MAX_PAYLOAD_SIZE) {
+        throw new Error("Arcade crawler response too large");
+      }
+      chunks.push(value);
+    }
+  } catch (error) {
+    await reader.cancel().catch(() => undefined);
+    throw error;
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(byteCount);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+}
+
 /** Public crawler data only; never forward Google cookies or auth tokens. */
 async function refreshCrawler(now: number): Promise<CachedGames> {
   const controller = new AbortController();
@@ -63,9 +105,7 @@ async function refreshCrawler(now: number): Promise<CachedGames> {
     if (Number.isFinite(size) && size > MAX_PAYLOAD_SIZE) {
       throw new Error("Arcade crawler response too large");
     }
-    const text = await response.text();
-    if (text.length > MAX_PAYLOAD_SIZE)
-      throw new Error("Arcade crawler response too large");
+    const text = await readBoundedCrawlerBody(response);
     const json: unknown = JSON.parse(text);
     if (!Array.isArray(json) || json.length > 500)
       throw new Error("Invalid Arcade crawler snapshot");
