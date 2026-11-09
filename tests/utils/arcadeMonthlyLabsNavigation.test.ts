@@ -30,8 +30,9 @@ describe("Arcade code assistant navigation", () => {
     );
     expect(script).toContain("monthlyLabsLink.href = MONTHLY_LABS_URL");
     expect(script).toContain(
-      'monthlyLabsLink.textContent = t("arcadeCodeViewMonthlyLabs")',
+      "monthlyLabsLink.textContent = translateArcadeMessage(",
     );
+    expect(script).toContain('"arcadeCodeViewMonthlyLabs"');
     expect(script).not.toContain("sourceLink.href = CRAWLER_SOURCE");
     expect(script).not.toContain("arcadeCodeViewSource");
   });
