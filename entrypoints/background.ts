@@ -131,26 +131,33 @@ export default defineBackground(() => {
   );
 
   browser.runtime.onStartup.addListener(() => {
-    void refreshBadge();
+    refreshBadge().catch((error) => {
+      console.debug("Failed to refresh extension badge on startup:", error);
+    });
   });
 
-  browser.runtime.onMessage.addListener(async (message) => {
+  /**
+   * Handle background commands that change extension state without a data reply.
+   *
+   * @param request - Message payload validated by the runtime message router.
+   */
+  async function handleBackgroundNotification(
+    request: Record<string, unknown>,
+  ): Promise<void> {
     try {
-      if (!message?.type) return;
-
-      switch (message.type) {
-        case "arcadeAccessCodeLookup": {
-          const gameId = message.gameId;
-          if (typeof gameId !== "string" || !/^[0-9]{1,12}$/.test(gameId))
-            return null;
-          return await lookupArcadeAccessCode(gameId);
-        }
+      switch (request.type) {
         case "setBadge": {
           const action = getAction();
           if (!action) return;
-          await action.setBadgeText({ text: message.text || "0" });
+          await action.setBadgeText({
+            text: typeof request.text === "string" && request.text
+              ? request.text
+              : "0",
+          });
           await action.setBadgeBackgroundColor?.({
-            color: message.color || UI_COLORS?.BADGE || "#155dfc",
+            color: typeof request.color === "string" && request.color
+              ? request.color
+              : UI_COLORS?.BADGE || "#155dfc",
           });
           break;
         }
@@ -163,44 +170,87 @@ export default defineBackground(() => {
         case "preferredSearchEngineChanged":
           await broadcast({
             type: "preferredSearchEngineChanged",
-            engine: message.engine || "google",
+            engine: typeof request.engine === "string" && request.engine
+              ? request.engine
+              : "google",
           });
           break;
         case "searchFeatureChanged":
           await broadcast({
             type: "searchFeatureChanged",
-            enabled: Boolean(message.enabled),
+            enabled: Boolean(request.enabled),
           });
           break;
         case "enableEplusSearchChanged":
           await broadcast({
             type: "enableEplusSearchChanged",
-            enabled: Boolean(message.enabled),
+            enabled: Boolean(request.enabled),
           });
           break;
         default:
-          return;
+          break;
       }
     } catch (error) {
-      console.debug("Error handling runtime message in background:", error);
+      console.debug("Error handling runtime notification:", error);
     }
-  });
+  }
 
-  browser.runtime.onMessage.addListener((message) => {
-    // Do not claim unrelated messages: the other listener handles Arcade code lookup.
-    if (!message?._openChangelogTest) return;
-    return (async () => {
-      try {
-        const path = `/changelog.html?version=${encodeURIComponent(
-          message.version || "",
-        )}&from=${encodeURIComponent(message.from || "")}`;
-        await browser.tabs.create({
-          url: browser.runtime.getURL(path as any),
-          active: true,
-        });
-      } catch (error) {
-        console.debug("Failed to open changelog test tab:", error);
+  /**
+   * Open the changelog tab requested by the extension's test interface.
+   *
+   * @param request - Runtime message containing optional version information.
+   */
+  async function openChangelogTestPage(
+    request: Record<string, unknown>,
+  ): Promise<void> {
+    try {
+      const version = typeof request.version === "string" ? request.version : "";
+      const from = typeof request.from === "string" ? request.from : "";
+      const path = `/changelog.html?version=${encodeURIComponent(version)}&from=${encodeURIComponent(from)}`;
+      await browser.tabs.create({
+        url: browser.runtime.getURL(path as any),
+        active: true,
+      });
+    } catch (error) {
+      console.debug("Failed to open changelog test tab:", error);
+    }
+  }
+
+  /**
+   * Route runtime messages while keeping request/reply and notification
+   * return contracts separate; unknown messages are not claimed.
+   *
+   * @param message - Untrusted runtime message from another extension context.
+   * @returns The reply Promise for supported commands, otherwise undefined.
+   */
+  function handleExtensionRuntimeMessage(
+    message: unknown,
+  ): Promise<unknown> | undefined {
+    if (!message || typeof message !== "object" || Array.isArray(message)) {
+      return undefined;
+    }
+
+    const request = message as Record<string, unknown>;
+    if (request._openChangelogTest === true) {
+      return openChangelogTestPage(request);
+    }
+
+    if (request.type === "arcadeAccessCodeLookup") {
+      const gameId = request.gameId;
+      if (typeof gameId !== "string" || !/^[0-9]{1,12}$/.test(gameId)) {
+        return Promise.resolve(null);
       }
-    })();
-  });
+      return lookupArcadeAccessCode(gameId).catch((error) => {
+        console.debug("Failed to resolve Arcade Access Code:", error);
+        return null;
+      });
+    }
+
+    if (typeof request.type === "string") {
+      return handleBackgroundNotification(request);
+    }
+    return undefined;
+  }
+
+  browser.runtime.onMessage.addListener(handleExtensionRuntimeMessage);
 });
