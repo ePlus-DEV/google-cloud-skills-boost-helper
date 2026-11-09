@@ -26,14 +26,15 @@ afterEach(() => {
 
 describe("public crawler access-code service", () => {
   it("fetches exact code without credentials and caches the snapshot", async () => {
-    const fetcher = vi.fn(async (_url: string, options: RequestInit) => {
+    const fetcher = vi.fn((_url: string, options: RequestInit) => {
       expect(options.credentials).toBe("omit");
       expect(options.redirect).toBe("error");
-      return {
-        ok: true,
-        headers: new Headers({ "content-length": "1024" }),
-        text: async () => JSON.stringify([game]),
-      };
+      return Promise.resolve(
+        new Response(JSON.stringify([game]), {
+          status: 200,
+          headers: { "content-length": "1024" },
+        }),
+      );
     });
     vi.stubGlobal("fetch", fetcher);
     const setSpy = vi.spyOn(fakeBrowser.storage.local, "set");
@@ -56,11 +57,7 @@ describe("public crawler access-code service", () => {
   it("does not leak an access code for unrelated or expired games", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => ({
-        ok: true,
-        headers: new Headers(),
-        text: async () => JSON.stringify([game]),
-      })),
+      vi.fn(() => Promise.resolve(new Response(JSON.stringify([game])))),
     );
     expect(await lookupArcadeAccessCode("9999")).toBeNull();
     expect(await lookupArcadeAccessCode("7564")).not.toBeNull();
@@ -77,9 +74,7 @@ describe("public crawler access-code service", () => {
     });
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => {
-        throw new Error("offline");
-      }),
+      vi.fn(() => Promise.reject(new Error("offline"))),
     );
     expect(await lookupArcadeAccessCode("7564")).toMatchObject({
       code: game.accessCode,
@@ -92,7 +87,7 @@ describe("public crawler access-code service", () => {
     const middle = Math.floor(bytes.length / 2);
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => {
+      vi.fn(() => {
         const body = new ReadableStream<Uint8Array>({
           start(controller) {
             controller.enqueue(bytes.slice(0, middle));
@@ -100,7 +95,7 @@ describe("public crawler access-code service", () => {
             controller.close();
           },
         });
-        return new Response(body, { status: 200 });
+        return Promise.resolve(new Response(body, { status: 200 }));
       }),
     );
     expect(await lookupArcadeAccessCode("7564")).toMatchObject({
@@ -111,25 +106,28 @@ describe("public crawler access-code service", () => {
   it("rejects oversized streamed payloads before consuming the whole body", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => {
+      vi.fn(() => {
         const body = new ReadableStream<Uint8Array>({
           start(controller) {
             controller.enqueue(new Uint8Array(200_001));
             controller.close();
           },
         });
-        return new Response(body, { status: 200 });
+        return Promise.resolve(new Response(body, { status: 200 }));
       }),
     );
     expect(await lookupArcadeAccessCode("7564")).toBeNull();
   });
 
   it("refuses unsupported IDs and responses that exceed the size limit", async () => {
-    const fetcher = vi.fn(async () => ({
-      ok: true,
-      headers: new Headers({ "content-length": "300000" }),
-      text: async () => JSON.stringify([game]),
-    }));
+    const fetcher = vi.fn(() =>
+      Promise.resolve(
+        new Response(JSON.stringify([game]), {
+          status: 200,
+          headers: { "content-length": "300000" },
+        }),
+      ),
+    );
     vi.stubGlobal("fetch", fetcher);
     expect(await lookupArcadeAccessCode("bad-id")).toBeNull();
     expect(fetcher).not.toHaveBeenCalled();
