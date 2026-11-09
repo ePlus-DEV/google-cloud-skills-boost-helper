@@ -81,6 +81,9 @@ describe("explicit code fragments", () => {
     );
     expect(codeFromUrlFragment("#access_code=unsafe%20value")).toBeNull();
     expect(codeFromUrlFragment("#other=x")).toBeNull();
+    expect(
+      codeFromUrlFragment("#access_code=valid-one&access_code=valid-two"),
+    ).toBeNull();
   });
 });
 
@@ -109,6 +112,26 @@ describe("Google Shadow DOM access-code field", () => {
     document.removeEventListener("input", inputSpy);
     document.removeEventListener("change", changeSpy);
     host.remove();
+  });
+
+  it("skips hidden or disabled stale fields and finds an eligible Shadow DOM input", () => {
+    const stale = document.createElement("input");
+    stale.name = "access_code";
+    stale.disabled = true;
+    document.body.append(stale);
+
+    const host = document.createElement("div");
+    document.body.append(host);
+    const shadow = host.attachShadow({ mode: "open" });
+    const visible = document.createElement("input");
+    visible.name = "access_code";
+    shadow.append(visible);
+
+    expect(findAccessCodeInput(document, (field) => !field.disabled)).toBe(
+      visible,
+    );
+    host.remove();
+    stale.remove();
   });
 
   it("refuses a disabled field, invalid code and does not submit any form", () => {
