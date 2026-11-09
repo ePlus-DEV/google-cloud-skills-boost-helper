@@ -118,8 +118,13 @@ export default defineContentScript({
 
       // Autofill empty fields only once. Never overwrite a user's typed code.
       if (!attempted.has(input)) {
-        attempted.add(input);
-        if (!input.value.trim()) applyCode(input, active.code);
+        if (input.value.trim()) {
+          // A user-entered value must remain untouched on future scans.
+          attempted.add(input);
+        } else {
+          // A failed fill must stay retryable when the dialog settles.
+          applyCode(input, active.code);
+        }
       }
     }
 
@@ -129,6 +134,7 @@ export default defineContentScript({
     }
 
     const onClick = () => {
+      if (!activeCode()) return;
       // The Join modal may mount asynchronously or replace a previously
       // rendered input. Retry a small, bounded number of times, even if an
       // earlier dialog's field was already found.
@@ -141,6 +147,10 @@ export default defineContentScript({
         }, delay);
         retryTimers.add(timer);
       }
+    };
+    const onKeyup = (event: KeyboardEvent) => {
+      // Ordinary typing must not trigger four DOM scans per keystroke.
+      if (event.key === "Enter" || event.key === " ") onClick();
     };
     const onHashChange = () => {
       urlCode = codeFromUrlFragment(window.location.hash);
@@ -213,12 +223,12 @@ export default defineContentScript({
     scheduleScan(0);
 
     document.addEventListener("click", onClick, true);
-    document.addEventListener("keyup", onClick, true);
+    document.addEventListener("keyup", onKeyup, true);
     window.addEventListener("hashchange", onHashChange);
     window.addEventListener("pageshow", onHashChange);
     ctx.onInvalidated(() => {
       document.removeEventListener("click", onClick, true);
-      document.removeEventListener("keyup", onClick, true);
+      document.removeEventListener("keyup", onKeyup, true);
       window.removeEventListener("hashchange", onHashChange);
       window.removeEventListener("pageshow", onHashChange);
       if (scanTimeout !== undefined) window.clearTimeout(scanTimeout);
