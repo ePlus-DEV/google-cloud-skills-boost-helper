@@ -61,10 +61,6 @@ async function readCache(now: number): Promise<CachedGames | null> {
 }
 
 /**
- * Stream with an explicit byte budget. Calling response.text() before checking
- * the size would permit an unexpectedly large remote response into memory.
- */
-/**
  * Decode a crawler response while enforcing the maximum byte budget.
  *
  * @param response - Successful crawler HTTP response.
@@ -109,7 +105,6 @@ async function readBoundedCrawlerBody(response: Response): Promise<string> {
   return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
 }
 
-/** Public crawler data only; never forward Google cookies or auth tokens. */
 /**
  * Fetch and cache a fresh public game snapshot without sending credentials.
  *
