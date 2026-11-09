@@ -31,7 +31,6 @@ export default defineContentScript({
 
     let crawler: ArcadeCodeSuggestion | null = null;
     let urlCode = codeFromUrlFragment(window.location.hash);
-    let currentInput: HTMLInputElement | null = null;
     let card: HTMLElement | null = null;
     let codeLabel: HTMLElement | null = null;
     let titleLabel: HTMLElement | null = null;
@@ -39,6 +38,7 @@ export default defineContentScript({
     let statusLabel: HTMLElement | null = null;
     let fillButton: HTMLButtonElement | null = null;
     let scanTimeout: number | undefined;
+    const retryTimers = new Set<number>();
     const attempted = new WeakSet<HTMLInputElement>();
 
     function activeCode(): {
@@ -66,27 +66,27 @@ export default defineContentScript({
 
     function codeField(): HTMLInputElement | null {
       if (arcadeGameIdFromUrl(location.href) !== gameId) return null;
-      const field = findAccessCodeInput(document);
-      if (
-        !field ||
-        !field.isConnected ||
-        field.disabled ||
-        field.getClientRects().length === 0
-      )
-        return null;
-      return field;
+      return findAccessCodeInput(
+        document,
+        (field) =>
+          field.isConnected &&
+          !field.disabled &&
+          !field.readOnly &&
+          field.getClientRects().length > 0,
+      );
     }
 
     function applyCode(input: HTMLInputElement, code: string) {
       if (!fillAccessCodeInput(input, code)) return;
       attempted.add(input);
-      if (urlCode) {
+      if (urlCode === code) {
         // Do not leave a shared access code visible in the address bar.
         window.history.replaceState(
           history.state,
           "",
           location.pathname + location.search,
         );
+        urlCode = null;
       }
       if (statusLabel) statusLabel.textContent = t("arcadeCodeFilled");
     }
@@ -95,7 +95,6 @@ export default defineContentScript({
       scanTimeout = undefined;
       const active = activeCode();
       const input = active ? codeField() : null;
-      currentInput = input;
       if (!card) return;
 
       if (!active || !input) {
@@ -130,12 +129,18 @@ export default defineContentScript({
     }
 
     const onClick = () => {
-      // Google may insert its dialog and nested fields across multiple render ticks.
-      // Two bounded checks avoid a permanent polling loop on every game page.
-      scheduleScan(150);
-      window.setTimeout(() => {
-        if (!currentInput) scheduleScan(0);
-      }, 650);
+      // The Join modal may mount asynchronously or replace a previously
+      // rendered input. Retry a small, bounded number of times, even if an
+      // earlier dialog's field was already found.
+      for (const timer of retryTimers) window.clearTimeout(timer);
+      retryTimers.clear();
+      for (const delay of [150, 450, 900, 1800]) {
+        const timer = window.setTimeout(() => {
+          retryTimers.delete(timer);
+          scheduleScan(0);
+        }, delay);
+        retryTimers.add(timer);
+      }
     };
     const onHashChange = () => {
       urlCode = codeFromUrlFragment(window.location.hash);
@@ -217,6 +222,8 @@ export default defineContentScript({
       window.removeEventListener("hashchange", onHashChange);
       window.removeEventListener("pageshow", onHashChange);
       if (scanTimeout !== undefined) window.clearTimeout(scanTimeout);
+      for (const timer of retryTimers) window.clearTimeout(timer);
+      retryTimers.clear();
     });
 
     try {
