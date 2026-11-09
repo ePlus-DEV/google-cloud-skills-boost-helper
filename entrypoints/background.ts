@@ -150,14 +150,16 @@ export default defineBackground(() => {
           const action = getAction();
           if (!action) return;
           await action.setBadgeText({
-            text: typeof request.text === "string" && request.text
-              ? request.text
-              : "0",
+            text:
+              typeof request.text === "string" && request.text
+                ? request.text
+                : "0",
           });
           await action.setBadgeBackgroundColor?.({
-            color: typeof request.color === "string" && request.color
-              ? request.color
-              : UI_COLORS?.BADGE || "#155dfc",
+            color:
+              typeof request.color === "string" && request.color
+                ? request.color
+                : UI_COLORS?.BADGE || "#155dfc",
           });
           break;
         }
@@ -170,9 +172,10 @@ export default defineBackground(() => {
         case "preferredSearchEngineChanged":
           await broadcast({
             type: "preferredSearchEngineChanged",
-            engine: typeof request.engine === "string" && request.engine
-              ? request.engine
-              : "google",
+            engine:
+              typeof request.engine === "string" && request.engine
+                ? request.engine
+                : "google",
           });
           break;
         case "searchFeatureChanged":
@@ -204,7 +207,8 @@ export default defineBackground(() => {
     request: Record<string, unknown>,
   ): Promise<void> {
     try {
-      const version = typeof request.version === "string" ? request.version : "";
+      const version =
+        typeof request.version === "string" ? request.version : "";
       const from = typeof request.from === "string" ? request.from : "";
       const path = `/changelog.html?version=${encodeURIComponent(version)}&from=${encodeURIComponent(from)}`;
       await browser.tabs.create({
