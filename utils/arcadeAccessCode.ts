@@ -50,10 +50,6 @@ export function arcadeGameIdFromUrl(url: string): string | null {
 }
 
 /**
- * Match by exact game ID, never by title or code substring.
- * A conflict or expired/non-active snapshot yields no suggestion.
- */
-/**
  * Resolve a code only when the public snapshot matches the exact game ID.
  * Reject conflicting, inactive, reconstructed, malformed or expired records.
  *
@@ -112,7 +108,6 @@ export function findCrawlerGameCode(
   return match;
 }
 
-/** Only read user-supplied codes from the fragment, never from query params. */
 /**
  * Read exactly one user-supplied access code from a URL fragment.
  * Query strings and duplicate access_code parameters are intentionally ignored.
@@ -131,7 +126,6 @@ export function codeFromUrlFragment(fragment: string): string | null {
     : null;
 }
 
-/** The page can render the code field within multiple open Shadow Roots. */
 /**
  * Locate the first eligible Access Code input across nested open Shadow Roots.
  *
@@ -158,10 +152,6 @@ export function findAccessCodeInput(
   return null;
 }
 
-/**
- * Trigger native input/change events so custom elements and frameworks observe
- * the same change as a real user typing. Google alone validates submitted codes.
- */
 /**
  * Fill an enabled field through its native setter and dispatch composed events.
  * This never submits the form or clicks Google's Join button.
