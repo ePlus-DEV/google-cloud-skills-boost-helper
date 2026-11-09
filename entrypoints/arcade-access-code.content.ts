@@ -10,6 +10,12 @@ import {
 
 const MONTHLY_LABS_URL = "https://arcade.eplus.dev/#monthly-games";
 
+/**
+ * Resolve a translated label for the extension UI.
+ *
+ * @param key - Message key in the browser's active locale.
+ * @returns Localized text, or the key when translation is unavailable.
+ */
 function t(key: string): string {
   return browser.i18n.getMessage(key) || key;
 }
@@ -25,6 +31,11 @@ export default defineContentScript({
   ],
   cssInjectionMode: "ui",
 
+  /**
+   * Install the Arcade code helper on a supported Google Skills game page.
+   *
+   * @param ctx - WXT lifecycle context used to mount and clean up the UI.
+   */
   async main(ctx) {
     const gameId = arcadeGameIdFromUrl(window.location.href);
     if (!gameId) return; // Never run on lab pages or non-game routes.
@@ -41,6 +52,11 @@ export default defineContentScript({
     const retryTimers = new Set<number>();
     const attempted = new WeakSet<HTMLInputElement>();
 
+    /**
+     * Prefer a valid explicit link code over an unexpired crawler suggestion.
+     *
+     * @returns The currently eligible suggestion or null.
+     */
     function activeCode(): {
       code: string;
       title: string;
@@ -64,6 +80,11 @@ export default defineContentScript({
       };
     }
 
+    /**
+     * Find the currently visible, editable code field on this game page.
+     *
+     * @returns The eligible field or null when the dialog is not available.
+     */
     function codeField(): HTMLInputElement | null {
       if (arcadeGameIdFromUrl(location.href) !== gameId) return null;
       return findAccessCodeInput(
@@ -76,6 +97,12 @@ export default defineContentScript({
       );
     }
 
+    /**
+     * Insert a code and consume a matching URL fragment after successful fill.
+     *
+     * @param input - Target field that Google will validate on manual Join.
+     * @param code - Suggested code to apply.
+     */
     function applyCode(input: HTMLInputElement, code: string) {
       if (!fillAccessCodeInput(input, code)) return;
       attempted.add(input);
@@ -91,6 +118,10 @@ export default defineContentScript({
       if (statusLabel) statusLabel.textContent = t("arcadeCodeFilled");
     }
 
+    /**
+     * Update the suggestion panel and fill a newly available empty field.
+     * Existing user-entered values are never overwritten automatically.
+     */
     function scan() {
       scanTimeout = undefined;
       const active = activeCode();
@@ -128,11 +159,17 @@ export default defineContentScript({
       }
     }
 
+    /**
+     * Debounce a pending DOM scan to avoid repeated traversal.
+     *
+     * @param delay - Milliseconds before checking for a code field.
+     */
     function scheduleScan(delay = 120) {
       if (scanTimeout !== undefined) window.clearTimeout(scanTimeout);
       scanTimeout = window.setTimeout(scan, delay);
     }
 
+    /** Retry a bounded set of scans after the Google Join dialog is opened. */
     const onClick = () => {
       if (!activeCode()) return;
       // The Join modal may mount asynchronously or replace a previously
@@ -148,10 +185,16 @@ export default defineContentScript({
         retryTimers.add(timer);
       }
     };
+    /**
+     * Handle keyboard activation without scanning on every typed character.
+     *
+     * @param event - Keyup event from the game page.
+     */
     const onKeyup = (event: KeyboardEvent) => {
       // Ordinary typing must not trigger four DOM scans per keystroke.
       if (event.key === "Enter" || event.key === " ") onClick();
     };
+    /** Refresh an explicit code supplied via navigation or hash updates. */
     const onHashChange = () => {
       urlCode = codeFromUrlFragment(window.location.hash);
       scheduleScan(150);
