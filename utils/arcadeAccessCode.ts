@@ -21,10 +21,22 @@ export type ArcadeAccessCodeMatch = {
 const SKILLS_HOSTS = new Set(["skills.google", "www.skills.google"]);
 const CODE_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{2,99}$/;
 
+/**
+ * Check whether a crawler or user-supplied value has a safe Access Code format.
+ *
+ * @param value - Untrusted value to validate.
+ * @returns Whether the value is a syntactically valid Arcade Access Code.
+ */
 export function validArcadeAccessCode(value: unknown): value is string {
   return typeof value === "string" && CODE_PATTERN.test(value);
 }
 
+/**
+ * Extract an exact numeric game ID from a trusted HTTPS Google Skills URL.
+ *
+ * @param url - Candidate game URL, which may contain query parameters.
+ * @returns The game ID, or null for unsupported hosts and paths.
+ */
 export function arcadeGameIdFromUrl(url: string): string | null {
   try {
     const parsed = new URL(url);
@@ -40,6 +52,15 @@ export function arcadeGameIdFromUrl(url: string): string | null {
 /**
  * Match by exact game ID, never by title or code substring.
  * A conflict or expired/non-active snapshot yields no suggestion.
+ */
+/**
+ * Resolve a code only when the public snapshot matches the exact game ID.
+ * Reject conflicting, inactive, reconstructed, malformed or expired records.
+ *
+ * @param snapshot - Untrusted crawler records.
+ * @param gameId - Numeric Google Skills game ID.
+ * @param now - Timestamp in milliseconds used for deadline validation.
+ * @returns Trusted code metadata, or null when no unambiguous match exists.
  */
 export function findCrawlerGameCode(
   snapshot: unknown,
@@ -92,6 +113,13 @@ export function findCrawlerGameCode(
 }
 
 /** Only read user-supplied codes from the fragment, never from query params. */
+/**
+ * Read exactly one user-supplied access code from a URL fragment.
+ * Query strings and duplicate access_code parameters are intentionally ignored.
+ *
+ * @param fragment - URL hash, including or excluding the leading #.
+ * @returns Valid code or null when missing, invalid or ambiguous.
+ */
 export function codeFromUrlFragment(fragment: string): string | null {
   const parsed = new URLSearchParams(
     fragment.startsWith("#") ? fragment.slice(1) : fragment,
@@ -104,6 +132,13 @@ export function codeFromUrlFragment(fragment: string): string | null {
 }
 
 /** The page can render the code field within multiple open Shadow Roots. */
+/**
+ * Locate the first eligible Access Code input across nested open Shadow Roots.
+ *
+ * @param root - Document or ShadowRoot to search.
+ * @param isEligible - Optional predicate for rejecting hidden or stale inputs.
+ * @returns An eligible input, or null if none can be reached.
+ */
 export function findAccessCodeInput(
   root: Document | ShadowRoot,
   isEligible: (input: HTMLInputElement) => boolean = () => true,
@@ -126,6 +161,14 @@ export function findAccessCodeInput(
 /**
  * Trigger native input/change events so custom elements and frameworks observe
  * the same change as a real user typing. Google alone validates submitted codes.
+ */
+/**
+ * Fill an enabled field through its native setter and dispatch composed events.
+ * This never submits the form or clicks Google's Join button.
+ *
+ * @param field - Access Code field to populate.
+ * @param code - Valid code to insert.
+ * @returns Whether the field contains the requested code after dispatch.
  */
 export function fillAccessCodeInput(
   field: HTMLInputElement,
