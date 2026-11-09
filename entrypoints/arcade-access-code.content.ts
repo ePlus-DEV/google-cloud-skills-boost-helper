@@ -16,7 +16,7 @@ const MONTHLY_LABS_URL = "https://arcade.eplus.dev/#monthly-games";
  * @param key - Message key in the browser's active locale.
  * @returns Localized text, or the key when translation is unavailable.
  */
-function t(key: string): string {
+function translateArcadeMessage(key: string): string {
   return browser.i18n.getMessage(key) || key;
 }
 
@@ -115,14 +115,14 @@ export default defineContentScript({
         );
         urlCode = null;
       }
-      if (statusLabel) statusLabel.textContent = t("arcadeCodeFilled");
+      if (statusLabel) statusLabel.textContent = translateArcadeMessage("arcadeCodeFilled");
     }
 
     /**
      * Update the suggestion panel and fill a newly available empty field.
      * Existing user-entered values are never overwritten automatically.
      */
-    function scan() {
+    function scanForAccessCodeField() {
       scanTimeout = undefined;
       const active = activeCode();
       const input = active ? codeField() : null;
@@ -136,14 +136,14 @@ export default defineContentScript({
       card.hidden = false;
       if (codeLabel) codeLabel.textContent = active.code;
       if (titleLabel) {
-        titleLabel.textContent = active.title || t("arcadeCodeTitle");
+        titleLabel.textContent = active.title || translateArcadeMessage("arcadeCodeTitle");
       }
       if (sourceLabel) {
         sourceLabel.textContent = active.fromLink
-          ? t("arcadeCodeFromLink")
+          ? translateArcadeMessage("arcadeCodeFromLink")
           : active.cached
-            ? t("arcadeCodeFromCache")
-            : t("arcadeCodeFromCrawler");
+            ? translateArcadeMessage("arcadeCodeFromCache")
+            : translateArcadeMessage("arcadeCodeFromCrawler");
       }
       if (fillButton) fillButton.disabled = false;
 
@@ -166,7 +166,7 @@ export default defineContentScript({
      */
     function scheduleScan(delay = 120) {
       if (scanTimeout !== undefined) window.clearTimeout(scanTimeout);
-      scanTimeout = window.setTimeout(scan, delay);
+      scanTimeout = window.setTimeout(scanForAccessCodeField, delay);
     }
 
     /** Retry a bounded set of scans after the Google Join dialog is opened. */
@@ -208,11 +208,11 @@ export default defineContentScript({
         const box = document.createElement("aside");
         box.className = "eplus-arcade-code";
         box.hidden = true;
-        box.setAttribute("aria-label", t("arcadeCodeTitle"));
+        box.setAttribute("aria-label", translateArcadeMessage("arcadeCodeTitle"));
 
         const eyebrow = document.createElement("div");
         eyebrow.className = "eplus-code-eyebrow";
-        eyebrow.textContent = t("arcadeCodeTitle");
+        eyebrow.textContent = translateArcadeMessage("arcadeCodeTitle");
 
         titleLabel = document.createElement("div");
         titleLabel.className = "eplus-code-title";
@@ -229,7 +229,7 @@ export default defineContentScript({
         fillButton = document.createElement("button");
         fillButton.type = "button";
         fillButton.className = "eplus-code-fill";
-        fillButton.textContent = t("arcadeCodeFill");
+        fillButton.textContent = translateArcadeMessage("arcadeCodeFill");
         fillButton.addEventListener("click", () => {
           const active = activeCode();
           const input = codeField();
@@ -242,13 +242,13 @@ export default defineContentScript({
         monthlyLabsLink.href = MONTHLY_LABS_URL;
         monthlyLabsLink.target = "_blank";
         monthlyLabsLink.rel = "noopener noreferrer";
-        monthlyLabsLink.textContent = t("arcadeCodeViewMonthlyLabs");
+        monthlyLabsLink.textContent = translateArcadeMessage("arcadeCodeViewMonthlyLabs");
 
         actions.append(fillButton, monthlyLabsLink);
         statusLabel = document.createElement("p");
         statusLabel.className = "eplus-code-status";
         statusLabel.setAttribute("aria-live", "polite");
-        statusLabel.textContent = t("arcadeCodeReview");
+        statusLabel.textContent = translateArcadeMessage("arcadeCodeReview");
 
         box.append(
           eyebrow,
