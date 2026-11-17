@@ -423,3 +423,14 @@ When deciding what moves first, use this order:
 5. **Convenience features** — shortcuts, workflow acceleration, optional visual enhancements.
 
 A feature should not ship if it makes score correctness, privacy, or core page compatibility harder to reason about.
+
+---
+
+## Shipped in v1.3.6 — Arcade game code suggestions
+
+- [x] Exact-ID access-code suggestions from public `hoangsvit/arcade-crawler` data
+- [x] Preserve Google Join confirmation (no auto-submit)
+- [x] Prefill empty code fields within open Shadow DOM, support user URL fragment
+- [x] Cache bounded by TTL, active status and game deadline
+- [x] 13 locale labels and explicit single-host permission justification
+- [ ] Follow-up: test additional Google Skills modal variants in live browser sessions

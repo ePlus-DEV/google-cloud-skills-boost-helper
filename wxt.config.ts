@@ -69,6 +69,8 @@ export default defineConfig({
     description: "__MSG_extDescription__",
     default_locale: "en",
     permissions: ["storage"],
+    // Public Arcade snapshot only. No tabs, notifications or blanket host access.
+    host_permissions: ["https://raw.githubusercontent.com/*"],
     browser_specific_settings: {
       gecko: {
         id: "{71243e5a-8ec2-41a5-8ef5-f2861ebd8fed}",
