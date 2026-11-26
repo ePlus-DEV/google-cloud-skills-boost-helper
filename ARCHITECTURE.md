@@ -761,3 +761,33 @@ When a feature becomes real:
 5. include it in release notes/changelog.
 
 This keeps **current state** and **future state** from drifting into the same document.
+
+---
+
+## Arcade Access Code Assistant (v1.3.6)
+
+**Current code owners:** `entrypoints/arcade-access-code.content.ts`,
+`entrypoints/background.ts`, `services/arcadeAccessCodeService.ts`,
+`utils/arcadeAccessCode.ts` and `assets/arcade-access-code.css`.
+
+- Runs only on Google Skills `/games/{numericId}` pages, not lab routes.
+- Requests an exact game-ID match via extension messaging. The background fetches
+  `https://raw.githubusercontent.com/hoangsvit/arcade-crawler/refs/heads/main/data/arcade_monthly_games.json`
+  with omitted credentials. The manifest grants this _single_ public crawler host.
+- Stores a public snapshot in extension-local storage for 30 minutes; when offline,
+  a prior snapshot is only eligible for up to 12 hours and before the game's deadline.
+- Requires an `active`, non-reconstructed record with a well-formed Access Code and
+  a future deadline. Duplicate conflicting IDs, unrecognized pages and unknown
+  games produce no suggestion. No fuzzy title matching or invented codes.
+- Optionally accepts a user-supplied `#access_code=...` fragment (not a Google API
+  parameter). Removes the fragment from the address bar after filling.
+- Finds the visible `input[name="access_code"]` through nested open Shadow Roots,
+  sets the native input value and dispatches composed input/change events.
+  It never clicks Join, submits a form, or bypasses Google's code validation.
+- Provides a small translated (13 locale) ShadowRoot UI showing the suggested code, its crawler provenance, a manual fill action, and a **View Monthly Labs** link to `https://arcade.eplus.dev/#monthly-games` instead of the raw JSON file. Empty fields are prefilled at most once; existing typed data is never overwritten automatically.
+- No cookies, tokens, account records or profiles are sent to the crawler. The
+  code itself is public data; the extension does not log it.
+
+**Known limitations:** Google Skills can change its modal or use closed Shadow Roots;
+in those cases the extension fails safely, allowing manual entry. Unpublished or
+expired codes are not suggested. Preview/release requires Google Skills manual QA.

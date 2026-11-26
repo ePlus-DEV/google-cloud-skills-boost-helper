@@ -979,5 +979,29 @@
   },
   "bonusMilestoneError": {
     "message": "تعذر تحديث Bonus Milestone. حاول مرة أخرى."
+  },
+  "arcadeCodeTitle": {
+    "message": "رمز الوصول إلى Arcade"
+  },
+  "arcadeCodeFill": {
+    "message": "إدخال الرمز"
+  },
+  "arcadeCodeFilled": {
+    "message": "تم إدخال الرمز. راجعه ثم اضغط Join."
+  },
+  "arcadeCodeReview": {
+    "message": "راجع الرمز قبل الانضمام؛ تتحقق Google من صحته."
+  },
+  "arcadeCodeFromLink": {
+    "message": "من الرابط (غير متحقق منه)"
+  },
+  "arcadeCodeFromCache": {
+    "message": "بيانات مخزنة مؤقتًا من زاحف Arcade العام"
+  },
+  "arcadeCodeFromCrawler": {
+    "message": "اقتراح من زاحف Arcade العام"
+  },
+  "arcadeCodeViewMonthlyLabs": {
+    "message": "عرض مختبرات هذا الشهر"
   }
 }
